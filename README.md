@@ -19,12 +19,12 @@ This is the profiles of Team Zenith. We are a family of 5. A group talented beyo
 
 |Team Member | Details | 
 | :---         | :---         |  
-|****|    ****   |
+|**Andrew Lumambo**|    **u16091010**   |
 |**Profile** |[Github]()|
-|**Overview**||
-|**Position** ||
-|**Interests** ||
-|**Skills**||
+|**Overview**|I am a passionate self-motivated Physics student from Namibia. My work ethic is rooted in being detail orientated and organised, allowing me to move between various multidisciplinary fields that require creative and logical application. This also aids in facilitating friendly work environments through attentiveness and open-mindedness.|
+|**Position** |Final year BSc Physics|
+|**Interests** |Writing, Painting, Poetry, Reading, Entrepreneurship, Design|
+|**Skills**|C++, Java, HTML, CSS, AJAX, JSON, JavaScript, SQL, PHP, C#, Graphic Design, Branding, Web Design|
 
 |Team Member | Details | 
 | :---         | :---         |  
