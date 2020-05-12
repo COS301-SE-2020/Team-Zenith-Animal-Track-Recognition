@@ -2,6 +2,7 @@
 
 **Project Managment Tools**
 * Trello: https://trello.com/b/J9e4ogC6/capstone-project-tasks-board
+* GitKraken Boards: https://app.gitkraken.com/glo/board/XrgQ-72g7AATO0N3
 * Discord: https://discord.com/channels/707165255481950219/707165255481950222
 
 **Team Overview**
