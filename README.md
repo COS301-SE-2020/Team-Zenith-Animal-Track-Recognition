@@ -29,12 +29,12 @@ This is the profiles of Team Zenith. We are a family of 5. A group talented beyo
 
 |Team Member | Details | 
 | :---         | :---         |  
-|****|    ****   |
-|**Profile** |[Github]()|
-|**Overview**||
-|**Position** ||
-|**Interests** ||
-|**Skills**||
+|**Obakeng Seageng**|    **u17336041**   |
+|**Profile** |[Github](https://obakengseageng.github.io/)|
+|**Overview**|Independent individual with a love for ideas and concepts. I Hope to change the world one day through innovative technology.|
+|**Position** |Final year BSc Computer Science|
+|**Interests** |Reading, strategy gaming and learning.|
+|**Skills**|Web Development - PHP, Javascript, HTML, CSS. Database management - MySQL. Java, Python, C++, C#|
 
 |Team Member | Details | 
 | :---         | :---         |  
