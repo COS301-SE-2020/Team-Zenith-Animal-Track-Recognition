@@ -38,12 +38,12 @@ This is the profiles of Team Zenith. We are a family of 5. A group talented beyo
 
 |Team Member | Details | 
 | :---         | :---         |  
-|****|    ****   |
-|**Profile** |[Github]()|
-|**Overview**||
-|**Position** ||
-|**Interests** ||
-|**Skills**||
+|**Zachary Christophers**|    **u17011125**   |
+|**Profile** |[Github](https://zachgc.github.io/)|
+|**Overview**|I am a highly focused individual with a goal-driven outlook, with a love of wildlife. I hope to one day find a way to solve the current extinction crisis through means of technology and my development sklls.|
+|**Position** |Final year BSc Computer Science|
+|**Interests** |Reading, Games of multiple genres, Procedural generation|
+|**Skills**|C++, C#, Java, PHP, MySQL, SQL Server, HTML, CSS, ASP.NET, Python, Office Suite|
 
 |Team Member | Details | 
 | :---         | :---         |  
