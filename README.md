@@ -47,7 +47,7 @@ This is the profiles of Team Zenith. We are a family of 5. A group talented beyo
 
 |Team Member | Details | 
 | :---         | :---         |  
-|**Johanes Du Preez**|    ****   |
+|**Johanes Du Preez**|    **u15285830**   |
 |**Profile** |[Github]()|
 |**Overview**|I am highly creative and diverse in knowledge and always willing to learn that with I don't know|
 |**Position** |Final year BSc Computer Science|
