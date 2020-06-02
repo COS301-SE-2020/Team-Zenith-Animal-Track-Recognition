@@ -47,6 +47,16 @@ This is the profiles of Team Zenith. We are a family of 5. A group talented beyo
 
 |Team Member | Details | 
 | :---         | :---         |  
+|**Johanes Du Preez**|    ****   |
+|**Profile** |[Github]()|
+|**Overview**|I am highly creative and diverse in knowledge and always willing to learn that with I don't know|
+|**Position** |Final year BSc Computer Science|
+|**Interests** |optimization problems,AI , wildlife , learning new skills , gaming , and fanfics|
+|**Skills**|C++,Java,PHP, MySQL, SQL Server, HTML,Javascript CSS,Python, microsoft office,mongodb|
+|**Skills in traning**|graphQL| 
+
+|Team Member | Details | 
+| :---         | :---         |  
 |****|    ****   |
 |**Profile** |[Github]()|
 |**Overview**||
