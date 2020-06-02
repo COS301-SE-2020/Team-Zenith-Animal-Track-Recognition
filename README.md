@@ -58,7 +58,7 @@ This is the profiles of Team Zenith. We are a family of 5. A group talented beyo
 |Team Member | Details | 
 | :---         | :---         |  
 |****|    ****   |
-|**Profile** |[Github]()|
+|**Profile** |[Github](https://greenlizzerd.github.io/)|
 |**Overview**||
 |**Position** ||
 |**Interests** ||
