@@ -6,7 +6,8 @@ const app = express();
 const prot =4000;
 // bind express with graphql
 app.use('/graphql', graphqlHTTP({
-    schema
+    schema,
+    graphiql:true
 }));
 
 app.listen(prot, () => {
