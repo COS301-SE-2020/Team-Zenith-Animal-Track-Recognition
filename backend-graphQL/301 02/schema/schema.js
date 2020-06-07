@@ -68,8 +68,11 @@ const RootQuery= new GraphQLObjectType({
         args:{
              img:{type: GraphQLString},
              acsseskey:{type: GraphQLString}
-        },
+        }, 
         resolve(parent,args ){
+
+/////
+
             a =_.find(usersdata,{acsseskey:args.acsseskey })
             if (a!=null){
             const newLocal = animaldata[0];
