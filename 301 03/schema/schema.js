@@ -26,10 +26,11 @@ var animaldata=[{
 const UserType= new GraphQLObjectType({
     name: 'user',
     fields:()=>({
-        id:{type: GraphQLString},
-        pass:{type: GraphQLString},
-        name:{type: GraphQLString},
-        acsseskey:{type: GraphQLString}
+        User_Name:{type: GraphQLString},
+        Password:{type: GraphQLString},
+        Token:{type: GraphQLString},
+        Access_Level:{type: GraphQLString},
+        e_mail:{type: GraphQLString}
     })
 });
 
