@@ -272,12 +272,12 @@ const RootQuery = new GraphQLObjectType({
 module.exports = new GraphQLSchema({
     query: RootQuery
 });
-db.collection('AnimalInfo').get()
-    .then((snapshot) => {
-        snapshot.forEach((doc) => {
-            console.log(doc.id, '=>', doc.data());
-        });
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
-    });
+// db.collection('AnimalInfo').get()
+//     .then((snapshot) => {
+//         snapshot.forEach((doc) => {
+//             console.log(doc.id, '=>', doc.data());
+//         });
+//     })
+//     .catch((err) => {
+//         console.log('Error getting documents', err);
+//     });
