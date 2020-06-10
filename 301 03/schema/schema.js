@@ -304,13 +304,13 @@ const RootQuery = new GraphQLObjectType({
                 img: {
                     type: GraphQLString
                 },
-                acsseskey: {
+                Token: {
                     type: GraphQLString
                 }
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
-                    acsseskey: args.acsseskey
+                    Token: args.Token
                 })
                 if (a != null) {
                     const newLocal = animaldata[0];
@@ -322,13 +322,13 @@ const RootQuery = new GraphQLObjectType({
         animals: {
             type: AnimalType,
             args: {
-                acsseskey: {
+                Token: {
                     type: GraphQLString
                 }
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
-                    acsseskey: args.acsseskey
+                    Token: args.Token
                 })
                 if (a != null) {
                     const newLocal = animaldata[0];
@@ -340,13 +340,13 @@ const RootQuery = new GraphQLObjectType({
         Users: {
             type: UserType,
             args: {
-                acsseskey: {
+                Token: {
                     type: GraphQLString
                 }
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
-                    acsseskey: args.acsseskey
+                    Token: args.Token
                 })
                 if (a != null) {
                     const newLocal = Users[0];
@@ -358,13 +358,13 @@ const RootQuery = new GraphQLObjectType({
         Geotags: {
             type: GeotagType,
             args: {
-                acsseskey: {
+                Token: {
                     type: GraphQLString
                 }
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
-                    acsseskey: args.acsseskey
+                    Token: args.Token
                 })
                 if (a != null) {
                     const newLocal = GeotagData[0];
@@ -373,19 +373,19 @@ const RootQuery = new GraphQLObjectType({
                 return null;
             }
         },
-        Geotags: {
+        Groups: {
             type: GeotagType,
             args: {
-                acsseskey: {
+                Token: {
                     type: GraphQLString
                 }
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
-                    acsseskey: args.acsseskey
+                    Token: args.Token
                 })
                 if (a != null) {
-                    const newLocal = GeotagData[0];
+                    const newLocal = GroupData[0];
                     return newLocal;
                 }
                 return null;
