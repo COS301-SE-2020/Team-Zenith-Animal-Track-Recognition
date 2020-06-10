@@ -310,7 +310,7 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
-                    acsseskey: args.acsseskey
+                    Token: args.Token
                 })
                 if (a != null) {
                     const newLocal = animaldata[0];
@@ -328,7 +328,7 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
-                    acsseskey: args.acsseskey
+                    Token: args.Token
                 })
                 if (a != null) {
                     const newLocal = animaldata[0];
@@ -346,7 +346,7 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
-                    acsseskey: args.acsseskey
+                    Token: args.Token
                 })
                 if (a != null) {
                     const newLocal = Users[0];
@@ -364,7 +364,7 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
-                    acsseskey: args.acsseskey
+                    Token: args.Token
                 })
                 if (a != null) {
                     const newLocal = GeotagData[0];
@@ -382,7 +382,7 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
-                    acsseskey: args.acsseskey
+                    Token: args.Token
                 })
                 if (a != null) {
                     const newLocal = GeotagData[0];
