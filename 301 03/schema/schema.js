@@ -8,7 +8,8 @@ const {
     GraphQLID,
     GraphQLInt,
     GraphQLList,
-    GraphQLFloat
+    GraphQLFloat,
+    GraphQLNonNull
 } = graphql;
 
 
@@ -92,11 +93,11 @@ const AnimalType = new GraphQLObjectType({
         Common_Name: {
             type: GraphQLString
         },
-        Group_ID: {
+        GroupID: {
             type: new GraphQLList(GroupType),
             resolve(parent, args) {
-                return _.filter(books, {
-                    authorId: parent.id
+                return _.find(GroupData, {
+                    GroupID: parent.GroupID
                 });
             }
         },
@@ -115,8 +116,8 @@ const AnimalType = new GraphQLObjectType({
         Habitats: {
             type: new GraphQLList(HabitatType),
             resolve(parent, args) {
-                return _.filter(books, {
-                    authorId: parent.id
+                return _.find(HabitatData, {
+                    ID: parent.Habitats
                 });
             }
         },
@@ -206,11 +207,11 @@ const GeotagType = new GraphQLObjectType({
 
 })
 var GroupData = [{
-    GroupID:  "1",
+    GroupID: "1",
     Group_Name: "BIG 5"
 }, {
-    GroupID : "2",
-    Group_Name : "BIG cats"
+    GroupID: "2",
+    Group_Name: "BIG cats"
 }]
 
 const GroupType = new GraphQLObjectType({
@@ -262,17 +263,22 @@ const RootQuery = new GraphQLObjectType({
             type: UserType,
             args: {
                 User_Name: {
-                    type: GraphQLString
+                    type: new GraphQLNonNull(GraphQLString)
                 },
                 Password: {
-                    type: GraphQLString
+                    type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
+
                 var a = _.find(usersdata, {
                     User_Name: args.User_Name
+
                 })
-                if (a.Password == args.Password)
+                console.log(a)
+                if (a === undefined)
+                    return null
+                else if (a.Password == args.Password)
                     return a
                 else return null
 
@@ -305,7 +311,7 @@ const RootQuery = new GraphQLObjectType({
                     type: GraphQLString
                 },
                 Token: {
-                    type: GraphQLString
+                    type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
@@ -320,10 +326,10 @@ const RootQuery = new GraphQLObjectType({
             }
         },
         animals: {
-            type: AnimalType,
+            type: GraphQLList(AnimalType),
             args: {
                 Token: {
-                    type: GraphQLString
+                    type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
@@ -331,35 +337,71 @@ const RootQuery = new GraphQLObjectType({
                     Token: args.Token
                 })
                 if (a != null) {
-                    const newLocal = animaldata[0];
+                    const newLocal = animaldata;
                     return newLocal;
                 }
                 return null;
             }
         },
         Users: {
-            type: UserType,
+            type: GraphQLList(UserType),
             args: {
+                TokenIn: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
                 Token: {
+                    type: GraphQLString
+                },
+                User_Name: {
+                    type: GraphQLString
+                },
+                Password: {
+                    type: GraphQLString
+                },
+                Access_Level: {
+                    type: GraphQLString
+                },
+                e_mail: {
                     type: GraphQLString
                 }
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
-                    Token: args.Token
+                    Token: args.TokenIn
                 })
                 if (a != null) {
-                    const newLocal = Users[0];
+                    // const newLocal = usersdata;
+                    let newLocal = usersdata;
+                    if (args.User_Name != undefined)
+                        newLocal = _.filter(newLocal, {
+                            User_Name: args.User_Name
+                        })
+                    if (args.Token != undefined)
+                        newLocal = _.filter(newLocal, {
+                            Token: args.Token
+                        })
+                    if (args.Password != undefined)
+                        newLocal = _.filter(newLocal, {
+                            Password: args.Password
+                        })
+                    if (args.Access_Level != undefined)
+                        newLocal = _.filter(newLocal, {
+                            Access_Level: args.Access_Level
+                        })
+                    if (args.e_mail != undefined)
+                        newLocal = _.filter(newLocal, {
+                            e_mail: args.e_mail
+                        })
                     return newLocal;
                 }
                 return null;
             }
         },
         Geotags: {
-            type: GeotagType,
+            type: GraphQLList(GeotagType),
             args: {
                 Token: {
-                    type: GraphQLString
+                    type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
@@ -367,17 +409,17 @@ const RootQuery = new GraphQLObjectType({
                     Token: args.Token
                 })
                 if (a != null) {
-                    const newLocal = GeotagData[0];
+                    const newLocal = GeotagData;
                     return newLocal;
                 }
                 return null;
             }
         },
         Groups: {
-            type: GeotagType,
+            type: GraphQLList(GeotagType),
             args: {
                 Token: {
-                    type: GraphQLString
+                    type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
@@ -385,7 +427,26 @@ const RootQuery = new GraphQLObjectType({
                     Token: args.Token
                 })
                 if (a != null) {
-                    const newLocal = GroupData[0];
+                    const newLocal = GroupData;
+                    return newLocal;
+                }
+                return null;
+            }
+        },
+        Habitats: {
+            type: GraphQLList(HabitatType),
+            args: {
+                Token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                a = _.find(usersdata, {
+                    Token: args.Token
+                })
+                if (a != null) {
+                    const newLocal = HabitatData;
+
                     return newLocal;
                 }
                 return null;
@@ -395,8 +456,65 @@ const RootQuery = new GraphQLObjectType({
     }
 })
 
+const Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        AddGeotags: {
+            type: GeotagType,
+            args: {
+                ID: {
+                    type: GraphQLString
+                },
+                Reporting_User_Name: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Classification: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                lat: {
+                    type: new GraphQLNonNull(GraphQLFloat)
+                },
+                long: {
+                    type: new GraphQLNonNull(GraphQLFloat)
+                },
+                timestamp: {
+                    type: new GraphQLNonNull(GraphQLInt)
+                }
+
+
+            },
+            resolve(parent, args) {
+                let id2 = GeotagData.length + 1;
+
+                if (args.ID != undefined)
+                    id2 = args.ID;
+                console.log(id2)
+                var newGeotag = {
+                    ID: id2,
+                    Reporting_User_Name: args.Reporting_User_Name,
+                    Classification: args.Classification,
+                    Geotag: {
+                        long: args.long,
+                        lat: args.lat
+                    },
+                    timestamp: {
+                        timestamp: args.timestamp
+                    }
+                }
+                console.log(GeotagData[0])
+                GeotagData.push(newGeotag)
+                console.log(newGeotag)
+                return _.find(GeotagData,{ID: id2})
+            }
+        }
+    }
+});
+
+
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+
+    mutation: Mutation
 });
 // db.collection('AnimalInfo').get()
 //     .then((snapshot) => {
