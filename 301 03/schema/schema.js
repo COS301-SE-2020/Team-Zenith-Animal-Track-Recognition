@@ -451,7 +451,21 @@ const RootQuery = new GraphQLObjectType({
                 }
                 return null;
             }
+        },
+        Pictures: {
+            type: GraphQLList(GraphQLString),
+            args: {
+                Classification: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                return _.find(animaldata, {
+                    Classification: args.Classification
+                })["Pictures"]
+            }
         }
+
 
     }
 })
@@ -501,10 +515,29 @@ const Mutation = new GraphQLObjectType({
                         timestamp: args.timestamp
                     }
                 }
-                console.log(GeotagData[0])
                 GeotagData.push(newGeotag)
-                console.log(newGeotag)
-                return _.find(GeotagData,{ID: id2})
+                return _.find(GeotagData, {
+                    ID: id2
+                })
+            }
+        },
+        AddIMG: {
+            type: AnimalType,
+            args: {
+                img: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Classification: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                let a = _.find(animaldata, {
+                    Classification: args.Classification
+                })
+                a.Pictures.push(args.img)
+
+                return a
             }
         }
     }
