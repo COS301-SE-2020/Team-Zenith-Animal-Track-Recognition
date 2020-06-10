@@ -10,7 +10,6 @@ const schema = require('./schema/schema');
 // bind express with graphql
 app.use('/graphql', graphqlHTTP({
     schema,
-    graphiql:true
 }));
 
 app.listen(prot, () => {
