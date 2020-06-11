@@ -305,7 +305,7 @@ const RootQuery = new GraphQLObjectType({
 
         },
         imageID: {
-            type: AnimalType,
+            type: GraphQLList(AnimalType),
             args: {
                 img: {
                     type: GraphQLString
@@ -319,7 +319,7 @@ const RootQuery = new GraphQLObjectType({
                     Token: args.Token
                 })
                 if (a != null) {
-                    const newLocal = animaldata[0];
+                    const newLocal = animaldata;
                     return newLocal;
                 }
                 return null;
