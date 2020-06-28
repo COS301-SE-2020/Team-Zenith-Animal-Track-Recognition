@@ -1,0 +1,8 @@
+**/do_NOT_git
+*.jpeg
+*.jpg
+*.png
+*.CR2
+!test.JPG
+!IMG_2567.jpg
+!IMG_4501.jpg
