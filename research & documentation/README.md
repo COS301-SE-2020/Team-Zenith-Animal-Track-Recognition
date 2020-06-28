@@ -1,0 +1,1 @@
+## This folder is for the sole purpose of research and documentation. The only files that are to enter this folder are one's pertaining to documentation of the research conducted, as well as documentation about one's work. 
