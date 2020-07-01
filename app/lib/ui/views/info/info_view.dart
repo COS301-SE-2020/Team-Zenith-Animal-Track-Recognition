@@ -1,13 +1,24 @@
-import 'package:ERP_Ranger/ui/views/confirm/confirm_view.dart';
-import 'package:ERP_Ranger/ui/views/confirm/unconfirmed_view.dart';
 import 'package:ERP_Ranger/ui/views/home/home_view.dart';
+import 'package:ERP_Ranger/ui/views/confirm/confirm_view.dart';
 import 'images.dart';
 import 'package:flutter/material.dart';
 import '../../../core/viewmodels/info_viewmodel.dart';
 import '../../widgets/bottom_nav.dart';
 import '../base_view.dart';
+import '../../../locator.dart';
 import '../../../core/services/user.dart';
+import 'package:ERP_Ranger/core/services/api.dart';
+import 'dart:io';
 
+List<User> bigFive = List<User>();
+List<User> bigCats = List<User>();
+List<User> bigGame = List<User>();
+List<User> localList = List<User>();
+List<User> localList1 = List<User>();
+List<User> localList2= List<User>();
+bool loaded = false;
+bool loaded1 = false;
+bool loaded2 = false;
   
 class InfoView extends StatefulWidget {
   InfoView({Key key}) : super(key: key);
@@ -16,116 +27,132 @@ class InfoView extends StatefulWidget {
   _InfoView createState() => _InfoView();
 }
 
-class _InfoView extends State<InfoView> with TickerProviderStateMixin{
+class _InfoView extends State<InfoView> with SingleTickerProviderStateMixin{
   int _currentTabIndex = 1;
-  int _startingTabCount = 4;
-  List<Tab> _tabs = List<Tab>();
-  List<Widget> _widgets = List<Widget>();
-  List<String> names = List<String>();
 
-  TabController _tabController;
+  List<User> users = List();
+  final Api _api = locator<Api>();
+  TextEditingController editingController = TextEditingController();
+  TabController _controller;
+  int index = 0;
+
+  
+  @override
+  void dispose(){
+    editingController.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    addNames();
-    _tabController = TabController(length: _startingTabCount, vsync: this);
-    _tabs.clear();
-    for(int i = 0; i < _startingTabCount; i++){
-      _tabs.add(getTab(names[i]));
+    _controller = TabController(vsync: this, length: 3);
+    _controller.addListener(_handleTabSelection);
+
+    setState(() {
+    });
+
+  }
+
+  Future<List<User>> setAnimals()async{
+      users = await _api.getResults();
+      bigFive.clear();
+      bigCats.clear();
+      bigGame.clear();
+      localList.clear();
+      localList1.clear();
+      localList2.clear();
+      users.forEach((element) {
+          if(element.name =="Leopard" || element.name =="Elephant" || element.name =="Lion" || element.name =="Black Rhinoceros" || element.name =="Buffalo"){
+            bigFive.add(element);
+            localList.add(element);
+          }
+          if(element.name =="Leopard" || element.name =="Lion" || element.name =="Cheetah"){
+            bigCats.add(element);
+            localList1.add(element);
+          }
+          if(element.name =="Impala"){
+            bigGame.add(element);
+            localList2.add(element);
+          }
+      });
+      return bigFive;
+  }
+
+  void filterSearch(String query){
+    if(index == 0){
+      List<User> bfSearchUser = List<User>();
+      bfSearchUser.addAll(bigFive);
+      if(query.isNotEmpty){
+        List<User> dummyListData = List<User>();
+        bfSearchUser.forEach((element) {
+          if(element.name.toLowerCase().substring(0,query.length).contains(query.toLowerCase())){
+            dummyListData.add(element);
+          }
+        });
+        setState(() {
+          localList.clear();
+          localList.addAll(dummyListData);
+        });
+        return;
+      }else{
+        setState(() {
+          localList.clear();
+          localList.addAll(bigFive);
+        });
+      }
+    }else if (index == 1){
+      List<User> bcSearchUser = List<User>();
+      bcSearchUser.addAll(bigCats);
+      if(query.isNotEmpty){
+        List<User> dummyListData = List<User>();
+        bcSearchUser.forEach((element) {
+          if(element.name.toLowerCase().substring(0,query.length).contains(query.toLowerCase())){
+            dummyListData.add(element);
+          }
+        });
+        setState(() {
+          localList1.clear();
+          localList1.addAll(dummyListData);
+        });
+        return;
+      }else{
+        setState(() {
+          localList1.clear();
+          localList1.addAll(bigCats);
+        });
+      }
+    }else if (index == 2){
+      List<User> bgSearchUser = List<User>();
+      bgSearchUser.addAll(bigGame);
+      if(query.isNotEmpty){
+        List<User> dummyListData = List<User>();
+        bgSearchUser.forEach((element) {
+          if(element.name.toLowerCase().substring(0,query.length).contains(query.toLowerCase())){
+            dummyListData.add(element);
+          }
+        });
+        setState(() {
+          localList2.clear();
+          localList2.addAll(dummyListData);
+        });
+        return;
+      }else{
+        setState(() {
+          localList2.clear();
+          localList2.addAll(bigGame);
+        });
+      }
     }
   }
 
-  Tab getTab(String widgetNumber){
-    return Tab(
-    child: Text(
-      "$widgetNumber",
-      style: TextStyle(
-          color:Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 10,
-        )
-      ),
-    );
-  }
-
-  List<Widget> getWidgets(var data){
-    _widgets.clear();
-    for(int i = 0; i < _tabs.length;i++){
-      _widgets.add(getWidget(data));
-    }
-    return _widgets;
-  }
-  
-  Widget getWidget(int i){
-    return ListView.builder(
-      itemCount: i,
-      itemBuilder: (BuildContext context, int index){
-        return new Container(
-        alignment: Alignment.centerLeft,
-          margin: new EdgeInsets.all(12),
-          padding: new EdgeInsets.all(5) ,
-            decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: Colors.black, width: 2,style: BorderStyle.solid)
-          ), 
-          child:Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              ListTileTheme(
-                dense: true,
-                child: ListTileTheme(
-                  dense: true,
-                  child: Row(
-                    children:<Widget>[
-                      Expanded(flex:2,child: imageBlock),
-                      Expanded(
-                        flex:3,
-                        child: Container(
-                          height: 100,
-                          width: 100,
-                          child: Column(
-                            children: <Widget>[
-                              Expanded(flex:1,child: Container(child: animalName)),
-                              Expanded(flex:2,child: Container(child: animalDetailTop)),
-                              Expanded(flex:1,child: Container(child: animalDetailBottom)),
-                            ], 
-                          ),
-                        ),
-                      )
-                    ]
-                  ),
-                ),
-              ),
-              ListTileTheme(dense:true,child: description),
-              ListTileTheme(dense:true,child: behaviour),
-              ListTileTheme(dense:true,child: habits),
-              ListTileTheme(dense:true,child: viewMoreButton(context)),
-            ],
-          )
-        );
-      },
-    );
-  }
-  
-  Future<int> getLists() async{
-    return 5;
-  }
-
-  void addNames(){
-    names.add("BIG FIVE");
-    names.add("BIG CATS");
-    names.add("LARGE ANTELOPE");
-    names.add("SMALL ANTELOPE");
-  }
- 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    _tabController.dispose();
-    super.dispose();
+  _handleTabSelection(){
+      setState(() {
+        index = _controller.index;
+      });
+    
   }
 
   @override
@@ -133,540 +160,2041 @@ class _InfoView extends State<InfoView> with TickerProviderStateMixin{
     BottomNavigation bottomNavigation = new BottomNavigation();
     bottomNavigation.setIndex(_currentTabIndex);
 
-    return BaseView<InfoModel>(
-      builder: (context, model, child) =>FutureBuilder(
-        future: getLists(),
-        builder: (context, snapshot) {
-          if(snapshot.hasData){
-           return WillPopScope(
-              onWillPop: () async { 
-                if(Navigator.canPop(context)){
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                }else{
-                  print("noo");
-                }
-              },
-              child: Scaffold(
-                appBar: AppBar(
-                  backgroundColor: Colors.black,
-                  leading: LeftMenu(),
-                  title: textTitle,
-                  actions: <Widget>[
-                    SearchButton(),
-                    MenuVert(),
-                  ],
-                  bottom: TabBar(
-                    tabs: _tabs,
-                    controller: _tabController,
-                  ),
-                ),
-                body: Container(
-                  color: Colors.grey,
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: getWidgets(snapshot.data),
-                  ),
+    Future<bool> _onBackPressed() async{
+      Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
+    }
+
+      return BaseView<InfoModel>(
+        builder: (context, model, child) => DefaultTabController(
+          length: 3,
+          child: Scaffold(
+                body: Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 0,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  margin: new EdgeInsets.only(top:20),
+                                  height: 20,
+                                  child: Text("Animal infomation",
+                                  style: TextStyle(fontSize: 25,
+                                  fontFamily: 'Arciform',
+                                  fontWeight: FontWeight.bold)
+                                  )
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: TextField(
+                                  keyboardType: TextInputType.text,
+                                  onChanged: (value){
+                                    filterSearch(value);
+                                  },
+                                  controller: editingController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Search',
+                                    prefixIcon: Icon(Icons.search),
+                                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(25.0)))
+                                  ),
+                                ),
+                              ),
+                              TabBar(
+                                indicatorColor: Colors.grey,
+                                indicatorWeight: 5,
+                                controller: _controller,
+                                tabs: <Widget>[
+                                  Tab(child: Text('Big Five',
+                                        style: TextStyle(fontSize: 15,
+                                        fontFamily: 'Arciform',
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold  
+                                        ),
+                                      ),
+                                    ),
+                                  Tab(child: Text('Big Cats',
+                                      style: TextStyle(fontSize: 15,
+                                        fontFamily: 'Arciform',
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold  
+                                      ),
+                                    ),
+                                  ),
+                                  Tab(child: Text('Big Game',
+                                      style: TextStyle(fontSize: 15,
+                                        fontFamily: 'Arciform',
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold  
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      Expanded(
+                        child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                            ),
+                            child: TabBarView(
+                              controller: _controller,
+                              children: [
+                                new WillPopScope(
+                                    onWillPop: _onBackPressed,
+                                    child: Scaffold(
+                                      body: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                        Expanded(
+                                          child: loaded ? ListView.builder(
+                                          padding: EdgeInsets.all(10.0),
+                                          itemCount:localList.length,
+                                          itemBuilder: (BuildContext context, int index){
+                                            return Card(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(15.0),
+                                                  side: BorderSide(color: Colors.grey[200], width:4),
+                                              ),
+                                              color: Colors.white,
+                                              elevation:10,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(10.0),
+                                                child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        flex:0,
+                                                        child: Container(
+                                                          height: 100,
+                                                          child: ClipRRect(
+                                                            borderRadius: BorderRadius.circular(10),
+                                                            child: Image(
+                                                              image: AssetImage('assets/images/logo.jpeg',
+                                                            ),
+                                                            fit: BoxFit.fill,
+                                                            )
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: Container(
+                                                          child: Column(
+                                                            children: <Widget>[
+                                                              Padding(
+                                                                padding: const EdgeInsets.all(4.0),
+                                                                child: Text(localList[index].name,
+                                                                  style: TextStyle(fontSize: 23,
+                                                                    fontFamily: 'Arciform',
+                                                                    fontWeight: FontWeight.bold,
+                                                                    color: Colors.grey
+                                                                  )                                     
+                                                                ),
+                                                              ),
+                                                              Row(children: <Widget>[
+                                                                  Expanded(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(8.0),
+                                                                      child: Container(
+                                                                        child: Row(
+                                                                          children: <Widget>[
+                                                                            Expanded(
+                                                                              flex: 1,
+                                                                              child: Container(
+                                                                                child: Text('Size: ',
+                                                                                style: TextStyle(fontSize: 11,
+                                                                                    fontFamily: 'Arciform',
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.grey
+                                                                                  )  
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Expanded(
+                                                                              flex: 2,
+                                                                                child: Container(
+                                                                                alignment: Alignment.bottomCenter,
+                                                                                child: Column(children: <Widget>[
+                                                                                  Row(children: <Widget>[
+                                                                                      Text(localList[index].heightF+"m",
+                                                                                      style: TextStyle(fontSize: 11,
+                                                                                            fontFamily: 'Arciform',
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey
+                                                                                          )  
+                                                                                        ),
+                                                                                      //Icon(Icons.ac_unit)
+                                                                                  ],),
+                                                                                  Row(children: <Widget>[
+                                                                                      Text(localList[index].heightM+"m",
+                                                                                      style: TextStyle(fontSize: 11,
+                                                                                            fontFamily: 'Arciform',
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey
+                                                                                          )  
+                                                                                        ),
+                                                                                    //Icon(Icons.ac_unit)
+                                                                                  ],),
+                                                                                ],),
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ),  
+                                                                  Expanded(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(8.0),
+                                                                      child: Container(
+                                                                        child: Row(
+                                                                          children: <Widget>[
+                                                                            Expanded(
+                                                                              flex: 1,
+                                                                              child: Container(
+                                                                                child: Text('Weight: ',
+                                                                                style: TextStyle(fontSize: 11,
+                                                                                    fontFamily: 'Arciform',
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.grey
+                                                                                  )  
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Expanded(
+                                                                              flex: 2,
+                                                                                child: Container(
+                                                                                alignment: Alignment.bottomCenter,
+                                                                                child: Column(children: <Widget>[
+                                                                                  Row(children: <Widget>[
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.only(left:8.0),
+                                                                                        child: Text(localList[index].weightF+"kg",
+                                                                                        style: TextStyle(fontSize: 11,
+                                                                                              fontFamily: 'Arciform',
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              color: Colors.grey
+                                                                                            )  
+                                                                                          ),
+                                                                                      ),
+                                                                                      //Icon(Icons.ac_unit)
+                                                                                  ],),
+                                                                                  Row(children: <Widget>[
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.only(left:8.0),
+                                                                                        child: Text(localList[index].weightM+"kg",
+                                                                                        style: TextStyle(fontSize: 11,
+                                                                                              fontFamily: 'Arciform',
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              color: Colors.grey
+                                                                                            )  
+                                                                                          ),
+                                                                                      ),
+                                                                                    //Icon(Icons.ac_unit)
+                                                                                  ],),
+                                                                                ],),
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ),                                                                                         
+                                                              ],),
+                                                              Row(children: <Widget>[
+                                                                  Expanded(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(8.0),
+                                                                      child: Container(
+                                                                        child: Text('Diet: '+localList[index].diet,
+                                                                        style: TextStyle(fontSize: 13,
+                                                                            fontFamily: 'Arciform',
+                                                                            fontWeight: FontWeight.bold,
+                                                                            color: Colors.grey
+                                                                          )  
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ),
+                                                                  Expanded(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(4.0),
+                                                                      child: Container(
+                                                                        child: Text('Gestation: '+localList[index].gestation,
+                                                                        style: TextStyle(fontSize: 13,
+                                                                            fontFamily: 'Arciform',
+                                                                            fontWeight: FontWeight.bold,
+                                                                            color: Colors.grey
+                                                                          )  
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ),
+                                                              ],)                                         
+                                                          ],),
+                                                        ),
+                                                      )
+                                                      ],
+                                                    ),
+                                                  Container(
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        ExpansionTile(
+                                                          title: Text("Description",
+                                                          style: TextStyle(fontSize: 17,
+                                                              fontFamily: 'Arciform',
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.grey     
+                                                            )                         
+                                                          ),
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:8.0),
+                                                              child: Container(
+                                                                alignment: Alignment.center,
+                                                                child: Center(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                    child: Text("The African Elephant is the largest mammal in the world and the largest of the three elephant species.  They can live up to 70 years - longer than any other mammal except humans.",
+                                                                      style: TextStyle(fontSize: 12,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey                                              
+                                                                      )
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        ExpansionTile(
+                                                          title: Text("Behavioural Information",
+                                                            style: TextStyle(fontSize: 17,
+                                                                fontFamily: 'Arciform',
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.grey     
+                                                            )                                      
+                                                          ),
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:8.0),
+                                                              child: Container(
+                                                                alignment: Alignment.center,
+                                                                child: Center(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                    child: Text(localList[index].behaviour,
+                                                                      style: TextStyle(fontSize: 12,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey                                              
+                                                                      )
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],                                     
+                                                        ),
+                                                        ExpansionTile(
+                                                          title: Text("Habitat",
+                                                            style: TextStyle(fontSize: 17,
+                                                                fontFamily: 'Arciform',
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.grey     
+                                                              )                                     
+                                                          ),
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:8.0),
+                                                              child: Container(
+                                                                alignment: Alignment.center,
+                                                                child: Center(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                    child: Text("The African Elephant is the largest mammal in the world and the largest of the three elephant species.  They can live up to 70 years - longer than any other mammal except humans.",
+                                                                      style: TextStyle(fontSize: 12,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey                                              
+                                                                      )
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],                                    
+                                                        ),
+                                                      ],),
+                                                    ), 
+                                                    SizedBox(height: 0.0,),
+                                                    FlatButton(
+                                                        child: Center(
+                                                            child: Text(
+                                                          'View More',
+                                                            style: TextStyle(fontSize: 15,
+                                                            fontFamily: 'Arciform'),
+                                                          )
+                                                        ),
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(15),
+                                                        ),
+                                                        onPressed: (){
+                                                          Navigator.push(context, PageRouteBuilder(
+                                                            pageBuilder: (context, animation1, animation2) => ImagesView(animals: localList),
+                                                          ),);
+                                                        },
+                                                        color: Colors.black12,
+                                                        highlightColor: Colors.grey,
+                                                        padding: EdgeInsets.all(8.0),
+                                                    ), 
+                                                  
+                                                  ],
+                                                ),
+                                              )
+                                              );
+                                            },
+                                          ) : FutureBuilder(
+                                              future: setAnimals(),
+                                              builder: (BuildContext context, AsyncSnapshot snapshot){
+                                                loaded = true;
+                                                return ListView.builder(
+                                                  padding: EdgeInsets.all(10.0),
+                                                  itemCount:localList.length,
+                                                  itemBuilder: (BuildContext context, int index){
+                                                    return Card(
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(15.0),
+                                                      ),
+                                                      color: Colors.white,
+                                                      elevation:10,
+                                                      child: Padding(
+                                                        padding: EdgeInsets.all(10.0),
+                                                        child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                flex:0,
+                                                                child: Container(
+                                                                  height: 100,
+                                                                  child: ClipRRect(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                    child: Image(
+                                                                      image: AssetImage('assets/images/logo.jpeg',
+                                                                    ),
+                                                                    fit: BoxFit.fill,
+                                                                    )
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                flex: 2,
+                                                                child: Container(
+                                                                  child: Column(
+                                                                    children: <Widget>[
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.all(4.0),
+                                                                        child: Text(localList[index].name,
+                                                                          style: TextStyle(fontSize: 23,
+                                                                            fontFamily: 'Arciform',
+                                                                            fontWeight: FontWeight.bold,
+                                                                            color: Colors.grey
+                                                                          )                                     
+                                                                        ),
+                                                                      ),
+                                                                      Row(children: <Widget>[
+                                                                          Expanded(
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Container(
+                                                                                child: Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      flex: 1,
+                                                                                      child: Container(
+                                                                                        child: Text('Size: ',
+                                                                                        style: TextStyle(fontSize: 11,
+                                                                                            fontFamily: 'Arciform',
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey
+                                                                                          )  
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    Expanded(
+                                                                                      flex: 2,
+                                                                                        child: Container(
+                                                                                        alignment: Alignment.bottomCenter,
+                                                                                        child: Column(children: <Widget>[
+                                                                                          Row(children: <Widget>[
+                                                                                              Text(localList[index].heightF+"m",
+                                                                                              style: TextStyle(fontSize: 11,
+                                                                                                    fontFamily: 'Arciform',
+                                                                                                    fontWeight: FontWeight.bold,
+                                                                                                    color: Colors.grey
+                                                                                                  )  
+                                                                                                ),
+                                                                                              //Icon(Icons.ac_unit)
+                                                                                          ],),
+                                                                                          Row(children: <Widget>[
+                                                                                              Text(localList[index].heightM+"m",
+                                                                                              style: TextStyle(fontSize: 11,
+                                                                                                    fontFamily: 'Arciform',
+                                                                                                    fontWeight: FontWeight.bold,
+                                                                                                    color: Colors.grey
+                                                                                                  )  
+                                                                                                ),
+                                                                                            //Icon(Icons.ac_unit)
+                                                                                          ],),
+                                                                                        ],),
+                                                                                      ),
+                                                                                    )
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ),  
+                                                                          Expanded(
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Container(
+                                                                                child: Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      flex: 1,
+                                                                                      child: Container(
+                                                                                        child: Text('Weight: ',
+                                                                                        style: TextStyle(fontSize: 11,
+                                                                                            fontFamily: 'Arciform',
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey
+                                                                                          )  
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    Expanded(
+                                                                                      flex: 2,
+                                                                                        child: Container(
+                                                                                        alignment: Alignment.bottomCenter,
+                                                                                        child: Column(children: <Widget>[
+                                                                                          Row(children: <Widget>[
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsets.only(left:8.0),
+                                                                                                child: Text(localList[index].weightF+"kg",
+                                                                                                style: TextStyle(fontSize: 11,
+                                                                                                      fontFamily: 'Arciform',
+                                                                                                      fontWeight: FontWeight.bold,
+                                                                                                      color: Colors.grey
+                                                                                                    )  
+                                                                                                  ),
+                                                                                              ),
+                                                                                              //Icon(Icons.ac_unit)
+                                                                                          ],),
+                                                                                          Row(children: <Widget>[
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsets.only(left:8.0),
+                                                                                                child: Text(localList[index].weightM+"kg",
+                                                                                                style: TextStyle(fontSize: 11,
+                                                                                                      fontFamily: 'Arciform',
+                                                                                                      fontWeight: FontWeight.bold,
+                                                                                                      color: Colors.grey
+                                                                                                    )  
+                                                                                                  ),
+                                                                                              ),
+                                                                                            //Icon(Icons.ac_unit)
+                                                                                          ],),
+                                                                                        ],),
+                                                                                      ),
+                                                                                    )
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ),                                                                                         
+                                                                      ],),
+                                                                      Row(children: <Widget>[
+                                                                          Expanded(
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Container(
+                                                                                child: Text('Diet: '+localList[index].diet,
+                                                                                style: TextStyle(fontSize: 13,
+                                                                                    fontFamily: 'Arciform',
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.grey
+                                                                                  )  
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ),
+                                                                          Expanded(
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.all(4.0),
+                                                                              child: Container(
+                                                                                child: Text('Gestation: '+localList[index].gestation,
+                                                                                style: TextStyle(fontSize: 13,
+                                                                                    fontFamily: 'Arciform',
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.grey
+                                                                                  )  
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ),
+                                                                      ],)                                         
+                                                                  ],),
+                                                                ),
+                                                              )
+                                                              ],
+                                                            ),
+                                                          Container(
+                                                            child: Column(
+                                                              children: <Widget>[
+                                                                ExpansionTile(
+                                                                  title: Text("Description",
+                                                                  style: TextStyle(fontSize: 17,
+                                                                      fontFamily: 'Arciform',
+                                                                      fontWeight: FontWeight.bold,
+                                                                      color: Colors.grey     
+                                                                    )                         
+                                                                  ),
+                                                                  children: <Widget>[
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(left:8.0),
+                                                                      child: Container(
+                                                                        alignment: Alignment.center,
+                                                                        child: Center(
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                            child: Text("The African Elephant is the largest mammal in the world and the largest of the three elephant species.  They can live up to 70 years - longer than any other mammal except humans.",
+                                                                              style: TextStyle(fontSize: 12,
+                                                                                fontFamily: 'Arciform',
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Colors.grey                                              
+                                                                              )
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                ExpansionTile(
+                                                                  title: Text("Behavioural Information",
+                                                                    style: TextStyle(fontSize: 17,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey     
+                                                                    )                                      
+                                                                  ),
+                                                                  children: <Widget>[
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(left:8.0),
+                                                                      child: Container(
+                                                                        alignment: Alignment.center,
+                                                                        child: Center(
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                            child: Text(localList[index].behaviour,
+                                                                              style: TextStyle(fontSize: 12,
+                                                                                fontFamily: 'Arciform',
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Colors.grey                                              
+                                                                              )
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],                                     
+                                                                ),
+                                                                ExpansionTile(
+                                                                  title: Text("Habitat",
+                                                                    style: TextStyle(fontSize: 17,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey     
+                                                                      )                                     
+                                                                  ),
+                                                                  children: <Widget>[
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(left:8.0),
+                                                                      child: Container(
+                                                                        alignment: Alignment.center,
+                                                                        child: Center(
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                            child: Text("The African Elephant is the largest mammal in the world and the largest of the three elephant species.  They can live up to 70 years - longer than any other mammal except humans.",
+                                                                              style: TextStyle(fontSize: 12,
+                                                                                fontFamily: 'Arciform',
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Colors.grey                                              
+                                                                              )
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],                                    
+                                                                ),
+                                                              ],),
+                                                            ), 
+                                                            SizedBox(height: 0.0,),
+                                                            FlatButton(
+                                                                child: Center(
+                                                                    child: Text(
+                                                                  'View More',
+                                                                    style: TextStyle(fontSize: 15,
+                                                                    fontFamily: 'Arciform'),
+                                                                  )
+                                                                ),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(15),
+                                                                ),
+                                                                onPressed: (){
+                                                                  Navigator.push(context, PageRouteBuilder(
+                                                                    pageBuilder: (context, animation1, animation2) => ImagesView(animals: localList),
+                                                                  ),);
+                                                                },
+                                                                color: Colors.black12,
+                                                                highlightColor: Colors.grey,
+                                                                padding: EdgeInsets.all(8.0),
+                                                            ), 
+                                                          
+                                                          ],
+                                                        ),
+                                                      )
+                                                      );
+                                                    },
+                                                  );
+                                            }
+                                          )
+                                        ),
+                                      ],
+                                    ),
+                                ),
+                              ),
+                                new WillPopScope(
+                                    onWillPop: _onBackPressed,
+                                    child: Scaffold(
+                                      body: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                        Expanded(
+                                          child: loaded1 ? ListView.builder(
+                                          padding: EdgeInsets.all(10.0),
+                                          itemCount:localList1.length,
+                                          itemBuilder: (BuildContext context, int index){
+                                            return Card(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(15.0),
+                                                  side: BorderSide(color: Colors.grey[200], width:4),
+                                              ),
+                                              color: Colors.white,
+                                              elevation:10,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(10.0),
+                                                child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        flex:0,
+                                                        child: Container(
+                                                          height: 100,
+                                                          child: ClipRRect(
+                                                            borderRadius: BorderRadius.circular(10),
+                                                            child: Image(
+                                                              image: AssetImage('assets/images/logo.jpeg',
+                                                            ),
+                                                            fit: BoxFit.fill,
+                                                            )
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: Container(
+                                                          child: Column(
+                                                            children: <Widget>[
+                                                              Padding(
+                                                                padding: const EdgeInsets.all(4.0),
+                                                                child: Text(localList1[index].name,
+                                                                  style: TextStyle(fontSize: 23,
+                                                                    fontFamily: 'Arciform',
+                                                                    fontWeight: FontWeight.bold,
+                                                                    color: Colors.grey
+                                                                  )                                     
+                                                                ),
+                                                              ),
+                                                              Row(children: <Widget>[
+                                                                  Expanded(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(8.0),
+                                                                      child: Container(
+                                                                        child: Row(
+                                                                          children: <Widget>[
+                                                                            Expanded(
+                                                                              flex: 1,
+                                                                              child: Container(
+                                                                                child: Text('Size: ',
+                                                                                style: TextStyle(fontSize: 11,
+                                                                                    fontFamily: 'Arciform',
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.grey
+                                                                                  )  
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Expanded(
+                                                                              flex: 2,
+                                                                                child: Container(
+                                                                                alignment: Alignment.bottomCenter,
+                                                                                child: Column(children: <Widget>[
+                                                                                  Row(children: <Widget>[
+                                                                                      Text(localList1[index].heightF+"m",
+                                                                                      style: TextStyle(fontSize: 11,
+                                                                                            fontFamily: 'Arciform',
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey
+                                                                                          )  
+                                                                                        ),
+                                                                                      //Icon(Icons.ac_unit)
+                                                                                  ],),
+                                                                                  Row(children: <Widget>[
+                                                                                      Text(localList1[index].heightM+"m",
+                                                                                      style: TextStyle(fontSize: 11,
+                                                                                            fontFamily: 'Arciform',
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey
+                                                                                          )  
+                                                                                        ),
+                                                                                    //Icon(Icons.ac_unit)
+                                                                                  ],),
+                                                                                ],),
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ),  
+                                                                  Expanded(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(8.0),
+                                                                      child: Container(
+                                                                        child: Row(
+                                                                          children: <Widget>[
+                                                                            Expanded(
+                                                                              flex: 1,
+                                                                              child: Container(
+                                                                                child: Text('Weight: ',
+                                                                                style: TextStyle(fontSize: 11,
+                                                                                    fontFamily: 'Arciform',
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.grey
+                                                                                  )  
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Expanded(
+                                                                              flex: 2,
+                                                                                child: Container(
+                                                                                alignment: Alignment.bottomCenter,
+                                                                                child: Column(children: <Widget>[
+                                                                                  Row(children: <Widget>[
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.only(left:8.0),
+                                                                                        child: Text(localList1[index].weightF+"kg",
+                                                                                        style: TextStyle(fontSize: 11,
+                                                                                              fontFamily: 'Arciform',
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              color: Colors.grey
+                                                                                            )  
+                                                                                          ),
+                                                                                      ),
+                                                                                      //Icon(Icons.ac_unit)
+                                                                                  ],),
+                                                                                  Row(children: <Widget>[
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.only(left:8.0),
+                                                                                        child: Text(localList1[index].weightM+"kg",
+                                                                                        style: TextStyle(fontSize: 11,
+                                                                                              fontFamily: 'Arciform',
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              color: Colors.grey
+                                                                                            )  
+                                                                                          ),
+                                                                                      ),
+                                                                                    //Icon(Icons.ac_unit)
+                                                                                  ],),
+                                                                                ],),
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ),                                                                                         
+                                                              ],),
+                                                              Row(children: <Widget>[
+                                                                  Expanded(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(8.0),
+                                                                      child: Container(
+                                                                        child: Text('Diet: '+localList1[index].diet,
+                                                                        style: TextStyle(fontSize: 13,
+                                                                            fontFamily: 'Arciform',
+                                                                            fontWeight: FontWeight.bold,
+                                                                            color: Colors.grey
+                                                                          )  
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ),
+                                                                  Expanded(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(4.0),
+                                                                      child: Container(
+                                                                        child: Text('Gestation: '+localList1[index].gestation,
+                                                                        style: TextStyle(fontSize: 13,
+                                                                            fontFamily: 'Arciform',
+                                                                            fontWeight: FontWeight.bold,
+                                                                            color: Colors.grey
+                                                                          )  
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ),
+                                                              ],)                                         
+                                                          ],),
+                                                        ),
+                                                      )
+                                                      ],
+                                                    ),
+                                                  Container(
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        ExpansionTile(
+                                                          title: Text("Description",
+                                                          style: TextStyle(fontSize: 17,
+                                                              fontFamily: 'Arciform',
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.grey     
+                                                            )                         
+                                                          ),
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:8.0),
+                                                              child: Container(
+                                                                alignment: Alignment.center,
+                                                                child: Center(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                    child: Text("The African Elephant is the largest mammal in the world and the largest of the three elephant species.  They can live up to 70 years - longer than any other mammal except humans.",
+                                                                      style: TextStyle(fontSize: 12,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey                                              
+                                                                      )
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        ExpansionTile(
+                                                          title: Text("Behavioural Information",
+                                                            style: TextStyle(fontSize: 17,
+                                                                fontFamily: 'Arciform',
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.grey     
+                                                            )                                      
+                                                          ),
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:8.0),
+                                                              child: Container(
+                                                                alignment: Alignment.center,
+                                                                child: Center(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                    child: Text(localList1[index].behaviour,
+                                                                      style: TextStyle(fontSize: 12,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey                                              
+                                                                      )
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],                                     
+                                                        ),
+                                                        ExpansionTile(
+                                                          title: Text("Habitat",
+                                                            style: TextStyle(fontSize: 17,
+                                                                fontFamily: 'Arciform',
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.grey     
+                                                              )                                     
+                                                          ),
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:8.0),
+                                                              child: Container(
+                                                                alignment: Alignment.center,
+                                                                child: Center(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                    child: Text("The African Elephant is the largest mammal in the world and the largest of the three elephant species.  They can live up to 70 years - longer than any other mammal except humans.",
+                                                                      style: TextStyle(fontSize: 12,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey                                              
+                                                                      )
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],                                    
+                                                        ),
+                                                      ],),
+                                                    ), 
+                                                    SizedBox(height: 0.0,),
+                                                    FlatButton(
+                                                        child: Center(
+                                                            child: Text(
+                                                          'View More',
+                                                            style: TextStyle(fontSize: 15,
+                                                            fontFamily: 'Arciform'),
+                                                          )
+                                                        ),
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(15),
+                                                        ),
+                                                        onPressed: (){
+                                                          Navigator.push(context, PageRouteBuilder(
+                                                            pageBuilder: (context, animation1, animation2) => ImagesView(animals: localList1),
+                                                          ),);
+                                                        },
+                                                        color: Colors.black12,
+                                                        highlightColor: Colors.grey,
+                                                        padding: EdgeInsets.all(8.0),
+                                                    ), 
+                                                  
+                                                  ],
+                                                ),
+                                              )
+                                              );
+                                            },
+                                          ) : FutureBuilder(
+                                              future: setAnimals(),
+                                              builder: (BuildContext context, AsyncSnapshot snapshot){
+                                                loaded1 = true;
+                                                return ListView.builder(
+                                                  padding: EdgeInsets.all(10.0),
+                                                  itemCount:localList1.length,
+                                                  itemBuilder: (BuildContext context, int index){
+                                                    return Card(
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(15.0),
+                                                      ),
+                                                      color: Colors.white,
+                                                      elevation:10,
+                                                      child: Padding(
+                                                        padding: EdgeInsets.all(10.0),
+                                                        child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                flex:0,
+                                                                child: Container(
+                                                                  height: 100,
+                                                                  child: ClipRRect(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                    child: Image(
+                                                                      image: AssetImage('assets/images/logo.jpeg',
+                                                                    ),
+                                                                    fit: BoxFit.fill,
+                                                                    )
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                flex: 2,
+                                                                child: Container(
+                                                                  child: Column(
+                                                                    children: <Widget>[
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.all(4.0),
+                                                                        child: Text(localList1[index].name,
+                                                                          style: TextStyle(fontSize: 23,
+                                                                            fontFamily: 'Arciform',
+                                                                            fontWeight: FontWeight.bold,
+                                                                            color: Colors.grey
+                                                                          )                                     
+                                                                        ),
+                                                                      ),
+                                                                      Row(children: <Widget>[
+                                                                          Expanded(
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Container(
+                                                                                child: Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      flex: 1,
+                                                                                      child: Container(
+                                                                                        child: Text('Size: ',
+                                                                                        style: TextStyle(fontSize: 11,
+                                                                                            fontFamily: 'Arciform',
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey
+                                                                                          )  
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    Expanded(
+                                                                                      flex: 2,
+                                                                                        child: Container(
+                                                                                        alignment: Alignment.bottomCenter,
+                                                                                        child: Column(children: <Widget>[
+                                                                                          Row(children: <Widget>[
+                                                                                              Text(localList1[index].heightF+"m",
+                                                                                              style: TextStyle(fontSize: 11,
+                                                                                                    fontFamily: 'Arciform',
+                                                                                                    fontWeight: FontWeight.bold,
+                                                                                                    color: Colors.grey
+                                                                                                  )  
+                                                                                                ),
+                                                                                              //Icon(Icons.ac_unit)
+                                                                                          ],),
+                                                                                          Row(children: <Widget>[
+                                                                                              Text(localList1[index].heightM+"m",
+                                                                                              style: TextStyle(fontSize: 11,
+                                                                                                    fontFamily: 'Arciform',
+                                                                                                    fontWeight: FontWeight.bold,
+                                                                                                    color: Colors.grey
+                                                                                                  )  
+                                                                                                ),
+                                                                                            //Icon(Icons.ac_unit)
+                                                                                          ],),
+                                                                                        ],),
+                                                                                      ),
+                                                                                    )
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ),  
+                                                                          Expanded(
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Container(
+                                                                                child: Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      flex: 1,
+                                                                                      child: Container(
+                                                                                        child: Text('Weight: ',
+                                                                                        style: TextStyle(fontSize: 11,
+                                                                                            fontFamily: 'Arciform',
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey
+                                                                                          )  
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    Expanded(
+                                                                                      flex: 2,
+                                                                                        child: Container(
+                                                                                        alignment: Alignment.bottomCenter,
+                                                                                        child: Column(children: <Widget>[
+                                                                                          Row(children: <Widget>[
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsets.only(left:8.0),
+                                                                                                child: Text(localList1[index].weightF+"kg",
+                                                                                                style: TextStyle(fontSize: 11,
+                                                                                                      fontFamily: 'Arciform',
+                                                                                                      fontWeight: FontWeight.bold,
+                                                                                                      color: Colors.grey
+                                                                                                    )  
+                                                                                                  ),
+                                                                                              ),
+                                                                                              //Icon(Icons.ac_unit)
+                                                                                          ],),
+                                                                                          Row(children: <Widget>[
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsets.only(left:8.0),
+                                                                                                child: Text(localList1[index].weightM+"kg",
+                                                                                                style: TextStyle(fontSize: 11,
+                                                                                                      fontFamily: 'Arciform',
+                                                                                                      fontWeight: FontWeight.bold,
+                                                                                                      color: Colors.grey
+                                                                                                    )  
+                                                                                                  ),
+                                                                                              ),
+                                                                                            //Icon(Icons.ac_unit)
+                                                                                          ],),
+                                                                                        ],),
+                                                                                      ),
+                                                                                    )
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ),                                                                                         
+                                                                      ],),
+                                                                      Row(children: <Widget>[
+                                                                          Expanded(
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Container(
+                                                                                child: Text('Diet: '+localList1[index].diet,
+                                                                                style: TextStyle(fontSize: 13,
+                                                                                    fontFamily: 'Arciform',
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.grey
+                                                                                  )  
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ),
+                                                                          Expanded(
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.all(4.0),
+                                                                              child: Container(
+                                                                                child: Text('Gestation: '+localList1[index].gestation,
+                                                                                style: TextStyle(fontSize: 13,
+                                                                                    fontFamily: 'Arciform',
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.grey
+                                                                                  )  
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ),
+                                                                      ],)                                         
+                                                                  ],),
+                                                                ),
+                                                              )
+                                                              ],
+                                                            ),
+                                                          Container(
+                                                            child: Column(
+                                                              children: <Widget>[
+                                                                ExpansionTile(
+                                                                  title: Text("Description",
+                                                                  style: TextStyle(fontSize: 17,
+                                                                      fontFamily: 'Arciform',
+                                                                      fontWeight: FontWeight.bold,
+                                                                      color: Colors.grey     
+                                                                    )                         
+                                                                  ),
+                                                                  children: <Widget>[
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(left:8.0),
+                                                                      child: Container(
+                                                                        alignment: Alignment.center,
+                                                                        child: Center(
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                            child: Text("The African Elephant is the largest mammal in the world and the largest of the three elephant species.  They can live up to 70 years - longer than any other mammal except humans.",
+                                                                              style: TextStyle(fontSize: 12,
+                                                                                fontFamily: 'Arciform',
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Colors.grey                                              
+                                                                              )
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                ExpansionTile(
+                                                                  title: Text("Behavioural Information",
+                                                                    style: TextStyle(fontSize: 17,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey     
+                                                                    )                                      
+                                                                  ),
+                                                                  children: <Widget>[
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(left:8.0),
+                                                                      child: Container(
+                                                                        alignment: Alignment.center,
+                                                                        child: Center(
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                            child: Text(localList1[index].behaviour,
+                                                                              style: TextStyle(fontSize: 12,
+                                                                                fontFamily: 'Arciform',
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Colors.grey                                              
+                                                                              )
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],                                     
+                                                                ),
+                                                                ExpansionTile(
+                                                                  title: Text("Habitat",
+                                                                    style: TextStyle(fontSize: 17,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey     
+                                                                      )                                     
+                                                                  ),
+                                                                  children: <Widget>[
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(left:8.0),
+                                                                      child: Container(
+                                                                        alignment: Alignment.center,
+                                                                        child: Center(
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                            child: Text("The African Elephant is the largest mammal in the world and the largest of the three elephant species.  They can live up to 70 years - longer than any other mammal except humans.",
+                                                                              style: TextStyle(fontSize: 12,
+                                                                                fontFamily: 'Arciform',
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Colors.grey                                              
+                                                                              )
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],                                    
+                                                                ),
+                                                              ],),
+                                                            ), 
+                                                            SizedBox(height: 0.0,),
+                                                            FlatButton(
+                                                                child: Center(
+                                                                    child: Text(
+                                                                  'View More',
+                                                                    style: TextStyle(fontSize: 15,
+                                                                    fontFamily: 'Arciform'),
+                                                                  )
+                                                                ),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(15),
+                                                                ),
+                                                                onPressed: (){
+                                                                  Navigator.push(context, PageRouteBuilder(
+                                                                    pageBuilder: (context, animation1, animation2) => ImagesView(animals: localList1),
+                                                                  ),);
+                                                                },
+                                                                color: Colors.black12,
+                                                                highlightColor: Colors.grey,
+                                                                padding: EdgeInsets.all(8.0),
+                                                            ), 
+                                                          
+                                                          ],
+                                                        ),
+                                                      )
+                                                      );
+                                                    },
+                                                  );
+                                            }
+                                          )
+                                        ),
+                                      ],
+                                    ),
+                                ),
+                              ),
+                                new WillPopScope(
+                                    onWillPop: _onBackPressed,
+                                    child: Scaffold(
+                                      body: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                        Expanded(
+                                          child: loaded2 ? ListView.builder(
+                                          padding: EdgeInsets.all(10.0),
+                                          itemCount:localList2.length,
+                                          itemBuilder: (BuildContext context, int index){
+                                            return Card(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(15.0),
+                                                  side: BorderSide(color: Colors.grey[200], width:4),
+                                              ),
+                                              color: Colors.white,
+                                              elevation:10,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(10.0),
+                                                child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        flex:0,
+                                                        child: Container(
+                                                          height: 100,
+                                                          child: ClipRRect(
+                                                            borderRadius: BorderRadius.circular(10),
+                                                            child: Image(
+                                                              image: AssetImage('assets/images/logo.jpeg',
+                                                            ),
+                                                            fit: BoxFit.fill,
+                                                            )
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: Container(
+                                                          child: Column(
+                                                            children: <Widget>[
+                                                              Padding(
+                                                                padding: const EdgeInsets.all(4.0),
+                                                                child: Text(localList2[index].name,
+                                                                  style: TextStyle(fontSize: 23,
+                                                                    fontFamily: 'Arciform',
+                                                                    fontWeight: FontWeight.bold,
+                                                                    color: Colors.grey
+                                                                  )                                     
+                                                                ),
+                                                              ),
+                                                              Row(children: <Widget>[
+                                                                  Expanded(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(8.0),
+                                                                      child: Container(
+                                                                        child: Row(
+                                                                          children: <Widget>[
+                                                                            Expanded(
+                                                                              flex: 1,
+                                                                              child: Container(
+                                                                                child: Text('Size: ',
+                                                                                style: TextStyle(fontSize: 11,
+                                                                                    fontFamily: 'Arciform',
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.grey
+                                                                                  )  
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Expanded(
+                                                                              flex: 2,
+                                                                                child: Container(
+                                                                                alignment: Alignment.bottomCenter,
+                                                                                child: Column(children: <Widget>[
+                                                                                  Row(children: <Widget>[
+                                                                                      Text(localList2[index].heightF+"m",
+                                                                                      style: TextStyle(fontSize: 11,
+                                                                                            fontFamily: 'Arciform',
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey
+                                                                                          )  
+                                                                                        ),
+                                                                                      //Icon(Icons.ac_unit)
+                                                                                  ],),
+                                                                                  Row(children: <Widget>[
+                                                                                      Text(localList2[index].heightM+"m",
+                                                                                      style: TextStyle(fontSize: 11,
+                                                                                            fontFamily: 'Arciform',
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey
+                                                                                          )  
+                                                                                        ),
+                                                                                    //Icon(Icons.ac_unit)
+                                                                                  ],),
+                                                                                ],),
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ),  
+                                                                  Expanded(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(8.0),
+                                                                      child: Container(
+                                                                        child: Row(
+                                                                          children: <Widget>[
+                                                                            Expanded(
+                                                                              flex: 1,
+                                                                              child: Container(
+                                                                                child: Text('Weight: ',
+                                                                                style: TextStyle(fontSize: 11,
+                                                                                    fontFamily: 'Arciform',
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.grey
+                                                                                  )  
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Expanded(
+                                                                              flex: 2,
+                                                                                child: Container(
+                                                                                alignment: Alignment.bottomCenter,
+                                                                                child: Column(children: <Widget>[
+                                                                                  Row(children: <Widget>[
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.only(left:8.0),
+                                                                                        child: Text(localList2[index].weightF+"kg",
+                                                                                        style: TextStyle(fontSize: 11,
+                                                                                              fontFamily: 'Arciform',
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              color: Colors.grey
+                                                                                            )  
+                                                                                          ),
+                                                                                      ),
+                                                                                      //Icon(Icons.ac_unit)
+                                                                                  ],),
+                                                                                  Row(children: <Widget>[
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.only(left:8.0),
+                                                                                        child: Text(localList2[index].weightM+"kg",
+                                                                                        style: TextStyle(fontSize: 11,
+                                                                                              fontFamily: 'Arciform',
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              color: Colors.grey
+                                                                                            )  
+                                                                                          ),
+                                                                                      ),
+                                                                                    //Icon(Icons.ac_unit)
+                                                                                  ],),
+                                                                                ],),
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ),                                                                                         
+                                                              ],),
+                                                              Row(children: <Widget>[
+                                                                  Expanded(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(8.0),
+                                                                      child: Container(
+                                                                        child: Text('Diet: '+localList2[index].diet,
+                                                                        style: TextStyle(fontSize: 13,
+                                                                            fontFamily: 'Arciform',
+                                                                            fontWeight: FontWeight.bold,
+                                                                            color: Colors.grey
+                                                                          )  
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ),
+                                                                  Expanded(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(4.0),
+                                                                      child: Container(
+                                                                        child: Text('Gestation: '+localList2[index].gestation,
+                                                                        style: TextStyle(fontSize: 13,
+                                                                            fontFamily: 'Arciform',
+                                                                            fontWeight: FontWeight.bold,
+                                                                            color: Colors.grey
+                                                                          )  
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ),
+                                                              ],)                                         
+                                                          ],),
+                                                        ),
+                                                      )
+                                                      ],
+                                                    ),
+                                                  Container(
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        ExpansionTile(
+                                                          title: Text("Description",
+                                                          style: TextStyle(fontSize: 17,
+                                                              fontFamily: 'Arciform',
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.grey     
+                                                            )                         
+                                                          ),
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:8.0),
+                                                              child: Container(
+                                                                alignment: Alignment.center,
+                                                                child: Center(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                    child: Text("The African Elephant is the largest mammal in the world and the largest of the three elephant species.  They can live up to 70 years - longer than any other mammal except humans.",
+                                                                      style: TextStyle(fontSize: 12,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey                                              
+                                                                      )
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        ExpansionTile(
+                                                          title: Text("Behavioural Information",
+                                                            style: TextStyle(fontSize: 17,
+                                                                fontFamily: 'Arciform',
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.grey     
+                                                            )                                      
+                                                          ),
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:8.0),
+                                                              child: Container(
+                                                                alignment: Alignment.center,
+                                                                child: Center(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                    child: Text(localList2[index].behaviour,
+                                                                      style: TextStyle(fontSize: 12,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey                                              
+                                                                      )
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],                                     
+                                                        ),
+                                                        ExpansionTile(
+                                                          title: Text("Habitat",
+                                                            style: TextStyle(fontSize: 17,
+                                                                fontFamily: 'Arciform',
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.grey     
+                                                              )                                     
+                                                          ),
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:8.0),
+                                                              child: Container(
+                                                                alignment: Alignment.center,
+                                                                child: Center(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                    child: Text("The African Elephant is the largest mammal in the world and the largest of the three elephant species.  They can live up to 70 years - longer than any other mammal except humans.",
+                                                                      style: TextStyle(fontSize: 12,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey                                              
+                                                                      )
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],                                    
+                                                        ),
+                                                      ],),
+                                                    ), 
+                                                    SizedBox(height: 0.0,),
+                                                    FlatButton(
+                                                        child: Center(
+                                                            child: Text(
+                                                          'View More',
+                                                            style: TextStyle(fontSize: 15,
+                                                            fontFamily: 'Arciform'),
+                                                          )
+                                                        ),
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(15),
+                                                        ),
+                                                        onPressed: (){
+                                                          Navigator.push(context, PageRouteBuilder(
+                                                            pageBuilder: (context, animation1, animation2) => ImagesView(animals: localList2),
+                                                          ),);
+                                                        },
+                                                        color: Colors.black12,
+                                                        highlightColor: Colors.grey,
+                                                        padding: EdgeInsets.all(8.0),
+                                                    ), 
+                                                  
+                                                  ],
+                                                ),
+                                              )
+                                              );
+                                            },
+                                          ) : FutureBuilder(
+                                              future: setAnimals(),
+                                              builder: (BuildContext context, AsyncSnapshot snapshot){
+                                                loaded2 = true;
+                                                return ListView.builder(
+                                                  padding: EdgeInsets.all(10.0),
+                                                  itemCount:localList2.length,
+                                                  itemBuilder: (BuildContext context, int index){
+                                                    return Card(
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(15.0),
+                                                      ),
+                                                      color: Colors.white,
+                                                      elevation:10,
+                                                      child: Padding(
+                                                        padding: EdgeInsets.all(10.0),
+                                                        child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                flex:0,
+                                                                child: Container(
+                                                                  height: 100,
+                                                                  child: ClipRRect(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                    child: Image(
+                                                                      image: AssetImage('assets/images/logo.jpeg',
+                                                                    ),
+                                                                    fit: BoxFit.fill,
+                                                                    )
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                flex: 2,
+                                                                child: Container(
+                                                                  child: Column(
+                                                                    children: <Widget>[
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.all(4.0),
+                                                                        child: Text(localList2[index].name,
+                                                                          style: TextStyle(fontSize: 23,
+                                                                            fontFamily: 'Arciform',
+                                                                            fontWeight: FontWeight.bold,
+                                                                            color: Colors.grey
+                                                                          )                                     
+                                                                        ),
+                                                                      ),
+                                                                      Row(children: <Widget>[
+                                                                          Expanded(
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Container(
+                                                                                child: Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      flex: 1,
+                                                                                      child: Container(
+                                                                                        child: Text('Size: ',
+                                                                                        style: TextStyle(fontSize: 11,
+                                                                                            fontFamily: 'Arciform',
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey
+                                                                                          )  
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    Expanded(
+                                                                                      flex: 2,
+                                                                                        child: Container(
+                                                                                        alignment: Alignment.bottomCenter,
+                                                                                        child: Column(children: <Widget>[
+                                                                                          Row(children: <Widget>[
+                                                                                              Text(localList2[index].heightF+"m",
+                                                                                              style: TextStyle(fontSize: 11,
+                                                                                                    fontFamily: 'Arciform',
+                                                                                                    fontWeight: FontWeight.bold,
+                                                                                                    color: Colors.grey
+                                                                                                  )  
+                                                                                                ),
+                                                                                              //Icon(Icons.ac_unit)
+                                                                                          ],),
+                                                                                          Row(children: <Widget>[
+                                                                                              Text(localList2[index].heightM+"m",
+                                                                                              style: TextStyle(fontSize: 11,
+                                                                                                    fontFamily: 'Arciform',
+                                                                                                    fontWeight: FontWeight.bold,
+                                                                                                    color: Colors.grey
+                                                                                                  )  
+                                                                                                ),
+                                                                                            //Icon(Icons.ac_unit)
+                                                                                          ],),
+                                                                                        ],),
+                                                                                      ),
+                                                                                    )
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ),  
+                                                                          Expanded(
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Container(
+                                                                                child: Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      flex: 1,
+                                                                                      child: Container(
+                                                                                        child: Text('Weight: ',
+                                                                                        style: TextStyle(fontSize: 11,
+                                                                                            fontFamily: 'Arciform',
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey
+                                                                                          )  
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    Expanded(
+                                                                                      flex: 2,
+                                                                                        child: Container(
+                                                                                        alignment: Alignment.bottomCenter,
+                                                                                        child: Column(children: <Widget>[
+                                                                                          Row(children: <Widget>[
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsets.only(left:8.0),
+                                                                                                child: Text(localList2[index].weightF+"kg",
+                                                                                                style: TextStyle(fontSize: 11,
+                                                                                                      fontFamily: 'Arciform',
+                                                                                                      fontWeight: FontWeight.bold,
+                                                                                                      color: Colors.grey
+                                                                                                    )  
+                                                                                                  ),
+                                                                                              ),
+                                                                                              //Icon(Icons.ac_unit)
+                                                                                          ],),
+                                                                                          Row(children: <Widget>[
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsets.only(left:8.0),
+                                                                                                child: Text(localList2[index].weightM+"kg",
+                                                                                                style: TextStyle(fontSize: 11,
+                                                                                                      fontFamily: 'Arciform',
+                                                                                                      fontWeight: FontWeight.bold,
+                                                                                                      color: Colors.grey
+                                                                                                    )  
+                                                                                                  ),
+                                                                                              ),
+                                                                                            //Icon(Icons.ac_unit)
+                                                                                          ],),
+                                                                                        ],),
+                                                                                      ),
+                                                                                    )
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ),                                                                                         
+                                                                      ],),
+                                                                      Row(children: <Widget>[
+                                                                          Expanded(
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Container(
+                                                                                child: Text('Diet: '+localList2[index].diet,
+                                                                                style: TextStyle(fontSize: 13,
+                                                                                    fontFamily: 'Arciform',
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.grey
+                                                                                  )  
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ),
+                                                                          Expanded(
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.all(4.0),
+                                                                              child: Container(
+                                                                                child: Text('Gestation: '+localList2[index].gestation,
+                                                                                style: TextStyle(fontSize: 13,
+                                                                                    fontFamily: 'Arciform',
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.grey
+                                                                                  )  
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ),
+                                                                      ],)                                         
+                                                                  ],),
+                                                                ),
+                                                              )
+                                                              ],
+                                                            ),
+                                                          Container(
+                                                            child: Column(
+                                                              children: <Widget>[
+                                                                ExpansionTile(
+                                                                  title: Text("Description",
+                                                                  style: TextStyle(fontSize: 17,
+                                                                      fontFamily: 'Arciform',
+                                                                      fontWeight: FontWeight.bold,
+                                                                      color: Colors.grey     
+                                                                    )                         
+                                                                  ),
+                                                                  children: <Widget>[
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(left:8.0),
+                                                                      child: Container(
+                                                                        alignment: Alignment.center,
+                                                                        child: Center(
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                            child: Text("The African Elephant is the largest mammal in the world and the largest of the three elephant species.  They can live up to 70 years - longer than any other mammal except humans.",
+                                                                              style: TextStyle(fontSize: 12,
+                                                                                fontFamily: 'Arciform',
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Colors.grey                                              
+                                                                              )
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                ExpansionTile(
+                                                                  title: Text("Behavioural Information",
+                                                                    style: TextStyle(fontSize: 17,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey     
+                                                                    )                                      
+                                                                  ),
+                                                                  children: <Widget>[
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(left:8.0),
+                                                                      child: Container(
+                                                                        alignment: Alignment.center,
+                                                                        child: Center(
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                            child: Text(localList2[index].behaviour,
+                                                                              style: TextStyle(fontSize: 12,
+                                                                                fontFamily: 'Arciform',
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Colors.grey                                              
+                                                                              )
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],                                     
+                                                                ),
+                                                                ExpansionTile(
+                                                                  title: Text("Habitat",
+                                                                    style: TextStyle(fontSize: 17,
+                                                                        fontFamily: 'Arciform',
+                                                                        fontWeight: FontWeight.bold,
+                                                                        color: Colors.grey     
+                                                                      )                                     
+                                                                  ),
+                                                                  children: <Widget>[
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(left:8.0),
+                                                                      child: Container(
+                                                                        alignment: Alignment.center,
+                                                                        child: Center(
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(left:8.0, bottom:8.0),
+                                                                            child: Text("The African Elephant is the largest mammal in the world and the largest of the three elephant species.  They can live up to 70 years - longer than any other mammal except humans.",
+                                                                              style: TextStyle(fontSize: 12,
+                                                                                fontFamily: 'Arciform',
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Colors.grey                                              
+                                                                              )
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],                                    
+                                                                ),
+                                                              ],),
+                                                            ), 
+                                                            SizedBox(height: 0.0,),
+                                                            FlatButton(
+                                                                child: Center(
+                                                                    child: Text(
+                                                                  'View More',
+                                                                    style: TextStyle(fontSize: 15,
+                                                                    fontFamily: 'Arciform'),
+                                                                  )
+                                                                ),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(15),
+                                                                ),
+                                                                onPressed: (){
+                                                                  Navigator.push(context, PageRouteBuilder(
+                                                                    pageBuilder: (context, animation1, animation2) => ImagesView(animals: localList2),
+                                                                  ),);
+                                                                },
+                                                                color: Colors.black12,
+                                                                highlightColor: Colors.grey,
+                                                                padding: EdgeInsets.all(8.0),
+                                                            ), 
+                                                          
+                                                          ],
+                                                        ),
+                                                      )
+                                                      );
+                                                    },
+                                                  );
+                                            }
+                                          )
+                                        ),
+                                      ],
+                                    ),
+                                ),
+                              ),
+                              ]
+                            ),
+                        ),
+                      )
+                    ],
                 ),
                 bottomNavigationBar: BottomNavigation(),
                 floatingActionButton: FloatingActionButton(
-                  child: Icon(Icons.add_a_photo),
-                  backgroundColor: Color(0xFFF2929C),
-                  tooltip: 'Pick Image',
-                  onPressed:()async{
-                    List<User> animals = await model.imagePicker();
-                    if(animals == null){
-                      Navigator.push(context, 
-                        new MaterialPageRoute(builder: (context) => UnConfirmView())
-                      ); 
-                    }
-                    else{
-                      Navigator.push(context, 
-                        new MaterialPageRoute(builder: (context) => ConfirmView(animal: animals,))
-                      ); 
-                    }
-                  } 
-                ),
+                child: Icon(Icons.add_a_photo),
+                backgroundColor: Color(0xFFF2929C),
+                tooltip: 'Pick Image',
+                onPressed:()async{
+                  bool boolean = await model.imagePicker();
+                  Navigator.push(context, 
+                      new MaterialPageRoute(builder: (context) => ConfirmView())
+                  ); 
+                } 
               ),
-           );
-          }else{
-            return  Text("");
-          }
-        }
-      ),
+            )
+        ) 
     );
   }
 }
 
-class LeftMenu extends StatefulWidget {
-  LeftMenu({Key key}) : super(key: key);
-
-  @override
-  _LeftMenu createState() => _LeftMenu();
-}
-
-class _LeftMenu extends State<LeftMenu> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(0),
-      padding: EdgeInsets.all(0),
-       child: IconButton(
-        padding: EdgeInsets.all(0),
-        icon: Icon(Icons.menu,color: Colors.white,),
-        onPressed: null
-      ),
-    );
-  }
-}
-
-class SearchButton extends StatefulWidget {
-  SearchButton({Key key}) : super(key: key);
-
-  @override
-  _SearchButton createState() => _SearchButton();
-}
-
-class _SearchButton extends State<SearchButton> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(0),
-      padding: EdgeInsets.all(0),
-       child: IconButton(
-        padding: EdgeInsets.all(0),
-        icon: Icon(Icons.search, color: Colors.white),
-        onPressed: null
-      ),
-    );
-  }
-}
-
-class MenuVert extends StatefulWidget {
-  MenuVert({Key key}) : super(key: key);
-
-  @override
-  _MenuVert createState() => _MenuVert();
-}
-
-class _MenuVert extends State<MenuVert> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(0),
-      padding: EdgeInsets.all(0),
-       child: IconButton(
-        padding: EdgeInsets.all(0),
-        icon: Icon(Icons.more_vert, color: Colors.white),
-        onPressed: null
-      ),
-    );
-  }
-}
-
-Widget textTitle = new Text(
-  "Animal Information",
-  textAlign: TextAlign.center,
-  style: TextStyle(
-    fontSize: 22,
-    fontFamily: 'Arciform',
-    fontWeight: FontWeight.bold,
-    color: Colors.white
-  )
-);
-
-//==============================
-Widget imageBlock = new Container(
-  alignment: Alignment.center,
-  margin: new EdgeInsets.only(bottom:10, left:15,right:10,top:10 ),
-  //padding: new EdgeInsets.all(5),
-    decoration: BoxDecoration(
-    image: DecorationImage(
-      image: NetworkImage( "https://images.unsplash.com/photo-1551316679-9c6ae9dec224?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"),
-      fit: BoxFit.fill,
-    ),
-    color: Colors.grey,
-    borderRadius: BorderRadius.circular(15),
-  ),
-  height: 100,
-  width: 100,
-);
-
-Widget viewMoreButton(var context)  {
-  return ButtonTheme(
-      minWidth: 200,
-      child: RaisedButton(
-      child: buttonName,
-      color: Colors.grey,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      padding: EdgeInsets.all(10),
-      onPressed: (){
-        Navigator.push(context, 
-          new MaterialPageRoute(builder: (context) => ImageView(animals: null,))
-        );
-      }
-    ),
-  );
-}
-
-Widget buttonName = new Text(
-    "VIEW PHOTOS",
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize:15,
-      fontFamily: 'Arciform',
-      color: Colors.white
-    ),
-  );
-
-Widget animalName = new Container(
-  alignment: Alignment.centerLeft,
-  padding: new EdgeInsets.all(5) ,
-    decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-  ),
-  //height: 0,
-  child: Text(
-    "AFRICAN BUSH ELEPHANT",
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize:17,
-      fontFamily: 'Arciform',
-      color: Colors.grey
-    ),
-  ),
-);
-//===============================
-Widget animalDetailTop = new Container(
-  alignment: Alignment.centerLeft,
-   margin: EdgeInsets.all(0),
-   padding: EdgeInsets.all(0),
-  child: Row(
-    children: <Widget>[
-      Expanded(flex:1,child: sizeContainer),
-      Expanded(flex:1,child: weightContainer)
-    ]
-  ),
-);
-
-Widget sizeContainer = new Container(
-   margin: EdgeInsets.all(0),
-   padding: EdgeInsets.all(0),
-    child: Row(children: <Widget>[
-      Expanded(flex: 1,child: sizeLabel,),
-      Expanded(flex: 1,child: sizes),
-    ],),
-);
-
-Widget weightContainer = new Container(
-   margin: EdgeInsets.all(0),
-   padding: EdgeInsets.all(0),
-    child: Row(children: <Widget>[
-      Expanded(flex: 1, child: weightLabel,),  
-      Expanded(flex: 1, child: weights),   
-    ],),
-);
-
-Widget sizeLabel = new Text(
-    "Size:",
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize:12,
-      fontFamily: 'Arciform',
-      color: Colors.black
-    ),
-  );
-
-Widget weightLabel = new Text(
-    "Weight:",
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize:12,
-      fontFamily: 'Arciform',
-      color: Colors.black
-    ),
-  );
-
-Widget sizes = Column(children: <Widget>[
-    Expanded(flex:1, child: femaleSizeContainer("")),
-    Expanded(flex:1, child: maleSizeContainer("") ),
-],);
-
-Widget maleSizeContainer(String male) {
- return Container(
-   margin: EdgeInsets.all(0),
-   padding: EdgeInsets.all(0),
-   child: Row(
-    children:<Widget>[
-      Expanded(
-        flex: 1,
-        child: Text("3.5m",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize:10,
-            fontFamily: 'Arciform',
-            color: Colors.black
-          ),
-        ),
-      ),
-      Expanded(
-        flex: 1,
-        child: Icon(Icons.perm_identity,size: 20),
-      )
-    ]
-),
- );
-}
-
-Widget femaleSizeContainer(String female){
-  return Container(
-   margin: EdgeInsets.all(0),
-   padding: EdgeInsets.all(0),
-    child: Row(
-    children:<Widget>[
-      Expanded(
-        flex: 1,
-        child: Text("3.2m",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize:10,
-            fontFamily: 'Arciform',
-            color: Colors.black
-          ),    
-        ),
-      ),
-      Expanded(
-        flex: 1,
-        child: Icon(Icons.perm_identity,size: 20,)
-        )
-      ]
-    ),
-  );
-
-}
-
-Widget weights = Column(children: <Widget>[
-    Expanded(flex:1, child: femaleWeightContainer("")),
-    Expanded(flex:1, child: maleWeightContainer("") ),
-],);
-
-Widget maleWeightContainer(String male) {
- return Container(
-    margin: EdgeInsets.all(0),
-   padding: EdgeInsets.all(0),
-   child: Row(
-    children:<Widget>[
-      Expanded(
-        flex: 1,
-        child: Text("6000kg",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize:8,
-            fontFamily: 'Arciform',
-            color: Colors.black
-          ),
-        ),
-      ),
-      Expanded(
-        flex: 1,
-        child: Icon(Icons.perm_identity,size: 20,)
-      )
-    ]
-  ),
- );
-}
-
-Widget femaleWeightContainer(String female){
- return Container(
-   margin: EdgeInsets.all(0),
-   padding: EdgeInsets.all(0),
-   child: Row(
-    children:<Widget>[
-      Expanded(
-        flex: 1,
-        child: Text("4500kg",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize:8,
-            fontFamily: 'Arciform',
-            color: Colors.black
-          ),
-        ),
-      ),
-      Expanded(
-        flex: 1,
-        child: Icon(Icons.perm_identity,size: 20,)
-      )
-    ]
-  ),
- );
-
-}
-//===============================
-Widget animalDetailBottom = new Container(
-  alignment: Alignment.centerLeft,
-  child: Row(
-    children: <Widget>[
-      Expanded(flex: 1,
-        child: diet,
-      ),
-      Expanded(flex: 1,
-        child: gestation,
-      ),
-    ],
-  )
-);
-
-Widget diet = new Container(
-  child: Row(children: <Widget>[
-      Expanded(flex:1, child: dietLabel,),
-      Expanded(flex:1, child: dietInputLabel("diet"),),
-  ],),
-);
-
-Widget gestation = new Container(
-  child: Row(children: <Widget>[
-      Expanded(flex:1, child: gestationLabel,),
-      Expanded(flex:1, child: gestationInputLabel("gestation"),),
-  ],),
-);
-
-Widget dietLabel = new Text(
-    "Diet:",
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize:12,
-      fontFamily: 'Arciform',
-      color: Colors.black
-    ),
-  );
-
-Widget dietInputLabel (String diet){
-  return Text(
-    "Herbivore",
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize:10,
-      fontFamily: 'Arciform',
-      color: Colors.black
-    ),
-  );
-}
-
-Widget gestationLabel = new Text(
-    "Gestation:",
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize:11,
-      fontFamily: 'Arciform',
-      color: Colors.black
-    ),
-  );
-
-Widget gestationInputLabel (String gestation){
-  return Text(
-    "24 Months",
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize:10,
-      fontFamily: 'Arciform',
-      color: Colors.black
-    ),
-  );
-}
-//===============================
-Widget description = new ExpansionTile(
-  title: descriptionTitle,
-  children: <Widget>[
-    Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.only(left:17, bottom:15),
-      child: behaviourBody
-    )
-  ],
-);
-
-Widget descriptionTitle = new Text(
-    "Description",
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize:18,
-      fontFamily: 'Arciform',
-      color: Colors.grey
-    ),
-);
-
-Widget descriptionBody = new Text(
-    "This body text is used for demonstration purposes",
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize:13,
-      fontFamily: 'Arciform',
-      color: Colors.grey,
-      fontWeight: FontWeight.bold,
-    ),
-);
-
-Widget behaviour = new ExpansionTile(
-  title: behaviourTitle,
-  children: <Widget>[
-    Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.only(left:17, bottom:15),
-      child: behaviourBody
-    )
-  ],
-);
-
-Widget behaviourTitle = new Text(
-    "Behaiour",
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize:18,
-      fontFamily: 'Arciform',
-      color: Colors.grey
-    ),
-);
-
-Widget behaviourBody = new Text(
-    "This body text is used for demonstration purposes",
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize:13,
-      fontFamily: 'Arciform',
-      color: Colors.grey,
-      fontWeight: FontWeight.bold,
-    ),
-);
-
-Widget habits = new ExpansionTile(
-  title: habitsTitle,
-  children: <Widget>[
-    Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.only(left:17, bottom:15),
-      child: behaviourBody
-    )
-  ],
-);
-
-Widget habitsTitle = new Text(
-    "Habits",
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize:18,
-      fontFamily: 'Arciform',
-      color: Colors.grey
-    ),
-);
-
-Widget habitsBody = new Text(
-    "This body text is used for demonstration purposes",
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize:13,
-      fontFamily: 'Arciform',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-);
