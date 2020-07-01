@@ -57,7 +57,6 @@ class FireMapState extends State<FireMap> {
   GoogleMapController mapController;
   Position position;
   Widget _child;
-
  build(BuildContext context) {
     return Stack(
     children: [
@@ -90,6 +89,8 @@ class Scroll extends StatefulWidget {
 class _Scroll extends State<Scroll> {
   User animal;
   _Scroll(this.animal);
+    int count = 0;
+
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -105,7 +106,7 @@ class _Scroll extends State<Scroll> {
               topRight: Radius.circular(20),
             )
           ),
-          child: ListView(
+          child: ListView( 
             controller: myscrollController,
             children: <Widget>[
               Padding(
@@ -207,7 +208,7 @@ class _Scroll extends State<Scroll> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Image(
-                                image: AssetImage('assets/images/logo.jpeg'),
+                                image: NetworkImage(animal.picture[0]),
                                 fit: BoxFit.fill,
                               ),
                             )
@@ -317,12 +318,15 @@ class _Scroll extends State<Scroll> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Image(
-                                  image: AssetImage('assets/images/logo.jpeg'),
+                                  image: NetworkImage(animal.picture[count]),
                                   fit: BoxFit.contain,
                                 ),
+                                
                               )
                              ),
+
                            );
+
                     },
                     scrollDirection: Axis.horizontal,
                   ),

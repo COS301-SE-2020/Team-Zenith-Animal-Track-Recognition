@@ -1,18 +1,17 @@
 class User{
     final int index;
     final String name;
-   // final String about;
-    final String picture;
+    List picture = new List();
     final String confidence;
     final String classification;
     final String heightM;
     final String heightF;
     final String weightM;
     final String weightF;
-    String diet;
-    String lifeSpan;
-    String gestation;
-    String behaviour;
+    final String diet;
+    final String lifeSpan;
+    final String gestation;
+    final String behaviour;
 
 
     User(this.index,this.name,this.picture,

@@ -6,7 +6,6 @@ import 'package:ERP_Ranger/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:ui';
 
 GraphQLConfiguration graphQLConfiguration = GraphQLConfiguration();
  void main() {
@@ -44,21 +43,15 @@ class _ERP extends State<ERP> {
           if(snapshot.data == true){
             return MaterialApp(
               title: 'Flutter Demo',
+              initialRoute: 'home',
               debugShowCheckedModeBanner: false,
-              home: HomeView(),
-              routes: <String, WidgetBuilder>{
-                  '/home' : (context)  => HomeView(),
-              },
               onGenerateRoute: Router.generateRoute,
             );
           }else {
             return MaterialApp(
               title: 'Flutter Demo',
               debugShowCheckedModeBanner: false,
-              home: LoginView(),
-              routes: <String, WidgetBuilder>{
-                  '/home' : (context)  => HomeView(),
-              },
+              initialRoute: '/',
               onGenerateRoute: Router.generateRoute,
             );
           }
@@ -69,7 +62,8 @@ class _ERP extends State<ERP> {
 
 Future<bool> getLoggedIn() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool loggedIn = prefs.getBool('loggedIn') ?? true;
+  bool loggedIn = prefs.getBool('loggedIn') ?? false;
+  prefs.setBool("loaded", false);
   await prefs.setInt('tabIndex', 0);
   return loggedIn;
 }

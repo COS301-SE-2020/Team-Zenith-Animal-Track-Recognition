@@ -1,260 +1,463 @@
-import 'dart:ui';
-
 import 'package:ERP_Ranger/core/services/api.dart';
-import 'package:ERP_Ranger/core/services/mock_api.dart';
 import 'package:ERP_Ranger/ui/views/confirm/confirm_view.dart';
+import 'package:ERP_Ranger/ui/views/confirm/unconfirmed_view.dart';
 import 'package:ERP_Ranger/ui/views/home/animal_infoview.dart';
-import 'package:ERP_Ranger/ui/views/info/spoor_indentification_1.dart';
 import '../../../core/viewmodels/home_viewmodel.dart';
 import '../../../core/services/user.dart';
 import 'package:flutter/material.dart';
 import '../../../locator.dart';
 import '../../widgets/bottom_nav.dart';
 import '../base_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 //import 'package:provider_assist/provider_assist.dart';
 
-var data = MockApi.getData;
+List<User> holder = List<User>();
+bool loaded = false;
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
+  List<User> animal;
+  HomeView({@required this.animal,});
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('     Recent Identifications', style: TextStyle(color: Colors.black),),
-        centerTitle: false,
-        backgroundColor: Colors.white,
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () {},
-              child: Icon(
-                Icons.search,
-                size: 26.0,
-                color: Colors.black,
-              ),
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () {},
-              child: Icon(
-                Icons.more_vert,
-                  color: Colors.black,
-              ),
-            )
-          )
-        ],
-      ),
-          body: Center(
-
-            child: Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: data.length,
-                      itemBuilder: (context,index) {
-                        return Container(
-                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          height: 220,
-                          width: double.maxFinite,
-                          child: InkWell(
-                            onTap: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => spoor_identification_1()),
-                              );
-                            },
-                            child: Card(
-                                elevation: 5,
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Container(
-                                              child: Image(
-                                                image: AssetImage(
-                                                    data[index]['pic']),
-                                                height: 120.0,
-                                                width: 120.0,
-                                              ),
-                                            ), //contains image
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Container(
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment
-                                                        .start,
-                                                    mainAxisAlignment: MainAxisAlignment
-                                                        .center,
-                                                    children: <Widget>[
-                                                      RichText(
-                                                          textAlign: TextAlign.left,
-                                                          text: TextSpan(
-                                                              text: data[index]['name'],
-                                                              style: TextStyle(
-                                                                  fontWeight: FontWeight
-                                                                      .bold,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: 19.0)
-                                                          )
-                                                      ),
-                                                      SizedBox(height: 8),
-                                                      RichText(
-                                                          text: TextSpan(
-                                                              text: 'Species: ',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .black),
-                                                              children: <TextSpan>[
-                                                                TextSpan(
-                                                                    text: data[index]['species'],
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .grey))
-                                                              ]
-                                                          )
-                                                      ),
-                                                      SizedBox(height: 8),
-                                                      RichText(
-                                                          text: TextSpan(
-                                                              text: 'Location: ',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .black),
-                                                              children: <TextSpan>[
-                                                                TextSpan(
-                                                                    text: data[index]['location'],
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .grey))
-                                                              ]
-                                                          )
-                                                      ),
-                                                      SizedBox(height: 8),
-                                                      RichText(
-                                                          text: TextSpan(
-                                                              text: 'Captured by: ',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .black),
-                                                              children: <TextSpan>[
-                                                                TextSpan(
-                                                                    text: data[index]['captured'],
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .grey))
-                                                              ]
-                                                          )
-                                                      )
-                                                    ],
-                                                  )
-                                              ),
-                                            ), //contains the information
-                                            Expanded(
-                                              child: Container(
-                                                  alignment: Alignment.topCenter,
-                                                  height: 105,
-                                                  child: Text(
-                                                    data[index]['time'], style: TextStyle(
-                                                      color: Colors.grey),
-                                                  )
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-
-                                    ), //top part of card
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          border: Border(top: BorderSide())
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceEvenly,
-                                          children: <Widget>[
-                                            Chip(
-                                              backgroundColor: Colors.grey,
-
-                                              label: Text(
-                                                data[index]['tag'], style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20.0),
-                                              ),
-                                              visualDensity: VisualDensity.compact,
-                                            ),
-                                            Text(
-                                              'ACCURACY SCORE: ',
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                            Text(
-                                              data[index]['score'], style: TextStyle(fontSize: 20,
-                                                fontWeight: FontWeight.bold),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ) //bottom part of carf
-                                  ],
-                                )
-
-                            ),
-                          ),
-
-
-                        );
-                      }),
-                  )
-                ],
-              ),
-            ),
-    ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: () {},
-      child: Icon(Icons.camera_alt),
-      backgroundColor: Colors.grey,
-    ),
-    bottomNavigationBar: BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home, color: Colors.grey),
-          title: Text('Home', style: TextStyle(color: Colors.grey)),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.pets, color: Colors.grey),
-          title: Text('Animals', style: TextStyle(color: Colors.grey)),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.file_upload, color: Colors.grey),
-          title: Text('Upload', style: TextStyle(color: Colors.grey)),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle, color: Colors.grey),
-          title: Text('Profile', style: TextStyle(color: Colors.grey)),
-        )
-    ]
-    ),
-    backgroundColor: Colors.grey,
-    );
-  }
+  _HomeView createState() => _HomeView(animal: animal);
 }
 
+class _HomeView extends State<HomeView> {
+  
+  List<User> animal;
+  _HomeView({@required this.animal,});
+  int _currentTabIndex = 0;
+  var quer;
+  List<User> users = List();
+  final Api _api = locator<Api>();
+  TextEditingController editingController = TextEditingController();
 
+  @override
+  void dispose(){
+    editingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    
+    super.initState();
+    setState(() {
+      //getAnimals();
+    });
+
+  }
+
+  Future<List<User>>getAnimals() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool loaded = prefs.getBool("loaded") ?? false;
+   
+    if(animal == null && loaded == false){
+      holder.clear();
+    }
+    else if(animal == null && loaded == true){
+      users =await _api.getResults();
+      holder.clear();
+      holder.addAll(users);
+    }
+    else if(animal != null){
+      holder.clear();
+      holder.addAll(animal);
+    }
+
+    return holder;
+  }
+
+  void filterSearch(String query){
+    List<User> dummySearchList = List<User>();
+    dummySearchList.addAll(users);
+    if(query.isNotEmpty){
+      List<User> dummyListData = List<User>();
+      dummySearchList.forEach((element) {
+        if(element.name.toLowerCase().substring(0,query.length).contains(query.toLowerCase())){
+          dummyListData.add(element);
+        }
+      });
+      setState(() {
+        holder.clear();
+        holder.addAll(dummyListData);
+      });
+      return;
+    }else{
+      setState(() {
+        holder.clear();
+        holder.addAll(users);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    BottomNavigation bottomNavigation = new BottomNavigation();
+    bottomNavigation.setIndex(_currentTabIndex);
+
+
+    return BaseView<HomeModel>(
+        builder: (context, model, child) => Scaffold(
+            body: Column(
+                children: <Widget>[
+                      Expanded(
+                        flex: 0,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  margin: new EdgeInsets.only(top:20),
+                                  height: 20,
+                                  child: Text("Recent Identifications",
+                                  style: TextStyle(fontSize: 25,
+                                  fontFamily: 'Arciform',
+                                  fontWeight: FontWeight.bold)
+                                  )
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: TextField(
+                                  keyboardType: TextInputType.text,
+                                  onChanged: (value){
+                                    filterSearch(value);
+                                  },
+                                  controller: editingController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Search',
+                                    prefixIcon: Icon(Icons.search),
+                                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(25.0)))
+                                  ),
+
+                                ),
+                              ),              
+                            ],
+                          ),
+                        ),
+                      Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: loaded ? ListView.builder(
+                              itemCount: holder.length,
+                              itemBuilder: (BuildContext context, int index){
+                                return Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    side: BorderSide(color: Colors.grey[200], width:4),
+                                  ),
+                                  elevation: 10,
+                                  margin: EdgeInsets.all(10),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(context, PageRouteBuilder(
+                                          pageBuilder: (context, animation1, animation2) => AnimalView(holder[index]),
+                                        ),);                                  
+                                      },
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Expanded(
+                                            flex: 2,
+                                              child: Container(
+                                               decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),                                          
+                                              child:ClipRRect(
+                                                borderRadius: BorderRadius.circular(10),
+                                                child: Image(
+                                                  image: NetworkImage(holder[index].picture[0]),
+                                                  fit: BoxFit.fill,
+                                                )
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 5,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  child: Column(
+                                                    children: <Widget>[
+                                                      
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(left:5,top:1,bottom:1,),
+                                                        child: Align(alignment: Alignment.centerLeft,
+                                                          child: Text(holder[index].name,
+                                                            style: TextStyle(fontSize: 13,
+                                                              fontFamily: 'Arciform',
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.grey
+                                                            ),                                                       
+                                                          ),
+                                                        ),
+                                                      ),                                               
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(left:5,top:1,bottom:1,),
+                                                        child: Align(alignment: Alignment.centerLeft,
+                                                          child: Text("Date: 09/09/2020",
+                                                            style: TextStyle(fontSize: 13,
+                                                              fontFamily: 'Arciform'
+                                                            ),                                                       
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(left:5,top:1,bottom:1,),
+                                                        child: Align(alignment: Alignment.centerLeft,
+                                                          child: Text("Location: Kruger Park",
+                                                            style: TextStyle(fontSize: 13,
+                                                              fontFamily: 'Arciform'
+                                                            ),                                                      
+                                                          ),
+                                                        ),
+                                                      ),                                               
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(left:5,top:1,bottom:1,),
+                                                        child: Align(alignment: Alignment.centerLeft,
+                                                          child: Text("-24.019097, 31.559270",
+                                                            style: TextStyle(fontSize: 13,
+                                                              fontFamily: 'Arciform'
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      
+                                                      
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 2,
+                                              child:Card(
+                                                color: Colors.grey[50],
+                                                shape: RoundedRectangleBorder(
+                                                  side: BorderSide(color: Colors.grey[100], width:3),
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),                                
+                                                child: Column(
+                                                  children: [
+                                                    Center(child: Padding(
+                                                      padding: const EdgeInsets.only(right:6,left:6,top:3,bottom:1,),
+                                                      child: Text(holder[index].confidence,
+                                                        style: TextStyle(fontSize: 22,
+                                                          fontFamily: 'Arciform'
+                                                        ),                                             
+                                                      ),
+                                                    )),
+                                                    Center(child: Padding(
+                                                      padding: const EdgeInsets.only(right:6,left:6,top:3),
+                                                      child: Text("Accuracy",
+                                                        style: TextStyle(fontSize: 12,
+                                                          fontFamily: 'Arciform'
+                                                        ),                                                    
+                                                      ),
+                                                    )),
+                                                    Center(child: Padding(
+                                                      padding: const EdgeInsets.only(right:6,left:6,bottom:3,),
+                                                      child: Text("Score",
+                                                        style: TextStyle(fontSize: 12,
+                                                          fontFamily: 'Arciform'
+                                                        ),                                                   
+                                                      ),
+                                                    ))                                                 
+                                                  ]
+                                                )
+                                              ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+                            ): FutureBuilder(
+                              future: getAnimals(),
+                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                //loaded = true;
+                                return ListView.builder( 
+                                  itemCount: holder.length,
+                                  itemBuilder: (BuildContext context, int index){
+                                    return Card(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                        side: BorderSide(color: Colors.grey[200], width:4),
+                                      ),
+                                      elevation: 10,
+                                      margin: EdgeInsets.all(10),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(context, PageRouteBuilder(
+                                              pageBuilder: (context, animation1, animation2) => AnimalView(holder[index]),
+                                            ),);                                  
+                                          },
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Expanded(
+                                                flex: 2,
+                                                  child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                    ),                                          
+                                                  child:ClipRRect(
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    child: Image(
+                                                      image: NetworkImage(holder[index].picture[0]),
+                                                      fit: BoxFit.fill,
+                                                    )
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 5,
+                                                child: Align(
+                                                  alignment: Alignment.center,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: Container(
+                                                      child: Column(
+                                                        children: <Widget>[
+                                                          
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left:5,top:1,bottom:1,),
+                                                            child: Align(alignment: Alignment.centerLeft,
+                                                              child: Text(holder[index].name,
+                                                                style: TextStyle(fontSize: 13,
+                                                                  fontFamily: 'Arciform',
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Colors.grey
+                                                                ),                                                       
+                                                              ),
+                                                            ),
+                                                          ),                                               
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left:5,top:1,bottom:1,),
+                                                            child: Align(alignment: Alignment.centerLeft,
+                                                              child: Text("Date: 09/09/2020",
+                                                                style: TextStyle(fontSize: 13,
+                                                                  fontFamily: 'Arciform'
+                                                                ),                                                       
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left:5,top:1,bottom:1,),
+                                                            child: Align(alignment: Alignment.centerLeft,
+                                                              child: Text("Location: Kruger Park",
+                                                                style: TextStyle(fontSize: 13,
+                                                                  fontFamily: 'Arciform'
+                                                                ),                                                      
+                                                              ),
+                                                            ),
+                                                          ),                                               
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left:5,top:1,bottom:1,),
+                                                            child: Align(alignment: Alignment.centerLeft,
+                                                              child: Text("-24.019097, 31.559270",
+                                                                style: TextStyle(fontSize: 13,
+                                                                  fontFamily: 'Arciform'
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          
+                                                          
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 2,
+                                                  child:Card(
+                                                    color: Colors.grey[50],
+                                                    shape: RoundedRectangleBorder(
+                                                      side: BorderSide(color: Colors.grey[100], width:3),
+                                                      borderRadius: BorderRadius.circular(10),
+                                                    ),                                
+                                                    child: Column(
+                                                      children: [
+                                                        Center(child: Padding(
+                                                          padding: const EdgeInsets.only(right:6,left:6,top:3,bottom:1,),
+                                                          child: Text(holder[index].confidence,
+                                                            style: TextStyle(fontSize: 22,
+                                                              fontFamily: 'Arciform'
+                                                            ),                                             
+                                                          ),
+                                                        )),
+                                                        Center(child: Padding(
+                                                          padding: const EdgeInsets.only(right:6,left:6,top:3),
+                                                          child: Text("Accuracy",
+                                                            style: TextStyle(fontSize: 12,
+                                                              fontFamily: 'Arciform'
+                                                            ),                                                    
+                                                          ),
+                                                        )),
+                                                        Center(child: Padding(
+                                                          padding: const EdgeInsets.only(right:6,left:6,bottom:3,),
+                                                          child: Text("Score",
+                                                            style: TextStyle(fontSize: 12,
+                                                              fontFamily: 'Arciform'
+                                                            ),                                                   
+                                                          ),
+                                                        ))                                                 
+                                                      ]
+                                                    )
+                                                  ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                );
+                              },
+                            ),
+                          ),
+                      )
+                ],
+            ),
+            bottomNavigationBar: BottomNavigation(),
+            floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add_a_photo),
+            backgroundColor: Color(0xFFF2929C),
+            tooltip: 'Pick Image',
+            onPressed:()async{
+                List<User> animals = await model.imagePicker();
+                  if(animals == null){
+                    Navigator.push(context, 
+                        new MaterialPageRoute(builder: (context) => UnConfirmView())
+                    ); 
+                  }else{
+                    Navigator.push(context, 
+                        new MaterialPageRoute(builder: (context) => ConfirmView(animal: animals,))
+                    ); 
+                  }
+            } 
+          ),
+        )
+    );
+  }
+
+}

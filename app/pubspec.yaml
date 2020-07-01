@@ -60,11 +60,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  google_maps_flutter:
-  
-  flutter_driver:
-    sdk: flutter
-  test: any
   
 
 # For information on the generic Dart part of this file, see the
@@ -110,9 +105,3 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - assets/images/logo.jpeg
-    - assets/images/buffalo.jpeg
-    - assets/images/Elephant.jpeg
-    - assets/images/Red_Hartebeest.jpg
-    - assets/images/rhino.jpeg
-    - assets/images/springbok.jpg
-    - assets/images/Blesbok.jpg

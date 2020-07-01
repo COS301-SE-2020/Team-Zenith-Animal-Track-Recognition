@@ -1,17 +1,17 @@
-import 'dart:convert';
-import 'package:ERP_Ranger/core/services/api.dart';
-import 'package:ERP_Ranger/core/services/user.dart';
 import 'package:ERP_Ranger/locator.dart';
-import 'package:image_picker/image_picker.dart';
+import '../services/user.dart';
+import 'package:ERP_Ranger/core/services/api.dart';
 import 'dart:async';
 import 'dart:io';
+import 'dart:convert';
+import 'package:image_picker/image_picker.dart';
 import 'base_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-class HomeModel extends BaseModel{
-  final Api _api = locator<Api>();
 
+class ProfileModel extends BaseModel{
+final Api _api = locator<Api>();
   Future<List<User>> imagePicker() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     File image;
@@ -29,18 +29,9 @@ class HomeModel extends BaseModel{
     return null;
   }
 
-  
-  Future navigateTo() async{
-  }
 
+  String _title = " Info View";
+  String get title => _title;
 
-  Future<List<User>> getResults() async {
-      return _api.getResults();
-  }
-
-  void updateCounter(){
-    notifyListeners();
-  }
 
 }
-

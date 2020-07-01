@@ -129,7 +129,7 @@ class _LoginView extends State<LoginView> {
                     textColor: Colors.black,
                     fontSize: 16.0
                   );
-                  Navigator.of(context).pushAndRemoveUntil(PageRouteBuilder(pageBuilder: (context, animation1, animation2) => HomeView()), (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(PageRouteBuilder(pageBuilder: (context, animation1, animation2) => HomeView(animal:null)), (Route<dynamic> route) => false);
                 }else{
                   Fluttertoast.showToast(
                           msg: "Invalid Login Details",
@@ -173,7 +173,6 @@ class ForgotPassword extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             FlatButton(
-              
               child: Text(
                 'Forgot Password?',
                 style: TextStyle(

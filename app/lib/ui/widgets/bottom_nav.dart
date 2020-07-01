@@ -1,6 +1,7 @@
-import 'package:ERP_Ranger/ui/views/heatmap/heatmap_view.dart';
 import 'package:ERP_Ranger/ui/views/home/home_view.dart';
 import 'package:ERP_Ranger/ui/views/info/info_view.dart';
+import 'package:ERP_Ranger/ui/views/profile/profile_view.dart';
+import 'package:ERP_Ranger/ui/views/upload/uploadView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,8 +31,7 @@ class BottomNavigationState extends State<BottomNavigation> {
             switch (selectedIndex) {
               case 0:
                 Navigator.push(context, PageRouteBuilder(
-                  
-                  pageBuilder: (context, animation1, animation2) => HomeView(),
+                  pageBuilder: (context, animation1, animation2) => HomeView(animal: null,),
                 ),);
                 break;
               case 1:
@@ -41,7 +41,12 @@ class BottomNavigationState extends State<BottomNavigation> {
                 break;
               case 2:
                 Navigator.push(context, PageRouteBuilder(
-                  pageBuilder: (context, animation1, animation2) => HeatMapView(),
+                  pageBuilder: (context, animation1, animation2) => UploadView(),
+                ),);
+                break;
+              case 3:
+                Navigator.push(context, PageRouteBuilder(
+                  pageBuilder: (context, animation1, animation2) => ProfileView(),
                 ),);
                 break;
               }
@@ -53,36 +58,33 @@ class BottomNavigationState extends State<BottomNavigation> {
 
         return Container(
             child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),
-                  title: Text('Home', 
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontFamily: 'Helvetica',
-                    ),
-                  ),
+                  title: Text('Home'),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.info_outline),
-                  title: Text('Info', 
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontFamily: 'Helvetica',
-                    ),
-                  ),
+                  title: Text('Info',),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.location_on),
-                  title: Text('Heat Map', 
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontFamily: 'Helvetica',
-                    ),
-                  ),
+                  icon: Icon(Icons.file_upload),
+                  title: Text('Upload'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  title: Text('Profile',),
                 ),
               ],
               selectedItemColor: Color(0xFFF2929C),
+              unselectedLabelStyle: TextStyle(
+                fontSize: 15,
+                fontFamily: 'Helvetica',
+                color: Colors.grey
+              ),
+              showUnselectedLabels: true,
+              unselectedItemColor: Colors.grey,
               onTap: _onTap,
               currentIndex: _currentTabIndex,
             ),        
