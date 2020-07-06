@@ -1,6 +1,7 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const expressPlayground = require("graphql-playground-middleware-express")
+const fs = require('fs');
 
 const app = express();
 const port = 55555;
@@ -23,7 +24,7 @@ app.use('/graphiql', graphqlHTTP({
 
 }));
 
-app.get('/AIretran', (req, res) => {
+app.get('/AI/retran', (req, res) => {
 
     if (status == "idle") {
         status = "training"
@@ -57,11 +58,12 @@ app.get('/AIretran', (req, res) => {
 
 })
 
-app.get('/AIstatus', (req, res) => {
+app.get('/AI', (req, res) => {
 
     res.send(status)
 
 })
+
 
 app.get('/', (req, res) => {
     res.write()
@@ -72,3 +74,6 @@ app.listen(port, () => {
     console.log('now listening for requests on port ' + port);
     console.log(`Example app listening at http://localhost:${port}`);
 });
+
+
+

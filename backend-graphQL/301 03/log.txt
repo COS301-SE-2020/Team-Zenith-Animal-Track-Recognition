@@ -1,0 +1,21 @@
+
+
+started at 2020/07/06, 04:05:34
+Epoch 1/2
+50/50 [==============================] - 180s 4s/step - loss: 0.9748 - accuracy: 0.5280 - val_loss: 0.6538 - val_accuracy: 0.5880
+Epoch 2/2
+50/50 [==============================] - 195s 4s/step - loss: 0.6712 - accuracy: 0.5465 - val_loss: 0.8519 - val_accuracy: 0.5670
+
+
+started at 2020/07/06, 04:15:59
+Epoch 1/2
+50/50 [==============================] - 140s 3s/step - loss: 0.8077 - accuracy: 0.5295 - val_loss: 0.6463 - val_accuracy: 0.6110
+Epoch 2/2
+50/50 [==============================] - 148s 3s/step - loss: 0.6408 - accuracy: 0.5955 - val_loss: 0.6136 - val_accuracy: 0.6720
+
+
+started at 2020/07/06, 04:29:48
+Epoch 1/2
+50/50 [==============================] - 142s 3s/step - loss: 1.1113 - accuracy: 0.5015 - val_loss: 0.6921 - val_accuracy: 0.5000
+Epoch 2/2
+50/50 [==============================] - 147s 3s/step - loss: 0.6936 - accuracy: 0.5000 - val_loss: 0.6932 - val_accuracy: 0.5000
