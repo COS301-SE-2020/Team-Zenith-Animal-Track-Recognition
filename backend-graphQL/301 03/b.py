@@ -1,3 +1,41 @@
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+import sys
+
+import datetime
+
+today = datetime.datetime.now()
+date_time = today.strftime("%Y/%m/%d, %H:%M:%S")
+
+
+te = open('log.txt','a')  # File where you need to keep the logs
+te.write("\n\nstarted at "+date_time+"\n")
+
+class Unbuffered:
+    
+    def __init__(self, stream):
+        self.txt =""
+        self.stream = stream
+
+    def write(self, data):
+
+        self.stream.write(data)
+        self.stream.flush()
+        self.txt =self.txt +data
+        if self.txt[-1]=="\n":
+            if ("Epoch"in self.txt):
+                te.write(self.txt)
+            if ("val_accuracy"in self.txt):
+                te.write(self.txt)
+            self.txt=""
+        # te.write(data)    # Write the data of stdout here to a text file as well
+
+    def flush(self):
+        te.flush()
+        pass
+
+sys.stdout=Unbuffered(sys.stdout)   
 import tensorflow as tf
 
 from tensorflow.keras.models import Sequential
@@ -5,16 +43,18 @@ from tensorflow.keras.layers import Dense, Conv2D, Flatten, Dropout, MaxPooling2
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import datasets, layers, models
 
-import os
-import numpy as np
-import matplotlib.pyplot as plt
+
+
+
+
+
 
 _URL = 'https://storage.googleapis.com/mledu-datasets/cats_and_dogs_filtered.zip'
 
 path_to_zip = tf.keras.utils.get_file('cats_and_dogs.zip', origin=_URL, extract=True)
 
 PATH = os.path.join(os.path.dirname(path_to_zip), 'cats_and_dogs_filtered')
-
+print(PATH)
 train_dir = os.path.join(PATH, 'train')
 validation_dir = os.path.join(PATH, 'validation')
 
@@ -41,13 +81,22 @@ print("--")
 print("Total training images:", total_train)
 print("Total validation images:", total_val)
 
-batch_size = 128
-epochs = 15
-IMG_HEIGHT = 512
-IMG_WIDTH = 512
+batch_size = 40
+epochs = 2
+IMG_HEIGHT = 350
+IMG_WIDTH = 350
 
-train_image_generator = ImageDataGenerator(rescale=1./255) # Generator for our training data
-validation_image_generator = ImageDataGenerator(rescale=1./255) # Generator for our validation data
+train_image_generator = ImageDataGenerator(
+                    rescale=1./255,
+                    rotation_range=45,
+                    width_shift_range=.15,
+                    height_shift_range=.15,
+                    horizontal_flip=True,
+                    zoom_range=0.5
+                    ) # Generator for our training data
+validation_image_generator = ImageDataGenerator(
+                    rescale=1./255
+                    ) # Generator for our validation data
 
 train_data_gen = train_image_generator.flow_from_directory(batch_size=batch_size,
                                                            directory=train_dir,
@@ -88,38 +137,38 @@ model = Sequential([
 ])
 
 
-# model.compile(optimizer='adam',
-#               loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
-#               metrics=['accuracy'])
+model.compile(optimizer='adam',
+              loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+              metrics=['accuracy'])
 
-# model.summary()
+model.summary()
 
-# history = model.fit_generator(
-#     train_data_gen,
-#     steps_per_epoch=total_train // batch_size,
-#     epochs=epochs,
-#     validation_data=val_data_gen,
-#     validation_steps=total_val // batch_size
-# )
+history = model.fit_generator(
+    train_data_gen,
+    steps_per_epoch=total_train // batch_size,
+    epochs=epochs,
+    validation_data=val_data_gen,
+    validation_steps=total_val // batch_size
+)
 
-# acc = history.history['accuracy']
-# val_acc = history.history['val_accuracy']
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
 
-# loss=history.history['loss']
-# val_loss=history.history['val_loss']
+loss=history.history['loss']
+val_loss=history.history['val_loss']
 
-# epochs_range = range(epochs)
+epochs_range = range(epochs)
 
-# plt.figure(figsize=(8, 8))
-# plt.subplot(1, 2, 1)
-# plt.plot(epochs_range, acc, label='Training Accuracy')
-# plt.plot(epochs_range, val_acc, label='Validation Accuracy')
-# plt.legend(loc='lower right')
-# plt.title('Training and Validation Accuracy')
+plt.figure(figsize=(8, 8))
+plt.subplot(1, 2, 1)
+plt.plot(epochs_range, acc, label='Training Accuracy')
+plt.plot(epochs_range, val_acc, label='Validation Accuracy')
+plt.legend(loc='lower right')
+plt.title('Training and Validation Accuracy')
 
-# plt.subplot(1, 2, 2)
-# plt.plot(epochs_range, loss, label='Training Loss')
-# plt.plot(epochs_range, val_loss, label='Validation Loss')
-# plt.legend(loc='upper right')
-# plt.title('Training and Validation Loss')
-# plt.show()
+plt.subplot(1, 2, 2)
+plt.plot(epochs_range, loss, label='Training Loss')
+plt.plot(epochs_range, val_loss, label='Validation Loss')
+plt.legend(loc='upper right')
+plt.title('Training and Validation Loss')
+plt.show()
