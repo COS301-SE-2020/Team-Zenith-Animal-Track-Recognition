@@ -88,6 +88,8 @@ IMG_HEIGHT = 350
 IMG_WIDTH = 350
 
 
+
+
 train_image_generator = ImageDataGenerator(rescale=1./255,
                                            rotation_range=30,
                                            width_shift_range=.15,
@@ -115,7 +117,7 @@ val_data_gen = validation_image_generator.flow_from_directory(batch_size=batch_s
                                                                   IMG_HEIGHT, IMG_WIDTH),
                                                               class_mode='categorical')
 
-
+sample_training_images, _ = next(train_data_gen)
 
 
 
@@ -127,7 +129,8 @@ def plotImages(images_arr):
         ax.axis('off')
     plt.tight_layout()
     plt.show()
-
+sample_training_images, _ = next(train_data_gen)
+plotImages(sample_training_images[:5])
 
 model = Sequential([
     Conv2D(16, 3, padding='same', activation='relu',

@@ -17,14 +17,13 @@ wdtrain=os.path.join( os.path.join(  cwd , dataset),"train")
 # print(fodervalidation)
 
 for i in fodervalidation:
-    wd = cwd + dataset+"/validation/"+i
-    temp = os.listdir(wd)
+    wdv = os.path.join(wdvalidation,i)
+    wdt = os.path.join(wdtrain,i)
+    temp = os.listdir(wdv)
+
     for j in temp:
-        # print( cwd + dataset+"validation/"+i+"/"+j+"\n")
-        pfrom =os.path.join(os.path.join(wdvalidation,i),j)
-        pto=cwd + os.path.join(os.path.join(wdtrain,i),j)
-        print(pfrom)
-        print(pto)
+        pfrom =os.path.join(wdv,j)
+        pto=os.path.join(wdt,j)
         os.replace(pfrom,pto)
 
 print("step1\n\n\n\n")
