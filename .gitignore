@@ -10,3 +10,6 @@ backend-graphQL/301 03/.vscode/settings.json
 backend-graphQL/301 03/saved_model*
 backend-graphQL/301 03/log.txt
 backend-graphQL/301 03/traningLog.txt
+Server/backend-graphQL/301 03/saved_model/*
+
+Server/backend-graphQL/301 03/traningLog.txt
