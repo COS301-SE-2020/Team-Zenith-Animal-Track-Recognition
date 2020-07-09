@@ -19,3 +19,12 @@ Epoch 1/2
 50/50 [==============================] - 142s 3s/step - loss: 1.1113 - accuracy: 0.5015 - val_loss: 0.6921 - val_accuracy: 0.5000
 Epoch 2/2
 50/50 [==============================] - 147s 3s/step - loss: 0.6936 - accuracy: 0.5000 - val_loss: 0.6932 - val_accuracy: 0.5000
+
+
+started at 2020/07/09, 14:45:05
+
+
+started at 2020/07/09, 14:50:18
+
+
+started at 2020/07/09, 14:52:24
