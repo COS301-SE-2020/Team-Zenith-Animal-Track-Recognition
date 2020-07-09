@@ -14,8 +14,8 @@ from tensorflow.keras import datasets, layers, models
 
 redistabut=False
 redistabut=not(redistabut)# comint out to matane files in posison
-# if(redistabut):
-#     import fileSplit
+if(redistabut):
+    import fileSplit
 
 
 today = datetime.datetime.now()
