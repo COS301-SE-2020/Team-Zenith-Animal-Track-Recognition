@@ -19,7 +19,7 @@ redistabut=not(redistabut)# comint out to matane files in posison
 
 
 today = datetime.datetime.now()
-date_time = today.strftime("%Y/%m/%d, %H:%M:%S")
+date_time = today.strftime("%Y %m %d, %H %M %S")
 
 
 
@@ -182,4 +182,4 @@ plt.title('Training and Validation Loss')
 
 plt.show()
 
-model.save('saved_model/my_model/') 
+model.save('saved_model/mane/'+date_time+"/") 
