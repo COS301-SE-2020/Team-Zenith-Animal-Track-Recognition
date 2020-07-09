@@ -26,17 +26,27 @@ for i in fodervalidation:
         pto=os.path.join(wdt,j)
         os.replace(pfrom,pto)
 
-print("step1\n\n\n\n")
+# print("step1\n\n\n\n")
 
 
-fodertrain = os.listdir(cwd + dataset+"/train")
-print(fodertrain)
-for i in fodervalidation:
-    wd = cwd + dataset+"/validation/"+i
-    temp = os.listdir(wd)
+fodertrain = os.listdir(wdtrain)
+for i in fodertrain:
+    wdv = os.path.join(wdvalidation,i)
+    wdt = os.path.join(wdtrain,i)
+    temp = os.listdir(wdt)
+
     for j in temp:
         if(random.random()<split):
-            os.replace(cwd + dataset+"test/"+i+"/"+j,cwd + dataset+"validation/"+i+"/"+j)
+            pfrom =os.path.join(wdt,j)
+            pto=os.path.join(wdv,j)
+            os.replace(pfrom,pto)
+# print(fodertrain)
+# for i in fodervalidation:
+#     wd = cwd + dataset+"/validation/"+i
+#     temp = os.listdir(wd)
+#     for j in temp:
+#         if(random.random()<split):
+#             os.replace(cwd + dataset+"test/"+i+"/"+j,cwd + dataset+"validation/"+i+"/"+j)
         
 
 
