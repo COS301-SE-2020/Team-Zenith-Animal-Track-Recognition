@@ -293,7 +293,7 @@ Widget button1 = new Container(
         ),
       ),
       Text(
-        "RECLASSIFY               SPOOR",
+        "EDIT               SPOOR",
         textAlign: TextAlign.center,
         style: TextStyle(
             fontWeight: FontWeight.bold,

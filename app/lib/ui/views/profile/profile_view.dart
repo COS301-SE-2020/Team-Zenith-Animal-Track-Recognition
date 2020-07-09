@@ -48,90 +48,7 @@ class _profile_ViewState extends State<profile_View> {
           )
         ],
       ),
-      body: DefaultTabController(
-        length: 2,
-        child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
-            return <Widget>[
-              SliverAppBar(
-                expandedHeight: 180.0,
-                floating: false,
-                pinned: true,
-                backgroundColor: Colors.white,
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  background: profileinfo,
-                ),
-              ),
-              new SliverPadding(
-                padding: new EdgeInsets.all(5.0),
-                sliver: new SliverList(
-                  delegate: new SliverChildListDelegate([
-                    Container(
-                      color: Colors.white,
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: <Widget>[
-                                IconButton(
-                                  icon: Icon(Icons.edit),
-                                  onPressed: () {},
-                                ),
-                                Text('EDIT'),
-                                Text('PROFILE')
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: <Widget>[
-                                IconButton(
-                                  icon: Icon(Icons.lock),
-                                  onPressed: () {},
-                                ),
-                                Text('CHANGE'),
-                                Text('PASSWORD')
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: <Widget>[
-                                IconButton(
-                                  icon: Icon(Icons.settings),
-                                  onPressed: () {},
-                                ),
-                                Text('PREFERENCES'),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: <Widget>[
-                                IconButton(
-                                  icon: Icon(Icons.power_settings_new),
-                                  onPressed: () {},
-                                ),
-                                Text('LOGOUT'),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ]),
-                ),
-              )
-            ];
-          },
-          body: Center(child: recentidentifications),
-        ),
-      ),
+      body: topbar,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: Icon(Icons.camera_alt),
@@ -162,6 +79,93 @@ class _profile_ViewState extends State<profile_View> {
 
   }
 }
+
+Widget topbar = new  DefaultTabController(
+  length: 2,
+  child: NestedScrollView(
+    headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
+      return <Widget>[
+        SliverAppBar(
+          expandedHeight: 180.0,
+          floating: false,
+          pinned: true,
+          backgroundColor: Colors.white,
+          flexibleSpace: FlexibleSpaceBar(
+            centerTitle: true,
+            background: profileinfo,
+          ),
+        ),
+        new SliverPadding(
+          padding: new EdgeInsets.all(5.0),
+          sliver: new SliverList(
+            delegate: new SliverChildListDelegate([
+              Container(
+                color: Colors.white,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {},
+                          ),
+                          Text('EDIT'),
+                          Text('PROFILE')
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.lock),
+                            onPressed: () {},
+                          ),
+                          Text('CHANGE'),
+                          Text('PASSWORD')
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.settings),
+                            onPressed: () {},
+                          ),
+                          Text('PREFERENCES'),
+                          Text(''),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.power_settings_new),
+                            onPressed: () {},
+                          ),
+                          Text('LOGOUT'),
+                          Text(''),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ]),
+          ),
+        )
+      ];
+    },
+    body: Center(child: recentidentifications),
+  ),
+);
 Widget recentidentifications = new Container(
   child: Column(
     mainAxisSize: MainAxisSize.max,
