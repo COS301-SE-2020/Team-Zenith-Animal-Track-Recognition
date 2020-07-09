@@ -6,7 +6,7 @@ import sys
 import datetime
 
 today = datetime.datetime.now()
-date_time = today.strftime("%Y %m %d, %H %M %S")
+date_time = today.strftime("%Y/%m/%d, %H:%M:%S")
 
 
 te = open('log.txt','a')  # File where you need to keep the logs
@@ -210,4 +210,9 @@ plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
 
 plt.show()
-model.save('saved_model/b/'+date_time+"/") 
+sentence=date_time+""
+sentence=sentence.replace("/", "")
+sentence='saved_model/b/'+sentence+"/"
+sentence=sentence.replace(" ", "")
+sentence=sentence.replace(":", "")
+model.save(sentence) 
