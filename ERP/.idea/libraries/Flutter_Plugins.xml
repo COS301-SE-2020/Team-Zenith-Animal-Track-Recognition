@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
+    <CLASSES>
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-0.1.2+7" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/connectivity_for_web-0.3.0" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-4.0.1" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+3" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/location_permissions-3.0.0+1" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.8" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/connectivity-0.4.9" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/connectivity_macos-0.1.0+3" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.7+3" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-5.0.0+hotfix.8" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/geolocator-5.3.2+2" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.11" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.6.7+4" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_api_availability-2.0.4" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-0.0.1+2" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-0.5.28+1" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
