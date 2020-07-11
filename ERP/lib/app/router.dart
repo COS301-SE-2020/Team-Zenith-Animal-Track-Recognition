@@ -6,6 +6,7 @@ import 'package:ERP_RANGER/ui/views/identification/identification_view.dart';
 import 'package:ERP_RANGER/ui/views/information/information_view.dart';
 import 'package:ERP_RANGER/ui/views/notconfirmed/notconfirmed_view.dart';
 import 'package:ERP_RANGER/ui/views/profile/profile_view.dart';
+import 'package:ERP_RANGER/ui/views/search/search_view.dart';
 import 'package:ERP_RANGER/ui/views/upload/upload_view.dart';
 import 'package:ERP_RANGER/ui/views/login/login_view.dart';
 import 'package:auto_route/auto_route_annotations.dart';
@@ -23,6 +24,7 @@ import 'package:auto_route/auto_route_annotations.dart';
     MaterialRoute(page: UploadView, initial: false, name: "uploadViewRoute"),
     MaterialRoute(page: InformationView, initial: false, name: "informationViewRoute"),
     MaterialRoute(page: LoginView, initial: false, name: "loginViewRoute"),
+    MaterialRoute(page: SearchView, initial: false, name: "searchViewRoute"),
   ]
 )
 class $Router {

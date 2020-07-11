@@ -18,7 +18,7 @@ class GraphQL implements Api{
   }
 
   @override
-  Future<List<GalleryModel>> getGalleryModel() async{
+  Future<GalleryModel> getGalleryModel() async{
     // TODO: implement getGalleryModel
     throw UnimplementedError();
   }
@@ -51,6 +51,23 @@ class GraphQL implements Api{
   Future<List<SearchModel>> getSearchModel() async{
     // TODO: implement getSearchModel
     throw UnimplementedError();
+  }
+
+  @override
+  Future<TabModel> getTabModel(String tab, String tab2, String tab3) {
+    // TODO: implement getTabModel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<String>> getTags() {
+    // TODO: implement getTags
+    throw UnimplementedError();
+  }
+
+  @override
+  void sendConfirmationSpoor(List<ConfirmModel> list, String tag) {
+    // TODO: implement sendConfirmationSpoor
   }
   
 }
