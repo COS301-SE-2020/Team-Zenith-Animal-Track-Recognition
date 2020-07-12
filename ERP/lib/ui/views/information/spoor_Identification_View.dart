@@ -1,11 +1,5 @@
-
-
-
 import 'dart:async';
 import 'dart:core';
-import 'dart:core';
-import 'dart:core';
-
 import 'package:ERP_RANGER/services/objects/id_cards.dart';
 import 'package:ERP_RANGER/ui/views/information/spoor_Identifiction_ViewModel.dart';
 import 'package:flutter/cupertino.dart';

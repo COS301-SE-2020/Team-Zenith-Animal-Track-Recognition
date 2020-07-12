@@ -1,6 +1,6 @@
 import 'package:ERP_RANGER/services/objects/id_cards.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider_assist/view_models/base_view_model.dart';
+import 'package:stacked/stacked.dart';
 
 class SpoorIdentificationViewModel extends BaseViewModel {
 

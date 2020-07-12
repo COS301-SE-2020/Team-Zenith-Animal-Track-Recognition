@@ -9,8 +9,10 @@ import '../../../services/objects/id_cards.dart';
 class HomeViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   int _cardLength = 6;
+
   int get cardLength => _cardLength;
   List<IdCard> _cards;
+
   List<IdCard> get cards => _cards;
 
   IdCard card1 = new IdCard(
@@ -83,9 +85,10 @@ class HomeViewModel extends BaseViewModel {
     _cards.add(card5);
     _cards.add(card6);
   }
-  void updateCounter() {
 
-  Future navigateToIdetification() async{
+  void updateCounter() {
+    Future navigateToIdetification() async {
       await _navigationService.navigateTo(Routes.identificationViewRoute);
+    }
   }
 }

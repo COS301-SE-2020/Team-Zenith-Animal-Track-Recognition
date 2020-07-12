@@ -9,6 +9,11 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="ERP_RANGER"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBhTc71Q7A8Xbp8HSE1iWQ0TNdW9wPHXqg"/>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
