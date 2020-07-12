@@ -17,6 +17,7 @@ import 'package:ERP_RANGER/ui/views/profile/profile_view.dart';
 import 'package:ERP_RANGER/ui/views/upload/upload_view.dart';
 import 'package:ERP_RANGER/ui/views/information/information_view.dart';
 import 'package:ERP_RANGER/ui/views/login/login_view.dart';
+import 'package:ERP_RANGER/ui/views/search/search_view.dart';
 
 class Routes {
   static const String homeViewRoute = '/';
@@ -29,6 +30,7 @@ class Routes {
   static const String uploadViewRoute = '/upload-view';
   static const String informationViewRoute = '/information-view';
   static const String loginViewRoute = '/login-view';
+  static const String searchViewRoute = '/search-view';
   static const all = <String>{
     homeViewRoute,
     animalViewRoute,
@@ -40,6 +42,7 @@ class Routes {
     uploadViewRoute,
     informationViewRoute,
     loginViewRoute,
+    searchViewRoute,
   };
 }
 
@@ -57,6 +60,7 @@ class Router extends RouterBase {
     RouteDef(Routes.uploadViewRoute, page: UploadView),
     RouteDef(Routes.informationViewRoute, page: InformationView),
     RouteDef(Routes.loginViewRoute, page: LoginView),
+    RouteDef(Routes.searchViewRoute, page: SearchView),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -64,84 +68,95 @@ class Router extends RouterBase {
     HomeView: (RouteData data) {
       var args =
           data.getArgs<HomeViewArguments>(orElse: () => HomeViewArguments());
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => HomeView(key: args.key),
+      return PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => HomeView(key: args.key),
         settings: data,
       );
     },
+
     AnimalView: (RouteData data) {
       var args = data.getArgs<AnimalViewArguments>(
           orElse: () => AnimalViewArguments());
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => AnimalView(key: args.key),
+      return  PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => AnimalView(key: args.key),
         settings: data,
       );
     },
+
     ConfirmedView: (RouteData data) {
       var args = data.getArgs<ConfirmedViewArguments>(
           orElse: () => ConfirmedViewArguments());
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ConfirmedView(key: args.key),
+      return PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => ConfirmedView(key: args.key),
         settings: data,
       );
     },
     GalleryView: (RouteData data) {
       var args = data.getArgs<GalleryViewArguments>(
           orElse: () => GalleryViewArguments());
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => GalleryView(key: args.key),
+      return PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => GalleryView(key: args.key),
         settings: data,
       );
     },
     IdentificationView: (RouteData data) {
       var args = data.getArgs<IdentificationViewArguments>(
           orElse: () => IdentificationViewArguments());
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => IdentificationView(key: args.key),
+      return PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => IdentificationView(key: args.key),
         settings: data,
       );
     },
     NotConfirmedView: (RouteData data) {
       var args = data.getArgs<NotConfirmedViewArguments>(
           orElse: () => NotConfirmedViewArguments());
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => NotConfirmedView(key: args.key),
+      return PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => NotConfirmedView(key: args.key),
         settings: data,
       );
     },
     ProfileView: (RouteData data) {
       var args = data.getArgs<ProfileViewArguments>(
           orElse: () => ProfileViewArguments());
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileView(key: args.key),
+      return PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => ProfileView(key: args.key),
         settings: data,
       );
     },
     UploadView: (RouteData data) {
       var args = data.getArgs<UploadViewArguments>(
           orElse: () => UploadViewArguments());
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => UploadView(key: args.key),
+      return PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => UploadView(key: args.key),
         settings: data,
       );
     },
     InformationView: (RouteData data) {
       var args = data.getArgs<InformationViewArguments>(
           orElse: () => InformationViewArguments());
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => InformationView(key: args.key),
+      return PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => InformationView(key: args.key),
         settings: data,
       );
     },
     LoginView: (RouteData data) {
       var args =
           data.getArgs<LoginViewArguments>(orElse: () => LoginViewArguments());
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => LoginView(key: args.key),
+      return PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => LoginView(key: args.key),
+        settings: data,
+      );
+    },
+    SearchView: (RouteData data) {
+      var args = data.getArgs<SearchViewArguments>(
+          orElse: () => SearchViewArguments());
+      return PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => SearchView(key: args.key),
         settings: data,
       );
     },
   };
+
 }
 
 // *************************************************************************
@@ -206,4 +221,10 @@ class InformationViewArguments {
 class LoginViewArguments {
   final Key key;
   LoginViewArguments({this.key});
+}
+
+//SearchView arguments holder class
+class SearchViewArguments {
+  final Key key;
+  SearchViewArguments({this.key});
 }

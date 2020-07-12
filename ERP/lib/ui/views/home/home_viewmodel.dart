@@ -83,10 +83,7 @@ class HomeViewModel extends BaseViewModel {
     _cards.add(card5);
     _cards.add(card6);
   }
-
   void updateCounter() {
-    notifyListeners();
-  }
 
   Future navigateToIdetification() async{
       await _navigationService.navigateTo(Routes.identificationViewRoute);

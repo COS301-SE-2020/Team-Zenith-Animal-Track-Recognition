@@ -4,15 +4,29 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
-import 'package:ERP_RANGER/services/api/api.dart';
+import 'package:ERP_RANGER/services/third_party_services_module.dart';
+import 'package:stacked_services/stacked_services.dart';
 import 'package:ERP_RANGER/services/api/fake_api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:get_it/get_it.dart';
 
-const bool USE_FAKE_DATA = true;
-
 void $initGetIt(GetIt g, {String environment}) {
-  // g.registerLazySingleton<FakeApi>(() => FakeApi());
-  // g.registerLazySingleton<GraphQL>(() => GraphQL());
-  g.registerLazySingleton<Api>(() => USE_FAKE_DATA ? FakeApi() : GraphQL());
+  final thirdPartyServicesModule = _$ThirdPartyServicesModule();
+  g.registerLazySingleton<DialogService>(
+      () => thirdPartyServicesModule.dialogService);
+  g.registerLazySingleton<FakeApi>(() => FakeApi());
+  g.registerLazySingleton<GraphQL>(() => GraphQL());
+  g.registerLazySingleton<NavigationService>(
+      () => thirdPartyServicesModule.navigationService);
+  g.registerLazySingleton<SnackbarService>(
+      () => thirdPartyServicesModule.snackBarService);
+}
+
+class _$ThirdPartyServicesModule extends ThirdPartyServicesModule {
+  @override
+  DialogService get dialogService => DialogService();
+  @override
+  NavigationService get navigationService => NavigationService();
+  @override
+  SnackbarService get snackBarService => SnackbarService();
 }

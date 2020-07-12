@@ -1,5 +1,4 @@
 import 'package:ERP_RANGER/ui/views/home/home_viewmodel.dart';
-import 'package:ERP_RANGER/ui/views/information/spoor_Identification_View.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -229,6 +228,7 @@ class HomeView extends StatelessWidget {
           backgroundColor: Colors.grey,
         ),
         bottomNavigationBar: BottomNavigationBar(
+          currentIndex: 0
             type: BottomNavigationBarType.fixed,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(

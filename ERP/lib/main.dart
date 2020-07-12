@@ -1,4 +1,5 @@
 import 'package:ERP_RANGER/app/locator.dart';
+import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'app/locator.dart';
@@ -14,8 +15,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      //home: HomeView(),
-      initialRoute: Routes.homeViewRoute,
+      //home: BottomNavBar(),
+      initialRoute: Routes.searchViewRoute,
       onGenerateRoute: Router().onGenerateRoute,
       navigatorKey: locator<NavigationService>().navigatorKey,
     );
