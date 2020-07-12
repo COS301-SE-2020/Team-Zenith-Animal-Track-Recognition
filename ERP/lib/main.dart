@@ -1,7 +1,10 @@
-import 'package:ERP_RANGER/ui/views/home/home_view.dart';
+import 'package:ERP_RANGER/app/locator.dart';
 import 'package:flutter/material.dart';
-//import 'app/router.gr.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'app/locator.dart';
+import 'app/router.gr.dart';
 void main() {
+  setupLocator();
   runApp(MyApp());
 }
 
@@ -11,8 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: HomeView(),
-      //onGenerateRoute: Router().onGenerateRoute,
+      //home: HomeView(),
+      initialRoute: Routes.homeViewRoute,
+      onGenerateRoute: Router().onGenerateRoute,
+      navigatorKey: locator<NavigationService>().navigatorKey,
     );
   }
 }

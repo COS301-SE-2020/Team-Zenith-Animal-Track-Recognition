@@ -210,7 +210,7 @@ packages:
       name: equatable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.2"
   file:
     dependency: "direct main"
     description:
@@ -237,6 +237,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_hooks:
+    dependency: "direct main"
+    description:
+      name: flutter_hooks
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.0"
   flutter_localizations:
     dependency: transitive
     description: flutter
@@ -400,12 +407,19 @@ packages:
     source: hosted
     version: "1.1.0"
   injectable:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: injectable
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.0+1"
+  injectable_generator:
+    dependency: "direct dev"
+    description:
+      name: injectable_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1"
   intl:
     dependency: transitive
     description:
@@ -608,7 +622,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.3.0"
+    version: "4.3.1"
   provider_assist:
     dependency: "direct main"
     description:
@@ -704,7 +718,7 @@ packages:
       name: source_gen
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.5"
+    version: "0.9.6"
   source_span:
     dependency: transitive
     description:
@@ -726,6 +740,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.1+1"
+  stacked_hooks:
+    dependency: "direct main"
+    description:
+      name: stacked_hooks
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   stacked_services:
     dependency: "direct main"
     description:

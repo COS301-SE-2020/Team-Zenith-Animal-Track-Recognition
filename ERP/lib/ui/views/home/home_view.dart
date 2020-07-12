@@ -3,8 +3,6 @@ import 'package:ERP_RANGER/ui/views/information/spoor_Identification_View.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../information/spoor_indentification_1.dart';
-
 class HomeView extends StatelessWidget {
   const HomeView({Key key}) : super(key: key);
 

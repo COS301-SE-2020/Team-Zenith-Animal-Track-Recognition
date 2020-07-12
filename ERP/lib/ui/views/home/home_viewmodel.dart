@@ -1,9 +1,13 @@
+import 'package:ERP_RANGER/app/locator.dart';
+import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 import '../../../services/objects/id_cards.dart';
 import '../../../services/objects/id_cards.dart';
 
 class HomeViewModel extends BaseViewModel {
+  final NavigationService _navigationService = locator<NavigationService>();
   int _cardLength = 6;
   int get cardLength => _cardLength;
   List<IdCard> _cards;
@@ -82,5 +86,9 @@ class HomeViewModel extends BaseViewModel {
 
   void updateCounter() {
     notifyListeners();
+  }
+
+  Future navigateToIdetification() async{
+      await _navigationService.navigateTo(Routes.identificationViewRoute);
   }
 }
