@@ -101,26 +101,26 @@ class BottomNavigationState extends State<BottomNavigation> {
         )
       : Container(
           child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                title: Text('Home'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.info_outline),
-                title: Text('Animals',),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.file_upload),
-                title: Text('Upload'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                title: Text('Profile',),
-              ),
-            ],
-            selectedItemColor: Color(0xFFF2929C),
+              type: BottomNavigationBarType.fixed,
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home, color: Colors.grey),
+                  title: Text('Home', style: TextStyle(color: Colors.grey)),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.pets, color: Colors.grey),
+                  title: Text('Animals', style: TextStyle(color: Colors.grey)),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.file_upload, color: Colors.grey),
+                  title: Text('Upload', style: TextStyle(color: Colors.grey)),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.account_circle, color: Colors.grey),
+                  title: Text('Profile', style: TextStyle(color: Colors.grey)),
+                )
+              ],
+            selectedItemColor: Colors.black,
             unselectedLabelStyle: TextStyle(
               fontSize: 15,
               fontFamily: 'Helvetica',

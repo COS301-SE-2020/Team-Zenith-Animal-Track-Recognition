@@ -1,5 +1,6 @@
 import 'package:ERP_RANGER/ui/views/home/home_viewmodel.dart';
 import 'package:ERP_RANGER/ui/views/information/spoor_Identification_View.dart';
+import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -8,6 +9,8 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BottomNavigation bottomNavigation = BottomNavigation();
+    bottomNavigation.setIndex(0);
     return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
@@ -228,27 +231,7 @@ class HomeView extends StatelessWidget {
           child: Icon(Icons.camera_alt),
           backgroundColor: Colors.grey,
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: 0,
-            type: BottomNavigationBarType.fixed,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: Colors.grey),
-                title: Text('Home', style: TextStyle(color: Colors.grey)),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.pets, color: Colors.grey),
-                title: Text('Animals', style: TextStyle(color: Colors.grey)),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.file_upload, color: Colors.grey),
-                title: Text('Upload', style: TextStyle(color: Colors.grey)),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle, color: Colors.grey),
-                title: Text('Profile', style: TextStyle(color: Colors.grey)),
-              )
-            ]),
+        bottomNavigationBar: BottomNavigation(),
         backgroundColor: Colors.grey,
       ),
       viewModelBuilder: () => HomeViewModel(),
