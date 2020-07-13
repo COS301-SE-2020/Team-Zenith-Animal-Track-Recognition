@@ -497,6 +497,7 @@ class Tags extends ViewModelWidget<ConfirmedViewModel> {
               model.setTag(tags[index]);
               model.setTagIndex(index);
             }
+            model.notifyListeners();
           },
         );     
       }),

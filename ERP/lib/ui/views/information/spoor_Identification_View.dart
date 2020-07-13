@@ -33,7 +33,7 @@ class SpoorIdentificationView extends StatelessWidget {
             ),
           ),
           backButton(context),
-          sheet(model.cards),
+          sheet(model.cards, model.tag),
         ],
       ),
     ),
@@ -42,7 +42,7 @@ class SpoorIdentificationView extends StatelessWidget {
   }
 }
 
-Widget sheet(List<IdCard> list) {
+Widget sheet(List<IdCard> list, String tag) {
   return NotificationListener<DraggableScrollableNotification>(
       child: DraggableScrollableSheet(
         initialChildSize: 0.12,
@@ -92,6 +92,17 @@ Widget sheet(List<IdCard> list) {
                             spoorMatches,
                             Row(
                               children: <Widget>[
+                                Expanded(flex: 1, child: otherMatches(list))
+                              ],
+                            )
+                          ],
+                        ),
+                        dividerGrey,
+                        Column(
+                          children: <Widget>[
+                            similarSpoors,
+                            Row(
+                              children: <Widget>[
                                 Expanded(flex: 1, child: similarSpoor(list))
                               ],
                             )
@@ -100,18 +111,21 @@ Widget sheet(List<IdCard> list) {
                         dividerGrey,
                         Column(
                           children: <Widget>[
-                            attachTag,
+                            attachTag(tag),
                           ],
                         ),
                         dividerGrey,
-                        Row(
-                          children: <Widget>[
-                            Expanded(flex: 1, child: button1),
-                            SizedBox(height: 1.0),
-                            Expanded(flex: 1, child: button2),
-                            SizedBox(height: 1.0),
-                            Expanded(flex: 1, child: button3),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(flex: 1, child: button1),
+                              SizedBox(height: 1.0),
+                              Expanded(flex: 1, child: button2),
+                              SizedBox(height: 1.0),
+                              Expanded(flex: 1, child: button3),
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -589,6 +603,25 @@ Widget spoorMatches = new Container(
   ),
   //height: 0,
   child: Text(
+    "Other Possible Matches",
+    style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+        fontFamily: 'Arciform',
+        color: Colors.black),
+  ),
+);
+
+Widget similarSpoors = new Container(
+  alignment: Alignment.centerLeft,
+  margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+  padding: new EdgeInsets.all(5),
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(10),
+  ),
+  //height: 0,
+  child: Text(
     "Similar Spoors",
     style: TextStyle(
         fontWeight: FontWeight.bold,
@@ -685,31 +718,87 @@ Widget similarSpoor(List<IdCard> list) {
             child: Column(
               children: <Widget>[
                 Expanded(child: innerImageBlock(list[index].pic), flex: 4),
-                //Expanded(child: name(list[index].name), flex: 1),
-                //Expanded(child: animalSpecies(list[index].species), flex: 1),
-                //Expanded(child: accuracyScore(list[index].score), flex: 1),
               ],
             ),
           );
         }),
   );
 }
-//===============================
-Widget attachTag = new Container(
-  alignment: Alignment.centerLeft,
-  margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-  padding: new EdgeInsets.all(5),
-  decoration: BoxDecoration(
+
+Widget otherMatches(List<IdCard> list) {
+  return new Container(
+    height: 250,
     color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-  ),
-  //height: 0,
-  child: Text(
-    "Tags",
-    style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
-        fontFamily: 'Arciform',
-        color: Colors.black),
-  ),
-);
+    child: ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: list.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            height: 110,
+            width: 150,
+            child: Column(
+              children: <Widget>[
+                Expanded(child: innerImageBlock(list[index].pic), flex: 4),
+                Expanded(child: name(list[index].name), flex: 1),
+                Expanded(child: animalSpecies(list[index].species), flex: 1),
+                Expanded(child: accuracyScore(list[index].score), flex: 1),
+              ],
+            ),
+          );
+        }),
+  );
+}
+
+//===============================
+Widget attachTag(String tag) {
+  return Container(
+    alignment: Alignment.centerLeft,
+    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+    padding: new EdgeInsets.all(5),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+    ),
+    //height: 0,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6.0),
+          child: Text(
+            "Tags",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                fontFamily: 'Arciform',
+                color: Colors.black),
+          ),
+        ),
+        Row(
+          mainAxisAlignment:
+          MainAxisAlignment.start,
+          children: <Widget>[
+            Chip(
+              backgroundColor: Colors.grey,
+              label: Text(
+                tag,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0),
+              ),
+              visualDensity:
+              VisualDensity.compact,
+            ),
+          ],
+        )
+      ],
+    ),
+  );
+}

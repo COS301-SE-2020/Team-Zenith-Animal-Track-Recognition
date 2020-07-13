@@ -2,7 +2,12 @@ import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:ERP_RANGER/ui/views/search/search_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:path/path.dart';
 
+SearchModel searchModel7 = SearchModel(commonName: "Buffalo", species: "Cape Buffalo",image: "https://images.unsplash.com/photo-1508605375977-9fe795aea86a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1148&q=80");
+
+List<SearchModel> searchList = new List<SearchModel>();
+List<SearchModel> displayList = new List<SearchModel>();
 class SearchView extends StatelessWidget {
   const SearchView({Key key}) : super(key: key);
 
@@ -15,6 +20,8 @@ class SearchView extends StatelessWidget {
           if(snapshot.hasError){
              return text("Error", 20);
           }if(snapshot.hasData){
+            displayList.addAll(snapshot.data.displayList);
+            searchList.addAll(snapshot.data.searchList);
             return WillPopScope(
               onWillPop:() async{
                 if(Navigator.canPop(context)){
@@ -28,15 +35,15 @@ class SearchView extends StatelessWidget {
                   appBar: AppBar(
                     backgroundColor: Colors.black,
                     title: text("Search View", 25),
-                    actions: <Widget>[IconBuilder(icon:Icons.search, colors: Colors.white,index: 0,)],
+                    actions: <Widget>[IconBuilder(icon: Icons.search, colors: Colors.grey,index: 0)],
                     bottom: TabBar(tabs: [text("ANIMAL", 15),text("SPECIES", 15),]),
                   ),
                   body: Container(
                     color: Colors.grey[200],
                     child: TabBarView(
                       children: <Widget>[
-                        ListBody(animalList: snapshot.data,),
-                        ListBody(animalList: snapshot.data,),
+                        ListBody(animalList: snapshot.data.animals,),
+                        ListBody(animalList: snapshot.data.species,),
                       ],
                     )
                   ),
@@ -69,6 +76,11 @@ class IconBuilder extends ViewModelWidget<SearchViewModel> {
         padding: EdgeInsets.all(0),
         icon: Icon(icon, color: colors),
         onPressed: (){
+          if(index == 0){
+            showSearch(context: context, delegate: DataSearch(model:model));
+          }else{
+            model.navigateToInformation();
+          }
         }
       ),
     );
@@ -201,3 +213,85 @@ Widget text5(String text, double font){
   );
 }
 //================================== TEXT TEMPLATES =============================
+Widget iconButton(var model) {
+  return IconButton(
+    icon: Icon(Icons.remove_red_eye), 
+    onPressed: (){
+      print("object");
+      model.navigateToInformation();
+    }
+  );
+}
+
+
+class DataSearch extends SearchDelegate<List<SearchModel>>{
+  final model;
+  DataSearch({this.model});
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    // TODO: implement buildActions
+    // actions for app bar
+    return [
+      IconButton(icon: Icon(Icons.clear), onPressed: (){
+        query = "";
+      }),
+    ];
+
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
+    // leading icon on the left of appbar
+    return IconButton(
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
+        progress: transitionAnimation,
+      ),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // show some result based on the selection
+    // TODO: implement buildResults
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // show when someone searches for something
+    // TODO: implement buildSuggestions
+
+    final suggestionList = query.isEmpty
+    ? displayList
+    : searchList.where((p) => p.commonName.toLowerCase().startsWith(query) || p.species.toLowerCase().startsWith(query)).toList();
+
+    return ListView.builder(
+        itemCount: suggestionList.length,
+        itemBuilder: (context, index){
+          return Container(
+              margin: new EdgeInsets.all(12),
+              padding: new EdgeInsets.only(left:0,right:0,top:5,bottom: 5) ,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+              ), 
+              child: ListTile(
+                dense: true,
+                leading: imageBlock(suggestionList[index].image),
+                title: text4(suggestionList[index].species,17),
+                subtitle: text4(suggestionList[index].commonName,13),
+                trailing: iconButton(model),
+              ),
+            );
+        }
+      );
+
+
+  }
+
+}

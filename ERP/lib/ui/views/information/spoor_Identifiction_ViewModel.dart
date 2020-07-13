@@ -16,6 +16,9 @@ class SpoorIdentificationViewModel extends BaseViewModel {
   List<IdCard> _cards;
   List<IdCard> get cards => _cards;
 
+  String _tag = "Dangerous";
+  String get tag => _tag;
+
   IdCard card1 = new IdCard(
       'Elephant',
       'African Bush',
