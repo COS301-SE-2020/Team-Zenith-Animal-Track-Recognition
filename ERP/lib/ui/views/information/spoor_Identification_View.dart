@@ -89,7 +89,6 @@ Widget sheet(List<IdCard> list, String tag) {
                         dividerGrey,
                         Column(
                           children: <Widget>[
-                            spoorMatches,
                             Row(
                               children: <Widget>[
                                 Expanded(flex: 1, child: otherMatches(list))
@@ -179,7 +178,10 @@ Widget barInfo = new Container(
               flex: 3,
               child: Text(
                 'Spoor Location',
-                style: TextStyle(color: Colors.black, fontSize: 15),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Arciform',
+                  color: Colors.black),
               ),
             ),
           ],
@@ -195,7 +197,11 @@ Widget barInfo = new Container(
         child: Row(
           children: <Widget>[
             Expanded(
-              child: Text('Kruger National Park'),
+              child: Text('Kruger National Park',
+                        style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Arciform',
+                        color: Colors.black)),
             )
           ],
         ),
@@ -210,7 +216,10 @@ Widget barInfo = new Container(
               flex: 1,
               child: Text(
                 'Date: ',
-                style: TextStyle(color: Colors.black, fontSize: 15),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Arciform',
+                  color: Colors.black),
               ),
             ),
             Expanded(
@@ -233,7 +242,10 @@ Widget barInfo = new Container(
               flex: 1,
               child: Text(
                 'Coordinates: ',
-                style: TextStyle(color: Colors.black, fontSize: 15),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Arciform',
+                  color: Colors.black),
               ),
             ),
             Expanded(
@@ -458,7 +470,7 @@ Widget identifyText = new Container(
         fontWeight: FontWeight.bold,
         fontSize: 20,
         fontFamily: 'Arciform',
-        color: Colors.grey),
+        color: Colors.black),
   ),
 );
 
@@ -593,24 +605,7 @@ Widget score = new Container(
   ),
 );
 //===============================
-Widget spoorMatches = new Container(
-  alignment: Alignment.centerLeft,
-  margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-  padding: new EdgeInsets.all(5),
-  decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-  ),
-  //height: 0,
-  child: Text(
-    "Other Possible Matches",
-    style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
-        fontFamily: 'Arciform',
-        color: Colors.black),
-  ),
-);
+
 
 Widget similarSpoors = new Container(
   alignment: Alignment.centerLeft,
@@ -726,32 +721,42 @@ Widget similarSpoor(List<IdCard> list) {
 }
 
 Widget otherMatches(List<IdCard> list) {
-  return new Container(
-    height: 250,
-    color: Colors.white,
-    child: ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: list.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            height: 110,
-            width: 150,
-            child: Column(
-              children: <Widget>[
-                Expanded(child: innerImageBlock(list[index].pic), flex: 4),
-                Expanded(child: name(list[index].name), flex: 1),
-                Expanded(child: animalSpecies(list[index].species), flex: 1),
-                Expanded(child: accuracyScore(list[index].score), flex: 1),
-              ],
-            ),
-          );
-        }),
+  return ExpansionTile(
+    title: Text(
+      "Other Possible Matches",
+      style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+          fontFamily: 'Arciform',
+          color: Colors.black),
+    ),
+    children: <Widget>[Container(
+      height: 250,
+      color: Colors.white,
+      child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: list.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              height: 110,
+              width: 150,
+              child: Column(
+                children: <Widget>[
+                  Expanded(child: innerImageBlock(list[index].pic), flex: 4),
+                  Expanded(child: name(list[index].name), flex: 1),
+                  Expanded(child: animalSpecies(list[index].species), flex: 1),
+                  Expanded(child: accuracyScore(list[index].score), flex: 1),
+                ],
+              ),
+            );
+          }),
+    ),]
   );
 }
 

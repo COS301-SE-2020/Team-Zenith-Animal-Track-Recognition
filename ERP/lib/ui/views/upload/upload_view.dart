@@ -28,9 +28,17 @@ class UploadView extends StatelessWidget {
             padding: EdgeInsets.all(10),
             color: Colors.grey[300], 
             child: SliverBody(),
-          )
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+            child: Icon(Icons.camera_alt),
+            backgroundColor: Colors.grey,
+          ),
+          bottomNavigationBar: BottomNavigation(),
+          backgroundColor: Colors.grey,
         ),
       ),
+
       viewModelBuilder: () => UploadViewModel(),
     );
   }
