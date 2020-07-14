@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=C:\Users\Phahl\flutter"
-export "FLUTTER_APPLICATION_PATH=C:\Users\Phahl\OneDrive\Documents\GitHub\Animal-Track-Recognition-Android-Frontend\app\ERP_Ranger"
+export "FLUTTER_APPLICATION_PATH=C:\Users\Phahl\OneDrive\Documents\GitHub\ERP_RANGER"
 export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "SYMROOT=${SOURCE_ROOT}/../build\ios"

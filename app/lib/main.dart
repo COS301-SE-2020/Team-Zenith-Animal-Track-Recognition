@@ -1,69 +1,23 @@
-import 'package:ERP_Ranger/ui/views/home/home_view.dart';
-import 'package:ERP_Ranger/ui/views/login/login_view.dart';
-import 'core/services/graphQLConf.dart';
-import 'package:ERP_Ranger/router.dart';
-import 'package:ERP_Ranger/locator.dart';
+import 'package:ERP_RANGER/app/locator.dart';
+import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-GraphQLConfiguration graphQLConfiguration = GraphQLConfiguration();
- void main() {
-   WidgetsFlutterBinding.ensureInitialized();
-  // setup locator
+import 'package:stacked_services/stacked_services.dart';
+import 'app/locator.dart';
+import 'app/router.gr.dart';
+void main() {
   setupLocator();
-  runApp(
-    GraphQLProvider(
-      client: graphQLConfiguration.client,
-      child: CacheProvider(child: ERP()),
-    ),
-  );
+  runApp(MyApp());
 }
 
-class ERP extends StatefulWidget {
-
-  @override
-  _ERP createState() => _ERP();
-}
-
-class _ERP extends State<ERP> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-        future: getLoggedIn(),
-        builder: (context, snapshot){
-          if(snapshot.hasError){
-            print(snapshot.error);
-          }
-          if(snapshot.data == true){
-            return MaterialApp(
-              title: 'Flutter Demo',
-              initialRoute: 'home',
-              debugShowCheckedModeBanner: false,
-              onGenerateRoute: Router.generateRoute,
-            );
-          }else {
-            return MaterialApp(
-              title: 'Flutter Demo',
-              debugShowCheckedModeBanner: false,
-              initialRoute: '/',
-              onGenerateRoute: Router.generateRoute,
-            );
-          }
-        },
+    return MaterialApp(
+      initialRoute: Routes.homeViewRoute,
+      onGenerateRoute: Router().onGenerateRoute,
+      navigatorKey: locator<NavigationService>().navigatorKey,
     );
   }
 }
 
-Future<bool> getLoggedIn() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool loggedIn = prefs.getBool('loggedIn') ?? false;
-  prefs.setBool("loaded", false);
-  await prefs.setInt('tabIndex', 0);
-  return loggedIn;
-}
