@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     });
 
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/overview';
   }
 
   get f() { return this.loginForm.controls; }
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authService.login(this.f.username.value, this.f.password.value)
+    /*this.authService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         data => {
@@ -52,6 +52,6 @@ export class LoginComponent implements OnInit {
         },
         error => {
           this.loading = false;
-        });
+        });*/
   }
 }
