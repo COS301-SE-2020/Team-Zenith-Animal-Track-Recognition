@@ -41,6 +41,8 @@ dependencies:
   injectable: ^0.4.0+1
   provider: ^4.3.0
 
+  # image picker
+  image_picker: ^0.6.3+4
 dev_dependencies:
   flutter_test:
     sdk: flutter
