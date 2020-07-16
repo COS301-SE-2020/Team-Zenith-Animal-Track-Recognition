@@ -1,4 +1,112 @@
-/* You can add global styles to this file, and also import other style files */
+/* Application-wide Styles */
+/*---------------------------------------------------------------------------------------------*/
+/* Maven Pro Font-face */
+/*---------------------------------------------------------------------------------------------*/
+
+/*Maven Pro Regular*/
+@font-face 
+{
+	font-family: 'Maven Pro';
+	src: url("/assets/fonts/MavenPro-Regular.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+}
+/*Maven Pro Medium*/
+@font-face 
+{
+	font-family: 'Maven Pro';
+	src: url("/assets/fonts/MavenPro-Medium.ttf") format("truetype");
+	font-weight: 500;
+	font-style: normal;
+}
+/*Maven Pro SemiBold*/
+@font-face 
+{
+	font-family: 'Maven Pro';
+	src: url("/assets/fonts/MavenPro-SemiBold.ttf") format("truetype");
+	font-weight: 600;
+	font-style: normal;
+}
+/*Maven Pro Bold*/
+@font-face 
+{
+	font-family: 'Maven Pro';
+	src: url("/assets/fonts/MavenPro-Bold.ttf") format("truetype");
+	font-weight: 700;
+	font-style: normal;
+}
+/*Maven Pro ExtraBold*/
+@font-face 
+{
+	font-family: 'Maven Pro';
+	src: url("/assets/fonts/MavenPro-ExtraBold.ttf") format("truetype");
+	font-weight: 800;
+	font-style: normal;
+}
+/*Maven Pro Black*/
+@font-face 
+{
+	font-family: 'Maven Pro';
+	src: url("/assets/fonts/MavenPro-Black.ttf") format("truetype");
+	font-weight: 900;
+	font-style: normal;
+}
+/* Maven Pro Font Classes/Style Linking */
+*
+{
+	font-family: "Maven Pro", sans-serif;
+	font-size: 100%;
+	box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+/*Maven Pro Regular*/
+.fontR 
+{
+   font-weight: 400;
+   font-style: normal;
+}
+/*Maven Pro Medium*/
+.fontM 
+{
+   font-weight: 500;
+   font-style: normal;
+}
+/*Maven Pro SemiBold*/
+.fontSB 
+{
+   font-weight: 600;
+   font-style: normal;
+}
+/*Maven Pro Bold*/
+.fontB
+{
+   font-weight: 700;
+   font-style: normal;
+}
+/*Maven Pro ExtraBold*/
+.fontEB
+{
+   font-weight: 800;
+   font-style: normal;
+}
+/*Maven Pro Black*/
+.fontBlk
+{
+   font-weight: 900;
+   font-style: normal;
+}
+
+/*---------------------------------------------------------------------------------------------*/
+/* Page Sizing and Layout */
+/*---------------------------------------------------------------------------------------------*/
+body
+{
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: "Maven Pro", sans-serif; }

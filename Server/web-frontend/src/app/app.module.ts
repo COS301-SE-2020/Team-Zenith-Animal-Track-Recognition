@@ -10,6 +10,7 @@ import { AnimalsComponent } from './animals/animals.component';
 import { RangersComponent } from './rangers/rangers.component';
 import { GeotagsComponent } from './geotags/geotags.component';
 import { SettingsComponent } from './settings/settings.component';
+import { SideNavigationComponent } from './side-navigation/side-navigation.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SettingsComponent } from './settings/settings.component';
     AnimalsComponent,
     RangersComponent,
     GeotagsComponent,
-    SettingsComponent
+    SettingsComponent,
+    SideNavigationComponent
   ],
   imports: [
     BrowserModule,
