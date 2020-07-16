@@ -1,7 +1,15 @@
-#loginView-Container
+:host
 {
 	height: 100vh;
-	width: 100vw;
+	width: 115vw;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+#loginView-Container
+{
+	height: 100%;
+	width: 100%;
 	display: flex;
 	flex-direction: row;
 }
