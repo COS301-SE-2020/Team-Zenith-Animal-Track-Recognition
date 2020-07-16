@@ -1,10 +1,7 @@
 :host
 {
-	height: 100vh;
+	height: 110vh;
 	width: 115vw;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
 }
 #loginView-Container
 {
@@ -86,7 +83,6 @@ a:hover
 	background-color: white;
 	height: 60%;
 	width: 65%;
-	border: 1px solid white;
 	border-radius: 15px;
 	box-shadow: 0px 7px 20px #DDDDDD;
 }

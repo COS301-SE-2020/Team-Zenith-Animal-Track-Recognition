@@ -17,6 +17,7 @@ import { RangersComponent } from './rangers/rangers.component';
 import { GeotagsComponent } from './geotags/geotags.component';
 import { SettingsComponent } from './settings/settings.component';
 import { SideNavigationComponent } from './side-navigation/side-navigation.component';
+import { UtilityNavigationComponent } from './utility-navigation/utility-navigation.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { SideNavigationComponent } from './side-navigation/side-navigation.compo
     RangersComponent,
     GeotagsComponent,
     SettingsComponent,
-    SideNavigationComponent
+    SideNavigationComponent,
+    UtilityNavigationComponent
   ],
   imports: [
     BrowserModule,
