@@ -1,0 +1,57 @@
+:host
+{
+    height: 12%;
+    width: 100%;
+}
+#rangers-toolbar-container
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	border-bottom: 2px solid #CCCCCC;
+}
+#rangers-toolbar-navigationtree-container
+{
+	height: 100%;
+	width: 50%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	padding-left: 2%;
+}
+#rangers-toolbar-navigation
+{
+	height: 100%;
+	width: auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+#rangers-toolbar-navigation > a
+{
+	color: #AAAAAA;
+	font-size: 130%;
+	text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out; 
+    -o-transition: all 0.2s ease-in-out;
+}
+#rangers-toolbar-navigation > a:hover
+{
+	color: #1A1A1A;
+}
+#rangers-toolbar
+{
+	height: 100%;
+	width: 50%;
+	border: 1px solid red;
+}
+#rangers-toolbar-navigation > a.activeView
+{
+	color: #1A1A1A;
+}

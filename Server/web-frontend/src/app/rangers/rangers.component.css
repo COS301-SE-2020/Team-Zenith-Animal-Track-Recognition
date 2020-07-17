@@ -1,5 +1,19 @@
-div
+:host
+{
+	z-index: 1;
+}
+#rangers-view-workspace-container
 {
     height: 88vh;
     width: 85vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+#rangers-view-workspace
+{
+	height: 88%;
+	width: 100%;
+	background-color: #F5F6FA;
 }
