@@ -10,14 +10,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginComponent } from './login/login.component';
-import { OverviewComponent } from './overview/overview.component';
-import { AnimalsComponent } from './animals/animals.component';
-import { RangersComponent } from './rangers/rangers.component';
-import { GeotagsComponent } from './geotags/geotags.component';
-import { SettingsComponent } from './settings/settings.component';
-import { SideNavigationComponent } from './side-navigation/side-navigation.component';
-import { UtilityNavigationComponent } from './utility-navigation/utility-navigation.component';
+import { LoginComponent } from './views/login/login.component';
+import { OverviewComponent } from './views/overview/overview.component';
+import { AnimalsComponent } from './views/animals/animals.component';
+import { RangersComponent } from './views/rangers/rangers.component';
+import { GeotagsComponent } from './views/geotags/geotags.component';
+import { SettingsComponent } from './views/settings/settings.component';
+import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 
 @NgModule({
   declarations: [
