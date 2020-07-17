@@ -10,6 +10,7 @@ export class AnimalsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    document.getElementById("animals-route").style.backgroundColor = "black";
   }
 
 }
