@@ -72,8 +72,7 @@
 }
 .side-navigation-route-container:hover > p, .activeRoute > p
 {
-	color: #1C1C1C;
-	font-weight: 600;
+	color: black;
 }
 .side-navigation-route-container > p
 {
