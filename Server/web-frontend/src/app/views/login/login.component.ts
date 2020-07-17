@@ -1,10 +1,10 @@
+import { AppComponent } from './../../app.component';
 import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent }  from '../app.component';
 
 @Component({
   selector: 'app-login',
@@ -44,6 +44,9 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
+    if(this.f.username.value == "admin" && this.f.password.value == "admin"){
+      this.router.navigate(['overview']);
+    }
     /*this.authService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(
