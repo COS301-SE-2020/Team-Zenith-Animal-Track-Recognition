@@ -10,7 +10,7 @@ export class GeotagsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    document.getElementById("geotags-route").style.backgroundColor = "black";
+    document.getElementById("geotags-route").classList.add("activeRoute");
   
   }
 

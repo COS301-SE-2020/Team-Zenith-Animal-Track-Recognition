@@ -10,7 +10,7 @@ export class RangersComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    document.getElementById("rangers-route").style.backgroundColor = "black";
+    document.getElementById("rangers-route").classList.add("activeRoute");
   
   }
 

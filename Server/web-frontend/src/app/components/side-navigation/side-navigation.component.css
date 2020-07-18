@@ -23,6 +23,10 @@
 	justify-content: center;
 	align-items: center;
 }
+#side-navigation-logo-container > div:hover
+{
+	cursor: pointer;
+}
 #side-navigation-logo-container > div
 {
 	background-color: #AAAAAA;
@@ -70,20 +74,16 @@
 {
 	background-color: #686E79;
 }
-.side-navigation-route-container:hover > p, .activeRoute > p
+.side-navigation-route-container:hover > p
 {
-	color: black;
+	color: #686E79;
+	font-weight: 600;
 }
 .side-navigation-route-container > p
 {
 	color: #AAAAAA;
 	margin: 0;
-	font-size: 120%;
-    transition: all 0.2s ease-in-out;
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    -ms-transition: all 0.2s ease-in-out; 
-    -o-transition: all 0.2s ease-in-out;
+	font-size: 115%;
 }
 .side-navigation-wireframeIcon
 {
@@ -98,9 +98,12 @@
     -ms-transition: all 0.2s ease-in-out; 
     -o-transition: all 0.2s ease-in-out;
 }
-/* @Zach, apply the class below to the active route .side-navigation-route-container element */
-/* Each route has a specific id for you to add the class to i.e overview-route, animals-route */
 .activeRoute
 {
 	background-color: #F3F3F5;
+}
+.activeRoute > p
+{
+	color: #686E79;
+	font-weight: 600;
 }
