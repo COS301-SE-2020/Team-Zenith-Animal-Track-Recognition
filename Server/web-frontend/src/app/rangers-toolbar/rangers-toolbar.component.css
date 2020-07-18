@@ -59,9 +59,17 @@
 	justify-content: space-around;
 	align-items: center;
 }
-#rangers-toolbar-sortby-btn, #rangers-toolbar-actions-btn
+#rangers-toolbar-sortby-btn
 {
 	width: 35%;
+	border: 1px solid #CCCCCC;
+	padding: 0.5em 0.5em;
+	border-radius: 5px;
+}
+#rangers-toolbar-actions-btn
+{
+	background: rgba(104, 110, 121, 1);
+	width: 38%;
 	border: 1px solid #CCCCCC;
 	padding: 0.5em 0.5em;
 	border-radius: 5px;
@@ -71,8 +79,4 @@
 }
 :host ::ng-deep #rangers-toolbar-actions-btn .mat-select-value-text, :host ::ng-deep #rangers-toolbar-actions-btn .mat-select-placeholder {
   color: white !important;
-}
-#rangers-toolbar-actions-btn
-{
-	background: rgba(104, 110, 121, 1);
 }
