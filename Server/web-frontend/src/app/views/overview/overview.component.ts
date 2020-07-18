@@ -10,7 +10,7 @@ export class OverviewComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    document.getElementById("overview-route").style.backgroundColor = "black";
+    document.getElementById("overview-route").classList.add("activeRoute");
   
   }
 

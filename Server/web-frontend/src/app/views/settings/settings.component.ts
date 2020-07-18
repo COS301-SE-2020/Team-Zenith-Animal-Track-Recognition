@@ -10,7 +10,7 @@ export class SettingsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    document.getElementById("settings-route").style.backgroundColor = "black";
+    document.getElementById("settings-route").classList.add("activeRoute");
   
   }
 

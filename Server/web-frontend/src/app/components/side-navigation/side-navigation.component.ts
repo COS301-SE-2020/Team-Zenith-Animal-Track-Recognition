@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { mixinColor } from '@angular/material/core';
 
 @Component({
   selector: 'app-side-navigation',
@@ -15,13 +14,14 @@ export class SideNavigationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  route(location: string) {
-    document.getElementById("animals-route").style.backgroundColor = "white";
-    document.getElementById("overview-route").style.backgroundColor = "white";
-    document.getElementById("rangers-route").style.backgroundColor = "white";
-    document.getElementById("geotags-route").style.backgroundColor = "white";
-    document.getElementById("settings-route").style.backgroundColor = "white";
-  
+  route(location: string) 
+  {
+    document.getElementById("animals-route").classList.remove("activeRoute");
+    document.getElementById("overview-route").classList.remove("activeRoute");
+    document.getElementById("rangers-route").classList.remove("activeRoute");
+    document.getElementById("geotags-route").classList.remove("activeRoute");
+    document.getElementById("settings-route").classList.remove("activeRoute");
+	
     this.router.navigate([location]);
   }
 }

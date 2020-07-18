@@ -1,0 +1,82 @@
+:host
+{
+    height: 12%;
+    width: 100%;
+}
+#rangers-toolbar-container
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	border-bottom: 2px solid #CCCCCC;
+}
+#rangers-toolbar-navigationtree-container
+{
+	height: 100%;
+	width: 60%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	padding-left: 2%;
+}
+#rangers-toolbar-navigation
+{
+	height: 100%;
+	width: auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+#rangers-toolbar-navigation > a
+{
+	color: #AAAAAA;
+	font-size: 130%;
+	text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out; 
+    -o-transition: all 0.2s ease-in-out;
+}
+#rangers-toolbar-navigation > a:hover
+{
+	color: #1A1A1A;
+}
+#rangers-toolbar-navigation > a.activeView
+{
+	color: #1A1A1A;
+}
+#rangers-toolbar
+{
+	height: 100%;
+	width: 40%;
+	font-size: 120%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+#rangers-toolbar-sortby-btn
+{
+	width: 35%;
+	border: 1px solid #CCCCCC;
+	padding: 0.5em 0.5em;
+	border-radius: 5px;
+}
+#rangers-toolbar-actions-btn
+{
+	background: rgba(104, 110, 121, 1);
+	width: 38%;
+	border: 1px solid #CCCCCC;
+	padding: 0.5em 0.5em;
+	border-radius: 5px;
+}
+:host ::ng-deep #rangers-toolbar-sortby-btn .mat-select-value-text, :host ::ng-deep #rangers-toolbar-sortby-btn .mat-select-placeholder {
+  color: #1C1C1C !important;
+}
+:host ::ng-deep #rangers-toolbar-actions-btn .mat-select-value-text, :host ::ng-deep #rangers-toolbar-actions-btn .mat-select-placeholder {
+  color: white !important;
+}

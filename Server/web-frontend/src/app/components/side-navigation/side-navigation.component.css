@@ -7,12 +7,12 @@
 {
 	height: 100%;
 	width: 100%;
-	z-index: 2;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
 	border-right: 2px solid #CCCCCC;
+	box-shadow: 2px 0px 6px #CCCCCC;
 }
 #side-navigation-logo-container
 {
@@ -22,6 +22,10 @@
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
+}
+#side-navigation-logo-container > div:hover
+{
+	cursor: pointer;
 }
 #side-navigation-logo-container > div
 {
@@ -55,6 +59,11 @@
 	justify-content: flex-start;
 	align-items: center;
 	border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out; 
+    -o-transition: all 0.2s ease-in-out;
 }
 .side-navigation-route-container:hover
 {
@@ -65,15 +74,16 @@
 {
 	background-color: #686E79;
 }
-.side-navigation-route-container:hover > p, .activeRoute > p
+.side-navigation-route-container:hover > p
 {
-	font-weight: bold;
+	color: #686E79;
+	font-weight: 600;
 }
 .side-navigation-route-container > p
 {
-	color: #626262;
+	color: #AAAAAA;
 	margin: 0;
-	font-size: 120%;
+	font-size: 115%;
 }
 .side-navigation-wireframeIcon
 {
@@ -82,10 +92,18 @@
 	width: 20px;
 	margin-right: 10%;
 	margin-left: 10%;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out; 
+    -o-transition: all 0.2s ease-in-out;
 }
-/* @Zach, apply the class below to the active route .side-navigation-route-container element */
-/* Each route has a specific id for you to add the class to i.e overview-route, animals-route */
 .activeRoute
 {
 	background-color: #F3F3F5;
+}
+.activeRoute > p
+{
+	color: #686E79;
+	font-weight: 600;
 }
