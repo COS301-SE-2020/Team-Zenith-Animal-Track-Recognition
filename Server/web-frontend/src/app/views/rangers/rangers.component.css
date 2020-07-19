@@ -17,3 +17,70 @@
 	width: 100%;
 	background-color: #F5F6FA;
 }
+#ranger-search-sidenav-container
+{
+	height: 100%;
+	width: 100%;
+}
+#ranger-search-sidenav-content
+{
+}
+#ranger-search-sidenav
+{
+	height: 100%;
+	width: 200px;
+	border-right: 2px solid #CCCCCC;
+	box-shadow: 1px 0px 5px #DDDDDD;
+}
+#sidenav-close-btn-container
+{
+	height: 10%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+}
+#sidenav-open-btn-container
+{
+	position: absolute;
+	bottom: 3%;
+	left: 0%;
+	height: 6%;
+	width: 40px;
+	background-color: #808080;
+	border: 1px solid #808080;
+	border-top-right-radius: 25px;
+	border-bottom-right-radius: 25px;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out; 
+    -o-transition: all 0.2s ease-in-out;
+}
+#sidenav-open-btn-container:hover, #sidenav-close-btn-container:hover
+{
+	cursor: pointer;
+}
+#side-nav-open-btn, #side-nav-close-btn
+{
+	background-color: white;
+	height: 22px;
+	width: 22px;
+	border-radius: 25px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	margin-right: 10%;
+}
+#side-nav-close-btn
+{
+	height: 25px;
+	width: 25px;
+	border: 1px solid #CCCCCC;
+}

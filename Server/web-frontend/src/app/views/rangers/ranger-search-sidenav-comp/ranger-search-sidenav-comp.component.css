@@ -1,0 +1,82 @@
+#ranger-search-sidenav
+{
+	height: 90%;
+	width: 100%;
+}
+#ranger-search-controls-container
+{
+	height: 30%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	border-bottom: 2px solid #CCCCCC;
+	overflow: hidden;
+}
+.mat-form-field
+{
+	width: 90%;  
+	font-size: 105%;
+}
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
+{
+	padding: 0.2em 0 0.5em 0;
+}
+:host ::ng-deep .mat-form-field-wrapper 
+{
+    padding-bottom: 0;
+}
+#ranger-search-controls
+{
+	height: 25%;
+	width: 90%;
+	border: 2px solid #A8ACB2;
+}
+#ranger-search-controls > .mat-button-toggle
+{
+	width: 50%;
+}
+:host ::ng-deep .mat-button-toggle-label-content 
+{
+	font-weight: 600;
+    line-height: 32px;
+}
+:host ::ng-deep .mat-button-toggle-checked
+{
+	color: white;
+	background-color: #A8ACB2;
+}
+#ranger-search-results-container
+{
+	height: 70%;
+	width: 100%;
+	border-bottom: 2px solid #CCCCCC;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	padding: 5% 0;
+}
+.ranger-search-results-entries
+{
+	height: auto;
+	width: 100%;
+}
+.ranger-search-resultgroup-subheader
+{
+	height: 1.5em;
+	width: 100%;
+}
+.mat-list-option
+{
+	font-size: 90%;
+}
+:host ::ng-deep .mat-list-text
+{
+	padding-left: 10% !important;
+	padding-right: 0 !important;
+}
+.ranger-search-resultgroup-subentry
+{
+	color: #BBBBBB;
+}
