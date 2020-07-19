@@ -1,5 +1,18 @@
 <div id="rangers-view-workspace-container">
 	<app-rangers-toolbar></app-rangers-toolbar>
 	<div id="rangers-view-workspace">
+		<mat-drawer-container id="ranger-search-sidenav-container">
+			<mat-drawer id="ranger-search-sidenav" #sidenav mode="side">
+				<app-ranger-search-sidenav-comp></app-ranger-search-sidenav-comp>
+				<div id="sidenav-close-btn-container" (click)="closeSidenav()">
+					<button id="side-nav-close-btn" mat-icon-button><mat-icon>chevron_left</mat-icon></button>
+				</div>
+			</mat-drawer>
+			<mat-drawer-content id="ranger-search-sidenav-content">
+				<div id="sidenav-open-btn-container" (click)="openSidenav()">
+					<button id="side-nav-open-btn" mat-icon-button><mat-icon>chevron_right</mat-icon></button>
+				</div>
+			</mat-drawer-content>
+		</mat-drawer-container>
 	</div>
 </div>

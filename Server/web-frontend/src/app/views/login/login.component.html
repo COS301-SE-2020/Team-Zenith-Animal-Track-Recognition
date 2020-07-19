@@ -15,9 +15,9 @@
                     <mat-label>Password</mat-label>
                     <input matInput formControlName="password" placeholder="Please enter your password." [type]="hide ? 'password' : 'text'">
                     <mat-icon matPrefix>https</mat-icon>
-                    <button type="plain" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <div type="plain" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    </button>
+                    </div>
                 </mat-form-field>
             </div>
             <div id="loginFormComp-loginForm-loginOptionsContainer">
