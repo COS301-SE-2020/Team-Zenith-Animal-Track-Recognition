@@ -28,7 +28,7 @@ export class AuthService {
 
   login(username, password) {
     console.log("hello");
-    return this.http.post<any>('http://putch.dyndns.org:55555/graphql', 'query{ login(User_Name:"' + username + '",Password:"' + password + '"){Token}}')
+    return this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{login(User_Name:"' + username + '",Password:"' + password + '"){Token}}')
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);

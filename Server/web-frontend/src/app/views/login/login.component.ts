@@ -44,10 +44,10 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    if(this.f.username.value == "admin" && this.f.password.value == "admin"){
+    /*if(this.f.username.value == "admin" && this.f.password.value == "admin"){
       this.router.navigate(['overview']);
-    }
-    /*this.authService.login(this.f.username.value, this.f.password.value)
+    }*/
+    this.authService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         data => {
@@ -55,6 +55,6 @@ export class LoginComponent implements OnInit {
         },
         error => {
           this.loading = false;
-        });*/
+        });
   }
 }

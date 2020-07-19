@@ -1,3 +1,4 @@
+import { AuthGuardService } from './services/auth-guard.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -57,7 +58,7 @@ import { UtilityNavigationComponent } from './components/utility-navigation/util
     HttpClientModule,
     Ng2SearchPipeModule
   ],
-  providers: [],
+  providers: [AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
