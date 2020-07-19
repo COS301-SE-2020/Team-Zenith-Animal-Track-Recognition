@@ -13,10 +13,19 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 
 	rangers = RANGERS;
 	searchText;
+	currentAlphabet;
 
 	constructor() { }
 
 	ngOnInit(): void {
 	}
 
+	checkIfNew(title: string) {
+		if (this.currentAlphabet === title.charAt(0).toLowerCase()) {
+			return false;
+		} else {
+			this.currentAlphabet = title.charAt(0).toLowerCase();
+			return true;
+		}
+	}
 }

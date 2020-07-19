@@ -38,8 +38,7 @@ import { UtilityNavigationComponent } from './components/utility-navigation/util
     GeotagsComponent,
     SettingsComponent,
     SideNavigationComponent,
-    UtilityNavigationComponent,
-    Ng2SearchPipeModule
+    UtilityNavigationComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +54,8 @@ import { UtilityNavigationComponent } from './components/utility-navigation/util
     MatListModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    Ng2SearchPipeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
