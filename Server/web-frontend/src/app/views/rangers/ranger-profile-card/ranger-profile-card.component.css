@@ -1,0 +1,80 @@
+.ranger-profile-cards-container
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: space-around;
+	overflow: auto;
+}
+.ranger-profile-cards-container::after 
+{
+	content: "";
+	flex: auto;
+}
+.ranger-profile-card-container
+{
+	height: 55%;
+	width: 280px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	/*margin: 1% 0;*/
+}
+.ranger-profile-card
+{
+	height: 90%;
+	width: 90%;
+	box-shadow: 0px 2px 5px #AAAAAA;
+	border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out; 
+    -o-transition: all 0.3s ease-in-out;
+}
+.ranger-profile-card:hover
+{
+	transform: translateY(-2%);
+	box-shadow: 0px 2px 7px #898989;
+}
+.mat-card-header
+{
+	border: 1px solid red;
+}
+.mat-card-avatar
+{
+	background-color: #B3B3B3;
+}
+.mat-card-title
+{
+	font-size: 100%;
+}
+.mat-card-subtitle
+{
+	font-size: 90%;
+	color: #1C1C1C;
+}
+.mat-card-content
+{
+	border: 1px solid green;
+}
+.mat-card-actions
+{
+	border: 1px solid purple;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.mat-card-actions > .mat-button
+{
+	background-color: #686E79;
+	color: white;
+	height: 100%;
+	width: 100%;
+}

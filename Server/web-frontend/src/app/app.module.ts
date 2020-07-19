@@ -9,6 +9,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatSelectModule} from '@angular/material/select'; 
 import {MatSidenavModule} from '@angular/material/sidenav'; 
 import {MatListModule} from '@angular/material/list';
+import {MatCardModule} from '@angular/material/card'; 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,6 +25,7 @@ import { GeotagsComponent } from './views/geotags/geotags.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 import { UtilityNavigationComponent } from './components/utility-navigation/utility-navigation.component';
+import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/ranger-profile-card.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { UtilityNavigationComponent } from './components/utility-navigation/util
     GeotagsComponent,
     SettingsComponent,
     SideNavigationComponent,
-    UtilityNavigationComponent
+    UtilityNavigationComponent,
+    RangerProfileCardComponent
   ],
   imports: [
     BrowserModule,
@@ -51,6 +54,7 @@ import { UtilityNavigationComponent } from './components/utility-navigation/util
 	MatSelectModule,
 	MatSidenavModule,
 	MatListModule,
+	MatCardModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule
