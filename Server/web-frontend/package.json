@@ -23,7 +23,7 @@
     "@angular/router": "~10.0.4",
     "@auth0/angular-jwt": "^5.0.1",
     "ng2-search-filter": "^0.5.1",
-    "rxjs": "~6.5.5",
+    "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
   },
