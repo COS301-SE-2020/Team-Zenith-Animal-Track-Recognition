@@ -5,24 +5,24 @@
 			<mat-button-toggle value="level">Level</mat-button-toggle>
 		</mat-button-toggle-group>
 		<mat-form-field appearance="outline">
-			<input matInput placeholder="Search Rangers...">
+			<input matInput placeholder="Search Rangers..." type="text" name="search" [(ngModel)]="searchText" autocomplete="off" >
 			<mat-icon matPrefix>search</mat-icon>
 		</mat-form-field>
 	</div>
 	<div id="ranger-search-results-container">
 		<mat-selection-list [multiple]="false" class="ranger-search-results-entries">
 			<div mat-subheader class="fontSB ranger-search-resultgroup-subheader">A</div>
-			<mat-list-option class="fontM" *ngFor="let ranger of rangers" [value]="ranger">
+			<mat-list-option class="fontM" *ngFor="let ranger of rangers | filter:searchText" [value]="ranger">
 				<p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
 				<p class="ranger-search-resultgroup-subentry">Level {{ranger.rangerLevel}} Ranger</p>
 			</mat-list-option>				
 			<div mat-subheader class="fontSB ranger-search-resultgroup-subheader">B</div>
-			<mat-list-option class="fontM" *ngFor="let ranger of rangers" [value]="ranger">
+			<mat-list-option class="fontM" *ngFor="let ranger of rangers | filter:searchText" [value]="ranger">
 				<p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
 				<p class="ranger-search-resultgroup-subentry">Level {{ranger.rangerLevel}} Ranger</p>
 			</mat-list-option>				
 			<div mat-subheader class="fontSB ranger-search-resultgroup-subheader">C</div>
-			<mat-list-option class="fontM" *ngFor="let ranger of rangers" [value]="ranger">
+			<mat-list-option class="fontM" *ngFor="let ranger of rangers | filter:searchText" [value]="ranger">
 				<p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
 				<p class="ranger-search-resultgroup-subentry">Level {{ranger.rangerLevel}} Ranger</p>
 			</mat-list-option>
