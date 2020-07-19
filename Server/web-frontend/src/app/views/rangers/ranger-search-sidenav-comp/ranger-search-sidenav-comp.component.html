@@ -1,28 +1,30 @@
 <div id="ranger-search-sidenav">
 	<div id="ranger-search-controls-container">
-		<mat-button-toggle-group id="ranger-search-controls" name="sortResultsBy">
-			<mat-button-toggle value="surname" checked>Surname</mat-button-toggle>
-			<mat-button-toggle value="level">Level</mat-button-toggle>
+		<mat-button-toggle-group id="ranger-search-controls" #group="matButtonToggleGroup" name="sortResultsBy">
+			<mat-button-toggle value="surname" checked (click)="toggle(true)">Surname</mat-button-toggle>
+			<mat-button-toggle value="level" (click)="toggle(false)">Level</mat-button-toggle>
 		</mat-button-toggle-group>
 		<mat-form-field appearance="outline">
-			<input matInput placeholder="Search Rangers...">
+			<input matInput placeholder="Search Rangers..." type="text" name="search" [(ngModel)]="searchText"
+				autocomplete="off">
 			<mat-icon matPrefix>search</mat-icon>
 		</mat-form-field>
 	</div>
 	<div id="ranger-search-results-container">
-		<mat-selection-list [multiple]="false" class="ranger-search-results-entries">
-			<div mat-subheader class="fontSB ranger-search-resultgroup-subheader">A</div>
-			<mat-list-option class="fontM" *ngFor="let ranger of rangers" [value]="ranger">
+		<mat-selection-list id="rangers-by-surnames" [multiple]="false" class="ranger-search-results-entries" *ngIf="surnames">
+			<mat-list-option class="fontM" *ngFor="let ranger of rangers | filter:searchText" [value]="ranger">
+				<ng-container *ngIf="checkIfNew(ranger.lastName, 0)">
+					{{ ranger.lastName.charAt(0).toUpperCase() }}
+				</ng-container>
 				<p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
 				<p class="ranger-search-resultgroup-subentry">Level {{ranger.rangerLevel}} Ranger</p>
-			</mat-list-option>				
-			<div mat-subheader class="fontSB ranger-search-resultgroup-subheader">B</div>
-			<mat-list-option class="fontM" *ngFor="let ranger of rangers" [value]="ranger">
-				<p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
-				<p class="ranger-search-resultgroup-subentry">Level {{ranger.rangerLevel}} Ranger</p>
-			</mat-list-option>				
-			<div mat-subheader class="fontSB ranger-search-resultgroup-subheader">C</div>
-			<mat-list-option class="fontM" *ngFor="let ranger of rangers" [value]="ranger">
+			</mat-list-option>
+		</mat-selection-list>
+		<mat-selection-list id="rangers-by-level" [multiple]="false" class="ranger-search-results-entries" *ngIf="levels">
+			<mat-list-option class="fontM" *ngFor="let ranger of rangers | filter:searchText" [value]="ranger">
+				<ng-container *ngIf='checkIfNew("Level " + ranger.rangerLevel + " Ranger", 6)'>
+					Level {{ ranger.rangerLevel }} Ranger
+				</ng-container>
 				<p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
 				<p class="ranger-search-resultgroup-subentry">Level {{ranger.rangerLevel}} Ranger</p>
 			</mat-list-option>

@@ -1,16 +1,16 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatSelectModule} from '@angular/material/select'; 
-import {MatSidenavModule} from '@angular/material/sidenav'; 
-import {MatListModule} from '@angular/material/list';
-import {MatCardModule} from '@angular/material/card'; 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,7 +25,6 @@ import { GeotagsComponent } from './views/geotags/geotags.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 import { UtilityNavigationComponent } from './components/utility-navigation/utility-navigation.component';
-import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/ranger-profile-card.component';
 
 @NgModule({
   declarations: [
@@ -34,13 +33,12 @@ import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/
     OverviewComponent,
     AnimalsComponent,
     RangersComponent,
-	RangersToolbarComponent,
+    RangersToolbarComponent,
     RangerSearchSidenavCompComponent,
     GeotagsComponent,
     SettingsComponent,
     SideNavigationComponent,
-    UtilityNavigationComponent,
-    RangerProfileCardComponent
+    UtilityNavigationComponent
   ],
   imports: [
     BrowserModule,
@@ -50,14 +48,14 @@ import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-	MatButtonToggleModule,
-	MatSelectModule,
-	MatSidenavModule,
-	MatListModule,
-	MatCardModule,
+    MatButtonToggleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatListModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    Ng2SearchPipeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
