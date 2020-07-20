@@ -27,8 +27,6 @@ export class AuthService {
   }
 
   login(username, password) {
-    // this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{login(User_Name:"' + username + '",Password:"' + password + '"){Token}}')
-    // .subscribe(response => console.log(response.data));
     return this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{login(User_Name:"' + username + '",Password:"' + password + '"){Token}}')
       .pipe(map(user => {
         if (null === user.data.login) {
@@ -44,7 +42,6 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('currentUser');
-    this.isAuthorized = false;
     this.currentUserSubject.next(null);
   }
 }

@@ -47,7 +47,14 @@ export class LoginComponent implements OnInit {
     /*if(this.f.username.value == "admin" && this.f.password.value == "admin"){
       this.router.navigate(['overview']);
     }*/
-    this.authService.login(this.f.username.value, this.f.password.value)
+
+    let username: string = this.f.username.value;
+    let password: string = this.f.password.value;
+
+    username = encodeURIComponent(username);
+    password = encodeURIComponent(password);
+
+    this.authService.login(username, password)
       .pipe(first())
       .subscribe(
         data => {
@@ -57,4 +64,6 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         });
   }
+
+  
 }
