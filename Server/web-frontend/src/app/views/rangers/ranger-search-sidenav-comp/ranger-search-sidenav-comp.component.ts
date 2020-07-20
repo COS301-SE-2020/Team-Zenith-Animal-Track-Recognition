@@ -15,7 +15,7 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 	searchText;
 	currentAlphabet;
 	surnames: boolean = true;
-	levels: boolean = true;
+	levels: boolean = false;
 
 	constructor() { }
 

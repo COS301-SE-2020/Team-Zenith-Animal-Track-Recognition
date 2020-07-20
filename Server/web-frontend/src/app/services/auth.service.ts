@@ -22,23 +22,25 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  isAuthenticated(){
+  isAuthenticated() {
     return this.isAuthorized;
   }
 
   login(username, password) {
-    console.log("hello");
-    return this.http.post<any>('http://putch.dyndns.org:55555/graphql', 'query{ login(User_Name:"' + username + '",Password:"' + password + '"){Token}}')
+    return this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{login(User_Name:"' + username + '",Password:"' + password + '"){Token}}')
       .pipe(map(user => {
+        if (null === user.data.login) {
+          return null;
+        }
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
         this.isAuthorized = true;
+
         return user;
       }));
   }
 
   logout() {
-    // remove user from local storage and set current user to null
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }
