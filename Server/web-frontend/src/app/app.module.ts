@@ -22,9 +22,6 @@ import { LoginComponent } from './views/login/login.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { AnimalsComponent } from './views/animals/animals.component';
 import { RangersComponent } from './views/rangers/rangers.component';
-import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
-import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
-import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/ranger-profile-card.component';
 import { GeotagsComponent } from './views/geotags/geotags.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
@@ -37,9 +34,6 @@ import { UtilityNavigationComponent } from './components/utility-navigation/util
     OverviewComponent,
     AnimalsComponent,
     RangersComponent,
-    RangersToolbarComponent,
-    RangerSearchSidenavCompComponent,
-    RangerProfileCardComponent,
     GeotagsComponent,
     SettingsComponent,
     SideNavigationComponent,
