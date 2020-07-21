@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import {MatCardModule} from '@angular/material/card'; 
+import {MatMenuModule} from '@angular/material/menu'; 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
@@ -57,6 +58,7 @@ import { UtilityNavigationComponent } from './components/utility-navigation/util
     MatSidenavModule,
     MatListModule,
     MatCardModule,
+	MatMenuModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
