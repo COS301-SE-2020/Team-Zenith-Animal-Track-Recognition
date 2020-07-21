@@ -1,4 +1,5 @@
 <div class="ranger-profile-cards-container">
+<<<<<<< HEAD
     <div class="ranger-profile-card-container" *ngFor="let ranger of rangers | filter:searchText">
         <mat-card class="ranger-profile-card">
             <mat-card-header>
@@ -16,3 +17,22 @@
         </mat-card>
     </div>
 </div>
+=======
+	<div class="ranger-profile-card-container" *ngFor="let ranger of rangers">
+		<mat-card class="ranger-profile-card">
+			<mat-card-header>
+				<div mat-card-avatar class="example-header-image"></div>
+				<mat-card-title class="fontM">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</mat-card-title>
+				<mat-card-subtitle>Level {{ranger.rangerLevel}} Ranger</mat-card-subtitle>
+			</mat-card-header>
+			<mat-card-content>
+				<p>{{ranger.phoneNumber}}&nbsp;&nbsp;{{ranger.email}}</p>
+				<p>{{ranger.activity}}</p>
+			</mat-card-content>
+			<mat-card-actions>
+				<button mat-button>VIEW PROFILE</button>
+			</mat-card-actions>
+		</mat-card>
+	</div>
+</div>
+>>>>>>> parent of 628519cc... Ranger Profile Card CSS & Layout
