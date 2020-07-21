@@ -22,6 +22,7 @@ class UploadView extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.black,
+            automaticallyImplyLeading: false,
             title: text("Upload Spoor Geotag", 22),
           ),
           body:Container(
@@ -30,9 +31,11 @@ class UploadView extends StatelessWidget {
             child: SliverBody(),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.camera_alt),
-            backgroundColor: Colors.grey,
+            onPressed: () {
+              model.captureImage();
+            },
+            child: Icon(Icons.camera_alt,),
+            backgroundColor: Colors.black,
           ),
           bottomNavigationBar: BottomNavigation(),
           backgroundColor: Colors.grey,
@@ -138,8 +141,13 @@ class GalleryButton extends ViewModelWidget<UploadViewModel> {
           Expanded(flex:1,child: rightIcon),
         ],),
       ),
-      onTap: () {
-        changed = true;
+      onTap: () async{
+        if(caption == "From Photos"){
+          model.uploadFromGallery();
+        }else{
+          model.uploadFromCamera();
+        }
+        changed = model.value;
         model.notifyListeners();
       },
     )
@@ -153,7 +161,12 @@ class GalleryButton extends ViewModelWidget<UploadViewModel> {
         ],),
       ),
       onTap: () {
-        changed = false;
+        if(caption == "From Photos"){
+          model.uploadFromGallery();
+        }else{
+          model.uploadFromCamera();
+        }
+        changed = model.value;
         model.notifyListeners();
       },
     );

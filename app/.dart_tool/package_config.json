@@ -9,7 +9,7 @@
     },
     {
       "name": "analyzer",
-      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-0.39.12",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-0.39.13",
       "packageUri": "lib/",
       "languageVersion": "2.6"
     },
@@ -96,6 +96,12 @@
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/built_value-7.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.3"
+    },
+    {
+      "name": "carousel_slider",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/carousel_slider-2.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.6"
     },
     {
       "name": "charcode",
@@ -189,7 +195,7 @@
     },
     {
       "name": "get",
-      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/get-3.2.2",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/get-3.3.0",
       "packageUri": "lib/",
       "languageVersion": "2.6"
     },
@@ -230,6 +236,12 @@
       "languageVersion": "2.3"
     },
     {
+      "name": "http",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.12.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.4"
+    },
+    {
       "name": "http_multi_server",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/http_multi_server-2.2.0",
       "packageUri": "lib/",
@@ -246,6 +258,18 @@
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/image-2.1.12",
       "packageUri": "lib/",
       "languageVersion": "2.0"
+    },
+    {
+      "name": "image_picker",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.6.7+4",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "image_picker_platform_interface",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_platform_interface-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.5"
     },
     {
       "name": "injectable",
@@ -363,7 +387,7 @@
     },
     {
       "name": "provider",
-      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/provider-4.3.0",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/provider-4.3.1",
       "packageUri": "lib/",
       "languageVersion": "2.7"
     },
@@ -405,9 +429,9 @@
     },
     {
       "name": "source_gen",
-      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/source_gen-0.9.5",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/source_gen-0.9.6",
       "packageUri": "lib/",
-      "languageVersion": "2.5"
+      "languageVersion": "2.7"
     },
     {
       "name": "source_span",
@@ -423,7 +447,7 @@
     },
     {
       "name": "stacked",
-      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/stacked-1.7.1+1",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/stacked-1.7.2",
       "packageUri": "lib/",
       "languageVersion": "2.1"
     },
@@ -518,7 +542,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-07-15T07:47:36.103767Z",
+  "generated": "2020-07-21T09:28:20.916125Z",
   "generator": "pub",
   "generatorVersion": "2.8.4"
 }

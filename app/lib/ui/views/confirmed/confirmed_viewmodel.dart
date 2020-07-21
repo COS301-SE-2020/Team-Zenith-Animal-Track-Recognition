@@ -71,7 +71,7 @@ class TempObject{
   String type;
   String animalName;
   String species;
-  double accuracyScore;
+  int accuracyScore;
 
   TempObject({this.accuracyScore,this.animalName,this.image,this.species,this.type});
 }

@@ -9,14 +9,10 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class AnimalViewModel extends BaseViewModel{
-  String _title = 'Home View';
-  String get title => '$_title $_counter ';
 
   final NavigationService _navigationService = locator<NavigationService>();
   final Api _api = locator<FakeApi>();
 
-  int _counter = 0;
-  int get counter => _counter;
 
   Future<TempObject> getCategories()async {
     TabModel tabModel = await _api.getTabModel("Big Cats", "Big Cats","Large Antelopes");
@@ -45,10 +41,8 @@ class AnimalViewModel extends BaseViewModel{
     _navigationService.navigateTo(Routes.informationViewRoute);
   }
 
-  void updateCounter(){
-    _counter++;
-    notifyListeners();
-  }
+
+  
 }
 
 class TempObject{

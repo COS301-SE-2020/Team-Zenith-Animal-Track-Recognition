@@ -10,6 +10,8 @@ abstract class Api {
 
   Future<List<ProfileModel>> getProfileModel();
 
+  Future<List<SpoorModel>> getSpoorModel();
+
   Future<List<ConfirmModel>> getConfirmModel();
 
   Future<List<SearchModel>> getSearchModel();
@@ -22,5 +24,9 @@ abstract class Api {
 
   Future<List<String>> getTags();
 
+  Future<ProfileInfoModel> getProfileInfoData();
+
   void sendConfirmationSpoor(List<ConfirmModel> list, String tag);
+
+  Future<List<ConfirmModel>> identifyImage(String url);
 }

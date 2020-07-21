@@ -20,6 +20,8 @@ class SearchView extends StatelessWidget {
           if(snapshot.hasError){
              return text("Error", 20);
           }if(snapshot.hasData){
+            displayList.clear();
+            searchList.clear();
             displayList.addAll(snapshot.data.displayList);
             searchList.addAll(snapshot.data.searchList);
             return WillPopScope(

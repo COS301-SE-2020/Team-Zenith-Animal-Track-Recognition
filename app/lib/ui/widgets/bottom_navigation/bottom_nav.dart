@@ -75,17 +75,17 @@ class BottomNavigationState extends State<BottomNavigation> {
               type: BottomNavigationBarType.fixed,
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home, size: 2,),
-                  title: Text('Home'),
+                  icon: Icon(Icons.home, color: Colors.grey),
+                  title: Text('Home', style: TextStyle(color: Colors.grey)),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.info_outline),
-                  title: Text('Animals',),
+                  icon: Icon(Icons.pets, color: Colors.grey),
+                  title: Text('Animals', style: TextStyle(color: Colors.grey)),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  title: Text('Profile',),
-                ),
+                  icon: Icon(Icons.account_circle, color: Colors.grey),
+                  title: Text('Profile', style: TextStyle(color: Colors.grey)),
+                )
               ],
               selectedItemColor: Color(0xFFF2929C),
               unselectedLabelStyle: TextStyle(

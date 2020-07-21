@@ -78,7 +78,7 @@ class SearchViewModel extends BaseViewModel{
   }
 
   void navigateToInformation(){
-    _navigationService.navigateTo("/information-view");
+    _navigationService.navigateTo(Routes.informationViewRoute);
   }
 
 }

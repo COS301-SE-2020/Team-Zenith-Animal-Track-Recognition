@@ -69,5 +69,22 @@ class GraphQL implements Api{
   void sendConfirmationSpoor(List<ConfirmModel> list, String tag) {
     // TODO: implement sendConfirmationSpoor
   }
+
+  @override
+  Future<ProfileInfoModel> getProfileInfoData() {
+    // TODO: implement getProfileInfoData
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ConfirmModel>> identifyImage(String url) {
+    // TODO: implement identifyImage
+  }
+
+  @override
+  Future<List<SpoorModel>> getSpoorModel() {
+    // TODO: implement getSpoorModel
+    throw UnimplementedError();
+  }
   
 }

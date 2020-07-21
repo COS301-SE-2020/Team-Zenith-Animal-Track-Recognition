@@ -1,5 +1,29 @@
 class HomeModel{
+  String name;
+  String species;
+  String location;
+  String captured;
+  String time;
+  String score;
+  String tag;
+  String pic;
 
+  HomeModel(this.name, this.species, this.location, this.captured, this.time,
+      this.score, this.tag, this.pic);
+}
+
+class SpoorModel{
+  String name;
+  String species;
+  String location;
+  String captured;
+  String time;
+  String score;
+  String tag;
+  String pic;
+
+  SpoorModel(this.name, this.species, this.location, this.captured, this.time,
+      this.score, this.tag, this.pic);
 }
 
 class AnimalModel{
@@ -7,8 +31,8 @@ class AnimalModel{
   String animalName;
   double sizeM;
   double sizeF;
-  double weightM;
-  double weightF;
+  int weightM;
+  int weightF;
   String diet;
   String gestation;
   String description;
@@ -27,7 +51,24 @@ class TabModel{
 }
 
 class ProfileModel{
+  String name;
+  String species;
+  String location;
+  String captured;
+  String time;
+  String score;
+  String tag;
+  String pic;
+  
+  ProfileModel(this.name, this.species, this.location, this.captured, this.time,
+      this.score, this.tag, this.pic);
+}
 
+class ProfileInfoModel{
+  int spoorIdentified;
+  int animalsTracked;
+  int speciesTracked;
+  ProfileInfoModel({this.animalsTracked,this.speciesTracked,this.spoorIdentified});
 }
 
 class ConfirmModel{
@@ -35,7 +76,7 @@ class ConfirmModel{
   String type;
   String animalName;
   String species;
-  double accuracyScore;
+  int accuracyScore;
 
   ConfirmModel({this.accuracyScore,this.animalName,this.image,this.species,this.type});
 }

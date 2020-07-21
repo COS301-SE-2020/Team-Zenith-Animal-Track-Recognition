@@ -7,28 +7,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-class NotConfirmedViewModel extends BaseViewModel{
+
+class NotConfirmedViewModel extends BaseViewModel {
   String _title = 'Home View';
 
   final NavigationService _navigationService = locator<NavigationService>();
   final Api _api = locator<FakeApi>();
 
-  Future<String> imagePicker()async{
-    return await "https://images.unsplash.com/photo-1551316679-9c6ae9dec224?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60";
+  Future<String> imagePicker() async {
+    return await "assets/images/Stock_Widllife_RhinoTrack.jpg";
   }
 
-  void recapture(var context){
-    if(false){
+  void recapture(var context) {
+    if (false) {
       Navigator.of(context).popAndPushNamed("/confirmed-view");
-    }else{
+    } else {
       Navigator.of(context).popAndPushNamed("/not-confirmed-view");
     }
   }
 
   void navigate(context) {
-     Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
+
   void reclassify(context) {
-     //Navigator.of(context).pop();
+    //Navigator.of(context).pop();
   }
 }

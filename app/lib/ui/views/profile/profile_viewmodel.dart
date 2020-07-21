@@ -1,84 +1,66 @@
-import 'package:ERP_RANGER/services/objects/id_cards.dart';
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:ERP_RANGER/app/locator.dart';
+import 'package:ERP_RANGER/app/router.gr.dart';
+import 'package:ERP_RANGER/services/api/api.dart';
+import 'package:ERP_RANGER/services/api/fake_api.dart';
+import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class ProfileViewModel extends BaseViewModel{
-  int _cardLength = 6;
-  int get cardLength => _cardLength;
-  List<IdCard> _cards;
-  List<IdCard> get cards => _cards;
+  final NavigationService _navigationService = locator<NavigationService>();
+  final Api _api = locator<FakeApi>();
 
-  IdCard card1 = new IdCard(
-      'Elephant',
-      'African Bush',
-      'Kruger park',
-      'Kagiso Ndlovu',
-      '4m ago',
-      '67%',
-      'Dangerous',
-      'assets/images/Elephant.jpeg');
-
-  IdCard card2 = new IdCard(
-    'Rhino',
-    'White',
-    'Kruger park',
-    'Pricille Berlien',
-    '4m ago',
-    '92%',
-    'Endangered',
-    'assets/images/rhino.jpeg',
-  );
-
-  IdCard card3 = new IdCard(
-      'Buffalo',
-      'Cape Buffalo',
-      'Kruger park',
-      'Charles De Clarke',
-      '4m ago',
-      '56%',
-      'tag1',
-      'assets/images/buffalo.jpeg');
-
-  IdCard card4 = new IdCard(
-      'Springbok',
-      'Antelope',
-      'Kruger park',
-      'Obakeng Seageng',
-      '10m ago',
-      '87%',
-      'Abundant',
-      'assets/images/springbok.jpg');
-
-  IdCard card5 = new IdCard(
-      'Blesbok',
-      'Antelope',
-      'Kruger park',
-      'Zachary Christophers',
-      '80m ago',
-      '100%',
-      'tag4',
-      'assets/images/Blesbok.jpg');
-
-  IdCard card6 = new IdCard(
-      'Red hartebeest',
-      'A. buselaphus',
-      'Kruger park',
-      'Kagiso Ndlovu',
-      '1d ago',
-      '23%',
-      'tag4',
-      'assets/images/Red_Hartebeest.jpg');
-
-  ProfileViewModel        () {
-    _cards = new List<IdCard>();
-    _cards.add(card1);
-    _cards.add(card2);
-    _cards.add(card3);
-    _cards.add(card4);
-    _cards.add(card5);
-    _cards.add(card6);
+  Future<TempObject>getRecentIdentifications() async {
+    List<ProfileModel> recentIdentifications = await _api.getProfileModel();
+    ProfileInfoModel infoModel = await _api.getProfileInfoData();
+    TempObject temp = TempObject(animalList: recentIdentifications,infoModel: infoModel);
+    return temp;
   }
 
-  void updateCounter() {
-    notifyListeners();
+  void navigateToSearchView(){
+    _navigationService.navigateTo(Routes.searchViewRoute);
   }
+ 
+  void navigateToInfo(){
+    _navigationService.navigateTo(Routes.identificationViewRoute);
+  }
+
+  void navigateToConfirmView(){
+    _navigationService.navigateTo(Routes.confirmlViewRoute);
+  }
+ 
+  void navigateToNotConfirmView(){
+    _navigationService.navigateTo(Routes.notConfirmedViewRoute);
+  }
+
+  void captureImage() async
+  {
+    File image;
+    final picker = ImagePicker();
+    
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    if(pickedFile != null){
+      image = File(pickedFile.path);
+      String url = base64Encode(image.readAsBytesSync());
+      List<ConfirmModel> animals = await _api.identifyImage(url);
+      if(animals != null){
+        navigateToConfirmView();
+      }else{
+        navigateToNotConfirmView();
+      }
+    }
+
+    return null;
+  }
+
+}
+
+class TempObject {
+  List<ProfileModel> animalList;
+  ProfileInfoModel infoModel;
+  TempObject({this.animalList,this.infoModel});
 }
