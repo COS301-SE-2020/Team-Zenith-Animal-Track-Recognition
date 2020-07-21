@@ -80,7 +80,7 @@
 }
 #user-profile-pic
 {
-	background-color: #E6E6E6;
+	background-color: #AAAAAA;
 	border-radius: 25px;
 	height: 30px;
 	width: 30px;
@@ -88,11 +88,20 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	align-items: flex-end;
+	align-items: center;
 }
 #user-profile-pic > .mat-icon
 {
-	font-size: 200%;
+	font-size: 280%;
+	color: #E6E6E6;
+	height: 100%;
+	width: 100%;
+	border-radius: 25px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
 }
 #user-profile-dropdown > p
 {

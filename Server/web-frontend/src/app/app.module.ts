@@ -10,6 +10,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import {MatCardModule} from '@angular/material/card'; 
+import {MatMenuModule} from '@angular/material/menu'; 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
@@ -22,6 +24,7 @@ import { AnimalsComponent } from './views/animals/animals.component';
 import { RangersComponent } from './views/rangers/rangers.component';
 import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
 import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
+import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/ranger-profile-card.component';
 import { GeotagsComponent } from './views/geotags/geotags.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
@@ -36,6 +39,7 @@ import { UtilityNavigationComponent } from './components/utility-navigation/util
     RangersComponent,
     RangersToolbarComponent,
     RangerSearchSidenavCompComponent,
+    RangerProfileCardComponent,
     GeotagsComponent,
     SettingsComponent,
     SideNavigationComponent,
@@ -53,6 +57,8 @@ import { UtilityNavigationComponent } from './components/utility-navigation/util
     MatSelectModule,
     MatSidenavModule,
     MatListModule,
+    MatCardModule,
+	MatMenuModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

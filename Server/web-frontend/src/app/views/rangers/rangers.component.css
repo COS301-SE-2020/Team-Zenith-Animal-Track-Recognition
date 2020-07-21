@@ -52,6 +52,7 @@
 	border: 1px solid #808080;
 	border-top-right-radius: 25px;
 	border-bottom-right-radius: 25px;
+	box-shadow: 0px 0px 5px #BBBBBB;
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-end;
@@ -61,6 +62,7 @@
     -moz-transition: all 0.2s ease-in-out;
     -ms-transition: all 0.2s ease-in-out; 
     -o-transition: all 0.2s ease-in-out;
+	z-index: 2;
 }
 #sidenav-open-btn-container:hover, #sidenav-close-btn-container:hover
 {

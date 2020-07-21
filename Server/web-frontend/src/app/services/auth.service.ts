@@ -1,3 +1,4 @@
+import { logging } from 'protractor';
 import { User } from './../models/user';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -23,6 +24,16 @@ export class AuthService {
   }
 
   isAuthenticated() {
+    if (localStorage.getItem("currentToken") != null) {
+      const item = JSON.parse(localStorage.getItem("currentToken"));
+      const now = new Date();
+
+      if (now.getTime() > item.expiry) {
+        localStorage.clear();
+      } else {
+        this.isAuthorized = true;
+      }
+    }
     return this.isAuthorized;
   }
 
@@ -32,7 +43,14 @@ export class AuthService {
         if (null === user.data.login) {
           return null;
         }
-        localStorage.setItem('currentUser', JSON.stringify(user));
+
+        const now = new Date();
+        const tkn = {
+          value: user.data.login.Token,
+          expiry: now.getTime() + 600000
+        }
+
+        localStorage.setItem('currentToken', JSON.stringify(tkn));
         this.currentUserSubject.next(user);
         this.isAuthorized = true;
 
@@ -41,7 +59,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentToken');
     this.currentUserSubject.next(null);
   }
 }
