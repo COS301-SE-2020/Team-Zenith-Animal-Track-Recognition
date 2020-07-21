@@ -47,7 +47,7 @@ export class AuthService {
         const now = new Date();
         const tkn = {
           value: user.data.login.Token,
-          expiry: now.getTime() + 600000
+          expiry: now.getTime() + 3600000
         }
 
         localStorage.setItem('currentToken', JSON.stringify(tkn));

@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'animals', component: AnimalsComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
-  { path: 'rangers', component: RangersComponent},
+  { path: 'rangers', component: RangersComponent, canActivate: [AuthGuard] },
   { path: 'geotags', component: GeotagsComponent, canActivate: [AuthGuard] },
   { path: 'overview', component: OverviewComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full'}

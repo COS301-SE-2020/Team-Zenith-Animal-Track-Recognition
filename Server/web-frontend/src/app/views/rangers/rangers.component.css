@@ -11,6 +11,84 @@
 	justify-content: flex-start;
 	align-items: center;
 }
+
+#rangers-toolbar-container
+{
+	height: 12%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	border-bottom: 2px solid #CCCCCC;
+}
+#rangers-toolbar-navigationtree-container
+{
+	height: 100%;
+	width: 60%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	padding-left: 2%;
+}
+#rangers-toolbar-navigation
+{
+	height: 100%;
+	width: auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+#rangers-toolbar-navigation > a
+{
+	color: #AAAAAA;
+	font-size: 130%;
+	text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out; 
+    -o-transition: all 0.2s ease-in-out;
+}
+#rangers-toolbar-navigation > a:hover
+{
+	color: #1A1A1A;
+}
+#rangers-toolbar-navigation > a.activeView
+{
+	color: #1A1A1A;
+}
+#rangers-toolbar
+{
+	height: 100%;
+	width: 40%;
+	font-size: 120%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+#rangers-toolbar-sortby-btn
+{
+	width: 35%;
+	border: 1px solid #CCCCCC;
+	padding: 0.5em 0.5em;
+	border-radius: 5px;
+}
+#rangers-toolbar-actions-btn
+{
+	background: rgba(104, 110, 121, 1);
+	width: 38%;
+	border: 1px solid #CCCCCC;
+	padding: 0.5em 0.5em;
+	border-radius: 5px;
+}
+:host ::ng-deep #rangers-toolbar-sortby-btn .mat-select-value-text, :host ::ng-deep #rangers-toolbar-sortby-btn .mat-select-placeholder {
+  color: #1C1C1C !important;
+}
+:host ::ng-deep #rangers-toolbar-actions-btn .mat-select-value-text, :host ::ng-deep #rangers-toolbar-actions-btn .mat-select-placeholder {
+  color: white !important;
+}
 #rangers-view-workspace
 {
 	height: 88%;
@@ -31,6 +109,88 @@
 	width: 200px;
 	border-right: 2px solid #CCCCCC;
 	box-shadow: 1px 0px 5px #DDDDDD;
+}
+#ranger-search-sidenav-content
+{
+	height: 90%;
+	width: 100%;
+}
+#ranger-search-controls-container
+{
+	height: 30%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	border-bottom: 2px solid #CCCCCC;
+	overflow: hidden;
+}
+.mat-form-field
+{
+	width: 90%;  
+	font-size: 105%;
+}
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
+{
+	padding: 0.2em 0 0.5em 0;
+}
+:host ::ng-deep .mat-form-field-wrapper 
+{
+    padding-bottom: 0;
+}
+#ranger-search-controls
+{
+	height: 25%;
+	width: 90%;
+	border: 2px solid #A8ACB2;
+}
+#ranger-search-controls > .mat-button-toggle
+{
+	width: 50%;
+}
+:host ::ng-deep .mat-button-toggle-label-content 
+{
+	font-weight: 600;
+    line-height: 32px;
+}
+:host ::ng-deep .mat-button-toggle-checked
+{
+	color: white;
+	background-color: #A8ACB2;
+}
+#ranger-search-results-container
+{
+	height: 70%;
+	width: 100%;
+	border-bottom: 2px solid #CCCCCC;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	padding: 5% 0;
+}
+.ranger-search-results-entries
+{
+	height: auto;
+	width: 100%;
+}
+.ranger-search-resultgroup-subheader
+{
+	height: 1.5em;
+	width: 100%;
+}
+.mat-list-option
+{
+	font-size: 90%;
+}
+:host ::ng-deep .mat-list-text
+{
+	padding-left: 10% !important;
+	padding-right: 0 !important;
+}
+.ranger-search-resultgroup-subentry
+{
+	color: #BBBBBB;
 }
 #sidenav-close-btn-container
 {
@@ -85,4 +245,169 @@
 	height: 25px;
 	width: 25px;
 	border: 1px solid #CCCCCC;
+}
+.ranger-profile-cards-container
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: space-around;
+	overflow: auto;
+}/*
+.ranger-profile-cards-container::after 
+{
+	content: "";
+	flex: auto;
+}*/
+.ranger-profile-card-container
+{
+	height: 60%;
+	width: 260px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	margin: 1% 0;
+}
+.ranger-profile-card
+{
+	height: 90%;
+	width: 100%;
+	box-shadow: 0px 2px 5px #AAAAAA;
+	border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out; 
+    -o-transition: all 0.3s ease-in-out;
+}
+.ranger-profile-card:hover
+{
+	transform: translateY(-3%);
+	box-shadow: 0px 2px 7px #898989;
+}
+.ranger-profile-card-header
+{
+	height: 25%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.mat-card-header
+{
+	width: 90%;
+	height: 90%;
+}
+.mat-card-avatar
+{
+	background-color: #B3B3B3;
+	overflow: hidden;
+}
+.mat-card-title
+{
+	font-size: 90%;
+}
+.mat-card-header .mat-card-title
+{
+	margin-bottom: 5%;
+}
+.mat-card-subtitle
+{
+	font-size: 90%;
+	color: #AAAAAA;
+	margin-bottom: 0;
+}
+.ranger-profile-card-contextMenu
+{
+	margin-left: auto;
+	width: 10%;
+	height: 70%;
+	align-self: flex-start;
+}
+.mat-card-content
+{
+	width: 100%;
+	height: 55%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+.ranger-profile-card-contact-container
+{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+.ranger-profile-card-contact-container > p
+{
+	font-size: 85%;
+	color: #3D3D3D;
+	margin: 0;
+}
+.ranger-profile-card-contact-info
+{
+	height: auto;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 80%;
+}
+.ranger-profile-card-phone, .ranger-profile-card-email
+{
+	margin: 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+.ranger-profile-card-phone > .mat-icon, .ranger-profile-card-email > .mat-icon
+{
+	font-size: 160%;
+	line-height: 1.5;
+}
+.ranger-profile-card-activity-container
+{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+.ranger-profile-card-activity-container > p
+{
+	font-size: 85%;
+	color: #3D3D3D;
+	margin: 0;
+}
+.ranger-profile-card-activity
+{
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+}
+.ranger-profile-card-activity > pre
+{
+	margin: 0;
+	font-size: 80%;
+}
+.mat-card-actions
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: flex-start;
+	padding-top: 0;
+}
+.mat-card-actions > .mat-button
+{
+	background-color: #686E79;
+	color: white;
+	width: 95%;
+	font-weight: 600;
 }
