@@ -20,6 +20,7 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit(): void {
+		this.sort(true);
 	}
 
 	checkIfNew(title: string, pos: number) {
