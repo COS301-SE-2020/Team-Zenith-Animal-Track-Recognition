@@ -14,20 +14,25 @@
 	content: "";
 	flex: auto;
 }
+/*
+.ranger-profile-cards-container::before
+{
+	content: "";
+	flex: auto;
+}*/
 .ranger-profile-card-container
 {
 	height: 55%;
-	width: 280px;
+	width: 260px;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-	/*margin: 1% 0;*/
 }
 .ranger-profile-card
 {
 	height: 90%;
-	width: 90%;
+	width: 95%;
 	box-shadow: 0px 2px 5px #AAAAAA;
 	border-radius: 10px;
     transition: all 0.3s ease-in-out;
@@ -48,6 +53,7 @@
 .mat-card-avatar
 {
 	background-color: #B3B3B3;
+	overflow: hidden;
 }
 .mat-card-title
 {

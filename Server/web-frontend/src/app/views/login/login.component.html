@@ -1,9 +1,16 @@
 <div id="loginView-Container">
+	<div id="loginView-onboardingMessages-Container">
+		<div id="loginView-onboardingMessages">
+		</div>
+		<div id="dashboard-version">
+			<p class="fontB">V 1.0</p>
+		</div>
+	</div>
 	<div id="loginView-loginForm-Container">
 		<form [formGroup]="loginForm" id="loginFormComp-loginForm-Container" (ngSubmit)="onSubmit()">
             <div id="loginFormComp-loginForm-TitleContainer">
-                <h2 class="fontR">Sign In</h2>
-                <p class="fontR">Please enter your details in the form below</p>
+                <h2 class="fontR">Welcome back, Administrator!</h2>
+                <p class="fontR">Please enter your details in the form below to sign in</p>
             </div>
             <div id="loginFormComp-loginForm-FormContainer">
                 <mat-form-field appearance="outline">
@@ -28,13 +35,5 @@
                 <button mat-flat-button id="loginFormComp-loginForm-loginBtn" class="fontSB">SIGN IN</button>
             </div>
         </form>
-	</div>
-	<div id="loginView-onboardingMessages-Container">
-		<div id="loginView-onboardingMessages">
-			<h1 class="fontSB">Welcome Back <br> Administrator!</h1>
-		</div>
-		<div id="dashboard-version">
-			<p class="fontB">V 1.0</p>
-		</div>
 	</div>
 </div>
