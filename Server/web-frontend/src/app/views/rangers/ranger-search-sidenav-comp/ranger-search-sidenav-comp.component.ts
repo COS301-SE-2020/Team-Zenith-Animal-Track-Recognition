@@ -42,7 +42,7 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 		if (bool) {
 			for (let i = 0; i < this.rangers.length - 1; i++) {
 				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].lastName > this.rangers[j].lastName) {
+					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
 						let temp = this.rangers[i];
 						this.rangers[i] = this.rangers[j];
 						this.rangers[j] = temp;
