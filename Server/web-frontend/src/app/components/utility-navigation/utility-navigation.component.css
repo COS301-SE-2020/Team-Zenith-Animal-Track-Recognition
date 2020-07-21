@@ -59,7 +59,7 @@
 #user-profile-container
 {
 	height: 100%;
-	width: 35%;
+	width: 30%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -71,14 +71,9 @@
 	width: 90%;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
+	justify-content: space-between;
 	align-items: center;
-	border: 1px solid red;
-}/*
-#user-profile-dropdown:hover
-{
-	cursor: pointer;
-}*/
+}
 #user-profile-pic
 {
 	background-color: #AAAAAA;
@@ -104,10 +99,9 @@
 	align-items: center;
 	overflow: hidden;
 }
-#user-profile-dropdown
+#user-profile-dropdown-icon
 {
-	width: 35%;
-	border: 1px solid #CCCCCC;
+	width: 80%;
 	padding: 0.5em 0.5em;
-	border-radius: 5px;
+	color: #1A1A1A;
 }
