@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog'; 
+import {MatDialog, MatDialogRef, MatDialogConfig} from '@angular/material/dialog'; 
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-ranger',
