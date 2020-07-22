@@ -65,7 +65,7 @@ var usersdata = [{
         User_Name: 'rager 2',
         Password: '12345',
         Token: 'zxcvb',
-        Access_Level: "1",
+        Access_Level: "3",
         e_mail: "teamzenith380@gmail.com"
     }
 ]
@@ -791,6 +791,50 @@ const RootQuery = new GraphQLObjectType({
                 })
                 return a
             }
+        },
+        DASlogin: {
+            type: UserType,
+            args: {
+                User_Name: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Password: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+
+                var a = _.find(usersdata, {
+                    User_Name: args.User_Name
+
+                })
+                if (a === undefined)
+                    return null
+                else if (a.Password == args.Password&&a.Access_Level>2)
+                    return a
+                else return null
+
+
+
+
+
+
+
+                // users.where('User_Name', '==', args.name).limit(1).get().then(snapshot => {
+                //     snapshot.forEach(doc => {
+
+                //         var result =JSON.stringify(doc.data());  
+
+                //         console.log(result)
+                //         // return doc.data()
+                //         if (result[Password]==args.pass)
+                //             return result
+                //         else
+                //             return null
+                //     });
+                // })
+            }
+
         }
     }
 })
