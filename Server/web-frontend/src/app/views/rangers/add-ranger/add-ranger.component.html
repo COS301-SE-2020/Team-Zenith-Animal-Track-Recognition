@@ -25,9 +25,9 @@
 			<div class="add-new-ranger-input-container">
                 <mat-form-field appearance="outline">
                     <mat-label>Date of Birth</mat-label>
-                    <input matInput formControlName="dob" placeholder="Date of Birth">
-					<!--<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-					<mat-datepicker #picker></mat-datepicker>-->
+                    <input matInput [matDatepicker]="picker" formControlName="dob" placeholder="Date of Birth">
+					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
             </div>
         </form>

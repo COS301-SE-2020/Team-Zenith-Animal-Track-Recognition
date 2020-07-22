@@ -12,7 +12,7 @@
 		</mat-select>
         <mat-select id="rangers-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
 			<mat-option (click)="openAddRangerDialog()">Add New Ranger</mat-option>
-			<mat-option>Manage Levels</mat-option>
+			<mat-option (click)='route("ranger_permissions")'>Manage Levels</mat-option>
 		</mat-select>
 	</div>
 </div>
