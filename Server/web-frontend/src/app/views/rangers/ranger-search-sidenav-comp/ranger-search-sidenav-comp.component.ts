@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Ranger } from './../../../models/ranger';
 import { RANGERS } from './../../../models/mock-rangers';
 
@@ -12,10 +12,11 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 	//USING MOCK RANGER DATA. @Zach please replace this with an API call that fetches the users. We only need ID, Name, Username and ranger level
 
 	rangers = RANGERS;
-	searchText;
 	currentAlphabet;
 	surnames: boolean = true;
 	levels: boolean = false;
+
+	@Input() searchText: string;
 
 	constructor() { }
 
@@ -52,10 +53,10 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 		} else {
 			for (let i = 0; i < this.rangers.length - 1; i++) {
 				for (let j = i + 1; j < this.rangers.length; j++) {
-					if(this.rangers[i].rangerLevel > this.rangers[j].rangerLevel){
+					if (this.rangers[i].rangerLevel > this.rangers[j].rangerLevel) {
 						let temp = this.rangers[i];
 						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp; 
+						this.rangers[j] = temp;
 					}
 				}
 			}

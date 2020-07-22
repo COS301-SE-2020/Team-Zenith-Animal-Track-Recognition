@@ -1,48 +1,50 @@
 <div class="ranger-profile-cards-container">
-	<div class="ranger-profile-card-container" *ngFor="let ranger of rangers">
-		<mat-card class="ranger-profile-card">
-			<div class="ranger-profile-card-header">
-				<mat-card-header>
-					<div mat-card-avatar class="example-header-image"></div>
-					<mat-card-title class="fontSB">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</mat-card-title>
-					<mat-card-subtitle class="fontM">Level {{ranger.rangerLevel}} Ranger</mat-card-subtitle>
-				</mat-card-header>
-				<button mat-icon-button [matMenuTriggerFor]="menu" class="ranger-profile-card-contextMenu">
+    <div class="ranger-profile-card-container" *ngFor="let ranger of rangers | filter:searchText">
+        <mat-card class="ranger-profile-card">
+            <div class="ranger-profile-card-header">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image"></div>
+                    <mat-card-title class="fontSB">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</mat-card-title>
+                    <mat-card-subtitle class="fontM">Level {{ranger.rangerLevel}} Ranger</mat-card-subtitle>
+                </mat-card-header>
+                <button mat-icon-button [matMenuTriggerFor]="menu" class="ranger-profile-card-contextMenu">
 					<mat-icon>more_vert</mat-icon>
 				</button>
-				<mat-menu #menu="matMenu" xPosition="before">
-					<button mat-menu-item>
+                <mat-menu #menu="matMenu" xPosition="before">
+                    <button mat-menu-item>
 						<span>Edit Information</span>
 					</button>
-					<button mat-menu-item>
+                    <button mat-menu-item>
 						<span>View Geotags</span>
 					</button>
-					<button mat-menu-item>
+                    <button mat-menu-item>
 						<span>View Activity</span>
 					</button>
-					<button mat-menu-item>
+                    <button mat-menu-item>
 						<span>Change Level</span>
 					</button>
-				</mat-menu>
-			</div>
-			<mat-card-content>
-				<div class="ranger-profile-card-contact-container">
-					<p class="fontSB">Contact Information</p>
-					<div class="ranger-profile-card-contact-info">
-						<p class="ranger-profile-card-phone"><mat-icon>call</mat-icon>{{ranger.phoneNumber}}</p>
-						<p class="ranger-profile-card-email"><mat-icon>mail</mat-icon>{{ranger.email}}</p>
-					</div>
-				</div>
-				<div class="ranger-profile-card-activity-container">
-					<p class="fontSB">Recent Activity</p>
-					<div class="ranger-profile-card-activity">
-						<pre>{{ranger.activity}}</pre>
-					</div>
-				</div>
-			</mat-card-content>
-			<mat-card-actions>
-				<button mat-button>VIEW PROFILE</button>
-			</mat-card-actions>
-		</mat-card>
-	</div>
+                </mat-menu>
+            </div>
+            <mat-card-content>
+                <div class="ranger-profile-card-contact-container">
+                    <p class="fontSB">Contact Information</p>
+                    <div class="ranger-profile-card-contact-info">
+                        <p class="ranger-profile-card-phone">
+                            <mat-icon>call</mat-icon>{{ranger.phoneNumber}}</p>
+                        <p class="ranger-profile-card-email">
+                            <mat-icon>mail</mat-icon>{{ranger.email}}</p>
+                    </div>
+                </div>
+                <div class="ranger-profile-card-activity-container">
+                    <p class="fontSB">Recent Activity</p>
+                    <div class="ranger-profile-card-activity">
+                        <pre>{{ranger.activity}}</pre>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button>VIEW PROFILE</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
 </div>

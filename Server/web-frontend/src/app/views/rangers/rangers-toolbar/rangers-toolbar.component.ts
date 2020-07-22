@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-rangers-toolbar',
@@ -10,8 +10,9 @@ export class RangersToolbarComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void 
-  {
+  @Input() searchText: string;
+
+  ngOnInit(): void {
   }
 
 }
