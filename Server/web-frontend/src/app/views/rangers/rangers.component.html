@@ -1,115 +1,116 @@
 <div id="rangers-view-workspace-container">
-	<div id="rangers-toolbar-container">
-		<div id="rangers-toolbar-navigationtree-container">
-			<div id="rangers-toolbar-navigation">
-				<a href="javascript:void(0)" class="fontM activeView">Rangers</a>
-			</div>
-		</div>
-		<div id="rangers-toolbar">
-			<mat-select id="rangers-toolbar-sortby-btn" class="fontR" placeholder="Sort By" disableOptionCentering>
-				<mat-option value="abc">Alphabetical</mat-option>
-				<mat-option value="rLevel">Ranger Level</mat-option>
-				<mat-option value="recent_activity">Recent Activity</mat-option>
-			</mat-select>
-			<mat-select id="rangers-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
-				<mat-option value="add_new_ranger" (click)="openAddRangerDialog()">Add New Ranger</mat-option>
-				<mat-option value="manage_levels">Manage Levels</mat-option>
-			</mat-select>
-		</div>
-	</div>
-	<div id="rangers-view-workspace">
-		<mat-drawer-container id="ranger-search-sidenav-container">
-			<mat-drawer id="ranger-search-sidenav" #sidenav mode="side">
-				<div id="ranger-search-sidenav-content">
-					<div id="ranger-search-controls-container">
-						<mat-button-toggle-group id="ranger-search-controls" #group="matButtonToggleGroup" name="sortResultsBy">
-							<mat-button-toggle value="surname" checked (click)="toggle(true)">Surname</mat-button-toggle>
-							<mat-button-toggle value="level" (click)="toggle(false)">Level</mat-button-toggle>
-						</mat-button-toggle-group>
-						<mat-form-field appearance="outline">
-							<input matInput placeholder="Search Rangers..." type="text" name="search" [(ngModel)]="searchText"
-								autocomplete="off">
-							<mat-icon matPrefix>search</mat-icon>
-						</mat-form-field>
-					</div>
-					<div id="ranger-search-results-container">
-						<mat-selection-list id="rangers-by-surnames" [multiple]="false" class="ranger-search-results-entries" *ngIf="surnames">
-							<mat-list-option class="fontM" *ngFor="let ranger of rangers | filter:searchText" [value]="ranger">
-								<ng-container *ngIf="checkIfNew(ranger.lastName, 0)">
-									{{ ranger.lastName.charAt(0).toUpperCase() }}
-								</ng-container>
-								<p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
-								<p class="ranger-search-resultgroup-subentry">Level {{ranger.rangerLevel}} Ranger</p>
-							</mat-list-option>
-						</mat-selection-list>
-						<mat-selection-list id="rangers-by-level" [multiple]="false" class="ranger-search-results-entries" *ngIf="levels">
-							<mat-list-option class="fontM" *ngFor="let ranger of rangers | filter:searchText" [value]="ranger">
-								<ng-container *ngIf='checkIfNew("Level " + ranger.rangerLevel + " Ranger", 6)'>
-									Level {{ ranger.rangerLevel }} Ranger
-								</ng-container>
-								<p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
-								<p class="ranger-search-resultgroup-subentry">Level {{ranger.rangerLevel}} Ranger</p>
-							</mat-list-option>
-						</mat-selection-list>
-					</div>
-				</div>
-				<div id="sidenav-close-btn-container" (click)="closeSidenav()">
-					<button id="side-nav-close-btn" mat-icon-button><mat-icon>chevron_left</mat-icon></button>
-				</div>
-			</mat-drawer>
-			<mat-drawer-content id="ranger-profile-card-content-container">
-				<div id="sidenav-open-btn-container" (click)="openSidenav()">
-					<button id="side-nav-open-btn" mat-icon-button><mat-icon>chevron_right</mat-icon></button>
-				</div>
-				<div class="ranger-profile-cards-container">
-					<div class="ranger-profile-card-container" *ngFor="let ranger of rangers">
-						<mat-card class="ranger-profile-card">
-							<div class="ranger-profile-card-header">
-								<mat-card-header>
-									<div mat-card-avatar class="example-header-image"></div>
-									<mat-card-title class="fontSB">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</mat-card-title>
-									<mat-card-subtitle class="fontM">Level {{ranger.rangerLevel}} Ranger</mat-card-subtitle>
-								</mat-card-header>
-								<button mat-icon-button [matMenuTriggerFor]="menu" class="ranger-profile-card-contextMenu">
+    <div id="rangers-toolbar-container">
+        <div id="rangers-toolbar-navigationtree-container">
+            <div id="rangers-toolbar-navigation">
+                <a href="javascript:void(0)" class="fontM activeView">Rangers</a>
+            </div>
+        </div>
+        <div id="rangers-toolbar">
+            <mat-select id="rangers-toolbar-sortby-btn" class="fontR" placeholder="Sort By" disableOptionCentering>
+                <mat-option value="abc" (click)="toggle(true)">Alphabetical</mat-option>
+                <mat-option value="rLevel" (click)="toggle(false)">Ranger Level</mat-option>
+                <mat-option value="recent_activity">Recent Activity</mat-option>
+            </mat-select>
+            <mat-select id="rangers-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
+                <mat-option value="add_new_ranger">Add New Ranger</mat-option>
+                <mat-option value="manage_levels">Manage Levels</mat-option>
+            </mat-select>
+        </div>
+    </div>
+    <div id="rangers-view-workspace">
+        <mat-drawer-container id="ranger-search-sidenav-container">
+            <mat-drawer id="ranger-search-sidenav" #sidenav mode="side">
+                <div id="ranger-search-sidenav-content">
+                    <div id="ranger-search-controls-container">
+                        <mat-button-toggle-group id="ranger-search-controls" #group="matButtonToggleGroup" name="sortResultsBy">
+                            <mat-button-toggle value="surname" checked (click)="toggle(true)">Surname</mat-button-toggle>
+                            <mat-button-toggle value="level" (click)="toggle(false)">Level</mat-button-toggle>
+                        </mat-button-toggle-group>
+                        <mat-form-field appearance="outline">
+                            <input matInput placeholder="Search Rangers..." type="text" name="search" [(ngModel)]="searchText" autocomplete="off">
+                            <mat-icon matPrefix>search</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div id="ranger-search-results-container">
+                        <mat-selection-list id="rangers-by-surnames" [multiple]="false" class="ranger-search-results-entries" *ngIf="surnames">
+                            <mat-list-option class="fontM" *ngFor="let ranger of rangers | filter:searchText" [value]="ranger">
+                                <ng-container *ngIf="checkIfNew(ranger.lastName, 0)">
+                                    {{ ranger.lastName.charAt(0).toUpperCase() }}
+                                </ng-container>
+                                <p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
+                                <p class="ranger-search-resultgroup-subentry">Level {{ranger.rangerLevel}} Ranger</p>
+                            </mat-list-option>
+                        </mat-selection-list>
+                        <mat-selection-list id="rangers-by-level" [multiple]="false" class="ranger-search-results-entries" *ngIf="levels">
+                            <mat-list-option class="fontM" *ngFor="let ranger of rangers | filter:searchText" [value]="ranger">
+                                <ng-container *ngIf='checkIfNew("Level " + ranger.rangerLevel + " Ranger", 6)'>
+                                    Level {{ ranger.rangerLevel }} Ranger
+                                </ng-container>
+                                <p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
+                                <p class="ranger-search-resultgroup-subentry">Level {{ranger.rangerLevel}} Ranger</p>
+                            </mat-list-option>
+                        </mat-selection-list>
+                    </div>
+                </div>
+                <div id="sidenav-close-btn-container" (click)="closeSidenav()">
+                    <button id="side-nav-close-btn" mat-icon-button><mat-icon>chevron_left</mat-icon></button>
+                </div>
+            </mat-drawer>
+            <mat-drawer-content id="ranger-profile-card-content-container">
+                <div id="sidenav-open-btn-container" (click)="openSidenav()">
+                    <button id="side-nav-open-btn" mat-icon-button><mat-icon>chevron_right</mat-icon></button>
+                </div>
+                <div class="ranger-profile-cards-container">
+                    <div class="ranger-profile-card-container" *ngFor="let ranger of rangers | filter:searchText">
+                        <mat-card class="ranger-profile-card">
+                            <div class="ranger-profile-card-header">
+                                <mat-card-header>
+                                    <div mat-card-avatar class="example-header-image"></div>
+                                    <mat-card-title class="fontSB">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</mat-card-title>
+                                    <mat-card-subtitle class="fontM">Level {{ranger.rangerLevel}} Ranger</mat-card-subtitle>
+                                </mat-card-header>
+                                <button mat-icon-button [matMenuTriggerFor]="menu" class="ranger-profile-card-contextMenu">
 									<mat-icon>more_vert</mat-icon>
 								</button>
-								<mat-menu #menu="matMenu" xPosition="before">
-									<button mat-menu-item>
+                                <mat-menu #menu="matMenu" xPosition="before">
+                                    <button mat-menu-item>
 										<span>Edit Information</span>
 									</button>
-									<button mat-menu-item>
+                                    <button mat-menu-item>
 										<span>View Geotags</span>
 									</button>
-									<button mat-menu-item>
+                                    <button mat-menu-item>
 										<span>View Activity</span>
 									</button>
-									<button mat-menu-item>
+                                    <button mat-menu-item>
 										<span>Change Level</span>
 									</button>
-								</mat-menu>
-							</div>
-							<mat-card-content>
-								<div class="ranger-profile-card-contact-container">
-									<p class="fontSB">Contact Information</p>
-									<div class="ranger-profile-card-contact-info">
-										<p class="ranger-profile-card-phone"><mat-icon>call</mat-icon>{{ranger.phoneNumber}}</p>
-										<p class="ranger-profile-card-email"><mat-icon>mail</mat-icon>{{ranger.email}}</p>
-									</div>
-								</div>
-								<div class="ranger-profile-card-activity-container">
-									<p class="fontSB">Recent Activity</p>
-									<div class="ranger-profile-card-activity">
-										<pre>{{ranger.activity}}</pre>
-									</div>
-								</div>
-							</mat-card-content>
-							<mat-card-actions>
-								<button mat-button>VIEW PROFILE</button>
-							</mat-card-actions>
-						</mat-card>
-					</div>
-				</div>
-			</mat-drawer-content>
-		</mat-drawer-container>
-	</div>
+                                </mat-menu>
+                            </div>
+                            <mat-card-content>
+                                <div class="ranger-profile-card-contact-container">
+                                    <p class="fontSB">Contact Information</p>
+                                    <div class="ranger-profile-card-contact-info">
+                                        <p class="ranger-profile-card-phone">
+                                            <mat-icon>call</mat-icon>{{ranger.phoneNumber}}</p>
+                                        <p class="ranger-profile-card-email">
+                                            <mat-icon>mail</mat-icon>{{ranger.email}}</p>
+                                    </div>
+                                </div>
+                                <div class="ranger-profile-card-activity-container">
+                                    <p class="fontSB">Recent Activity</p>
+                                    <div class="ranger-profile-card-activity">
+                                        <pre>{{ranger.activity}}</pre>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-button>VIEW PROFILE</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-drawer-content>
+        </mat-drawer-container>
+    </div>
 </div>
