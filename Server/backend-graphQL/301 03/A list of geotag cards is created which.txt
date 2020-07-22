@@ -124,3 +124,36 @@ each object must contain the common name of the animal i.e "Elephant" in *String
 each object must have the name of the species i.e "African Bush Elephant" in *String format*
 
 each object must have the image of the animal i.e "[https://images.unsplash.com/photo-1551316679-9c6ae9dec224?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60](https://images.unsplash.com/photo-1551316679-9c6ae9dec224?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)" in *String format*
+
+
+### API-CALLS FOR spoor identification
+
+>>>Unique ID for the spoor identification
+
+<<<Place where spoor was captured
+<<<Date it was captured 
+<<<Coordinates
+<<<Animal name for main result
+<<<Animal species for main result
+<<<accuracy score for main result
+<<<Animal Tags associated to main result
+<<<Other possible matches object [Animal name, Species, accuracy score] as many as the ML identified
+<<<Similar spoor images , [5]
+
+### API-CALLS for Animal information 
+
+>>>Animal Species ID
+
+<<<Species name
+<<<Animal name
+<<<Avg weight [male, female]
+<<<Avg height [male, female]
+<<<Gestation period
+<<<Diet
+<<<Overview of the animal
+<<<Description of animal
+<<<Behaviour of animal
+<<<Habitat of animal
+<<<Threat posed by the animal to rangers 
+
+
