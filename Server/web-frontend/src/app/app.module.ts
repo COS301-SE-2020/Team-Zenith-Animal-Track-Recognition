@@ -8,7 +8,6 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AddRangerComponent } from './views/rangers/add-ranger/add-ranger.component';
 import { LoginComponent } from './views/login/login.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { AnimalsComponent } from './views/animals/animals.component';
@@ -16,6 +15,8 @@ import { RangersComponent } from './views/rangers/rangers.component';
 import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
 import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
 import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/ranger-profile-card.component';
+import { AddRangerComponent } from './views/rangers/add-ranger/add-ranger.component';
+import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
 import { GeotagsComponent } from './views/geotags/geotags.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
@@ -33,10 +34,12 @@ import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu'; 
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
     AppComponent,
+	AddRangerComponent,
     LoginComponent,
     OverviewComponent,
     AnimalsComponent,
@@ -44,20 +47,20 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     RangersToolbarComponent,
     RangerSearchSidenavCompComponent,
     RangerProfileCardComponent,
-	AddRangerComponent,
     GeotagsComponent,
     SettingsComponent,
     SideNavigationComponent,
     UtilityNavigationComponent,
+    RangerPermissionsComponent,
   ],
   imports: [
     BrowserModule,
+	BrowserAnimationsModule,
 	FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
     Ng2SearchPipeModule,
-    BrowserAnimationsModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
@@ -69,10 +72,11 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatCardModule,
 	MatMenuModule,
 	MatDialogModule,
-	MatDatepickerModule
+	MatDatepickerModule,
+	MatNativeDateModule
   ],
   providers: [AuthGuardService],
-  entryComponents: [AddRangerComponent],
+  entryComponents: [RangersComponent, RangersToolbarComponent, AddRangerComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
