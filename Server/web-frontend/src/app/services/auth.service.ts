@@ -38,15 +38,16 @@ export class AuthService {
   }
 
   login(username, password) {
-    return this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{login(User_Name:"' + username + '",Password:"' + password + '"){Token}}')
+   return this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{DASlogin(e_mail:"' + username + '",Password:"' + password + '"){Token}}')
       .pipe(map(user => {
-        if (null === user.data.login) {
+        if (null === user.data.DASlogin) {
+          this.isAuthorized = false;
           return null;
         }
 
         const now = new Date();
         const tkn = {
-          value: user.data.login.Token,
+          value: user.data.DASlogin.Token,
           expiry: now.getTime() + 3600000
         }
 

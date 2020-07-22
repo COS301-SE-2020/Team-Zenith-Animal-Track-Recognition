@@ -35,6 +35,10 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatExpansionModule} from '@angular/material/expansion'; 
+import {MatTableModule} from '@angular/material/table'; 
+import {MatRadioModule} from '@angular/material/radio'; 
 
 @NgModule({
   declarations: [
@@ -73,7 +77,11 @@ import {MatNativeDateModule} from '@angular/material/core';
 	MatMenuModule,
 	MatDialogModule,
 	MatDatepickerModule,
-	MatNativeDateModule
+	MatNativeDateModule,
+	MatBadgeModule,
+	MatExpansionModule,
+	MatTableModule,
+	MatRadioModule
   ],
   providers: [AuthGuardService],
   entryComponents: [RangersComponent, RangersToolbarComponent, AddRangerComponent],
