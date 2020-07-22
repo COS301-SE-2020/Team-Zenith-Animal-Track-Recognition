@@ -841,7 +841,7 @@ const RootQuery = new GraphQLObjectType({
                 // })
             }
 
-        }
+        },
     }
 })
 
