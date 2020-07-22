@@ -14,14 +14,12 @@
 				<div id="user-profile-pic">
 					<mat-icon>account_circle</mat-icon>
 				</div>
-				<p class="fontB">Administrator</p>
-				<div id="user-profile-dropdown-icon">
-					<mat-icon>expand_more</mat-icon>
-				</div>
+				<mat-select id="user-profile-dropdown-icon" class="fontSB" placeholder="Administrator" disableOptionCentering>
+					<mat-option>View Profile</mat-option>
+					<mat-option>Settings</mat-option>
+					<mat-option (click)="logout()">Logout</mat-option>
+				</mat-select>
 			</div>
 		</div>
-		<button (click)="logout()">
-
-		</button>
 	</div>
 </div>

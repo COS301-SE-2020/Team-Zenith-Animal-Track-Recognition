@@ -7,12 +7,12 @@
 	<div id="rangers-toolbar">
         <mat-select id="rangers-toolbar-sortby-btn" class="fontR" placeholder="Sort By" disableOptionCentering>
 			<mat-option value="abc">Alphabetical</mat-option>
-			<mat-option value="rLevel">Ranger Level</mat-option>
-			<mat-option value="recent_activity">Recent Activity</mat-option>
+			<mat-option value="rangerLevel">Ranger Level</mat-option>
+			<mat-option value="activity">Recent Activity</mat-option>
 		</mat-select>
         <mat-select id="rangers-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
-			<mat-option value="add_new_ranger">Add New Ranger</mat-option>
-			<mat-option value="manage_levels">Manage Levels</mat-option>
+			<mat-option (click)="openAddRangerDialog()">Add New Ranger</mat-option>
+			<mat-option>Manage Levels</mat-option>
 		</mat-select>
 	</div>
 </div>
