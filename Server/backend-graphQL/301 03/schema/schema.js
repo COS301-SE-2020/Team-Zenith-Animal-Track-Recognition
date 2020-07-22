@@ -55,10 +55,10 @@ var usersdata = [{
         e_mail: "teamzenith380@gmail.com"
     },
     {
-        User_Name: 'rager 1',
-        Password: '12345',
+        User_Name: 'rager1',
+        Password: 'zenith!@#$5',
         Token: 'asdfg',
-        Access_Level: "1",
+        Access_Level: "3",
         e_mail: "teamzenith380@gmail.com"
     },
     {
@@ -572,12 +572,6 @@ const RootQuery = new GraphQLObjectType({
                 else if (a.Password == args.Password)
                     return a
                 else return null
-
-
-
-
-
-
 
                 // users.where('User_Name', '==', args.name).limit(1).get().then(snapshot => {
                 //     snapshot.forEach(doc => {
