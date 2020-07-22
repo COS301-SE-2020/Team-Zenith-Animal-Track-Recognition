@@ -38,9 +38,10 @@ export class AuthService {
   }
 
   login(username, password) {
-    return this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{ DASlogin(User_Name:"' + username + '",Password:"' + password + '"){Token}}')
+    return this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{DASlogin(e_mail:"' + username + '",Password:"' + password + '"){Token}}')
       .pipe(map(user => {
         if (null === user.data.DASlogin) {
+          this.isAuthorized = false;
           return null;
         }
 
