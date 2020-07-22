@@ -53,19 +53,25 @@ var usersdata = [{
         Password: '12345',
         Token: 'qwerty',
         Access_Level: "1",
-        e_mail: "teamzenith380@gmail.com"
+        e_mail: "teamzenith380@gmail.com",
+        firstName: "Henco",
+        lastName: "du Preez"
     },
     {
         Password: 'zenith!@#$5',
         Token: 'asdfg',
         Access_Level: "3",
-        e_mail: "teamzenith380@gmail.com"
+        e_mail: "zachary.christophers@gmail.com",
+        firstName: "Zach",
+        lastName: "Christophers"
     },
     {
         Password: '12345',
         Token: 'zxcvb',
         Access_Level: "3",
-        e_mail: "teamzenith380@gmail.com"
+        e_mail: "zachary@christophers.co.za",
+        firstName: "Obakeng",
+        lastName: "Seageng"
     }
 ]
 
@@ -659,6 +665,12 @@ const RootQuery = new GraphQLObjectType({
                     type: GraphQLString
                 },
                 e_mail: {
+                    type: GraphQLString
+                },
+                firstName: {
+                    type: GraphQLString
+                },
+                lastName: {
                     type: GraphQLString
                 }
             },
