@@ -133,7 +133,7 @@ each object must have the image of the animal i.e "[https://images.unsplash.com/
 <<<Place where spoor was captured
 <<<Date it was captured 
 <<<Coordinates
-<<<Animal name for main result
+<<<Animal common name for main result
 <<<Animal species for main result
 <<<accuracy score for main result
 <<<Animal Tags associated to main result
@@ -145,7 +145,7 @@ each object must have the image of the animal i.e "[https://images.unsplash.com/
 >>>Animal Species ID
 
 <<<Species name
-<<<Animal name
+<<<Animal common name
 <<<Avg weight [male, female]
 <<<Avg height [male, female]
 <<<Gestation period
