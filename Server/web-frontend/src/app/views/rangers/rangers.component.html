@@ -12,7 +12,7 @@
 				<mat-option value="recent_activity">Recent Activity</mat-option>
 			</mat-select>
 			<mat-select id="rangers-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
-				<mat-option value="add_new_ranger">Add New Ranger</mat-option>
+				<mat-option value="add_new_ranger" (click)="openAddRangerDialog()">Add New Ranger</mat-option>
 				<mat-option value="manage_levels">Manage Levels</mat-option>
 			</mat-select>
 		</div>

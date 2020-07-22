@@ -12,12 +12,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import {MatCardModule} from '@angular/material/card'; 
 import {MatMenuModule} from '@angular/material/menu'; 
+import {MatDialogModule} from '@angular/material/dialog'; 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddRangerComponent } from './views/rangers/add-ranger/add-ranger.component';
 import { LoginComponent } from './views/login/login.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { AnimalsComponent } from './views/animals/animals.component';
@@ -37,7 +39,8 @@ import { UtilityNavigationComponent } from './components/utility-navigation/util
     GeotagsComponent,
     SettingsComponent,
     SideNavigationComponent,
-    UtilityNavigationComponent
+    UtilityNavigationComponent,
+	AddRangerComponent
   ],
   imports: [
     BrowserModule,
@@ -53,10 +56,14 @@ import { UtilityNavigationComponent } from './components/utility-navigation/util
     MatListModule,
     MatCardModule,
 	MatMenuModule,
+	MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     Ng2SearchPipeModule
+  ],
+  entryComponents: [
+    AddRangerComponent
   ],
   providers: [AuthGuardService],
   bootstrap: [AppComponent]

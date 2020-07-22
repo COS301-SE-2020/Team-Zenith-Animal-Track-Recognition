@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog'; 
 import { Ranger } from './../../models/ranger';
 import { RANGERS } from './../../models/mock-rangers';
 
@@ -16,13 +17,14 @@ export class RangersComponent implements OnInit {
 	surnames: boolean = true;
 	levels: boolean = false;
 	
-  constructor() { }
+	constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
     document.getElementById("rangers-route").classList.add("activeRoute");
   
   }
-	  
+	
+	//Ranger Search Side Navigation	
 	openSidenav()
 	{
 		this.sidenav.open();
@@ -35,6 +37,18 @@ export class RangersComponent implements OnInit {
 		document.getElementById("sidenav-open-btn-container").style.transitionDuration = "0.8s";
 		document.getElementById("sidenav-open-btn-container").style.left = "0%";
 	}
+	
+	//Add New Ranger Dialog
+	openAddRangerDialog()
+	{
+		const dialogRef = this.dialog.open(AddRangerComponent);
+
+		dialogRef.afterClosed().subscribe(result => {
+		  console.log(`Dialog result: ${result}`);
+		});
+	}
+	
+	//Sorting and Filtering
 	checkIfNew(title: string, pos: number) {
 		if (this.currentAlphabet === ("" + title).charAt(pos).toLowerCase()) {
 			return false;
@@ -43,13 +57,11 @@ export class RangersComponent implements OnInit {
 			return true;
 		}
 	}
-
 	toggle(bool: boolean) {
 		this.surnames = bool;
 		this.levels = !bool;
 		this.sort(bool);
 	}
-
 	sort(bool: boolean) {
 		if (bool) {
 			for (let i = 0; i < this.rangers.length - 1; i++) {
@@ -72,5 +84,20 @@ export class RangersComponent implements OnInit {
 				}
 			}
 		}
+	}
+}
+
+@Component({
+  selector: 'app-add-ranger',
+  templateUrl: './add-ranger/add-ranger.component.html',
+  styleUrls: ['./add-ranger/add-ranger.component.css']
+})
+export class AddRangerComponent {
+	
+	constructor(public dialogRef: MatDialogRef<AddRangerComponent>) { }
+
+	closeDialog() 
+	{
+		this.dialogRef.close('Pizza!');
 	}
 }
