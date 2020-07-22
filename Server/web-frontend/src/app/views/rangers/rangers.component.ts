@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Ranger } from './../../models/ranger';
 import { RANGERS } from './../../models/mock-rangers';
@@ -11,9 +12,8 @@ import { HttpClient } from '@angular/common/http';
 export class RangersComponent implements OnInit {
 
 	@ViewChild('sidenav') sidenav;
-	rs = this.http.get<any>('http://192.168.8.95:55555/graphql?query=query{Users(TokenIn:"asdfg"){Token,Password,Access_Level,e_mail}}');
-	
-	rangers = RANGERS;
+
+	rangers;
 	searchText: string;
 	currentAlphabet;
 	surnames: boolean = true;
@@ -23,9 +23,18 @@ export class RangersComponent implements OnInit {
 
 	ngOnInit(): void {
 		document.getElementById("rangers-route").classList.add("activeRoute");
-		console.log(this.rs);
+		this.http.get<any>('http://192.168.8.95:55555/graphql?query=query{Users(TokenIn:"asdfg"){Token,Password,Access_Level,e_mail}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.printOut(temp);
+			});
 	}
 
+	printOut(temp: any) {
+		this.rangers = temp;
+		console.log(this.rangers);
+	}
 
 	openSidenav() {
 		this.sidenav.open();

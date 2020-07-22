@@ -42,10 +42,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    /*if(this.f.username.value == "admin" && this.f.password.value == "admin"){
-      this.router.navigate(['overview']);
-    }*/
-
+    
     let username: string = this.f.username.value;
     let password: string = this.f.password.value;
 
@@ -62,6 +59,4 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         });
   }
-
-  
 }

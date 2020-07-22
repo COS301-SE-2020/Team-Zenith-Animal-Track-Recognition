@@ -14,6 +14,7 @@ export class AddRangerComponent implements OnInit {
   loading = false;
   submitted = false;
 
+  hide = true;
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -32,6 +33,7 @@ export class AddRangerComponent implements OnInit {
     });
   }
 
+  get f() { return this.addUserForm.controls; }
 
   onSubmit() {
     this.submitted = true;
