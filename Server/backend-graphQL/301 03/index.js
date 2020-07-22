@@ -30,49 +30,65 @@ app.use('/graphiql', graphqlHTTP({
 
 }));
 
-app.get('/AI/retran', (req, res) => {
 
-    if (status == "idle") {
-        status = "training"
+// const schema2 = require('./schema/schema2');
+// bind express with graphql
 
-        const {
-            spawn
-        } = require('child_process');
-        const pyProg = spawn('python', ['./fileReader.py']);
+// app.use('/API2', graphqlHTTP({
 
-        pyProg.stdout.on('data', function (data) {
-            if (data.toString().startsWith("charizard") == true) {
-                // console.log(data.toString());
-                res.write(data);
-                res.end('end');
-                status = "idle";
-                console.log(status)
-                pyProg.end;
-            } else {
-                console.log(data.toString());
-            }
-        });
-        pyProg.stderr.on('data', function (data) {
-            console.log(data)
-        });
-    } else {
-        res.write("buzzy");
-        res.end('end');
-    }
+//     schema2
+
+// }));
+
+// app.use('/API2I', graphqlHTTP({
+
+//     schema2,
+//     graphiql: true
+
+// }));
+// app.get('/AI/retran', (req, res) => {
+
+//     if (status == "idle") {
+//         status = "training"
+
+//         const {
+//             spawn
+//         } = require('child_process');
+//         const pyProg = spawn('python', ['./fileReader.py']);
+
+//         pyProg.stdout.on('data', function (data) {
+//             if (data.toString().startsWith("charizard") == true) {
+//                 // console.log(data.toString());
+//                 res.write(data);
+//                 res.end('end');
+//                 status = "idle";
+//                 console.log(status)
+//                 pyProg.end;
+//             } else {
+//                 console.log(data.toString());
+//             }
+//         });
+//         pyProg.stderr.on('data', function (data) {
+//             console.log(data)
+//         });
+//     } else {
+//         res.write("buzzy");
+//         res.end('end');
+//     }
 
 
 
-})
+// })
 
-app.get('/AI', (req, res) => {
+// app.get('/AI', (req, res) => {
 
-    res.send(status)
+//     res.send(status)
 
-})
+// })
 
 
 app.get('/', (req, res) => {
-    res.write()
+    res.send("pleas go to /graphiql or make api calls to /graphql")
 
 })
 

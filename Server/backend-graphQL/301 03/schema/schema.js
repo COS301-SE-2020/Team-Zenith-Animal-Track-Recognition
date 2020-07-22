@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const helper =require('./helper')
+const helper = require('./helper')
 const _ = require('lodash')
 const {
     GraphQLObjectType,
@@ -19,7 +19,9 @@ const {
 const admin = require('firebase-admin');
 
 let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
-const { toNumber } = require('lodash');
+const {
+    toNumber
+} = require('lodash');
 const makeid = require('./helper');
 
 admin.initializeApp({
@@ -48,21 +50,18 @@ const GessType = new GraphQLObjectType({
 })
 
 var usersdata = [{
-        User_Name: 'root',
         Password: '12345',
         Token: 'qwerty',
         Access_Level: "1",
         e_mail: "teamzenith380@gmail.com"
     },
     {
-        User_Name: 'rager1',
         Password: 'zenith!@#$5',
         Token: 'asdfg',
         Access_Level: "3",
         e_mail: "teamzenith380@gmail.com"
     },
     {
-        User_Name: 'rager 2',
         Password: '12345',
         Token: 'zxcvb',
         Access_Level: "3",
@@ -75,9 +74,6 @@ var usersdata = [{
 const UserType = new GraphQLObjectType({
     name: 'user',
     fields: () => ({
-        User_Name: {
-            type: GraphQLString
-        },
         Password: {
             type: GraphQLString
         },
@@ -89,99 +85,108 @@ const UserType = new GraphQLObjectType({
         },
         e_mail: {
             type: GraphQLString
-        }
+        },
+        firstName: {
+            type: GraphQLString
+        },
+        lastName: {
+            type: GraphQLString
+        },
+        // activity:{
+        //     type:new GraphQLList(OBJTypeRI)
+        // }
     })
 });
 
 var PictureData = [{
     ID: "1",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/panthera_leo%2FLion_waiting_in_Namibia.jpg?alt=media&token=548e4d88-4c6e-4b79-9318-e34de2cce11f",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "2",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Lioness.jpg?alt=media&token=ee206a62-4ada-49fb-ab2a-5a8c1c64e71a",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "3",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/lion-3.jpg?alt=media&token=bb20992a-6e66-4315-b335-7c90095e5dc2",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "4",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Leopard-Preview.jpg?alt=media&token=6324c77a-c8a4-491e-93f4-158c1dfaaf93",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "5",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/images.jpg?alt=media&token=8285358f-8d7d-4614-a81a-9b00f70d500b",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "6",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/leopard-africa-safari.jpg?alt=media&token=1cd99d5c-ee4a-49ae-8053-a17cd73a6898",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "7",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/download.jpg?alt=media&token=ce7bb440-5a2c-4d94-8e4a-28dab9b761c8",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "8",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/32cb44cc3846beda8dcfb89c9ab69711.jpg?alt=media&token=de4777e1-24dc-4b1f-a406-53f33da0aa01",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "9",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Cheetah.jpg?alt=media&token=66f2a822-2f16-4eaa-a0af-66009bb4dfce",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "10",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/unnamed.jpg?alt=media&token=4bc8bcf7-6af8-49a5-ab32-d86cf934ea9f",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "11",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/images%20(1).jpg?alt=media&token=985d5b66-bf0b-437a-8613-d7e3cefbf687",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "12",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/KambakuP.jpg?alt=media&token=315d73e1-92b1-4df4-a736-9ca32db52df0",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "13",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/65555323_2448143245245563_5682639601198432256_o.jpg?alt=media&token=bb86c99b-9d92-4d83-b29b-06cb3ff426b7",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "14",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/BlackMichaelWain_large.jpg?alt=media&token=7a01bcb7-ac23-4204-b606-a764010b440c",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "15",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/black-rhino-on-the-masai-mara-sandra-bronstein.jpg?alt=media&token=a0f146b2-f91c-46f4-b91c-95f77c1c42d7",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "16",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Impala-Saddleback.jpg?alt=media&token=f7b222d1-80cd-42a1-b652-988e4a5c6d7e",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "17",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Impala_ram.jpg?alt=media&token=1d63f203-8cda-4698-8255-b7c4796b9a74",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }, {
     ID: "18",
     URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/unnamed%20(1).jpg?alt=media&token=12519e85-9b6a-4b20-9857-0bee3da43c82",
-    Kind_Of_Picture:"Animal",
+    Kind_Of_Picture: "Animal",
     GeotagID: ""
 }]
 
@@ -554,7 +559,7 @@ const RootQuery = new GraphQLObjectType({
         login: {
             type: UserType,
             args: {
-                User_Name: {
+                e_mail: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 Password: {
@@ -564,7 +569,7 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
 
                 var a = _.find(usersdata, {
-                    User_Name: args.User_Name
+                    e_mail: args.e_mail
 
                 })
                 if (a === undefined)
@@ -647,9 +652,6 @@ const RootQuery = new GraphQLObjectType({
                 Token: {
                     type: GraphQLString
                 },
-                User_Name: {
-                    type: GraphQLString
-                },
                 Password: {
                     type: GraphQLString
                 },
@@ -667,10 +669,7 @@ const RootQuery = new GraphQLObjectType({
                 if (a != null) {
                     // const newLocal = usersdata;
                     let newLocal = usersdata;
-                    if (args.User_Name != undefined)
-                        newLocal = _.filter(newLocal, {
-                            User_Name: args.User_Name
-                        })
+
                     if (args.Token != undefined)
                         newLocal = _.filter(newLocal, {
                             Token: args.Token
@@ -771,7 +770,9 @@ const RootQuery = new GraphQLObjectType({
                             console.log(b)
                             b.forEach(c => {
                                 console.log(c)
-                                let d =_.find(PictureData, {ID : c.toString()})
+                                let d = _.find(PictureData, {
+                                    ID: c.toString()
+                                })
                                 console.log(d)
                                 a.push(d)
                             })
@@ -781,7 +782,9 @@ const RootQuery = new GraphQLObjectType({
                             let b = val.Pictures
                             console.log(b)
                             b.forEach(c => {
-                                let d =_.find(PictureData, {ID : c.toString()})
+                                let d = _.find(PictureData, {
+                                    ID: c.toString()
+                                })
                                 a.push(d)
                             })
                         }
@@ -795,7 +798,7 @@ const RootQuery = new GraphQLObjectType({
         DASlogin: {
             type: UserType,
             args: {
-                User_Name: {
+                e_mail: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 Password: {
@@ -805,12 +808,12 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
 
                 var a = _.find(usersdata, {
-                    User_Name: args.User_Name
+                    e_mail: args.e_mail
 
                 })
                 if (a === undefined)
                     return null
-                else if (a.Password == args.Password&&a.Access_Level>2)
+                else if (a.Password == args.Password && a.Access_Level > 2)
                     return a
                 else return null
 
@@ -934,8 +937,12 @@ const Mutation = new GraphQLObjectType({
         AddUser: {
             type: UserType,
             args: {
-
-                User_Name: {
+                firstName:
+                {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                lastName:
+                {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 Password: {
@@ -948,22 +955,19 @@ const Mutation = new GraphQLObjectType({
                     type: new GraphQLNonNull(GraphQLString)
                 }
 
-
             },
             resolve(parent, args) {
                 var newuser = {
-                    User_Name: args.User_Name,
                     Password: args.Password,
                     Token: makeid(10),
                     Access_Level: args.Access_Level,
-                    e_mail: args.e_mail
-
+                    e_mail: args.e_mail,
+                    firstName:args.firstName,
+                    lastName:args.lastName
                 }
                 usersdata.push(newuser)
-
                 return newuser
             }
-
         }
     }
 });
