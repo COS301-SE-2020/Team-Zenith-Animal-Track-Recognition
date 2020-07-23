@@ -51,7 +51,19 @@ const GessType = new GraphQLObjectType({
 var usersdata = [
 
 ]
+const MesType = new GraphQLObjectType({
+    name: "mesig",
+    fields: () => ({
+        msg:
+        {
+            type:GraphQLString
+        } 
+    })
+})
 
+var MesTypeData = [{
+    msg: "deleted"
+}]
 
 //user 
 const UserType = new GraphQLObjectType({
@@ -1089,24 +1101,42 @@ const Mutation = new GraphQLObjectType({
                     Token: args.TokenChange
                 })
 
-                // users.doc(TokenChange).update({"Access_Level":Level})
+
                 if (args.Access_Level != undefined) {
                     usersdata[b].Access_Level = args.Access_Level
+                    users.doc(args.TokenChange).update({
+                        "Access_Level": args.Access_Level
+                    })
                 }
                 if (args.Password != undefined) {
                     usersdata[b].Password = args.Password
+                    users.doc(args.TokenChange).update({
+                        "Password": args.Password
+                    })
                 }
                 if (args.e_mail != undefined) {
                     usersdata[b].e_mail = args.e_mail
+                    users.doc(args.TokenChange).update({
+                        "e_mail": args.e_mail
+                    })
                 }
                 if (args.firstName != undefined) {
                     usersdata[b].firstName = args.firstName
+                    users.doc(args.TokenChange).update({
+                        "firstName": args.firstName
+                    })
                 }
                 if (args.lastName != undefined) {
                     usersdata[b].lastName = args.lastName
+                    users.doc(args.TokenChange).update({
+                        "lastName": args.lastName
+                    })
                 }
                 if (args.phoneNumber != undefined) {
                     usersdata[b].phoneNumber = args.phoneNumber
+                    users.doc(args.TokenChange).update({
+                        "phoneNumber": args.phoneNumber
+                    })
                 }
 
                 return usersdata[b]
@@ -1114,7 +1144,7 @@ const Mutation = new GraphQLObjectType({
 
         },
         DeleteUser: {
-            type: UserType,
+            type: MesType,
             args: {
                 TokenIn: {
                     type: new GraphQLNonNull(GraphQLString)
@@ -1139,18 +1169,19 @@ const Mutation = new GraphQLObjectType({
                     console.log("deleted aberted 3");
                     return null
                 }
-                b = _.findIndex(usersdata, {
-                    Token: args.TokenChange
+                console.log("hello")
+                var b = _.findIndex(usersdata, {
+                    Token: args.TokenDelete
                 })
 
-                usersdata.splice(b,1)
+                usersdata.splice(b, 1)
 
-                users.doc(TokenDelete).delete().then(function() {
+                users.doc(args.TokenDelete).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
-                
+
                 console.log(usersdata);
-                return null;
+                return MesTypeData[0];
             }
 
         }
