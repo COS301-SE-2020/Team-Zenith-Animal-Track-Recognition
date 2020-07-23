@@ -1,7 +1,5 @@
 import { Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
-import { Ranger } from './../../../models/ranger';
-import { RANGERS } from './../../../models/mock-rangers';
 import { HttpClient } from '@angular/common/http';
 import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
@@ -23,7 +21,7 @@ export class RangerProfileCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"asdfg"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+    this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
       .subscribe((data: any[]) => {
         let temp = [];
         temp = Object.values(Object.values(data)[0]);
