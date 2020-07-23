@@ -18,12 +18,9 @@
 						<span>View Geotags</span>
 					</button>
                     <button mat-menu-item>
-						<span>View Activity</span>
-					</button>
-                    <button mat-menu-item>
 						<span>Change Level</span>
 					</button>
-					<button mat-menu-item>
+					<button mat-menu-item (click)="openDeleteRangerDialog(ranger.id)">
 						<span>Delete Ranger</span>
 					</button>
                 </mat-menu>

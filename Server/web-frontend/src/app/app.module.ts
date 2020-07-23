@@ -88,7 +88,7 @@ import {MatRadioModule} from '@angular/material/radio';
 	MatRadioModule
   ],
   providers: [AuthGuardService],
-  entryComponents: [AddRangerComponent, EditRangerInfoComponent],
+  entryComponents: [AddRangerComponent, EditRangerInfoComponent, DeleteRangerComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

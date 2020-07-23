@@ -1,28 +1,10 @@
 
-	<h1 mat-dialog-title>Delete Ranger</h1>
-	<mat-dialog-content id="add-ranger-form-container">
-		<form id="add-new-ranger-form">
-            <div class="add-new-ranger-input-container">
-                <mat-form-field appearance="outline">
-                    <mat-label>First Name</mat-label>
-                    <input matInput formControlName="firstName" placeholder="First Name" value="{{data.firstName}}">
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Last Name</mat-label>
-                    <input matInput formControlName="lastName" placeholder="Last Name"  value="{{data.lastName}}">
-                </mat-form-field>
-            </div>
-			<div class="add-new-ranger-input-container">
-                <mat-form-field appearance="outline">
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="email" placeholder="Email"  value="{{data.email}}">
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Phone Number</mat-label>
-                    <input matInput formControlName="phoneNumber" placeholder="Phone Number"  value="{{data.phoneNum}}">
-                </mat-form-field>
-            </div>
-        </form>
+	<h1 mat-dialog-title>Confirm Delete Ranger</h1>
+	<mat-dialog-content id="delete-ranger-container">
+		<p class="fontSB delete-ranger-confirmMessage">Are you sure you would like to delete</p>
+		<p class="fontSB" id="delete-ranger-name">{{data.name}}</p>
+		<p class="fontSB delete-ranger-confirmMessage" >This action will delete all information <br>associated with this Ranger*.</p>
+		<p class="fontR" id="delete-ranger-clause">*This does not include any captured spoors or geotags.</p>
 	</mat-dialog-content>
 	<mat-dialog-actions  align="center">
 	  <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
