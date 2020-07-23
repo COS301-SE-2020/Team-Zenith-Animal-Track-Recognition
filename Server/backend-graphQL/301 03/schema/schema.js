@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const helper = require('./helper')
+
 const _ = require('lodash')
 const {
     GraphQLObjectType,
@@ -22,7 +22,6 @@ let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
 const {
     toNumber
 } = require('lodash');
-const makeid = require('./helper');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -1075,7 +1074,8 @@ users.get().then((snapshot) => {
                 Access_Level: doc.data().Access_Level,
                 e_mail: doc.data().e_mail,
                 firstName: doc.data().firstName,
-                lastName: doc.data().lastName
+                lastName: doc.data().lastName,
+                phoneNumber:doc.data().phoneNumber
             }
             usersdata.push(newuser)
             console.log(newuser)
