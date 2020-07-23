@@ -23,7 +23,7 @@ export class RangersToolbarComponent implements OnInit {
   ngOnInit(): void {
 
     document.getElementById("rangers-route").classList.add("activeRoute");
-    this.http.get<any>('http://192.168.8.95:55555/graphql?query=query{Users(TokenIn:"asdfg"){Token,Password,Access_Level,e_mail}}')
+    this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"asdfg"){Token,Password,Access_Level,e_mail}}')
       .subscribe((data: any[]) => {
         let temp = [];
         temp = Object.values(Object.values(data)[0]);
@@ -36,7 +36,6 @@ export class RangersToolbarComponent implements OnInit {
   }
 
   openAddRangerDialog() {
-    console.log("TEEEES");
     const dialogConfig = new MatDialogConfig();
 
     this.dialog.open(AddRangerComponent, { height: '55%', width: '35%', panelClass: "add-ranger-modal", autoFocus: true, disableClose: true });
@@ -51,3 +50,11 @@ export class RangersToolbarComponent implements OnInit {
     this.router.navigate([location]);
   }
 }
+
+
+
+
+
+
+
+
