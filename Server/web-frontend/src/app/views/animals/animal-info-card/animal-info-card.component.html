@@ -1,10 +1,10 @@
 <div class="animal-profile-cards-container">
     <div class="animal-profile-card-container" *ngFor="let animal of animals | filter:searchText">
-        <mat-card class="animal-profile-card"  id="animal{{animal.Token}}ProfileCard">
-			<img mat-card-image>
+        <mat-card class="animal-profile-card" id="animal{{animal.Token}}ProfileCard">
+            <img mat-card-image id="animal-info-card-picture" src="{{animal.Pictures[0].URL}}">
             <div class="animal-profile-card-header">
                 <mat-card-header>
-                    <mat-card-title class="fontSB"  id="animal{{animal.Token}}Name">{{animal.Common_Name}}</mat-card-title>
+                    <mat-card-title class="fontSB" id="animal{{animal.Token}}Name">{{animal.Common_Name}}</mat-card-title>
                     <mat-card-subtitle class="fontM" id="animal{{animal.Token}}animalLevel">{{animal.Classification}}</mat-card-subtitle>
                 </mat-card-header>
                 <button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
@@ -20,7 +20,7 @@
                     <button mat-menu-item>
 						<span>View Geotags</span>
 					</button>
-					<button mat-menu-item (click)="openDeleteAnimalDialog(animal.Token)">
+                    <button mat-menu-item (click)="openDeleteAnimalDialog(animal.Token)">
 						<span>Delete Animal</span>
 					</button>
                 </mat-menu>
@@ -28,7 +28,7 @@
             <mat-card-content>
                 <div class="animal-profile-card-contact-container">
                     <div class="animal-profile-card-contact-info">
-                        <p class="animal-profile-card-phone" id="animal{{animal.Token}}PhoneNumber">{{animal.Description_of_anima}}</p>
+                        <p class="animal-profile-card-phone" id="animal{{animal.Token}}PhoneNumber">{{animal.Description_of_animal}}</p>
                     </div>
                 </div>
             </mat-card-content>
