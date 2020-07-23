@@ -1112,6 +1112,47 @@ const Mutation = new GraphQLObjectType({
                 return usersdata[b]
             }
 
+        },
+        DeleteUser: {
+            type: UserType,
+            args: {
+                TokenIn: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                TokenDelete: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                var a = _.find(usersdata, {
+                    Token: args.TokenIn
+                })
+                if (a == undefined) {
+                    console.log("deleted aberted 1");
+                    return null
+                }
+                if (a.Access_Level <= 2) {
+                    console.log("deleted aberted 2");
+                    return null
+                }
+                if (args.TokenDelete == args.TokenIn) {
+                    console.log("deleted aberted 3");
+                    return null
+                }
+                b = _.findIndex(usersdata, {
+                    Token: args.TokenChange
+                })
+
+                usersdata.splice(b,1)
+
+                users.doc(TokenDelete).delete().then(function() {
+                    console.log("Document successfully deleted!");
+                })
+                
+                console.log(usersdata);
+                return null;
+            }
+
         }
     }
 });
