@@ -1,1 +1,19 @@
-<div>Animal Component</div>>
+<div id="animals-view-workspace-container">
+    <app-animals-toolbar></app-animals-toolbar>
+    <div id="animals-view-workspace">
+        <mat-drawer-container id="animal-search-sidenav-container">
+            <mat-drawer id="animal-search-sidenav" #sidenav mode="side">
+              <!--  <app-animal-search-sidenav-comp></app-animal-search-sidenav-comp>-->
+                <div id="sidenav-close-btn-container" (click)="closeSidenav()">
+                    <button id="side-nav-close-btn" mat-icon-button><mat-icon>chevron_left</mat-icon></button>
+                </div>
+            </mat-drawer>
+            <mat-drawer-content id="animal-search-sidenav-content">
+                <div id="sidenav-open-btn-container" (click)="openSidenav()">
+                    <button id="side-nav-open-btn" mat-icon-button><mat-icon>chevron_right</mat-icon></button>
+                </div>
+                <!--<app-animal-profile-card></app-animal-profile-card>-->
+            </mat-drawer-content>
+        </mat-drawer-container>
+    </div>
+</div>
