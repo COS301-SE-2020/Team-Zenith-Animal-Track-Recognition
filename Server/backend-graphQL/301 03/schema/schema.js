@@ -1047,7 +1047,7 @@ const Mutation = new GraphQLObjectType({
             }
 
         },
-        UpdateUserd: {
+        UpdateUser: {
             type: UserType,
             args: {
                 TokenSend: {
