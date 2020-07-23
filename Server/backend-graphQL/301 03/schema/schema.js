@@ -60,15 +60,6 @@ var usersdata = [{
         phoneNumber: "+27123456789"
     },
     {
-        Password: 'zenith!@#$5',
-        Token: 'asdfg',
-        Access_Level: "3",
-        e_mail: "zachary.christophers@gmail.com",
-        firstName: "Zach",
-        lastName: "Christophers",
-        phoneNumber: "+27123456789"
-    },
-    {
         Password: '12345',
         Token: 'zxcvb',
         Access_Level: "3",
@@ -387,6 +378,12 @@ const AnimalType = new GraphQLObjectType({
             type: GraphQLString
         },
         Typical_Behaviour: {
+            type: GraphQLString
+        },
+        Overview_of_the_animal: {
+            type: GraphQLString
+        },
+        Description_of_animal: {
             type: GraphQLString
         },
         Pictures: {
@@ -1057,7 +1054,7 @@ const Mutation = new GraphQLObjectType({
                     return null
                 }
 
-                users.doc(TokenChange).update({"Access_Level":Level})
+                // users.doc(TokenChange).update({"Access_Level":Level})
 
                 b=_.findIndex(usersdata,{
                     Token: args.TokenChange
