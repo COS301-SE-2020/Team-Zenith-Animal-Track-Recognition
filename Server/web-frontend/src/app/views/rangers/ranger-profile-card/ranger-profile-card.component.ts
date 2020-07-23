@@ -1,9 +1,13 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
-import {MatDialog, MatDialogRef, MatDialogConfig} from '@angular/material/dialog'; 
-import {EditRangerInfoComponent} from './../edit-ranger-info/edit-ranger-info.component'; 
-import {DeleteRangerComponent} from './../delete-ranger/delete-ranger.component'; 
 import { Ranger } from './../../../models/ranger';
 import { RANGERS } from './../../../models/mock-rangers';
+import { HttpClient } from '@angular/common/http';
+import { FnParam } from '@angular/compiler/src/output/output_ast';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
+import {EditRangerInfoComponent} from './../edit-ranger-info/edit-ranger-info.component'; 
+import {DeleteRangerComponent} from './../delete-ranger/delete-ranger.component'; 
+
 
 @Component({
   selector: 'app-ranger-profile-card',
@@ -13,14 +17,21 @@ import { RANGERS } from './../../../models/mock-rangers';
 export class RangerProfileCardComponent implements OnInit {
 
   @Input() searchText: string;
-  rangers = RANGERS;
+  rangers;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
+    this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"asdfg"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+      .subscribe((data: any[]) => {
+        let temp = [];
+        temp = Object.values(Object.values(data)[0]);
+        this.printOut(temp);
+      });
   }
   
-    //Ranger CRUD Quick-Actions
+  //Ranger CRUD Quick-Actions
 	
 	//EDIT Ranger
     openEditRangerDialog(rangerID) 
@@ -34,10 +45,11 @@ export class RangerProfileCardComponent implements OnInit {
 		var rangerPhone = document.getElementById("ranger" + rangerID + "PhoneNumber").textContent;
 		var rangerEmail = document.getElementById("ranger" + rangerID + "Email").textContent;
 		
+		
 		this.dialog.open(EditRangerInfoComponent, {height: '55%', width: '35%', autoFocus: true, disableClose: true, data: { firstName: rangerName[0], lastName: rangerName[1], level: rangerLevel, phoneNum: rangerPhone.replace("call",""), email: rangerEmail.replace("mail","")},});
 	}
-	
-	//DELETE Ranger
+  
+  	//DELETE Ranger
 	openDeleteRangerDialog(rangerID) 
 	{
 		const dialogConfig = new MatDialogConfig();
@@ -48,4 +60,32 @@ export class RangerProfileCardComponent implements OnInit {
 		this.dialog.open(DeleteRangerComponent, {height: '45%', width: '30%', autoFocus: true, disableClose: true, data: { name: rangerFullName,},});
 	}
 
+  printOut(temp: any) {
+    this.rangers = temp[0];
+    this.sort(true);
+  }
+
+  sort(bool: boolean) {
+    if (bool) {
+      for (let i = 0; i < this.rangers.length - 1; i++) {
+        for (let j = i + 1; j < this.rangers.length; j++) {
+          if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
+            let temp = this.rangers[i];
+            this.rangers[i] = this.rangers[j];
+            this.rangers[j] = temp;
+          }
+        }
+      }
+    } else {
+      for (let i = 0; i < this.rangers.length - 1; i++) {
+        for (let j = i + 1; j < this.rangers.length; j++) {
+          if (this.rangers[i].Access_Level > this.rangers[j].Access_Level) {
+            let temp = this.rangers[i];
+            this.rangers[i] = this.rangers[j];
+            this.rangers[j] = temp;
+          }
+        }
+      }
+    }
+  }
 }

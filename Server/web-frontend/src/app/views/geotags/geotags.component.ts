@@ -1,4 +1,6 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'app-geotags',
@@ -7,11 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GeotagsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) {
+    const temp = new URLSearchParams(window.location.search);
+    if (temp.has('reload')) {
+      var start = new Date().getTime();
+      var end = start;
+      while (end < start + 500) {
+        end = new Date().getTime();
+      }
+      this.router.navigate(['/rangers']);
+    }
+  }
 
   ngOnInit(): void {
     document.getElementById("geotags-route").classList.add("activeRoute");
-  
   }
 
 }
