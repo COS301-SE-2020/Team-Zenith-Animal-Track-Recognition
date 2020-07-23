@@ -1004,7 +1004,7 @@ const Mutation = new GraphQLObjectType({
                     }
                     usersdata.push(newuser2)
                 })
-                
+
                 console.log(x)
                 a = _.find(usersdata, {
                     Token: x
@@ -1013,34 +1013,102 @@ const Mutation = new GraphQLObjectType({
                 return a;
             }
         },
-        UpdateLevel:
-        {
+        UpdateLevel: {
             type: UserType,
-            args:{
-                TokenSend:{
+            args: {
+                TokenSend: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                TokenChange:{
+                TokenChange: {
                     type: new GraphQLNonNull(GraphQLString)
-                }
-                ,Level:{
+                },
+                Level: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
-            resolve(parent, args){
+            resolve(parent, args) {
                 var a = _.find(usersdata, {
                     Token: args.TokenSend
                 })
+                if (a == undefined) {
+                    return null
+                }
                 if (a.Access_Level <= 2) {
                     return null
                 }
 
                 // users.doc(TokenChange).update({"Access_Level":Level})
 
-                b=_.findIndex(usersdata,{
+                b = _.findIndex(usersdata, {
                     Token: args.TokenChange
                 })
-                usersdata[b].Access_Level=args.Level
+                usersdata[b].Access_Level = args.Level
+                return usersdata[b]
+            }
+
+        },
+        UpdateUserd: {
+            type: UserType,
+            args: {
+                TokenSend: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                TokenChange: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Password: {
+                    type: GraphQLString
+                },
+                Access_Level: {
+                    type: GraphQLString
+                },
+                e_mail: {
+                    type: GraphQLString
+                },
+                firstName: {
+                    type: GraphQLString
+                },
+                lastName: {
+                    type: GraphQLString
+                },
+                phoneNumber: {
+                    type: GraphQLString
+                }
+            },
+            resolve(parent, args) {
+                var a = _.find(usersdata, {
+                    Token: args.TokenSend
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.Access_Level <= 2) {
+                    return null
+                }
+                b = _.findIndex(usersdata, {
+                    Token: args.TokenChange
+                })
+
+                // users.doc(TokenChange).update({"Access_Level":Level})
+                if (args.Access_Level != undefined) {
+                    usersdata[b].Access_Level = args.Access_Level
+                }
+                if (args.Password != undefined) {
+                    usersdata[b].Password = args.Password
+                }
+                if (args.e_mail != undefined) {
+                    usersdata[b].e_mail = args.e_mail
+                }
+                if (args.firstName != undefined) {
+                    usersdata[b].firstName = args.firstName
+                }
+                if (args.lastName != undefined) {
+                    usersdata[b].lastName = args.lastName
+                }
+                if (args.phoneNumber != undefined) {
+                    usersdata[b].phoneNumber = args.phoneNumber
+                }
+
                 return usersdata[b]
             }
 
@@ -1074,7 +1142,7 @@ users.get().then((snapshot) => {
                 e_mail: doc.data().e_mail,
                 firstName: doc.data().firstName,
                 lastName: doc.data().lastName,
-                phoneNumber:doc.data().phoneNumber
+                phoneNumber: doc.data().phoneNumber
             }
             usersdata.push(newuser)
             console.log(newuser)
