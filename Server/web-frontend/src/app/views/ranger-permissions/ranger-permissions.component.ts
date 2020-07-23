@@ -61,7 +61,7 @@ export class RangerPermissionsComponent implements OnInit {
 
 		var count = 1;
 		//Replace Permissions with appropiate radio button
-		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"asdfg"){Token,Access_Level,firstName,lastName}}')
+		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +'"){Token,Access_Level,firstName,lastName}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);

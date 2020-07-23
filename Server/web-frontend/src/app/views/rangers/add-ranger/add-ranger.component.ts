@@ -50,8 +50,8 @@ export class AddRangerComponent implements OnInit {
     let phoneNumber: string = "" + this.f.phoneNumber.value;
     phoneNumber = phoneNumber.trim();
 
-    let temp = this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{AddUser(firstName:"' + encodeURIComponent(this.f.firstName.value) + '",lastName:"' + encodeURIComponent(this.f.lastName.value) + '",Password:"' + encodeURIComponent(this.f.password.value) + '",Access_Level:"1",e_mail:"' + encodeURIComponent(this.f.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}',
-      'mutation{AddUser(firstName:"' + encodeURIComponent(this.f.firstName.value) + '",lastName:"' + encodeURIComponent(this.f.lastName.value) + '",Password:"' + encodeURIComponent(this.f.password.value) + '",Access_Level:"1",e_mail:"' + encodeURIComponent(this.f.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}');
+    let temp = this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{AddUser(firstName:"' + encodeURIComponent(this.f.firstName.value) + '",lastName:"' + encodeURIComponent(this.f.lastName.value) + '",Password:"' + encodeURIComponent(this.f.password.value) + '",Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",Access_Level:"1",e_mail:"' + encodeURIComponent(this.f.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}',
+      'mutation{AddUser(firstName:"' + encodeURIComponent(this.f.firstName.value) + '",lastName:"' + encodeURIComponent(this.f.lastName.value) + '",Password:"' + encodeURIComponent(this.f.password.value) + '",Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",Access_Level:"1",e_mail:"' + encodeURIComponent(this.f.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}');
     console.log(temp.subscribe(data => (data: any[]) => {
       let temp = [];
       temp = Object.values(Object.values(data)[0]);
