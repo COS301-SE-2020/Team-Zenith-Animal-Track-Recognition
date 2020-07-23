@@ -50,15 +50,6 @@ const GessType = new GraphQLObjectType({
 })
 
 var usersdata = [
-    {
-        Password: '12345',
-        Token: 'zxcvb',
-        Access_Level: "3",
-        e_mail: "zachary@christophers.co.za",
-        firstName: "Obakeng",
-        lastName: "Seageng",
-        phoneNumber: "+27123456789"
-    }
 
 ]
 
