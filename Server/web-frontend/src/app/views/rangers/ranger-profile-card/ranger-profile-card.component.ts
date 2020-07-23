@@ -1,7 +1,5 @@
 import { Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
-import { Ranger } from './../../../models/ranger';
-import { RANGERS } from './../../../models/mock-rangers';
 import { HttpClient } from '@angular/common/http';
 import { FnParam } from '@angular/compiler/src/output/output_ast';
 

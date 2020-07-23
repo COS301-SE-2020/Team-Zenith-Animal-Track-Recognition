@@ -10,6 +10,14 @@ import { threadId } from 'worker_threads';
 export class GeotagsComponent implements OnInit {
 
   constructor(private router: Router) {
+    this.executeOrder66();
+  }
+
+  ngOnInit(): void {
+    document.getElementById("geotags-route").classList.add("activeRoute");
+  }
+
+  executeOrder66() {
     const temp = new URLSearchParams(window.location.search);
     if (temp.has('reload')) {
       var start = new Date().getTime();
@@ -19,10 +27,13 @@ export class GeotagsComponent implements OnInit {
       }
       this.router.navigate(['/rangers']);
     }
+    if (temp.has('reloadPerms')) {
+      var start = new Date().getTime();
+      var end = start;
+      while (end < start + 500) {
+        end = new Date().getTime();
+      }
+      this.router.navigate(['/rangers/permissions']);
+    }
   }
-
-  ngOnInit(): void {
-    document.getElementById("geotags-route").classList.add("activeRoute");
-  }
-
 }
