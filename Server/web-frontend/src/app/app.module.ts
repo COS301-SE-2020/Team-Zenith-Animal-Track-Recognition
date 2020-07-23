@@ -16,6 +16,8 @@ import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers
 import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
 import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/ranger-profile-card.component';
 import { AddRangerComponent } from './views/rangers/add-ranger/add-ranger.component';
+import { EditRangerInfoComponent } from './views/rangers/edit-ranger-info/edit-ranger-info.component'; 
+import { DeleteRangerComponent } from './views/rangers/delete-ranger/delete-ranger.component';
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
 import { GeotagsComponent } from './views/geotags/geotags.component';
 import { SettingsComponent } from './views/settings/settings.component';
@@ -35,6 +37,10 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatExpansionModule} from '@angular/material/expansion'; 
+import {MatTableModule} from '@angular/material/table'; 
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -52,6 +58,8 @@ import {MatNativeDateModule} from '@angular/material/core';
     SideNavigationComponent,
     UtilityNavigationComponent,
     RangerPermissionsComponent,
+    EditRangerInfoComponent,
+    DeleteRangerComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,10 +81,14 @@ import {MatNativeDateModule} from '@angular/material/core';
 	MatMenuModule,
 	MatDialogModule,
 	MatDatepickerModule,
-	MatNativeDateModule
+	MatNativeDateModule,
+	MatBadgeModule,
+	MatExpansionModule,
+	MatTableModule,
+	MatRadioModule
   ],
   providers: [AuthGuardService],
-  entryComponents: [RangersComponent, RangersToolbarComponent, AddRangerComponent],
+  entryComponents: [AddRangerComponent, EditRangerInfoComponent, DeleteRangerComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

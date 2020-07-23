@@ -10,7 +10,7 @@ export const RANGERS: Ranger[] =
 	{id: 6, firstName: "Matthew", lastName: "Deleon", phoneNumber: "+27 123 456 78", email: "ranger1@erp.com", rangerLevel: 1, activity: "Captured Spoor		09/09/2020\nCaptured Spoor		09/09/2020\nCaptured Spoor		09/09/2020"},
 	{id: 7, firstName: "Sibusiso", lastName: "Nxolela", phoneNumber: "+27 123 456 78", email: "ranger1@erp.com", rangerLevel: 2, activity: "Reclassified Spoor		09/09/2020\nCaptured Spoor		09/09/2020\nCaptured Spoor		09/09/2020"},
 	{id: 8, firstName: "Kagiso", lastName: "Ndlovu", phoneNumber: "+27 123 456 78", email: "ranger1@erp.com", rangerLevel: 2, activity: "Reclassified Spoor		09/09/2020\nCaptured Spoor		09/09/2020\nCaptured Spoor		09/09/2020"},	
-	{id: 8, firstName: "Daniel", lastName: "Rogers", phoneNumber: "+27 123 456 78", email: "ranger1@erp.com", rangerLevel: 3, activity: "Reclassified Spoor		09/09/2020\nCaptured Spoor		09/09/2020\nCaptured Spoor		09/09/2020"},	
-	{id: 8, firstName: "Kagiso", lastName: "Ndlovu", phoneNumber: "+27 123 456 78", email: "ranger1@erp.com", rangerLevel: 2, activity: "Reclassified Spoor		09/09/2020\nCaptured Spoor		09/09/2020\nCaptured Spoor		09/09/2020"},	
-	{id: 8, firstName: "Kagiso", lastName: "Ndlovu", phoneNumber: "+27 123 456 78", email: "ranger1@erp.com", rangerLevel: 2, activity: "Reclassified Spoor		09/09/2020\nCaptured Spoor		09/09/2020\nCaptured Spoor		09/09/2020"},	
+	{id: 9, firstName: "Daniel", lastName: "Rogers", phoneNumber: "+27 123 456 78", email: "ranger1@erp.com", rangerLevel: 3, activity: "Reclassified Spoor		09/09/2020\nCaptured Spoor		09/09/2020\nCaptured Spoor		09/09/2020"},	
+	{id: 10, firstName: "Vincent", lastName: "Mataruse", phoneNumber: "+27 123 456 78", email: "ranger1@erp.com", rangerLevel: 1, activity: "Reclassified Spoor		09/09/2020\nCaptured Spoor		09/09/2020\nCaptured Spoor		09/09/2020"},	
+	{id: 11, firstName: "Tendai", lastName: "Soweto", phoneNumber: "+27 123 456 78", email: "ranger1@erp.com", rangerLevel: 2, activity: "Reclassified Spoor		09/09/2020\nCaptured Spoor		09/09/2020\nCaptured Spoor		09/09/2020"},	
 ];
