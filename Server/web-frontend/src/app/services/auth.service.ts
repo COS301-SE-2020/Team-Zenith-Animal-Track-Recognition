@@ -15,7 +15,7 @@ export class AuthService {
   private isAuthorized = false;
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentToken')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   login(username, password) {
-    return this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{DASlogin(e_mail:"' + username + '",Password:"' + password + '"){Token}}')
+    return this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{DASlogin(e_mail:"' + username + '",Password:"' + password + '"){Token, firstName, lastName}}')
       .pipe(map(user => {
         if (null === user.data.DASlogin) {
           this.isAuthorized = false;
@@ -48,7 +48,8 @@ export class AuthService {
         const now = new Date();
         const tkn = {
           value: user.data.DASlogin.Token,
-          expiry: now.getTime() + 3600000
+          expiry: now.getTime() + 3600000,
+          fullName: user.data.DASlogin.firstName + " " + user.data.DASlogin.lastName
         }
 
         localStorage.setItem('currentToken', JSON.stringify(tkn));

@@ -1,30 +1,30 @@
-
-	<h1 mat-dialog-title>Edit Ranger Information</h1>
-	<mat-dialog-content id="add-ranger-form-container">
-		<form id="add-new-ranger-form">
-            <div class="add-new-ranger-input-container">
-                <mat-form-field appearance="outline">
-                    <mat-label>First Name</mat-label>
-                    <input matInput formControlName="firstName" placeholder="First Name" value="{{data.firstName}}">
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Last Name</mat-label>
-                    <input matInput formControlName="lastName" placeholder="Last Name"  value="{{data.lastName}}">
-                </mat-form-field>
-            </div>
-			<div class="add-new-ranger-input-container">
-                <mat-form-field appearance="outline">
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="email" placeholder="Email"  value="{{data.email}}">
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Phone Number</mat-label>
-                    <input matInput formControlName="phoneNumber" placeholder="Phone Number"  value="{{data.phoneNum}}">
-                </mat-form-field>
-            </div>
-        </form>
-	</mat-dialog-content>
-	<mat-dialog-actions  align="center">
-	  <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
-	  <button mat-button id="add-ranger-btn" class="fontSB">SAVE CHANGES</button>
-	</mat-dialog-actions>
+<h1 mat-dialog-title>
+    Edit Ranger Information</h1>
+<mat-dialog-content id="add-ranger-form-container">
+    <form [formGroup]="editUserForm" id="add-new-ranger-form">
+        <div class="add-new-ranger-input-container">
+            <mat-form-field appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName" placeholder="First Name" value="{{data.firstName}}">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName" placeholder="Last Name" value="{{data.lastName}}">
+            </mat-form-field>
+        </div>
+        <div class="add-new-ranger-input-container">
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" placeholder="Email" value="{{data.email}}">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Phone Number</mat-label>
+                <input matInput formControlName="phoneNumber" placeholder="Phone Number" value="{{data.phoneNum}}">
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
+    <button type="submit" mat-button mat-dialog-close (click)="onSubmit()" id="add-ranger-btn" class="fontSB">SAVE CHANGES</button>
+</mat-dialog-actions>
