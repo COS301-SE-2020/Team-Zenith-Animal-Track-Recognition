@@ -144,16 +144,26 @@ each object must have the image of the animal i.e "[https://images.unsplash.com/
 
 >>>Animal Species ID
 
-<<<Species name
-<<<Animal common name
-<<<Avg weight [male, female]
-<<<Avg height [male, female]
-<<<Gestation period
-<<<Diet
-<<<Overview of the animal
-<<<Description of animal
-<<<Behaviour of animal
-<<<Habitat of animal
+<<<Species name//Done
+<<<Animal common name//Done
+<<<Avg weight [male, female] //exzisting format
+
+//Avg weight male
+//Avg weight female
+
+<<<Avg height [male, female]//exzisting format
+
+//Avg height male
+//Avg height female
+
+
+<<<Gestation period//Done
+<<<Diet//Done
+<<<Overview of the animal//Done
+<<<Description of animal//Done
+<<<Behaviour of animal//Done
+<<<Habitat of animal//returnss a list
+<><><> calls Habitats
 <<<Threat posed by the animal to rangers 
 
 
