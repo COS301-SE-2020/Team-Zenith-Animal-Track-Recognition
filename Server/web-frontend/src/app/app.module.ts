@@ -16,6 +16,7 @@ import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers
 import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
 import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/ranger-profile-card.component';
 import { AddRangerComponent } from './views/rangers/add-ranger/add-ranger.component';
+import { EditRangerInfoComponent } from './views/rangers/edit-ranger-info/edit-ranger-info.component'; 
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
 import { GeotagsComponent } from './views/geotags/geotags.component';
 import { SettingsComponent } from './views/settings/settings.component';
@@ -38,7 +39,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatExpansionModule} from '@angular/material/expansion'; 
 import {MatTableModule} from '@angular/material/table'; 
-import {MatRadioModule} from '@angular/material/radio'; 
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import {MatRadioModule} from '@angular/material/radio';
     SideNavigationComponent,
     UtilityNavigationComponent,
     RangerPermissionsComponent,
+    EditRangerInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,7 +86,7 @@ import {MatRadioModule} from '@angular/material/radio';
 	MatRadioModule
   ],
   providers: [AuthGuardService],
-  entryComponents: [RangersComponent, RangersToolbarComponent, AddRangerComponent],
+  entryComponents: [AddRangerComponent, EditRangerInfoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
