@@ -1,17 +1,17 @@
 <div class="ranger-profile-cards-container">
     <div class="ranger-profile-card-container" *ngFor="let ranger of rangers | filter:searchText">
-        <mat-card class="ranger-profile-card">
+        <mat-card class="ranger-profile-card" id="ranger{{ranger.id}}ProfileCard">
             <div class="ranger-profile-card-header">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
-                    <mat-card-title class="fontSB">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</mat-card-title>
-                    <mat-card-subtitle class="fontM">Level {{ranger.rangerLevel}} Ranger</mat-card-subtitle>
+                    <mat-card-title class="fontSB" id="ranger{{ranger.id}}Name">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</mat-card-title>
+                    <mat-card-subtitle class="fontM" id="ranger{{ranger.id}}RangerLevel">Level {{ranger.rangerLevel}} Ranger</mat-card-subtitle>
                 </mat-card-header>
                 <button mat-icon-button [matMenuTriggerFor]="menu" class="ranger-profile-card-contextMenu">
 					<mat-icon>more_vert</mat-icon>
 				</button>
-                <mat-menu #menu="matMenu" xPosition="before">
-                    <button mat-menu-item (click)="openEditRangerDialog()">
+                <mat-menu #menu="matMenu" xPosition="before" class="ranger{{ranger.id}}ContextMenu">
+                    <button mat-menu-item (click)="openEditRangerDialog(ranger.id)">
 						<span>Edit Information</span>
 					</button>
                     <button mat-menu-item>
@@ -29,9 +29,9 @@
                 <div class="ranger-profile-card-contact-container">
                     <p class="fontSB">Contact Information</p>
                     <div class="ranger-profile-card-contact-info">
-                        <p class="ranger-profile-card-phone">
+                        <p class="ranger-profile-card-phone" id="ranger{{ranger.id}}PhoneNumber">
                             <mat-icon>call</mat-icon>{{ranger.phoneNumber}}</p>
-                        <p class="ranger-profile-card-email">
+                        <p class="ranger-profile-card-email" id="ranger{{ranger.id}}Email">
                             <mat-icon>mail</mat-icon>{{ranger.email}}</p>
                     </div>
                 </div>

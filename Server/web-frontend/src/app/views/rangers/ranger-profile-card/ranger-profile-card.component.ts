@@ -20,11 +20,20 @@ export class RangerProfileCardComponent implements OnInit {
   }
   
     
-    openEditRangerDialog() 
+    openEditRangerDialog(rangerID) 
 	{
 		const dialogConfig = new MatDialogConfig();
 		
-		this.dialog.open(EditRangerInfoComponent, {height: '55%', width: '35%', autoFocus: true, disableClose: true});
+		//Get ranger information for chosen card
+		var rangerFullName = document.getElementById("ranger" + rangerID + "Name").innerHTML;
+		var rangerName = rangerFullName.split("&nbsp;");
+		var rangerLevel = document.getElementById("ranger" + rangerID + "RangerLevel").textContent;
+		var rangerPhone = document.getElementById("ranger" + rangerID + "PhoneNumber").textContent;
+		var rangerEmail = document.getElementById("ranger" + rangerID + "Email").textContent;
+		
+		console.log(document.getElementById("ranger" + rangerID + "PhoneNumber"));
+		
+		this.dialog.open(EditRangerInfoComponent, {height: '55%', width: '35%', autoFocus: true, disableClose: true, data: { firstName: rangerName[0], lastName: rangerName[1], level: rangerLevel, phoneNum: rangerPhone.replace("call",""), email: rangerEmail.replace("mail","")},});
 	}
 
 }
