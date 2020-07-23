@@ -1040,8 +1040,7 @@ const Mutation = new GraphQLObjectType({
                 b=_.findIndex(usersdata,{
                     Token: args.TokenChange
                 })
-                usersdata[b].Access_Level=args.Access_Level
-
+                usersdata[b].Access_Level=args.Level
                 return usersdata[b]
             }
 

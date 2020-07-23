@@ -2,7 +2,6 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const expressPlayground = require("graphql-playground-middleware-express")
-const helper =require('../schema/helper')
 
 const app = express();
 
@@ -39,7 +38,7 @@ test("login test", async (done) => {
   request
     .post("/graphql")
     .send({
-      query: "query{ login(User_Name:\"root\",Password:\"12345\"){Token} }",
+      query: "query{login(e_mail:\"zachary.christophers@gmail.com\",Password:\"zenith!@#$5\"){Token}}",
     })
     .set("Accept", "application/json")
     .expect("Content-Type", /json/)
@@ -98,19 +97,5 @@ test("query that does not exist", async () => {
     .set("Accept", "application/json");
 
   expect(response.status).toBe(400);
-});
-test("tokin generater test", async () => {
-  let t = []
-  for(let i = 0;i<10;i++)
-  {
-    let d=makeid(32)
-    t.push(d)
-  }
-  t.forEach((a)=>{
-    t.forEach((b)=>{
-      expect(a).not.toBe(b)
-    })
-  }
-  )
 });
 
