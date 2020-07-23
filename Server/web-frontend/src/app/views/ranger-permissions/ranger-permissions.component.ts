@@ -116,7 +116,7 @@ export class RangerPermissionsComponent implements OnInit {
 		let temp = this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{UpdateUser('
 			+ 'TokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
 			+ 'TokenChange:"' + tkn + '",'
-			+ 'Level:"' + lvl + '"){lastName,Token}}', '').subscribe((data: any[]) => {
+			+ 'Access_Level:"' + lvl + '"){lastName,Token}}', '').subscribe((data: any[]) => {
 			let t = [];
 			t = Object.values(Object.values(data)[0]);
 		});
