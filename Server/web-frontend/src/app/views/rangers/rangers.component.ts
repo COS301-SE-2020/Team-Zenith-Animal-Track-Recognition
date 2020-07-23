@@ -23,7 +23,7 @@ export class RangersComponent implements OnInit {
 
 	ngOnInit(): void {
 		document.getElementById("rangers-route").classList.add("activeRoute");
-		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"asdfg"){Token,Password,Access_Level,e_mail}}')
+		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
