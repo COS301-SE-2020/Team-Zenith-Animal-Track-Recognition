@@ -9,7 +9,7 @@
 	<div id="loginView-loginForm-Container">
 		<form [formGroup]="loginForm" id="loginFormComp-loginForm-Container" (ngSubmit)="onSubmit()">
             <div id="loginFormComp-loginForm-TitleContainer">
-                <h2 class="fontR">Welcome back, Administrator!</h2>
+                <h2 class="fontR">Welcome back, {{welcome}}!</h2>
                 <p class="fontR">Please enter your details in the form below to sign in</p>
             </div>
             <div id="loginFormComp-loginForm-FormContainer">

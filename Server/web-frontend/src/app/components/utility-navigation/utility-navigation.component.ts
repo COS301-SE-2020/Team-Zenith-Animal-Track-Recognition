@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class UtilityNavigationComponent implements OnInit {
   currentUser: User;
+  username;
 
   constructor(
     private router: Router,
@@ -18,7 +19,10 @@ export class UtilityNavigationComponent implements OnInit {
     this.authService.currentUser.subscribe(x => this.currentUser = x);
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void 
+  {
+	  //Show logged in user
+	  this.username = localStorage.getItem("localStorageUsername");
   }
 
   logout(): void {

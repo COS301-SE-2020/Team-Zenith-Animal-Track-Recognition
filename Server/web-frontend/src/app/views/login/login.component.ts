@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
+  welcome;
 
   hide = true;
   constructor(
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-
+	  this.welcome = localStorage.getItem("localStorageUsername");
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/overview';
   }
 
@@ -53,7 +54,16 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-			console.log("logging in!");
+
+		//Save username
+		if (localStorage.getItem("localStorageUsername") === null) 
+		{
+			localStorage.setItem("localStorageUsername", username);
+		}
+		else if (localStorage.getItem("localStorageUsername") != null)
+		{
+			localStorage.setItem("localStorageUsername", username);
+		}
           this.router.navigate([this.returnUrl]);
         },
         error => {
