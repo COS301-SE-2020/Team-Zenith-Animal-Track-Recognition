@@ -17,6 +17,7 @@ import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-
 import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/ranger-profile-card.component';
 import { AddRangerComponent } from './views/rangers/add-ranger/add-ranger.component';
 import { EditRangerInfoComponent } from './views/rangers/edit-ranger-info/edit-ranger-info.component'; 
+import { DeleteRangerComponent } from './views/rangers/delete-ranger/delete-ranger.component';
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
 import { GeotagsComponent } from './views/geotags/geotags.component';
 import { SettingsComponent } from './views/settings/settings.component';
@@ -58,6 +59,7 @@ import {MatRadioModule} from '@angular/material/radio';
     UtilityNavigationComponent,
     RangerPermissionsComponent,
     EditRangerInfoComponent,
+    DeleteRangerComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,7 +88,7 @@ import {MatRadioModule} from '@angular/material/radio';
 	MatRadioModule
   ],
   providers: [AuthGuardService],
-  entryComponents: [AddRangerComponent, EditRangerInfoComponent],
+  entryComponents: [AddRangerComponent, EditRangerInfoComponent, DeleteRangerComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
