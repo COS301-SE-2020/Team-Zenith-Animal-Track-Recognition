@@ -4,8 +4,8 @@
 			<img mat-card-image>
             <div class="animal-profile-card-header">
                 <mat-card-header>
-                    <mat-card-title class="fontSB"  id="animal{{animal.Token}}Name">{{animal.firstName}}&nbsp;{{animal.lastName}}</mat-card-title>
-                    <mat-card-subtitle class="fontM" id="animal{{animal.Token}}animalLevel">Level {{animal.Access_Level}} animal</mat-card-subtitle>
+                    <mat-card-title class="fontSB"  id="animal{{animal.Token}}Name">{{animal.Common_Name}}</mat-card-title>
+                    <mat-card-subtitle class="fontM" id="animal{{animal.Token}}animalLevel">{{animal.Classification}}</mat-card-subtitle>
                 </mat-card-header>
                 <button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
 					<mat-icon>more_vert</mat-icon>
@@ -28,7 +28,7 @@
             <mat-card-content>
                 <div class="animal-profile-card-contact-container">
                     <div class="animal-profile-card-contact-info">
-                        <p class="animal-profile-card-phone" id="animal{{animal.Token}}PhoneNumber">{{animal.phoneNumber}}</p>
+                        <p class="animal-profile-card-phone" id="animal{{animal.Token}}PhoneNumber">{{animal.Description_of_anima}}</p>
                     </div>
                 </div>
             </mat-card-content>
