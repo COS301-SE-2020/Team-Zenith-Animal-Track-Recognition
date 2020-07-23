@@ -1063,6 +1063,8 @@ const Mutation = new GraphQLObjectType({
                     Token: args.TokenChange
                 })
                 usersdata[b].Access_Level=args.Access_Level
+
+                return usersdata[b]
             }
 
         }
