@@ -23,7 +23,7 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 
 	ngOnInit(): void {
 		document.getElementById("rangers-route").classList.add("activeRoute");
-		this.http.get<any>('http://192.168.8.95:55555/graphql?query=query{Users(TokenIn:"asdfg"){Token,Password,Access_Level,e_mail,firstName,lastName}}')
+		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"asdfg"){Token,Password,Access_Level,e_mail,firstName,lastName}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
