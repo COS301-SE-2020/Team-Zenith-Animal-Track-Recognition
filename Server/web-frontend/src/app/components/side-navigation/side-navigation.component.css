@@ -1,0 +1,108 @@
+:host
+{
+	height: 100vh;
+	width: 15vw;
+}
+#side-navigation-container
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	border-right: 2px solid #CCCCCC;
+}
+#side-navigation-logo-container
+{
+	height: 12%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+#side-navigation-logo-container > div:hover
+{
+	cursor: pointer;
+}
+#side-navigation-logo-container > div
+{
+	background-color: #AAAAAA;
+	color: white;
+	text-align: center;
+	height: 60%;
+	width: 85%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	font-size: 130%;
+	border-radius: 10px;
+}
+#side-navigation-routes-container
+{
+	height: 50%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: flex-start;
+}
+.side-navigation-route-container
+{
+	height: 15%;
+	width: 90%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out; 
+    -o-transition: all 0.2s ease-in-out;
+}
+.side-navigation-route-container:hover
+{
+	background-color: #F3F3F5;
+	cursor: pointer;
+}
+.side-navigation-route-container:hover .side-navigation-wireframeIcon, .activeRoute > .side-navigation-wireframeIcon
+{
+	background-color: #686E79;
+}
+.side-navigation-route-container:hover > p
+{
+	color: #686E79;
+	font-weight: 600;
+}
+.side-navigation-route-container > p
+{
+	color: #AAAAAA;
+	margin: 0;
+	font-size: 115%;
+}
+.side-navigation-wireframeIcon
+{
+	background-color: #BBBBBB;
+	height: 20px;
+	width: 20px;
+	margin-right: 10%;
+	margin-left: 10%;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out; 
+    -o-transition: all 0.2s ease-in-out;
+}
+.activeRoute
+{
+	background-color: #F3F3F5;
+}
+.activeRoute > p
+{
+	color: #686E79;
+	font-weight: 600;
+}
