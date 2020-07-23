@@ -53,19 +53,22 @@ var usersdata = [{
         Password: '12345',
         Token: 'qwerty',
         Access_Level: "1",
-        e_mail: "teamzenith380@gmail.com"
+        e_mail: "teamzenith380@gmail.com",
+        number:"08155555555"
     },
     {
         Password: 'zenith!@#$5',
         Token: 'asdfg',
         Access_Level: "3",
-        e_mail: "teamzenith380@gmail.com"
+        e_mail: "teamzenith380@gmail.com",
+        number:"08155555555"
     },
     {
         Password: '12345',
         Token: 'zxcvb',
         Access_Level: "3",
-        e_mail: "teamzenith380@gmail.com"
+        e_mail: "teamzenith380@gmail.com",
+        number:"08155555555"
     }
 ]
 
@@ -90,6 +93,9 @@ const UserType = new GraphQLObjectType({
             type: GraphQLString
         },
         lastName: {
+            type: GraphQLString
+        },
+        number: {
             type: GraphQLString
         },
         // activity:{
@@ -845,67 +851,67 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        AddGeotags: {
-            type: GeotagType,
-            args: {
-                ID: {
-                    type: GraphQLString
-                },
-                Reporting_User_Name: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                Classification: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                lat: {
-                    type: new GraphQLNonNull(GraphQLFloat)
-                },
-                long: {
-                    type: new GraphQLNonNull(GraphQLFloat)
-                },
-                timestamp: {
-                    type: new GraphQLNonNull(GraphQLInt)
-                },
-                Img_ID: {
-                    type: GraphQLID
-                }
+        // AddGeotags: {
+        //     type: GeotagType,
+        //     args: {
+        //         ID: {
+        //             type: GraphQLString
+        //         },
+        //         Reporting_User_Name: {
+        //             type: new GraphQLNonNull(GraphQLString)
+        //         },
+        //         Classification: {
+        //             type: new GraphQLNonNull(GraphQLString)
+        //         },
+        //         lat: {
+        //             type: new GraphQLNonNull(GraphQLFloat)
+        //         },
+        //         long: {
+        //             type: new GraphQLNonNull(GraphQLFloat)
+        //         },
+        //         timestamp: {
+        //             type: new GraphQLNonNull(GraphQLInt)
+        //         },
+        //         Img_ID: {
+        //             type: GraphQLID
+        //         }
 
 
-            },
-            resolve(parent, args) {
-                let id2 = GeotagData.length + 1;
-                if (args.Img != undefined) {
+        //     },
+        //     resolve(parent, args) {
+        //         let id2 = GeotagData.length + 1;
+        //         if (args.Img != undefined) {
 
-                }
+        //         }
 
-                if (args.ID += undefined)
-                    id2 = args.ID;
-                console.log(id2)
-                var newGeotag = {
-                    ID: id2,
-                    Reporting_User_Name: args.Reporting_User_Name,
-                    Classification: args.Classification,
-                    Geotag: {
-                        long: args.long,
-                        lat: args.lat
-                    },
-                    timestamp: {
-                        timestamp: args.timestamp
-                    }
-                }
+        //         if (args.ID += undefined)
+        //             id2 = args.ID;
+        //         console.log(id2)
+        //         var newGeotag = {
+        //             ID: id2,
+        //             Reporting_User_Name: args.Reporting_User_Name,
+        //             Classification: args.Classification,
+        //             Geotag: {
+        //                 long: args.long,
+        //                 lat: args.lat
+        //             },
+        //             timestamp: {
+        //                 timestamp: args.timestamp
+        //             }
+        //         }
 
-                GeotagData.push(newGeotag)
-                if (args.Img_ID != undefined) {
-                    i = _.find(PictureData, {
-                        ID: args.Img_ID
-                    })
-                    i[GeotagID] = id2;
-                }
-                return _.find(GeotagData, {
-                    ID: id2
-                })
-            }
-        },
+        //         GeotagData.push(newGeotag)
+        //         if (args.Img_ID != undefined) {
+        //             i = _.find(PictureData, {
+        //                 ID: args.Img_ID
+        //             })
+        //             i[GeotagID] = id2;
+        //         }
+        //         return _.find(GeotagData, {
+        //             ID: id2
+        //         })
+        //     }
+        // },
         AddIMG: {
             type: PicturesType,
             args: {
@@ -917,13 +923,20 @@ const Mutation = new GraphQLObjectType({
                 },
                 GeotagID: {
                     type: GraphQLString
+                },
+                Token: {
+                    type: new GraphQLNonNull(GraphQLString)
                 }
 
             },
             resolve(parent, args) {
                 if (args.GeotagID == undefined)
                     args.GeotagID = "";
-
+                a = _.find(usersdata, {
+                    Token: args.Token
+                })
+                if (a.Access_Level <= 2)
+                    return null
                 var newPicture = {
                     ID: (PictureData.length + 1),
                     URL: "",
@@ -937,12 +950,10 @@ const Mutation = new GraphQLObjectType({
         AddUser: {
             type: UserType,
             args: {
-                firstName:
-                {
+                firstName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                lastName:
-                {
+                lastName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 Password: {
@@ -953,20 +964,46 @@ const Mutation = new GraphQLObjectType({
                 },
                 e_mail: {
                     type: new GraphQLNonNull(GraphQLString)
+                },
+                number: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                number:{
+                    type: new GraphQLNonNull(GraphQLString)
                 }
 
             },
             resolve(parent, args) {
+                a = _.find(usersdata, {
+                    Token: args.Token
+                })
+                if (a.Access_Level <= 2)
+                    return null
                 var newuser = {
                     Password: args.Password,
-                    Token: makeid(10),
                     Access_Level: args.Access_Level,
                     e_mail: args.e_mail,
-                    firstName:args.firstName,
-                    lastName:args.lastName
+                    firstName: args.firstName,
+                    lastName: args.lastName,
+                    number:args.number
                 }
-                usersdata.push(newuser)
-                return newuser
+
+                users.add(newuser).then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                    var newuser = {
+                        Password: args.Password,
+                        Access_Level: args.Access_Level,
+                        e_mail: args.e_mail,
+                        firstName: args.firstName,
+                        lastName: args.lastName,
+                        number:args.number,
+                        Token:docRef.id
+                    }
+                    usersdata.push(newuser)
+                })
             }
         }
     }
@@ -988,3 +1025,21 @@ module.exports = new GraphQLSchema({
 //     .catch((err) => {
 //         console.log('Error getting documents', err);
 //     });
+
+users.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+            var newuser = {
+                Password: doc.data().Password,
+                Token: doc.id,
+                Access_Level: doc.data().Access_Level,
+                e_mail: doc.data().e_mail,
+                firstName: doc.data().firstName,
+                lastName: doc.data().lastName
+            }
+            usersdata.push(newuser)
+            console.log(newuser)
+        });
+    })
+    .catch((err) => {
+        console.log('Error getting documents', err);
+    });
