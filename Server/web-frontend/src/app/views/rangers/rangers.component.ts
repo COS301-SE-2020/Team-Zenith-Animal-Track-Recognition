@@ -1,6 +1,8 @@
+import { map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Ranger } from './../../models/ranger';
 import { RANGERS } from './../../models/mock-rangers';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
 	selector: 'app-rangers',
@@ -10,19 +12,29 @@ import { RANGERS } from './../../models/mock-rangers';
 export class RangersComponent implements OnInit {
 
 	@ViewChild('sidenav') sidenav;
-	rangers = RANGERS;
+
+	rangers;
 	searchText: string;
 	currentAlphabet;
 	surnames: boolean = true;
 	levels: boolean = false;
 
-	constructor() { }
+	constructor(private http: HttpClient) { }
 
 	ngOnInit(): void {
 		document.getElementById("rangers-route").classList.add("activeRoute");
-
+		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"asdfg"){Token,Password,Access_Level,e_mail}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.printOut(temp);
+			});
 	}
 
+	printOut(temp: any) {
+		this.rangers = temp;
+		console.log(this.rangers);
+	}
 
 	openSidenav() {
 		this.sidenav.open();

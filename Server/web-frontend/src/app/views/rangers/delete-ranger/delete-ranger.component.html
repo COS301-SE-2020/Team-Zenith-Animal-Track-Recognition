@@ -1,0 +1,12 @@
+
+	<h1 mat-dialog-title>Confirm Delete Ranger</h1>
+	<mat-dialog-content id="delete-ranger-container">
+		<p class="fontM delete-ranger-confirmMessage">Are you sure you would like to delete</p>
+		<p class="fontSB" id="delete-ranger-name">{{data.name}}</p>
+		<p class="fontM delete-ranger-confirmMessage" >This action will delete all information <br>associated with this Ranger*.</p>
+		<p class="fontR" id="delete-ranger-clause">*This does not include any captured spoors or geotags.</p>
+	</mat-dialog-content>
+	<mat-dialog-actions  align="center">
+	  <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
+	  <button mat-button id="add-ranger-btn" class="fontSB">DELETE RANGER</button>
+	</mat-dialog-actions>
