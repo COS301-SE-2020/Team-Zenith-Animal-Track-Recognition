@@ -50,26 +50,34 @@ const GessType = new GraphQLObjectType({
 })
 
 var usersdata = [{
-        Password: '12345',
-        Token: 'qwerty',
-        Access_Level: "1",
-        e_mail: "teamzenith380@gmail.com",
-        number:"08155555555"
-    },
-    {
-        Password: 'zenith!@#$5',
-        Token: 'asdfg',
-        Access_Level: "3",
-        e_mail: "teamzenith380@gmail.com",
-        number:"08155555555"
-    },
-    {
-        Password: '12345',
-        Token: 'zxcvb',
-        Access_Level: "3",
-        e_mail: "teamzenith380@gmail.com",
-        number:"08155555555"
-    }
+
+    Password: '12345',
+    Token: 'qwerty',
+    Access_Level: "1",
+    e_mail: "teamzenith380@gmail.com",
+    firstName: "Henco",
+    lastName: "du Preez",
+    phoneNumber: "+27123456789"
+},
+{
+    Password: 'zenith!@#$5',
+    Token: 'asdfg',
+    Access_Level: "3",
+    e_mail: "zachary.christophers@gmail.com",
+    firstName: "Zach",
+    lastName: "Christophers",
+    phoneNumber: "+27123456789"
+},
+{
+    Password: '12345',
+    Token: 'zxcvb',
+    Access_Level: "3",
+    e_mail: "zachary@christophers.co.za",
+    firstName: "Obakeng",
+    lastName: "Seageng",
+    phoneNumber: "+27123456789"
+}
+
 ]
 
 
@@ -95,7 +103,7 @@ const UserType = new GraphQLObjectType({
         lastName: {
             type: GraphQLString
         },
-        number: {
+        phoneNumber: {
             type: GraphQLString
         },
         // activity:{
@@ -423,43 +431,43 @@ const timestampType = new GraphQLObjectType({
 })
 
 var GeotagData = [{
-        ID: 1,
-        Reporting_User_Name: "root",
-        Classification: 'Panthera leo',
-        Geotag: {
-            long: 0,
-            lat: 0
-        },
-        timestamp: {
-            timestamp: 0
-        }
-
+    ID: 1,
+    Reporting_User_Name: "root",
+    Classification: 'Panthera leo',
+    Geotag: {
+        long: 0,
+        lat: 0
     },
-    {
-        ID: 2,
-        Reporting_User_Name: "root",
-        Classification: 'Panthera leo',
-        Geotag: {
-            long: 0,
-            lat: 0
-        },
-        timestamp: {
-            timestamp: 0
-        }
-
-    }, {
-        ID: 3,
-        Reporting_User_Name: "root",
-        Classification: 'Panthera leo',
-        Geotag: {
-            long: 0,
-            lat: 0
-        },
-        timestamp: {
-            timestamp: 0
-        }
-
+    timestamp: {
+        timestamp: 0
     }
+
+},
+{
+    ID: 2,
+    Reporting_User_Name: "root",
+    Classification: 'Panthera leo',
+    Geotag: {
+        long: 0,
+        lat: 0
+    },
+    timestamp: {
+        timestamp: 0
+    }
+
+}, {
+    ID: 3,
+    Reporting_User_Name: "root",
+    Classification: 'Panthera leo',
+    Geotag: {
+        long: 0,
+        lat: 0
+    },
+    timestamp: {
+        timestamp: 0
+    }
+
+}
 ]
 
 const GeotagType = new GraphQLObjectType({
@@ -666,6 +674,15 @@ const RootQuery = new GraphQLObjectType({
                 },
                 e_mail: {
                     type: GraphQLString
+                },
+                firstName: {
+                    type: GraphQLString
+                },
+                lastName: {
+                    type: GraphQLString
+                },
+                phoneNumber: {
+                    type: GraphQLString
                 }
             },
             resolve(parent, args) {
@@ -692,6 +709,12 @@ const RootQuery = new GraphQLObjectType({
                         newLocal = _.filter(newLocal, {
                             e_mail: args.e_mail
                         })
+                    if (args.phoneNumber != undefined) {
+                        newLocal = _.filter(newLocal, {
+                            phoneNumber: args.phoneNumber
+                        })
+                        newLocal = newLocal.trim();
+                    }
                     return newLocal;
                 }
                 return null;
@@ -965,13 +988,10 @@ const Mutation = new GraphQLObjectType({
                 e_mail: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                number: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
                 Token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                number:{
+                phoneNumber: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
 
@@ -988,7 +1008,7 @@ const Mutation = new GraphQLObjectType({
                     e_mail: args.e_mail,
                     firstName: args.firstName,
                     lastName: args.lastName,
-                    number:args.number
+                    phoneNumber: args.phoneNumber
                 }
 
                 users.add(newuser).then(function (docRef) {
