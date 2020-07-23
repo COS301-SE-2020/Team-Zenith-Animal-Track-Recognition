@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './views/login/login.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { AnimalsToolbarComponent } from './views/animals/animals-toolbar/animals-toolbar.component';
+import { AnimalSearchSidenavComponent } from './views/animals/animal-search-sidenav/animal-search-sidenav.component';
 import { AnimalsComponent } from './views/animals/animals.component';
 import { RangersComponent } from './views/rangers/rangers.component';
 import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
@@ -62,6 +63,7 @@ import {MatRadioModule} from '@angular/material/radio';
     EditRangerInfoComponent,
     DeleteRangerComponent,
     AnimalsToolbarComponent,
+    AnimalSearchSidenavComponent,
   ],
   imports: [
     BrowserModule,
