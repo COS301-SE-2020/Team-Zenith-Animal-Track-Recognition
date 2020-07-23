@@ -116,7 +116,7 @@ export class RangerPermissionsComponent implements OnInit {
 		this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{UpdateLevel('
 			+ 'TokenSend: ' + JSON.parse(localStorage.getItem('currentToken'))['value'] + ', '
 			+ 'TokenChange: ' + tkn + ', '
-			+ 'Level: ' + lvl + ')}{}', '');
+			+ 'Level: ' + lvl + '){ lastName}}', '');
 
 
 		this.router.navigate(["/geotags"], { queryParams: { reloadPerms: "true" } });
