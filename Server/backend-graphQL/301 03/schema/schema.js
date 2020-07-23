@@ -51,32 +51,32 @@ const GessType = new GraphQLObjectType({
 
 var usersdata = [{
 
-    Password: '12345',
-    Token: 'qwerty',
-    Access_Level: "1",
-    e_mail: "teamzenith380@gmail.com",
-    firstName: "Henco",
-    lastName: "du Preez",
-    phoneNumber: "+27123456789"
-},
-{
-    Password: 'zenith!@#$5',
-    Token: 'asdfg',
-    Access_Level: "3",
-    e_mail: "zachary.christophers@gmail.com",
-    firstName: "Zach",
-    lastName: "Christophers",
-    phoneNumber: "+27123456789"
-},
-{
-    Password: '12345',
-    Token: 'zxcvb',
-    Access_Level: "3",
-    e_mail: "zachary@christophers.co.za",
-    firstName: "Obakeng",
-    lastName: "Seageng",
-    phoneNumber: "+27123456789"
-}
+        Password: '12345',
+        Token: 'qwerty',
+        Access_Level: "1",
+        e_mail: "teamzenith380@gmail.com",
+        firstName: "Henco",
+        lastName: "du Preez",
+        phoneNumber: "+27123456789"
+    },
+    {
+        Password: 'zenith!@#$5',
+        Token: 'asdfg',
+        Access_Level: "3",
+        e_mail: "zachary.christophers@gmail.com",
+        firstName: "Zach",
+        lastName: "Christophers",
+        phoneNumber: "+27123456789"
+    },
+    {
+        Password: '12345',
+        Token: 'zxcvb',
+        Access_Level: "3",
+        e_mail: "zachary@christophers.co.za",
+        firstName: "Obakeng",
+        lastName: "Seageng",
+        phoneNumber: "+27123456789"
+    }
 
 ]
 
@@ -431,43 +431,43 @@ const timestampType = new GraphQLObjectType({
 })
 
 var GeotagData = [{
-    ID: 1,
-    Reporting_User_Name: "root",
-    Classification: 'Panthera leo',
-    Geotag: {
-        long: 0,
-        lat: 0
-    },
-    timestamp: {
-        timestamp: 0
-    }
+        ID: 1,
+        Reporting_User_Name: "root",
+        Classification: 'Panthera leo',
+        Geotag: {
+            long: 0,
+            lat: 0
+        },
+        timestamp: {
+            timestamp: 0
+        }
 
-},
-{
-    ID: 2,
-    Reporting_User_Name: "root",
-    Classification: 'Panthera leo',
-    Geotag: {
-        long: 0,
-        lat: 0
     },
-    timestamp: {
-        timestamp: 0
-    }
+    {
+        ID: 2,
+        Reporting_User_Name: "root",
+        Classification: 'Panthera leo',
+        Geotag: {
+            long: 0,
+            lat: 0
+        },
+        timestamp: {
+            timestamp: 0
+        }
 
-}, {
-    ID: 3,
-    Reporting_User_Name: "root",
-    Classification: 'Panthera leo',
-    Geotag: {
-        long: 0,
-        lat: 0
-    },
-    timestamp: {
-        timestamp: 0
-    }
+    }, {
+        ID: 3,
+        Reporting_User_Name: "root",
+        Classification: 'Panthera leo',
+        Geotag: {
+            long: 0,
+            lat: 0
+        },
+        timestamp: {
+            timestamp: 0
+        }
 
-}
+    }
 ]
 
 const GeotagType = new GraphQLObjectType({
@@ -997,11 +997,13 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
-                a = _.find(usersdata, {
+                var a = _.find(usersdata, {
                     Token: args.Token
                 })
-                if (a.Access_Level <= 2)
+                if (a.Access_Level <= 2) {
                     return null
+                }
+
                 var newuser = {
                     Password: args.Password,
                     Access_Level: args.Access_Level,
@@ -1011,20 +1013,58 @@ const Mutation = new GraphQLObjectType({
                     phoneNumber: args.phoneNumber
                 }
 
-                users.add(newuser).then(function (docRef) {
+                var x = users.add(newuser).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
-                    var newuser = {
+                    var newuser2 = {
                         Password: args.Password,
                         Access_Level: args.Access_Level,
                         e_mail: args.e_mail,
                         firstName: args.firstName,
                         lastName: args.lastName,
-                        number:args.number,
-                        Token:docRef.id
+                        phoneNumber: args.phoneNumber,
+                        Token: docRef.id
                     }
-                    usersdata.push(newuser)
+                    usersdata.push(newuser2)
                 })
+                
+                console.log(x)
+                a = _.find(usersdata, {
+                    Token: x
+                })
+                console.log(a)
+                return a;
             }
+        },
+        UpdateLevel:
+        {
+            type: UserType,
+            args:{
+                TokenSend:{
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                TokenChange:{
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+                ,Level:{
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args){
+                var a = _.find(usersdata, {
+                    Token: args.TokenSend
+                })
+                if (a.Access_Level <= 2) {
+                    return null
+                }
+
+                users.doc(TokenChange).update({"Access_Level":Level})
+
+                b=_.findIndex(usersdata,{
+                    Token: args.TokenChange
+                })
+                usersdata[b].Access_Level=args.Access_Level
+            }
+
         }
     }
 });
