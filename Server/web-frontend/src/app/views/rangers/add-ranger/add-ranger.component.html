@@ -34,9 +34,9 @@
                 <input matInput formControlName="password" placeholder="Password">
             </mat-form-field>
         </div>
-        <mat-dialog-actions align="center">
-            <div mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</div>
-            <button type="submit" mat-button mat-dialog-close id="add-ranger-btn" class="fontSB">ADD RANGER</button>
-        </mat-dialog-actions>
     </form>
 </mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
+    <button type="submit"  mat-button mat-dialog-close (click)="onSubmit()" id="add-ranger-btn" class="fontSB">ADD RANGER</button>
+</mat-dialog-actions>
