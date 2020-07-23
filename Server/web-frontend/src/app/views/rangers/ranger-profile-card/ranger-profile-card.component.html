@@ -5,7 +5,7 @@
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
                     <mat-card-title class="fontSB">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</mat-card-title>
-                    <mat-card-subtitle class="fontM">Level {{ranger.rangerLevel}} Ranger</mat-card-subtitle>
+                    <mat-card-subtitle class="fontM">Level {{ranger.Access_Level}} Ranger</mat-card-subtitle>
                 </mat-card-header>
                 <button mat-icon-button [matMenuTriggerFor]="menu" class="ranger-profile-card-contextMenu">
 					<mat-icon>more_vert</mat-icon>
@@ -32,7 +32,7 @@
                         <p class="ranger-profile-card-phone">
                             <mat-icon>call</mat-icon>{{ranger.phoneNumber}}</p>
                         <p class="ranger-profile-card-email">
-                            <mat-icon>mail</mat-icon>{{ranger.email}}</p>
+                            <mat-icon>mail</mat-icon>{{ranger.e_mail}}</p>
                     </div>
                 </div>
                 <div class="ranger-profile-card-activity-container">

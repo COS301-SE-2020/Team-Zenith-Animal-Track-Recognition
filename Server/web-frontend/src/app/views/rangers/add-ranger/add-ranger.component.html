@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>
     Add New Ranger</h1>
 <mat-dialog-content id="add-ranger-form-container">
-    <form [formGroup]="addUserForm" id="add-new-ranger-form">
+    <form [formGroup]="addUserForm" id="add-new-ranger-form" (ngSubmit)="onSubmit()">
         <div class="add-new-ranger-input-container">
             <mat-form-field appearance="outline">
                 <mat-label>First Name</mat-label>
@@ -29,10 +29,14 @@
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" placeholder="Password">
+            </mat-form-field>
         </div>
         <mat-dialog-actions align="center">
             <div mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</div>
-            <button mat-button id="add-ranger-btn" class="fontSB">ADD RANGER</button>
+            <button type="submit" mat-button mat-dialog-close id="add-ranger-btn" class="fontSB">ADD RANGER</button>
         </mat-dialog-actions>
     </form>
 </mat-dialog-content>

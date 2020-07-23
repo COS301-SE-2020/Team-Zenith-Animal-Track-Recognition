@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,11 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GeotagsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     document.getElementById("geotags-route").classList.add("activeRoute");
-  
+    const temp = new URLSearchParams();
+    if(temp.has('reload')){
+      this.router.navigate(['rangers']);
+    }
   }
 
 }
