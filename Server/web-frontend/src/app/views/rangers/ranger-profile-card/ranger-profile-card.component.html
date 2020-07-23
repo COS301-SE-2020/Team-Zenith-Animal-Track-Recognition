@@ -1,10 +1,10 @@
 <div class="ranger-profile-cards-container">
     <div class="ranger-profile-card-container" *ngFor="let ranger of rangers | filter:searchText">
-        <mat-card class="ranger-profile-card"  id="ranger{{ranger.Token}}ProfileCard">
+        <mat-card class="ranger-profile-card" id="ranger{{ranger.Token}}ProfileCard">
             <div class="ranger-profile-card-header">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
-                    <mat-card-title class="fontSB"  id="ranger{{ranger.Token}}Name">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</mat-card-title>
+                    <mat-card-title class="fontSB" id="ranger{{ranger.Token}}Name">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</mat-card-title>
                     <mat-card-subtitle class="fontM" id="ranger{{ranger.Token}}RangerLevel">Level {{ranger.Access_Level}} Ranger</mat-card-subtitle>
                 </mat-card-header>
                 <button mat-icon-button [matMenuTriggerFor]="menu" class="ranger-profile-card-contextMenu">
@@ -17,10 +17,10 @@
                     <button mat-menu-item>
 						<span>View Geotags</span>
 					</button>
-                    <button mat-menu-item>
+                    <button mat-menu-item (click)="route('rangers/permissions')">
 						<span>Change Level</span>
 					</button>
-					<button mat-menu-item (click)="openDeleteRangerDialog(ranger.Token)">
+                    <button mat-menu-item (click)="openDeleteRangerDialog(ranger.Token)">
 						<span>Delete Ranger</span>
 					</button>
                 </mat-menu>
@@ -29,7 +29,7 @@
                 <div class="ranger-profile-card-contact-container">
                     <p class="fontSB">Contact Information</p>
                     <div class="ranger-profile-card-contact-info">
-                        <p class="ranger-profile-card-phone" id="ranger{{ranger.Token}}PhoneNumber"> 
+                        <p class="ranger-profile-card-phone" id="ranger{{ranger.Token}}PhoneNumber">
                             <mat-icon>call</mat-icon>{{ranger.phoneNumber}}</p>
                         <p class="ranger-profile-card-email" id="ranger{{ranger.Token}}Email">
                             <mat-icon>mail</mat-icon>{{ranger.e_mail}}</p>
