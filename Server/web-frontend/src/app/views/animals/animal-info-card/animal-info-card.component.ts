@@ -19,7 +19,7 @@ export class AnimalInfoCardComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-	    this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+	    this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{animals(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Classification,Common_Name,Description_of_an_animal,Pictures{URL}}}')
       .subscribe((data: any[]) => {
         let temp = [];
         temp = Object.values(Object.values(data)[0]);
