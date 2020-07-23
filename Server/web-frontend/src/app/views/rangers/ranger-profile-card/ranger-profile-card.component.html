@@ -11,7 +11,7 @@
 					<mat-icon>more_vert</mat-icon>
 				</button>
                 <mat-menu #menu="matMenu" xPosition="before">
-                    <button mat-menu-item>
+                    <button mat-menu-item (click)="openEditRangerDialog()">
 						<span>Edit Information</span>
 					</button>
                     <button mat-menu-item>

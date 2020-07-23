@@ -1,0 +1,38 @@
+
+	<h1 mat-dialog-title>Add New Ranger</h1>
+	<mat-dialog-content id="add-ranger-form-container">
+		<form id="add-new-ranger-form">
+            <div class="add-new-ranger-input-container">
+                <mat-form-field appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input matInput formControlName="firstName" placeholder="First Name">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput formControlName="lastName" placeholder="Last Name">
+                </mat-form-field>
+            </div>
+			<div class="add-new-ranger-input-container">
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" placeholder="Email">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput formControlName="phoneNumber" placeholder="Phone Number">
+                </mat-form-field>
+            </div>
+			<div class="add-new-ranger-input-container">
+                <mat-form-field appearance="outline">
+                    <mat-label>Date of Birth</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="dob" placeholder="Date of Birth">
+					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </form>
+	</mat-dialog-content>
+	<mat-dialog-actions  align="center">
+	  <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
+	  <button mat-button id="add-ranger-btn" class="fontSB">ADD RANGER</button>
+	</mat-dialog-actions>
