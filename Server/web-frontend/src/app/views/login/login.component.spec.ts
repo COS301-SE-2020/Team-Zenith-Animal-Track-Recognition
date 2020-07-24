@@ -52,7 +52,7 @@ describe('LoginComponent', () => {
     expect(component.returnUrl).toEqual("/ranger");
   });
 
-  it('Test', () => {
+  it('Check on initialise', () => {
     component.ngOnInit();
     expect(component.welcome).toBeDefined();
     expect(component.returnUrl).toBeDefined();

@@ -29,20 +29,21 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-    //this.welcome = localStorage.getItem("localStorageUsername");
+    this.welcome = localStorage.getItem("localStorageUsername");
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/overview';
   }
 
   get f() { return this.loginForm.controls; }
 
     onSubmit(temp: boolean) {
-      this.startLoader();
       this.submitted = true;
 
       if (temp) {
         this.welcome = "Hello";
         return;
       }
+      
+      this.startLoader();
 
       if (this.loginForm.invalid) {
         return;
