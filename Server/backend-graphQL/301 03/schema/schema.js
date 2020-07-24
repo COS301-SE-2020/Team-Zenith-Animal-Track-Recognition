@@ -30,9 +30,9 @@ admin.initializeApp({
 
 let db = admin.firestore();
 let users = db.collection("Users");
-let AnimalInfo = db.collection("AnimalInfo");
+let Animals = db.collection("Animals");
 let Groups = db.collection("Groups");
-let Habitat = db.collection("Habitat");
+let Habitats = db.collection("Habitat");
 
 //google db
 
@@ -48,52 +48,14 @@ const GessType = new GraphQLObjectType({
     })
 })
 
-var usersdata = [
-
-]
-const MesType = new GraphQLObjectType({
-    name: "mesig",
-    fields: () => ({
-        msg: {
-            type: GraphQLString
-        }
-    })
-})
-
 var MesTypeData = [{
     msg: "deleted"
 }]
+var HabitatData = []
+var usersdata = []
+var GroupData = []
+var animaldata = []
 
-//user 
-const UserType = new GraphQLObjectType({
-    name: 'user',
-    fields: () => ({
-        Password: {
-            type: GraphQLString
-        },
-        Token: {
-            type: GraphQLString
-        },
-        Access_Level: {
-            type: GraphQLString
-        },
-        e_mail: {
-            type: GraphQLString
-        },
-        firstName: {
-            type: GraphQLString
-        },
-        lastName: {
-            type: GraphQLString
-        },
-        phoneNumber: {
-            type: GraphQLString
-        },
-        // activity:{
-        //     type:new GraphQLList(OBJTypeRI)
-        // }
-    })
-});
 
 var PictureData = [{
     ID: "1",
@@ -186,8 +148,84 @@ var PictureData = [{
     Kind_Of_Picture: "Animal",
     GeotagID: ""
 }]
+var GeotagData = [{
+        ID: 1,
+        Reporting_User_Name: "root",
+        Classification: 'Panthera leo',
+        Geotag: {
+            long: 0,
+            lat: 0
+        },
+        timestamp: {
+            timestamp: 0
+        }
 
+    },
+    {
+        ID: 2,
+        Reporting_User_Name: "root",
+        Classification: 'Panthera leo',
+        Geotag: {
+            long: 0,
+            lat: 0
+        },
+        timestamp: {
+            timestamp: 0
+        }
 
+    }, {
+        ID: 3,
+        Reporting_User_Name: "root",
+        Classification: 'Panthera leo',
+        Geotag: {
+            long: 0,
+            lat: 0
+        },
+        timestamp: {
+            timestamp: 0
+        }
+
+    }
+]
+const MesType = new GraphQLObjectType({
+    name: "mesig",
+    fields: () => ({
+        msg: {
+            type: GraphQLString
+        }
+    })
+})
+
+//user 
+const UserType = new GraphQLObjectType({
+    name: 'user',
+    fields: () => ({
+        Password: {
+            type: GraphQLString
+        },
+        Token: {
+            type: GraphQLString
+        },
+        Access_Level: {
+            type: GraphQLString
+        },
+        e_mail: {
+            type: GraphQLString
+        },
+        firstName: {
+            type: GraphQLString
+        },
+        lastName: {
+            type: GraphQLString
+        },
+        phoneNumber: {
+            type: GraphQLString
+        },
+        // activity:{
+        //     type:new GraphQLList(OBJTypeRI)
+        // }
+    })
+});
 
 const PicturesType = new GraphQLObjectType({
     name: 'Picture',
@@ -214,101 +252,14 @@ const PicturesType = new GraphQLObjectType({
 });
 
 //animals
-var animaldata = [{
-    Classification: 'Panthera leo',
-    Common_Name: 'Lion',
-    Pictures: [1, 2, 3],
-    Group_ID: [1, 2],
-    HeightM: 120.0,
-    HeightF: 100.0,
-    WeightM: 200.0,
-    WeightF: 130.0,
-    Habitats: [1],
-    Diet_Type: "Carnivorous",
-    Life_Span: "15 years",
-    Gestation_Period: "102 days",
-    Typical_Behaviour: "Fiercely territorial and pack-oriented, treat with caution. Will generally only charge if provoked."
 
-}, {
-    Classification: 'Panthera pardus',
-    Common_Name: 'Leopard',
-    Pictures: [4, 5, 6],
-    Group_ID: [1, 2],
-    HeightM: 70.0,
-    HeightF: 70.0,
-    WeightM: 80.0,
-    WeightF: 60.0,
-    Habitats: [1, 2],
-    Diet_Type: "Carnivorous",
-    Life_Span: "15 years",
-    Gestation_Period: "105 days",
-    Typical_Behaviour: "The leopard's hunting technique is to either ambush its prey or to stalk it. In either instance, it tries to get as close as possible to its target. It then makes a brief and explosive charge (up to 60km/h), pouncing on its prey and dispatching it with a bite to the neck. Leopards do not have the aptitude to chase their quarry over any kind of distance and will give up if the initial element of surprise is lost and the intended victim gets away."
-
-}, {
-    Classification: 'Acinonyx jubatus',
-    Common_Name: 'Cheetah',
-    Pictures: [7, 8, 9],
-    Group_ID: [2],
-    HeightM: 75.0,
-    HeightF: 75.0,
-    WeightM: 60.0,
-    WeightF: 55.0,
-    Habitats: [1],
-    Diet_Type: "Carnivorous",
-    Life_Span: "15 years",
-    Gestation_Period: "90 days",
-    Typical_Behaviour: "Diurnal. Sprint hunter. Avoids humans."
-
-}, {
-    Classification: 'Loxodonta africanus',
-    Common_Name: 'Elephant',
-    Pictures: [10, 11, 12],
-    Group_ID: [1],
-    HeightM: 320.0,
-    HeightF: 260.0,
-    WeightM: 6000.0,
-    WeightF: 3000.0,
-    Habitats: [1],
-    Diet_Type: "Herbivorous",
-    Life_Span: "60 years",
-    Gestation_Period: "22 Months",
-    Typical_Behaviour: "Diurnal. Can be highly aggressive, but is mostly passive when left alone. Gives a warning of a swinging foot and a rocking motion prior to charging."
-
-}, {
-    Classification: 'Diceros bicornis',
-    Common_Name: 'Black Rhinoceros',
-    Pictures: [13, 14, 15],
-    Group_ID: [1],
-    HeightM: 160.0,
-    HeightF: 160.0,
-    WeightM: 1000.0,
-    WeightF: 900.0,
-    Habitats: [1],
-    Diet_Type: "Herbivorous",
-    Life_Span: "15 years",
-    Gestation_Period: "16 months",
-    Typical_Behaviour: "Diurnal. Highly territorial"
-
-}, {
-    Classification: 'Aepyceros melampus',
-    Common_Name: 'Impala',
-    Pictures: [16, 17, 18],
-    Group_ID: [3],
-    HeightM: 90.0,
-    HeightF: 80.0,
-    WeightM: 60.0,
-    WeightF: 45.0,
-    Habitats: [1],
-    Diet_Type: "Herbivorous",
-    Life_Span: "12 years",
-    Gestation_Period: "210 days",
-    Typical_Behaviour: "Diurnal. Sprint hunter. Avoids humans."
-
-}]
 const AnimalType = new GraphQLObjectType({
     name: 'animal',
     fields: () => ({
         Classification: {
+            type: GraphQLString
+        },
+        Animal_ID: {
             type: GraphQLString
         },
         Common_Name: {
@@ -419,45 +370,6 @@ const timestampType = new GraphQLObjectType({
     })
 })
 
-var GeotagData = [{
-        ID: 1,
-        Reporting_User_Name: "root",
-        Classification: 'Panthera leo',
-        Geotag: {
-            long: 0,
-            lat: 0
-        },
-        timestamp: {
-            timestamp: 0
-        }
-
-    },
-    {
-        ID: 2,
-        Reporting_User_Name: "root",
-        Classification: 'Panthera leo',
-        Geotag: {
-            long: 0,
-            lat: 0
-        },
-        timestamp: {
-            timestamp: 0
-        }
-
-    }, {
-        ID: 3,
-        Reporting_User_Name: "root",
-        Classification: 'Panthera leo',
-        Geotag: {
-            long: 0,
-            lat: 0
-        },
-        timestamp: {
-            timestamp: 0
-        }
-
-    }
-]
 
 const GeotagType = new GraphQLObjectType({
     name: 'Geotag',
@@ -491,7 +403,6 @@ const GeotagType = new GraphQLObjectType({
     })
 
 })
-var GroupData = []
 
 const GroupType = new GraphQLObjectType({
     name: "Group",
@@ -505,30 +416,10 @@ const GroupType = new GraphQLObjectType({
     })
 })
 
-var HabitatData = [{
-    ID: 1,
-    Habitat_Name: "to fill",
-    Broad_Description: "to fill",
-    Distinguishing_Features: "to fill",
-    Photo_Link: ["to fill"]
-}, {
-    ID: 1,
-    Habitat_Name: "to fill",
-    Broad_Description: "to fill",
-    Distinguishing_Features: "to fill",
-    Photo_Link: ["to fill"]
-}, {
-    ID: 1,
-    Habitat_Name: "to fill",
-    Broad_Description: "to fill",
-    Distinguishing_Features: "to fill",
-    Photo_Link: ["to fill"]
-}]
-
 const HabitatType = new GraphQLObjectType({
     name: "Habitat",
     fields: () => ({
-        ID: {
+        Habitat_ID: {
             type: GraphQLID
         },
         Habitat_Name: {
@@ -540,8 +431,9 @@ const HabitatType = new GraphQLObjectType({
         Distinguishing_Features: {
             type: GraphQLString
         },
-        Photo_Link: {
-            type: new GraphQLList(GraphQLString)
+        Pictures: {
+            type: new GraphQLList(PicturesType),
+            //TODO
         }
     })
 })
@@ -571,69 +463,62 @@ const RootQuery = new GraphQLObjectType({
                 else if (a.Password == args.Password)
                     return a
                 else return null
-
-                // users.where('User_Name', '==', args.name).limit(1).get().then(snapshot => {
-                //     snapshot.forEach(doc => {
-
-                //         var result =JSON.stringify(doc.data());  
-
-                //         console.log(result)
-                //         // return doc.data()
-                //         if (result[Password]==args.pass)
-                //             return result
-                //         else
-                //             return null
-                //     });
-                // })
             }
 
         },
-        imageID: {
-            type: new GraphQLList(GessType),
+        DASlogin: {
+            type: UserType,
             args: {
-                img: {
+                e_mail: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Password: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                var a = _.find(usersdata, {
+                    e_mail: args.e_mail
+                })
+                if (a === undefined)
+                    return null
+                else if (a.Password == args.Password && a.Access_Level > 2)
+                    return a
+                else return null
+            }
+
+        },
+        Groups: {
+            type: GraphQLList(GroupType),
+            args: {
+                Token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Group_ID: {
                     type: GraphQLString
                 },
-                Token: {
-                    type: new GraphQLNonNull(GraphQLString)
-                }
+                Group_Name: {
+                    type: GraphQLString
+                },
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
                     Token: args.Token
                 })
                 if (a != null) {
-                    const newLocal = animaldata;
-                    let b = []
-                    newLocal.forEach(val => {
-                        let c = {}
-                        c.animal = val;
-                        c.confidence = Math.random();
-                        b.push(c)
-                    })
-                    b.sort((a, b) => (a.confidence > b.confidence) ? 1 : -1)
-                    console.log(b)
-                    return b;
-                }
-                return null;
-            }
-        },
-        animals: {
-            type: GraphQLList(AnimalType),
-            args: {
-                Token: {
-                    type: new GraphQLNonNull(GraphQLString)
-                }
-            },
-            resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.Token
-                })
-                if (a != null) {
-                    const newLocal = animaldata;
+                    const newLocal = GroupData;
+                    if (Group_ID != undefined) {
+                        newLocal = _.filter(newLocal, {
+                            Group_ID: args.Group_ID
+                        })
+                    }
+                    if (Group_Name != undefined) {
+                        newLocal = _.filter(newLocal, {
+                            Group_Name: args.Group_Name
+                        })
+                    }
                     return newLocal;
                 }
-
                 return null;
             }
         },
@@ -700,6 +585,74 @@ const RootQuery = new GraphQLObjectType({
                 return null;
             }
         },
+        Habitats: {
+            type: GraphQLList(HabitatType),
+            args: {
+                Token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                a = _.find(usersdata, {
+                    Token: args.Token
+                })
+                if (a != null) {
+                    const newLocal = HabitatData;
+                    return newLocal;
+                }
+                return null;
+            }
+        },
+
+        imageID: {
+            type: new GraphQLList(GessType),
+            args: {
+                img: {
+                    type: GraphQLString
+                },
+                Token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                a = _.find(usersdata, {
+                    Token: args.Token
+                })
+                if (a != null) {
+                    const newLocal = animaldata;
+                    let b = []
+                    newLocal.forEach(val => {
+                        let c = {}
+                        c.animal = val;
+                        c.confidence = Math.random();
+                        b.push(c)
+                    })
+                    b.sort((a, b) => (a.confidence > b.confidence) ? 1 : -1)
+                    console.log(b)
+                    return b;
+                }
+                return null;
+            }
+        },
+        animals: {
+            type: GraphQLList(AnimalType),
+            args: {
+                Token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                a = _.find(usersdata, {
+                    Token: args.Token
+                })
+                if (a != null) {
+                    const newLocal = animaldata;
+                    return newLocal;
+                }
+
+                return null;
+            }
+        },
         Geotags: {
             type: GraphQLList(GeotagType),
             args: {
@@ -718,59 +671,8 @@ const RootQuery = new GraphQLObjectType({
                 return null;
             }
         },
-        Groups: {
-            type: GraphQLList(GroupType),
-            args: {
-                Token: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                Group_ID: {
-                    type: GraphQLString
-                },
-                Group_Name: {
-                    type: GraphQLString
-                },
-            },
-            resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.Token
-                })
-                if (a != null) {
-                    const newLocal = GroupData;
-                    if (Group_ID != undefined) {
-                        newLocal = _.filter(newLocal, {
-                            Group_ID: args.Group_ID
-                        })
-                    }
-                    if (Group_Name != undefined) {
-                        newLocal = _.filter(newLocal, {
-                            Group_Name: args.Group_Name
-                        })
-                    }
-                    return newLocal;
-                }
-                return null;
-            }
-        },
-        Habitats: {
-            type: GraphQLList(HabitatType),
-            args: {
-                Token: {
-                    type: new GraphQLNonNull(GraphQLString)
-                }
-            },
-            resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.Token
-                })
-                if (a != null) {
-                    const newLocal = HabitatData;
 
-                    return newLocal;
-                }
-                return null;
-            }
-        },
+
         Pictures: {
             type: GraphQLList(PicturesType),
             args: {
@@ -819,51 +721,8 @@ const RootQuery = new GraphQLObjectType({
                 })
                 return a
             }
-        },
-        DASlogin: {
-            type: UserType,
-            args: {
-                e_mail: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                Password: {
-                    type: new GraphQLNonNull(GraphQLString)
-                }
-            },
-            resolve(parent, args) {
-
-                var a = _.find(usersdata, {
-                    e_mail: args.e_mail
-
-                })
-                if (a === undefined)
-                    return null
-                else if (a.Password == args.Password && a.Access_Level > 2)
-                    return a
-                else return null
-
-
-
-
-
-
-
-                // users.where('User_Name', '==', args.name).limit(1).get().then(snapshot => {
-                //     snapshot.forEach(doc => {
-
-                //         var result =JSON.stringify(doc.data());  
-
-                //         console.log(result)
-                //         // return doc.data()
-                //         if (result[Password]==args.pass)
-                //             return result
-                //         else
-                //             return null
-                //     });
-                // })
-            }
-
         }
+
     }
 })
 
@@ -1213,14 +1072,13 @@ const Mutation = new GraphQLObjectType({
                     return null
                 }
                 var GID = ((GroupData.length + 1))
-                var b=_.find(GroupData,{
-                    GeotagID:GID.toString()
+                var b = _.find(GroupData, {
+                    GeotagID: GID.toString()
                 })
-                while(b!=null)
-                {
+                while (b != null) {
                     GID++
-                    b=_.find(GroupData,{
-                        GeotagID:GID.toString()
+                    b = _.find(GroupData, {
+                        GeotagID: GID.toString()
                     })
                 }
 
@@ -1307,7 +1165,159 @@ const Mutation = new GraphQLObjectType({
                 return MesTypeData[0];
             }
 
-        }
+        },
+        AddHabitat: {
+            type: HabitatType,
+            args: {
+                Habitat_Name: {
+                    type: GraphQLString
+                },
+                Broad_Description: {
+                    type: GraphQLString
+                },
+                Distinguishing_Features: {
+                    type: GraphQLString
+                }
+
+
+            },
+            resolve(parent, args) {
+                var a = _.find(usersdata, {
+                    Token: args.Token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.Access_Level <= 2) {
+                    return null
+                }
+                var HID = ((HabitatData.length + 1))
+                var b = _.find(HabitatData, {
+                    Habitat_ID: HID.toString()
+                })
+                while (b != null) {
+                    HID++
+                    b = _.find(HabitatData, {
+                        Habitat_ID: HID.toString()
+                    })
+                }
+
+                var newHabitat = {
+                    Habitat_Name: args.Habitat_Name,
+                    Habitat_ID: HID.toString(),
+                    Broad_Description: args.Broad_Description,
+                    Distinguishing_Features: args.Distinguishing_Features
+                }
+                console.log(HID.toString())
+                Habitats.doc(HID.toString()).set(newHabitat)
+                HabitatData.push(newHabitat)
+                return newHabitat;
+            }
+        },
+        AddAnimal: {
+            type: AnimalType,
+            args: {
+                Token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Classification: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Common_Name: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                HeightM: {
+                    type: new GraphQLNonNull(GraphQLInt)
+                },
+                HeightF: {
+                    type: new GraphQLNonNull(GraphQLInt)
+                },
+                WeightF: {
+                    type: new GraphQLNonNull(GraphQLInt)
+                },
+                WeightM: {
+                    type: new GraphQLNonNull(GraphQLInt)
+                },
+                Habitats: {
+                    type:new GraphQLNonNull(new GraphQLList( new GraphQLNonNull(GraphQLInt)))
+                },
+                Group_ID: {
+                    type:new GraphQLNonNull(new GraphQLList( new GraphQLNonNull(GraphQLInt)))
+                },
+                Diet_Type: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Life_Span: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Gestation_Period: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Typical_Behaviour: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Overview_of_the_animal: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Description_of_animal: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Pictures: {
+                    type:new GraphQLList(GraphQLInt)
+                }
+
+            },
+            resolve(parent, args) {
+                var a = _.find(usersdata, {
+                    Token: args.Token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.Access_Level <= 2) {
+                    return null
+                }
+                var HID = ((animaldata.length + 1))
+                var b = _.find(HabitatData, {
+                    Animal_ID: HID.toString()
+                })
+                while (b != null) {
+                    HID++
+                    b = _.find(HabitatData, {
+                        Animal_ID: HID.toString()
+                    })
+                }
+
+                var newAnimal = {
+                    Animal_ID:HID,
+                    Common_Name:args.Common_Name,
+                    Group_ID:args.Group_ID,
+                    HeightM:args.HeightM,
+                    HeightF:args.HeightF,
+                    WeightM:args.WeightM,
+                    WeightF:args.WeightF,
+                    Habitats:args.Habitats,
+                    Diet_Type:args.Diet_Type,
+                    Life_Span:args.Life_Span,
+                    Gestation_Period:args.Gestation_Period,
+                    Typical_Behaviour:args.Typical_Behaviour,
+                    Overview_of_the_animal:args.Overview_of_the_animal,
+                    Description_of_animal:args.Description_of_animal
+                }
+                if(args.Pictures!=undefined)
+                {
+                    newAnimal.Pictures=args.Pictures
+                }
+                
+                Animals.doc(args.Classification).set(newAnimal).then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+                newAnimal.Classification=args.Classification
+                animaldata.push(newAnimal)
+                return newAnimal;
+            }
+        },
+
     }
 });
 
@@ -1340,7 +1350,6 @@ users.get().then((snapshot) => {
                 phoneNumber: doc.data().phoneNumber
             }
             usersdata.push(newuser)
-            console.log(newuser)
         });
     })
     .catch((err) => {
@@ -1355,9 +1364,56 @@ Groups.get().then((snapshot) => {
                 Group_Name: doc.data().Group_Name
             }
             GroupData.push(newGoupe)
-            console.log(newGoupe)
         });
     })
     .catch((err) => {
         console.log('Error getting documents', err);
     });
+
+Habitats.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+            var newHabitat = {
+                Habitat_ID: doc.data().Habitat_ID,
+                Habitat_Name: doc.data().Habitat_Name
+            }
+            HabitatData.push(newHabitat)
+        });
+    })
+    .catch((err) => {
+        console.log('Error getting documents', err);
+    });
+
+Animals.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+            var newAnimal = {
+                Classification: doc.id,
+                Animal_ID: doc.data().Animal_ID,
+                Common_Name: doc.data().Common_Name,
+                Group_ID: doc.data().Group_ID,
+                HeightM: doc.data().HeightM,
+                HeightF: doc.data().HeightF,
+                WeightM: doc.data().WeightM,
+                WeightF: doc.data().WeightF,
+                Habitats: doc.data().Habitats,
+                Diet_Type: doc.data().Diet_Type,
+                Life_Span: doc.data().Life_Span,
+                Gestation_Period: doc.data().Gestation_Period,
+                Typical_Behaviour: doc.data().Typical_Behaviour,
+                Overview_of_the_animal: doc.data().Overview_of_the_animal,
+                Description_of_animal: doc.data().Description_of_animal,
+                Pictures: doc.data().Pictures
+            }
+            animaldata.push(newAnimal)
+        });
+        // console.log(animaldata)
+    })
+    .catch((err) => {
+        console.log('Error getting documents', err);
+    });
+
+// animaldata2.forEach((doc)=>{
+//     var newLocal=doc
+//     docid =newLocal.Classification
+//     delete newLocal.Classification
+//     Animals.doc(docid).set(newLocal)
+// })
