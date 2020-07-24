@@ -54,10 +54,9 @@ var usersdata = [
 const MesType = new GraphQLObjectType({
     name: "mesig",
     fields: () => ({
-        msg:
-        {
-            type:GraphQLString
-        } 
+        msg: {
+            type: GraphQLString
+        }
     })
 })
 
@@ -492,22 +491,13 @@ const GeotagType = new GraphQLObjectType({
     })
 
 })
-var GroupData = [{
-    Group_ID: "1",
-    Group_Name: "BIG FIVE"
-}, {
-    Group_ID: "2",
-    Group_Name: "BIG CATS"
-}, {
-    Group_ID: "3",
-    Group_Name: "LARGE ANTELOPE"
-}]
+var GroupData = []
 
 const GroupType = new GraphQLObjectType({
     name: "Group",
     fields: () => ({
         Group_ID: {
-            type: GraphQLID
+            type: GraphQLString
         },
         Group_Name: {
             type: GraphQLString
@@ -733,7 +723,13 @@ const RootQuery = new GraphQLObjectType({
             args: {
                 Token: {
                     type: new GraphQLNonNull(GraphQLString)
-                }
+                },
+                Group_ID: {
+                    type: GraphQLString
+                },
+                Group_Name: {
+                    type: GraphQLString
+                },
             },
             resolve(parent, args) {
                 a = _.find(usersdata, {
@@ -741,6 +737,16 @@ const RootQuery = new GraphQLObjectType({
                 })
                 if (a != null) {
                     const newLocal = GroupData;
+                    if (Group_ID != undefined) {
+                        newLocal = _.filter(newLocal, {
+                            Group_ID: args.Group_ID
+                        })
+                    }
+                    if (Group_Name != undefined) {
+                        newLocal = _.filter(newLocal, {
+                            Group_Name: args.Group_Name
+                        })
+                    }
                     return newLocal;
                 }
                 return null;
@@ -1184,6 +1190,123 @@ const Mutation = new GraphQLObjectType({
                 return MesTypeData[0];
             }
 
+        },
+        AddGroup: {
+            type: GroupType,
+            args: {
+                Group_Name: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+
+            },
+            resolve(parent, args) {
+                var a = _.find(usersdata, {
+                    Token: args.Token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.Access_Level <= 2) {
+                    return null
+                }
+                var GID = ((GroupData.length + 1))
+                var b=_.find(GroupData,{
+                    GeotagID:GID.toString()
+                })
+                while(b!=null)
+                {
+                    GID++
+                    b=_.find(GroupData,{
+                        GeotagID:GID.toString()
+                    })
+                }
+
+                var newGroup = {
+                    Group_Name: args.Group_Name,
+                    Group_ID: GID.toString()
+                }
+                console.log(GID.toString())
+                Groups.doc(GID.toString()).set(newGroup)
+
+                GroupData.push(newGroup)
+                return newGroup;
+            }
+        },
+        UpdateGroup: {
+            type: UserType,
+            args: {
+                Group_Name: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Group_ID: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                var a = _.find(GroupData, {
+                    Token: args.TokenSend
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.Access_Level <= 2) {
+                    return null
+                }
+                b = _.findIndex(GroupData, {
+                    Token: args.Group_ID
+                })
+                GroupData[b].Group_Name = args.Group_Name
+                users.doc(args.Group_ID).update({
+                    "Group_Name": args.Group_Name
+                })
+
+                return usersdata[b]
+            }
+
+        },
+        DeleteGroup: {
+            type: MesType,
+            args: {
+                Token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                Group_ID: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                var a = _.find(usersdata, {
+                    Token: args.TokenIn
+                })
+                if (a == undefined) {
+                    console.log("deleted aberted 1");
+                    return null
+                }
+                if (a.Access_Level <= 2) {
+                    console.log("deleted aberted 2");
+                    return null
+                }
+                console.log("hello")
+                var b = _.findIndex(GroupData, {
+                    Token: args.Group_ID
+                })
+
+                usersdata.splice(b, 1)
+
+                users.doc(args.Group_ID).delete().then(function () {
+                    console.log("Document successfully deleted!");
+                })
+
+                console.log(usersdata);
+                return MesTypeData[0];
+            }
+
         }
     }
 });
@@ -1218,6 +1341,21 @@ users.get().then((snapshot) => {
             }
             usersdata.push(newuser)
             console.log(newuser)
+        });
+    })
+    .catch((err) => {
+        console.log('Error getting documents', err);
+    });
+
+
+Groups.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+            var newGoupe = {
+                Group_ID: doc.data().Group_ID,
+                Group_Name: doc.data().Group_Name
+            }
+            GroupData.push(newGoupe)
+            console.log(newGoupe)
         });
     })
     .catch((err) => {
