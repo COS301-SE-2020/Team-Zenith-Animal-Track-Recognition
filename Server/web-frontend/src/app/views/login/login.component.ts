@@ -29,13 +29,16 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-	  this.welcome = localStorage.getItem("localStorageUsername");
+	  //this.welcome = localStorage.getItem("localStorageUsername");
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/overview';
   }
 
   get f() { return this.loginForm.controls; }
 
+  onSubmit() {
+	this.startLoader();
   onSubmit(temp: boolean) {
+  	this.startLoader();
     this.submitted = true;
     
     if(temp){
@@ -75,4 +78,17 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         });
   }
+  
+    //Loader
+  startLoader()
+  {
+	  console.log("Starting Loader");
+	  document.getElementById("loader-container").style.visibility = "visible";
+  }  
+  stopLoader()
+  {
+	  	  console.log("Stopping Loader");
+	  document.getElementById("loader-container").style.visibility = "hidden";
+  }
+
 }
