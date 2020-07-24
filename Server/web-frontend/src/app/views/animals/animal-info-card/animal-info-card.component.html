@@ -1,17 +1,20 @@
 <div class="animal-profile-cards-container">
+<div id="loader-container">
+	<mat-spinner id="loader"></mat-spinner>
+</div>
     <div class="animal-profile-card-container" *ngFor="let animal of animals | filter:searchText">
         <mat-card class="animal-profile-card" id="animal{{animal.Token}}ProfileCard">
             <img mat-card-image id="animal-info-card-picture" src="{{animal.Pictures[0].URL}}">
             <div class="animal-profile-card-header">
                 <mat-card-header>
-                    <mat-card-title class="fontSB" id="animal{{animal.Token}}Name">{{animal.Common_Name}}</mat-card-title>
-                    <mat-card-subtitle class="fontM" id="animal{{animal.Token}}animalLevel">{{animal.Classification}}</mat-card-subtitle>
+                    <mat-card-title class="fontSB"  id="{{animal.Classification}}Name">{{animal.Common_Name}}</mat-card-title>
+                    <mat-card-subtitle class="fontM" id="{{animal.Classification}}Classification">{{animal.Classification}}</mat-card-subtitle>
                 </mat-card-header>
                 <button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
 					<mat-icon>more_vert</mat-icon>
 				</button>
                 <mat-menu #menu="matMenu" xPosition="before">
-                    <button mat-menu-item (click)="openEditAnimalDialog(animal.Token)">
+                    <button mat-menu-item (click)="openEditAnimalDialog(animal.Classification)">
 						<span>Edit Information</span>
 					</button>
                     <button mat-menu-item>
@@ -20,15 +23,12 @@
                     <button mat-menu-item>
 						<span>View Geotags</span>
 					</button>
-                    <button mat-menu-item (click)="openDeleteAnimalDialog(animal.Token)">
-						<span>Delete Animal</span>
-					</button>
                 </mat-menu>
             </div>
             <mat-card-content>
                 <div class="animal-profile-card-contact-container">
                     <div class="animal-profile-card-contact-info">
-                        <p class="animal-profile-card-phone" id="animal{{animal.Token}}PhoneNumber">{{animal.Description_of_animal}}</p>
+                        <p class="animal-profile-card-phone" id="{{animal.Classification}}Descr">{{animal.Description_of_animal}}</p>
                     </div>
                 </div>
             </mat-card-content>

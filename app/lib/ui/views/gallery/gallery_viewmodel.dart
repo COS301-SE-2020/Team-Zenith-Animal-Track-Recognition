@@ -24,16 +24,11 @@ class GalleryViewModel extends BaseViewModel{
       for(int i = 0; i < tabModel.categories.length; i++){
         tabs.add( Tab( child: Text( tabModel.categories[i], style: TextStyle( color:Colors.white, fontWeight: FontWeight.bold, fontSize: 10,)),));
       }
-      List<List<String>> animalList = new List();
-      GalleryModel galleryModel = await _api.getGalleryModel();
-      animalList.add(galleryModel.appearance);
-      animalList.add(galleryModel.tracks);
-      animalList.add(galleryModel.droppings);
-      return TempObject(tabs: tabs,length: tabModel.length, animalList: animalList);
+      return TempObject(tabs: tabs,length: tabModel.length);
   }
 
   void navigate(context) {
-     Navigator.of(context).pushNamedAndRemoveUntil('/animal-view', ModalRoute.withName('/'));
+     Navigator.of(context).pop();
   }
 
   void updateCounter(){
@@ -41,9 +36,9 @@ class GalleryViewModel extends BaseViewModel{
     notifyListeners();
   }
 }
+
 class TempObject{
   List<Tab> tabs;
   int length;
-  List<List<String>> animalList;
-  TempObject({this.tabs, this.length, this.animalList});
+  TempObject({this.tabs, this.length});
 }

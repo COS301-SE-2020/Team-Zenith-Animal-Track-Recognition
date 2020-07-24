@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-//import {EditRangerInfoComponent} from './../edit-ranger-info/edit-ranger-info.component'; 
+import {EditAnimalInfoComponent} from './../edit-animal-info/edit-animal-info.component'; 
 //import {DeleteRangerComponent} from './../delete-ranger/delete-ranger.component';
 
 @Component({
@@ -18,11 +18,14 @@ export class AnimalInfoCardComponent implements OnInit {
 
   constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void 
+  {
+	this.startLoader();
     this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{animals(Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Classification,Common_Name,Description_of_animal,Pictures{URL}}}')
       .subscribe((data: any[]) => {
         let temp = [];
         temp = Object.values(Object.values(data)[0]);
+		this.stopLoader();
         this.printOut(temp);
       });
   }
@@ -36,19 +39,17 @@ export class AnimalInfoCardComponent implements OnInit {
   //animal CRUD Quick-Actions
 
   //EDIT 
-  openEditAnimalDialog(animalID) {
-    const dialogConfig = new MatDialogConfig();
-
-    //Get animal information for chosen card
-    var animalFullName = document.getElementById("animal" + animalID + "Name").innerHTML;
-    var animalName = animalFullName.split("&nbsp;");
-    var animalLevel = document.getElementById("animal" + animalID + "animalLevel").textContent;
-    var animalPhone = document.getElementById("animal" + animalID + "PhoneNumber").textContent;
-    var animalEmail = document.getElementById("animal" + animalID + "Email").textContent;
-
-
-    //this.dialog.open(EditAnimalInfoComponent, {height: '55%', width: '35%', autoFocus: true, disableClose: true, data: { firstName: animalName[0], lastName: animalName[1], level: animalLevel, phoneNum: animalPhone.replace("call",""), email: animalEmail.replace("mail","")},});
-  }
+	openEditAnimalDialog(animalClassi) 
+	{
+		const dialogConfig = new MatDialogConfig();
+		
+		//Get animal information for chosen card
+		var animalName = document.getElementById(animalClassi + "Name").textContent;
+		var animalClassification = document.getElementById(animalClassi + "Classification").textContent;
+		var animalDescription = document.getElementById(animalClassi + "Descr").textContent;
+		
+		this.dialog.open(EditAnimalInfoComponent, {height: '85%', width: '65%', autoFocus: true, disableClose: true, data: { name: animalName, classification: animalClassification, description: animalDescription},});
+	}
 
   //DELETE animal
   openDeleteAnimalDialog(animalID) {
@@ -83,6 +84,17 @@ export class AnimalInfoCardComponent implements OnInit {
         }
       }
     }
+  }
+    //Loader
+  startLoader()
+  {
+	  console.log("Starting Loader");
+	  document.getElementById("loader-container").style.visibility = "visible";
+  }  
+  stopLoader()
+  {
+	  	  console.log("Stopping Loader");
+	  document.getElementById("loader-container").style.visibility = "hidden";
   }
 
 }

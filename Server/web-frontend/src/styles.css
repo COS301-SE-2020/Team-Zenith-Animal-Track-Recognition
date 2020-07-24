@@ -108,6 +108,31 @@ body
     overflow: hidden;
 }
 
+#loader-container
+{
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	height: 100%;
+	width: 100%;
+	visibility: hidden;
+	background: rgba(1.0, 1.0, 1.0, 0.1);
+	z-index: 5;
+	transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out;
+    -ms-transition: all 0.5s ease-out; 
+    -o-transition: all 0.5s ease-out;
+}
+#loader
+{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 6;
+}
+
+
 html, body { height: 100%; }
 body { margin: 0; font-family: "Maven Pro", sans-serif; }
 

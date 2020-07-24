@@ -24,7 +24,7 @@ export class AddRangerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addUserForm = this.formBuilder.group({
+		this.addUserForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', Validators.required],
@@ -36,7 +36,10 @@ export class AddRangerComponent implements OnInit {
 
   get f() { return this.addUserForm.controls; }
 
-  onSubmit() {
+  onSubmit(test: boolean) {
+    if(test){
+      return true;
+    }
     this.submitted = true;
     console.log("hi");
     console.log(this.f.password.value);
@@ -59,6 +62,7 @@ export class AddRangerComponent implements OnInit {
     }));
 
     this.router.navigate(["/geotags"], { queryParams: { reload: "true" } });
+    return false;
   }
 
 

@@ -29,45 +29,63 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-	  this.welcome = localStorage.getItem("localStorageUsername");
+    this.welcome = localStorage.getItem("localStorageUsername");
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/overview';
   }
 
   get f() { return this.loginForm.controls; }
 
-  onSubmit() {
-    this.submitted = true;
+    onSubmit(temp: boolean) {
+      this.submitted = true;
 
-    if (this.loginForm.invalid) {
-      return;
+      if (temp) {
+        this.welcome = "Hello";
+        return;
+      }
+      
+      this.startLoader();
+
+      if (this.loginForm.invalid) {
+        return;
+      }
+
+      this.loading = true;
+
+      let username: string = this.f.username.value;
+      let password: string = this.f.password.value;
+
+      username = encodeURIComponent(username);
+      password = encodeURIComponent(password);
+
+      this.authService.login(username, password)
+        .pipe(first())
+        .subscribe(
+          data => {
+
+            //Save username
+            if (localStorage.getItem("localStorageUsername") === null) {
+              localStorage.setItem("localStorageUsername", username);
+            }
+            else if (localStorage.getItem("localStorageUsername") != null) {
+              localStorage.setItem("localStorageUsername", username);
+            }
+            this.router.navigate([this.returnUrl]);
+          },
+          error => {
+            this.loading = false;
+          });
     }
 
-    this.loading = true;
-    
-    let username: string = this.f.username.value;
-    let password: string = this.f.password.value;
+    //Loader
+    startLoader()
+    {
+      console.log("Starting Loader");
+      document.getElementById("loader-container").style.visibility = "visible";
+    }
+    stopLoader()
+    {
+      console.log("Stopping Loader");
+      document.getElementById("loader-container").style.visibility = "hidden";
+    }
 
-    username = encodeURIComponent(username);
-    password = encodeURIComponent(password);
-
-    this.authService.login(username, password)
-      .pipe(first())
-      .subscribe(
-        data => {
-
-		//Save username
-		if (localStorage.getItem("localStorageUsername") === null) 
-		{
-			localStorage.setItem("localStorageUsername", username);
-		}
-		else if (localStorage.getItem("localStorageUsername") != null)
-		{
-			localStorage.setItem("localStorageUsername", username);
-		}
-          this.router.navigate([this.returnUrl]);
-        },
-        error => {
-          this.loading = false;
-        });
   }
-}

@@ -10,6 +10,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:ERP_RANGER/ui/views/home/home_view.dart';
 import 'package:ERP_RANGER/ui/views/animals/animal_view.dart';
 import 'package:ERP_RANGER/ui/views/confirmed/confirmed_view.dart';
+import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'dart:io';
 import 'package:ERP_RANGER/ui/views/gallery/gallery_view.dart';
 import 'package:ERP_RANGER/ui/views/identification/identification_view.dart';
 import 'package:ERP_RANGER/ui/views/notconfirmed/notconfirmed_view.dart';
@@ -68,95 +70,91 @@ class Router extends RouterBase {
     HomeView: (RouteData data) {
       var args =
           data.getArgs<HomeViewArguments>(orElse: () => HomeViewArguments());
-      return PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => HomeView(key: args.key),
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => HomeView(key: args.key),
         settings: data,
       );
     },
-
     AnimalView: (RouteData data) {
       var args = data.getArgs<AnimalViewArguments>(
           orElse: () => AnimalViewArguments());
-      return  PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => AnimalView(key: args.key),
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => AnimalView(key: args.key),
         settings: data,
       );
     },
-
     ConfirmedView: (RouteData data) {
       var args = data.getArgs<ConfirmedViewArguments>(
           orElse: () => ConfirmedViewArguments());
-      return PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => ConfirmedView(key: args.key),
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ConfirmedView(
+            confirmedAnimals: args.confirmedAnimals, image: args.image),
         settings: data,
       );
     },
     GalleryView: (RouteData data) {
-      var args = data.getArgs<GalleryViewArguments>(
-          orElse: () => GalleryViewArguments());
-      return PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => GalleryView(key: args.key),
+      var args = data.getArgs<GalleryViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => GalleryView(args.galleryModel),
         settings: data,
       );
     },
     IdentificationView: (RouteData data) {
-      var args = data.getArgs<IdentificationViewArguments>(
-          orElse: () => IdentificationViewArguments());
-      return PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => IdentificationView(key: args.key),
+      var args = data.getArgs<IdentificationViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => IdentificationView(name: args.name),
         settings: data,
       );
     },
     NotConfirmedView: (RouteData data) {
       var args = data.getArgs<NotConfirmedViewArguments>(
           orElse: () => NotConfirmedViewArguments());
-      return PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => NotConfirmedView(key: args.key),
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => NotConfirmedView(key: args.key),
         settings: data,
       );
     },
     ProfileView: (RouteData data) {
       var args = data.getArgs<ProfileViewArguments>(
           orElse: () => ProfileViewArguments());
-      return PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => ProfileView(key: args.key),
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileView(key: args.key),
         settings: data,
       );
     },
     UploadView: (RouteData data) {
       var args = data.getArgs<UploadViewArguments>(
           orElse: () => UploadViewArguments());
-      return PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => UploadView(key: args.key),
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => UploadView(key: args.key),
         settings: data,
       );
     },
     InformationView: (RouteData data) {
       var args = data.getArgs<InformationViewArguments>(
           orElse: () => InformationViewArguments());
-      return PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => InformationView(key: args.key),
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => InformationView(animalInfo: args.animalInfo),
         settings: data,
       );
     },
     LoginView: (RouteData data) {
       var args =
           data.getArgs<LoginViewArguments>(orElse: () => LoginViewArguments());
-      return PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => LoginView(key: args.key),
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => LoginView(key: args.key),
         settings: data,
       );
     },
     SearchView: (RouteData data) {
       var args = data.getArgs<SearchViewArguments>(
           orElse: () => SearchViewArguments());
-      return PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => SearchView(key: args.key),
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => SearchView(key: args.key),
         settings: data,
       );
     },
   };
-
 }
 
 // *************************************************************************
@@ -177,20 +175,21 @@ class AnimalViewArguments {
 
 //ConfirmedView arguments holder class
 class ConfirmedViewArguments {
-  final Key key;
-  ConfirmedViewArguments({this.key});
+  final List<ConfirmModel> confirmedAnimals;
+  final File image;
+  ConfirmedViewArguments({this.confirmedAnimals, this.image});
 }
 
 //GalleryView arguments holder class
 class GalleryViewArguments {
-  final Key key;
-  GalleryViewArguments({this.key});
+  final GalleryModel galleryModel;
+  GalleryViewArguments({@required this.galleryModel});
 }
 
 //IdentificationView arguments holder class
 class IdentificationViewArguments {
-  final Key key;
-  IdentificationViewArguments({this.key});
+  final String name;
+  IdentificationViewArguments({@required this.name});
 }
 
 //NotConfirmedView arguments holder class
@@ -213,8 +212,8 @@ class UploadViewArguments {
 
 //InformationView arguments holder class
 class InformationViewArguments {
-  final Key key;
-  InformationViewArguments({this.key});
+  final InfoModel animalInfo;
+  InformationViewArguments({this.animalInfo});
 }
 
 //LoginView arguments holder class

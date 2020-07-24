@@ -1,41 +1,63 @@
 import 'dart:core';
 
+import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:ERP_RANGER/ui/views/information/information_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-final List<String> imgList = [
-  'assets/images/E1.jpg',
-  'assets/images/E2.jpg',
-  'assets/images/E3.jpg',
-  'assets/images/E4.jpg',
-  'assets/images/E5.jpg'
-];
+final List<String> imgList = new List();
 
 class InformationView extends StatelessWidget {
-  const InformationView({Key key}) : super(key: key);
+  InfoModel animalInfo;
+  InformationView({this.animalInfo});
 
   @override
   Widget build(BuildContext context) {
+
     BottomNavigation bottomNavigation = BottomNavigation();
     bottomNavigation.setIndex(1);
     return ViewModelBuilder<InformationViewModel>.reactive(
-      builder: (context, model, child) => Scaffold(
-        body: Stack(
-          children: <Widget>[
-            InfoListBody(),
-            Scroll(),
-            backButton(context),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigation(),
+      builder: (context, model, child) => FutureBuilder(
+        future: model.getInfo(),
+        builder: (context, snapshot){
+          model.setAnimalInfo(animalInfo);
+          if (snapshot.hasError) {
+            print("hello");
+            return text1("Error", 20);
+          }
+          if(snapshot.hasData){
+           // imageSliders.clear();
+            imgList.clear();
+            imgList.addAll(animalInfo.carouselImages);
+            return WillPopScope(
+              onWillPop:() async{
+                if(Navigator.canPop(context)){
+                  model.navigate(context);
+                }
+              return;
+              },
+              child: Scaffold(
+              body: Stack(
+                children: <Widget>[
+                  InfoListBody(),
+                  Scroll(infomodel: animalInfo,),
+                  backButton(context),
+                ],
+              ),
+              //bottomNavigationBar: BottomNavigation(),
+            ),
+          );
+
+          }else {
+            return text1("Null no Data", 20);
+          }
+        },
       ),
-      viewModelBuilder: () => InformationViewModel(),
+    viewModelBuilder: () => InformationViewModel(),
     );
   }
 }
@@ -57,40 +79,42 @@ class InfoListBody extends ViewModelWidget<InformationViewModel> {
   }
 }
 
-final List<Widget> imageSliders = imgList
-    .map((item) => Container(
+List<Widget> getCarousel(){
+  return imgList.map((item) => Container(
           child: Container(
             margin: EdgeInsets.all(5.0),
             child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                child: Stack(
-                  children: <Widget>[
-                    //Image.network(item, fit: BoxFit.cover, width: 1000.0),
-                    Image.asset(item,fit: BoxFit.cover, width: 1000.0 ,height: 500,),
-                    Positioned(
-                      bottom: 0.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(200, 0, 0, 0),
-                              Color.fromARGB(0, 0, 0, 0)
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              child: Stack(
+                children: <Widget>[
+                  //Image.network(item, fit: BoxFit.cover, width: 1000.0),
+                  Image.asset(item,fit: BoxFit.cover, width: 1000.0 ,height: 500,),
+                  Positioned(
+                    bottom: 0.0,
+                    left: 0.0,
+                    right: 0.0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromARGB(200, 0, 0, 0),
+                            Color.fromARGB(0, 0, 0, 0)
+                          ],
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
                         ),
-                        padding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
                       ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 20.0),
                     ),
-                  ],
-                )),
+                  ),
+                ],
+              )),
           ),
-        ))
-    .toList();
+        )).toList();
+
+}
+
 
 class CarouselWithIndicator extends StatefulWidget {
   @override
@@ -111,7 +135,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
         ),
         child: Column(children: [
           CarouselSlider(
-            items: imageSliders,
+            items: getCarousel(),
             options: CarouselOptions(
                 autoPlay: true,
                 enlargeCenterPage: true,
@@ -146,7 +170,8 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
 }
 
 class Scroll extends ViewModelWidget<InformationViewModel> {
-  Scroll({Key key}) : super(key: key, reactive: true);
+  InfoModel infomodel;
+  Scroll({this.infomodel}) : super(reactive: true);
 
 
 
@@ -155,7 +180,7 @@ class Scroll extends ViewModelWidget<InformationViewModel> {
   Widget build(BuildContext context, InformationViewModel model) {
     return DraggableScrollableSheet(
         initialChildSize: 0.59,
-        minChildSize: 0.12,
+        minChildSize: 0.59,
         maxChildSize: 0.99,
         builder: (BuildContext context, ScrollController myscrollController) {
           return Container(
@@ -168,18 +193,18 @@ class Scroll extends ViewModelWidget<InformationViewModel> {
               padding: new EdgeInsets.only(top: 10.0),
               controller: myscrollController,
               children: <Widget>[
-                name("Elephant", "African Bush Elephant"),
+                name(infomodel.commonName,infomodel.species),
                 SizedBox(height: 10),
-                animalDetails(),
+                animalDetails(infomodel.heightF1, infomodel.heightF2, infomodel.heightM1, infomodel.heightM2, infomodel.weightF1,infomodel.weightF2, infomodel.weightM1,infomodel.weightM1, infomodel.gestation, infomodel.diet),
                 SizedBox(height: 10),
-                overview("African Bush Elephants, also known as the African Savanna elephant, is the larget living terrestial animal. Both sexes have tusks, which erupt when they are 1-3 years old and grow throughout life."),
+                overview(infomodel.overview),
                 SizedBox(height: 35),
                 ListTileTheme(
                   dense: true,
-                  child: ViewButton(),
+                  child: ViewButton(name: infomodel.commonName,),
                 ),
                 SizedBox(height: 35),
-                tabs(),
+                Tabs(infoModel: infomodel,),
               ],
             ),
 
@@ -326,7 +351,7 @@ Widget gestation(String period)
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Gestation Period', style: TextStyle(color: Colors.grey),),
+          Text('Gestation', textAlign:TextAlign.center, style: TextStyle(color: Colors.grey),),
           Row(
             children: <Widget>[
 
@@ -396,15 +421,15 @@ Widget diet(String diet)
 }
 
 
-Widget animalDetails()
+Widget animalDetails(double heightF, double heightF1, double heightM, double heightM1,double weightF, double weightF2, double weightM, double weightM1, String gestations, String diets)
 {
   return Container(
     child: Row(
       children: <Widget>[
-        height("2.2 - 2.6 m", "3.2 - 4.0 m"),
-        weight("2.1 - 3.2 t", "4.7 - 6.4 t"),
-        gestation("22 Months"),
-        diet("Herbivore")
+        height("$heightF - $heightF1 m", "$heightM - $heightM1 m"),
+        weight("$weightF - $weightF2 t", "$weightM - $weightM1 t"),
+        gestation(gestations),
+        diet(diets)
       ],
     ),
 
@@ -420,7 +445,7 @@ Widget overview(String text)
         children: <Widget>[
           Text('Overview', style: TextStyle(fontSize: 16),),
           SizedBox(height: 5),
-          Text(text)
+          text2(text,15)
         ],
       ),
     );
@@ -428,7 +453,8 @@ Widget overview(String text)
 
 
 class ViewButton extends ViewModelWidget<InformationViewModel> {
-  const ViewButton({Key key}) : super(key: key, reactive: true);
+  String name;
+  ViewButton({Key key,this.name}) : super(key: key, reactive: true);
   @override
   Widget build(BuildContext context, InformationViewModel model) {
     return Row(
@@ -445,7 +471,8 @@ class ViewButton extends ViewModelWidget<InformationViewModel> {
           ),
           child: Text('VIEW GALLERY', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white)),
           onPressed: () {
-            model.navigateToGalleryView();
+            print(name);
+            model.navigateToGalleryView(name);
           },
         )
       ],
@@ -454,16 +481,15 @@ class ViewButton extends ViewModelWidget<InformationViewModel> {
   }
 }
 
-
-
-class tabs extends StatefulWidget {
-const tabs({Key key}) : super(key: key);
+class Tabs extends StatefulWidget {
+  InfoModel infoModel;
+  Tabs({this.infoModel, key}) : super(key: key);
 
 @override
-_tabs createState() => _tabs();
+  _Tabs createState() => _Tabs();
 }
 
-class _tabs extends State<tabs> with SingleTickerProviderStateMixin {
+class _Tabs extends State<Tabs> with SingleTickerProviderStateMixin {
   TabController tabController;
   int selectedIndex = 0;
 
@@ -504,15 +530,15 @@ class _tabs extends State<tabs> with SingleTickerProviderStateMixin {
               child: TabBarView(
                 controller: tabController,
                 children: <Widget>[
-                  tabtext("text"),
-                  tabtext("text"),
-                  tabtext("text"),
-                  tabtext("text"),
+                  tabtext(widget.infoModel.description),
+                  tabtext(widget.infoModel.behaviour),
+                  tabtext(widget.infoModel.habitat),
+                  tabtext(widget.infoModel.threat),
                 ],
               ),
             )
           ],
-        )
+        ), viewModelBuilder:() => InformationViewModel(),
 
     );
   }
@@ -520,11 +546,11 @@ class _tabs extends State<tabs> with SingleTickerProviderStateMixin {
 
 Widget tabtext(String text){
   return Container(
-    child: Text(text),
+    child: text2(text,15),
   );
 }
 
- Widget backButton(context) {
+Widget backButton(context) {
    return Container(
        padding: new EdgeInsets.all(0.0),
        height: 50,
@@ -547,3 +573,29 @@ Widget tabtext(String text){
          ),
        ));
  }
+
+Widget text1(String text, double font){
+  return Text(
+    text,
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: font,
+      fontFamily: 'Helvetica',
+      fontWeight: FontWeight.bold,
+      color: Colors.white
+    ),
+  );
+}
+
+Widget text2(String text, double font){
+  return Text(
+    text,
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: font,
+      fontFamily: 'Helvetica',
+      fontWeight: FontWeight.normal,
+      color: Colors.grey
+    ),
+  );
+}

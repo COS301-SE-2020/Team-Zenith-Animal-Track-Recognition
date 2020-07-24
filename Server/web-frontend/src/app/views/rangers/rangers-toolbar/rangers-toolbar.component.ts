@@ -39,7 +39,9 @@ export class RangersToolbarComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
 
     this.dialog.open(AddRangerComponent, { height: '55%', width: '35%', panelClass: "add-ranger-modal", autoFocus: true, disableClose: true });
+
   }
+
   route(location: string) {
     document.getElementById("animals-route").classList.remove("activeRoute");
     document.getElementById("overview-route").classList.remove("activeRoute");
