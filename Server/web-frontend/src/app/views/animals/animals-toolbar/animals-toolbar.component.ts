@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-//import { AddRangerComponent } from './../add-ranger/add-ranger.component';
+import { AddAnimalComponent } from './../add-animal/add-animal.component';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -26,7 +26,7 @@ export class AnimalsToolbarComponent implements OnInit {
   openAddAnimalDialog() {
     const dialogConfig = new MatDialogConfig();
 
-   // this.dialog.open(AddRangerComponent, { height: '55%', width: '35%', panelClass: "add-ranger-modal", autoFocus: true, disableClose: true });
+	this.dialog.open(AddAnimalComponent, { height: '85%', width: '65%', autoFocus: true, disableClose: true });
   }
   route(location: string) {
     document.getElementById("animals-route").classList.remove("activeRoute");

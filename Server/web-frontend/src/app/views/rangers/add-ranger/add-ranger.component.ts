@@ -24,7 +24,7 @@ export class AddRangerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addUserForm = this.formBuilder.group({
+		this.addUserForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', Validators.required],
