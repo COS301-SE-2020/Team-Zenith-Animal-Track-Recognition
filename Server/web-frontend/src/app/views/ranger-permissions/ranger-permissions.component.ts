@@ -110,6 +110,7 @@ export class RangerPermissionsComponent implements OnInit {
 				}
 			}
 		}
+		return bool;
 	}
 
 	updateLevel(tkn: string, lvl: string) {

@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>
     Add New Ranger</h1>
 <mat-dialog-content id="add-ranger-form-container">
-    <form [formGroup]="addUserForm" id="add-new-ranger-form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="addUserForm" id="add-new-ranger-form" (ngSubmit)="onSubmit(false)">
         <div class="add-new-ranger-input-container">
             <mat-form-field appearance="outline">
                 <mat-label>First Name</mat-label>
@@ -38,5 +38,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="center">
     <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
-    <button type="submit"  mat-button mat-dialog-close (click)="onSubmit()" id="add-ranger-btn" class="fontSB">ADD RANGER</button>
+    <button type="submit" mat-button mat-dialog-close (click)="onSubmit(false)" id="add-ranger-btn" class="fontSB">ADD RANGER</button>
 </mat-dialog-actions>

@@ -9,15 +9,12 @@ import { HttpClient } from '@angular/common/http';
 	styleUrls: ['./ranger-search-sidenav-comp.component.css']
 })
 export class RangerSearchSidenavCompComponent implements OnInit {
-
-	//USING MOCK RANGER DATA. @Zach please replace this with an API call that fetches the users. We only need ID, Name, Username and ranger level
-
 	rangers;
 	currentAlphabet;
 	surnames: boolean = true;
 	levels: boolean = false;
-
-	@Input() searchText: string;
+	sorted: string;
+	searchText: string;
 
 	constructor(private http: HttpClient) { }
 
@@ -52,6 +49,7 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 	}
 
 	sort(bool: boolean) {
+		let temp: string;
 		if (bool) {
 			for (let i = 0; i < this.rangers.length - 1; i++) {
 				for (let j = i + 1; j < this.rangers.length; j++) {
@@ -62,6 +60,7 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 					}
 				}
 			}
+			temp = "Sorted alphabetically";
 		} else {
 			for (let i = 0; i < this.rangers.length - 1; i++) {
 				for (let j = i + 1; j < this.rangers.length; j++) {
@@ -72,6 +71,9 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 					}
 				}
 			}
+			temp = "Sorted by ranger level";
 		}
+		this.sorted = temp;
+		return temp;
 	}
 }
