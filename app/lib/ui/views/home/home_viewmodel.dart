@@ -14,86 +14,48 @@ class HomeViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final Api _api = locator<FakeApi>();
 
-  Future<List<HomeModel>> getRecentIdentifications() async {
+  Future<List<HomeModel>>getRecentIdentifications() async {
     List<HomeModel> recentIdentifications = await _api.getHomeModel();
     return recentIdentifications;
   }
 
-  void navigateToSearchView() {
+  void navigateToSearchView(){
     _navigationService.navigateTo(Routes.searchViewRoute);
   }
-
-  void navigateToInfo() {
-    _navigationService.navigateTo(Routes.identificationViewRoute);
+ 
+  void navigateToIdentification(String animal)async {
+    
+    await _navigationService.navigateTo(
+      Routes.identificationViewRoute,
+      arguments: IdentificationViewArguments(name:animal)
+    );
   }
-
-  void navigateToConfirmView() {
-    _navigationService.navigateTo(Routes.confirmlViewRoute);
-  }
-
-  void navigateToNotConfirmView() {
+ 
+  void navigateToNotConfirmView(){
     _navigationService.navigateTo(Routes.notConfirmedViewRoute);
   }
 
-  void captureImage() async {
+  void captureImage() async
+  {
     File image;
     final picker = ImagePicker();
-
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-    if (pickedFile != null) {
+    
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    if(pickedFile != null){
       image = File(pickedFile.path);
       String url = base64Encode(image.readAsBytesSync());
       List<ConfirmModel> animals = await _api.identifyImage(url);
-      if (animals != null) {
-        navigateToConfirmView();
-      } else {
+      if(animals != null){
+        _navigationService.navigateTo(Routes.confirmlViewRoute,
+          arguments: ConfirmedViewArguments(image: image, confirmedAnimals:animals )
+        );
+      }else{
         navigateToNotConfirmView();
       }
     }
 
     return null;
   }
+
 }
-// builder: (context, model, child) => Scaffold(
-//     appBar: AppBar(
-//       title: Text('Profile', style: TextStyle(color: Colors.white)),
-//       centerTitle: false,
-//       backgroundColor: Colors.black,
-//       leading: IconButton(
-//         icon: Icon(
-//           Icons.menu,
-//         ),
-//         onPressed: () {},
-//       ),
-//       actions: <Widget>[
-//         Padding(
-//             padding: EdgeInsets.only(right: 20.0),
-//             child: GestureDetector(
-//               onTap: () {},
-//               child: Icon(
-//                 Icons.search,
-//                 size: 26.0,
-//                 color: Colors.white,
-//               ),
-//             )
-//         ),
-//         Padding(
-//             padding: EdgeInsets.only(right: 20.0),
-//             child: GestureDetector(
-//               onTap: () {},
-//               child: Icon(
-//                 Icons.more_vert,
-//                 color: Colors.white,
-//               ),
-//             )
-//         )
-//       ],
-//     ),
-//   body: topbar(),
-//   bottomNavigationBar: BottomNavigation(),
-//     floatingActionButton: FloatingActionButton(
-//       onPressed: () {},
-//       child: Icon(Icons.camera_alt),
-//       backgroundColor: Colors.grey,
-//     ),
-// )
+  
