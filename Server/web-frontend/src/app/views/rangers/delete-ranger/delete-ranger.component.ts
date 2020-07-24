@@ -23,9 +23,12 @@ export class DeleteRangerComponent implements OnInit {
     if (test) {
       return true;
     }
+
+    console.log(JSON.parse(localStorage.getItem('currentToken'))['value']);
+    console.log(this.data.Token);
     let temp = this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{DeleteUser('
       + 'TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
-      + 'TokenDelete:"' + this.data.Token + '"){Token}}', '').subscribe((dt: any[]) => {
+      + 'TokenDelete:"' + this.data.Token + '"){msg}}', '').subscribe((dt: any[]) => {
         let t = [];
         t = Object.values(Object.values(dt)[0]);
       });
