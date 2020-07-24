@@ -1140,12 +1140,12 @@ const Mutation = new GraphQLObjectType({
                     return null
                 }
                 b = _.findIndex(usersdata, {
-                    Token: args.TokenChange
+                    Token: args.TokenDelete
                 })
 
                 usersdata.splice(b,1)
 
-                users.doc(TokenDelete).delete().then(function() {
+                users.doc(args.TokenDelete).delete().then(function() {
                     console.log("Document successfully deleted!");
                 })
                 
