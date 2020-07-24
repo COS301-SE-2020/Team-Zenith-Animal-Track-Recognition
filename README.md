@@ -18,7 +18,7 @@ The Animal Track Recognition system is an application which will support ERP ran
 * PDF: [Animal Track Recognition User Manual Doc](https://drive.google.com/file/d/138Y-w3XJszpY5oBIsyVg4-csuZC8hga1/view?usp=sharing)
 
 **Coding Standards Document**
-* PDF: [Animal Track Recognition Coding Standards] (https://drive.google.com/file/d/1Eb0PFPzKs8F8VZHP1lAfKrqgMnvFt7ab/view?usp=sharing)
+* PDF: [Animal Track Recognition Coding Standards](https://drive.google.com/file/d/1Eb0PFPzKs8F8VZHP1lAfKrqgMnvFt7ab/view?usp=sharing)
 
 **Project Managment Tools**
 * Slack: https://teamzenithhq.slack.com
