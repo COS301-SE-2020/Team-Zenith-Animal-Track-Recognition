@@ -68,7 +68,10 @@ export class AddRangerComponent implements OnInit {
 
   get f() { return this.addUserForm.controls; }
 
-  onSubmit() {
+  onSubmit(test: boolean) {
+    if(test){
+      return true;
+    }
     this.submitted = true;
     console.log("hi");
     console.log(this.f.password.value);
@@ -91,6 +94,7 @@ export class AddRangerComponent implements OnInit {
     }));
 
     this.router.navigate(["/geotags"], { queryParams: { reload: "true" } });
+    return false;
   }
 
 

@@ -16,6 +16,7 @@ export class RangersComponent implements OnInit {
 	rangers;
 	searchText: string;
 	currentAlphabet;
+	sorted: string;
 	surnames: boolean = true;
 	levels: boolean = false;
 
@@ -33,13 +34,13 @@ export class RangersComponent implements OnInit {
 
 	printOut(temp: any) {
 		this.rangers = temp;
-		console.log(this.rangers);
 	}
 
 	openSidenav() {
 		this.sidenav.open();
 		document.getElementById("sidenav-open-btn-container").style.transitionDuration = "0.2s";
 		document.getElementById("sidenav-open-btn-container").style.left = "-10%";
+		return 
 	}
 	closeSidenav() {
 		this.sidenav.close();
@@ -63,6 +64,7 @@ export class RangersComponent implements OnInit {
 		this.sort(bool);
 	}
 	sort(bool: boolean) {
+		let temp: string;
 		if (bool) {
 			for (let i = 0; i < this.rangers.length - 1; i++) {
 				for (let j = i + 1; j < this.rangers.length; j++) {
@@ -73,6 +75,7 @@ export class RangersComponent implements OnInit {
 					}
 				}
 			}
+			temp = "Sorted alphabetically";
 		} else {
 			for (let i = 0; i < this.rangers.length - 1; i++) {
 				for (let j = i + 1; j < this.rangers.length; j++) {
@@ -83,6 +86,9 @@ export class RangersComponent implements OnInit {
 					}
 				}
 			}
+			temp = "Sorted by ranger level";
 		}
+		this.sorted = temp;
+		return temp;
 	}
 }

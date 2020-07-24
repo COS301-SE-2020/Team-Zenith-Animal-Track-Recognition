@@ -37,7 +37,14 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
 	this.startLoader();
+  onSubmit(temp: boolean) {
+  	this.startLoader();
     this.submitted = true;
+    
+    if(temp){
+      this.welcome = "Hello";
+      return;
+    }
 
     if (this.loginForm.invalid) {
       return;

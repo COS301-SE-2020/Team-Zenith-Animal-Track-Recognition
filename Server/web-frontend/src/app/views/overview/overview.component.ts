@@ -13,9 +13,8 @@ export class OverviewComponent implements OnInit {
     document.getElementById("overview-route").classList.add("activeRoute");
   	  this.stopLoader();
   }
-
-
-  //Loader
+  
+    //Loader
   startLoader()
   {
 	  console.log("Starting Loader");

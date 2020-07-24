@@ -11,12 +11,18 @@ import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angu
 })
 export class DeleteRangerComponent implements OnInit {
 
+  temp: boolean;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
+    this.temp = false;
   }
 
-  confirmDelete() {
+  confirmDelete(test: boolean) {
+    if (test) {
+      return true;
+    }
     let temp = this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{DeleteUser('
       + 'TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
       + 'TokenDelete:"' + this.data.Token + '"){Token}}', '').subscribe((dt: any[]) => {
@@ -25,5 +31,6 @@ export class DeleteRangerComponent implements OnInit {
       });
 
     this.router.navigate(["/geotags"], { queryParams: { reload: "true" } });
+    return false;
   }
 }
