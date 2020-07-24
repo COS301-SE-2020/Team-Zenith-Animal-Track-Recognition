@@ -33,26 +33,18 @@ export class RangerProfileCardComponent implements OnInit {
 
   //EDIT Ranger
   openEditRangerDialog(rangerID) {
-    try {
-      const dialogConfig = new MatDialogConfig();
+    const dialogConfig = new MatDialogConfig();
 
-      if (rangerID.equals("te57ca53t0t3s7a11ex7r3me71e5")) {
-        throw "test";
-      }
-
-      //Get ranger information for chosen card
-      var rangerFullName = document.getElementById("ranger" + rangerID + "Name").innerHTML;
-      var rangerName = rangerFullName.split("&nbsp;");
-      var rangerLevel = document.getElementById("ranger" + rangerID + "RangerLevel").textContent;
-      var rangerPhone = document.getElementById("ranger" + rangerID + "PhoneNumber").textContent;
-      var rangerEmail = document.getElementById("ranger" + rangerID + "Email").textContent;
+    //Get ranger information for chosen card
+    var rangerFullName = document.getElementById("ranger" + rangerID + "Name").innerHTML;
+    var rangerName = rangerFullName.split("&nbsp;");
+    var rangerLevel = document.getElementById("ranger" + rangerID + "RangerLevel").textContent;
+    var rangerPhone = document.getElementById("ranger" + rangerID + "PhoneNumber").textContent;
+    var rangerEmail = document.getElementById("ranger" + rangerID + "Email").textContent;
 
 
-      this.dialog.open(EditRangerInfoComponent, { height: '55%', width: '35%', autoFocus: true, disableClose: true, data: { Token: rangerID, firstName: rangerName[0], lastName: rangerName[1], level: rangerLevel, phoneNumber: rangerPhone.replace("call", ""), email: rangerEmail.replace("mail", "") }, });
-      return true;
-    } catch (e) {
-      return false;
-    }
+    this.dialog.open(EditRangerInfoComponent, { height: '55%', width: '35%', autoFocus: true, disableClose: true, data: { Token: rangerID, firstName: rangerName[0], lastName: rangerName[1], level: rangerLevel, phoneNumber: rangerPhone.replace("call", ""), email: rangerEmail.replace("mail", "") }, });
+
   }
 
   route(temp: string) {
@@ -64,16 +56,16 @@ export class RangerProfileCardComponent implements OnInit {
     try {
       const dialogConfig = new MatDialogConfig();
 
-      if(rangerID === "te57ca53t0t3s7a11ex7r3me71e5"){
+      if (rangerID === "te57ca53t0t3s7a11ex7r3me71e5") {
         throw "test";
       }
       //Get ranger information for chosen card
       var rangerFullName = document.getElementById("ranger" + rangerID + "Name").textContent;
 
       this.dialog.open(DeleteRangerComponent, { height: '45%', width: '30%', autoFocus: true, disableClose: true, data: { name: rangerFullName, Token: rangerID }, });
-    
+
       return true;
-    }catch(e){
+    } catch (e) {
       return false;
     }
   }

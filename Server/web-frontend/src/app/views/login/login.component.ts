@@ -35,8 +35,13 @@ export class LoginComponent implements OnInit {
 
   get f() { return this.loginForm.controls; }
 
-  onSubmit() {
+  onSubmit(temp: boolean) {
     this.submitted = true;
+    
+    if(temp){
+      this.welcome = "Hello";
+      return;
+    }
 
     if (this.loginForm.invalid) {
       return;
