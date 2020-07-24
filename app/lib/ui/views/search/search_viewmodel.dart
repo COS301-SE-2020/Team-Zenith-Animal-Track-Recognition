@@ -77,8 +77,11 @@ class SearchViewModel extends BaseViewModel{
      Navigator.of(context).pop();
   }
 
-  void navigateToInformation(){
-    _navigationService.navigateTo(Routes.informationViewRoute);
+  void navigateToInfo(String name) async{
+    InfoModel infoModel = await _api.getInfoModel(name);
+    _navigationService.navigateTo(Routes.informationViewRoute,
+      arguments: InformationViewArguments(animalInfo:infoModel)
+    );
   }
 
 }

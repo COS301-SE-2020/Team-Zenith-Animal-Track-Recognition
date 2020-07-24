@@ -6,7 +6,7 @@ import 'api.dart';
 @lazySingleton
 class GraphQL implements Api{
   @override
-  Future<List<AnimalModel>> getAnimalModel() async{
+  Future<List<AnimalModel>> getAnimalModel(String category) async{
     // TODO: implement getAnimalModel
     throw UnimplementedError();
   }
@@ -18,7 +18,7 @@ class GraphQL implements Api{
   }
 
   @override
-  Future<GalleryModel> getGalleryModel() async{
+  Future<GalleryModel> getGalleryModel(String i) async{
     // TODO: implement getGalleryModel
     throw UnimplementedError();
   }
@@ -30,7 +30,7 @@ class GraphQL implements Api{
   }
 
   @override
-  Future<List<InfoModel>> getInfoModel() async {
+  Future<InfoModel> getInfoModel(String name) async {
     // TODO: implement getInfoModel
     throw UnimplementedError();
   }
@@ -66,6 +66,12 @@ class GraphQL implements Api{
   }
 
   @override
+  Future<int> getUserLevel() {
+    // TODO: implement getTags
+    throw UnimplementedError();
+  }
+
+  @override
   void sendConfirmationSpoor(List<ConfirmModel> list, String tag) {
     // TODO: implement sendConfirmationSpoor
   }
@@ -82,8 +88,14 @@ class GraphQL implements Api{
   }
 
   @override
-  Future<List<SpoorModel>> getSpoorModel() {
+  Future<List<SpoorModel>> getSpoorModel(String animal) {
     // TODO: implement getSpoorModel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<SimilarSpoorModel> getSpoorSimilarModel(String animal) {
+    // TODO: implement getSpoorSimilarModel
     throw UnimplementedError();
   }
   
