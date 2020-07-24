@@ -1,10 +1,10 @@
-<h1 mat-dialog-title>Edit Animal Information - {{data.name}} ({{data.classification}})</h1>
+<h1 mat-dialog-title>Add New Animal Information</h1>
 <mat-dialog-content id="add-ranger-form-container">
 	<mat-tab-group mat-align-tabs="start">
 		<mat-tab label="Overview">
 			<form [formGroup]="overviewForm" id="edit-animal-form-overview">
 				<div class="edit-animal-inputgroup-container">
-					<form [formGroup]="animalListForm">
+					<!--<form [formGroup]="animalListForm">
 						<mat-form-field appearance="outline">
 							<input type="text" matInput placeholder="Animals" formControlName="animal" required [matAutocomplete]="autoGroup">
 							<mat-icon matPrefix>search</mat-icon>
@@ -14,31 +14,35 @@
 								</mat-optgroup>
 							</mat-autocomplete>
 						</mat-form-field>
-					</form>
+					</form>-->
 					<mat-form-field appearance="outline">
-						<mat-label>Animal Species</mat-label>
-						<input matInput formControlName="Classification" placeholder="Last Name" value="{{data.classification}}">
+						<mat-label>Animal Common Name</mat-label>
+						<input matInput formControlName="Description_of_animal" placeholder="Last Name">
+					</mat-form-field>
+					<mat-form-field appearance="outline">
+						<mat-label>Animal Classification</mat-label>
+						<input matInput formControlName="Description_of_animal" placeholder="Last Name">
 					</mat-form-field>
 				</div>
 				<div class="edit-animal-inputgroup-container">
 					<div class="edit-animal-range-container">
 						<mat-form-field appearance="outline">
 							<mat-label>Avg. Height Range</mat-label>
-							<input type="number" matInput formControlName="Description_of_animal" placeholder="Email" value="{{data.description}}">
+							<input type="number" matInput formControlName="Description_of_animal" placeholder="Email">
 						</mat-form-field>
 						<mat-form-field appearance="outline">
 							<mat-label>Avg. Height Range</mat-label>
-							<input type="number" matInput formControlName="Description_of_animal" placeholder="Email" value="{{data.description}}">
+							<input type="number" matInput formControlName="Description_of_animal" placeholder="Email" >
 						</mat-form-field>
 					</div>
 					<div class="edit-animal-range-container">
 						<mat-form-field appearance="outline">
 							<mat-label>Avg. Weight Range</mat-label>
-							<input type="number" matInput formControlName="Common_Name" placeholder="Phone Number" value="{{data.name}}">
+							<input type="number" matInput formControlName="Common_Name" placeholder="Phone Number" >
 						</mat-form-field>
 						<mat-form-field appearance="outline">
 							<mat-label>Avg. Weight Range</mat-label>
-							<input type="number" matInput formControlName="Common_Name" placeholder="Phone Number" value="{{data.name}}">
+							<input type="number" matInput formControlName="Common_Name" placeholder="Phone Number">
 						</mat-form-field>
 					</div>
 				</div>				
@@ -47,11 +51,11 @@
 						<mat-label>Gestation Period</mat-label>
 						<mat-form-field appearance="outline">
 							<mat-label>Duration</mat-label>
-							<input matInput formControlName="Description_of_animal" placeholder="Email" value="{{data.description}}">
+							<input matInput formControlName="Description_of_animal" placeholder="Email">
 						</mat-form-field>						
 						<mat-form-field appearance="outline">
 							<mat-label>Offspring</mat-label>
-							<input type="number" matInput formControlName="Description_of_animal" placeholder="Email" value="{{data.description}}">
+							<input type="number" matInput formControlName="Description_of_animal" placeholder="Email">
 						</mat-form-field>
 					</div>
 					<div class="edit-animal-inputbtn-container">
@@ -69,12 +73,12 @@
 			<form [formGroup]="descrForm" id="edit-animal-form-descr">
 					<mat-form-field appearance="outline">
 						<mat-label>Animal Description</mat-label>
-						<textarea rows="5" matInput #descrTa class="edit-animal-form-descr-textarea" formControlName="Description_of_animal" placeholder="Please enter a description of the animal." value="{{data.name}}"></textarea>
+						<textarea rows="5" matInput #descrTa class="edit-animal-form-descr-textarea" formControlName="Description_of_animal" placeholder="Please enter a description of the animal."></textarea>
 						<mat-hint align="start">{{descrTa.value?.length || 0}}/300</mat-hint>
 					</mat-form-field>
 					<mat-form-field appearance="outline">
 						<mat-label>Animal Characteristics</mat-label>
-						<textarea rows="5" matInput #charTa class="edit-animal-form-descr-textarea" formControlName="Classification" placeholder="Please enter the physical characteristics of the animal." value="{{data.name}}"></textarea>
+						<textarea rows="5" matInput #charTa class="edit-animal-form-descr-textarea" formControlName="Classification" placeholder="Please enter the physical characteristics of the animal."></textarea>
 						<mat-hint align="start">{{charTa.value?.length || 0}}/300</mat-hint>
 					</mat-form-field>
 			</form>
@@ -83,12 +87,12 @@
 			<form [formGroup]="behaviourForm" id="edit-animal-form-behaviour">
 				<mat-form-field appearance="outline">
 					<mat-label>Female Behavioural Information</mat-label>
-					<textarea rows="5" matInput #femaleTa formControlName="Description_of_animal" placeholder="Please enter female behavioural information." value="{{data.name}}"></textarea>
+					<textarea rows="5" matInput #femaleTa formControlName="Description_of_animal" placeholder="Please enter female behavioural information." ></textarea>
 					<mat-hint align="start">{{femaleTa.value?.length || 0}}/300</mat-hint>
 				</mat-form-field>
 				<mat-form-field appearance="outline">
 					<mat-label>Male Behavioural Information</mat-label>
-					<textarea rows="5" matInput #maleTa formControlName="Classification" placeholder="Please enter male behavioural information." value="{{data.name}}"></textarea>
+					<textarea rows="5" matInput #maleTa formControlName="Classification" placeholder="Please enter male behavioural information." ></textarea>
 					<mat-hint align="start">{{maleTa.value?.length || 0}}/300</mat-hint>
 				</mat-form-field>
 			</form>
@@ -97,12 +101,12 @@
 			<form [formGroup]="habitatForm" id="edit-animal-form-habitat">
 				<mat-form-field appearance="outline">
 					<mat-label>Habitat Information</mat-label>
-					<textarea rows="5" matInput #habitatTa formControlName="Description_of_animal" placeholder="Please enter information about the animal's habitat." value="{{data.name}}"></textarea>
+					<textarea rows="5" matInput #habitatTa formControlName="Description_of_animal" placeholder="Please enter information about the animal's habitat." ></textarea>
 					<mat-hint align="start">{{habitatTa.value?.length || 0}}/300</mat-hint>
 				</mat-form-field>
 				<mat-form-field appearance="outline">
 					<mat-label>Distribution Information</mat-label>
-					<textarea rows="5" matInput #distriTa formControlName="Classification" placeholder="Please enter information about the animal's distribution." value="{{data.name}}"></textarea>
+					<textarea rows="5" matInput #distriTa formControlName="Classification" placeholder="Please enter information about the animal's distribution." ></textarea>
 					<mat-hint align="start">{{distriTa.value?.length || 0}}/300</mat-hint>
 				</mat-form-field>
 			</form>
@@ -111,7 +115,7 @@
 			<form [formGroup]="threatForm" id="edit-animal-form-threat">
 				<mat-form-field appearance="outline">
 					<mat-label>Known Dangers</mat-label>
-					<textarea rows="7" matInput #threatTa formControlName="Classification" placeholder="Please enter information that could warn rangers about potential dangers with the animal." value="{{data.name}}"></textarea>
+					<textarea rows="7" matInput #threatTa formControlName="Classification" placeholder="Please enter information that could warn rangers about potential dangers with the animal."></textarea>
 					<mat-hint align="start">{{threatTa.value?.length || 0}}/300</mat-hint>
 				</mat-form-field>
 			</form>
@@ -120,5 +124,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="center">
     <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
-    <button type="submit" mat-button mat-dialog-close (click)="onSubmit()" id="add-ranger-btn" class="fontSB">SAVE CHANGES</button>
+    <button type="submit" mat-button mat-dialog-close (click)="onSubmit()" id="add-ranger-btn" class="fontSB">ADD ANIMAL</button>
 </mat-dialog-actions>

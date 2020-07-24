@@ -24,7 +24,13 @@ export class AddRangerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addUserForm = this.formBuilder.group({
+		this.overviewForm =this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+
+    });
+
+		this.descrForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', Validators.required],
@@ -32,6 +38,32 @@ export class AddRangerComponent implements OnInit {
       password: ['', Validators.required],
       dob: ['', Validators.required]
     });
+
+		this.behaviourForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      password: ['', Validators.required],
+      dob: ['', Validators.required]
+    });
+		this.habitatForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      password: ['', Validators.required],
+      dob: ['', Validators.required]
+    });
+		this.threatForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      password: ['', Validators.required],
+      dob: ['', Validators.required]
+    });
+		
   }
 
   get f() { return this.addUserForm.controls; }

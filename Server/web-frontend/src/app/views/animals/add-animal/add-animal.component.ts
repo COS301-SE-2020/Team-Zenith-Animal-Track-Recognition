@@ -19,13 +19,14 @@ export const _filter = (opt: string[], value: string): string[] => {
 };
 
 @Component({
-  selector: 'app-edit-animal-info',
-  templateUrl: './edit-animal-info.component.html',
-  styleUrls: ['./edit-animal-info.component.css']
+  selector: 'app-add-animal',
+  templateUrl: './add-animal.component.html',
+  styleUrls: ['./add-animal.component.css']
 })
-export class EditAnimalInfoComponent implements OnInit {
+export class AddAnimalComponent implements OnInit {
 	
 	animalListForm: FormGroup  = this.formBuilder.group({animal: '',});
+	
 	overviewForm: FormGroup;
 	descrForm: FormGroup;
 	behaviourForm: FormGroup;
@@ -44,10 +45,9 @@ export class EditAnimalInfoComponent implements OnInit {
 
 	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private router: Router, private http: HttpClient, private formBuilder: FormBuilder) { }
 
-
-	ngOnInit(): void 
+ngOnInit(): void 
 	{
-		
+		/*
 		this.overviewForm = this.formBuilder.group({Classification: [this.data.Classification , Validators.required],
 		Common_Name: [this.data.Common_Name, Validators.required], Description_of_animal: [this.data.Description_of_animal, Validators.required],});
 
@@ -62,7 +62,7 @@ export class EditAnimalInfoComponent implements OnInit {
 
 		this.threatForm = this.formBuilder.group({Classification: [this.data.Classification , Validators.required],
 		Common_Name: [this.data.Common_Name, Validators.required], Description_of_animal: [this.data.Description_of_animal, Validators.required],});
-		
+		*/
 		//Fetch Animal List
 		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{animals(Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Classification,Common_Name,Group_ID{Group_Name}}}')
 			.subscribe((data: any[]) => {
@@ -104,9 +104,7 @@ export class EditAnimalInfoComponent implements OnInit {
         let t = [];
         t = Object.values(Object.values(data)[0]);        
       });
-
-    this.router.navigate(["/geotags"], { queryParams: { reload: "true" } });
 	*/
+    this.router.navigate(["/geotags"], { queryParams: { reload: "true" } });
   }
-
 }

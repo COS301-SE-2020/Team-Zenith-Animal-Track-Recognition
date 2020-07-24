@@ -14,6 +14,7 @@ import { AnimalsToolbarComponent } from './views/animals/animals-toolbar/animals
 import { AnimalSearchSidenavComponent } from './views/animals/animal-search-sidenav/animal-search-sidenav.component';
 import { AnimalInfoCardComponent } from './views/animals/animal-info-card/animal-info-card.component';
 import { EditAnimalInfoComponent } from './views/animals/edit-animal-info/edit-animal-info.component'; 
+import { AddAnimalComponent } from './views/animals/add-animal/add-animal.component';
 import { AnimalsComponent } from './views/animals/animals.component';
 import { RangersComponent } from './views/rangers/rangers.component';
 import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
@@ -70,7 +71,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     AnimalsToolbarComponent,
     AnimalSearchSidenavComponent,
     AnimalInfoCardComponent,
-	EditAnimalInfoComponent 
+	EditAnimalInfoComponent,
+	AddAnimalComponent
   ],
   imports: [
     BrowserModule,
@@ -106,7 +108,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 	AddRangerComponent, 
 	EditRangerInfoComponent, 
 	DeleteRangerComponent, 
-	EditAnimalInfoComponent
+	EditAnimalInfoComponent,
+	AddAnimalComponent
   ],
   bootstrap: [AppComponent]
 })
