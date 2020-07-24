@@ -2,31 +2,32 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-animals',
-  templateUrl: './animals.component.html',
-  styleUrls: ['./animals.component.css']
+	selector: 'app-animals',
+	templateUrl: './animals.component.html',
+	styleUrls: ['./animals.component.css']
 })
 export class AnimalsComponent implements OnInit {
 
 
 	@ViewChild('sidenav') sidenav;
 
-	rangers;
+	animals;
 	searchText: string;
 	currentAlphabet;
 	surnames: boolean = true;
 	levels: boolean = false;
-	
-	
-  constructor(private http: HttpClient) { }
+	test: boolean;
 
-  ngOnInit(): void {
-    document.getElementById("animals-route").classList.add("activeRoute");
-  }
-  
-  	printOut(temp: any) {
-		this.rangers = temp;
-		console.log(this.rangers);
+	constructor(private http: HttpClient) { }
+
+	ngOnInit(): void {
+		this.test = true;
+		document.getElementById("animals-route").classList.add("activeRoute");
+	}
+
+	printOut(temp: any) {
+		this.animals = temp;
+		console.log(this.animals);
 	}
 
 	openSidenav() {
@@ -57,22 +58,22 @@ export class AnimalsComponent implements OnInit {
 	}
 	sort(bool: boolean) {
 		if (bool) {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
+			for (let i = 0; i < this.animals.length - 1; i++) {
+				for (let j = i + 1; j < this.animals.length; j++) {
+					if (this.animals[i].lastName.toUpperCase() > this.animals[j].lastName.toUpperCase()) {
+						let temp = this.animals[i];
+						this.animals[i] = this.animals[j];
+						this.animals[j] = temp;
 					}
 				}
 			}
 		} else {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].rangerLevel > this.rangers[j].rangerLevel) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
+			for (let i = 0; i < this.animals.length - 1; i++) {
+				for (let j = i + 1; j < this.animals.length; j++) {
+					if (this.animals[i].rangerLevel > this.animals[j].rangerLevel) {
+						let temp = this.animals[i];
+						this.animals[i] = this.animals[j];
+						this.animals[j] = temp;
 					}
 				}
 			}

@@ -1,25 +1,34 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SideNavigationComponent } from './side-navigation.component';
+import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SideNavigationComponent', () => {
   let component: SideNavigationComponent;
   let fixture: ComponentFixture<SideNavigationComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ SideNavigationComponent ]
-    })
-    .compileComponents();
-  }));
+  let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SideNavigationComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    TestBed.configureTestingModule({
+      providers: [SideNavigationComponent],
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule
+      ]
+    });
+
+
+    httpTestingController = TestBed.get(HttpTestingController);
+    component = TestBed.get(SideNavigationComponent);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  afterEach(() => {
+    httpTestingController.verify();
   });
+
+  it('Test should be false', () => {    component.test = false;
+    expect(component.test).toBeFalsy();
+  });
+
 });
