@@ -13,6 +13,7 @@ import { OverviewComponent } from './views/overview/overview.component';
 import { AnimalsToolbarComponent } from './views/animals/animals-toolbar/animals-toolbar.component';
 import { AnimalSearchSidenavComponent } from './views/animals/animal-search-sidenav/animal-search-sidenav.component';
 import { AnimalInfoCardComponent } from './views/animals/animal-info-card/animal-info-card.component';
+import { EditAnimalInfoComponent } from './views/animals/edit-animal-info/edit-animal-info.component'; 
 import { AnimalsComponent } from './views/animals/animals.component';
 import { RangersComponent } from './views/rangers/rangers.component';
 import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
@@ -44,6 +45,9 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatExpansionModule} from '@angular/material/expansion'; 
 import {MatTableModule} from '@angular/material/table'; 
 import {MatRadioModule} from '@angular/material/radio';
+import {MatTabsModule} from '@angular/material/tabs'; 
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -66,6 +70,7 @@ import {MatRadioModule} from '@angular/material/radio';
     AnimalsToolbarComponent,
     AnimalSearchSidenavComponent,
     AnimalInfoCardComponent,
+	EditAnimalInfoComponent 
   ],
   imports: [
     BrowserModule,
@@ -91,10 +96,18 @@ import {MatRadioModule} from '@angular/material/radio';
 	MatBadgeModule,
 	MatExpansionModule,
 	MatTableModule,
-	MatRadioModule
+	MatRadioModule,
+	MatTabsModule,
+	MatProgressSpinnerModule,
+	MatAutocompleteModule
   ],
   providers: [AuthGuardService],
-  entryComponents: [AddRangerComponent, EditRangerInfoComponent, DeleteRangerComponent],
+  entryComponents: [
+	AddRangerComponent, 
+	EditRangerInfoComponent, 
+	DeleteRangerComponent, 
+	EditAnimalInfoComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

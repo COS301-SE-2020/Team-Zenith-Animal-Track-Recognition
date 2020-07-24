@@ -8,7 +8,9 @@
 	justify-content: space-around;
 	align-items: space-around;
 	overflow: auto;
-}/*
+}
+
+/*
 .animal-profile-cards-container::after 
 {
 	content: "";
@@ -63,7 +65,7 @@
 }
 .mat-card-title
 {
-	font-size: 90%;
+	font-size: 100%;
 	margin-bottom: 0;
 }
 .mat-card-header .mat-card-title
@@ -72,7 +74,7 @@
 }
 .mat-card-subtitle
 {
-	font-size: 90%;
+	font-size: 95%;
 	color: #AAAAAA;
 	margin-bottom: 0;
 }

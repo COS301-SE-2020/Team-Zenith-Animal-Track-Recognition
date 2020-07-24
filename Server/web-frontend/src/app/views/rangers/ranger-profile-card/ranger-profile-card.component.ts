@@ -20,11 +20,14 @@ export class RangerProfileCardComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) {
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void 
+  {
+	  	this.startLoader();
     this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
       .subscribe((data: any[]) => {
         let temp = [];
         temp = Object.values(Object.values(data)[0]);
+				this.stopLoader();
         this.printOut(temp);
       });
   }
@@ -86,5 +89,16 @@ export class RangerProfileCardComponent implements OnInit {
         }
       }
     }
+  }
+    //Loader
+  startLoader()
+  {
+	  console.log("Starting Loader");
+	  document.getElementById("loader-container").style.visibility = "visible";
+  }  
+  stopLoader()
+  {
+	  	  console.log("Stopping Loader");
+	  document.getElementById("loader-container").style.visibility = "hidden";
   }
 }
