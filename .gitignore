@@ -12,4 +12,6 @@ backend-graphQL/301 03/log.txt
 backend-graphQL/301 03/traningLog.txt
 Server/backend-graphQL/301 03/saved_model/*
 
+**/node_modules
+
 Server/backend-graphQL/301 03/traningLog.txt
