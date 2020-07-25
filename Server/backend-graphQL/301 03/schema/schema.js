@@ -32,7 +32,7 @@ let db = admin.firestore();
 let users = db.collection("Users");
 let Animals = db.collection("Animals");
 let Groups = db.collection("Groups");
-let Habitats = db.collection("Habitat");
+let Habitats = db.collection("Habitats");
 
 //google db
 
@@ -1169,14 +1169,17 @@ const Mutation = new GraphQLObjectType({
         AddHabitat: {
             type: HabitatType,
             args: {
+                Token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
                 Habitat_Name: {
-                    type: GraphQLString
+                    type: new GraphQLNonNull(GraphQLString)
                 },
                 Broad_Description: {
-                    type: GraphQLString
+                    type: new GraphQLNonNull(GraphQLString)
                 },
                 Distinguishing_Features: {
-                    type: GraphQLString
+                    type: new GraphQLNonNull(GraphQLString)
                 }
 
 
@@ -1308,6 +1311,11 @@ const Mutation = new GraphQLObjectType({
                 {
                     newAnimal.Pictures=args.Pictures
                 }
+                else
+                {
+                    newAnimal.Pictures=[]
+                    newAnimal.Pictures.push(1)
+                }
                 
                 Animals.doc(args.Classification).set(newAnimal).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
@@ -1317,6 +1325,7 @@ const Mutation = new GraphQLObjectType({
                 return newAnimal;
             }
         },
+        
 
     }
 });
