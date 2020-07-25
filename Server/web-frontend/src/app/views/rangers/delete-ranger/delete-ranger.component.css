@@ -1,0 +1,59 @@
+:host ::ng-deep #mat-dialog-0
+{
+	border: 1px solid green;
+	
+}
+.mat-dialog-title
+{
+	font-size: 120%;
+	border-bottom: 1px solid #CCCCCC;
+}
+.mat-dialog-content
+{
+}
+#delete-ranger-container
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	height: 65%;
+	width: 110%;
+	padding: 0;
+}
+.delete-ranger-confirmMessage
+{
+	font-size: 110%;
+	text-align: center;
+	color: #BBBBBB;
+		margin: 0;
+}
+#delete-ranger-name
+{
+	font-size: 120%;
+	text-align: center;
+		margin: 0;
+}
+#delete-ranger-clause
+{
+	font-size: 75%;
+	color: red;
+}
+.mat-dialog-actions
+{
+	border-top: 1px solid #CCCCCC;
+}
+.mat-dialog-actions > .mat-button
+{
+	font-size: 90%;
+	width: 40%;
+}
+#cancel-btn
+{
+	background-color: #686E79;
+	color: white;
+}
+#add-ranger-btn
+{
+	border: 2px solid #CCCCCC;
+}

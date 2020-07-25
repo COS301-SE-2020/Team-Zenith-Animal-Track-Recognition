@@ -1,11 +1,17 @@
 **/do_NOT_git
+
 !test.jpg
 Server/backend-graphQL/301 03/.vscode/settings.json
 Server/backend-graphQL/301 03/saved_model*
 Server/backend-graphQL/301 03/log.txt
 Server/backend-graphQL/301 03/traningLog.txt
+
 Server/backend-graphQL/301 03/saved_model/*
 
+**/node_modules
+
 Server/backend-graphQL/301 03/traningLog.txt
+
 **/Training Data 350/
 **/Training Data/
+

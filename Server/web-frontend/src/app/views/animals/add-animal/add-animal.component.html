@@ -1,0 +1,128 @@
+<h1 mat-dialog-title>Add New Animal Information</h1>
+<mat-dialog-content id="add-ranger-form-container">
+	<mat-tab-group mat-align-tabs="start">
+		<mat-tab label="Overview">
+			<form [formGroup]="overviewForm" id="edit-animal-form-overview">
+				<div class="edit-animal-inputgroup-container">
+					<!--<form [formGroup]="animalListForm">
+						<mat-form-field appearance="outline">
+							<input type="text" matInput placeholder="Animals" formControlName="animal" required [matAutocomplete]="autoGroup">
+							<mat-icon matPrefix>search</mat-icon>
+							<mat-autocomplete #autoGroup="matAutocomplete">
+								<mat-optgroup *ngFor="let group of animalListOptions | async" [label]="group.Common_Name">
+									<mat-option *ngFor="let class of group.Classification" [value]="class">{{class}}</mat-option>
+								</mat-optgroup>
+							</mat-autocomplete>
+						</mat-form-field>
+					</form>-->
+					<mat-form-field appearance="outline">
+						<mat-label>Animal Common Name</mat-label>
+						<input matInput formControlName="Description_of_animal" placeholder="Last Name">
+					</mat-form-field>
+					<mat-form-field appearance="outline">
+						<mat-label>Animal Classification</mat-label>
+						<input matInput formControlName="Description_of_animal" placeholder="Last Name">
+					</mat-form-field>
+				</div>
+				<div class="edit-animal-inputgroup-container">
+					<div class="edit-animal-range-container">
+						<mat-form-field appearance="outline">
+							<mat-label>Avg. Height Range</mat-label>
+							<input type="number" matInput formControlName="Description_of_animal" placeholder="Email">
+						</mat-form-field>
+						<mat-form-field appearance="outline">
+							<mat-label>Avg. Height Range</mat-label>
+							<input type="number" matInput formControlName="Description_of_animal" placeholder="Email" >
+						</mat-form-field>
+					</div>
+					<div class="edit-animal-range-container">
+						<mat-form-field appearance="outline">
+							<mat-label>Avg. Weight Range</mat-label>
+							<input type="number" matInput formControlName="Common_Name" placeholder="Phone Number" >
+						</mat-form-field>
+						<mat-form-field appearance="outline">
+							<mat-label>Avg. Weight Range</mat-label>
+							<input type="number" matInput formControlName="Common_Name" placeholder="Phone Number">
+						</mat-form-field>
+					</div>
+				</div>				
+				<div class="edit-animal-inputgroup-container">
+					<div class="edit-animal-input-container">
+						<mat-label>Gestation Period</mat-label>
+						<mat-form-field appearance="outline">
+							<mat-label>Duration</mat-label>
+							<input matInput formControlName="Description_of_animal" placeholder="Email">
+						</mat-form-field>						
+						<mat-form-field appearance="outline">
+							<mat-label>Offspring</mat-label>
+							<input type="number" matInput formControlName="Description_of_animal" placeholder="Email">
+						</mat-form-field>
+					</div>
+					<div class="edit-animal-inputbtn-container">
+						<mat-label>Diet</mat-label>
+						<mat-button-toggle-group id="ranger-search-controls" #group="matButtonToggleGroup">
+							<mat-button-toggle value="herb" checked>Herbivore</mat-button-toggle>
+							<mat-button-toggle value="carn">Carnivore</mat-button-toggle>
+							<mat-button-toggle value="omni">Omnivore</mat-button-toggle>
+						</mat-button-toggle-group>
+					</div>
+				</div>
+			</form>
+		</mat-tab>
+		<mat-tab label="Description">
+			<form [formGroup]="descrForm" id="edit-animal-form-descr">
+					<mat-form-field appearance="outline">
+						<mat-label>Animal Description</mat-label>
+						<textarea rows="5" matInput #descrTa class="edit-animal-form-descr-textarea" formControlName="Description_of_animal" placeholder="Please enter a description of the animal."></textarea>
+						<mat-hint align="start">{{descrTa.value?.length || 0}}/300</mat-hint>
+					</mat-form-field>
+					<mat-form-field appearance="outline">
+						<mat-label>Animal Characteristics</mat-label>
+						<textarea rows="5" matInput #charTa class="edit-animal-form-descr-textarea" formControlName="Classification" placeholder="Please enter the physical characteristics of the animal."></textarea>
+						<mat-hint align="start">{{charTa.value?.length || 0}}/300</mat-hint>
+					</mat-form-field>
+			</form>
+		</mat-tab>
+		<mat-tab label="Behavioural Information">
+			<form [formGroup]="behaviourForm" id="edit-animal-form-behaviour">
+				<mat-form-field appearance="outline">
+					<mat-label>Female Behavioural Information</mat-label>
+					<textarea rows="5" matInput #femaleTa formControlName="Description_of_animal" placeholder="Please enter female behavioural information." ></textarea>
+					<mat-hint align="start">{{femaleTa.value?.length || 0}}/300</mat-hint>
+				</mat-form-field>
+				<mat-form-field appearance="outline">
+					<mat-label>Male Behavioural Information</mat-label>
+					<textarea rows="5" matInput #maleTa formControlName="Classification" placeholder="Please enter male behavioural information." ></textarea>
+					<mat-hint align="start">{{maleTa.value?.length || 0}}/300</mat-hint>
+				</mat-form-field>
+			</form>
+		</mat-tab>
+		<mat-tab label="Habitat & Distribution">
+			<form [formGroup]="habitatForm" id="edit-animal-form-habitat">
+				<mat-form-field appearance="outline">
+					<mat-label>Habitat Information</mat-label>
+					<textarea rows="5" matInput #habitatTa formControlName="Description_of_animal" placeholder="Please enter information about the animal's habitat." ></textarea>
+					<mat-hint align="start">{{habitatTa.value?.length || 0}}/300</mat-hint>
+				</mat-form-field>
+				<mat-form-field appearance="outline">
+					<mat-label>Distribution Information</mat-label>
+					<textarea rows="5" matInput #distriTa formControlName="Classification" placeholder="Please enter information about the animal's distribution." ></textarea>
+					<mat-hint align="start">{{distriTa.value?.length || 0}}/300</mat-hint>
+				</mat-form-field>
+			</form>
+		</mat-tab>
+		<mat-tab label="Threats">
+			<form [formGroup]="threatForm" id="edit-animal-form-threat">
+				<mat-form-field appearance="outline">
+					<mat-label>Known Dangers</mat-label>
+					<textarea rows="7" matInput #threatTa formControlName="Classification" placeholder="Please enter information that could warn rangers about potential dangers with the animal."></textarea>
+					<mat-hint align="start">{{threatTa.value?.length || 0}}/300</mat-hint>
+				</mat-form-field>
+			</form>
+		</mat-tab>
+	</mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
+    <button type="submit" mat-button mat-dialog-close (click)="onSubmit()" id="add-ranger-btn" class="fontSB">ADD ANIMAL</button>
+</mat-dialog-actions>

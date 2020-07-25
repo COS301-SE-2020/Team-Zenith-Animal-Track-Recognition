@@ -91,11 +91,7 @@ IMG_WIDTH = 350
 
 
 train_image_generator = ImageDataGenerator(rescale=1./255,
-                                           rotation_range=30,
-                                           width_shift_range=.15,
-                                           height_shift_range=.15,
-                                           horizontal_flip=True,
-                                           zoom_range=0.6)
+                                           horizontal_flip=True)
 
 
 
@@ -130,8 +126,9 @@ def plotImages(images_arr):
     plt.tight_layout()
     plt.show()
 sample_training_images, _ = next(train_data_gen)
-plotImages(sample_training_images[:5])
 
+print(sample_training_images[0].shape)
+plotImages(sample_training_images[:5])
 model = Sequential([
     Conv2D(16, 3, padding='same', activation='relu',
            input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
@@ -152,7 +149,7 @@ model.compile(optimizer='adam',
 
 model.summary()
 
-history = model.fit_generator(
+history = model.fit(
     train_data_gen,
     steps_per_epoch=total_train // batch_size,
     epochs=epochs,
@@ -191,3 +188,7 @@ sentence='saved_model/mane/'+sentence+"/"
 sentence=sentence.replace(" ", "")
 sentence=sentence.replace(":", "")
 model.save(sentence) 
+
+
+
+
