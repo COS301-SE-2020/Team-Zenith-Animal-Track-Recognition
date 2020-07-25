@@ -1,17 +1,15 @@
 **/do_NOT_git
-*.jpeg
-*.jpg
-*.png
-*.CR2
-!test.JPG
-!IMG_2567.jpg
-!IMG_4501.jpg
+
 backend-graphQL/301 03/.vscode/settings.json
 backend-graphQL/301 03/saved_model*
 backend-graphQL/301 03/log.txt
 backend-graphQL/301 03/traningLog.txt
+**/node_modules
 Server/backend-graphQL/301 03/saved_model/*
 
 **/node_modules
 
 Server/backend-graphQL/301 03/traningLog.txt
+Server/backend-graphQL/301 03/Training Data 350/*
+Server/backend-graphQL/Training Data/*
+Server/backend-graphQL/301 03/coverage/*

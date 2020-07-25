@@ -1,0 +1,128 @@
+
+.mat-dialog-title
+{
+	font-size: 120%;
+}
+.mat-dialog-content
+{
+	height: 80%;
+}
+.mat-tab-group
+{
+	height: 100%;
+	width: 100%;
+}
+:host ::ng-deep .mat-tab-body-wrapper
+{
+	height: 100%;
+	width: 100%;
+}
+#add-new-ranger-form
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	background-color: #CCCCCC;
+}
+#edit-animal-form-overview, #edit-animal-form-descr, #edit-animal-form-behaviour, #edit-animal-form-habitat, #edit-animal-form-threat
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: flex-start;
+}
+.edit-animal-inputgroup-container
+{
+	height: 30%;
+	width: 80%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+.edit-animal-input-container
+{
+	width: 40%;
+	height: 90%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+.edit-animal-range-container
+{
+	height: 70%;
+	width: 50%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+.edit-animal-range-container > .mat-form-field
+{
+	width: 40%;
+}
+:host ::ng-deep .edit-animal-input-container > .mat-label
+{
+	width: 100%;
+	height: 15%;
+}
+.edit-animal-input-container > .mat-form-field
+{
+	width: 35%;
+}
+.edit-animal-inputbtn-container
+{
+	width: 40%;
+	height: 90%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: flex-start;
+}
+#edit-animal-form-descr > .mat-form-field, #edit-animal-form-behaviour > .mat-form-field, #edit-animal-form-habitat > .mat-form-field,
+#edit-animal-form-threat > .mat-form-field
+{
+	width: 70%;
+	font-size: 110%;
+}
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
+{
+	padding: 0.2em 0 0.8em 0;
+}
+:host ::ng-deep .mat-form-field-wrapper {
+    /*padding-bottom: 0;*/
+}
+:host ::ng-deep .mat-form-field-label-wrapper
+{
+}
+:host ::ng-deep .mat-form-field-label
+{
+	/*top: 1.1em;*/
+}
+.mat-dialog-actions
+{
+	border-top: 1px solid #CCCCCC;
+	height: 15%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.mat-dialog-actions > .mat-button
+{
+	width: 25%;
+}
+#cancel-btn
+{
+	border: 2px solid #CCCCCC;
+}
+#add-ranger-btn
+{
+	background-color: #686E79;
+	color: white;
+}

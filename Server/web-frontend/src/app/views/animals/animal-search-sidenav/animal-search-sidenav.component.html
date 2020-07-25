@@ -1,0 +1,32 @@
+<div id="animal-search-sidenav">
+    <div id="animal-search-controls-container">
+        <mat-button-toggle-group id="animal-search-controls" #group="matButtonToggleGroup" name="sortResultsBy">
+            <mat-button-toggle value="surname" checked (click)="toggle(true)">Animal</mat-button-toggle>
+            <mat-button-toggle value="level" (click)="toggle(false)">Species</mat-button-toggle>
+        </mat-button-toggle-group>
+        <mat-form-field appearance="outline">
+            <input matInput placeholder="Search animals..." type="text" name="search" [(ngModel)]="searchText" autocomplete="off">
+            <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+    </div>
+    <div id="animal-search-results-container">
+        <mat-selection-list id="animals-by-surnames" [multiple]="false" class="animal-search-results-entries" *ngIf="surnames">
+            <mat-list-option class="fontM" *ngFor="let animal of animals | filter:searchText" [value]="animal">
+                <ng-container *ngIf="checkIfNew(animal.Common_Name, 0)">
+                    {{ animal.Common_Name.charAt(0).toUpperCase() }}
+                </ng-container>
+                <p class="animal-search-resultgroup-mainentry">{{animal.Common_Name}}</p>
+                <p class="animal-search-resultgroup-subentry">{{animal.Classification}}</p>
+            </mat-list-option>
+        </mat-selection-list>
+        <mat-selection-list id="animals-by-level" [multiple]="false" class="animal-search-results-entries" *ngIf="levels">
+            <mat-list-option class="fontM" *ngFor="let animal of animals | filter:searchText" [value]="animal">
+                <ng-container *ngIf='checkSpecies(animal.Group_ID[0].Group_Name)'>
+                    {{ animal.Group_ID[0].Group_Name }}
+                </ng-container>
+                <p class="animal-search-resultgroup-mainentry">{{animal.Common_Name}}</p>
+                <p class="animal-search-resultgroup-subentry">{{animal.Classification}}</p>
+            </mat-list-option>
+        </mat-selection-list>
+    </div>
+</div>
