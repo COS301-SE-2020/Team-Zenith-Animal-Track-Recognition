@@ -92,7 +92,7 @@ test("fetch animals", async (done) => {
   request
     .post("/graphql")
     .send({
-      query: "query{animals(Token:\"4mKb71GQNpPJH1mgmaoh\"){Classification,Common_Name,HeightM,HeightF,WeightM,WeightF,Gestation_Period,Diet_Type,Life_Span}}",
+      query: "query{animals(Token:\"4mKb71GQNpPJH1mgmaoh\"){Classification,Common_Name,Group_ID{Group_ID,Group_Name},HeightM,HeightF,WeightM,WeightF,Habitats,{ID,Habitat_Name,Broad_Description,Distinguishing_Features,Photo_Link}Diet_Type,Life_Span,Gestation_Period,Typical_Behaviour,Overview_of_the_animal,Description_of_animal,Pictures{ID,URL,GeotagID{ID,Reporting_User_Name{firstName},Classification{Common_Name},Geotag{lat,long}timestamp{timestamp}},Kind_Of_Picture}}}"
     })
     .set("Accept", "application/json")
     .expect("Content-Type", /json/)
@@ -103,6 +103,9 @@ test("fetch animals", async (done) => {
       done();
     });
 });
+
+
+
 
 test("fetch Groups", async (done) => {
   request
@@ -199,3 +202,18 @@ test("query that does not exist", async () => {
   expect(response.status).toBe(400);
 });
 
+test("AddAnimal", async (done) => {
+  request
+    .post("/graphql")
+    .send({
+      query: "mutation{AddAnimal(Token:\"\",Classification:\"test\",Common_Name:\"\",HeightM:0,HeightF:0,WeightF:0,WeightM:0,Pictures:[0],Description_of_animal:\"\",Overview_of_the_animal:\"\",Typical_Behaviour:\"\",Gestation_Period:\"\",Life_Span:\"\",Diet_Type:\"\",Group_ID:[0],Habitats:[0]){Animal_ID}}",
+    })
+    .set("Accept", "application/json")
+    .expect("Content-Type", /json/)
+    .expect(200)
+    .end(function (err, res) {
+      if (err) return done(err);
+      expect(res.body).toBeInstanceOf(Object);
+      done();
+    });
+});
