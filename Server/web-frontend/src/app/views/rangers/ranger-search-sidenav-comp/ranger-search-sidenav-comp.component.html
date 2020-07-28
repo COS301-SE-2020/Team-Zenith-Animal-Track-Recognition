@@ -6,14 +6,14 @@
         </mat-button-toggle-group>
 			<form [formGroup]="stateForm">
 			<mat-form-field appearance="outline">
-		    <input type="text" matInput placeholder="States Group" formControlName="stateGroup" position="below" required [matAutocomplete]="autoGroup" [matAutocompleteConnectedTo]="origin">
+		    <input type="text" matInput placeholder="States Group" formControlName="stateGroup" required  [matAutocompleteConnectedTo]="origin" [matAutocomplete]="autoGroup" position="below">
            <!-- <input matInput placeholder="Search Rangers..." type="text" name="search" [(ngModel)]="searchText" autocomplete="off">-->
             <mat-icon matPrefix>search</mat-icon>
 			</mat-form-field>
 			</form>
     </div>
     <div id="ranger-search-results-container" matAutocompleteOrigin #origin="matAutocompleteOrigin">
-      <mat-autocomplete #autoGroup="matAutocomplete">
+      <mat-autocomplete #autoGroup="matAutocomplete" class="rangerAutocompletePanel">
         <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
           <mat-option *ngFor="let name of group.names" [value]="name">
             {{name}}

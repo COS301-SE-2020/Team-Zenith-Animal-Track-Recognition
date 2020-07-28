@@ -30,6 +30,7 @@ export class RangerSearchSidenavCompComponent implements OnInit
 	sorted: string;
 	searchText: string;
 	@Input() rangers;
+	@Input('rangerAutocompletePanel') classList: string 
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	
 	stateForm: FormGroup = this._formBuilder.group({

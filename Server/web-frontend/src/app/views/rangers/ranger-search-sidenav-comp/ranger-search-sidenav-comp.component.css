@@ -2,6 +2,9 @@
 {
 	height: 90%;
 	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 #ranger-search-controls-container
 {
@@ -66,15 +69,23 @@ form
 	overflow: auto;
 	display: flex;
 	flex-direction: column;
-	/*padding: 5% 0;*/
-	border: 1px solid blue;
+	justify-content: flex-end;
+	padding: 5% 0;
 	display: hidden;
+}
+.rangerAutocompletePanel
+{
+	height: 100%;
+	width: 100%;
+	border: 1px solid red;
+	position: absolute;
+	top: 0;
 }
 #ranger-search-results-container > .mat-autocomplete
 {
-	border: 1px solid red;
 	height: 100%;
 	width: 100%;
+	border: 1px solid green;
 }
 .ranger-search-results-entries
 {

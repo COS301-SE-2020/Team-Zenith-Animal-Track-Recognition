@@ -49,12 +49,15 @@ export class AuthService {
         const tkn = {
           value: user.data.DASlogin.Token,
           expiry: now.getTime() + 3600000,
-          fullName: user.data.DASlogin.firstName + " " + user.data.DASlogin.lastName
+          fullName: user.data.DASlogin.firstName + ' ' + user.data.DASlogin.lastName
         }
 
         localStorage.setItem('currentToken', JSON.stringify(tkn));
         this.currentUserSubject.next(user);
         this.isAuthorized = true;
+		
+		//Save last name to use for Profile name
+		localStorage.setItem('userLastName', user.data.DASlogin.lastName);
 
         return user;
       }));

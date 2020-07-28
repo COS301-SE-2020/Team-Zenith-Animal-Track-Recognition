@@ -12,7 +12,8 @@
     <div id="loginView-loginForm-Container">
         <form [formGroup]="loginForm" id="loginFormComp-loginForm-Container" (ngSubmit)="onSubmit(false)">
             <div id="loginFormComp-loginForm-TitleContainer">
-                <h2 class="fontR">Welcome back, Administrator!</h2>
+				<h2 *ngIf="userLastName; else defaultMessage" class="fontR welcomeMessage">Welcome back, {{userLastName}}!</h2>
+				<ng-template #defaultMessage><h2 class="fontR altWelcomeMessage">Welcome to the ERP Animal Track Dashboard</h2></ng-template>
                 <p class="fontR">Please enter your details in the form below to sign in</p>
             </div>
             <div id="loginFormComp-loginForm-FormContainer">

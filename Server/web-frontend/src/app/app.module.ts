@@ -49,6 +49,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatTabsModule} from '@angular/material/tabs'; 
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatSnackBarModule} from '@angular/material/snack-bar'; 
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 	MatRadioModule,
 	MatTabsModule,
 	MatProgressSpinnerModule,
-	MatAutocompleteModule
+	MatAutocompleteModule,
+	MatSnackBarModule
   ],
   providers: [AuthGuardService],
   entryComponents: [
