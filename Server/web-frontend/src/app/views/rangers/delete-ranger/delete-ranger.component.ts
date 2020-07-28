@@ -13,27 +13,29 @@ export class DeleteRangerComponent implements OnInit {
 
   temp: boolean;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private router: Router) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private router: Router, public dialogRef: MatDialogRef<DeleteRangerComponent>) { }
 
   ngOnInit(): void {
     this.temp = false;
   }
 
-  confirmDelete(test: boolean) {
-    if (test) {
-      return true;
-    }
-
-    console.log(JSON.parse(localStorage.getItem('currentToken'))['value']);
-    console.log(this.data.Token);
-    let temp = this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{DeleteUser('
-      + 'TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
-      + 'TokenDelete:"' + this.data.Token + '"){msg}}', '').subscribe((dt: any[]) => {
-        let t = [];
-        t = Object.values(Object.values(dt)[0]);
-      });
-
-    this.router.navigate(["/geotags"], { queryParams: { reload: "true" } });
-    return false;
-  }
+	confirmDelete(test: boolean) 
+	{
+		if (test) {return true;}
+		this.startLoader();
+		this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{DeleteUser('+ 'TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",' + 'TokenDelete:"' + this.data.Token + '"){msg}}', '')
+		.subscribe({next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message)});
+	}
+	
+    //Loader
+	startLoader()
+	{
+		console.log("Starting Loader");
+		document.getElementById("loader-container").style.visibility = "visible";
+	}  
+	stopLoader()
+	{
+	  	console.log("Stopping Loader");
+		document.getElementById("loader-container").style.visibility = "hidden";
+	}
 }

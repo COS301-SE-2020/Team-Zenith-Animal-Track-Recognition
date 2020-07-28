@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Ranger } from './../../models/ranger';
 import { RANGERS } from './../../models/mock-rangers';
 import { HttpClient } from '@angular/common/http';
@@ -9,10 +9,9 @@ import { HttpClient } from '@angular/common/http';
 	templateUrl: './rangers.component.html',
 	styleUrls: ['./rangers.component.css']
 })
-export class RangersComponent implements OnInit {
-
+export class RangersComponent implements OnInit 
+{
 	@ViewChild('sidenav') sidenav;
-
 	rangers;
 	searchText: string;
 	currentAlphabet;
@@ -22,20 +21,40 @@ export class RangersComponent implements OnInit {
 
 	constructor(private http: HttpClient) { }
 
-	ngOnInit(): void {
+	ngOnInit(): void 
+	{
 		document.getElementById("rangers-route").classList.add("activeRoute");
-		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail}}')
-			.subscribe((data: any[]) => {
-				let temp = [];
-				temp = Object.values(Object.values(data)[0]);
-				this.printOut(temp);
-			});
+		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+		.subscribe((data: any[]) => {
+			let temp = [];
+			temp = Object.values(Object.values(data)[0]);
+			this.rangers = temp[0];
+			console.log("ON GLOBAL LOAD there are  " + this.rangers.length + " rangers");
+		});
 	}
-
-	printOut(temp: any) {
-		this.rangers = temp;
+	
+	refresh() 
+	{
+		document.getElementById("rangers-route").classList.add("activeRoute");
+		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+		.subscribe((data: any[]) => {
+			let temp = [];
+			temp = Object.values(Object.values(data)[0]);
+			this.rangers = null;
+			this.rangers = temp[0];
+			console.log("AFTER GLOBAL REFRESH there are  " + this.rangers.length + " rangers");
+		});
 	}
-
+	
+	updateRangerList(updatedList)
+	{
+		if (updatedList == "update")
+		{
+			this.refresh();
+		}
+	}
+	
+	//Ranger Search sidenav
 	openSidenav() {
 		this.sidenav.open();
 		document.getElementById("sidenav-open-btn-container").style.transitionDuration = "0.2s";
