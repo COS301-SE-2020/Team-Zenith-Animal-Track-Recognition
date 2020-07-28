@@ -1,0 +1,169 @@
+A list of geotag cards is created which show recent identifications by all rangers.
+
+Each geotag has and requires the following information from the database
+
+>>>>KEY
+||||id
+||||negat bool
+<<<<Unique ID for the spoor identification
+
+-Name of animala captured the spoor
+
+-Any tags attached to the spoor identification (Discuss limiting it to one)(0-5)
+
+-Accuracy score that the ML provided for the confirmed identification
+
+-Date & time it was taken
+
+-Picture of the spoor
+
+-Pictures of similar spoors (Discuss the limit of this)(5)
+
+-Other possible Matches collection(Discuss limit of this) with a picture, name of animal, species and accuracy score given by ML(0-N) P(N>0.60)
+
+Discuss how many of these cards are necessary (0-20)
+
+__________________________
+
+Profile view API call info one person 
+
+>>>>KEY- mok
+
+-Name of ranger
+
+-email address as as well as contact number
+
+-Total number of species identified by this ranger
+
+-Total number of animals tracked
+
+-Total number of species tracked
+
+<><><>Recet identifnications made by the ranger
+
+
+
+### API-CALLS FOR ANIMAL VIEW
+
+
+
+>>>>>
+||||
+<<<<<
+
+List of Animals
+
+each animal must come with the following data:
+
+>>>> catagoy
+||||
+<<<<
+
+[ 
+*int* size M&F,
+*int*  weight M&F,
+*String* diet,
+*String*  gestation,
+*String*  description,
+*String*  behavioural Information,
+*String*  habitats information,
+*animal ID* ID  ,
+*String* Image , 
+*String* category it belongs too 
+]
+
+→ Different api call to get the categories needed for the animal view, The call should return a list of category names eg:
+
+>>>> null
+|||| null
+<<<< [ "Big Cats","Big Five","Large Antelopes"] in the order of display.
+
+### API-CALLS FOR CONFIRMED VIEW
+
+→ API call to get a list of string of the various tags present on the DB e.g →
+
+>>>>
+||||
+<<<< ["Tracks","Stool","Blood"] .
+
+→ List of an object of possible animals it could be and they should be ordered in terms of possibilities. Each object should contain the following:
+
+>>>> base64 img
+>>>> key
+||||
+<<<<
+
+[
+*int* accuracy score, 
+*String*  type of spoor, 
+*String*  animal name e.g "elephant", 
+*String*  species e.g "African Bush Elephant",
+*String*  image for the animal
+*ID * id
+]
+
+### API-CALLS FOR GALLERY VIEW
+
+→ Retrieve three different lists of strings: (returns 3 different lists, each made up of strings only, and those strings must be images )
+
+>>>> SpesisID
+|||| 
+<<<< 
+
+
+1. List String 1 = List of Animal Appearance
+2. List String 2 = List of droppings
+3. List String 3 = List of Tracks
+
+### API-CALLS FOR SEARCH PAGE
+
+Retrieve → A list of objects:
+
+each object must contain the common name of the animal i.e "Elephant" in *String format*
+
+each object must have the name of the species i.e "African Bush Elephant" in *String format*
+
+each object must have the image of the animal i.e "[https://images.unsplash.com/photo-1551316679-9c6ae9dec224?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60](https://images.unsplash.com/photo-1551316679-9c6ae9dec224?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)" in *String format*
+
+
+### API-CALLS FOR spoor identification
+
+>>>Unique ID for the spoor identification
+
+<<<Place where spoor was captured
+<<<Date it was captured 
+<<<Coordinates
+<<<Animal common name for main result
+<<<Animal species for main result
+<<<accuracy score for main result
+<<<Animal Tags associated to main result
+<<<Other possible matches object [Animal name, Species, accuracy score] as many as the ML identified
+<<<Similar spoor images , [5]
+
+### API-CALLS for Animal information 
+
+>>>Animal Species ID
+
+<<<Species name//Done
+<<<Animal common name//Done
+<<<Avg weight [male, female] //exzisting format
+
+//Avg weight male
+//Avg weight female
+
+<<<Avg height [male, female]//exzisting format
+
+//Avg height male
+//Avg height female
+
+
+<<<Gestation period//Done
+<<<Diet//Done
+<<<Overview of the animal//Done
+<<<Description of animal//Done
+<<<Behaviour of animal//Done
+<<<Habitat of animal//returnss a list
+<><><> calls Habitats
+<<<Threat posed by the animal to rangers 
+
+

@@ -8,13 +8,23 @@ The Animal Track Recognition system is an application which will support ERP ran
 **DEMO 1 Recorded Video**
 * Video: [Animal Track Recognition DEMO 1 Video](https://drive.google.com/file/d/1wPRWSZfDXdYjMZgVQhYv0WJvxW_datI-/view?usp=sharing)
 
-**Functional Requirement (SRS) Document**
-* PDF: [Animal Track Recognition SRS Doc](https://teamzenith.educationhost.cloud/assets/Team_Zenith___Animal_Track_Recog_SRS.pdf)
+**DEMO 2 Recorded Video**
+* Video: [Animal Track Recognition DEMO 2 Video](https://drive.google.com/file/d/1Wsltu0sKa-cJ66aMKDCI91PJNubGCKhR/view?usp=sharing)
+
+**Functional Requirement (SRS) Document - (Updated DEMO2)**
+* PDF: [Animal Track Recognition SRS Doc](https://drive.google.com/file/d/1fFZ2abwsEy2jyUbLJCvffx-5dfQE1YqG/view?usp=sharing)
+
+**User Manual Document - (Updated DEMO2)**
+* PDF: [Animal Track Recognition User Manual Doc](https://drive.google.com/file/d/138Y-w3XJszpY5oBIsyVg4-csuZC8hga1/view?usp=sharing)
+
+**Coding Standards Document**
+* PDF: [Animal Track Recognition Coding Standards](https://drive.google.com/file/d/1Eb0PFPzKs8F8VZHP1lAfKrqgMnvFt7ab/view?usp=sharing)
 
 **Project Managment Tools**
 * Slack: https://teamzenithhq.slack.com
 * GitKraken Boards: https://app.gitkraken.com/glo/board/XrgQ-72g7AATO0N3
 * Discord: https://discord.com/channels/707165255481950219/707165255481950222
+* InVision: https://teamzenith.invisionapp.com/freehand/COS-301-DEMO-1---Use-Case--View-Wireframe-Concepts-6AnwhkKsC
 
 **Team Overview**
 This is the profiles of Team Zenith. We are a family of 5. A group talented beyond measure. A team that is ready to create something phenomenal. We are dedicated to our craft as Software Engineers, Computer Scientists and Mathematicians. This repository is the pillar on which we establish ourselves as the best.
