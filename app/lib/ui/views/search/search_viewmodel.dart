@@ -73,14 +73,6 @@ class SearchViewModel extends BaseViewModel{
     return tempObject;
   }
 
- void navigate(context) {
-     Navigator.of(context).pop();
-  }
-
-  void navigateToInformation(){
-    _navigationService.navigateTo("/information-view");
-  }
-
 }
 
 class TempObject{

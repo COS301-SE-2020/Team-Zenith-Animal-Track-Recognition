@@ -1,8 +1,9 @@
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/app/router.gr.dart';
-import 'package:stacked/stacked.dart';
+import 'package:ERP_RANGER/services/api/api.dart';
+import 'package:ERP_RANGER/services/api/fake_api.dart';
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class BottomNavigation extends StatefulWidget{
@@ -16,10 +17,11 @@ class BottomNavigation extends StatefulWidget{
 }
 
 class BottomNavigationState extends State<BottomNavigation> {
-    int userLevel = 2;
+    //int userLevel = 2;
     int _currentTabIndex;
     BottomNavigationState(this._currentTabIndex);
     BottomNavigation model = new BottomNavigation();
+    final Api _api = locator<FakeApi>();
     final NavigationService _navigationService = locator<NavigationService>();
 
     @override
@@ -69,69 +71,84 @@ class BottomNavigationState extends State<BottomNavigation> {
         }
       }
 
-        return userLevel == 1 
-        ? Container(
-            child: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home, color: Colors.grey),
-                  title: Text('Home', style: TextStyle(color: Colors.grey)),
+      return FutureBuilder(
+        future: _api.getUserLevel(),
+        builder: (context, snapshot){
+          if(snapshot.hasError){
+             return progressIndicator();
+          }    
+          if(snapshot.hasData){
+            if (snapshot.data == 1) {
+              return Container(
+                child: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  items:  <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home, color: Colors.grey),
+                      title: bottomNavigationText('Home',context),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.pets, color: Colors.grey),
+                      title: bottomNavigationText('Animals',context),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.account_circle, color: Colors.grey),
+                      title: bottomNavigationText('Profile',context),
+                    )
+                  ],
+                  selectedItemColor: Colors.black,
+                  unselectedLabelStyle: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'MavenPro',
+                    color: Colors.grey
+                  ),
+                  showUnselectedLabels: true,
+                  unselectedItemColor: Colors.grey,
+                  onTap: _onTap,
+                  currentIndex: _currentTabIndex,
+                ),        
+            );
+            } else {
+              return Container(
+              child: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  items: <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home, color: Colors.grey),
+                      title: bottomNavigationText('Home',context),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.pets, color: Colors.grey),
+                      title: bottomNavigationText('Animals',context),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.file_upload, color: Colors.grey),
+                      title: bottomNavigationText('Upload',context),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.account_circle, color: Colors.grey),
+                      title: bottomNavigationText('Profile',context),
+                    )
+                  ],
+                selectedItemColor: Colors.black,
+                unselectedLabelStyle: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Helvetica',
+                  color: Colors.grey
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.pets, color: Colors.grey),
-                  title: Text('Animals', style: TextStyle(color: Colors.grey)),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle, color: Colors.grey),
-                  title: Text('Profile', style: TextStyle(color: Colors.grey)),
-                )
-              ],
-              selectedItemColor: Color(0xFFF2929C),
-              unselectedLabelStyle: TextStyle(
-                fontSize: 15,
-                fontFamily: 'Helvetica',
-                color: Colors.grey
-              ),
-              showUnselectedLabels: true,
-              unselectedItemColor: Colors.grey,
-              onTap: _onTap,
-              currentIndex: _currentTabIndex,
-            ),        
-        )
-      : Container(
-          child: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home, color: Colors.grey),
-                  title: Text('Home', style: TextStyle(color: Colors.grey)),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.pets, color: Colors.grey),
-                  title: Text('Animals', style: TextStyle(color: Colors.grey)),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.file_upload, color: Colors.grey),
-                  title: Text('Upload', style: TextStyle(color: Colors.grey)),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle, color: Colors.grey),
-                  title: Text('Profile', style: TextStyle(color: Colors.grey)),
-                )
-              ],
-            selectedItemColor: Colors.black,
-            unselectedLabelStyle: TextStyle(
-              fontSize: 15,
-              fontFamily: 'Helvetica',
-              color: Colors.grey
-            ),
-            showUnselectedLabels: true,
-            unselectedItemColor: Colors.grey,
-            onTap: _onTap2,
-            currentIndex: _currentTabIndex,
-          ),        
-        );
+                showUnselectedLabels: true,
+                unselectedItemColor: Colors.grey,
+                onTap: _onTap2,
+                currentIndex: _currentTabIndex,
+              ),        
+            );
+            }
+          }
+          else{
+            return progressIndicator();
+          }
+        }
+      );
     }
 }
 

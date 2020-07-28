@@ -1,3 +1,4 @@
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/animals/animal_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
@@ -14,42 +15,44 @@ class AnimalView extends StatelessWidget {
 
     return ViewModelBuilder<AnimalViewModel>.reactive(
       builder: (context, model, child) => FutureBuilder(
-        future: model.getCategories(),
+        future: model.getCategories(context),
         // ignore: missing_return
         builder: (context, snapshot){
           if(snapshot.hasError){
-             return text("Error", 20);
+             return progressIndicator();
           }
           if(snapshot.hasData){
-            return WillPopScope(
+            return snapshot.hasData? WillPopScope(
               onWillPop:() async{
                 if(Navigator.canPop(context)){
-                  model.navigate(context);
+                  navigate(context);
                 }
                 return;
               },
               child: DefaultTabController(
-                length: snapshot.data.length,
+                length: 3,
                 child: Scaffold(
                   appBar: AppBar(
                     leading: null,
                     automaticallyImplyLeading: false,
                     backgroundColor: Colors.black,
-                    title: text("Animal Information", 22),
+                    title: appBarTitle("Animal Information", context),
                     actions: <Widget>[IconBuilder(icon:Icons.search,type:"search"), IconBuilder(icon:Icons.more_vert,type:"vert")],
                     bottom: TabBar(tabs: snapshot.data.tabs,indicatorWeight: 3,),
                   ),
                   body: Container(
                     padding: EdgeInsets.all(10),
                     color: Colors.grey[300], 
-                    child: TabBarView(children:getBodyWidgets(snapshot.data.length, snapshot.data.animalList),),
+                    child: TabBarView(children:getBodyWidgets(3, snapshot.data.animalList),),
                   ),
                   bottomNavigationBar: BottomNavigation(),
                 ),
               ), 
-            );
+            )
+            : progressIndicator();
+
           }else{
-            return text("Null no Data", 20);
+            return progressIndicator();
           }
         }
       ),
@@ -75,7 +78,7 @@ class IconBuilder extends ViewModelWidget<AnimalViewModel> {
         icon: Icon(icon, color: Colors.white),
         onPressed: (){
           if(type == "search"){
-            model.navigateToSearchView();
+            navigateToSearchView();
           }else{
 
           }
@@ -116,12 +119,12 @@ Widget getWidget(var animalTabList){
             ListTileTheme(dense:true,child: Row( children:[
               Expanded(flex:2,child: imageBlock(animalTabList[index].image)),
               Expanded(flex:4,child: cardText(animalTabList[index].animalName, animalTabList[index].sizeM, animalTabList[index].sizeF, 
-                animalTabList[index].weightM, animalTabList[index].weightF, animalTabList[index].diet, animalTabList[index].gestation)),
+                animalTabList[index].weightM, animalTabList[index].weightF, animalTabList[index].diet, animalTabList[index].gestation,context)),
             ])),
-            ListTileTheme(dense:true,child: description(animalTabList[index].description)),
-            ListTileTheme(dense:true,child: behaviour(animalTabList[index].behaviour)),
-            ListTileTheme(dense:true,child: habitats(animalTabList[index].habitats)),
-            ListTileTheme(dense:true,child: ViewButton()),
+            ListTileTheme(dense:true,child: description(animalTabList[index].description,context)),
+            ListTileTheme(dense:true,child: behaviour(animalTabList[index].behaviour, context)),
+            ListTileTheme(dense:true,child: habitats(animalTabList[index].habitats, context)),
+            ListTileTheme(dense:true,child: ViewButton(name:animalTabList[index].animalName)),
           ]
         ),
       );
@@ -132,17 +135,18 @@ Widget getWidget(var animalTabList){
 
 //=============================VIEW BUTTON======================
 class ViewButton extends ViewModelWidget<AnimalViewModel> {
-  const ViewButton({Key key}) : super(key: key, reactive: true);
+  String name;
+  ViewButton({this.name,Key key}) : super(key: key, reactive: true);
   @override
   Widget build(BuildContext context, AnimalViewModel model) {
   return ButtonTheme(
       minWidth: 200,
       child: RaisedButton(
-      child: text("VIEW INFO",15),
+      child: tagText("VIEW INFO",context),
       color: Colors.grey,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       padding: EdgeInsets.all(10),
-      onPressed: (){model.navigateToInfo();}
+      onPressed: (){navigateToInfo(name);}
     ),
   );
   }
@@ -156,7 +160,7 @@ Widget imageBlock (String imageLink) {
     margin: new EdgeInsets.only(bottom:10, left:15,right:10,top:10 ),
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: NetworkImage(imageLink),
+        image: AssetImage(imageLink),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,
@@ -169,7 +173,7 @@ Widget imageBlock (String imageLink) {
 //=============================IMAGE BLOCK======================
 
 //=============================ANIMAL DETAILS===================
-Widget cardText(String name, double sizeM, double sizeF, int weightM, int weightF,String diet, String gestation ){
+Widget cardText(String name, double sizeM, double sizeF, int weightM, int weightF,String diet, String gestation,context ){
   return Container(
     margin: EdgeInsets.all(0),
     alignment: Alignment.center,
@@ -177,15 +181,15 @@ Widget cardText(String name, double sizeM, double sizeF, int weightM, int weight
     width: 75,
     child: Column(
       children:<Widget>[
-        Expanded(flex:1,child: Container(alignment: Alignment.centerLeft,margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: text4(name,16))),
-        Expanded(flex:2,child: Container(margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: middleRow(sizeM, sizeF, weightM, weightF))),
-        Expanded(flex:1,child: Container(margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: bottomRow(diet, gestation))),
+        Expanded(flex:1,child: Container(alignment: Alignment.centerLeft,margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: animalViewCardTitle(name,context))),
+        Expanded(flex:2,child: Container(margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: middleRow(sizeM, sizeF, weightM, weightF,context))),
+        Expanded(flex:1,child: Container(margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: bottomRow(diet, gestation,context))),
       ]
     )
   );
 }
 
-Widget middleRow(double sizeM, double sizeF, int weightM, int weightF){
+Widget middleRow(double sizeM, double sizeF, int weightM, int weightF,var context){
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
@@ -197,13 +201,13 @@ Widget middleRow(double sizeM, double sizeF, int weightM, int weightF){
             Expanded(
               flex: 1,
               child: Container(
-                child: text4("Size:", 10),
+                child: animalViewCardBodyText("Size:", context),
               )
             ),
             Expanded(
               flex: 2,
               child: Container(
-                child: column2(sizeF, sizeM),
+                child: column2(sizeF, sizeM, context),
               )
             ),
           ],),
@@ -214,15 +218,15 @@ Widget middleRow(double sizeM, double sizeF, int weightM, int weightF){
           margin: EdgeInsets.only(right:10),
           child: Row(children: <Widget>[
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Container(
-                child: text4("Weight:", 10),
+                child: animalViewCardBodyText("Weight:", context),
               )
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Container(
-                child: column(weightF, weightM),
+                child: column(weightF, weightM,context),
               )
             ), 
           ],),
@@ -232,13 +236,13 @@ Widget middleRow(double sizeM, double sizeF, int weightM, int weightF){
   );
 }
 
-Widget column(int metricF, int metricM){
+Widget column(int metricF, int metricM, var context){
   return Column(
     children: <Widget>[
       Expanded(
         flex: 1,
           child: Row(children: <Widget>[
-            Expanded(flex:2,child: Container(child: text3('$metricF kg', 12),)),
+            Expanded(flex:2,child: Container(child: animalViewCardBodyTextRight('$metricF kg', context),)),
             Expanded(flex:1,child: Container(child: Icon(Icons.person_pin,color: Colors.pink[200],size: 13,),)),
           ],
         ),
@@ -246,7 +250,7 @@ Widget column(int metricF, int metricM){
       Expanded(
         flex: 1,
           child: Row(children: <Widget>[
-            Expanded(flex:2,child: Container(child: text3('$metricM kg', 12),)),
+            Expanded(flex:2,child: Container(child: animalViewCardBodyTextRight('$metricM kg', context),)),
             Expanded(flex:1,child: Container(child: Icon(Icons.person_pin,color: Colors.blue,size: 13,),)),
           ],
         ),
@@ -255,13 +259,13 @@ Widget column(int metricF, int metricM){
   );
 }
 
-Widget column2(double metricF, double metricM){
+Widget column2(double metricF, double metricM, var context){
   return Column(
     children: <Widget>[
       Expanded(
         flex: 1,
           child: Row(children: <Widget>[
-            Expanded(flex:2,child: Container(child: text3('$metricF m', 14),)),
+            Expanded(flex:2,child: Container(child: animalViewCardBodyTextRight('$metricF m', context),)),
             Expanded(flex:1,child: Container(child: Icon(Icons.person_pin,color: Colors.pink[200],size: 14,),)),
           ],
         ),
@@ -269,7 +273,7 @@ Widget column2(double metricF, double metricM){
       Expanded(
         flex: 1,
           child: Row(children: <Widget>[
-            Expanded(flex:2,child: Container(child: text3('$metricM m', 14),)),
+            Expanded(flex:2,child: Container(child: animalViewCardBodyTextRight('$metricM m', context),)),
             Expanded(flex:1,child: Container(child: Icon(Icons.person_pin,color: Colors.blue,size: 14,),)),
           ],
         ),
@@ -278,7 +282,7 @@ Widget column2(double metricF, double metricM){
   );
 }
 
-Widget bottomRow(String diet, String gestation){
+Widget bottomRow(String diet, String gestation,var context){
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
@@ -287,8 +291,8 @@ Widget bottomRow(String diet, String gestation){
         child: Container(
           margin: EdgeInsets.only(right:10),
           child: Row(children: <Widget>[
-            Expanded(flex: 1,child: text4("Diet:",12),),
-            Expanded(flex: 2,child: text3(diet, 12),),
+            Expanded(flex: 1,child: animalViewCardBodyText("Diet: ",context)),
+            Expanded(flex: 2,child: animalViewCardBodyTextRight(diet, context),),
           ],),
         ),
       ),
@@ -297,8 +301,8 @@ Widget bottomRow(String diet, String gestation){
         child: Container(
           margin: EdgeInsets.only(right:10),
           child: Row(children: <Widget>[
-            Expanded(flex: 1,child: text4("Gestation:",12),),
-            Expanded(flex: 1,child: text3(gestation, 12),),
+            Expanded(flex: 1,child: animalViewCardBodyText("Gestation: ",context)),
+            Expanded(flex: 1,child: animalViewCardBodyTextRight(gestation, context),),
           ],),
         ),
       ),
@@ -306,97 +310,29 @@ Widget bottomRow(String diet, String gestation){
   );
 }
 //=============================ANIMAL DETAILS===================
+
 //=============================EXPANSION TILE===================
-Widget description (String bodyText){
+Widget description (String bodyText, var context){
   return ExpansionTile(
-    title: text4("Description", 15),
-    children: <Widget>[expansionTileBodyTemplate(text4(bodyText,11))],
+    title: descriptionText("Description", context),
+    children: <Widget>[expansionTileBodyTemplate(animalViewCardBodyText(bodyText,context))],
   );
 }
 
-Widget behaviour (String bodyText){
+Widget behaviour (String bodyText, var context){
   return ExpansionTile(
-    title: text4("Behaviour", 15),
-    children: <Widget>[expansionTileBodyTemplate(text4(bodyText,11))],
+    title: descriptionText("Behaviour", context),
+    children: <Widget>[expansionTileBodyTemplate(animalViewCardBodyText(bodyText,context))],
   );
 }
 
-Widget habitats (String bodyText){
+Widget habitats (String bodyText, var context){
   return ExpansionTile(
-    title: text4("Habitats", 15),
-    children: <Widget>[expansionTileBodyTemplate(text4(bodyText,11))],
+    title: descriptionText("Habitats", context),
+    children: <Widget>[expansionTileBodyTemplate(animalViewCardBodyText(bodyText,context))],
   );
 }
 //=============================EXPANSION TILE===================
-
-//============================================TEMPLATES================================================
-
-//================================== TEXT TEMPLATES =============================
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.white
-    ),
-  );
-}
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text3(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text4(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text5(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-//================================== TEXT TEMPLATES =============================
 
 //================================== EXPANSION TILE TEMPLATES =============================
 Widget expansionTileBodyTemplate(Widget body){
@@ -408,4 +344,3 @@ Widget expansionTileBodyTemplate(Widget body){
 } 
 //================================== EXPANSION TILE TEMPLATES =============================
 
-//============================================TEMPLATES================================================

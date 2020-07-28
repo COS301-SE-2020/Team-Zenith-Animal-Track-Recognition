@@ -17,18 +17,4 @@ class NotConfirmedViewModel extends BaseViewModel{
     return await "https://images.unsplash.com/photo-1551316679-9c6ae9dec224?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60";
   }
 
-  void recapture(var context){
-    if(false){
-      Navigator.of(context).popAndPushNamed("/confirmed-view");
-    }else{
-      Navigator.of(context).popAndPushNamed("/not-confirmed-view");
-    }
-  }
-
-  void navigate(context) {
-     Navigator.of(context).pop();
-  }
-  void reclassify(context) {
-     //Navigator.of(context).pop();
-  }
 }

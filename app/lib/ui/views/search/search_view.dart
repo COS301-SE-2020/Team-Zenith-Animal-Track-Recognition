@@ -1,4 +1,5 @@
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/search/search_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -18,7 +19,7 @@ class SearchView extends StatelessWidget {
         future: model.getSearchList(),
         builder: (context, snapshot){
           if(snapshot.hasError){
-             return text("Error", 20);
+             return progressIndicator();
           }if(snapshot.hasData){
             displayList.clear();
             searchList.clear();
@@ -27,7 +28,7 @@ class SearchView extends StatelessWidget {
             return WillPopScope(
               onWillPop:() async{
                 if(Navigator.canPop(context)){
-                  model.navigate(context);
+                  navigate(context);
                 }
                 return;
               },
@@ -36,7 +37,7 @@ class SearchView extends StatelessWidget {
                 child: Scaffold(
                   appBar: AppBar(
                     backgroundColor: Colors.black,
-                    title: text("Search View", 25),
+                    title: appBarTitle("Search View", context),
                     actions: <Widget>[IconBuilder(icon: Icons.search, colors: Colors.grey,index: 0)],
                     bottom: TabBar(tabs: [text("ANIMAL", 15),text("SPECIES", 15),]),
                   ),
@@ -53,7 +54,7 @@ class SearchView extends StatelessWidget {
               ), 
             );
           }else{
-            return text("Null no Data", 20);
+            return  progressIndicator();
           }    
         }
       ) ,
@@ -67,7 +68,8 @@ class IconBuilder extends ViewModelWidget<SearchViewModel> {
   IconData icon;
   Color colors;
   int index;
-  IconBuilder({Key key,this.icon,this.colors,this.index}) : super(reactive: true);
+  String name;
+  IconBuilder({Key key,this.icon,this.colors,this.index,this.name}) : super(reactive: true);
 
   @override
   Widget build(BuildContext context, SearchViewModel model) {
@@ -81,7 +83,7 @@ class IconBuilder extends ViewModelWidget<SearchViewModel> {
           if(index == 0){
             showSearch(context: context, delegate: DataSearch(model:model));
           }else{
-            model.navigateToInformation();
+            navigateToInfo(name.toLowerCase());
           }
         }
       ),
@@ -123,7 +125,7 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
             leading: imageBlock(animalList[index].image),
             title: text4(animalList[index].species, 17),
             subtitle: text4(animalList[index].commonName,13),
-            trailing: IconBuilder(icon: Icons.remove_red_eye, colors: Colors.grey,index: 1),
+            trailing: IconBuilder(icon: Icons.remove_red_eye, colors: Colors.grey,index: 1, name:animalList[index].commonName ,),
           ),
         );
       }

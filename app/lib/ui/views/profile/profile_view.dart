@@ -1,5 +1,5 @@
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
-import 'package:ERP_RANGER/ui/views/information/spoor_Identification_View.dart';
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/profile/profile_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
@@ -10,42 +10,43 @@ class ProfileView extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    int userLevel = 2;
-    BottomNavigation bottomNavigation = BottomNavigation();
-    if(userLevel == 1){
-      bottomNavigation.setIndex(2);
-    }else{
-      bottomNavigation.setIndex(3);
-    }
-
     return ViewModelBuilder<ProfileViewModel>.reactive(
       builder: (context, model, child) => FutureBuilder(
         future: model.getRecentIdentifications(),
         builder: (context, snapshot){
           if(snapshot.hasError){
-             return Center(child: text("Error", 20));
+             return progressIndicator();
           }
           if(snapshot.hasData){
-            return Scaffold(
+            int userLevel = snapshot.data.userLevel;
+            BottomNavigation bottomNavigation = BottomNavigation();
+            if(userLevel == 1){
+              bottomNavigation.setIndex(2);
+            }else{
+              bottomNavigation.setIndex(3);
+            }
+            return snapshot. hasData 
+            ? Scaffold(
               appBar: AppBar(
                 backgroundColor: Colors.black,
                 leading: IconBuilder(icon:Icons.menu,type:"search"),
-                title: text("Profile", 22),
+                title: appBarTitle("Profile", context),
                 actions: <Widget>[IconBuilder(icon:Icons.search,type:"search"), IconBuilder(icon:Icons.more_vert,type:"vert")],
               ),
               body: Container(color:Colors.grey[300] ,child: TopBar(tempObject: snapshot.data,)),
               bottomNavigationBar: BottomNavigation(),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
-                  model.captureImage();
+                  captureImage();
                 },
                 child: Icon(Icons.camera_alt,),
                 backgroundColor: Colors.black,
               ),
-            );
+            )
+            : progressIndicator();
           }
           else{
-            return Center(child: text("Null no Data", 20));
+            return progressIndicator();
           }
         }        
       ), 
@@ -102,7 +103,7 @@ class IconBuilder extends ViewModelWidget<ProfileViewModel> {
         icon: Icon(icon, color: Colors.white),
         onPressed: (){
           if(type == "search"){
-            model.navigateToSearchView();
+            navigateToSearchView();
           }else{
           }
         }
@@ -123,7 +124,7 @@ class ListBody extends ViewModelWidget<ProfileViewModel> {
       itemBuilder: (context, index){
         return GestureDetector(
           onTap: (){
-            model.navigateToInfo();
+            navigateToIdentification(animalList[index].name.toLowerCase());
           },
           child: Container(
             margin: new EdgeInsets.all(10),
@@ -323,22 +324,6 @@ class TopBar extends ViewModelWidget<ProfileViewModel> {
     );
   }
 }
- //
-// SliverAppBar(
-//                 expandedHeight: 180.0,
-//                 automaticallyImplyLeading: false,
-//                 leading: null,
-//                 floating: false,
-//                 pinned: true,
-//                 stretch: false,
-//                 snap: false,
-//                 backgroundColor: Colors.white,
-//                   flexibleSpace: FlexibleSpaceBar(
-//                   centerTitle: true,
-//                   background: profileinfo(tempObject.infoModel),
-//                   collapseMode: CollapseMode.pin,
-//                 ),
-//               ),
 
 Widget profileinfo(ProfileInfoModel profileInfo){
   return Container(
@@ -466,10 +451,10 @@ Widget profilepic = new Container(
     padding: new EdgeInsets.all(5),
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: NetworkImage( "https://images.unsplash.com/photo-1551316679-9c6ae9dec224?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"),
+        image: AssetImage( "assets/images/profile.png"),
         fit: BoxFit.fill,
       ),
-      color: Colors.black,
+      color: Colors.white,
       borderRadius: BorderRadius.circular(100),
     ),
     height: 70,

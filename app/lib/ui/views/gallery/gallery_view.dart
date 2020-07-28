@@ -1,10 +1,13 @@
+import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/gallery/gallery_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class GalleryView extends StatelessWidget {
-  const GalleryView({Key key}) : super(key: key);
+  GalleryModel galleryModel;
+  GalleryView(this.galleryModel);
 
   @override
   Widget build(BuildContext context) {
@@ -12,16 +15,16 @@ class GalleryView extends StatelessWidget {
     bottomNavigation.setIndex(1);
     return ViewModelBuilder<GalleryViewModel>.reactive(
       builder: (context, model, child) => FutureBuilder(
-        future: model.getSpoor(),
+        future: model.getSpoor(context),
         builder: (context, snapshot){
           if(snapshot.hasError){
-             return text("Error", 20);
+             return progressIndicator();
           }
           if(snapshot.hasData){
-            return WillPopScope(
+            return snapshot.hasData ? WillPopScope(
               onWillPop:() async{
                 if(Navigator.canPop(context)){
-                  model.navigate(context);
+                  navigate(context);
                 }
                 return;
               },
@@ -31,22 +34,22 @@ class GalleryView extends StatelessWidget {
                   appBar: AppBar(
                     leading: null,
                     backgroundColor: Colors.black,
-                    title: text("African Bush Elephant", 22),
+                    title: appBarTitle(galleryModel.name, context),
                     actions: <Widget>[IconBuilder(icon:Icons.more_vert,type:"vert")],
                     bottom: TabBar(tabs: snapshot.data.tabs,indicatorWeight: 3,),
                   ),
                   body: Container(
                     padding: EdgeInsets.all(10),
                     color: Colors.grey[300], 
-                    child: TabBarView(children:getBodyWidgets(snapshot.data.length, snapshot.data.animalList),),
+                    child: TabBarView(children:getBodyWidgets(snapshot.data.length,galleryModel.galleryList),),
                   ),
-                  bottomNavigationBar: BottomNavigation(),
-                  floatingActionButton: FloatingActionButton(onPressed: model.updateCounter,),                                
+                  bottomNavigationBar: BottomNavigation(),                                
                 ),
               ),           
-            );
+            )
+            : progressIndicator();
           }else{
-            return text("Null no Data", 20);
+            return progressIndicator();
           }
         },
       ),
@@ -66,14 +69,14 @@ List<Widget> getBodyWidgets(int len, var data){
 
 Widget getWidget(var animalTabList){
   return GridView.count(
-    crossAxisCount: 2,
+    crossAxisCount: 3,
     children: List.generate(animalTabList.length, (index){
       return Container(
         alignment: Alignment.center,
-        margin: new EdgeInsets.only(bottom:10, left:15,right:10,top:10 ),
+        margin: new EdgeInsets.all(5),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(animalTabList[index]),
+            image: AssetImage(animalTabList[index]),
             fit: BoxFit.fill,
           ),
           color: Colors.grey,
@@ -107,32 +110,4 @@ class IconBuilder extends ViewModelWidget<GalleryViewModel> {
 }
 //========================== APPBAR ICONS =======================
 
-
-//================================== TEXT TEMPLATES =============================
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.white
-    ),
-  );
-}
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-//================================== TEXT TEMPLATES =============================
 

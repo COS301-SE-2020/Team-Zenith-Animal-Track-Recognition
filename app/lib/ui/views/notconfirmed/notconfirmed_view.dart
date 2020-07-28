@@ -1,9 +1,13 @@
+import 'dart:io';
+
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/notconfirmed/notconfirmed_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class NotConfirmedView extends StatelessWidget {
-  const NotConfirmedView({Key key}) : super(key: key);
+  File image;
+  NotConfirmedView({this.image,Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,28 +16,30 @@ class NotConfirmedView extends StatelessWidget {
         future: model.imagePicker(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if(snapshot.hasError){
-             return text("Error", 20);
+             return progressIndicator();
           }
           if(snapshot.hasData){
-            return WillPopScope(
+            return snapshot.hasData 
+            ? WillPopScope(
               onWillPop:() async{
                 if(Navigator.canPop(context)){
-                  model.navigate(context);
+                  navigate(context);
                 }
                 return;
               },  
               child: Scaffold(
                 body: Stack(
                   children: <Widget>[
-                    imageBlock(snapshot.data),
+                    imageBlock(image),
                     BackButton(),
                     Scroll()
                   ],
                 ),
               )       
-            );
+            )
+            : progressIndicator();
           }else{
-            return text("Null no Data", 20);
+            return progressIndicator();
           }
         },
       ), 
@@ -42,11 +48,11 @@ class NotConfirmedView extends StatelessWidget {
   }
 }
 
-Widget imageBlock (String imageLink) {
+Widget imageBlock (File imageLink) {
     return Container(
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: NetworkImage(imageLink),
+        image: MemoryImage(imageLink.readAsBytesSync()),
         fit: BoxFit.cover,
       ),
     ),
@@ -72,7 +78,7 @@ class BackButton extends ViewModelWidget<NotConfirmedViewModel> {
     ),
     child: GestureDetector(
       onTap: (){
-        model.navigate(context);
+        navigate(context);
       },
       child: Center(
         child:Icon(Icons.arrow_back, color:Colors.black),
@@ -112,42 +118,44 @@ class IconButtons extends ViewModelWidget<NotConfirmedViewModel> {
               if(index == 0){
 
               }else if(index ==1){
-                model.recapture(context);
+                recapture(context);
               }else if(index ==2){
 
               }
             },
           ),
         ),
-        text2(subTitle, 13)
+        notConfirmViewIconButtonText(subTitle, context)
       ],
       ),
     );
   }
 }
 
-Widget textDisplay = new Container(
-  alignment: Alignment(0.0,0.0),
-  margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
-    decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-  ),
-  height: 50,
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.center,
-    mainAxisSize: MainAxisSize.min,
-    children: <Widget>[
-        Expanded(flex:1,
-        child: Container(alignment: Alignment.centerLeft,child: text("Spoor could not be identified",20))
-        ),
-        Expanded(flex:1,
-          child: Container( alignment: Alignment.centerLeft, child: text2("Swipe up for more options", 13))
-        )
-    ],
-  )
-);
+Widget textDisplay(var context){
+  return Container(
+    alignment: Alignment(0.0,0.0),
+    margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
+      decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+    ),
+    height: 50,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+          Expanded(flex:1,
+          child: Container(alignment: Alignment.centerLeft,child: notConfirmViewTitle("Spoor could not be identified",context))
+          ),
+          Expanded(flex:1,
+            child: Container( alignment: Alignment.centerLeft, child: notConfirmViewSubTitle("Swipe up for more options", context))
+          )
+      ],
+    )
+  );
+} 
 
 class LeadingIcon  extends ViewModelWidget<NotConfirmedViewModel> {
   LeadingIcon({Key key,}) : super(key: key, reactive:true);
@@ -196,7 +204,7 @@ class Scroll extends ViewModelWidget<NotConfirmedViewModel> {
               Row(children: <Widget>[
                 Expanded(flex:1 ,child: LeadingIcon()),
                 SizedBox(height: 1.0,),
-                Expanded(flex:4 ,child: textDisplay,),
+                Expanded(flex:4 ,child: textDisplay(context),),
                 SizedBox(height: 1.0,),
                 Expanded(flex:1 ,child: blocks),
               ],),
@@ -231,29 +239,4 @@ Widget dividerGrey = new Container(
   margin: EdgeInsets.only(top: 7, bottom: 7),
 );
 
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey[300]
-    ),
-  );
-}
 //================================== TEXT TEMPLATES =============================

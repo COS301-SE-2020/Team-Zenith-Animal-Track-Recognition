@@ -1,36 +1,26 @@
+import 'package:ERP_RANGER/app/locator.dart';
+import 'package:ERP_RANGER/app/router.gr.dart';
+import 'package:ERP_RANGER/services/api/api.dart';
+import 'package:ERP_RANGER/services/api/fake_api.dart';
+import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
-class InformationViewModel extends BaseViewModel{
-  String _title = 'Home View';
-  String get title => '$_title $_counter ';
+class InformationViewModel extends BaseViewModel {
+  final NavigationService _navigationService = locator<NavigationService>();
+  final Api _api = locator<FakeApi>();
+  InfoModel _animalInfo;
+  InfoModel get animalInfo => _animalInfo;
 
-  int _counter = 0;
-  int get counter => _counter;
-
-  void updateCounter(){
-    _counter++;
-    notifyListeners();
+  void setAnimalInfo(InfoModel _animalInfo){
+    this._animalInfo = _animalInfo;
   }
+
+  Future<int>getInfo() async{
+    return 0;
+  }
+
 }
 
-// import '../../../services/datamodels/api_models.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:stacked/stacked.dart';
-
-// class SpoorIdentificationViewModel extends BaseViewModel {
-
-//   CameraPosition _myLocation = CameraPosition(
-//   target: LatLng(-25.882171, 28.264653),
-//   zoom: 15,
-//   );
-
-//   CameraPosition get myLocation => _myLocation;
-
-//   int _cardLength = 6;
-//   int get cardLength => _cardLength;
-
-//   String _tag = "Dangerous";
-//   String get tag => _tag;
-
-
-// }

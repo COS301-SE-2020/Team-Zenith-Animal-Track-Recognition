@@ -1,4 +1,5 @@
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/home/home_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +18,14 @@ class HomeView extends StatelessWidget {
         future: model.getRecentIdentifications(),
         builder: (context, snapshot){
           if(snapshot.hasError){
-             return Center(child: text("Error", 20));
+             return progressIndicator();
           }
           if(snapshot.hasData){
-            return Scaffold(
+            return snapshot.hasData ? Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.black,
-                title: text("Recent Indentifications", 20),
+                title: appBarTitle("Recent Indentifications", context),
                 actions: <Widget>[IconBuilder(icon:Icons.search,type:"search"), IconBuilder(icon:Icons.more_vert,type:"vert")],
               ),
               body: Container(
@@ -35,15 +36,16 @@ class HomeView extends StatelessWidget {
               bottomNavigationBar: BottomNavigation(),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
-                  model.captureImage();
+                  captureImage();
                 },
                 child: Icon(Icons.camera_alt,),
                 backgroundColor: Colors.black,
               ),
-            );
+            )
+            : progressIndicator();
           }
           else{
-            return Center(child: text("Null no Data", 20));
+            return progressIndicator();
           }
         }
       ),
@@ -67,7 +69,7 @@ class IconBuilder extends ViewModelWidget<HomeViewModel> {
         icon: Icon(icon, color: Colors.white),
         onPressed: (){
           if(type == "search"){
-            model.navigateToSearchView();
+            navigateToSearchView();
           }else{
           }
         }
@@ -88,39 +90,43 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
       itemBuilder: (context, index){
         return GestureDetector(
           onTap: (){
-            model.navigateToInfo();
+            navigateToIdentification(animalList[index].name.toLowerCase());
           },
-          child: Container(
+          child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            elevation: 0,
             margin: new EdgeInsets.all(10),
-            padding: new EdgeInsets.all(0),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            height: 150,
-            child: Column(
-              children: <Widget>[
-                Expanded(flex:4,child: Row(children: <Widget>[
-                  Expanded(flex:1,child: imageBlock(animalList[index].pic)),
-                  Expanded(flex:2,child: textColumn(animalList[index].name, animalList[index].time, animalList[index].species, animalList[index].location, animalList[index].captured))
-                ],)),
-                Divider(),
-                Expanded(flex:1,child: Row(
-                  children: <Widget>[
-                    Expanded(flex: 1,child: Container(
-                      alignment: Alignment.center, margin: new EdgeInsets.only(left:15,right:10,bottom: 6),
-                      decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(10)),
-                      child: text(animalList[index].tag, 13),
-                    ),),
-                    Expanded(flex: 2,child: Container(
-                      alignment: Alignment.center, margin: new EdgeInsets.only(right:10,bottom: 6),
-                      //decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(10)),
-                      child: textRow(animalList[index].score),
-                    ),),
-                  ],
-                )),
-              ],
+            child: Container(
+              padding: new EdgeInsets.all(0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              height: 150,
+              child: Column(
+                children: <Widget>[
+                  Expanded(flex:4,child: Row(children: <Widget>[
+                    Expanded(flex:1,child: imageBlock(animalList[index].pic)),
+                    Expanded(flex:2,child: textColumn(animalList[index].name, animalList[index].time, animalList[index].species, animalList[index].location, animalList[index].captured,context))
+                  ],)),
+                  Divider(),
+                  Expanded(flex:1,child: Row(
+                    children: <Widget>[
+                      Expanded(flex: 1,child: Container(
+                        alignment: Alignment.center, margin: new EdgeInsets.only(left:15,right:10,bottom: 6),
+                        decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(10)),
+                        child: tagText(animalList[index].tag, context),
+                      ),),
+                      Expanded(flex: 2,child: Container(
+                        alignment: Alignment.center, margin: new EdgeInsets.only(right:10,bottom: 6),
+                        //decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(10)),
+                        child: textRow(animalList[index].score,context),
+                      ),),
+                    ],
+                  )),
+                ],
+              ),
             ),
           ),
         );
@@ -145,116 +151,35 @@ Widget imageBlock (String imageLink) {
   );
 }
 
-Widget textColumn(String name, String time, String species, String location, String capturedBy){
+Widget textColumn(String name, String time, String species, String location, String capturedBy, var context){
   return Container(
     height: 75,
     margin: new EdgeInsets.only(right:10,),
     child: Column(
       children: <Widget>[
         Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: text2(name, 18),)),
-          Expanded(flex:1,child: Container(color: Colors.white,child: text5(time, 13),)),
+          Expanded(flex:1,child: Container(color: Colors.white,child: cardTitle(name, context),)),
+          Expanded(flex:1,child: Container(color: Colors.white,child: cardTextRight(time, context),)),
         ],)),
         Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: text2("Species: ", 12),)),
-          Expanded(flex:2,child: Container(color: Colors.white,child: text3(species, 12),)),
+          Expanded(flex:1,child: Container(color: Colors.white,child: cardTextLeft("Species: ", context),)),
+          Expanded(flex:2,child: Container(color: Colors.white,child: cardTextValue(species, context),)),
         ],)),      
         Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: text2("Location: ", 12),)),
-          Expanded(flex:2,child: Container(color: Colors.white,child: text3(location, 12),)),
+          Expanded(flex:1,child: Container(color: Colors.white,child: cardTextLeft("Location: ", context),)),
+          Expanded(flex:2,child: Container(color: Colors.white,child: cardTextValue(location, context),)),
         ],)),
         Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: text2("Captured by: ", 12),)),
-          Expanded(flex:2,child: Container(color: Colors.white,child: text3(capturedBy, 12),)),
+          Expanded(flex:1,child: Container(color: Colors.white,child: cardTextLeft("Captured by: ", context),)),
+          Expanded(flex:2,child: Container(color: Colors.white,child: cardTextValue(capturedBy, context),)),
         ],)),    ],
     ),
   );
 }
 
-Widget textRow(String accuracy){
+Widget textRow(String accuracy,var context){
   return Row(children: <Widget>[
-    Expanded(flex: 2,child: text3("ACCURACY SCORE", 14),),
-    Expanded(flex: 1,child: text6(accuracy, 14),),
+    Expanded(flex: 2,child: homeViewAccuracyScoreLeft("ACCURACY SCORE", context),),
+    Expanded(flex: 1,child: homeViewAccuracyScoreRight(accuracy, context),),
   ],);
 }
-//================================== TEXT TEMPLATES =============================
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.white
-    ),
-  );
-}
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.black
-    ),
-  );
-}
-
-Widget text3(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text4(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text5(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.normal,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text6(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-//================================== TEXT TEMPLATES =============================
-
-

@@ -1,10 +1,15 @@
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/confirmed/confirmed_viewmodel.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'dart:io';
 
+// ignore: must_be_immutable
 class ConfirmedView extends StatelessWidget {
-  const ConfirmedView({Key key}) : super(key: key);
+  List<ConfirmModel> confirmedAnimals;
+  File image;
+  ConfirmedView({this.confirmedAnimals,this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -13,20 +18,26 @@ class ConfirmedView extends StatelessWidget {
         future: model.getConfirm(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if(snapshot.hasError){
-             return text("Error", 20);
+             return progressIndicator();
           }
           if(snapshot.hasData){
+            if(model.loaded == false){
+              model.setConfidentAnimal(confirmedAnimals[0]);
+              confirmedAnimals.removeAt(0);
+              model.setConfirmedList(confirmedAnimals);
+              model.setLoaded(true);
+            }
             return WillPopScope(
               onWillPop:() async{
                 if(Navigator.canPop(context)){
-                  model.navigate(context);
+                  navigate(context);
                 }
                 return;
               }, 
               child: Scaffold(
                 body: Stack(
                   children: <Widget>[
-                    imageBlock(snapshot.data.identifiedList[0].image),
+                    imageBlock(image),
                     BackButton(),
                     Scroll(finalObject: snapshot.data)
                   ],
@@ -34,7 +45,7 @@ class ConfirmedView extends StatelessWidget {
               ),
             );
           }else{
-            return text("Null no Data", 20);
+            return progressIndicator();
           }
         },
       ),
@@ -43,11 +54,11 @@ class ConfirmedView extends StatelessWidget {
   }
 }
 
-Widget imageBlock (String imageLink) {
+Widget imageBlock (File imageLink) {
     return Container(
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: NetworkImage(imageLink),
+        image: MemoryImage(imageLink.readAsBytesSync()),
         fit: BoxFit.cover,
       ),
     ),
@@ -73,7 +84,7 @@ class BackButton extends ViewModelWidget<ConfirmedViewModel> {
     ),
     child: GestureDetector(
       onTap: (){
-        model.navigate(context);
+        navigate(context);
       },
       child: Center(
         child:Icon(Icons.arrow_back, color:Colors.black),
@@ -85,10 +96,13 @@ class BackButton extends ViewModelWidget<ConfirmedViewModel> {
 
 class Scroll extends ViewModelWidget<ConfirmedViewModel> {
   FinalObject finalObject;
+  ConfirmModel confidentAnimal;
   Scroll({Key key, this.finalObject}) : super(key: key, reactive:true);
 
   @override
   Widget build(BuildContext context, ConfirmedViewModel model) {
+    confidentAnimal = model.confidentAnimal;
+
     return DraggableScrollableSheet(
       initialChildSize: 0.12,
       minChildSize: 0.12,
@@ -108,34 +122,34 @@ class Scroll extends ViewModelWidget<ConfirmedViewModel> {
                 children: <Widget>[
                   Expanded(flex:1 ,child: LeadingIcon()),
                   SizedBox(height: 1.0,),
-                  Expanded(flex:4 ,child: textDisplay(finalObject.identifiedList[0].species +" "+ finalObject.identifiedList[0].animalName)),
+                  Expanded(flex:4 ,child: textDisplay(model.confidentAnimal.species +" "+ model.confidentAnimal.animalName,context)),
                   SizedBox(height: 1.0,),
-                  Expanded(flex:1 ,child: blocks(finalObject.identifiedList[0].accuracyScore)),
+                  Expanded(flex:1 ,child: blocks(model.confidentAnimal.accuracyScore)),
                 ],
               ),
               Divider(),
               Column(
                 children: <Widget>[
-                  identifyText,
-                  SpoorIdentification(animalIdentified:finalObject.identifiedList[0]),
+                  identifyText(context),
+                  SpoorIdentification(),
                 ],
               ),
               Divider(),
               Column(children: <Widget>[
-                otherMatches,
-                Row(children: <Widget>[Expanded(flex:1, child: similarSpoor(finalObject.identifiedList),)],)]
+                otherMatches(context),
+                Row(children: <Widget>[Expanded(flex:1, child: SimilarSpoor(),)],)]
               ,),
               Divider(),
               Column(
                 children: <Widget>[
-                  tagText,
+                  tagText(context),
                   Tags(tags:finalObject.tags)
                 ],
               ),
               Divider(),
               Row(children: <Widget>[
                 Expanded(flex:1,child: IconButtons(iconData:Icons.check,subTitle:"CONFIRM SPOOR",index:0)),
-                Expanded(flex:1,child: IconButtons(iconData:Icons.search,subTitle:"EDIT GEOTAG",index:1)),
+                //Expanded(flex:1,child: IconButtons(iconData:Icons.search,subTitle:"EDIT GEOTAG",index:1)),
                 Expanded(flex:1,child: IconButtons(iconData:Icons.camera_alt,subTitle:"RECAPTURE SPOOR",index:2)),
                 Expanded(flex:1,child: IconButtons(iconData:Icons.file_download,subTitle:"DOWNLOAD IMAGE",index:3)),
               ],)
@@ -148,15 +162,14 @@ class Scroll extends ViewModelWidget<ConfirmedViewModel> {
 }
 
 class SpoorIdentification extends ViewModelWidget<ConfirmedViewModel> {
-  TempObject animalIdentified;
-  SpoorIdentification({Key key, this.animalIdentified}) : super(key: key, reactive:true);
+  SpoorIdentification({Key key}) : super(key: key, reactive:true);
 
   @override
   Widget build(BuildContext context, ConfirmedViewModel model) {
     return Container(
       child: Row(children: <Widget>[
-        Expanded(flex:1,child: confidentImageBlock(animalIdentified.image)),
-        Expanded(flex:1,child: confidentImageDetails(animalIdentified.type, animalIdentified.animalName, animalIdentified.species, animalIdentified.accuracyScore))
+        Expanded(flex:1,child: confidentImageBlock(model.confidentAnimal.image)),
+        Expanded(flex:1,child: confidentImageDetails(model.confidentAnimal.type, model.confidentAnimal.animalName, model.confidentAnimal.species, model.confidentAnimal.accuracyScore,context))
       ],),
     );
   }
@@ -194,16 +207,16 @@ class IconButtons extends ViewModelWidget<ConfirmedViewModel> {
               }else if(index == 1){
 
               }else if(index == 2){
-                model.recapture(context);
+                recapture(context);
               }else if(index == 3){
                 
               }
             },
           ),
         ),
-        text2(subTitle, 13)
+        confirmViewIconButtonText(subTitle, context)
       ],
-  ),
+    ),
     );
   }
 }
@@ -231,32 +244,80 @@ class LeadingIcon  extends ViewModelWidget<ConfirmedViewModel> {
     );
   }
 }
-
 // ignore: must_be_immutable
 class PossibleTags extends ViewModelWidget<ConfirmedViewModel> {
   String image;
   String name;
   String species;
   int score;
-  PossibleTags({Key key,this.image,this.name,this.score,this.species}) : super(key: key);
+  int index;
+  PossibleTags({Key key,this.image,this.name,this.score,this.species,this.index}) : super(key: key, reactive:true);
 
   @override
   Widget build(BuildContext context, ConfirmedViewModel model) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: new EdgeInsets.only(left:8,bottom:5,top:5,),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+    return  PopupMenuButton<int>(
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 1,
+          child: Text('Reclassify', style: TextStyle(color: Colors.black)),
+        ),
+        PopupMenuItem(
+          value: 2,
+          child: Text('View Info', style: TextStyle(color: Colors.black)),
+        ),
+        PopupMenuItem(
+          value: 3,
+          child: Text('View Photos', style: TextStyle(color: Colors.black)),
+        ),
+      ],
+      child: Container(
+        alignment: Alignment.centerLeft,
+        margin: new EdgeInsets.only(left:8,bottom:5,top:5,),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        height: 200,
+        width: 110,
+        child: Column(children: <Widget>[
+          Expanded(child: Container(alignment: Alignment.centerLeft, child: innerImageBlock(image)) ,flex:4),
+          Expanded(child: Container(alignment: Alignment.centerLeft,margin: new EdgeInsets.only(left:8),child: confirmViewSimilarSpoorTextName(name,context)),flex:1),
+          Expanded(child: Container(alignment: Alignment.centerLeft,margin: new EdgeInsets.only(left:8),child: confirmViewSimilarSpoorText(species,context)),flex:1),
+          Expanded(child: Container(alignment: Alignment.centerLeft,margin: new EdgeInsets.only(left:8),child: confirmViewSimilarSpoorText("$score%",context)),flex:1),
+        ],),
       ),
+      onSelected: (value){
+        if(value == 1){
+          model.reclassify(index);
+        }else if(value == 2){
+          navigateToInfo(name.toLowerCase());
+        }else{
+          navigateToGallery(name.toLowerCase());
+        }
+        //different fuctionality insert here
+      },
+        offset: Offset(120,40),
+      color: Colors.white,
+    );
+  }
+}
+
+class SimilarSpoor  extends ViewModelWidget<ConfirmedViewModel> {
+  SimilarSpoor({Key key,}) : super(key: key, reactive:true);
+ 
+  @override
+  Widget build(BuildContext context, ConfirmedViewModel model) {
+    return Container(
       height: 200,
-      width: 110,
-      child: Column(children: <Widget>[
-        Expanded(child: Container(alignment: Alignment.centerLeft, child: innerImageBlock(image)) ,flex:4),
-        Expanded(child: Container(alignment: Alignment.centerLeft,margin: new EdgeInsets.only(left:8),child: text3(name,15)),flex:1),
-        Expanded(child: Container(alignment: Alignment.centerLeft,margin: new EdgeInsets.only(left:8),child: text4(species,15)),flex:1),
-        Expanded(child: Container(alignment: Alignment.centerLeft,margin: new EdgeInsets.only(left:8),child: text4("$score%",15)),flex:1),
-      ],),
+      color: Colors.white,
+      child: ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: model.confirmedList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return PossibleTags(image: model.confirmedList[index].image,name:model.confirmedList[index].animalName,species: model.confirmedList[index].species,score:model.confirmedList[index].accuracyScore,index:index);
+        }
+      ),
     );
   }
 }
@@ -268,7 +329,7 @@ Widget confidentImageBlock(String image){
     //padding: new EdgeInsets.all(5),
       decoration: BoxDecoration(
       image: DecorationImage(
-        image: NetworkImage( image ),
+        image: AssetImage( image ),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,
@@ -278,7 +339,7 @@ Widget confidentImageBlock(String image){
   );
 } 
 
-Widget confidentImageDetails (String type, String name, String species, int score){
+Widget confidentImageDetails (String type, String name, String species, int score, var context){
   return Container(
     alignment: Alignment.center,
     margin: new EdgeInsets.all(10),
@@ -290,54 +351,43 @@ Widget confidentImageDetails (String type, String name, String species, int scor
     height: 130,
     child: Column(
       children:<Widget>[
-        Expanded(flex:1,child: Row(children: <Widget>[Expanded(flex:1,child: text3("Type:", 16)),Expanded(flex:1,child: text4(type, 16))])),
-        Expanded(flex:1,child: Row(children: <Widget>[Expanded(flex:1,child: text3("Animal:", 16)),Expanded(flex:1,child: text4(name,16))])),
-        Expanded(flex:1,child: Row(children: <Widget>[ Expanded(flex:1,child: text3("Species", 16)),Expanded(flex:1,child: text4(species, 15))])),
-        Expanded(flex:1,child: Container(alignment: Alignment.centerLeft,child: text3("Accuracy Score:", 17))),
-        Expanded(flex:2,child: Container(alignment: Alignment.centerLeft,child: text3("$score%", 47))),      
+        Expanded(flex:1,child: Row(children: <Widget>[Expanded(flex:1,child: confirmViewConfidentDetailsLeft("Type: ", context)),Expanded(flex:1,child: confirmViewConfidentDetailsRight(type, context))])),
+        Expanded(flex:1,child: Row(children: <Widget>[Expanded(flex:1,child: confirmViewConfidentDetailsLeft("Animal:", context)),Expanded(flex:1,child: confirmViewConfidentDetailsRight(name,context))])),
+        Expanded(flex:1,child: Row(children: <Widget>[ Expanded(flex:1,child: confirmViewConfidentDetailsLeft("Species", context)),Expanded(flex:1,child: confirmViewConfidentDetailsRight(species, context))])),
+        Expanded(flex:1,child: Container(alignment: Alignment.centerLeft,child: confirmViewConfidentDetailsLeft("Accuracy Score:", context))),
+        Expanded(flex:2,child: Container(alignment: Alignment.centerLeft,child: percentageText("$score%", 47))),      
       ]
     ),
   );
 } 
 
-Widget otherMatches = new Container(
-  alignment: Alignment.centerLeft,
-  margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-  padding: new EdgeInsets.all(5) ,
-    decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-  ),
-  //height: 0,
-  child: text("Other Possible Matches", 20),
-);
-
-Widget tagText = new Container(
-  alignment: Alignment.centerLeft,
-  margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-  padding: new EdgeInsets.all(5) ,
-    decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-  ),
-  //height: 0,
-  child: text("Attach A Tag", 20),
-);
-
-Widget similarSpoor (List<TempObject> possibleAnimals){
+Widget otherMatches (var context){
   return Container(
-    height: 200,
-    color: Colors.white,
-    child: ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemCount: possibleAnimals.length,
-      itemBuilder: (BuildContext context, int index) {
-        return PossibleTags(image: possibleAnimals[index].image,name:possibleAnimals[index].animalName,species: possibleAnimals[index].species,score:possibleAnimals[index].accuracyScore,);
-      }
+    alignment: Alignment.centerLeft,
+    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+    padding: new EdgeInsets.all(5) ,
+      decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
     ),
+    //height: 0,
+    child: confirmViewAnimalTitle("Other Possible Matches", context),
   );
 } 
+
+Widget tagText(var context){
+ return Container(
+  alignment: Alignment.centerLeft,
+  margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+  padding: new EdgeInsets.all(5) ,
+    decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(10),
+  ),
+  //height: 0,
+  child: confirmViewAnimalTitle("Attach A Tag", context),
+);
+}
 
 Widget innerImageBlock (String link){
     return new Container(
@@ -348,7 +398,7 @@ Widget innerImageBlock (String link){
       color: Colors.grey,
       borderRadius: BorderRadius.circular(10),
       image: DecorationImage(
-          image: NetworkImage( link),
+          image: AssetImage( link),
           fit: BoxFit.fill,
       ),
     ),
@@ -370,13 +420,13 @@ Widget blocks(int percentage){
     height: 50,
     child: Column(
       children: <Widget>[
-        Expanded(flex: 2,child: text("$percentage%",30)),
-        Expanded(flex: 1, child: text("MATCH",15)),
+        Expanded(flex: 2,child: percentageText("$percentage%",30)),
+        Expanded(flex: 1, child: percentageText("MATCH",15)),
     ],)
   );
 } 
 
-Widget textDisplay (String name){
+Widget textDisplay (String name,var context){
   return Container(
     alignment: Alignment(0.0,0.0),
     margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
@@ -391,79 +441,28 @@ Widget textDisplay (String name){
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
           Expanded(flex:1,
-          child: Container(alignment: Alignment.centerLeft,child: text(name,20))
+          child: Container(alignment: Alignment.centerLeft,child: confirmViewTitle(name,context))
           ),
           Expanded(flex:1,
-            child: Container( alignment: Alignment.centerLeft, child: text2("Swipe up for more options", 13))
+            child: Container( alignment: Alignment.centerLeft, child: confirmViewSubTitle("Swipe up for more options", context))
           )
       ],
     )
   );
 }
 
-Widget identifyText = new Container(
-  alignment: Alignment.centerLeft,
-  margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-  padding: new EdgeInsets.all(5) ,
-    decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-  ),
-  child: text("Spoor Identification Results",20),
-);
-
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.black
+Widget identifyText(var context){
+  return Container(
+    alignment: Alignment.centerLeft,
+    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+    padding: new EdgeInsets.all(5) ,
+      decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
     ),
+    child: confirmViewAnimalTitle("Spoor Identification Results",context),
   );
-}
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text3(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.black
-    ),
-  );
-}
-
-Widget text4(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-//================================== TEXT TEMPLATES =============================
+} 
 
 // ignore: must_be_immutable
 class Tags extends ViewModelWidget<ConfirmedViewModel> {
@@ -481,9 +480,9 @@ class Tags extends ViewModelWidget<ConfirmedViewModel> {
         return ChoiceChip(
           avatar: CircleAvatar(
             backgroundColor: Colors.grey.shade600,
-            child: Text(tags[index][0].toUpperCase())
+            child: confirmViewTagText(tags[index][0].toUpperCase(),context)
           ),
-          label: text(tags[index], 10),
+          label:confirmViewTagText(tags[index],context),
           backgroundColor: Colors.grey[100],
           selected: defualtChoiceIndex==index,
           selectedColor: Colors.grey.shade600,
@@ -504,4 +503,5 @@ class Tags extends ViewModelWidget<ConfirmedViewModel> {
     );
   }
 }
+
 
