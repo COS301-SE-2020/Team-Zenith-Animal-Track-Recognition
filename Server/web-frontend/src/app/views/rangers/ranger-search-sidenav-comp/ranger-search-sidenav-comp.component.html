@@ -4,13 +4,24 @@
             <mat-button-toggle value="surname" checked (click)="toggle(true)">Surname</mat-button-toggle>
             <mat-button-toggle value="level" (click)="toggle(false)">Level</mat-button-toggle>
         </mat-button-toggle-group>
-        <mat-form-field appearance="outline">
-            <input matInput placeholder="Search Rangers..." type="text" name="search" [(ngModel)]="searchText" autocomplete="off">
+			<form [formGroup]="stateForm">
+			<mat-form-field appearance="outline">
+		    <input type="text" matInput placeholder="States Group" formControlName="stateGroup" position="below" required [matAutocomplete]="autoGroup" [matAutocompleteConnectedTo]="origin">
+           <!-- <input matInput placeholder="Search Rangers..." type="text" name="search" [(ngModel)]="searchText" autocomplete="off">-->
             <mat-icon matPrefix>search</mat-icon>
-        </mat-form-field>
+			</mat-form-field>
+			</form>
     </div>
-    <div id="ranger-search-results-container">
-        <mat-selection-list id="rangers-by-surnames" [multiple]="false" class="ranger-search-results-entries" *ngIf="surnames">
+    <div id="ranger-search-results-container" matAutocompleteOrigin #origin="matAutocompleteOrigin">
+      <mat-autocomplete #autoGroup="matAutocomplete">
+        <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
+          <mat-option *ngFor="let name of group.names" [value]="name">
+            {{name}}
+          </mat-option>
+      </mat-optgroup>
+    </mat-autocomplete>
+
+        <!--<mat-selection-list id="rangers-by-surnames" [multiple]="false" class="ranger-search-results-entries" *ngIf="surnames">
             <mat-list-option class="fontM" *ngFor="let ranger of rangers | filter:searchText" [value]="ranger">
                 <ng-container *ngIf="checkIfNew(ranger.lastName, 0)">
                     {{ ranger.lastName.charAt(0).toUpperCase() }}
@@ -27,6 +38,6 @@
                 <p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
                 <p class="ranger-search-resultgroup-subentry">Level {{ranger.Access_Level}} Ranger</p>
             </mat-list-option>
-        </mat-selection-list>
+        </mat-selection-list>-->
     </div>
 </div>

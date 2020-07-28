@@ -29,27 +29,21 @@ export class RangersComponent implements OnInit
 			let temp = [];
 			temp = Object.values(Object.values(data)[0]);
 			this.rangers = temp[0];
-			console.log("ON GLOBAL LOAD there are  " + this.rangers.length + " rangers");
 		});
 	}
 	
-	refresh() 
-	{
-		document.getElementById("rangers-route").classList.add("activeRoute");
+	refresh() {
 		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
 		.subscribe((data: any[]) => {
 			let temp = [];
 			temp = Object.values(Object.values(data)[0]);
 			this.rangers = null;
 			this.rangers = temp[0];
-			console.log("AFTER GLOBAL REFRESH there are  " + this.rangers.length + " rangers");
 		});
 	}
 	
-	updateRangerList(updatedList)
-	{
-		if (updatedList == "update")
-		{
+	updateRangerList(updatedList){
+		if (updatedList == "update"){
 			this.refresh();
 		}
 	}
