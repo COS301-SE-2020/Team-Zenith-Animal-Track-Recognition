@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { Ranger } from './../../../models/ranger';
 import { RANGERS } from './../../../models/mock-rangers';
 import { HttpClient } from '@angular/common/http';
@@ -8,13 +8,16 @@ import { HttpClient } from '@angular/common/http';
 	templateUrl: './ranger-search-sidenav-comp.component.html',
 	styleUrls: ['./ranger-search-sidenav-comp.component.css']
 })
-export class RangerSearchSidenavCompComponent implements OnInit {
-	rangers;
+export class RangerSearchSidenavCompComponent implements OnInit 
+{
+
 	currentAlphabet;
 	surnames: boolean = true;
 	levels: boolean = false;
 	sorted: string;
 	searchText: string;
+	@Input() rangers;
+	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 
 	constructor(private http: HttpClient) { }
 

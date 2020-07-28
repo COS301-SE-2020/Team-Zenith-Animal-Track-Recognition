@@ -28,9 +28,7 @@ export class RangerProfileCardComponent implements OnInit
         if ('rangers' in changes) 
 		{
 			//If rangers has updated
-			console.log("RANGER PROFILE CARD NGONCHANGE");
         }
-		//console.log("RANGER PROFILE CARD There are  " + this.rangers.length + " rangers");
 		this.stopLoader();
     }    
 	
