@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { AddRangerComponent } from './../add-ranger/add-ranger.component';
@@ -9,48 +9,68 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './rangers-toolbar.component.html',
   styleUrls: ['./rangers-toolbar.component.css']
 })
-export class RangersToolbarComponent implements OnInit {
-  rangers;
+export class RangersToolbarComponent implements OnInit 
+{
+	@Input() searchText: string;
+	@Input() rangers;
+	@Output() rangersOnChange: EventEmitter<string> = new EventEmitter();
 
-  constructor(
-    private router: Router,
-    public dialog: MatDialog,
-    private http: HttpClient
-  ) { }
+	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient) { }
+	ngOnInit(): void {}
+	
+	public ngOnChanges(changes: SimpleChanges) 
+	{
+        if ('rangers' in changes) 
+		{
+			//If rangers has updated
+			console.log("RANGER TOOLBAR NGONCHANGE");
+        }
+    }
 
-  @Input() searchText: string;
+	openAddRangerDialog() 
+	{
+		const dialogConfig = new MatDialogConfig();
 
-  ngOnInit(): void {
+		const addDialogRef = this.dialog.open(AddRangerComponent, { height: '55%', width: '35%', panelClass: "add-ranger-modal", autoFocus: true, disableClose: true });
+		addDialogRef.afterClosed().subscribe(result => {
+			this.stopLoader();
+			//Refresh component and notify parent
+			if (result == "success")
+			{
+				//If ranger was successfully added
+				console.log("ADDING ", result);
+				//Refresh component and notify parent
+				this.rangersOnChange.emit("update");
+			}
+			else
+			{
+				console.log("Error adding ranger: ", result);
+			}
+		});
+	}
 
-    document.getElementById("rangers-route").classList.add("activeRoute");
-    this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"asdfg"){Token,Password,Access_Level,e_mail}}')
-      .subscribe((data: any[]) => {
-        let temp = [];
-        temp = Object.values(Object.values(data)[0]);
-        this.printOut(temp);
-      });
-  }
+	route(location: string) 
+	{
+		document.getElementById("animals-route").classList.remove("activeRoute");
+		document.getElementById("overview-route").classList.remove("activeRoute");
+		document.getElementById("rangers-route").classList.remove("activeRoute");
+		document.getElementById("geotags-route").classList.remove("activeRoute");
+		document.getElementById("settings-route").classList.remove("activeRoute");
 
-  printOut(temp: any) {
-    this.rangers = temp;
-  }
-
-  openAddRangerDialog() {
-    const dialogConfig = new MatDialogConfig();
-
-    this.dialog.open(AddRangerComponent, { height: '55%', width: '35%', panelClass: "add-ranger-modal", autoFocus: true, disableClose: true });
-
-  }
-
-  route(location: string) {
-    document.getElementById("animals-route").classList.remove("activeRoute");
-    document.getElementById("overview-route").classList.remove("activeRoute");
-    document.getElementById("rangers-route").classList.remove("activeRoute");
-    document.getElementById("geotags-route").classList.remove("activeRoute");
-    document.getElementById("settings-route").classList.remove("activeRoute");
-
-    this.router.navigate([location]);
-  }
+		this.router.navigate([location]);
+	}
+	
+    //Loader
+	startLoader()
+	{
+		console.log("Starting Loader");
+		document.getElementById("loader-container").style.visibility = "visible";
+	}  
+	stopLoader()
+	{
+	  	console.log("Stopping Loader");
+		document.getElementById("loader-container").style.visibility = "hidden";
+	}
 }
 
 

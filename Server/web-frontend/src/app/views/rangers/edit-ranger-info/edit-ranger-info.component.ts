@@ -9,40 +9,47 @@ import { Router } from '@angular/router';
   templateUrl: './edit-ranger-info.component.html',
   styleUrls: ['./edit-ranger-info.component.css']
 })
-export class EditRangerInfoComponent implements OnInit {
-  editUserForm: FormGroup;
+export class EditRangerInfoComponent implements OnInit 
+{
+	editUserForm: FormGroup;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private router: Router, private http: HttpClient, private formBuilder: FormBuilder) { }
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private router: Router, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<EditRangerInfoComponent>) { }
 
-  ngOnInit(): void {
-    this.editUserForm = this.formBuilder.group({
-      firstName: [this.data.firstName, Validators.required],
-      lastName: [this.data.lastName, Validators.required],
-      email: [this.data.email, Validators.required],
-      phoneNumber: [this.data.phoneNumber, Validators.required]
-    });
-  }
+	ngOnInit(): void 
+	{
+		this.editUserForm = this.formBuilder.group({
+		firstName: [this.data.firstName, Validators.required],
+		lastName: [this.data.lastName, Validators.required],
+		email: [this.data.email, Validators.required],
+		phoneNumber: [this.data.phoneNumber, Validators.required]
+		});
+	}
 
-  get f() { return this.editUserForm.controls; }
+	get f() { return this.editUserForm.controls; }
 
-  onSubmit(test: boolean) {
-    if (false === test) {
-      let temp = this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{UpdateUser('
-        + 'TokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
-        + 'TokenChange:"' + this.data.Token + '",'
-        + 'e_mail:"' + this.f.email.value + '",'
-        + 'lastName:"' + this.f.lastName.value + '",'
-        + 'phoneNumber:"' + this.f.phoneNumber.value + '",'
-        + 'firstName:"' + this.f.firstName.value + '"){lastName,Token}}', '').subscribe((data: any[]) => {
-          let t = [];
-          t = Object.values(Object.values(data)[0]);
-        });
-    }else{
-      return true;
-    }
-    
-
-    this.router.navigate(["/geotags"], { queryParams: { reload: "true" } });
-    return false;
-  }
+	onSubmit(test: boolean) 
+	{
+		if (false === test) 
+		{
+			this.startLoader();
+			this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{UpdateUser('+ 'TokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'+ 'TokenChange:"' + this.data.Token + '",' + 'e_mail:"' + this.f.email.value + '",'+ 'lastName:"' + this.f.lastName.value + '",' + 'phoneNumber:"' + this.f.phoneNumber.value + '",'+ 'firstName:"' + this.f.firstName.value + '"){lastName,Token}}', '')
+			.subscribe({next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message)});
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+    //Loader
+	startLoader()
+	{
+		console.log("Starting Loader");
+		document.getElementById("loader-container").style.visibility = "visible";
+	}  
+	stopLoader()
+	{
+	  	console.log("Stopping Loader");
+		document.getElementById("loader-container").style.visibility = "hidden";
+	}
 }
