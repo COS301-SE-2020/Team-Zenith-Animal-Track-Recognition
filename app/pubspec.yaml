@@ -31,15 +31,23 @@ dependencies:
 
   # state management
   stacked: ^1.7.1+1
+  observable_ish:
   stacked_hooks: ^0.1.2
   flutter_hooks: ^0.9.0
+  shared_preferences: ^0.5.8
+  
   # navigation
   auto_route: ^0.6.1
   stacked_services: ^0.4.4+3
+
   # inversion of control
   get_it: ^4.0.2
   injectable: ^0.4.0+1
   provider: ^4.3.0
+  http: ^0.12.2
+
+  # grahpql
+  graphql_flutter: ^3.0.0
 
   # image picker
   image_picker: ^0.6.3+4
@@ -51,6 +59,7 @@ dev_dependencies:
   auto_route_generator: ^0.6.0
   injectable_generator:
   google_maps_flutter:
+  carousel_slider: ^2.2.1
 
 flutter_icons:
   android: "launcher_icon"
@@ -83,17 +92,25 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: MavenPro
+      fonts:
+        - asset: fonts/MavenPro-Black.ttf
+        - asset: fonts/MavenPro-Bold.ttf
+        - asset: fonts/MavenPro-ExtraBold.ttf
+        - asset: fonts/MavenPro-Medium.ttf
+        - asset: fonts/MavenPro-Regular.ttf
+        - asset: fonts/MavenPro-SemiBold.ttf
+    # - family: Schyler
+    #   fonts:
+    #     - asset: fonts/Schyler-Regular.ttf
+    #     - asset: fonts/Schyler-Italic.ttf
+    #       style: italic
+    # - family: Trajan Pro
+    #   fonts:
+    #     - asset: fonts/TrajanPro.ttf
+    #     - asset: fonts/TrajanPro_Bold.ttf
+    #       weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
@@ -105,3 +122,152 @@ flutter:
     - assets/images/rhino.jpeg
     - assets/images/springbok.jpg
     - assets/images/Blesbok.jpg
+    - assets/images/profile.png
+
+    - assets/images/print/buffalo/print1.jpg
+    - assets/images/print/buffalo/print2.jpg
+    - assets/images/print/buffalo/print3.jpg
+    - assets/images/print/buffalo/print4.jpg
+
+    - assets/images/print/elephant/print1.jpg
+    - assets/images/print/elephant/print2.jpg
+    - assets/images/print/elephant/print3.jpg
+    - assets/images/print/elephant/print4.jpg
+
+    - assets/images/print/rhino/print1.jpg
+    - assets/images/print/rhino/print2.jpg
+    - assets/images/print/rhino/print3.jpg
+    - assets/images/print/rhino/print4.jpg
+    - assets/images/print/rhino/print5.jpg
+
+    - assets/images/print/lion/print1.jpg
+    - assets/images/print/lion/print2.jpg
+    - assets/images/print/lion/print3.jpg
+    - assets/images/print/lion/print4.jpg
+
+    - assets/images/print/springbok/print1.jpg
+
+    - assets/images/print/blesbok/print1.jpg
+
+    - assets/images/print/cheetah/print1.jpg
+    - assets/images/print/cheetah/print2.jpg
+    - assets/images/print/cheetah/print3.jpg
+
+
+    - assets/images/print/leopard/print1.jpg
+    - assets/images/print/leopard/print2.jpg
+    - assets/images/print/leopard/print3.jpg
+
+    - assets/images/appearance/buffalo/p1.jpg
+    - assets/images/appearance/buffalo/p2.jpg
+    - assets/images/appearance/buffalo/p3.jpg
+    - assets/images/appearance/buffalo/p4.jpg
+
+    - assets/images/appearance/blesbok/p1.jpg
+    - assets/images/appearance/blesbok/p2.jpg
+    - assets/images/appearance/blesbok/p3.jpg
+    - assets/images/appearance/blesbok/p4.jpg
+    
+    - assets/images/appearance/elephant/p1.jpg
+    - assets/images/appearance/elephant/p2.jpg
+    - assets/images/appearance/elephant/p3.jpg
+    - assets/images/appearance/elephant/p4.jpg
+
+    - assets/images/appearance/rhino/p1.jpg
+    - assets/images/appearance/rhino/p2.jpg
+    - assets/images/appearance/rhino/p3.jpg
+    - assets/images/appearance/rhino/p4.jpg
+
+    - assets/images/appearance/springbok/p1.jpg
+    - assets/images/appearance/springbok/p2.jpg
+    - assets/images/appearance/springbok/p3.jpg
+    - assets/images/appearance/springbok/p4.jpg
+    
+    - assets/images/appearance/hartebeest/p1.jpg
+    - assets/images/appearance/hartebeest/p2.jpg
+    - assets/images/appearance/hartebeest/p3.jpg
+    - assets/images/appearance/hartebeest/p4.jpg
+
+    - assets/images/appearance/leopard/p1.jpg
+    - assets/images/appearance/leopard/p2.jpg
+    - assets/images/appearance/leopard/p3.jpg
+    - assets/images/appearance/leopard/p4.jpg
+
+    - assets/images/appearance/cheetah/p1.jpg
+    - assets/images/appearance/cheetah/p2.jpg
+    - assets/images/appearance/cheetah/p3.jpg
+    - assets/images/appearance/cheetah/p4.jpg
+
+    - assets/images/droppings/buffalo/drop1.jpg
+    - assets/images/droppings/buffalo/drop2.jpg
+    - assets/images/droppings/buffalo/drop3.jpg
+    - assets/images/droppings/buffalo/drop4.jpg
+    
+    - assets/images/droppings/elephant/drop1.jpg
+    - assets/images/droppings/elephant/drop2.jpg
+    - assets/images/droppings/elephant/drop3.jpg
+    - assets/images/droppings/elephant/drop4.jpg
+
+    - assets/images/droppings/lion/drop1.jpg
+    - assets/images/droppings/lion/drop2.jpg
+    - assets/images/droppings/lion/drop3.jpg
+
+    - assets/images/droppings/rhino/drop1.jpg
+    - assets/images/droppings/rhino/drop2.jpg
+    - assets/images/droppings/rhino/drop3.jpg
+
+    - assets/images/droppings/springbok/drop1.jpg
+    - assets/images/droppings/springbok/drop2.jpg
+    - assets/images/droppings/springbok/drop3.jpg
+    
+    - assets/images/droppings/blesbok/drop1.jpg
+    - assets/images/droppings/blesbok/drop2.jpg
+
+    - assets/images/droppings/leopard/drop1.jpg
+    - assets/images/droppings/leopard/drop2.jpg
+    - assets/images/droppings/leopard/drop3.jpg
+
+    - assets/images/droppings/cheetah/drop1.jpg
+
+
+    - assets/images/animal/Big_Cats/cheetah/a1.jpg
+    - assets/images/animal/Big_Cats/cheetah/a2.jpg
+    - assets/images/animal/Big_Cats/cheetah/a3.jpg
+    - assets/images/animal/Big_Cats/cheetah/a4.jpg
+
+    - assets/images/animal/Big_Cats/leopard/a1.jpg
+    - assets/images/animal/Big_Cats/leopard/a2.jpg
+    - assets/images/animal/Big_Cats/leopard/a3.jpg
+    - assets/images/animal/Big_Cats/leopard/a4.jpg
+
+    - assets/images/animal/Big_Cats/lion/a1.jpeg
+    - assets/images/animal/Big_Cats/lion/a2.jpg
+    - assets/images/animal/Big_Cats/lion/a3.jpg
+    - assets/images/animal/Big_Cats/lion/a4.jpg
+
+    - assets/images/animal/Big_Five/buffalo/p1.jpg
+    - assets/images/animal/Big_Five/buffalo/p2.jpg
+    - assets/images/animal/Big_Five/buffalo/p3.jpg
+    - assets/images/animal/Big_Five/buffalo/p4.jpg
+
+    - assets/images/animal/Big_Five/elephant/p1.jpg
+    - assets/images/animal/Big_Five/elephant/p2.jpg
+    - assets/images/animal/Big_Five/elephant/p3.jpg
+    - assets/images/animal/Big_Five/elephant/p4.jpg
+
+    - assets/images/animal/Big_Five/lion/a1.jpeg
+    - assets/images/animal/Big_Five/lion/a2.jpg
+    - assets/images/animal/Big_Five/lion/a3.jpg
+    - assets/images/animal/Big_Five/lion/a4.jpg
+
+    - assets/images/animal/Antelopes/eland/a1.jpg
+    - assets/images/animal/Antelopes/eland/a2.jpg
+    - assets/images/animal/Antelopes/eland/a3.jpg
+
+    - assets/images/animal/Antelopes/hartebeest/a1.jpg
+    - assets/images/animal/Antelopes/hartebeest/a2.jpg
+    - assets/images/animal/Antelopes/hartebeest/a3.jpg
+
+    - assets/images/animal/Antelopes/kudu/a1.jpg
+    - assets/images/animal/Antelopes/kudu/a2.jpg
+    - assets/images/animal/Antelopes/kudu/a3.jpg
