@@ -721,7 +721,7 @@ const Mutation = new GraphQLObjectType({
                     return null
                 }
                 if (a.Access_Level <= 2) {
-                    return null
+                    return null;
                 }
 
                 // users.doc(TokenChange).update({"Access_Level":Level})
