@@ -1,6 +1,4 @@
 const graphql = require('graphql');
-
-const _ = require('lodash')
 const {
     GraphQLObjectType,
     GraphQLString,
@@ -11,21 +9,16 @@ const {
     GraphQLFloat,
     GraphQLNonNull
 } = graphql;
-
-
-
-//google db
-
-const admin = require('firebase-admin');
-
-let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
+const _ = require('lodash')
 const {
     toNumber
 } = require('lodash');
 
+//google db
+const admin = require('firebase-admin');
+let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-
 });
 
 let db = admin.firestore();
@@ -33,6 +26,7 @@ let users = db.collection("Users");
 let Animals = db.collection("Animals");
 let Groups = db.collection("Groups");
 let Habitats = db.collection("Habitats");
+let Pictures = db.collection("Pictures");
 
 //google db
 
@@ -48,107 +42,17 @@ const GessType = new GraphQLObjectType({
     })
 })
 
-var MesTypeData = [{
+let MesTypeData = [{
     msg: "deleted"
 }]
-var HabitatData = []
-var usersdata = []
-var GroupData = []
-var animaldata = []
+let HabitatData = []
+let usersdata = []
+let GroupData = []
+let animaldata = []
 
 
-var PictureData = [{
-    ID: "1",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/panthera_leo%2FLion_waiting_in_Namibia.jpg?alt=media&token=548e4d88-4c6e-4b79-9318-e34de2cce11f",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "2",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Lioness.jpg?alt=media&token=ee206a62-4ada-49fb-ab2a-5a8c1c64e71a",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "3",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/lion-3.jpg?alt=media&token=bb20992a-6e66-4315-b335-7c90095e5dc2",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "4",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Leopard-Preview.jpg?alt=media&token=6324c77a-c8a4-491e-93f4-158c1dfaaf93",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "5",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/images.jpg?alt=media&token=8285358f-8d7d-4614-a81a-9b00f70d500b",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "6",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/leopard-africa-safari.jpg?alt=media&token=1cd99d5c-ee4a-49ae-8053-a17cd73a6898",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "7",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/download.jpg?alt=media&token=ce7bb440-5a2c-4d94-8e4a-28dab9b761c8",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "8",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/32cb44cc3846beda8dcfb89c9ab69711.jpg?alt=media&token=de4777e1-24dc-4b1f-a406-53f33da0aa01",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "9",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Cheetah.jpg?alt=media&token=66f2a822-2f16-4eaa-a0af-66009bb4dfce",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "10",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/unnamed.jpg?alt=media&token=4bc8bcf7-6af8-49a5-ab32-d86cf934ea9f",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "11",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/images%20(1).jpg?alt=media&token=985d5b66-bf0b-437a-8613-d7e3cefbf687",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "12",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/KambakuP.jpg?alt=media&token=315d73e1-92b1-4df4-a736-9ca32db52df0",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "13",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/65555323_2448143245245563_5682639601198432256_o.jpg?alt=media&token=bb86c99b-9d92-4d83-b29b-06cb3ff426b7",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "14",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/BlackMichaelWain_large.jpg?alt=media&token=7a01bcb7-ac23-4204-b606-a764010b440c",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "15",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/black-rhino-on-the-masai-mara-sandra-bronstein.jpg?alt=media&token=a0f146b2-f91c-46f4-b91c-95f77c1c42d7",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "16",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Impala-Saddleback.jpg?alt=media&token=f7b222d1-80cd-42a1-b652-988e4a5c6d7e",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "17",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Impala_ram.jpg?alt=media&token=1d63f203-8cda-4698-8255-b7c4796b9a74",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "18",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/unnamed%20(1).jpg?alt=media&token=12519e85-9b6a-4b20-9857-0bee3da43c82",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}]
-var GeotagData = [{
+let PictureData = []
+let GeotagData = [{
         ID: 1,
         Reporting_User_Name: "root",
         Classification: 'Panthera leo',
@@ -454,7 +358,7 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve(parent, args) {
 
-                var a = _.find(usersdata, {
+                let a = _.find(usersdata, {
                     e_mail: args.e_mail
 
                 })
@@ -477,7 +381,7 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
+                let a = _.find(usersdata, {
                     e_mail: args.e_mail
                 })
                 if (a === undefined)
@@ -726,105 +630,11 @@ const RootQuery = new GraphQLObjectType({
     }
 })
 
+
+
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        // AddGeotags: {
-        //     type: GeotagType,
-        //     args: {
-        //         ID: {
-        //             type: GraphQLString
-        //         },
-        //         Reporting_User_Name: {
-        //             type: new GraphQLNonNull(GraphQLString)
-        //         },
-        //         Classification: {
-        //             type: new GraphQLNonNull(GraphQLString)
-        //         },
-        //         lat: {
-        //             type: new GraphQLNonNull(GraphQLFloat)
-        //         },
-        //         long: {
-        //             type: new GraphQLNonNull(GraphQLFloat)
-        //         },
-        //         timestamp: {
-        //             type: new GraphQLNonNull(GraphQLInt)
-        //         },
-        //         Img_ID: {
-        //             type: GraphQLID
-        //         }
-
-
-        //     },
-        //     resolve(parent, args) {
-        //         let id2 = GeotagData.length + 1;
-        //         if (args.Img != undefined) {
-
-        //         }
-
-        //         if (args.ID += undefined)
-        //             id2 = args.ID;
-        //         console.log(id2)
-        //         var newGeotag = {
-        //             ID: id2,
-        //             Reporting_User_Name: args.Reporting_User_Name,
-        //             Classification: args.Classification,
-        //             Geotag: {
-        //                 long: args.long,
-        //                 lat: args.lat
-        //             },
-        //             timestamp: {
-        //                 timestamp: args.timestamp
-        //             }
-        //         }
-
-        //         GeotagData.push(newGeotag)
-        //         if (args.Img_ID != undefined) {
-        //             i = _.find(PictureData, {
-        //                 ID: args.Img_ID
-        //             })
-        //             i[GeotagID] = id2;
-        //         }
-        //         return _.find(GeotagData, {
-        //             ID: id2
-        //         })
-        //     }
-        // },
-        AddIMG: {
-            type: PicturesType,
-            args: {
-                img: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                Classification: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                GeotagID: {
-                    type: GraphQLString
-                },
-                Token: {
-                    type: new GraphQLNonNull(GraphQLString)
-                }
-
-            },
-            resolve(parent, args) {
-                if (args.GeotagID == undefined)
-                    args.GeotagID = "";
-                a = _.find(usersdata, {
-                    Token: args.Token
-                })
-                if (a.Access_Level <= 2)
-                    return null
-                var newPicture = {
-                    ID: (PictureData.length + 1),
-                    URL: "",
-                    GeotagID: args.GeotagID
-                }
-                PictureData.push(newPicture)
-
-                return newPicture
-            }
-        },
         AddUser: {
             type: UserType,
             args: {
@@ -852,14 +662,14 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
+                let a = _.find(usersdata, {
                     Token: args.Token
                 })
                 if (a.Access_Level <= 2) {
                     return null
                 }
 
-                var newuser = {
+                let newuser = {
                     Password: args.Password,
                     Access_Level: args.Access_Level,
                     e_mail: args.e_mail,
@@ -868,9 +678,9 @@ const Mutation = new GraphQLObjectType({
                     phoneNumber: args.phoneNumber
                 }
 
-                var x = users.add(newuser).then(function(docRef) {
+                let x = users.add(newuser).then(function(docRef) {
                     console.log("Document written with ID: ", docRef.id);
-                    var newuser2 = {
+                    let newuser2 = {
                         Password: args.Password,
                         Access_Level: args.Access_Level,
                         e_mail: args.e_mail,
@@ -904,7 +714,7 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
+                let a = _.find(usersdata, {
                     Token: args.TokenSend
                 })
                 if (a == undefined) {
@@ -924,12 +734,6 @@ const Mutation = new GraphQLObjectType({
             }
 
         },
-    }
-})
-
-const Mutation = new GraphQLObjectType({
-    name: 'Mutation',
-    fields: {
         UpdateUser: {
             type: UserType,
             args: {
@@ -959,7 +763,7 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
+                let a = _.find(usersdata, {
                     Token: args.TokenSend
                 })
                 if (a == undefined) {
@@ -1025,7 +829,7 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
+                let a = _.find(usersdata, {
                     Token: args.TokenIn
                 })
                 if (a == undefined) {
@@ -1041,7 +845,7 @@ const Mutation = new GraphQLObjectType({
                     return null
                 }
                 console.log("hello")
-                var b = _.findIndex(usersdata, {
+                let b = _.findIndex(usersdata, {
                     Token: args.TokenDelete
                 })
 
@@ -1068,7 +872,7 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
+                let a = _.find(usersdata, {
                     Token: args.Token
                 })
                 if (a == undefined) {
@@ -1077,8 +881,8 @@ const Mutation = new GraphQLObjectType({
                 if (a.Access_Level <= 2) {
                     return null
                 }
-                var GID = ((GroupData.length + 1))
-                var b = _.find(GroupData, {
+                let GID = ((GroupData.length + 1))
+                let b = _.find(GroupData, {
                     GeotagID: GID.toString()
                 })
                 while (b != null) {
@@ -1088,7 +892,7 @@ const Mutation = new GraphQLObjectType({
                     })
                 }
 
-                var newGroup = {
+                let newGroup = {
                     Group_Name: args.Group_Name,
                     Group_ID: GID.toString()
                 }
@@ -1113,7 +917,7 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                var a = _.find(GroupData, {
+                let a = _.find(GroupData, {
                     Token: args.TokenSend
                 })
                 if (a == undefined) {
@@ -1145,7 +949,7 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
+                let a = _.find(usersdata, {
                     Token: args.TokenIn
                 })
                 if (a == undefined) {
@@ -1157,7 +961,7 @@ const Mutation = new GraphQLObjectType({
                     return null
                 }
                 console.log("hello")
-                var b = _.findIndex(GroupData, {
+                let b = _.findIndex(GroupData, {
                     Token: args.Group_ID
                 })
 
@@ -1191,7 +995,7 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
+                let a = _.find(usersdata, {
                     Token: args.Token
                 })
                 if (a == undefined) {
@@ -1200,8 +1004,8 @@ const Mutation = new GraphQLObjectType({
                 if (a.Access_Level <= 2) {
                     return null
                 }
-                var HID = ((HabitatData.length + 1))
-                var b = _.find(HabitatData, {
+                let HID = ((HabitatData.length + 1))
+                let b = _.find(HabitatData, {
                     Habitat_ID: HID.toString()
                 })
                 while (b != null) {
@@ -1211,7 +1015,7 @@ const Mutation = new GraphQLObjectType({
                     })
                 }
 
-                var newHabitat = {
+                let newHabitat = {
                     Habitat_Name: args.Habitat_Name,
                     Habitat_ID: HID.toString(),
                     Broad_Description: args.Broad_Description,
@@ -1232,7 +1036,7 @@ const Mutation = new GraphQLObjectType({
                 Classification: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Common_Name: {
+                CommonName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 HeightM: {
@@ -1250,25 +1054,25 @@ const Mutation = new GraphQLObjectType({
                 Habitats: {
                     type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLInt)))
                 },
-                Group_ID: {
+                GroupID: {
                     type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLInt)))
                 },
-                Diet_Type: {
+                DietType: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Life_Span: {
+                LifeSpan: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Gestation_Period: {
+                GestationPeriod: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Typical_Behaviour: {
+                TypicalBehaviour: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Overview_of_the_animal: {
+                OverviewOfTheAnimal: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Description_of_animal: {
+                DescriptionOfAnimal: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 Pictures: {
@@ -1277,7 +1081,7 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
+                let a = _.find(usersdata, {
                     Token: args.Token
                 })
                 if (a == undefined) {
@@ -1286,9 +1090,9 @@ const Mutation = new GraphQLObjectType({
                 if (a.Access_Level <= 2) {
                     return null
                 }
-                var HID = ((animaldata.length + 1))
-                var b = _.find(HabitatData, {
-                    Animal_ID: HID.toString()
+                let HID = ((animaldata.length + 1))
+                let b = _.find(HabitatData, {
+                    AnimalID: HID.toString()
                 })
                 while (b != null) {
                     HID++
@@ -1297,7 +1101,7 @@ const Mutation = new GraphQLObjectType({
                     })
                 }
 
-                var newAnimal = {
+                let newAnimal = {
                     Animal_ID: HID,
                     Common_Name: args.Common_Name,
                     Group_ID: args.Group_ID,
@@ -1352,7 +1156,7 @@ module.exports = new GraphQLSchema({
 
 users.get().then((snapshot) => {
         snapshot.forEach((doc) => {
-            var newuser = {
+            let newuser = {
                 Password: doc.data().Password,
                 Token: doc.id,
                 Access_Level: doc.data().Access_Level,
@@ -1371,7 +1175,7 @@ users.get().then((snapshot) => {
 
 Groups.get().then((snapshot) => {
         snapshot.forEach((doc) => {
-            var newGoupe = {
+            let newGoupe = {
                 Group_ID: doc.data().Group_ID,
                 Group_Name: doc.data().Group_Name
             }
@@ -1384,7 +1188,7 @@ Groups.get().then((snapshot) => {
 
 Habitats.get().then((snapshot) => {
         snapshot.forEach((doc) => {
-            var newHabitat = {
+            let newHabitat = {
                 Habitat_ID: doc.data().Habitat_ID,
                 Habitat_Name: doc.data().Habitat_Name
             }
@@ -1397,7 +1201,7 @@ Habitats.get().then((snapshot) => {
 
 Animals.get().then((snapshot) => {
         snapshot.forEach((doc) => {
-            var newAnimal = {
+            let newAnimal = {
                 Classification: doc.id,
                 Animal_ID: doc.data().Animal_ID,
                 Common_Name: doc.data().Common_Name,
@@ -1423,9 +1227,30 @@ Animals.get().then((snapshot) => {
         console.log('Error getting documents', err);
     });
 
-// animaldata2.forEach((doc)=>{
-//     var newLocal=doc
-//     docid =newLocal.Classification
-//     delete newLocal.Classification
-//     Animals.doc(docid).set(newLocal)
-// })
+    Animals.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+            let newAnimal = {
+                Classification: doc.id,
+                Animal_ID: doc.data().Animal_ID,
+                Common_Name: doc.data().Common_Name,
+                Group_ID: doc.data().Group_ID,
+                HeightM: doc.data().HeightM,
+                HeightF: doc.data().HeightF,
+                WeightM: doc.data().WeightM,
+                WeightF: doc.data().WeightF,
+                Habitats: doc.data().Habitats,
+                Diet_Type: doc.data().Diet_Type,
+                Life_Span: doc.data().Life_Span,
+                Gestation_Period: doc.data().Gestation_Period,
+                Typical_Behaviour: doc.data().Typical_Behaviour,
+                Overview_of_the_animal: doc.data().Overview_of_the_animal,
+                Description_of_animal: doc.data().Description_of_animal,
+                Pictures: doc.data().Pictures
+            }
+            animaldata.push(newAnimal)
+        });
+        // console.log(animaldata)
+    })
+    .catch((err) => {
+        console.log('Error getting documents', err);
+    });
