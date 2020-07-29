@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Ranger } from './../../../models/ranger';
 import { RANGERS } from './../../../models/mock-rangers';
-import {Observable} from 'rxjs';
-import {startWith, map} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 
 export interface StateGroup {
   letter: string;
@@ -17,23 +17,22 @@ export const _filter = (opt: string[], value: string): string[] => {
 };
 
 @Component({
-	selector: 'app-ranger-search-sidenav-comp',
-	templateUrl: './ranger-search-sidenav-comp.component.html',
-	styleUrls: ['./ranger-search-sidenav-comp.component.css']
+  selector: 'app-ranger-search-sidenav-comp',
+  templateUrl: './ranger-search-sidenav-comp.component.html',
+  styleUrls: ['./ranger-search-sidenav-comp.component.css']
 })
-export class RangerSearchSidenavCompComponent implements OnInit 
-{
+export class RangerSearchSidenavCompComponent implements OnInit {
 
-	currentAlphabet: any;
-	surnames: boolean = true;
-	levels: boolean = false;
-	sorted: string;
-	searchText: string;
-	@Input() rangers;
-	@Input('rangerAutocompletePanel') classList: string 
-	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
-	
-	stateForm: FormGroup = this._formBuilder.group({
+  currentAlphabet: any;
+  surnames: boolean = true;
+  levels: boolean = false;
+  sorted: string;
+  searchText: string;
+  @Input() rangers;
+  @Input('rangerAutocompletePanel') classList: string
+  @Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
+
+  stateForm: FormGroup = this._formBuilder.group({
     stateGroup: '',
   });
 
@@ -100,66 +99,64 @@ export class RangerSearchSidenavCompComponent implements OnInit
 
   stateGroupOptions: Observable<StateGroup[]>;
 
-	constructor(private _formBuilder: FormBuilder) {}
+  constructor(private _formBuilder: FormBuilder) { }
 
-	ngOnInit(): void {
-		this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
-		.pipe(startWith(''), map(value => this._filterGroup(value)));
-	}
-	
-	 private _filterGroup(value: string): StateGroup[] {
+  ngOnInit(): void {
+    this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
+      .pipe(startWith(''), map(value => this._filterGroup(value)));
+  }
+
+  private _filterGroup(value: string): StateGroup[] {
     if (value) {
       return this.stateGroups
-        .map(group => ({letter: group.letter, names: _filter(group.names, value)}))
+        .map(group => ({ letter: group.letter, names: _filter(group.names, value) }))
         .filter(group => group.names.length > 0);
     }
 
     return this.stateGroups;
   }
-  
-  
 
-	checkIfNew(title: string, pos: number) {
-		if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {
-			return false;
-		} else {
-			this.currentAlphabet = ('' + title).charAt(pos).toLowerCase();
-			return true;
-		}
-	}
+  checkIfNew(title: string, pos: number) {
+    if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {
+      return false;
+    } else {
+      this.currentAlphabet = ('' + title).charAt(pos).toLowerCase();
+      return true;
+    }
+  }
 
-	toggle(bool: boolean) {
-		this.surnames = bool;
-		this.levels = !bool;
-		this.sort(bool);
-	}
+  toggle(bool: boolean) {
+    this.surnames = bool;
+    this.levels = !bool;
+    this.sort(bool);
+  }
 
-	sort(bool: boolean) {
-		let temp: string;
-		if (bool) {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
-					}
-				}
-			}
-			temp = 'Sorted alphabetically';
-		} else {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].Access_Level > this.rangers[j].Access_Level) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
-					}
-				}
-			}
-			temp = "Sorted by ranger level";
-		}
-		this.sorted = temp;
-		return temp;
-	}
+  sort(bool: boolean) {
+    let temp: string;
+    if (bool) {
+      for (let i = 0; i < this.rangers.length - 1; i++) {
+        for (let j = i + 1; j < this.rangers.length; j++) {
+          if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
+            let temp = this.rangers[i];
+            this.rangers[i] = this.rangers[j];
+            this.rangers[j] = temp;
+          }
+        }
+      }
+      temp = 'Sorted alphabetically';
+    } else {
+      for (let i = 0; i < this.rangers.length - 1; i++) {
+        for (let j = i + 1; j < this.rangers.length; j++) {
+          if (this.rangers[i].Access_Level > this.rangers[j].Access_Level) {
+            let temp = this.rangers[i];
+            this.rangers[i] = this.rangers[j];
+            this.rangers[j] = temp;
+          }
+        }
+      }
+      temp = "Sorted by ranger level";
+    }
+    this.sorted = temp;
+    return temp;
+  }
 }

@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 export class RangersComponent implements OnInit 
 {
 	@ViewChild('sidenav') sidenav;
-	rangers;
+	rangers: any;
 	searchText: string;
 	currentAlphabet;
 	sorted: string;
@@ -23,7 +23,7 @@ export class RangersComponent implements OnInit
 
 	ngOnInit(): void 
 	{
-		document.getElementById("rangers-route").classList.add("activeRoute");
+		document.getElementById('rangers-route').classList.add('activeRoute');
 		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
 		.subscribe((data: any[]) => {
 			let temp = [];
@@ -43,7 +43,7 @@ export class RangersComponent implements OnInit
 	}
 	
 	updateRangerList(updatedList){
-		if (updatedList == "update"){
+		if (updatedList == 'update'){
 			this.refresh();
 		}
 	}
@@ -51,23 +51,23 @@ export class RangersComponent implements OnInit
 	//Ranger Search sidenav
 	openSidenav() {
 		this.sidenav.open();
-		document.getElementById("sidenav-open-btn-container").style.transitionDuration = "0.2s";
-		document.getElementById("sidenav-open-btn-container").style.left = "-10%";
+		document.getElementById('sidenav-open-btn-container').style.transitionDuration = '0.2s';
+		document.getElementById('sidenav-open-btn-container').style.left = '-10%';
 		return 
 	}
 	closeSidenav() {
 		this.sidenav.close();
-		document.getElementById("sidenav-open-btn-container").style.transitionDuration = "0.8s";
-		document.getElementById("sidenav-open-btn-container").style.left = "0%";
+		document.getElementById('sidenav-open-btn-container').style.transitionDuration = '0.8s';
+		document.getElementById('sidenav-open-btn-container').style.left = '0%';
 	}
 
 
 	//Sorting and Filtering
 	checkIfNew(title: string, pos: number) {
-		if (this.currentAlphabet === ("" + title).charAt(pos).toLowerCase()) {
+		if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {
 			return false;
 		} else {
-			this.currentAlphabet = ("" + title).charAt(pos).toLowerCase();
+			this.currentAlphabet = ('' + title).charAt(pos).toLowerCase();
 			return true;
 		}
 	}
@@ -88,7 +88,7 @@ export class RangersComponent implements OnInit
 					}
 				}
 			}
-			temp = "Sorted alphabetically";
+			temp = 'Sorted alphabetically';
 		} else {
 			for (let i = 0; i < this.rangers.length - 1; i++) {
 				for (let j = i + 1; j < this.rangers.length; j++) {
@@ -99,7 +99,7 @@ export class RangersComponent implements OnInit
 					}
 				}
 			}
-			temp = "Sorted by ranger level";
+			temp = 'Sorted by ranger level';
 		}
 		this.sorted = temp;
 		return temp;
