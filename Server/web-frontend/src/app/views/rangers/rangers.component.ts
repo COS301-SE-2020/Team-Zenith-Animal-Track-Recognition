@@ -9,8 +9,7 @@ import { HttpClient } from '@angular/common/http';
 	templateUrl: './rangers.component.html',
 	styleUrls: ['./rangers.component.css']
 })
-export class RangersComponent implements OnInit 
-{
+export class RangersComponent implements OnInit {
 	@ViewChild('sidenav') sidenav;
 	rangers: any;
 	searchText: string;
@@ -21,39 +20,56 @@ export class RangersComponent implements OnInit
 
 	constructor(private http: HttpClient) { }
 
-	ngOnInit(): void 
-	{
+	ngOnInit(): void {
 		document.getElementById('rangers-route').classList.add('activeRoute');
-		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
-		.subscribe((data: any[]) => {
-			let temp = [];
-			temp = Object.values(Object.values(data)[0]);
-			this.rangers = temp[0];
-		});
+		/*this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.rangers = temp[0];
+			});*/
+		this.rangers = [
+			{ firstName: "Zach", lastName: "Christophers", Access_Level: 3, e_mail:"xyz@123.com", phoneNumber:"1234567890", Token:"1"},
+			{ firstName: "OB", lastName: "Seageng", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"2"},
+			{ firstName: "Christian", lastName: "Wheeler", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"3"},
+			{ firstName: "Andrew", lastName: "Lumambo", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"4"},
+		];
 	}
-	
+
+	updateSearchText(event) {
+		this.searchText = event;
+	}
+
 	refresh() {
-		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
-		.subscribe((data: any[]) => {
-			let temp = [];
-			temp = Object.values(Object.values(data)[0]);
-			this.rangers = null;
-			this.rangers = temp[0];
-		});
+		/*this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.rangers = null;
+				this.rangers = temp[0];
+			});*/
+		
+
+		this.rangers = [
+			{ firstName: "Zach", lastName: "Christophers", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"1"},
+			{ firstName: "OB", lastName: "Seageng", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"2"},
+			{ firstName: "Christian", lastName: "Wheeler", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"3"},
+			{ firstName: "Andrew", lastName: "Lumambo", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"4"},
+		];
 	}
-	
-	updateRangerList(updatedList){
-		if (updatedList == 'update'){
+
+	updateRangerList(updatedList) {
+		if (updatedList == 'update') {
 			this.refresh();
 		}
 	}
-	
+
 	//Ranger Search sidenav
 	openSidenav() {
 		this.sidenav.open();
 		document.getElementById('sidenav-open-btn-container').style.transitionDuration = '0.2s';
 		document.getElementById('sidenav-open-btn-container').style.left = '-10%';
-		return 
+		return
 	}
 	closeSidenav() {
 		this.sidenav.close();
@@ -92,7 +108,7 @@ export class RangersComponent implements OnInit
 		} else {
 			for (let i = 0; i < this.rangers.length - 1; i++) {
 				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].rangerLevel > this.rangers[j].rangerLevel) {
+					if (this.rangers[i].Access_Level > this.rangers[j].Access_Level) {
 						let temp = this.rangers[i];
 						this.rangers[i] = this.rangers[j];
 						this.rangers[j] = temp;
