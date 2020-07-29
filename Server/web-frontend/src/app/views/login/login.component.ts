@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
 	get f() { return this.loginForm.controls; }
 
     onSubmit(temp: boolean) {
-		this.snackBar.open('Singing in...');
+		this.snackBar.open('Signing in...');
       this.submitted = true;
 
       if (temp) {
