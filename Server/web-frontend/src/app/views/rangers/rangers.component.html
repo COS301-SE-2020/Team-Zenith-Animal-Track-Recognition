@@ -3,7 +3,7 @@
     <div id="rangers-view-workspace">
         <mat-drawer-container id="ranger-search-sidenav-container">
             <mat-drawer id="ranger-search-sidenav" #sidenav mode="side">
-                <app-ranger-search-sidenav-comp></app-ranger-search-sidenav-comp>
+                <app-ranger-search-sidenav-comp [rangers]="rangers" (rangersOnChange)="updateRangerList($event)"></app-ranger-search-sidenav-comp>
                 <div id="sidenav-close-btn-container" (click)="closeSidenav()">
                     <button id="side-nav-close-btn" mat-icon-button><mat-icon>chevron_left</mat-icon></button>
                 </div>
