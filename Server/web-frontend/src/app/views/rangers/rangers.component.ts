@@ -58,7 +58,6 @@ export class RangersComponent implements OnInit {
 		this.sidenav.open();
 		document.getElementById('sidenav-open-btn-container').style.transitionDuration = '0.2s';
 		document.getElementById('sidenav-open-btn-container').style.left = '-10%';
-		return
 	}
 	closeSidenav() {
 		this.sidenav.close();
@@ -68,7 +67,7 @@ export class RangersComponent implements OnInit {
 
 
 	//Sorting and Filtering
-	sortAlpha() {
+sortAlpha() {
 		let temp: string;
 		for (let i = 0; i < this.rangers.length - 1; i++) {
 			for (let j = i + 1; j < this.rangers.length; j++) {

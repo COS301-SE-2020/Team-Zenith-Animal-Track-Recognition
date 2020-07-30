@@ -44,7 +44,6 @@ export class RangerSearchSidenavCompComponent implements OnInit {
   sort(bool: boolean) {
     let temp: string;
     if (bool) {
-
       for (let i = 0; i < this.rangers.length - 1; i++) {
         for (let j = i + 1; j < this.rangers.length; j++) {
           if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {

@@ -29,6 +29,11 @@ export class RangerProfileCardComponent implements OnInit {
 		this.stopLoader();
 	}
 
+	trackByRangerSurname(index: number, ranger: any): string {
+		//console.log("RANGER PROFILE CARD TRACKING " + ranger.lastName);
+		return ranger.lastName;
+	}
+
 	//Ranger CRUD Quick-Actions
 
 	//EDIT Ranger
