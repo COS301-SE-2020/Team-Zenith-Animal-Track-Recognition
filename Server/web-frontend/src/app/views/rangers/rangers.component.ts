@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angu
 import { Ranger } from './../../models/ranger';
 import { RANGERS } from './../../models/mock-rangers';
 import { HttpClient } from '@angular/common/http';
+import { ROOT_QUERY_STRING } from 'src/app/app.component';
 
 @Component({
 	selector: 'app-rangers',
@@ -16,18 +17,18 @@ export class RangersComponent implements OnInit {
 	currentAlphabet;
 	sorted: string;
 	surnames: boolean = true;
-	levels: boolean = false;
+	levels: boolean = false;	
 
 	constructor(private http: HttpClient) { }
 
 	ngOnInit(): void {
 		document.getElementById('rangers-route').classList.add('activeRoute');
-		/*this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.rangers = temp[0];
-			});*/
+			});
 		this.rangers = [
 			{ firstName: "Zach", lastName: "Christophers", Access_Level: 3, e_mail:"xyz@123.com", phoneNumber:"1234567890", Token:"1"},
 			{ firstName: "OB", lastName: "Seageng", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"2"},
@@ -41,13 +42,13 @@ export class RangersComponent implements OnInit {
 	}
 
 	refresh() {
-		/*this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+		this.http.get<any>(ROOT_QUERY_STRING + 'query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.rangers = null;
 				this.rangers = temp[0];
-			});*/
+			});
 		
 
 		this.rangers = [
