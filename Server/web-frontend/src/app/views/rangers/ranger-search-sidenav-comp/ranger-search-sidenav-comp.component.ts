@@ -12,19 +12,16 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 
   @Input() rangers;
   @Input() searchText: string;
-  @Input('rangerAutocompletePanel') classList: string;
   @Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
   @Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
 
   currentAlphabet: any;
-  surnames: boolean = true;
-  levels: boolean = false;
+  sortByLevel: boolean = false;
   sorted: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   checkIfNew(title: string, pos: number) {
     if (this.currentAlphabet === ("" + title).charAt(pos).toLowerCase()) {
@@ -40,14 +37,14 @@ export class RangerSearchSidenavCompComponent implements OnInit {
   }
 
   toggle(bool: boolean) {
-    this.surnames = bool;
-    this.levels = !bool;
+	this.sortByLevel = !this.sortByLevel;
     this.sort(bool);
   }
 
   sort(bool: boolean) {
     let temp: string;
     if (bool) {
+
       for (let i = 0; i < this.rangers.length - 1; i++) {
         for (let j = i + 1; j < this.rangers.length; j++) {
           if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {

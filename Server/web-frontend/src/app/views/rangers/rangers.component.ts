@@ -28,6 +28,7 @@ export class RangersComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.rangers = temp[0];
+				this.sortAlpha();
 			});
 	}
 
@@ -42,6 +43,7 @@ export class RangersComponent implements OnInit {
 				temp = Object.values(Object.values(data)[0]);
 				this.rangers = null;
 				this.rangers = temp[0];
+				this.sortAlpha();
 			});
 	}
 
@@ -66,45 +68,16 @@ export class RangersComponent implements OnInit {
 
 
 	//Sorting and Filtering
-	checkIfNew(title: string, pos: number) {
-		if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {
-			return false;
-		} else {
-			this.currentAlphabet = ('' + title).charAt(pos).toLowerCase();
-			return true;
-		}
-	}
-	toggle(bool: boolean) {
-		this.surnames = bool;
-		this.levels = !bool;
-		this.sort(bool);
-	}
-	sort(bool: boolean) {
+	sortAlpha() {
 		let temp: string;
-		if (bool) {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
+		for (let i = 0; i < this.rangers.length - 1; i++) {
+			for (let j = i + 1; j < this.rangers.length; j++) {
+				if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
+					let temp = this.rangers[i];
+					this.rangers[i] = this.rangers[j];
 						this.rangers[j] = temp;
-					}
 				}
 			}
-			temp = 'Sorted alphabetically';
-		} else {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].Access_Level > this.rangers[j].Access_Level) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
-					}
-				}
-			}
-			temp = 'Sorted by ranger level';
 		}
-		this.sorted = temp;
-		return temp;
 	}
 }
