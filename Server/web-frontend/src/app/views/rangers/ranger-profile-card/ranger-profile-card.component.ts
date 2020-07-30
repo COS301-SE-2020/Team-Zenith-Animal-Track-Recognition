@@ -30,7 +30,6 @@ export class RangerProfileCardComponent implements OnInit {
 	}
 
 	trackByRangerSurname(index: number, ranger: any): string {
-		//console.log("RANGER PROFILE CARD TRACKING " + ranger.lastName);
 		return ranger.lastName;
 	}
 
@@ -52,7 +51,6 @@ export class RangerProfileCardComponent implements OnInit {
 			this.stopLoader();
 			if (result == "success") {
 				//If ranger was successfully edited
-				console.log("EDITING ", result);
 				//Refresh component and notify parent
 				this.rangersOnChange.emit("update");
 			}
@@ -73,7 +71,6 @@ export class RangerProfileCardComponent implements OnInit {
 				this.stopLoader();
 				if (result == "success") {
 					//If ranger was successfully deleted
-					console.log("DELETING ", result);
 					//Refresh component and notify parent
 					this.rangersOnChange.emit("update");
 				}

@@ -20,7 +20,6 @@ export class RangersToolbarComponent implements OnInit {
 	public ngOnChanges(changes: SimpleChanges) {
 		if ('rangers' in changes) {
 			//If rangers has updated
-			console.log('RANGER TOOLBAR NGONCHANGE');
 		}
 	}
 
@@ -33,7 +32,6 @@ export class RangersToolbarComponent implements OnInit {
 			//Refresh component and notify parent
 			if (result == 'success') {
 				//If ranger was successfully added
-				console.log('ADDING ', result);
 				//Refresh component and notify parent
 				this.rangersOnChange.emit('update');
 			}
@@ -55,11 +53,9 @@ export class RangersToolbarComponent implements OnInit {
 
 	//Loader
 	startLoader() {
-		console.log('Starting Loader');
 		document.getElementById('loader-container').style.visibility = 'visible';
 	}
 	stopLoader() {
-		console.log('Stopping Loader');
 		document.getElementById('loader-container').style.visibility = 'hidden';
 	}
 }
