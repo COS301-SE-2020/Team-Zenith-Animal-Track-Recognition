@@ -1,6 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Ranger } from './../../../models/ranger';
-import { RANGERS } from './../../../models/mock-rangers';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -12,22 +10,24 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 
   @Input() rangers;
   @Input() searchText: string;
+  @Input() sortBySurname: boolean;
   @Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
   @Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
 
   currentAlphabet: any;
-  sortByLevel: boolean = false;
   sorted: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { 
+    this.sortBySurname = true;
+  }
 
   checkIfNew(title: string, pos: number) {
-    if (this.currentAlphabet === ("" + title).charAt(pos).toLowerCase()) {
+    if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {
       return false;
     } else {
-      this.currentAlphabet = ("" + title).charAt(pos).toLowerCase();
+      this.currentAlphabet = ('' + title).charAt(pos).toLowerCase();
       return true;
     }
   }
@@ -37,7 +37,7 @@ export class RangerSearchSidenavCompComponent implements OnInit {
   }
 
   toggle(bool: boolean) {
-	this.sortByLevel = !this.sortByLevel;
+    this.sortBySurname = bool;
     this.sort(bool);
   }
 
