@@ -29,12 +29,6 @@ export class RangersComponent implements OnInit {
 				temp = Object.values(Object.values(data)[0]);
 				this.rangers = temp[0];
 			});
-		this.rangers = [
-			{ firstName: "Zach", lastName: "Christophers", Access_Level: 3, e_mail:"xyz@123.com", phoneNumber:"1234567890", Token:"1"},
-			{ firstName: "OB", lastName: "Seageng", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"2"},
-			{ firstName: "Christian", lastName: "Wheeler", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"3"},
-			{ firstName: "Andrew", lastName: "Lumambo", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"4"},
-		];
 	}
 
 	updateSearchText(event) {
@@ -48,15 +42,7 @@ export class RangersComponent implements OnInit {
 				temp = Object.values(Object.values(data)[0]);
 				this.rangers = null;
 				this.rangers = temp[0];
-			});
-		
-
-		this.rangers = [
-			{ firstName: "Zach", lastName: "Christophers", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"1"},
-			{ firstName: "OB", lastName: "Seageng", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"2"},
-			{ firstName: "Christian", lastName: "Wheeler", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"3"},
-			{ firstName: "Andrew", lastName: "Lumambo", Access_Level: 3, e_mail:"abc@123.com", phoneNumber:"1234567890", Token:"4"},
-		];
+			});		
 	}
 
 	updateRangerList(updatedList) {
