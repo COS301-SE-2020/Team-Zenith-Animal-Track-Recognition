@@ -1,18 +1,18 @@
 <div id="rangers-toolbar-container">
-	<div id="rangers-toolbar-navigationtree-container">
-		<div id="rangers-toolbar-navigation">
-			<a href="javascript:void(0)" class="fontM activeView">Rangers</a>
-		</div>
-	</div>
-	<div id="rangers-toolbar">
+    <div id="rangers-toolbar-navigationtree-container">
+        <div id="rangers-toolbar-navigation">
+            <a href="javascript:void(0)" class="fontM activeView">Rangers</a>
+        </div>
+    </div>
+    <div id="rangers-toolbar">
         <mat-select id="rangers-toolbar-sortby-btn" class="fontR" placeholder="Sort By" disableOptionCentering>
-			<mat-option value="abc">Alphabetical</mat-option>
-			<mat-option value="rangerLevel">Ranger Level</mat-option>
-			<mat-option value="activity">Recent Activity</mat-option>
-		</mat-select>
+            <mat-option value="abc" (click)="toggle(true)" *ngIf="display">Alphabetical</mat-option>
+            <mat-option value="rangerLevel" (click)="toggle(false)" *ngIf="display">Ranger Level</mat-option>
+            <mat-option value="activity" *ngIf="display">Recent Activity</mat-option>
+        </mat-select>
         <mat-select id="rangers-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
-			<mat-option (click)="openAddRangerDialog()">Add New Ranger</mat-option>
-			<mat-option (click)='route("rangers/permissions")'>Manage Levels</mat-option>
-		</mat-select>
-	</div>
+            <mat-option (click)="openAddRangerDialog()">Add New Ranger</mat-option>
+            <mat-option (click)='route("rangers/permissions")'>Manage Levels</mat-option>
+        </mat-select>
+    </div>
 </div>
