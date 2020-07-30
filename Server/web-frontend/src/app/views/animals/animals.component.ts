@@ -13,6 +13,7 @@ export class AnimalsComponent implements OnInit {
 	@ViewChild('sidenav') sidenav;
 
 	animals;
+	sortByCommonName: boolean = true;
 	searchText: string;
 	currentAlphabet;
 	surnames: boolean = true;
@@ -31,9 +32,11 @@ export class AnimalsComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.animals = temp[0];
+				this.sort(true);
 			});
-	}
 
+	}
+	
 	openSidenav() {
 		this.sidenav.open();
 		document.getElementById("sidenav-open-btn-container").style.transitionDuration = "0.2s";
@@ -58,9 +61,10 @@ export class AnimalsComponent implements OnInit {
 				temp = Object.values(Object.values(data)[0]);
 				this.animals = null;
 				this.animals = temp[0];
+				this.sort(true);
 			});
 	}
-	
+
 	updateAnimalList(updatedList) {
 		if (updatedList == 'update') {
 			this.refresh();
@@ -76,6 +80,7 @@ export class AnimalsComponent implements OnInit {
 			return true;
 		}
 	}
+
 	toggle(bool: boolean) {
 		this.surnames = bool;
 		this.levels = !bool;
@@ -85,17 +90,18 @@ export class AnimalsComponent implements OnInit {
 		if (bool) {
 			for (let i = 0; i < this.animals.length - 1; i++) {
 				for (let j = i + 1; j < this.animals.length; j++) {
-					if (this.animals[i].lastName.toUpperCase() > this.animals[j].lastName.toUpperCase()) {
+					if (this.animals[i].Common_Name.toUpperCase() > this.animals[j].Common_Name.toUpperCase()) {
 						let temp = this.animals[i];
 						this.animals[i] = this.animals[j];
 						this.animals[j] = temp;
 					}
 				}
 			}
+			console.log(this.animals);
 		} else {
 			for (let i = 0; i < this.animals.length - 1; i++) {
 				for (let j = i + 1; j < this.animals.length; j++) {
-					if (this.animals[i].rangerLevel > this.animals[j].rangerLevel) {
+					if (this.animals[i].Group_ID[0].Group_Name > this.animals[j].Group_ID[0].Group_Name) {
 						let temp = this.animals[i];
 						this.animals[i] = this.animals[j];
 						this.animals[j] = temp;

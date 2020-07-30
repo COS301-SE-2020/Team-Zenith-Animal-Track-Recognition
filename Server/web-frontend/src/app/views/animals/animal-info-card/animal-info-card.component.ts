@@ -15,26 +15,20 @@ export class AnimalInfoCardComponent implements OnInit {
 
   @Input() animals;
   @Input() searchText: string;
+  @Input() sortByCommonName: boolean;
   @Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
-  
+
   constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) { }
 
-  ngOnInit(): void { this.startLoader();  }
+  ngOnInit(): void { this.startLoader(); }
 
   public ngOnChanges(changes: SimpleChanges) {
-		this.startLoader();
-		if ('rangers' in changes) {
-			//If rangers has updated
-		}
-		this.stopLoader();
-	}
-
-  printOut(temp: any) {
-    this.animals = temp[0];
-    console.log(this.animals);
-    this.sort(true);
+    this.startLoader();
+    if ('rangers' in changes) {
+      //If rangers has updated
+    }
+    this.stopLoader();
   }
-
 
   //animal CRUD Quick-Actions
 
