@@ -1,8 +1,8 @@
 <div class="ranger-profile-cards-container">
-<div id="loader-container">
-	<mat-spinner id="loader"></mat-spinner>
-</div>
-<div class="ranger-profile-card-container" *ngFor="let ranger of rangers;trackBy:trackByRangerSurname | filter:searchText">
+    <div id="loader-container">
+        <mat-spinner id="loader"></mat-spinner>
+    </div>
+    <div class="ranger-profile-card-container" *ngFor="let ranger of rangers | filter:searchText">
         <mat-card class="ranger-profile-card" id="ranger{{ranger.Token}}ProfileCard">
             <div class="ranger-profile-card-header">
                 <mat-card-header>
@@ -31,12 +31,10 @@
             <mat-card-content>
                 <div class="ranger-profile-card-contact-container">
                     <p class="fontSB">Contact Information</p>
-                    <div class="ranger-profile-card-contact-info">
-                        <p class="ranger-profile-card-phone" id="ranger{{ranger.Token}}PhoneNumber">
-                            <mat-icon>call</mat-icon>{{ranger.phoneNumber}}</p>
-                        <p class="ranger-profile-card-email" id="ranger{{ranger.Token}}Email">
-                            <mat-icon>mail</mat-icon>{{ranger.e_mail}}</p>
-                    </div>
+                    <p class="ranger-profile-card-phone" id="ranger{{ranger.Token}}PhoneNumber">
+                        <mat-icon>call</mat-icon>{{ranger.phoneNumber}}</p>
+                    <p class="ranger-profile-card-email" id="ranger{{ranger.Token}}Email">
+                        <mat-icon>mail</mat-icon>{{ranger.e_mail}}</p>
                 </div>
                 <div class="ranger-profile-card-activity-container">
                     <p class="fontSB">Recent Activity</p>

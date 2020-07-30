@@ -3,16 +3,16 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angu
 import { Ranger } from './../../models/ranger';
 import { RANGERS } from './../../models/mock-rangers';
 import { HttpClient } from '@angular/common/http';
+import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
 @Component({
 	selector: 'app-rangers',
 	templateUrl: './rangers.component.html',
 	styleUrls: ['./rangers.component.css']
 })
-export class RangersComponent implements OnInit 
-{
+export class RangersComponent implements OnInit {
 	@ViewChild('sidenav') sidenav;
-	rangers;
+	rangers: any;
 	searchText: string;
 	currentAlphabet;
 	sorted: string;
@@ -21,45 +21,43 @@ export class RangersComponent implements OnInit
 
 	constructor(private http: HttpClient) { }
 
-	ngOnInit(): void 
-	{
+	ngOnInit(): void {
 		document.getElementById('rangers-route').classList.add('activeRoute');
-		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
-		.subscribe((data: any[]) => {
-			let temp = [];
-			temp = Object.values(Object.values(data)[0]);
-			this.rangers = temp[0];
-			console.log('ON GLOBAL LOAD there are  ' + this.rangers.length + ' rangers');
-		});
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.rangers = temp[0];
+				this.sortAlpha();
+			});
 	}
-	
-	refresh() 
-	{
-		document.getElementById('rangers-route').classList.add('activeRoute');
-		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
-		.subscribe((data: any[]) => {
-			let temp = [];
-			temp = Object.values(Object.values(data)[0]);
-			this.rangers = null;
-			this.rangers = temp[0];
-			console.log('AFTER GLOBAL REFRESH there are  ' + this.rangers.length + ' rangers');
-		});
+
+	updateSearchText(event) {
+		this.searchText = event;
 	}
-	
-	updateRangerList(updatedList)
-	{
-		if (updatedList == 'update')
-		{
+
+	refresh() {
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.rangers = null;
+				this.rangers = temp[0];
+				this.sortAlpha();
+			});
+	}
+
+	updateRangerList(updatedList) {
+		if (updatedList == 'update') {
 			this.refresh();
 		}
 	}
-	
+
 	//Ranger Search sidenav
 	openSidenav() {
 		this.sidenav.open();
 		document.getElementById('sidenav-open-btn-container').style.transitionDuration = '0.2s';
 		document.getElementById('sidenav-open-btn-container').style.left = '-10%';
-		return 
 	}
 	closeSidenav() {
 		this.sidenav.close();
@@ -69,45 +67,16 @@ export class RangersComponent implements OnInit
 
 
 	//Sorting and Filtering
-	checkIfNew(title: string, pos: number) {
-		if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {
-			return false;
-		} else {
-			this.currentAlphabet = ('' + title).charAt(pos).toLowerCase();
-			return true;
-		}
-	}
-	toggle(bool: boolean) {
-		this.surnames = bool;
-		this.levels = !bool;
-		this.sort(bool);
-	}
-	sort(bool: boolean) {
+sortAlpha() {
 		let temp: string;
-		if (bool) {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
+		for (let i = 0; i < this.rangers.length - 1; i++) {
+			for (let j = i + 1; j < this.rangers.length; j++) {
+				if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
+					let temp = this.rangers[i];
+					this.rangers[i] = this.rangers[j];
 						this.rangers[j] = temp;
-					}
 				}
 			}
-			temp = 'Sorted alphabetically';
-		} else {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].rangerLevel > this.rangers[j].rangerLevel) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
-					}
-				}
-			}
-			temp = 'Sorted by ranger level';
 		}
-		this.sorted = temp;
-		return temp;
 	}
 }

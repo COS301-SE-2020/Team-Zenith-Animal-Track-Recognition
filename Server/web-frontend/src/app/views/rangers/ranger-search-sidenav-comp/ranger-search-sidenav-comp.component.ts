@@ -11,31 +11,17 @@ import { HttpClient } from '@angular/common/http';
 export class RangerSearchSidenavCompComponent implements OnInit {
 
   @Input() rangers;
-  @Input('rangerAutocompletePanel') classList: string;
+  @Input() searchText: string;
   @Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
+  @Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
 
   currentAlphabet: any;
-  surnames: boolean = true;
-  levels: boolean = false;
+  sortByLevel: boolean = false;
   sorted: string;
-  searchText: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  ngOnInit(): void {
-    document.getElementById("rangers-route").classList.add("activeRoute");
-    this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName}}')
-      .subscribe((data: any[]) => {
-        let temp = [];
-        temp = Object.values(Object.values(data)[0]);
-        this.printOut(temp);
-      });
-  }
-
-  printOut(temp: any) {
-    this.rangers = temp[0];
-    this.sort(true);
-  }
+  ngOnInit(): void {}
 
   checkIfNew(title: string, pos: number) {
     if (this.currentAlphabet === ("" + title).charAt(pos).toLowerCase()) {
@@ -46,9 +32,12 @@ export class RangerSearchSidenavCompComponent implements OnInit {
     }
   }
 
+  updateSearchText(event) {
+    this.searchTextOnChange.emit(event);
+  }
+
   toggle(bool: boolean) {
-    this.surnames = bool;
-    this.levels = !bool;
+	this.sortByLevel = !this.sortByLevel;
     this.sort(bool);
   }
 
