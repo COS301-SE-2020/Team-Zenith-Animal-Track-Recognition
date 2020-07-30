@@ -43,6 +43,7 @@ export class RangersComponent implements OnInit {
 				temp = Object.values(Object.values(data)[0]);
 				this.rangers = null;
 				this.rangers = temp[0];
+				this.rangers = [].concat(this.rangers);
 				this.sortAlpha();
 			});
 	}
