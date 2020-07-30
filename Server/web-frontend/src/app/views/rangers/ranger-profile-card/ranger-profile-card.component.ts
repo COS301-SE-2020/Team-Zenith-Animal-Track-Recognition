@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
@@ -9,7 +9,8 @@ import { DeleteRangerComponent } from './../delete-ranger/delete-ranger.componen
 @Component({
 	selector: 'app-ranger-profile-card',
 	templateUrl: './ranger-profile-card.component.html',
-	styleUrls: ['./ranger-profile-card.component.css']
+	styleUrls: ['./ranger-profile-card.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RangerProfileCardComponent implements OnInit {
 
@@ -18,19 +19,16 @@ export class RangerProfileCardComponent implements OnInit {
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	sorted: string;
 
-	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) { }
+	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog,   private changeDetection: ChangeDetectorRef) { }
 	ngOnInit(): void { this.startLoader(); }
 
 	public ngOnChanges(changes: SimpleChanges) {
 		this.startLoader();
 		if ('rangers' in changes) {
 			//If rangers has updated
+			this.changeDetection.markForCheck();
 		}
 		this.stopLoader();
-	}
-
-	trackByRangerSurname(index: number, ranger: any): string {
-		return ranger.lastName;
 	}
 
 	//Ranger CRUD Quick-Actions

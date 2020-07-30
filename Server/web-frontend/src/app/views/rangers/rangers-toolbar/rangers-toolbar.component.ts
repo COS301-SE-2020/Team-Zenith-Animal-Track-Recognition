@@ -13,10 +13,11 @@ export class RangersToolbarComponent implements OnInit {
 	@Input() rangers;
 	@Input() sortBySurname: boolean;
 	@Output() rangersOnChange: EventEmitter<string> = new EventEmitter();
+  currentAlphabet: any;
+  sortByLevel: boolean = false;
 	@Output() sBSOnChange: EventEmitter<string> = new EventEmitter();
 	sorted: string;
 	display: boolean = false;
-
 	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient) { }
 	ngOnInit(): void { }
 
