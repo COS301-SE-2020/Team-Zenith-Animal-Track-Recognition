@@ -19,19 +19,14 @@ export class RangerProfileCardComponent implements OnInit {
 	sorted: string;
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) { }
-	ngOnInit(): void {} //this.startLoader(); }
+	ngOnInit(): void { this.startLoader(); }
 
 	public ngOnChanges(changes: SimpleChanges) {
-		/*this.startLoader();
+		this.startLoader();
 		if ('rangers' in changes) {
 			//If rangers has updated
 		}
-		this.stopLoader();*/
-	}
-
-	trackByRangerSurname(index: number, ranger: any): string {
-		//console.log("RANGER PROFILE CARD TRACKING " + ranger.lastName);
-		return ranger.lastName;
+		this.stopLoader();
 	}
 
 	//Ranger CRUD Quick-Actions

@@ -1,3 +1,4 @@
+import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -23,6 +24,14 @@ export class AnimalsComponent implements OnInit {
 	ngOnInit(): void {
 		this.test = true;
 		document.getElementById("animals-route").classList.add("activeRoute");
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'"){Classification,Animal_ID,Common_Name,Group_ID,HeightM,HeightF,WeightM,WeightF,Habitats,Diet_Type,Life_Span,Gestation_Period,Typical_Behaviour,' +
+			'Overview_of_the_animal,Description_of_animal,Pictures}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.animals = temp[0];
+			});
 	}
 
 	printOut(temp: any) {
@@ -41,6 +50,25 @@ export class AnimalsComponent implements OnInit {
 		document.getElementById("sidenav-open-btn-container").style.left = "0%";
 	}
 
+	updateSearchText(event) {
+		this.searchText = event;
+	}
+
+	refresh() {
+		this.http.get<any>(ROOT_QUERY_STRING + 'query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.animals = null;
+				this.animals = temp[0];
+			});
+	}
+	
+	updateAnimalList(updatedList) {
+		if (updatedList == 'update') {
+			this.refresh();
+		}
+	}
 
 	//Sorting and Filtering
 	checkIfNew(title: string, pos: number) {

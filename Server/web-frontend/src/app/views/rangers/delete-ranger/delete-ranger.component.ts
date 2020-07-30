@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
 @Component({
   selector: 'app-delete-ranger',
@@ -23,7 +24,7 @@ export class DeleteRangerComponent implements OnInit {
 	{
 		if (test) {return true;}
 		this.startLoader();
-		this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{DeleteUser('+ 'TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",' + 'TokenDelete:"' + this.data.Token + '"){msg}}', '')
+		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{DeleteUser('+ 'TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",' + 'TokenDelete:"' + this.data.Token + '"){msg}}', '')
 		.subscribe({next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message)});
 	}
 	

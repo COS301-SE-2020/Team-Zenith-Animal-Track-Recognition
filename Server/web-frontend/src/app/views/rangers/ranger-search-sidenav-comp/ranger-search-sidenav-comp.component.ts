@@ -10,11 +10,11 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RangerSearchSidenavCompComponent implements OnInit {
 
-  @Input() rangers;  
+  @Input() rangers;
   @Input() searchText: string;
   @Input('rangerAutocompletePanel') classList: string;
   @Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
-	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
+  @Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
 
   currentAlphabet: any;
   surnames: boolean = true;
@@ -23,7 +23,8 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 
   constructor(private http: HttpClient) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
 
   checkIfNew(title: string, pos: number) {
     if (this.currentAlphabet === ("" + title).charAt(pos).toLowerCase()) {
@@ -34,7 +35,7 @@ export class RangerSearchSidenavCompComponent implements OnInit {
     }
   }
 
-  updateSearchText(event){
+  updateSearchText(event) {
     this.searchTextOnChange.emit(event);
   }
 

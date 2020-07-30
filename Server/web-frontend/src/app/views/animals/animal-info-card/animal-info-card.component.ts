@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
@@ -13,21 +13,21 @@ import { EditAnimalInfoComponent } from './../edit-animal-info/edit-animal-info.
 })
 export class AnimalInfoCardComponent implements OnInit {
 
+  @Input() animals;
   @Input() searchText: string;
-  animals;
-
+  @Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
+  
   constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) { }
 
-  ngOnInit(): void {
-    this.startLoader();
-    this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{animals(Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Classification,Common_Name,Description_of_animal,Pictures{URL}}}')
-      .subscribe((data: any[]) => {
-        let temp = [];
-        temp = Object.values(Object.values(data)[0]);
-        this.stopLoader();
-        this.printOut(temp);
-      });
-  }
+  ngOnInit(): void { this.startLoader();  }
+
+  public ngOnChanges(changes: SimpleChanges) {
+		this.startLoader();
+		if ('rangers' in changes) {
+			//If rangers has updated
+		}
+		this.stopLoader();
+	}
 
   printOut(temp: any) {
     this.animals = temp[0];

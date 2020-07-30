@@ -1,3 +1,4 @@
+import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
@@ -44,7 +45,7 @@ export class AddRangerComponent implements OnInit {
 		let phoneNumber: string = "" + this.f.phoneNumber.value;
 		phoneNumber = phoneNumber.trim();
 
-		this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{AddUser(firstName:"' + encodeURIComponent(this.f.firstName.value) + '",lastName:"' + encodeURIComponent(this.f.lastName.value) + '",Password:"' + encodeURIComponent(this.f.password.value) + '",Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",Access_Level:"1",e_mail:"' + encodeURIComponent(this.f.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}',
+		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{AddUser(firstName:"' + encodeURIComponent(this.f.firstName.value) + '",lastName:"' + encodeURIComponent(this.f.lastName.value) + '",Password:"' + encodeURIComponent(this.f.password.value) + '",Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",Access_Level:"1",e_mail:"' + encodeURIComponent(this.f.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}',
 		'mutation{AddUser(firstName:"' + encodeURIComponent(this.f.firstName.value) + '",lastName:"' + encodeURIComponent(this.f.lastName.value) + '",Password:"' + encodeURIComponent(this.f.password.value) + '",Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",Access_Level:"1",e_mail:"' + encodeURIComponent(this.f.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}')
 		.subscribe({next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message)});
 	}	

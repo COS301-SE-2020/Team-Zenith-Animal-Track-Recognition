@@ -1,3 +1,4 @@
+import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { logging } from 'protractor';
 import { User } from './../models/user';
 import { Injectable } from '@angular/core';
@@ -38,7 +39,7 @@ export class AuthService {
   }
 
   login(username, password) {
-    return this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{DASlogin(e_mail:"' + username + '",Password:"' + password + '"){Token, firstName, lastName}}')
+    return this.http.get<any>(ROOT_QUERY_STRING + '?query=query{DASlogin(e_mail:"' + username + '",Password:"' + password + '"){Token, firstName, lastName}}')
       .pipe(map(user => {
         if (null === user.data.DASlogin) {
           this.isAuthorized = false;

@@ -1,6 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Ranger } from './../../../models/ranger';
-import { RANGERS } from './../../../models/mock-rangers';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -9,32 +7,17 @@ import { HttpClient } from '@angular/common/http';
 	styleUrls: ['./animal-search-sidenav.component.css']
 })
 export class AnimalSearchSidenavComponent implements OnInit {
-
-	//USING MOCK RANGER DATA. @Zach please replace this with an API call that fetches the users. We only need ID, Name, Username and ranger level
-
-	animals;
+	@Input() animals;
+	@Input() searchText: string;
 	currentAlphabet;
 	surnames: boolean = true;
 	levels: boolean = false;
+	@Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
+	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
 
-	@Input() searchText: string;
+	constructor() { }
 
-	constructor(private http: HttpClient) { }
-
-	ngOnInit(): void {
-		document.getElementById("animals-route").classList.add("activeRoute");
-		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{animals(Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Classification,Common_Name,Group_ID{Group_Name}}}')
-			.subscribe((data: any[]) => {
-				let temp = [];
-				temp = Object.values(Object.values(data)[0]);
-				this.printOut(temp);
-			});
-	}
-
-	printOut(temp: any) {
-		this.animals = temp[0];
-		this.sort(true);
-	}
+	ngOnInit(): void { }
 
 	checkIfNew(title: string, pos: number) {
 		if (this.currentAlphabet === ("" + title).charAt(pos).toLowerCase()) {
@@ -43,6 +26,10 @@ export class AnimalSearchSidenavComponent implements OnInit {
 			this.currentAlphabet = ("" + title).charAt(pos).toLowerCase();
 			return true;
 		}
+	}
+
+	updateSearchText(event) {
+		this.searchTextOnChange.emit(event);
 	}
 
 	checkSpecies(title: string) {
