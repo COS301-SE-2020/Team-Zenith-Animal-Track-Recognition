@@ -14,10 +14,9 @@ export class RangersComponent implements OnInit {
 	@ViewChild('sidenav') sidenav;
 	rangers: any;
 	searchText: string;
+	sortBySurname: boolean = true;
 	currentAlphabet;
 	sorted: string;
-	surnames: boolean = true;
-	levels: boolean = false;
 
 	constructor(private http: HttpClient) { }
 
@@ -28,7 +27,7 @@ export class RangersComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.rangers = temp[0];
-				this.sortAlpha();
+				this.sort(this.sortBySurname);
 			});
 	}
 
@@ -43,8 +42,7 @@ export class RangersComponent implements OnInit {
 				temp = Object.values(Object.values(data)[0]);
 				this.rangers = null;
 				this.rangers = temp[0];
-				this.rangers = [].concat(this.rangers);
-				this.sortAlpha();
+				this.sort(this.sortBySurname);
 			});
 	}
 
@@ -66,18 +64,38 @@ export class RangersComponent implements OnInit {
 		document.getElementById('sidenav-open-btn-container').style.left = '0%';
 	}
 
-
 	//Sorting and Filtering
-	sortAlpha() {
+	toggle(bool: boolean) {
+		this.sortBySurname = bool;
+		this.sort(bool);
+	}
+
+	sort(bool: boolean) {
 		let temp: string;
-		for (let i = 0; i < this.rangers.length - 1; i++) {
-			for (let j = i + 1; j < this.rangers.length; j++) {
-				if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-					let temp = this.rangers[i];
-					this.rangers[i] = this.rangers[j];
+		if (bool) {
+			for (let i = 0; i < this.rangers.length - 1; i++) {
+				for (let j = i + 1; j < this.rangers.length; j++) {
+					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
+						let temp = this.rangers[i];
+						this.rangers[i] = this.rangers[j];
 						this.rangers[j] = temp;
+					}
 				}
 			}
+			temp = "Sorted alphabetically";
+		} else {
+			for (let i = 0; i < this.rangers.length - 1; i++) {
+				for (let j = i + 1; j < this.rangers.length; j++) {
+					if (this.rangers[i].Access_Level > this.rangers[j].Access_Level) {
+						let temp = this.rangers[i];
+						this.rangers[i] = this.rangers[j];
+						this.rangers[j] = temp;
+					}
+				}
+			}
+			temp = "Sorted by ranger level";
 		}
+		this.sorted = temp;
+		return temp;
 	}
 }
