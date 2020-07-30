@@ -109,18 +109,13 @@ a:hover
 .welcomeMessage
 {
 	text-align: center;
-	font-size: 180%;
-}
-.altWelcomeMessage
-{
-	text-align: center;
-	width: 100%;
-	font-size: 150%;
+	font-size: 155%;
+	width: 110%;
 }
 #loginFormComp-loginForm-TitleContainer > p
 {
 	margin-top: 1%;
-	font-size: 95%;
+	font-size: 105%;
 	color: #AAAAAA;
 }
 #loginFormComp-loginForm-FormContainer
@@ -138,6 +133,10 @@ a:hover
 .mat-form-field
 {
 	width: 80%;
+}
+#viewPasswordBtn:hover
+{
+	cursor: pointer;
 }
 #loginFormComp-loginForm-loginOptionsContainer
 {

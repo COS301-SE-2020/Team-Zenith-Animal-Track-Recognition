@@ -9,21 +9,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./utility-navigation.component.css']
 })
 export class UtilityNavigationComponent implements OnInit {
+	
   currentUser: User;
-  userLastName;
-
-  constructor(
-    private router: Router,
-    private authService: AuthService
-  ) {
+  
+  constructor(private router: Router, private authService: AuthService) {
     this.authService.currentUser.subscribe(x => this.currentUser = x);
   }
 
-  ngOnInit(): void 
-  {
-	  //Show logged in user
-	  this.userLastName = localStorage.getItem("userLastName");
-  }
+  ngOnInit(): void {}
 
   logout(): void {
     this.authService.logout();

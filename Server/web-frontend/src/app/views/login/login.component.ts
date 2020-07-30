@@ -16,7 +16,6 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  userLastName: string;
 
   hide = true;
   constructor(
@@ -31,7 +30,6 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-    this.userLastName = localStorage.getItem('userLastName');
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/overview';
   }
 
@@ -61,7 +59,7 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.snackBar.open("You're in!", "Dismiss", { duration: 5000, });
+          this.snackBar.open("Signed in.", "Dismiss", { duration: 2500, });
           this.router.navigate([this.returnUrl]);
         },
         error => {
