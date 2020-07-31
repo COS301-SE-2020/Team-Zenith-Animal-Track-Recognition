@@ -1,3 +1,5 @@
+const CACHE = true;
+
 const graphql = require('graphql');
 const {
     GraphQLObjectType,
@@ -21,26 +23,18 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
 
+
+
 let db = admin.firestore();
 let users = db.collection("Users");
 let Animals = db.collection("Animals");
 let Groups = db.collection("Groups");
 let Habitats = db.collection("Habitats");
 let Pictures = db.collection("Pictures");
+let SpoorIdentifications = db.collection("SpoorIdentifications");
 
 //google db
 
-const GessType = new GraphQLObjectType({
-    name: "gess",
-    fields: () => ({
-        animal: {
-            type: AnimalType
-        },
-        confidence: {
-            type: GraphQLFloat
-        }
-    })
-})
 
 let MesTypeData = [{
     msg: "deleted"
@@ -49,48 +43,9 @@ let HabitatData = []
 let usersdata = []
 let GroupData = []
 let animaldata = []
-
-
 let PictureData = []
-let GeotagData = [{
-        ID: 1,
-        Reporting_User_Name: "root",
-        Classification: 'Panthera leo',
-        Geotag: {
-            long: 0,
-            lat: 0
-        },
-        timestamp: {
-            timestamp: 0
-        }
+let SpoorIdentification=[]
 
-    },
-    {
-        ID: 2,
-        Reporting_User_Name: "root",
-        Classification: 'Panthera leo',
-        Geotag: {
-            long: 0,
-            lat: 0
-        },
-        timestamp: {
-            timestamp: 0
-        }
-
-    }, {
-        ID: 3,
-        Reporting_User_Name: "root",
-        Classification: 'Panthera leo',
-        Geotag: {
-            long: 0,
-            lat: 0
-        },
-        timestamp: {
-            timestamp: 0
-        }
-
-    }
-]
 const MesType = new GraphQLObjectType({
     name: "mesig",
     fields: () => ({
@@ -98,8 +53,93 @@ const MesType = new GraphQLObjectType({
             type: GraphQLString
         }
     })
-})
+});
+const locationType = new GraphQLObjectType({
+    name: "location",
+    fields: () => ({
+        latitude: {
+            type: GraphQLFloat
+        },
+        longitude: {
+            type: GraphQLFloat
+        }
+    })
+});
+const dateAndTimeType = new GraphQLObjectType({
+    name: "dateAndTime",
+    fields: () => ({
+        year:
+        {
+            type:GraphQLInt
+        },
+        month:
+        {
+            type:GraphQLInt
+        },
+        day:
+        {
+            type:GraphQLInt
+        },
+        hour:
+        {
+            type:GraphQLInt
+        },
+        min:
+        {
+            type:GraphQLInt
+        },
+        second:
+        {
+            type:GraphQLInt
+        },
+    })
+});
+const potentialMatchesType = new GraphQLObjectType({
+    name: "potentialMatches",
+    fields: () => ({
+        Animals:{
+            type:new GraphQLList(AnimalType)
+        },
+        Confidence:{
+            type:new GraphQLList(GraphQLList)
+        }
+    })
+});
 
+const SpoorIdentificationType = new GraphQLObjectType({
+    name: "SpoorIdentification",
+    fields: () => ({
+        animal: {
+            type: AnimalType,
+            resolve(parent, args) {
+                let temp = undefined;
+                if (CACHE) {
+                    temp = _.find(animaldata, {
+                        AnimalID: parent.animal
+                    })
+                } else {
+                    //todo
+                }
+                return temp;
+            }
+        },
+        dateAndTime: {
+            type: dateAndTimeType
+        },
+        location:
+        {
+            type:locationType
+        },
+        ranger :
+        {
+            type:UserType
+        },
+        potentialMatches :
+        {
+            type:potentialMatchesType
+        }
+    })
+});
 //user 
 const UserType = new GraphQLObjectType({
     name: 'user',
@@ -110,10 +150,10 @@ const UserType = new GraphQLObjectType({
         Token: {
             type: GraphQLString
         },
-        Access_Level: {
+        accessLevel: {
             type: GraphQLString
         },
-        e_mail: {
+        eMail: {
             type: GraphQLString
         },
         firstName: {
@@ -125,9 +165,10 @@ const UserType = new GraphQLObjectType({
         phoneNumber: {
             type: GraphQLString
         },
-        // activity:{
-        //     type:new GraphQLList(OBJTypeRI)
-        // }
+        activity:{
+            type:new GraphQLList(SpoorIdentificationType)
+
+        }
     })
 });
 
@@ -508,36 +549,36 @@ const RootQuery = new GraphQLObjectType({
             }
         },
 
-        imageID: {
-            type: new GraphQLList(GessType),
-            args: {
-                img: {
-                    type: GraphQLString
-                },
-                Token: {
-                    type: new GraphQLNonNull(GraphQLString)
-                }
-            },
-            resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.Token
-                })
-                if (a != null) {
-                    const newLocal = animaldata;
-                    let b = []
-                    newLocal.forEach(val => {
-                        let c = {}
-                        c.animal = val;
-                        c.confidence = Math.random();
-                        b.push(c)
-                    })
-                    b.sort((a, b) => (a.confidence > b.confidence) ? 1 : -1)
-                    console.log(b)
-                    return b;
-                }
-                return null;
-            }
-        },
+        // imageID: {
+        //     type: new GraphQLList(GessType),
+        //     args: {
+        //         img: {
+        //             type: GraphQLString
+        //         },
+        //         Token: {
+        //             type: new GraphQLNonNull(GraphQLString)
+        //         }
+        //     },
+        //     resolve(parent, args) {
+        //         a = _.find(usersdata, {
+        //             Token: args.Token
+        //         })
+        //         if (a != null) {
+        //             const newLocal = animaldata;
+        //             let b = []
+        //             newLocal.forEach(val => {
+        //                 let c = {}
+        //                 c.animal = val;
+        //                 c.confidence = Math.random();
+        //                 b.push(c)
+        //             })
+        //             b.sort((a, b) => (a.confidence > b.confidence) ? 1 : -1)
+        //             console.log(b)
+        //             return b;
+        //         }
+        //         return null;
+        //     }
+        // },
         animals: {
             type: GraphQLList(AnimalType),
             args: {
@@ -678,7 +719,7 @@ const Mutation = new GraphQLObjectType({
                     phoneNumber: args.phoneNumber
                 }
 
-                let x = users.add(newuser).then(function(docRef) {
+                let x = users.add(newuser).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                     let newuser2 = {
                         Password: args.Password,
@@ -851,7 +892,7 @@ const Mutation = new GraphQLObjectType({
 
                 usersdata.splice(b, 1)
 
-                users.doc(args.TokenDelete).delete().then(function() {
+                users.doc(args.TokenDelete).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
 
@@ -967,7 +1008,7 @@ const Mutation = new GraphQLObjectType({
 
                 usersdata.splice(b, 1)
 
-                users.doc(args.Group_ID).delete().then(function() {
+                users.doc(args.Group_ID).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
 
@@ -1124,7 +1165,7 @@ const Mutation = new GraphQLObjectType({
                     newAnimal.Pictures.push(1)
                 }
 
-                Animals.doc(args.Classification).set(newAnimal).then(function(docRef) {
+                Animals.doc(args.Classification).set(newAnimal).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
                 newAnimal.Classification = args.Classification
@@ -1171,8 +1212,6 @@ users.get().then((snapshot) => {
     .catch((err) => {
         console.log('Error getting documents', err);
     });
-
-
 Groups.get().then((snapshot) => {
         snapshot.forEach((doc) => {
             let newGoupe = {
@@ -1227,7 +1266,7 @@ Animals.get().then((snapshot) => {
         console.log('Error getting documents', err);
     });
 
-    Animals.get().then((snapshot) => {
+Animals.get().then((snapshot) => {
         snapshot.forEach((doc) => {
             let newAnimal = {
                 Classification: doc.id,
@@ -1254,3 +1293,4 @@ Animals.get().then((snapshot) => {
     .catch((err) => {
         console.log('Error getting documents', err);
     });
+
