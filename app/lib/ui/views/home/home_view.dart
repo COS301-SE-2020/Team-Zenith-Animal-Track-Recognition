@@ -4,6 +4,8 @@ import 'package:ERP_RANGER/ui/views/home/home_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class HomeView extends StatelessWidget {
   const HomeView({Key key}) : super(key: key);
@@ -22,10 +24,11 @@ class HomeView extends StatelessWidget {
           }
           if(snapshot.hasData){
             return snapshot.hasData ? Scaffold(
+              drawer: NavDrawer(),
               appBar: AppBar(
-                automaticallyImplyLeading: false,
+                //automaticallyImplyLeading: true,
                 backgroundColor: Colors.black,
-                title: appBarTitle("Recent Indentifications", context),
+                title: text18LeftBoldWhite("Recent Indentifications",),
                 actions: <Widget>[IconBuilder(icon:Icons.search,type:"search"), IconBuilder(icon:Icons.more_vert,type:"vert")],
               ),
               body: Container(
@@ -108,7 +111,7 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
                 children: <Widget>[
                   Expanded(flex:4,child: Row(children: <Widget>[
                     Expanded(flex:1,child: imageBlock(animalList[index].pic)),
-                    Expanded(flex:2,child: textColumn(animalList[index].name, animalList[index].time, animalList[index].species, animalList[index].location, animalList[index].captured,context))
+                    Expanded(flex:2,child: textColumn(animalList[index].name, animalList[index].time, animalList[index].species, animalList[index].location, animalList[index].captured))
                   ],)),
                   Divider(),
                   Expanded(flex:1,child: Row(
@@ -116,12 +119,12 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
                       Expanded(flex: 1,child: Container(
                         alignment: Alignment.center, margin: new EdgeInsets.only(left:15,right:10,bottom: 6),
                         decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(10)),
-                        child: tagText(animalList[index].tag, context),
+                        child: text12LeftBoldWhite(animalList[index].tag,),
                       ),),
                       Expanded(flex: 2,child: Container(
                         alignment: Alignment.center, margin: new EdgeInsets.only(right:10,bottom: 6),
                         //decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(10)),
-                        child: textRow(animalList[index].score,context),
+                        child: textRow(animalList[index].score),
                       ),),
                     ],
                   )),
@@ -135,51 +138,54 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
   }
 }
 
-Widget imageBlock (String imageLink) {
-    return Container(
-    alignment: Alignment.center,
-    margin: new EdgeInsets.only(left:15,right:10,),
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage(imageLink),
-        fit: BoxFit.fill,
+class NavDrawer extends ViewModelWidget<HomeViewModel> {
+  //List<HomeModel> animalList;
+  NavDrawer({Key key}) : super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, HomeViewModel model) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: text22LeftBoldWhite("Side Menu"),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage('assets/images/springbok.jpg')
+              )
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.verified_user),
+            title: text16LeftBoldGrey("Profile"),
+            onTap: () =>{
+              navigateToProfile()
+            }
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: text16LeftBoldGrey("Settings"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: text16LeftBoldGrey("Preference"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: text16LeftBoldGrey("Logout"),
+            onTap: ()async{
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("loggedIn", false);
+              navigateToLogin(context);
+            }
+          ),
+        ],
       ),
-      color: Colors.grey,
-      borderRadius: BorderRadius.circular(15),
-    ),
-    height: 75,
-  );
-}
-
-Widget textColumn(String name, String time, String species, String location, String capturedBy, var context){
-  return Container(
-    height: 75,
-    margin: new EdgeInsets.only(right:10,),
-    child: Column(
-      children: <Widget>[
-        Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: cardTitle(name, context),)),
-          Expanded(flex:1,child: Container(color: Colors.white,child: cardTextRight(time, context),)),
-        ],)),
-        Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: cardTextLeft("Species: ", context),)),
-          Expanded(flex:2,child: Container(color: Colors.white,child: cardTextValue(species, context),)),
-        ],)),      
-        Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: cardTextLeft("Location: ", context),)),
-          Expanded(flex:2,child: Container(color: Colors.white,child: cardTextValue(location, context),)),
-        ],)),
-        Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: cardTextLeft("Captured by: ", context),)),
-          Expanded(flex:2,child: Container(color: Colors.white,child: cardTextValue(capturedBy, context),)),
-        ],)),    ],
-    ),
-  );
-}
-
-Widget textRow(String accuracy,var context){
-  return Row(children: <Widget>[
-    Expanded(flex: 2,child: homeViewAccuracyScoreLeft("ACCURACY SCORE", context),),
-    Expanded(flex: 1,child: homeViewAccuracyScoreRight(accuracy, context),),
-  ],);
+    );
+  }
 }

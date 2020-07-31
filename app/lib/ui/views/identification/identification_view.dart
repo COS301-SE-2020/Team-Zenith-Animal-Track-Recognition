@@ -34,7 +34,7 @@ class IdentificationView extends StatelessWidget {
           ? WillPopScope(
             onWillPop: () async {
               if (Navigator.canPop(context)) {
-                navigate(context);
+                navigateBack(context);
               }
               return;
             },
@@ -117,7 +117,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
                             )
                           ],
                         ),
-                        Divider(thickness: 2),
+                        //Divider(thickness: 2),
                         Column(
                           children: <Widget>[
                             Row(
@@ -127,7 +127,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
                             )
                           ],
                         ),
-                        Divider(thickness: 2),
+                        //Divider(thickness: 2),
                         Column(
                           children: <Widget>[
                             similarSpoors(context),
@@ -213,7 +213,7 @@ return Container(
                 )),
             Expanded(
               flex: 8,
-              child: cardTextLeft("Spoor Location", context)
+              child: text12LeftNormGrey("Spoor Location")
             ),
           ],
         ),
@@ -228,7 +228,7 @@ return Container(
         child: Row(
           children: <Widget>[
             Expanded(
-              child: cardTextLeft('Kruger National Park', context),
+              child: text12LeftNormGrey('Kruger National Park'),
             )
           ],
         ),
@@ -241,11 +241,11 @@ return Container(
           children: <Widget>[
             Expanded(
               flex: 1,
-              child: cardTextLeft( 'Date: ', context),
+              child: text12LeftNormGrey( 'Date: '),
             ),
             Expanded(
               flex: 3,
-              child: cardTextLeft('09/09/2020', context)
+              child: text12LeftNormBlack('09/09/2020')
             )
           ],
         ),
@@ -258,11 +258,11 @@ return Container(
           children: <Widget>[
             Expanded(
               flex: 1,
-              child: cardTextLeft('Coordinates: ', context),
+              child: text12LeftNormGrey('Coordinates: '),
             ),
             Expanded(
               flex: 3,
-              child: cardTextLeft('-240.19097, 31.559270', context),
+              child: text12LeftNormBlack('-240.19097, 31.559270'),
             )
           ],
         ),
@@ -290,33 +290,20 @@ Widget text(String name, var context){
           flex: 1,
           child: Container(
             alignment: Alignment.centerLeft,
-            child: appBarTitle('$name Spoor identified', context),
+            child: text22LeftBoldWhite('$name Spoor identified'),
           ),
         ),
         Expanded(
           flex: 1,
           child: Container(
             alignment: Alignment.centerLeft,
-            child: Text(
-              'Swipe up for more options',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
-            ),
+            child: text16LeftBoldWhite('Swipe up for more options'),
           ),
         )
       ],
     ),
   );
 } 
-
-Widget dividerGrey = new Container(
-  child: Divider(
-    color: Colors.grey,
-    thickness: 1.2,
-  ),
-  margin: EdgeInsets.only(top: 7, bottom: 7),
-);
 
 //================================
 
@@ -343,7 +330,7 @@ Widget button1(var context) {
             onPressed: () {},
           ),
         ),
-        homeViewAccuracyScoreLeft("Edit Spoor",context),
+        text14LeftBoldGrey("Edit Spoor"),
       ],
     ),
   );
@@ -372,7 +359,7 @@ Widget button2(var context){
             onPressed: () {},
           ),
         ),
-        homeViewAccuracyScoreLeft("View Animal Info", context)
+        text14LeftBoldGrey("View Animal Info")
       ],
     ),
   );
@@ -401,7 +388,7 @@ return Container(
           onPressed: () {},
         ),
       ),
-      homeViewAccuracyScoreLeft("Download Image",context)
+      text14LeftBoldGrey("Download Image")
     ],
   ),
 );
@@ -443,7 +430,7 @@ Widget backButton(context) {
      borderRadius: BorderRadius.circular(10),
    ),
    //height: 0,
-   child: cardTitle("Spoor Identification Results", context),
+   child: text18LeftBoldBlack("Spoor Identification Results"),
  );
  }
 
@@ -504,7 +491,7 @@ Widget backButton(context) {
     return Container(
     alignment: Alignment.centerLeft,
     padding: new EdgeInsets.all(0),
-    child: nameText("Animal: ", context),
+    child: text14LeftBoldBlack("Animal: "),
   );
  }
 
@@ -512,7 +499,7 @@ Widget backButton(context) {
    return new Container(
      alignment: Alignment.centerLeft,
      padding: new EdgeInsets.all(0),
-     child: homeViewAccuracyScoreLeft(name, context),
+     child: text14LeftBoldGrey(name),
    );
  }
 
@@ -520,7 +507,7 @@ Widget backButton(context) {
   return Container(
     alignment: Alignment.centerLeft,
     padding: new EdgeInsets.all(0),
-    child: nameText("Species:", context)
+    child: text14LeftBoldBlack("Species:")
   );
  }
 
@@ -528,7 +515,7 @@ Widget backButton(context) {
    return new Container(
      alignment: Alignment.centerLeft,
      padding: new EdgeInsets.all(0),
-     child: homeViewAccuracyScoreLeft(species, context),
+     child: text14LeftBoldGrey(species),
    );
  }
 
@@ -536,7 +523,7 @@ Widget backButton(context) {
    return Container(
    alignment: Alignment.centerLeft,
    padding: new EdgeInsets.all(0),
-   child: nameText("Accuracy Score:", context)
+   child: text14LeftBoldBlack("Accuracy Score:")
  );
  }
  
@@ -560,7 +547,7 @@ Widget backButton(context) {
       borderRadius: BorderRadius.circular(10),
     ),
     //height: 0,
-    child: cardTitle("Similar Spoors", context),
+    child: text18LeftBoldBlack("Similar Spoors",),
   );
  } 
 
@@ -587,7 +574,7 @@ Widget backButton(context) {
      alignment: Alignment.centerLeft,
      padding: new EdgeInsets.all(5),
      margin: new EdgeInsets.only(left: 2),
-     child: nameText(name, context));
+     child: text14LeftBoldBlack(name));
  }
 
  Widget animalSpecies(String species,var context) {
@@ -595,7 +582,7 @@ Widget backButton(context) {
      alignment: Alignment.centerLeft,
      margin: new EdgeInsets.only(left: 2),
      padding: new EdgeInsets.all(5),
-     child: homeViewAccuracyScoreLeft(species,context),
+     child: text14LeftBoldGrey(species),
    );
  }
 
@@ -604,7 +591,7 @@ Widget backButton(context) {
      alignment: Alignment.centerLeft,
      margin: new EdgeInsets.only(left: 2),
      padding: new EdgeInsets.all(5),
-     child: homeViewAccuracyScoreLeft(score,context),
+     child: text14LeftBoldGrey(score),
    );
  }
 
@@ -643,7 +630,7 @@ class OtherMatches  extends ViewModelWidget<IdentificationViewModel> {
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
     return ExpansionTile(
-     title: cardTitle("Other Possible Matches", context),
+     title: text18LeftBoldBlack("Other Possible Matches"),
      children: <Widget>[Container(
        height: 250,
        color: Colors.white,
@@ -675,15 +662,15 @@ class ChildPopup  extends ViewModelWidget<IdentificationViewModel>{
       itemBuilder: (context) => [
         PopupMenuItem(
           value: 1,
-          child: Text('Reclassify', style: TextStyle(color: Colors.black)),
+          child: text14LeftNormBlack('Reclassify'),
         ),
         PopupMenuItem(
           value: 2,
-          child: Text('View Info', style: TextStyle(color: Colors.black)),
+          child: text14LeftNormBlack('View Info'),
         ),
         PopupMenuItem(
           value: 3,
-          child: Text('View Photos', style: TextStyle(color: Colors.black)),
+          child: text14LeftNormBlack('View Photos'),
         ),
       ],
       child: Container(
@@ -753,13 +740,13 @@ Widget containerTitle(String title, var context){
   return Container(
     margin: EdgeInsets.only(left:7),
     alignment: Alignment.centerLeft,
-    child: cardTitle(title,context)
+    child: text18LeftBoldBlack(title)
   );
 } 
 
 class Tags extends ViewModelWidget<IdentificationViewModel> {
   Tags({Key key}) : super(key: key, reactive:true);
-
+  
   @override
   Widget build(BuildContext context,IdentificationViewModel model) {
     model.setTags();
@@ -774,12 +761,48 @@ class Tags extends ViewModelWidget<IdentificationViewModel> {
             radius: 10,
             backgroundColor: Colors.grey.
             shade600,
-            child: confirmViewTagText(model.tags[index][0].toUpperCase(),context)
+            child: text12LeftNormBlack(model.tags[index][0].toUpperCase())
           ),
-          label: confirmViewTagText(model.tags[index], context),
+          label: text12LeftNormBlack(model.tags[index]),
           backgroundColor: Colors.grey[100],
         );     
       }
     );
   }
 }
+    // int defualtChoiceIndex = model.tagIndex;
+    // model.setTags();
+    // return ListView.builder(
+    //   shrinkWrap: true,
+    //   scrollDirection: Axis.horizontal,
+    //   itemCount: model.tags.length,
+    //   itemBuilder: (BuildContext context, int index) {
+    //     return Container(
+    //       margin: new EdgeInsets.only(right:5),
+    //       child: ChoiceChip(
+    //         avatar: CircleAvatar(
+    //           radius: 10,
+    //           backgroundColor: Colors.black,
+    //           child: text14CenterNormWhite(model.tags[index][0].toUpperCase())
+    //         ),
+    //         label: text14CenterBoldGrey(model.tags[index]),
+    //         backgroundColor: Colors.grey[100],
+    //         selected: defualtChoiceIndex==index,
+    //         selectedColor: Colors.blue.shade100,
+    //         elevation: 2,
+    //         onSelected: (bool selected){
+    //           print(index);
+    //           defualtChoiceIndex = selected ? index : null;
+    //           if(defualtChoiceIndex == null){
+    //             model.setTag(null);
+    //             model.setTagIndex(null);                  
+    //           }else{
+    //             model.setTag(model.tags[index]);
+    //             model.setTagIndex(index);
+    //           }
+    //           model.notifyListeners();
+    //         },
+    //       ),
+    //     );     
+    //   }
+    // );

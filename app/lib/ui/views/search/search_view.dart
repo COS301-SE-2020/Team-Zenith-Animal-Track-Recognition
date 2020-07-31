@@ -3,9 +3,7 @@ import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/search/search_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:path/path.dart';
 
-SearchModel searchModel7 = SearchModel(commonName: "Buffalo", species: "Cape Buffalo",image: "https://images.unsplash.com/photo-1508605375977-9fe795aea86a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1148&q=80");
 
 List<SearchModel> searchList = new List<SearchModel>();
 List<SearchModel> displayList = new List<SearchModel>();
@@ -28,7 +26,7 @@ class SearchView extends StatelessWidget {
             return WillPopScope(
               onWillPop:() async{
                 if(Navigator.canPop(context)){
-                  navigate(context);
+                  navigateBack(context);
                 }
                 return;
               },
@@ -39,7 +37,7 @@ class SearchView extends StatelessWidget {
                     backgroundColor: Colors.black,
                     title: appBarTitle("Search View", context),
                     actions: <Widget>[IconBuilder(icon: Icons.search, colors: Colors.grey,index: 0)],
-                    bottom: TabBar(tabs: [text("ANIMAL", 15),text("SPECIES", 15),]),
+                    bottom: TabBar(tabs: [text14CenterBoldGrey("ANIMAL"),text14CenterBoldGrey("SPECIES"),]),
                   ),
                   body: Container(
                     color: Colors.grey[200],
@@ -103,15 +101,7 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
         return animalList[index].image == ""
         ? Container(
           margin: new EdgeInsets.only(left:30, top:17, bottom: 10),
-          child: Text(
-            animalList[index].commonName,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize:16,
-              fontFamily: 'Arciform',
-              color: Colors.grey
-            ),
-          ),
+          child: text16LeftBoldGrey(animalList[index].commonName),
         )
         :  Container(
           margin: new EdgeInsets.all(12),
@@ -123,8 +113,8 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
           child: ListTile(
             dense: true,
             leading: imageBlock(animalList[index].image),
-            title: text4(animalList[index].species, 17),
-            subtitle: text4(animalList[index].commonName,13),
+            title: text16LeftBoldGrey(animalList[index].species),
+            subtitle: text12LeftBoldGrey(animalList[index].commonName),
             trailing: IconBuilder(icon: Icons.remove_red_eye, colors: Colors.grey,index: 1, name:animalList[index].commonName ,),
           ),
         );
@@ -132,101 +122,6 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
     );
   }
 }
-
-Widget imageBlock(String image){
-  return Container(
-    alignment: Alignment.center,
-  // margin: new EdgeInsets.only(bottom:10, left:15,right:10,top:10 ),
-    //padding: new EdgeInsets.all(5),
-      decoration: BoxDecoration(
-      image: DecorationImage(
-        image: NetworkImage( image ),
-        fit: BoxFit.fill,
-      ),
-      color: Colors.grey,
-      borderRadius: BorderRadius.circular(10),
-    ),
-    height: 50,
-    width: 50,
-  );
-}
-
-//================================== TEXT TEMPLATES =============================
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.white
-    ),
-  );
-}
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text3(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.normal,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text4(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text5(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-//================================== TEXT TEMPLATES =============================
-Widget iconButton(var model) {
-  return IconButton(
-    icon: Icon(Icons.remove_red_eye), 
-    onPressed: (){
-      print("object");
-      model.navigateToInformation();
-    }
-  );
-}
-
 
 class DataSearch extends SearchDelegate<List<SearchModel>>{
   final model;
@@ -287,8 +182,8 @@ class DataSearch extends SearchDelegate<List<SearchModel>>{
               child: ListTile(
                 dense: true,
                 leading: imageBlock(suggestionList[index].image),
-                title: text4(suggestionList[index].species,17),
-                subtitle: text4(suggestionList[index].commonName,13),
+                title: text16LeftBoldGrey(suggestionList[index].species),
+                subtitle: text16LeftBoldGrey(suggestionList[index].commonName),
                 trailing: iconButton(model),
               ),
             );
@@ -298,4 +193,32 @@ class DataSearch extends SearchDelegate<List<SearchModel>>{
 
   }
 
+}
+
+Widget imageBlock(String image){
+  return Container(
+    alignment: Alignment.center,
+  // margin: new EdgeInsets.only(bottom:10, left:15,right:10,top:10 ),
+    //padding: new EdgeInsets.all(5),
+      decoration: BoxDecoration(
+      image: DecorationImage(
+        image: NetworkImage( image ),
+        fit: BoxFit.fill,
+      ),
+      color: Colors.grey,
+      borderRadius: BorderRadius.circular(10),
+    ),
+    height: 50,
+    width: 50,
+  );
+}
+
+Widget iconButton(var model) {
+  return IconButton(
+    icon: Icon(Icons.remove_red_eye), 
+    onPressed: (){
+      print("object");
+      model.navigateToInformation();
+    }
+  );
 }

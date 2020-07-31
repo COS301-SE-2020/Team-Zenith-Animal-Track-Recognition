@@ -56,7 +56,6 @@ Widget imageBlock (File imageLink) {
         fit: BoxFit.cover,
       ),
     ),
-
   );
 }
 
@@ -125,37 +124,12 @@ class IconButtons extends ViewModelWidget<NotConfirmedViewModel> {
             },
           ),
         ),
-        notConfirmViewIconButtonText(subTitle, context)
+        text12LeftNormGrey(subTitle)
       ],
       ),
     );
   }
 }
-
-Widget textDisplay(var context){
-  return Container(
-    alignment: Alignment(0.0,0.0),
-    margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
-      decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-    ),
-    height: 50,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-          Expanded(flex:1,
-          child: Container(alignment: Alignment.centerLeft,child: notConfirmViewTitle("Spoor could not be identified",context))
-          ),
-          Expanded(flex:1,
-            child: Container( alignment: Alignment.centerLeft, child: notConfirmViewSubTitle("Swipe up for more options", context))
-          )
-      ],
-    )
-  );
-} 
 
 class LeadingIcon  extends ViewModelWidget<NotConfirmedViewModel> {
   LeadingIcon({Key key,}) : super(key: key, reactive:true);
@@ -208,7 +182,7 @@ class Scroll extends ViewModelWidget<NotConfirmedViewModel> {
                 SizedBox(height: 1.0,),
                 Expanded(flex:1 ,child: blocks),
               ],),
-              dividerGrey,
+              Divider(),
               Row(children: <Widget>[
                 Expanded(flex:1,child: IconButtons(iconData:Icons.search,subTitle:"RECLASSIFY SPOOR", index: 0,)),
                 Expanded(flex:1,child: IconButtons(iconData:Icons.camera_alt,subTitle:"RECAPTURE SPOOR", index: 1)),
@@ -221,7 +195,7 @@ class Scroll extends ViewModelWidget<NotConfirmedViewModel> {
     );
   }
 }
-//================================== TEXT TEMPLATES =============================
+
 Widget blocks = new Container(
   alignment: Alignment(0.0,0.0),
   margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
@@ -234,9 +208,28 @@ Widget blocks = new Container(
   height: 50,
 );
 
-Widget dividerGrey = new Container(
-  child: Divider(color: Colors.grey[300], thickness: 1.0),
-  margin: EdgeInsets.only(top: 7, bottom: 7),
-);
+Widget textDisplay(var context){
+  return Container(
+    alignment: Alignment(0.0,0.0),
+    margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
+      decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+    ),
+    height: 50,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+          Expanded(flex:1,
+          child: Container(alignment: Alignment.centerLeft,child: text18LeftBoldBlack("Spoor could not be identified"))
+          ),
+          Expanded(flex:1,
+            child: Container( alignment: Alignment.centerLeft, child: text14LeftBoldGrey("Swipe up for more options"))
+          )
+      ],
+    )
+  );
+} 
 
-//================================== TEXT TEMPLATES =============================

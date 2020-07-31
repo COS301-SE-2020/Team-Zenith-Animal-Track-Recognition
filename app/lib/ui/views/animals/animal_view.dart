@@ -4,6 +4,7 @@ import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AnimalView extends StatelessWidget {
   AnimalView({Key key}) : super(key: key);
@@ -32,11 +33,11 @@ class AnimalView extends StatelessWidget {
               child: DefaultTabController(
                 length: 3,
                 child: Scaffold(
+                  drawer: NavDrawer(),
                   appBar: AppBar(
-                    leading: null,
-                    automaticallyImplyLeading: false,
+
                     backgroundColor: Colors.black,
-                    title: appBarTitle("Animal Information", context),
+                    title: text18LeftBoldWhite("Animal Information"),
                     actions: <Widget>[IconBuilder(icon:Icons.search,type:"search"), IconBuilder(icon:Icons.more_vert,type:"vert")],
                     bottom: TabBar(tabs: snapshot.data.tabs,indicatorWeight: 3,),
                   ),
@@ -60,6 +61,59 @@ class AnimalView extends StatelessWidget {
     );
   }
 }
+
+class NavDrawer extends ViewModelWidget<AnimalViewModel> {
+  //List<HomeModel> animalList;
+  NavDrawer({Key key}) : super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, AnimalViewModel model) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: text22LeftBoldWhite("Side Menu"),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage('assets/images/springbok.jpg')
+              )
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.verified_user),
+            title: text16LeftBoldGrey("Profile"),
+            onTap: () =>{
+              navigateToProfile()
+            }
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: text16LeftBoldGrey("Settings"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: text16LeftBoldGrey("Preference"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: text16LeftBoldGrey("Logout"),
+            onTap: ()async{
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("loggedIn", false);
+              navigateToLogin(context);
+            }
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 //========================== APPBAR ICONS =======================
 // ignore: must_be_immutable
@@ -142,7 +196,7 @@ class ViewButton extends ViewModelWidget<AnimalViewModel> {
   return ButtonTheme(
       minWidth: 200,
       child: RaisedButton(
-      child: tagText("VIEW INFO",context),
+      child: text12CenterBoldWhite("VIEW INFO"),
       color: Colors.grey,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       padding: EdgeInsets.all(10),
@@ -181,7 +235,7 @@ Widget cardText(String name, double sizeM, double sizeF, int weightM, int weight
     width: 75,
     child: Column(
       children:<Widget>[
-        Expanded(flex:1,child: Container(alignment: Alignment.centerLeft,margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: animalViewCardTitle(name,context))),
+        Expanded(flex:1,child: Container(alignment: Alignment.centerLeft,margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: text14RightBoldGrey(name))),
         Expanded(flex:2,child: Container(margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: middleRow(sizeM, sizeF, weightM, weightF,context))),
         Expanded(flex:1,child: Container(margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: bottomRow(diet, gestation,context))),
       ]
@@ -201,7 +255,7 @@ Widget middleRow(double sizeM, double sizeF, int weightM, int weightF,var contex
             Expanded(
               flex: 1,
               child: Container(
-                child: animalViewCardBodyText("Size:", context),
+                child: text12LeftNormGrey("Size:"),
               )
             ),
             Expanded(
@@ -220,7 +274,7 @@ Widget middleRow(double sizeM, double sizeF, int weightM, int weightF,var contex
             Expanded(
               flex: 2,
               child: Container(
-                child: animalViewCardBodyText("Weight:", context),
+                child: text12LeftNormGrey("Weight:"),
               )
             ),
             Expanded(
@@ -242,7 +296,7 @@ Widget column(int metricF, int metricM, var context){
       Expanded(
         flex: 1,
           child: Row(children: <Widget>[
-            Expanded(flex:2,child: Container(child: animalViewCardBodyTextRight('$metricF kg', context),)),
+            Expanded(flex:2,child: Container(child: text12RighttNormGrey('$metricF kg'),)),
             Expanded(flex:1,child: Container(child: Icon(Icons.person_pin,color: Colors.pink[200],size: 13,),)),
           ],
         ),
@@ -250,7 +304,7 @@ Widget column(int metricF, int metricM, var context){
       Expanded(
         flex: 1,
           child: Row(children: <Widget>[
-            Expanded(flex:2,child: Container(child: animalViewCardBodyTextRight('$metricM kg', context),)),
+            Expanded(flex:2,child: Container(child: text12RighttNormGrey('$metricM kg'),)),
             Expanded(flex:1,child: Container(child: Icon(Icons.person_pin,color: Colors.blue,size: 13,),)),
           ],
         ),
@@ -265,7 +319,7 @@ Widget column2(double metricF, double metricM, var context){
       Expanded(
         flex: 1,
           child: Row(children: <Widget>[
-            Expanded(flex:2,child: Container(child: animalViewCardBodyTextRight('$metricF m', context),)),
+            Expanded(flex:2,child: Container(child: text12RighttNormGrey('$metricF m'),)),
             Expanded(flex:1,child: Container(child: Icon(Icons.person_pin,color: Colors.pink[200],size: 14,),)),
           ],
         ),
@@ -273,7 +327,7 @@ Widget column2(double metricF, double metricM, var context){
       Expanded(
         flex: 1,
           child: Row(children: <Widget>[
-            Expanded(flex:2,child: Container(child: animalViewCardBodyTextRight('$metricM m', context),)),
+            Expanded(flex:2,child: Container(child: text12RighttNormGrey('$metricM m'),)),
             Expanded(flex:1,child: Container(child: Icon(Icons.person_pin,color: Colors.blue,size: 14,),)),
           ],
         ),
@@ -291,8 +345,8 @@ Widget bottomRow(String diet, String gestation,var context){
         child: Container(
           margin: EdgeInsets.only(right:10),
           child: Row(children: <Widget>[
-            Expanded(flex: 1,child: animalViewCardBodyText("Diet: ",context)),
-            Expanded(flex: 2,child: animalViewCardBodyTextRight(diet, context),),
+            Expanded(flex: 1,child: text12LeftNormGrey("Diet: ")),
+            Expanded(flex: 2,child: text12RighttNormGrey(diet),),
           ],),
         ),
       ),
@@ -301,8 +355,8 @@ Widget bottomRow(String diet, String gestation,var context){
         child: Container(
           margin: EdgeInsets.only(right:10),
           child: Row(children: <Widget>[
-            Expanded(flex: 1,child: animalViewCardBodyText("Gestation: ",context)),
-            Expanded(flex: 1,child: animalViewCardBodyTextRight(gestation, context),),
+            Expanded(flex: 1,child: text12LeftNormGrey("Gestation: ")),
+            Expanded(flex: 1,child: text12RighttNormGrey(gestation),),
           ],),
         ),
       ),
@@ -314,22 +368,22 @@ Widget bottomRow(String diet, String gestation,var context){
 //=============================EXPANSION TILE===================
 Widget description (String bodyText, var context){
   return ExpansionTile(
-    title: descriptionText("Description", context),
-    children: <Widget>[expansionTileBodyTemplate(animalViewCardBodyText(bodyText,context))],
+    title: text14LeftBoldGrey("Description"),
+    children: <Widget>[expansionTileBodyTemplate(text12LeftNormGrey(bodyText))],
   );
 }
 
 Widget behaviour (String bodyText, var context){
   return ExpansionTile(
-    title: descriptionText("Behaviour", context),
-    children: <Widget>[expansionTileBodyTemplate(animalViewCardBodyText(bodyText,context))],
+    title: text14LeftBoldGrey("Behaviour",),
+    children: <Widget>[expansionTileBodyTemplate(text12LeftNormGrey(bodyText))],
   );
 }
 
 Widget habitats (String bodyText, var context){
   return ExpansionTile(
-    title: descriptionText("Habitats", context),
-    children: <Widget>[expansionTileBodyTemplate(animalViewCardBodyText(bodyText,context))],
+    title: text14LeftBoldGrey("Habitats"),
+    children: <Widget>[expansionTileBodyTemplate(text12LeftNormGrey(bodyText))],
   );
 }
 //=============================EXPANSION TILE===================

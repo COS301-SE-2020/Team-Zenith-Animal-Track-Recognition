@@ -23,7 +23,7 @@ class AnimalViewModel extends BaseViewModel{
     TabModel tabModel = await _api.getTabModel("Big Five", "Big Cats","Large Antelopes");
     List<Tab> tabs = new List();
     for(int i = 0; i <3; i++){
-      tabs.add( Tab( child:tabBarTitles(tabModel.categories[i], context)));
+      tabs.add( Tab( child:text12CenterBoldWhite(tabModel.categories[i])));
     }
 
     List<List<AnimalModel>> animalList = new List();

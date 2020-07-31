@@ -62,7 +62,6 @@ class SliverBody extends ViewModelWidget<UploadViewModel> {
             [
               header,
               spoorImageBlock,
-              //animalInformation,
               SpoorLocationInput(),
               attachATag,
               UploadButton()
@@ -73,43 +72,6 @@ class SliverBody extends ViewModelWidget<UploadViewModel> {
     );
   }
 }
-
-Widget spoorImageBlock = new Container(
-  height: 150,
-  width: 100,
-  padding: EdgeInsets.all(5),
-  margin: EdgeInsets.all(15),
-  decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-    border: Border.all(color: Colors.white)
-  ),
-  child: Column(
-    children: <Widget>[
-      Expanded(flex:1,child: containerTitle("Spoor Image", 13)),
-      Expanded(flex:1,child: CameraButton()),
-      Expanded(flex:1,child: GalleryButton()),
-    ],
-  ),
-);
-
-Widget rightIcon = new Container(
-  margin: new EdgeInsets.only(right:5,left:5,),
-  height: 30,
-  child: Icon(Icons.arrow_right),
-);
-
-Widget leftBlock = new Container(
-  alignment: Alignment.center,
-  margin: new EdgeInsets.only(right:5,left:5),
-  padding: new EdgeInsets.all(5),
-    decoration: BoxDecoration(
-    color: Colors.grey,
-    borderRadius: BorderRadius.circular(10),
-  ),
-  height: 30,
-  width: 30,
-);
 
 class LeftImage extends ViewModelWidget<UploadViewModel> {
   LeftImage({Key key,}) :super(reactive: true);
@@ -143,7 +105,7 @@ class GalleryButton extends ViewModelWidget<UploadViewModel> {
         margin: new EdgeInsets.only(bottom: 10),
         child: Row(children: <Widget>[
           Expanded(flex:1,child: leftBlock),
-          Expanded(flex:5,child: text4("From Gallery",15)),
+          Expanded(flex:5,child: text14LeftBoldGrey("From Gallery")),
           Expanded(flex:1,child: rightIcon),
         ],),
       ),
@@ -156,7 +118,7 @@ class GalleryButton extends ViewModelWidget<UploadViewModel> {
         margin: new EdgeInsets.only(bottom: 10),
         child: Row(children: <Widget>[
           Expanded(flex:1,child: LeftImage()),
-          Expanded(flex:5,child: text4("From Gallery",15)),
+          Expanded(flex:5,child: text14LeftBoldGrey("From Gallery")),
           Expanded(flex:1,child: rightIcon),
         ],),
       ),
@@ -179,7 +141,7 @@ class CameraButton extends ViewModelWidget<UploadViewModel> {
         margin: new EdgeInsets.only(bottom: 10),
         child: Row(children: <Widget>[
           Expanded(flex:1,child: leftBlock),
-          Expanded(flex:5,child: text4("From Camera",15)),
+          Expanded(flex:5,child: text14LeftBoldGrey("From Camera")),
           Expanded(flex:1,child: rightIcon),
         ],),
       ),
@@ -192,7 +154,7 @@ class CameraButton extends ViewModelWidget<UploadViewModel> {
         margin: new EdgeInsets.only(bottom: 10),
         child: Row(children: <Widget>[
           Expanded(flex:1,child: LeftImage()),
-          Expanded(flex:5,child: text4("From Camera",15)),
+          Expanded(flex:5,child: text14LeftBoldGrey("From Camera")),
           Expanded(flex:1,child: rightIcon),
         ],),
       ),
@@ -200,21 +162,6 @@ class CameraButton extends ViewModelWidget<UploadViewModel> {
         model.uploadFromCamera();
       },
     );
-  }
-}
-
-class SpoorLocation extends ViewModelWidget<UploadViewModel> {
-  SpoorLocation({Key key,}) :super(reactive: true);
-  @override
-  Widget build(BuildContext context, UploadViewModel model) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(margin: new EdgeInsets.only(left:5),padding:new EdgeInsets.all(0) ,alignment:Alignment.centerLeft,child: text2("Longitude: ",15)),
-        Container(margin: new EdgeInsets.only(left:0),padding:new EdgeInsets.all(5) ,alignment:Alignment.centerLeft,child: Longitude()),
-        Container(margin: new EdgeInsets.only(left:5),padding:new EdgeInsets.all(0) ,alignment:Alignment.centerLeft,child: text2("Latitude: ",15)),
-        Container(margin: new EdgeInsets.only(left:0),padding:new EdgeInsets.all(5) ,alignment:Alignment.centerLeft,child: Latitude()),
-      ],);
   }
 }
 
@@ -239,7 +186,7 @@ class Longitude extends HookViewModelWidget<UploadViewModel>{
         fillColor: Colors.grey[100]
       ),
       style: TextStyle(
-        fontFamily: 'Helvetica',
+        fontFamily: 'MavenPro',
         fontWeight: FontWeight.normal,
         color: Colors.grey
       ),
@@ -268,51 +215,13 @@ class Latitude extends HookViewModelWidget<UploadViewModel>{
         fillColor: Colors.grey[100]
       ),
       style: TextStyle(
-        fontFamily: 'Helvetica',
+        fontFamily: 'MavenPro',
         fontWeight: FontWeight.normal,
         color: Colors.grey
       ),
     );
   }
 }
-
-class AnimalSelection extends ViewModelWidget<UploadViewModel> {
-  AnimalSelection({Key key,}) :super(reactive: true);
-  @override
-  Widget build(BuildContext context, UploadViewModel model) {
-    return GestureDetector(
-     child: Container(
-        margin: new EdgeInsets.only(bottom: 10),
-        child: Row(children: <Widget>[
-          Expanded(flex:1,child: leftBlock),
-          Expanded(flex:5,child: text4("Select Animal",15)),
-          Expanded(flex:1,child: rightIcon),
-        ],),
-      ),
-      onTap: () async{
-        //model.uploadFromGallery();
-      },
-    );
-  }
-}
-
-Widget animalInformation = new Container(
-  height: 100,
-  width: 100,
-  padding: EdgeInsets.all(5),
-  margin: EdgeInsets.all(15),
-  decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-    border: Border.all(color: Colors.white)
-  ),
-  child: Column(
-    children: <Widget>[
-      Expanded(flex:1,child: containerTitle("Animal Information", 13)),
-      Expanded(flex:1,child: AnimalSelection()),
-    ],
-  ),
-);
 
 class SpoorLocationInput extends ViewModelWidget<UploadViewModel> { 
   SpoorLocationInput({Key key}) : super(key: key, reactive:true);
@@ -329,13 +238,109 @@ class SpoorLocationInput extends ViewModelWidget<UploadViewModel> {
       ),
       child: Column(
         children: <Widget>[
-          Container(margin: EdgeInsets.only(top:13,bottom:10),child: containerTitle("Spoor Location", 13)),
+          Container(margin: EdgeInsets.only(top:13,bottom:10),child: containerTitle("Spoor Location")),
           SpoorLocation(),
         ],
       ),
     );
   }
 }
+
+class SpoorLocation extends ViewModelWidget<UploadViewModel> {
+  SpoorLocation({Key key,}) :super(reactive: true);
+  @override
+  Widget build(BuildContext context, UploadViewModel model) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(margin: new EdgeInsets.only(left:5),padding:new EdgeInsets.all(0) ,alignment:Alignment.centerLeft,child: text14LeftBoldGrey("Longitude: ")),
+        Container(margin: new EdgeInsets.only(left:0),padding:new EdgeInsets.all(5) ,alignment:Alignment.centerLeft,child: Longitude()),
+        Container(margin: new EdgeInsets.only(left:5),padding:new EdgeInsets.all(0) ,alignment:Alignment.centerLeft,child: text14LeftBoldGrey("Latitude: ")),
+        Container(margin: new EdgeInsets.only(left:0),padding:new EdgeInsets.all(5) ,alignment:Alignment.centerLeft,child: Latitude()),
+      ],);
+  }
+}
+
+class Tags extends ViewModelWidget<UploadViewModel> {
+  Tags({Key key}) : super(key: key, reactive:true);
+
+  @override
+  Widget build(BuildContext context,UploadViewModel model) {
+    int defualtChoiceIndex = model.tagIndex;
+    model.setTags();
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemCount: model.tags.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          margin: new EdgeInsets.only(right:5),
+          child: ChoiceChip(
+            avatar: CircleAvatar(
+              radius: 10,
+              backgroundColor: Colors.black,
+              child: text14CenterNormWhite(model.tags[index][0].toUpperCase())
+            ),
+            label: text14CenterBoldGrey(model.tags[index]),
+            backgroundColor: Colors.grey[100],
+            selected: defualtChoiceIndex==index,
+            selectedColor: Colors.blue.shade100,
+            elevation: 2,
+            onSelected: (bool selected){
+              print(index);
+              defualtChoiceIndex = selected ? index : null;
+              if(defualtChoiceIndex == null){
+                model.setTag(null);
+                model.setTagIndex(null);                  
+              }else{
+                model.setTag(model.tags[index]);
+                model.setTagIndex(index);
+              }
+              model.notifyListeners();
+            },
+          ),
+        );     
+      }
+    );
+  }
+}
+
+class UploadButton extends ViewModelWidget<UploadViewModel> {
+  UploadButton({Key key}) :super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, UploadViewModel model) {
+    return Container(
+      margin: EdgeInsets.only(right:15, left: 15, top: 5,bottom: 5,),
+      width: 80,
+      child: RaisedButton(
+        child: text16CenterBoldWhite("UPLOAD GEOTAG"),
+        color: Colors.grey,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        padding: EdgeInsets.all(10),
+        onPressed: (){
+          model.upload();
+        }
+      ),
+    );
+  }
+}
+
+//================================== TEXT TEMPLATES =============================
+Widget header = new Container(
+  alignment: Alignment.center,
+  padding: EdgeInsets.all(5),
+  margin: EdgeInsets.all(15),
+  child: text18CenterBoldGrey("Please enter in Spoor Information below"),
+);
+
+Widget containerTitle(String title){
+  return Container(
+    margin: EdgeInsets.only(left:7),
+    alignment: Alignment.centerLeft,
+    child: text12LeftBoldGrey(title)
+  );
+} 
 
 Widget attachATag = new Container(
   height: 115,
@@ -357,159 +362,44 @@ Widget attachATag = new Container(
 
 Widget attachATagButton = new Container(
     child: Row(children: <Widget>[
-      Expanded(flex:1,child: containerTitle("Attach A Tag", 13)),
+      Expanded(flex:1,child: containerTitle("Attach A Tag")),
     ],),
 );
 
-class Tags extends ViewModelWidget<UploadViewModel> {
-  Tags({Key key}) : super(key: key, reactive:true);
-
-  @override
-  Widget build(BuildContext context,UploadViewModel model) {
-    int defualtChoiceIndex = model.tagIndex;
-    model.setTags();
-    return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemCount: model.tags.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ChoiceChip(
-          avatar: CircleAvatar(
-            radius: 10,
-            backgroundColor: Colors.black,
-            child: Text(model.tags[index][0].toUpperCase())
-          ),
-          label: text2(model.tags[index], 15),
-          backgroundColor: Colors.grey[100],
-          selected: defualtChoiceIndex==index,
-          selectedColor: Colors.blueGrey,
-          elevation: 2,
-          onSelected: (bool selected){
-            print(index);
-            defualtChoiceIndex = selected ? index : null;
-            if(defualtChoiceIndex == null){
-              model.setTag(null);
-              model.setTagIndex(null);                  
-            }else{
-              model.setTag(model.tags[index]);
-              model.setTagIndex(index);
-            }
-            model.notifyListeners();
-          },
-        );     
-      }
-    );
-  }
-}
-
-class UploadButton extends ViewModelWidget<UploadViewModel> {
-  UploadButton({Key key}) :super(reactive: true);
-
-  @override
-  Widget build(BuildContext context, UploadViewModel model) {
-    return Container(
-      margin: EdgeInsets.only(right:15, left: 15, top: 5,bottom: 5,),
-      width: 80,
-      child: RaisedButton(
-        child: text("UPLOAD GEOTAG",15),
-        color: Colors.grey,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        padding: EdgeInsets.all(10),
-        onPressed: (){
-          model.upload();
-        }
-      ),
-    );
-  }
-}
-
-//================================== TEXT TEMPLATES =============================
-Widget header = new Container(
-  alignment: Alignment.center,
+Widget spoorImageBlock = new Container(
+  height: 150,
+  width: 100,
   padding: EdgeInsets.all(5),
   margin: EdgeInsets.all(15),
-  child: Text(
-      "Please enter in Spoor Information below",
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontSize: 18,
-        fontFamily: 'Helvetica',
-        fontWeight: FontWeight.bold,
-        color: Colors.grey
-      )  
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(10),
+    border: Border.all(color: Colors.white)
+  ),
+  child: Column(
+    children: <Widget>[
+      Expanded(flex:1,child: containerTitle("Spoor Image")),
+      Expanded(flex:1,child: CameraButton()),
+      Expanded(flex:1,child: GalleryButton()),
+    ],
   ),
 );
 
-Widget containerTitle(String title, double fontsize){
-  return Container(
-    margin: EdgeInsets.only(left:7),
-    alignment: Alignment.centerLeft,
-    child: text2(title,fontsize)
-  );
-} 
+Widget rightIcon = new Container(
+  margin: new EdgeInsets.only(right:5,left:5,),
+  height: 30,
+  child: Icon(Icons.arrow_right),
+);
 
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.white
-    ),
-  );
-}
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text3(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.black
-    ),
-  );
-}
-
-Widget text4(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text5(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
+Widget leftBlock = new Container(
+  alignment: Alignment.center,
+  margin: new EdgeInsets.only(right:5,left:5),
+  padding: new EdgeInsets.all(5),
+    decoration: BoxDecoration(
+    color: Colors.grey,
+    borderRadius: BorderRadius.circular(10),
+  ),
+  height: 30,
+  width: 30,
+);
 //================================== TEXT TEMPLATES =============================

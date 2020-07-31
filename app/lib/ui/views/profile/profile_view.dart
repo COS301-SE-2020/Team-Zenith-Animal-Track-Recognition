@@ -3,6 +3,7 @@ import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/profile/profile_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/rendering/sliver_persistent_header.dart';
 import 'package:stacked/stacked.dart';
 
 class ProfileView extends StatelessWidget {
@@ -33,7 +34,7 @@ class ProfileView extends StatelessWidget {
                 title: appBarTitle("Profile", context),
                 actions: <Widget>[IconBuilder(icon:Icons.search,type:"search"), IconBuilder(icon:Icons.more_vert,type:"vert")],
               ),
-              body: Container(color:Colors.grey[300] ,child: TopBar(tempObject: snapshot.data,)),
+              body: Container(color:Colors.grey[300] ,child: ProfileViewList(tempObject: snapshot.data,)),
               bottomNavigationBar: BottomNavigation(),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
@@ -81,7 +82,7 @@ class IconButtons extends ViewModelWidget<ProfileViewModel> {
             },
           ),
         ),
-        text4(subTitle, 10)
+        text12CenterBoldBlack(subTitle)
       ],
   ),
     );
@@ -112,224 +113,108 @@ class IconBuilder extends ViewModelWidget<ProfileViewModel> {
   }
 }
 //========================== APPBAR ICONS =======================
-
-class ListBody extends ViewModelWidget<ProfileViewModel> {
-  List<ProfileModel> animalList;
-  ListBody({Key key, this.animalList}) : super(reactive: true);
-
-  @override
-  Widget build(BuildContext context, ProfileViewModel model) {
-    return ListView.builder(
-      itemCount: animalList.length,
-      itemBuilder: (context, index){
-        return GestureDetector(
-          onTap: (){
-            navigateToIdentification(animalList[index].name.toLowerCase());
-          },
-          child: Container(
-            margin: new EdgeInsets.all(10),
-            padding: new EdgeInsets.all(0),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            height: 150,
-            child: Column(
-              children: <Widget>[
-                Expanded(flex:4,child: Row(children: <Widget>[
-                  Expanded(flex:1,child: imageBlock(animalList[index].pic)),
-                  Expanded(flex:2,child: textColumn(animalList[index].name, animalList[index].time, animalList[index].species, animalList[index].location, animalList[index].captured))
-                ],)),
-                Divider(),
-                Expanded(flex:1,child: Row(
-                  children: <Widget>[
-                    Expanded(flex: 1,child: Container(
-                      alignment: Alignment.center, margin: new EdgeInsets.only(left:15,right:10,bottom: 6),
-                      decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(10)),
-                      child: text(animalList[index].tag, 13),
-                    ),),
-                    Expanded(flex: 2,child: Container(
-                      alignment: Alignment.center, margin: new EdgeInsets.only(right:10,bottom: 6),
-                      //decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(10)),
-                      child: textRow(animalList[index].score),
-                    ),),
-                  ],
-                )),
-              ],
-            ),
-          ),
-        );
-      }
-    );
-  }
-}
-
-Widget imageBlock (String imageLink) {
-    return Container(
-    alignment: Alignment.center,
-    margin: new EdgeInsets.only(left:15,right:10,),
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage(imageLink),
-        fit: BoxFit.fill,
-      ),
-      color: Colors.grey,
-      borderRadius: BorderRadius.circular(15),
-    ),
-    height: 75,
-  );
-}
-
-Widget textColumn(String name, String time, String species, String location, String capturedBy){
-  return Container(
-    height: 75,
-    margin: new EdgeInsets.only(right:10,),
-    child: Column(
-      children: <Widget>[
-        Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: text2(name, 18),)),
-          Expanded(flex:1,child: Container(color: Colors.white,child: text5(time, 13),)),
-        ],)),
-        Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: text2("Species: ", 12),)),
-          Expanded(flex:2,child: Container(color: Colors.white,child: text3(species, 12),)),
-        ],)),      
-        Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: text2("Location: ", 12),)),
-          Expanded(flex:2,child: Container(color: Colors.white,child: text3(location, 12),)),
-        ],)),
-        Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: text2("Captured by: ", 12),)),
-          Expanded(flex:2,child: Container(color: Colors.white,child: text3(capturedBy, 12),)),
-        ],)),    ],
-    ),
-  );
-}
-
-Widget textRow(String accuracy){
-  return Row(children: <Widget>[
-    Expanded(flex: 2,child: text3("ACCURACY SCORE", 14),),
-    Expanded(flex: 1,child: text6(accuracy, 14),),
-  ],);
-}
-//================================== TEXT TEMPLATES =============================
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.white
-    ),
-  );
-}
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.black
-    ),
-  );
-}
-
-Widget text3(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text4(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.black
-    ),
-  );
-}
-
-Widget text5(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.normal,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text6(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-//================================== TEXT TEMPLATES =============================
-class TopBar extends ViewModelWidget<ProfileViewModel> {
+class ProfileViewList extends ViewModelWidget<ProfileViewModel>{
   TempObject tempObject;
   List<ProfileModel> animalList;
-  TopBar({Key key,this.tempObject}) : super(reactive: true);
-
+  ProfileViewList({Key key, this.tempObject}) : super(reactive: true);
   @override
-  Widget build(BuildContext context, ProfileViewModel model) {
+  Widget build(BuildContext context, ProfileViewModel viewModel) {
     animalList = tempObject.animalList;
-    return NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool isScrolled){
-          return [
-            SliverAppBar(
-              expandedHeight: 180.0,
-              automaticallyImplyLeading: false,
-              leading: null,
-              floating: true,
-              pinned: false,
-              stretch: false,
-              snap: false,
-              backgroundColor: Colors.white,
-                flexibleSpace: FlexibleSpaceBar(
-                centerTitle: true,
-                background: profileinfo(tempObject.infoModel),
-                collapseMode: CollapseMode.pin,
-              ),
-            ),
-          ];
-        }, 
-        body: ListBody(animalList: animalList,)
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverPersistentHeader(
+          pinned: true,
+          floating: false,
+          delegate: ProfileViewDelegate(minExtent: 120,maxExtent: 120,tempObject: tempObject),
+        ),  
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index){
+              return GestureDetector(
+                onTap: (){
+                  navigateToIdentification(animalList[index].name.toLowerCase());
+                },
+                child: Card(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  elevation: 0,
+                  margin: new EdgeInsets.only(top:10, bottom:10, left: 15, right: 15),
+                  child: Container(
+                    //margin: new EdgeInsets.all(10),
+                    padding: new EdgeInsets.all(0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    height: 150,
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(flex:4,child: Row(children: <Widget>[
+                          Expanded(flex:1,child: imageBlock(animalList[index].pic)),
+                          Expanded(flex:2,child: textColumn(animalList[index].name, animalList[index].time, animalList[index].species, animalList[index].location, animalList[index].captured))
+                        ],)),
+                        Divider(),
+                        Expanded(flex:1,child: Row(
+                          children: <Widget>[
+                            Expanded(flex: 1,child: Container(
+                              alignment: Alignment.center, margin: new EdgeInsets.only(left:15,right:10,bottom: 6),
+                              decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(10)),
+                              child: text12LeftBoldWhite(animalList[index].tag),
+                            ),),
+                            Expanded(flex: 2,child: Container(
+                              alignment: Alignment.center, margin: new EdgeInsets.only(right:10,bottom: 6),
+                              child: textRow(animalList[index].score),
+                            ),),
+                          ],
+                        )),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+            childCount: animalList.length
+          )
+        )    
+      ],
     );
   }
+}
+
+class ProfileViewDelegate implements SliverPersistentHeaderDelegate{
+  final double maxExtent;
+  final double minExtent;
+  final TempObject tempObject;
+  ProfileViewDelegate({@required this.minExtent ,@required this.maxExtent, @required this.tempObject });
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(child: profileinfo(tempObject.infoModel));
+  }
+  
+  @override
+  bool shouldRed(BuildContext context, legate) {
+    return true;
+  }
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
+  }
+
+  @override
+  // TODO: implement snapConfiguration
+  FloatingHeaderSnapConfiguration get snapConfiguration => null;
+
+  @override
+  // TODO: implement stretchConfiguration
+  OverScrollHeaderStretchConfiguration get stretchConfiguration =>null;
 }
 
 Widget profileinfo(ProfileInfoModel profileInfo){
   return Container(
-    child: Stack(
-      children: <Widget>[
-        Column(
+    color: Colors.white,
+    child:Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
@@ -338,29 +223,17 @@ Widget profileinfo(ProfileInfoModel profileInfo){
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[Expanded(flex:1, child: profilepic),Expanded(flex:3, child: profiletext)],
+                  children: <Widget>[Expanded(flex:1, child: profilepic("profilePicLink")),Expanded(flex:3, child: profiletext)],
                 ),
               ),
-            Container(padding: new EdgeInsets.all(0),color:Colors.white,child: summary(profileInfo)),
-            Container(
-              child: Row(children: <Widget>[
-                Expanded(flex:1,child: IconButtons(iconData:Icons.edit,subTitle:"EDIT PROFILE",index:0)),
-                Expanded(flex:1,child: IconButtons(iconData:Icons.lock,subTitle:"CHANGE PASSWORD",index:1)),
-                Expanded(flex:1,child: IconButtons(iconData:Icons.settings,subTitle:"PREFERENCE",index:2)),
-                Expanded(flex:1,child: IconButtons(iconData:Icons.power_settings_new,subTitle:"LOGOUT",index:3)),
-              ],),
-            ),        //ListBody(animalList: animalList,)
-
+            Container(padding: new EdgeInsets.all(0),color:Colors.white,child: summary(profileInfo)),        //ListBody(animalList: animalList,)
           ],
         ),
-      ],
-    ),
   );
 } 
 
 Widget profiletext = new Container(
-    color: Colors.white
-    ,
+    color: Colors.white,
     alignment: Alignment.center,
     margin: new EdgeInsets.only(bottom:5,right:10,top:5 ),
     height: 70,
@@ -368,14 +241,14 @@ Widget profiletext = new Container(
         children:<Widget>[
           Expanded(
               flex:1,
-              child: Container(alignment: Alignment.centerLeft ,child: text2("Kagiso Ndlovu",22))
+              child: Container(alignment: Alignment.centerLeft ,child: text20LeftBoldBlack("Kagiso Ndlovu"))
           ),
           Expanded(
               flex:1,
               child: Row(
                 children: <Widget>[
                   Expanded(flex:1,child: Container(alignment: Alignment.centerLeft ,child: Icon(Icons.email,size: 15,color: Colors.grey,))),
-                  Expanded(flex:10,child: Container(alignment: Alignment.centerLeft ,child: text5('k.ndlovu@email.com',15))),
+                  Expanded(flex:10,child: Container(alignment: Alignment.centerLeft ,child: text14LeftNormGrey('k.ndlovu@email.com'))),
                 ],
               )
           ),
@@ -384,7 +257,7 @@ Widget profiletext = new Container(
               child: Row(
                 children: <Widget>[
                   Expanded(flex:1,child: Container(alignment: Alignment.centerLeft , child: Icon(Icons.phone,size: 15,color: Colors.grey))),
-                  Expanded(flex:10,child: Container(alignment: Alignment.centerLeft ,child: text5('+27712345567',15))),
+                  Expanded(flex:10,child: Container(alignment: Alignment.centerLeft ,child: text14LeftNormGrey('0712345567'))),
                 ],
               )
           ),
@@ -407,10 +280,10 @@ Widget summary(ProfileInfoModel profileInfo){
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Expanded(flex:1,child: Container(alignment:Alignment.centerRight,color: Colors.white,height: 30,width: 30,child: Center(child: text2("$spoorIdentified", 20)),)),
+                Expanded(flex:1,child: Container(alignment:Alignment.centerRight,color: Colors.white,height: 30,width: 30,child: Center(child: text20LeftBoldBlack("$spoorIdentified")),)),
                 Expanded(flex:1,child: Container(margin: new EdgeInsets.all(0),color: Colors.white,height: 30,width: 30,child: Column(children:[
-                  Expanded(flex:1,child: Container(alignment:Alignment.bottomLeft,child: text3("Spoors",10))),
-                  Expanded(flex:1,child: Container(alignment: Alignment.topLeft,child: text3("Identified",10)))
+                  Expanded(flex:1,child: Container(alignment:Alignment.bottomLeft,child: text12LeftBoldGrey("Spoors"))),
+                  Expanded(flex:1,child: Container(alignment: Alignment.topLeft,child: text12LeftBoldGrey("Identified")))
                 ]),)),
               ],
             ),
@@ -420,10 +293,10 @@ Widget summary(ProfileInfoModel profileInfo){
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Expanded(flex:1,child: Container(alignment:Alignment.centerRight,color: Colors.white,height: 30,width: 30,child: Center(child: text2("$animalsTracked", 20)))),
+                Expanded(flex:1,child: Container(alignment:Alignment.centerRight,color: Colors.white,height: 30,width: 30,child: Center(child: text20LeftBoldBlack("$animalsTracked")))),
                 Expanded(flex:1,child: Container(margin: new EdgeInsets.all(0),color: Colors.white,height: 30,width: 30,child: Column(children:[
-                  Expanded(flex:1,child: Container(alignment:Alignment.bottomLeft,child: text3("Animals",10))),
-                  Expanded(flex:1,child: Container(alignment: Alignment.topLeft,child: text3("Tracked",10)))
+                  Expanded(flex:1,child: Container(alignment:Alignment.bottomLeft,child: text12LeftBoldGrey("Animals"))),
+                  Expanded(flex:1,child: Container(alignment: Alignment.topLeft,child: text12LeftBoldGrey("Tracked")))
                 ]),)),
               ],
             ),
@@ -432,10 +305,10 @@ Widget summary(ProfileInfoModel profileInfo){
             flex: 1,
             child: Row(
               children: <Widget>[
-                Expanded(flex:1,child: Container(alignment:Alignment.centerRight,color: Colors.white,height: 30,width: 30,child: Center(child: text2("$speciesTracked", 20)))),
+                Expanded(flex:1,child: Container(alignment:Alignment.centerRight,color: Colors.white,height: 30,width: 30,child: Center(child: text20LeftBoldBlack("$speciesTracked")))),
                 Expanded(flex:1,child: Container(margin: new EdgeInsets.all(0),color: Colors.white,height: 30,width: 30,child: Column(children:[
-                  Expanded(flex:1,child: Container(alignment:Alignment.bottomLeft,child: text3("Species",10))),
-                  Expanded(flex:1,child: Container(alignment: Alignment.topLeft,child: text3("Tracked",10)))
+                  Expanded(flex:1,child: Container(alignment:Alignment.bottomLeft,child: text12LeftBoldGrey("Species"))),
+                  Expanded(flex:1,child: Container(alignment: Alignment.topLeft,child: text12LeftBoldGrey("Tracked")))
                 ]),)),
               ],
             ),
@@ -445,7 +318,8 @@ Widget summary(ProfileInfoModel profileInfo){
     );
   } 
 
-Widget profilepic = new Container(
+Widget profilepic(String profilePicture){
+  return Container(
     alignment: Alignment.center,
     margin: new EdgeInsets.only(bottom:5,right:10,top:5,left:5 ),
     padding: new EdgeInsets.all(5),
@@ -459,4 +333,15 @@ Widget profilepic = new Container(
     ),
     height: 70,
   );
+} 
 
+
+
+            // Container(
+            //   child: Row(children: <Widget>[
+            //     Expanded(flex:1,child: IconButtons(iconData:Icons.edit,subTitle:"EDIT PROFILE",index:0)),
+            //     Expanded(flex:1,child: IconButtons(iconData:Icons.lock,subTitle:"CHANGE PASSWORD",index:1)),
+            //     Expanded(flex:1,child: IconButtons(iconData:Icons.settings,subTitle:"PREFERENCE",index:2)),
+            //     Expanded(flex:1,child: IconButtons(iconData:Icons.power_settings_new,subTitle:"LOGOUT",index:3)),
+            //   ],),
+            // )
