@@ -40,6 +40,8 @@ export class AnimalSearchSidenavComponent implements OnInit {
 
 	updateSearchText(event) {
 		this.searchTextOnChange.emit(event);
+		if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")
+			this.currentAlphabet = null;
 	}
 
 	checkSpecies(title: string) {

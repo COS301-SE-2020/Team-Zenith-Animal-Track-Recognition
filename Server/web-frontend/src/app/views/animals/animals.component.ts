@@ -97,7 +97,6 @@ export class AnimalsComponent implements OnInit {
 					}
 				}
 			}
-			console.log(this.animals);
 		} else {
 			for (let i = 0; i < this.animals.length - 1; i++) {
 				for (let j = i + 1; j < this.animals.length; j++) {

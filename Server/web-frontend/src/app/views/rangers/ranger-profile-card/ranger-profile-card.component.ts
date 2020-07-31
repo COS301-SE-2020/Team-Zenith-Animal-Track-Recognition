@@ -19,7 +19,8 @@ export class RangerProfileCardComponent implements OnInit {
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	sorted: string;
 
-	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog,   private changeDetection: ChangeDetectorRef) { }
+	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef) { }
+	
 	ngOnInit(): void { this.startLoader(); }
 
 	public ngOnChanges(changes: SimpleChanges) {

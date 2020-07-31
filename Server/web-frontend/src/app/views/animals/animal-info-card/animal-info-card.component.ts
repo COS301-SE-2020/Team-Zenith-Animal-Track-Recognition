@@ -1,10 +1,9 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges,  ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { EditAnimalInfoComponent } from './../edit-animal-info/edit-animal-info.component';
-//import {DeleteRangerComponent} from './../delete-ranger/delete-ranger.component';
 
 @Component({
   selector: 'app-animal-info-card',
@@ -18,7 +17,7 @@ export class AnimalInfoCardComponent implements OnInit {
   @Input() sortByCommonName: boolean;
   @Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
 
-  constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) { }
+  constructor(private http: HttpClient, private router: Router, public dialog: MatDialog,  private changeDetection: ChangeDetectorRef) { }
 
   ngOnInit(): void { this.startLoader(); }
 
@@ -26,34 +25,40 @@ export class AnimalInfoCardComponent implements OnInit {
     this.startLoader();
     if ('rangers' in changes) {
       //If rangers has updated
+		this.changeDetection.markForCheck();
     }
     this.stopLoader();
   }
 
-  //animal CRUD Quick-Actions
+	//Animal CRUD Quick-Actions
 
-  //EDIT 
-  openEditAnimalDialog(animalClassi) {
-    const dialogConfig = new MatDialogConfig();
+	//EDIT 
+	openEditAnimalDialog(animalID) {
+		const dialogConfig = new MatDialogConfig();
 
-    //Get animal information for chosen card
-    var animalName = document.getElementById(animalClassi + "Name").textContent;
-    var animalClassification = document.getElementById(animalClassi + "Classification").textContent;
-    var animalDescription = document.getElementById(animalClassi + "Descr").textContent;
-
-    this.dialog.open(EditAnimalInfoComponent, { height: '85%', width: '65%', autoFocus: true, disableClose: true, data: { name: animalName, classification: animalClassification, description: animalDescription }, });
-  }
-
-  //DELETE animal
-  openDeleteAnimalDialog(animalID) {
-    const dialogConfig = new MatDialogConfig();
-
-    //Get animal information for chosen card
-    var animalFullName = document.getElementById("animal" + animalID + "Name").textContent;
-
-    //	this.dialog.open(DeleteAnimalComponent, {height: '45%', width: '30%', autoFocus: true, disableClose: true, data: { name: animalFullName,},});
-  }
-
+		//Get animal information for chosen card
+		var chosenAnimal;
+		for (let i = 0; i < this.animals.length; i++)
+		{
+			if (animalID == this.animals[i].Animal_ID)
+			{
+				chosenAnimal = this.animals[i];
+				i = this.animals[i].length;
+			}
+		}
+		const editDialogRef = this.dialog.open(EditAnimalInfoComponent, { height: '85%', width: '60%', autoFocus: true, disableClose: true, data: { animal: chosenAnimal}, });
+		editDialogRef.afterClosed().subscribe(result => {
+			this.stopLoader();
+			if (result == "success") {
+				//If animal was successfully edited
+				//Refresh component and notify parent
+				this.animalsOnChange.emit("update");
+			}
+			else {
+				console.log("Error editing animal: ", result);
+			}
+		});
+	}
 
   sort(bool: boolean) {
     if (bool) {
@@ -80,11 +85,9 @@ export class AnimalInfoCardComponent implements OnInit {
   }
   //Loader
   startLoader() {
-    console.log("Starting Loader");
     document.getElementById("loader-container").style.visibility = "visible";
   }
   stopLoader() {
-    console.log("Stopping Loader");
     document.getElementById("loader-container").style.visibility = "hidden";
   }
 
