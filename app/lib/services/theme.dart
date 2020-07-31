@@ -45,18 +45,6 @@ ThemeData basicTheme(){
         color: Colors.black,
         fontSize: 14
       ),
-      bodyText1: base.bodyText1.copyWith(
-        fontFamily: 'MavenPro',
-        fontWeight: FontWeight.normal,
-        fontSize: 12.0,
-        color: Colors.black
-      ),
-      bodyText2: base.bodyText2.copyWith(
-        fontFamily: 'MavenPro',
-        fontWeight: FontWeight.normal,
-        fontSize: 12.0,
-        color: Colors.grey
-      ),
     );
   }
   final ThemeData base = ThemeData.light();

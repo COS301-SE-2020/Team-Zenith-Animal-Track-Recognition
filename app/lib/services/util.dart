@@ -71,8 +71,16 @@ void navigate(context) {
   Navigator.popUntil(context, ModalRoute.withName('/'));
 }
 
+void navigateBack(context) {
+  Navigator.of(context).pop();
+}
+
 void navigateToSearchView(){
   _navigationService.navigateTo(Routes.searchViewRoute);
+}
+
+void navigateToProfile(){
+  _navigationService.navigateTo(Routes.profileViewRoute);
 }
 
 void navigateToInfo(String name) async{
@@ -84,7 +92,7 @@ void navigateToInfo(String name) async{
 }
 
 void navigateToGallery(String i)async{
-  GalleryModel galleryModel = await _api.getGalleryModel(i);
+  GalleryModel galleryModel = await _api.getGalleryModel(i.toLowerCase());
   _navigationService.navigateTo(Routes.gallerylViewRoute,
     arguments: GalleryViewArguments(galleryModel: galleryModel)
   );
@@ -97,9 +105,27 @@ void navigateToIdentification(String animal)async {
   );
 }
 
+void navigateToLogin(var context){
+  Navigator.of(context).pushNamedAndRemoveUntil('/login-view', (route) => false);
+}
 //============================ Functionality Section ==================================//
 
 //================================ Widget Section =====================================//
+Widget logo = new Container(
+    alignment: Alignment.center,
+    //margin: new EdgeInsets.only(right:5,left:5),
+    padding: new EdgeInsets.all(5),
+    decoration: BoxDecoration(
+      color: Colors.grey,
+      borderRadius: BorderRadius.circular(10),
+      image: DecorationImage(
+        image: AssetImage("assets/images/logo.jpeg"),
+        fit: BoxFit.fill,
+      ),
+    ),
+    height: 130,
+    width: 130,
+);
 
 Widget progressIndicator(){
   return Container(
@@ -121,76 +147,53 @@ Widget appBarTitle(String title, var context){
   );
 }
 
-Widget cardTitle(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.headline2,
+Widget imageBlock (String imageLink) {
+    return Container(
+    alignment: Alignment.center,
+    margin: new EdgeInsets.only(left:15,right:10,),
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage(imageLink),
+        fit: BoxFit.fill,
+      ),
+      color: Colors.grey,
+      borderRadius: BorderRadius.circular(15),
+    ),
+    height: 75,
   );
 }
 
-Widget cardTextLeft(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.bodyText1,
+Widget textColumn(String name, String time, String species, String location, String capturedBy){
+  return Container(
+    height: 75,
+    margin: new EdgeInsets.only(right:10,),
+    child: Column(
+      children: <Widget>[
+        Expanded(flex:1,child:Row(children: <Widget>[
+          Expanded(flex:1,child: Container(color: Colors.white,child: text18LeftBoldBlack(name),)),
+          Expanded(flex:1,child: Container(color: Colors.white,child: text12RighttNormGrey(time),)),
+        ],)),
+        Expanded(flex:1,child:Row(children: <Widget>[
+          Expanded(flex:1,child: Container(color: Colors.white,child: text12LeftNormBlack("Species: "),)),
+          Expanded(flex:2,child: Container(color: Colors.white,child: text12LeftNormGrey(species,),)),
+        ],)),      
+        Expanded(flex:1,child:Row(children: <Widget>[
+          Expanded(flex:1,child: Container(color: Colors.white,child: text12LeftNormBlack("Location: "),)),
+          Expanded(flex:2,child: Container(color: Colors.white,child: text12LeftNormGrey(location),)),
+        ],)),
+        Expanded(flex:1,child:Row(children: <Widget>[
+          Expanded(flex:1,child: Container(color: Colors.white,child: text12LeftNormBlack("Captured by: "),)),
+          Expanded(flex:2,child: Container(color: Colors.white,child: text12LeftNormGrey(capturedBy),)),
+        ],)),    ],
+    ),
   );
 }
 
-Widget cardTextValue(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.bodyText2,
-  );
-}
-
-Widget cardTextRight(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.right,
-    style: Theme.of(context).textTheme.bodyText2,
-  );
-}
-
-Widget animalViewCardBodyText(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.headline4,
-  );
-}
-
-Widget animalViewCardBodyTextRight(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.right,
-    style: Theme.of(context).textTheme.headline4,
-  );
-}
-
-Widget homeViewAccuracyScoreLeft(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.subtitle1
-  );
-}
-
-Widget homeViewAccuracyScoreRight(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.right,
-    style: Theme.of(context).textTheme.subtitle1
-  );
-}
-
-Widget tagText(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.center,
-    style: Theme.of(context).textTheme.headline6
-  );
+Widget textRow(String accuracy){
+  return Row(children: <Widget>[
+    Expanded(flex: 2,child: text14LeftBoldGrey("ACCURACY SCORE")),
+    Expanded(flex: 1,child: text14RightBoldGrey(accuracy)),
+  ],);
 }
 
 Widget bottomNavigationText(String title, var context){
@@ -198,54 +201,6 @@ Widget bottomNavigationText(String title, var context){
     title,
     textAlign: TextAlign.right,
     style: Theme.of(context).textTheme.subtitle1
-  );
-}
-
-Widget animalViewCardTitle(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.right,
-    style: Theme.of(context).textTheme.subtitle1
-  );
-}
-
-Widget tabBarTitles(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.center,
-    style: Theme.of(context).textTheme.headline3
-  );
-}
-
-Widget descriptionText(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.subtitle1
-  );
-}
-
-Widget confirmViewTitle(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.headline2
-  );
-}
-
-Widget confirmViewSubTitle(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.subtitle1
-  );
-}
-
-Widget confirmViewAnimalTitle(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.headline2,
   );
 }
 
@@ -262,83 +217,1432 @@ Widget percentageText(String title, double font){
   );
 }
 
-Widget confirmViewConfidentDetailsRight(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.right,
-    style: Theme.of(context).textTheme.bodyText2,
-  );
-}
-
-Widget confirmViewConfidentDetailsLeft(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.bodyText1,
-  );
-}
-
-Widget confirmViewSimilarSpoorTextName(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.bodyText1,
-  );
-}
-
-Widget confirmViewSimilarSpoorText(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.bodyText2,
-  );
-}
-
-Widget confirmViewTagText(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.bodyText1,
-  );
-}
-
-Widget confirmViewIconButtonText(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.bodyText2,
-  );
-}
-
-Widget notConfirmViewTitle(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.headline2
-  );
-}
-
-Widget notConfirmViewSubTitle(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.subtitle1
-  );
-}
-
-Widget notConfirmViewIconButtonText(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.bodyText2,
-  );
-}
-
-Widget nameText(String title, var context){
-  return Text(
-    title,
-    textAlign: TextAlign.left,
-    style: Theme.of(context).textTheme.subtitle2,
-  );
-}
 //================================ Widget Section =====================================//
+
+//================================ Text Section 1=====================================//
+
+Widget text22LeftBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text22CenterBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}  
+
+Widget text22RighttBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text22LeftNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text22CenterNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text22RighttNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text22LeftBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text22CenterBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text22RighttBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text22LeftNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text22CenterNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text22RightNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text22LeftBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text22CenterBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text22RightBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text22LeftNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text22CenterNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text22RightNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+//================================ Text Section 1=====================================//
+
+//================================ Text Section 2=====================================//
+
+Widget text20LeftBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text20CenterBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text20RightBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text20LeftNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text20CenterNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text20RightNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text20LeftBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text20CenterBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text20RightBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text20LeftNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text20CenterNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text20RightNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text20LeftBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text20CenterBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text20RightBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text20LeftNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text20CenterNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text20RightNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+//================================ Text Section 2=====================================//
+
+//================================ Text Section 3=====================================//
+
+Widget text18LeftBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text18CenterBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text18RightBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text18LeftNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text18CenterNormalBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text18RightNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text18LeftBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text18CenterBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text18RightBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text18LeftNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text18CenterNormalGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text18RightNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text18LeftBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text18CenterBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text18RightBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text18LeftNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text18CenterNormalWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text18RightNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+//================================ Text Section 3=====================================//
+
+//================================ Text Section 4=====================================//
+
+Widget text16LeftBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text16CenterBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text16RightBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text16LeftNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text16CenterNormalBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text16RightNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text16LeftBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text16CenterBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text16RightBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text16LeftNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text16CenterNormalGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text16RightNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text16LeftBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text16CenterBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text16RightBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text16LeftNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text16CenterNormalWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text16RightNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+//================================ Text Section 4=====================================//
+
+//================================ Text Section 5=====================================//
+
+Widget text14LeftBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text14CenterBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text14RightBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text14LeftNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text14CenterNormalBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text14RightNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text14LeftBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text14CenterBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text14RightBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text14LeftNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text14CenterNormalGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text14RightNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text14LeftBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text14CenterBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text14RightBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+
+Widget text14LeftNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text14CenterNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text14RightNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+//================================ Text Section 5=====================================//
+
+//================================ Text Section 5=====================================//
+
+Widget text12LeftBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text12CenterBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text12RighttBoldBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text12LeftNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text12CenterNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text12RighttNormBlack(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text12LeftBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text12CenterBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget tBoldGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+
+Widget text12LeftNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text12CenterNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text12RighttNormGrey(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+Widget text12LeftBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text12CenterBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+} 
+
+Widget text12RighttBoldWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}       
+        
+Widget text12LeftNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}        
+
+Widget text12CenterNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+} 
+
+Widget text12RighttNormWhite(String value){
+  return Text(
+    value, 
+    textAlign: TextAlign.right,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+      fontFamily: 'MavenPro',
+    ), 
+  );
+}
+
+//================================ Text Section 6=====================================//
