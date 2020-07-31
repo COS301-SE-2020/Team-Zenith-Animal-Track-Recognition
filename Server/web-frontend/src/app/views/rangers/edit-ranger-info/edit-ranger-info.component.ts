@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
 @Component({
@@ -14,7 +13,7 @@ export class EditRangerInfoComponent implements OnInit
 {
 	editUserForm: FormGroup;
 
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private router: Router, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<EditRangerInfoComponent>) { }
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<EditRangerInfoComponent>) { }
 
 	ngOnInit(): void 
 	{
@@ -28,16 +27,13 @@ export class EditRangerInfoComponent implements OnInit
 
 	get f() { return this.editUserForm.controls; }
 
-	onSubmit(test: boolean) 
-	{
-		if (false === test) 
-		{
+	onSubmit(test: boolean) {
+		if (false === test) {
 			this.startLoader();
 			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{UpdateUser('+ 'TokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'+ 'TokenChange:"' + this.data.Token + '",' + 'e_mail:"' + this.f.email.value + '",'+ 'lastName:"' + this.f.lastName.value + '",' + 'phoneNumber:"' + this.f.phoneNumber.value + '",'+ 'firstName:"' + this.f.firstName.value + '"){lastName,Token}}', '')
 			.subscribe({next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message)});
 		}
-		else
-		{
+		else {
 			return true;
 		}
 	}

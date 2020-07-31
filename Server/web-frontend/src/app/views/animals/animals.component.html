@@ -3,7 +3,7 @@
     <div id="animals-view-workspace">
         <mat-drawer-container id="animal-search-sidenav-container">
             <mat-drawer id="animal-search-sidenav" #sidenav mode="side">
-                <app-animal-search-sidenav [animals]="animals" (animalsOnChange)="updateAnimalList($event)" [searchText]="searchText"></app-animal-search-sidenav>
+                <app-animal-search-sidenav [animals]="animals" (animalsOnChange)="updateAnimalList($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"></app-animal-search-sidenav>
                 <div id="sidenav-close-btn-container" (click)="closeSidenav()">
                     <button id="side-nav-close-btn" mat-icon-button><mat-icon>chevron_left</mat-icon></button>
                 </div>

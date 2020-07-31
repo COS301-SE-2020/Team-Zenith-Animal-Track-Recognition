@@ -10,23 +10,19 @@
         </mat-form-field>
     </div>
     <div id="animal-search-results-container">
-        <mat-selection-list id="animals-by-surnames" [multiple]="false" class="animal-search-results-entries" *ngIf="surnames">
-            <mat-list-option class="fontM" *ngFor="let animal of animals | filter:searchText" [value]="animal">
-                <ng-container *ngIf="checkIfNew(animal.Common_Name, 0)">
-                    {{ animal.Common_Name.charAt(0).toUpperCase() }}
+        <mat-selection-list id="animals-by-surnames" [multiple]="false" class="animal-search-results-entries">
+            <div class="animal-search-result-entry" *ngFor="let animal of animals | filter:searchText">
+                <ng-container *ngIf="sortByCommonName; else sortedByCategories">
+                    <div mat-subheader class="animal-search-resultgroup-subheader" *ngIf="checkIfNew(animal.Common_Name)">{{ animal.Common_Name.charAt(0).toUpperCase() }}</div>
                 </ng-container>
-                <p class="animal-search-resultgroup-mainentry">{{animal.Common_Name}}</p>
-                <p class="animal-search-resultgroup-subentry">{{animal.Classification}}</p>
-            </mat-list-option>
-        </mat-selection-list>
-        <mat-selection-list id="animals-by-level" [multiple]="false" class="animal-search-results-entries" *ngIf="levels">
-            <mat-list-option class="fontM" *ngFor="let animal of animals | filter:searchText" [value]="animal">
-                <ng-container *ngIf='checkSpecies(animal.Group_ID[0].Group_Name)'>
-                    {{ animal.Group_ID[0].Group_Name }}
-                </ng-container>
-                <p class="animal-search-resultgroup-mainentry">{{animal.Common_Name}}</p>
-                <p class="animal-search-resultgroup-subentry">{{animal.Classification}}</p>
-            </mat-list-option>
+                <ng-template #sortedByCategories>
+                    <div mat-subheader class="animal-search-resultgroup-subheader" *ngIf='checkIfNewGroup(animal.Group_ID[0].Group_Name)'>{{ animal.Group_ID[0].Group_Name | titlecase }}</div>
+                </ng-template>
+                <mat-list-option class="fontM" [value]="animal">
+                    <p class="animal-search-resultgroup-mainentry">{{animal.Common_Name}}</p>
+                    <p class="animal-search-resultgroup-subentry">{{animal.Classification}}</p>
+                </mat-list-option>
+            </div>
         </mat-selection-list>
     </div>
 </div>
