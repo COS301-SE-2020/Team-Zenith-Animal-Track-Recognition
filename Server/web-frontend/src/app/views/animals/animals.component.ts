@@ -1,34 +1,42 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
 @Component({
-  selector: 'app-animals',
-  templateUrl: './animals.component.html',
-  styleUrls: ['./animals.component.css']
+	selector: 'app-animals',
+	templateUrl: './animals.component.html',
+	styleUrls: ['./animals.component.css']
 })
 export class AnimalsComponent implements OnInit {
 
 
 	@ViewChild('sidenav') sidenav;
 
-	rangers;
+	animals;
+	sortByCommonName: boolean = true;
 	searchText: string;
 	currentAlphabet;
 	surnames: boolean = true;
 	levels: boolean = false;
-	
-	
-  constructor(private http: HttpClient) { }
+	test: boolean;
 
-  ngOnInit(): void {
-    document.getElementById("animals-route").classList.add("activeRoute");
-  }
-  
-  	printOut(temp: any) {
-		this.rangers = temp;
-		console.log(this.rangers);
+	constructor(private http: HttpClient) { }
+
+	ngOnInit(): void {
+		this.test = true;
+		document.getElementById("animals-route").classList.add("activeRoute");
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'"){Classification,Animal_ID,Common_Name,Group_ID{Group_Name},HeightM,HeightF,WeightM,WeightF,Habitats{Habitat_ID},Diet_Type,Life_Span,Gestation_Period,Typical_Behaviour,' +
+			'Overview_of_the_animal,Description_of_animal,Pictures{URL}}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.animals = temp[0];
+				this.sort(true);
+			});
+
 	}
-
+	
 	openSidenav() {
 		this.sidenav.open();
 		document.getElementById("sidenav-open-btn-container").style.transitionDuration = "0.2s";
@@ -40,6 +48,28 @@ export class AnimalsComponent implements OnInit {
 		document.getElementById("sidenav-open-btn-container").style.left = "0%";
 	}
 
+	updateSearchText(event) {
+		this.searchText = event;
+	}
+
+	refresh() {
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'"){Classification,Animal_ID,Common_Name,Group_ID{Group_Name},HeightM,HeightF,WeightM,WeightF,Habitats{Habitat_ID},Diet_Type,Life_Span,Gestation_Period,Typical_Behaviour,' +
+			'Overview_of_the_animal,Description_of_animal,Pictures{URL}}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.animals = null;
+				this.animals = temp[0];
+				this.sort(true);
+			});
+	}
+
+	updateAnimalList(updatedList) {
+		if (updatedList == 'update') {
+			this.refresh();
+		}
+	}
 
 	//Sorting and Filtering
 	checkIfNew(title: string, pos: number) {
@@ -50,6 +80,7 @@ export class AnimalsComponent implements OnInit {
 			return true;
 		}
 	}
+
 	toggle(bool: boolean) {
 		this.surnames = bool;
 		this.levels = !bool;
@@ -57,22 +88,22 @@ export class AnimalsComponent implements OnInit {
 	}
 	sort(bool: boolean) {
 		if (bool) {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
+			for (let i = 0; i < this.animals.length - 1; i++) {
+				for (let j = i + 1; j < this.animals.length; j++) {
+					if (this.animals[i].Common_Name.toUpperCase() > this.animals[j].Common_Name.toUpperCase()) {
+						let temp = this.animals[i];
+						this.animals[i] = this.animals[j];
+						this.animals[j] = temp;
 					}
 				}
 			}
 		} else {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].rangerLevel > this.rangers[j].rangerLevel) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
+			for (let i = 0; i < this.animals.length - 1; i++) {
+				for (let j = i + 1; j < this.animals.length; j++) {
+					if (this.animals[i].Group_ID[0].Group_Name > this.animals[j].Group_ID[0].Group_Name) {
+						let temp = this.animals[i];
+						this.animals[i] = this.animals[j];
+						this.animals[j] = temp;
 					}
 				}
 			}

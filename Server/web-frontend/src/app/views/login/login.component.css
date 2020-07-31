@@ -87,16 +87,35 @@ a:hover
 	flex-direction: column;
 	justify-content: flex-end;
 	align-items: center;
+	animation: fadeUp 0.8s ease-out 0s 1 normal forwards;
+	opacity: 0.1;
+	transform: translateY(30%);
+}
+@keyframes fadeUp 
+{
+  from {opacity: 0.1; transform: translateY(30%);}
+  to {opacity: 1.0; transform: translateY(0%);}
+}
+@keyframes fadeIn 
+{
+  from {opacity: 0.1;}
+  to {opacity: 1.0;}
 }
 #loginFormComp-loginForm-TitleContainer > h2
 {
-	font-size: 180%;
 	color: #1A1A1A;
 	margin: 0;
 }
+.welcomeMessage
+{
+	text-align: center;
+	font-size: 155%;
+	width: 110%;
+}
 #loginFormComp-loginForm-TitleContainer > p
 {
-	font-size: 90%;
+	margin-top: 1%;
+	font-size: 105%;
 	color: #AAAAAA;
 }
 #loginFormComp-loginForm-FormContainer
@@ -108,10 +127,16 @@ a:hover
 	justify-content: flex-end;
 	align-items: center;
 	font-size: 85%;
+	animation: fadeIn 1.2s ease-out 1s 1 normal forwards;
+	opacity: 0;
 }
 .mat-form-field
 {
 	width: 80%;
+}
+#viewPasswordBtn:hover
+{
+	cursor: pointer;
 }
 #loginFormComp-loginForm-loginOptionsContainer
 {
@@ -121,6 +146,8 @@ a:hover
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
+	animation: fadeIn 1.2s ease-out 1s 1 normal forwards;
+	opacity: 0;
 }
 #loginFormComp-loginForm-loginOptions
 {

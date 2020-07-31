@@ -1,22 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject} from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import {Observable} from 'rxjs';
-import {startWith, map} from 'rxjs/operators';
-
-export interface Animals
-{
-	Common_Name: string;
-	Classification: string[];
-}
-
-export const _filter = (opt: string[], value: string): string[] => {
-  const filterValue = value.toLowerCase();
-
-  return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
-};
+import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
 @Component({
   selector: 'app-edit-animal-info',
@@ -25,88 +11,69 @@ export const _filter = (opt: string[], value: string): string[] => {
 })
 export class EditAnimalInfoComponent implements OnInit {
 	
-	animalListForm: FormGroup  = this.formBuilder.group({animal: '',});
+
 	overviewForm: FormGroup;
 	descrForm: FormGroup;
 	behaviourForm: FormGroup;
 	habitatForm: FormGroup;
 	threatForm: FormGroup;
 	
-	//animals;
-	//animals: Animals[] = [];
-	animals: Animals[] = [
-		{Common_Name: 'Big Five', Classification: ['Blesbok', 'Red Hartebeest', 'Waterbuck']}, 
-		{Common_Name: 'Big Cats', Classification: ['Cape Buffalo']}, 
-		{Common_Name: 'Large Antelope', Classification: ['African Bush Elephant']}
-	];
-
-	animalListOptions: Observable<Animals[]>;
-
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private router: Router, private http: HttpClient, private formBuilder: FormBuilder) { }
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<EditAnimalInfoComponent>) { }
 
 
 	ngOnInit(): void 
 	{
-		
-		this.overviewForm = this.formBuilder.group({Classification: [this.data.Classification , Validators.required],
-		Common_Name: [this.data.Common_Name, Validators.required], Description_of_animal: [this.data.Description_of_animal, Validators.required],});
-
-		this.descrForm = this.formBuilder.group({Classification: [this.data.Classification , Validators.required],
-		Common_Name: [this.data.Common_Name, Validators.required], Description_of_animal: [this.data.Description_of_animal, Validators.required],});
-
-		this.behaviourForm = this.formBuilder.group({Classification: [this.data.Classification , Validators.required],
-		Common_Name: [this.data.Common_Name, Validators.required], Description_of_animal: [this.data.Description_of_animal, Validators.required],});	
-
-		this.habitatForm = this.formBuilder.group({Classification: [this.data.Classification , Validators.required],
-		Common_Name: [this.data.Common_Name, Validators.required], Description_of_animal: [this.data.Description_of_animal, Validators.required],});	
-
-		this.threatForm = this.formBuilder.group({Classification: [this.data.Classification , Validators.required],
-		Common_Name: [this.data.Common_Name, Validators.required], Description_of_animal: [this.data.Description_of_animal, Validators.required],});
-		
-		//Fetch Animal List
-		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{animals(Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Classification,Common_Name,Group_ID{Group_Name}}}')
-			.subscribe((data: any[]) => {
-				let temp = [];
-				temp = Object.values(Object.values(data)[0]);
-				this.printOut(temp);
-			});			
-		this.animalListOptions = this.animalListForm.get('animal')!.valueChanges.pipe(startWith(''), map(value => this._filterGroup(value)));
+		this.overviewForm = this.formBuilder.group({
+			Group_Name: [this.data.animal.Group_ID[0].Group_Name , Validators.required],
+			Common_Name: [this.data.animal.Common_Name, Validators.required], 
+			Classification: [this.data.animal.Classification, Validators.required],
+			HeightF: [this.data.animal.HeightF, Validators.required],
+			HeightM: [this.data.animal.HeightM, Validators.required],
+			WeightF: [this.data.animal.WeightF, Validators.required],
+			WeightM: [this.data.animal.WeightM, Validators.required],
+			Gestation_Period: [this.data.animal.Gestation_Period, Validators.required],
+			Diet_Type: [this.data.animal.Diet_Type, Validators.required],
+			Typical_Behaviour: [this.data.animal.Typical_Behaviour, Validators.required],
+		});		
+		this.descrForm = this.formBuilder.group({
+			Life_Span: [this.data.animal.Life_Span, Validators.required],
+			Overview_of_animal: [this.data.animal.Overview_of_animal, Validators.required],
+			Description_of_animal: [this.data.animal.Description_of_animal, Validators.required],
+		});		
+		this.behaviourForm = this.formBuilder.group({
+			Typical_Behaviour: [this.data.animal.Typical_Behaviour, Validators.required]
+		});		
+		this.habitatForm = this.formBuilder.group({
+			Habitat: [this.data.animal.Habitat, Validators.required]
+		});
+		this.threatForm = this.formBuilder.group({
+			Typical_Behaviour: [this.data.animal.Typical_Behaviour, Validators.required]
+		});	
 	}
 	
-	printOut(temp: any) 
-	{
-		//this.animals = temp[0];
-		//this.sort(true);
-	}
+	get f() { return this.overviewForm.controls; }
 
-	
-	private _filterGroup(value: string): Animals[] 
-	{
-		if (value) 
-		{
-			return this.animals.map(group => ({Common_Name: group.Common_Name, Classification: _filter(group.Classification, value)}))
-        .filter(group => group.Classification.length > 0);
+	onSubmit(test: boolean) {
+		
+		if (false === test) {
+			this.startLoader();
+			//@Zach Please change the query string. 
+			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{UpdateUser('+ 'TokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'+ 'TokenChange:"' + this.data.Token + '"){lastName,Token}}', '')
+			.subscribe({next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message)});
 		}
-		return this.animals;
+		else {
+			return true;
+		}
 	}
-  
-  //get f() { return this.overviewForm.controls; }
-
-  onSubmit() {
-	  /*
-    let temp = this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{UpdateUser('
-      + 'TokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
-      + 'TokenChange:"' + this.data.Token + '",'
-      + 'e_mail:"' + this.f.email.value + '",'
-      + 'lastName:"' + this.f.lastName.value + '",'
-      + 'phoneNumber:"' + this.f.phoneNumber.value + '",'
-      + 'firstName:"' + this.f.firstName.value + '"){lastName,Token}}', '').subscribe((data: any[]) => {
-        let t = [];
-        t = Object.values(Object.values(data)[0]);        
-      });
-
-    this.router.navigate(["/geotags"], { queryParams: { reload: "true" } });
-	*/
-  }
+	
+	//Loader
+	startLoader()
+	{
+		document.getElementById("loader-container").style.visibility = "visible";
+	}  
+	stopLoader()
+	{
+		document.getElementById("loader-container").style.visibility = "hidden";
+	}
 
 }

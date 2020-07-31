@@ -1,6 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Ranger } from './../../../models/ranger';
-import { RANGERS } from './../../../models/mock-rangers';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -9,40 +7,41 @@ import { HttpClient } from '@angular/common/http';
 	styleUrls: ['./animal-search-sidenav.component.css']
 })
 export class AnimalSearchSidenavComponent implements OnInit {
-
-	//USING MOCK RANGER DATA. @Zach please replace this with an API call that fetches the users. We only need ID, Name, Username and ranger level
-
-	animals;
-	currentAlphabet;
-	surnames: boolean = true;
-	levels: boolean = false;
-
+	@Input() animals;
 	@Input() searchText: string;
+	@Input() sortByCommonName: boolean;
+	currentAlphabet;
+	@Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
+	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
 
-	constructor(private http: HttpClient) { }
+	constructor() { }
 
-	ngOnInit(): void {
-		document.getElementById("animals-route").classList.add("activeRoute");
-		this.http.get<any>('http://putch.dyndns.org:55555/graphql?query=query{animals(Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Classification,Common_Name,Group_ID{Group_Name}}}')
-			.subscribe((data: any[]) => {
-				let temp = [];
-				temp = Object.values(Object.values(data)[0]);
-				this.printOut(temp);
-			});
+	ngOnInit(): void { 
+		this.sortByCommonName = true;
 	}
 
-	printOut(temp: any) {
-		this.animals = temp[0];
-		this.sort(true);
-	}
-
-	checkIfNew(title: string, pos: number) {
-		if (this.currentAlphabet === ("" + title).charAt(pos).toLowerCase()) {
+	checkIfNew(title: string) {
+		if (this.currentAlphabet === ("" + title).charAt(0).toLowerCase()) {
 			return false;
 		} else {
-			this.currentAlphabet = ("" + title).charAt(pos).toLowerCase();
+			this.currentAlphabet = ("" + title).charAt(0).toLowerCase();			
 			return true;
 		}
+	}
+
+	checkIfNewGroup(title: string) {
+		if (this.currentAlphabet === ("" + title).toLowerCase()) {
+			return false;
+		} else {
+			this.currentAlphabet = ("" + title).toLowerCase();			
+			return true;
+		}
+	}
+
+	updateSearchText(event) {
+		this.searchTextOnChange.emit(event);
+		if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")
+			this.currentAlphabet = null;
 	}
 
 	checkSpecies(title: string) {
@@ -55,8 +54,7 @@ export class AnimalSearchSidenavComponent implements OnInit {
 	}
 
 	toggle(bool: boolean) {
-		this.surnames = bool;
-		this.levels = !bool;
+		this.sortByCommonName = bool;
 		this.sort(bool);
 	}
 

@@ -11,19 +11,5 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit(): void {
     document.getElementById("overview-route").classList.add("activeRoute");
-  	  this.stopLoader();
   }
-  
-    //Loader
-  startLoader()
-  {
-	  console.log("Starting Loader");
-	  document.getElementById("loader-container").style.visibility = "visible";
-  }  
-  stopLoader()
-  {
-	  	  console.log("Stopping Loader");
-	  document.getElementById("loader-container").style.visibility = "hidden";
-  }
-
 }
