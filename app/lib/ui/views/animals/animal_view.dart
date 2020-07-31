@@ -35,7 +35,6 @@ class AnimalView extends StatelessWidget {
                 child: Scaffold(
                   drawer: NavDrawer(),
                   appBar: AppBar(
-
                     backgroundColor: Colors.black,
                     title: text18LeftBoldWhite("Animal Information"),
                     actions: <Widget>[IconBuilder(icon:Icons.search,type:"search"), IconBuilder(icon:Icons.more_vert,type:"vert")],

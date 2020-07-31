@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UploadView extends StatelessWidget {
   const UploadView({Key key}) : super(key: key);
@@ -23,10 +24,11 @@ class UploadView extends StatelessWidget {
           return;
         },
         child: Scaffold(
+          drawer: NavDrawer(),
           appBar: AppBar(
             backgroundColor: Colors.black,
-            automaticallyImplyLeading: false,
-            title: appBarTitle("Upload Spoor Geotag", context),
+            actions: <Widget>[IconBuilder(icon:Icons.search,type:"search"), IconBuilder(icon:Icons.more_vert,type:"vert")],
+            title: text18LeftBoldWhite("Upload Spoor Geotag",),
           ),
           body:Container(
             padding: EdgeInsets.all(10),
@@ -69,6 +71,83 @@ class SliverBody extends ViewModelWidget<UploadViewModel> {
           ),
         )
       ],
+    );
+  }
+}
+
+class IconBuilder extends ViewModelWidget<UploadViewModel> {
+  String type;
+  IconData icon;
+  IconBuilder({Key key,this.icon,this.type}) : super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, UploadViewModel model) {
+    return Container(
+      margin: EdgeInsets.all(0),
+      padding: EdgeInsets.all(0),
+       child: IconButton(
+        padding: EdgeInsets.all(0),
+        icon: Icon(icon, color: Colors.white),
+        onPressed: (){
+          if(type == "search"){
+            navigateToSearchView();
+          }else{
+
+          }
+        }
+      ),
+    );
+  }
+}
+
+class NavDrawer extends ViewModelWidget<UploadViewModel> {
+  //List<HomeModel> animalList;
+  NavDrawer({Key key}) : super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, UploadViewModel model) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: text22LeftBoldWhite("Side Menu"),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage('assets/images/springbok.jpg')
+              )
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.verified_user),
+            title: text16LeftBoldGrey("Profile"),
+            onTap: () =>{
+              navigateToProfile()
+            }
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: text16LeftBoldGrey("Settings"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: text16LeftBoldGrey("Preference"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: text16LeftBoldGrey("Logout"),
+            onTap: ()async{
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("loggedIn", false);
+              navigateToLogin(context);
+            }
+          ),
+        ],
+      ),
     );
   }
 }

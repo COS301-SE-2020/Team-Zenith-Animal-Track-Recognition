@@ -5,6 +5,7 @@ import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
 import 'package:stacked/stacked.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({Key key}) : super(key: key);
@@ -28,10 +29,11 @@ class ProfileView extends StatelessWidget {
             }
             return snapshot. hasData 
             ? Scaffold(
+              drawer: NavDrawer(),
               appBar: AppBar(
                 backgroundColor: Colors.black,
                 leading: IconBuilder(icon:Icons.menu,type:"search"),
-                title: appBarTitle("Profile", context),
+                title: text18LeftBoldWhite("Profile"),
                 actions: <Widget>[IconBuilder(icon:Icons.search,type:"search"), IconBuilder(icon:Icons.more_vert,type:"vert")],
               ),
               body: Container(color:Colors.grey[300] ,child: ProfileViewList(tempObject: snapshot.data,)),
@@ -209,6 +211,58 @@ class ProfileViewDelegate implements SliverPersistentHeaderDelegate{
   @override
   // TODO: implement stretchConfiguration
   OverScrollHeaderStretchConfiguration get stretchConfiguration =>null;
+}
+
+class NavDrawer extends ViewModelWidget<ProfileViewModel> {
+  //List<HomeModel> animalList;
+  NavDrawer({Key key}) : super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, ProfileViewModel model) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: text22LeftBoldWhite("Side Menu"),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage('assets/images/springbok.jpg')
+              )
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.verified_user),
+            title: text16LeftBoldGrey("Profile"),
+            onTap: () =>{
+              navigateToProfile()
+            }
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: text16LeftBoldGrey("Settings"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: text16LeftBoldGrey("Preference"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: text16LeftBoldGrey("Logout"),
+            onTap: ()async{
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("loggedIn", false);
+              navigateToLogin(context);
+            }
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 Widget profileinfo(ProfileInfoModel profileInfo){

@@ -3,6 +3,7 @@ import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/search/search_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 List<SearchModel> searchList = new List<SearchModel>();
@@ -33,9 +34,10 @@ class SearchView extends StatelessWidget {
               child: DefaultTabController(
                 length: 2, 
                 child: Scaffold(
+                  drawer: NavDrawer(),
                   appBar: AppBar(
                     backgroundColor: Colors.black,
-                    title: appBarTitle("Search View", context),
+                    title: text18LeftBoldWhite("Search View"),
                     actions: <Widget>[IconBuilder(icon: Icons.search, colors: Colors.grey,index: 0)],
                     bottom: TabBar(tabs: [text14CenterBoldGrey("ANIMAL"),text14CenterBoldGrey("SPECIES"),]),
                   ),
@@ -57,6 +59,58 @@ class SearchView extends StatelessWidget {
         }
       ) ,
       viewModelBuilder: () => SearchViewModel(),
+    );
+  }
+}
+
+class NavDrawer extends ViewModelWidget<SearchViewModel> {
+  //List<HomeModel> animalList;
+  NavDrawer({Key key}) : super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, SearchViewModel model) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: text22LeftBoldWhite("Side Menu"),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage('assets/images/springbok.jpg')
+              )
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.verified_user),
+            title: text16LeftBoldGrey("Profile"),
+            onTap: () =>{
+              navigateToProfile()
+            }
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: text16LeftBoldGrey("Settings"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: text16LeftBoldGrey("Preference"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: text16LeftBoldGrey("Logout"),
+            onTap: ()async{
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("loggedIn", false);
+              navigateToLogin(context);
+            }
+          ),
+        ],
+      ),
     );
   }
 }
