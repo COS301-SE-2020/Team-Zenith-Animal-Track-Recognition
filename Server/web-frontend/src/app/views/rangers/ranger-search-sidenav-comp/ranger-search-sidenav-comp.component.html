@@ -5,7 +5,7 @@
             <mat-button-toggle id="levelToggle" value="level" (click)="toggle(false)">Level</mat-button-toggle>
         </mat-button-toggle-group>
         <mat-form-field appearance="outline">
-            <input matInput placeholder="Search Rangers..." type="text" name="search" [(ngModel)]="searchText" autocomplete="off" (ngModelChange)="updateSearchText($event)">
+            <input id="search-sidenav-input" matInput placeholder="Search Rangers..." type="text" name="search" [(ngModel)]="searchText" autocomplete="off" (ngModelChange)="updateSearchText($event)">
             <mat-icon matPrefix>search</mat-icon>
         </mat-form-field>
     </div>
