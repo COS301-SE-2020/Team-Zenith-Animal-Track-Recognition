@@ -34,6 +34,7 @@ export class AnimalInfoCardComponent implements OnInit {
 
 	//EDIT 
 	openEditAnimalDialog(animalID) {
+		
 		const dialogConfig = new MatDialogConfig();
 
 		//Get animal information for chosen card

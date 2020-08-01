@@ -11,7 +11,6 @@ export class AnimalsComponent implements OnInit {
 
 
 	@ViewChild('sidenav') sidenav;
-
 	animals;
 	sortByCommonName: boolean = true;
 	searchText: string;
