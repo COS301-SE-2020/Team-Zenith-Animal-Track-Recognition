@@ -26,25 +26,25 @@ admin.initializeApp({
 
 
 let db = admin.firestore();
-let Animals = db.collection("Animals");
-let users = db.collection("Users");
-let Groups = db.collection("Groups");
-let Habitats = db.collection("Habitats");
-let Pictures = db.collection("Pictures");
-let SpoorIdentifications = db.collection("SpoorIdentifications");
+let animals = db.collection("animals");
+let users = db.collection("users");
+let groups = db.collection("groups");
+let habitats = db.collection("habitats");
+let pictures = db.collection("pictures");
+let spoorIdentifications = db.collection("spoorIdentifications");
 
 //google db
 
 
-let MesTypeData = [{
+let mesData = [{
     msg: "deleted"
 }]
-let HabitatData = []
-let usersdata = []
-let GroupData = []
-let animaldata = []
-let PictureData = []
-let SpoorIdentificationData = []
+let habitatData = []
+let usersData = []
+let groupData = []
+let animalData = []
+let dictureData = []
+let spoorIdentificationData = []
 
 const MesType = new GraphQLObjectType({
     name: "mesig",
@@ -91,11 +91,11 @@ const dateAndTimeType = new GraphQLObjectType({
 const potentialMatchesType = new GraphQLObjectType({
     name: "potentialMatches",
     fields: () => ({
-        Animals: {
+        animals: {
             type: new GraphQLList(AnimalType),
             resolve(parent, args) {
                 let temp = [];
-                parent.Animals.forEach(element => {
+                parent.animals.forEach(element => {
                     temp.push(_.find(animaldata, {
                         AnimalID: element
                     }))
@@ -148,13 +148,13 @@ const SpoorIdentificationType = new GraphQLObjectType({
     })
 });
 //user 
-const UserType = new GraphQLObjectType({
+const userType = new GraphQLObjectType({
     name: 'user',
     fields: () => ({
-        Password: {
+        password: {
             type: GraphQLString
         },
-        Token: {
+        token: {
             type: GraphQLString
         },
         accessLevel: {
@@ -183,8 +183,8 @@ const UserType = new GraphQLObjectType({
     })
 });
 
-const PicturesType = new GraphQLObjectType({
-    name: 'Picture',
+const picturesType = new GraphQLObjectType({
+    name: 'picture',
     fields: () => ({
         ID: {
             type: GraphQLID
@@ -192,7 +192,7 @@ const PicturesType = new GraphQLObjectType({
         URL: {
             type: GraphQLString
         },
-        Kind_Of_Picture: {
+        kindOfPicture: {
             type: GraphQLString
         }
 
@@ -242,11 +242,11 @@ const AnimalType = new GraphQLObjectType({
         WeightF: {
             type: GraphQLFloat
         },
-        Habitats: {
+        habitats: {
             type: new GraphQLList(HabitatType),
             resolve(parent, args) {
                 let a = []
-                let d = parent.Habitats
+                let d = parent.habitats
                 d.forEach(b => {
 
                     let c = _.find(HabitatData, {
@@ -277,11 +277,11 @@ const AnimalType = new GraphQLObjectType({
         Description_of_animal: {
             type: GraphQLString
         },
-        Pictures: {
+        pictures: {
             type: new GraphQLList(PicturesType),
             resolve(parent, args) {
                 let a = []
-                let d = parent.Pictures
+                let d = parent.pictures
                 d.forEach(b => {
 
                     let c = _.find(PictureData, {
@@ -379,7 +379,7 @@ const RootQuery = new GraphQLObjectType({
             }
 
         },
-        Groups: {
+        groups: {
             type: GraphQLList(GroupType),
             args: {
                 Token: {
@@ -413,7 +413,7 @@ const RootQuery = new GraphQLObjectType({
                 return null;
             }
         },
-        Users: {
+        users: {
             type: GraphQLList(UserType),
             args: {
                 TokenIn: {
@@ -476,7 +476,7 @@ const RootQuery = new GraphQLObjectType({
                 return null;
             }
         },
-        Habitats: {
+        habitats: {
             type: GraphQLList(HabitatType),
             args: {
                 Token: {
@@ -513,7 +513,7 @@ const RootQuery = new GraphQLObjectType({
                 return null;
             }
         },
-        Pictures: {
+        pictures: {
             type: GraphQLList(PicturesType),
             args: {
                 Classification: {
@@ -533,7 +533,7 @@ const RootQuery = new GraphQLObjectType({
 
                     if (args.Classification != undefined)
                         if (args.Classification == val.Classification) {
-                            let b = val.Pictures
+                            let b = val.pictures
                             console.log(b)
                             b.forEach(c => {
                                 console.log(c)
@@ -546,7 +546,7 @@ const RootQuery = new GraphQLObjectType({
                         }
                     if (args.Common_Name != undefined) {
                         if (args.Common_Name == val.Common_Name) {
-                            let b = val.Pictures
+                            let b = val.pictures
                             console.log(b)
                             b.forEach(c => {
                                 let d = _.find(PictureData, {
@@ -832,7 +832,7 @@ const Mutation = new GraphQLObjectType({
                     Group_ID: GID.toString()
                 }
                 console.log(GID.toString())
-                Groups.doc(GID.toString()).set(newGroup)
+                groups.doc(GID.toString()).set(newGroup)
 
                 GroupData.push(newGroup)
                 return newGroup;
@@ -957,7 +957,7 @@ const Mutation = new GraphQLObjectType({
                     Distinguishing_Features: args.Distinguishing_Features
                 }
                 console.log(HID.toString())
-                Habitats.doc(HID.toString()).set(newHabitat)
+                habitats.doc(HID.toString()).set(newHabitat)
                 HabitatData.push(newHabitat)
                 return newHabitat;
             }
@@ -986,7 +986,7 @@ const Mutation = new GraphQLObjectType({
                 WeightM: {
                     type: new GraphQLNonNull(GraphQLInt)
                 },
-                Habitats: {
+                habitats: {
                     type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLInt)))
                 },
                 GroupID: {
@@ -1010,7 +1010,7 @@ const Mutation = new GraphQLObjectType({
                 DescriptionOfAnimal: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Pictures: {
+                pictures: {
                     type: new GraphQLList(GraphQLInt)
                 }
 
@@ -1044,7 +1044,7 @@ const Mutation = new GraphQLObjectType({
                     HeightF: args.HeightF,
                     WeightM: args.WeightM,
                     WeightF: args.WeightF,
-                    Habitats: args.Habitats,
+                    habitats: args.habitats,
                     Diet_Type: args.Diet_Type,
                     Life_Span: args.Life_Span,
                     Gestation_Period: args.Gestation_Period,
@@ -1052,14 +1052,14 @@ const Mutation = new GraphQLObjectType({
                     Overview_of_the_animal: args.Overview_of_the_animal,
                     Description_of_animal: args.Description_of_animal
                 }
-                if (args.Pictures != undefined) {
-                    newAnimal.Pictures = args.Pictures
+                if (args.pictures != undefined) {
+                    newAnimal.pictures = args.pictures
                 } else {
-                    newAnimal.Pictures = []
-                    newAnimal.Pictures.push(1)
+                    newAnimal.pictures = []
+                    newAnimal.pictures.push(1)
                 }
 
-                Animals.doc(args.Classification).set(newAnimal).then(function (docRef) {
+                animals.doc(args.Classification).set(newAnimal).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
                 newAnimal.Classification = args.Classification
@@ -1091,7 +1091,7 @@ const Mutation = new GraphQLObjectType({
                 WeightM: {
                     type: GraphQLInt
                 },
-                Habitats: {
+                habitats: {
                     type: new GraphQLList(new GraphQLNonNull(GraphQLInt))
                 },
                 GroupID: {
@@ -1115,7 +1115,7 @@ const Mutation = new GraphQLObjectType({
                 DescriptionOfAnimal: {
                     type:GraphQLString
                 },
-                Pictures: {
+                pictures: {
                     type: new GraphQLList(GraphQLInt)
                 }
 
@@ -1182,7 +1182,7 @@ const Mutation = new GraphQLObjectType({
                 if (args.descriptionOfAnimal!=undefined){
                     updatedAnimal.descriptionOfAnimal =args.descriptionOfAnimal
                 }
-                Animals.doc(args.Classification).set(updatedAnimal)
+                animals.doc(args.Classification).set(updatedAnimal)
                 newAnimal.Classification = args.Classification
                 animaldata.push(newAnimal)
                 return newAnimal;
@@ -1227,7 +1227,7 @@ users.get().then((snapshot) => {
     .catch((err) => {
         console.log('Error getting documents', err);
     });
-Groups.get().then((snapshot) => {
+    groups.get().then((snapshot) => {
         snapshot.forEach((doc) => {
             let newGoupe = {
                 Group_ID: doc.data().Group_ID,
@@ -1240,7 +1240,7 @@ Groups.get().then((snapshot) => {
         console.log('Error getting documents', err);
     });
 
-Habitats.get().then((snapshot) => {
+    habitats.get().then((snapshot) => {
         snapshot.forEach((doc) => {
             let newHabitat = {
                 Habitat_ID: doc.data().Habitat_ID,
@@ -1253,7 +1253,7 @@ Habitats.get().then((snapshot) => {
         console.log('Error getting documents', err);
     });
 
-Animals.get().then((snapshot) => {
+    animals.get().then((snapshot) => {
         snapshot.forEach((doc) => {
             let newAnimal = {
                 Classification: doc.id,
@@ -1264,42 +1264,14 @@ Animals.get().then((snapshot) => {
                 HeightF: doc.data().HeightF,
                 WeightM: doc.data().WeightM,
                 WeightF: doc.data().WeightF,
-                Habitats: doc.data().Habitats,
+                habitats: doc.data().habitats,
                 Diet_Type: doc.data().Diet_Type,
                 Life_Span: doc.data().Life_Span,
                 Gestation_Period: doc.data().Gestation_Period,
                 Typical_Behaviour: doc.data().Typical_Behaviour,
                 Overview_of_the_animal: doc.data().Overview_of_the_animal,
                 Description_of_animal: doc.data().Description_of_animal,
-                Pictures: doc.data().Pictures
-            }
-            animaldata.push(newAnimal)
-        });
-        // console.log(animaldata)
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
-    });
-
-Animals.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-            let newAnimal = {
-                Classification: doc.id,
-                Animal_ID: doc.data().Animal_ID,
-                Common_Name: doc.data().Common_Name,
-                Group_ID: doc.data().Group_ID,
-                HeightM: doc.data().HeightM,
-                HeightF: doc.data().HeightF,
-                WeightM: doc.data().WeightM,
-                WeightF: doc.data().WeightF,
-                Habitats: doc.data().Habitats,
-                Diet_Type: doc.data().Diet_Type,
-                Life_Span: doc.data().Life_Span,
-                Gestation_Period: doc.data().Gestation_Period,
-                Typical_Behaviour: doc.data().Typical_Behaviour,
-                Overview_of_the_animal: doc.data().Overview_of_the_animal,
-                Description_of_animal: doc.data().Description_of_animal,
-                Pictures: doc.data().Pictures
+                pictures: doc.data().pictures
             }
             animaldata.push(newAnimal)
         });
