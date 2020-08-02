@@ -1526,256 +1526,114 @@ function getSimilarimg(ImgID) {
     return obj
 }
 
-{ //transver
-    // db.collection("users")
-    //     .get()
-    //     .then(
-    //         function (querySnapshot) {
-    //             querySnapshot.forEach(function (doc) {
-    //                 let user = doc.data()
-    //                 if (user.Password != undefined) {
-    //                     user.password = user.Password
-    //                     delete user.Password
-    //                 }
-    //                 if (user.e_mail != undefined) {
-    //                     user.eMail = user.e_mail
-    //                     delete user.e_mail
-    //                 }
-    //                 if (user.Access_Level != undefined) {
-    //                     user.accessLevel = user.Access_Level
-    //                     delete user.Access_Level
-    //                 }
-    //                 if (user.password == undefined) {
-    //                     user.password == "12345"
-    //                 }
-    //                 if (user.eMail == undefined) {
-    //                     user.eMail == "replas me"
-    //                 }
-    //                 if (user.accessLevel == undefined) {
-    //                     user.accessLevel == "0"
-    //                 }
-    //                 users.doc(doc.id).set(user)
-    //             });
-
-    //         }
-    //     )
-
-        // db.collection("Pictures")
-        // .get()
-        // .then(
-        //     function (querySnapshot) {
-        //         querySnapshot.forEach(function (doc) {
-        //             let puter = doc.data()
-        //             if (puter.GeotagID!=undefined)
-        //             {
-        //                 puter.picturesID=doc.id
-        //                 delete puter.GeotagID
-        //             }
-        //             if (puter.Kind_Of_Picture!=undefined)
-        //             {
-        //                 puter.kindOfPicture=puter.Kind_Of_Picture
-        //                 delete puter.Kind_Of_Picture
-        //             }
-                    
-        //             pictures.doc(doc.id).set(puter)
-        //         });
-
-        //     }
-        // )
-
-        // db.collection("Habitats")
-        // .get()
-        // .then(
-        //     function (querySnapshot) {
-        //         querySnapshot.forEach(function (doc) {
-        //             let Habitat = doc.data()
-        //             if (Habitat.Habitat_ID!=undefined)
-        //             {
-        //                 Habitat.habitatID=doc.id
-        //                 delete Habitat.Habitat_ID
-        //             }
-
-        //             if (Habitat.Broad_Description!=undefined)
-        //             {
-        //                 Habitat.description=Habitat.Broad_Description
-        //                 delete Habitat.Broad_Description
-        //             }
-
-        //             if (Habitat.Habitat_Name!=undefined)
-        //             {
-        //                 Habitat.habitatName=Habitat.Habitat_Name
-        //                 delete Habitat.Habitat_Name
-        //             }
-        //             if (Habitat.Distinguishing_Features!=undefined)
-        //             {
-        //                 Habitat.distinguishingFeatures=Habitat.Distinguishing_Features
-        //                 delete Habitat.Distinguishing_Features
-        //             }
-                    
-        //             habitats.doc(doc.id).set(Habitat)
-        //         });
-
-        //     }
-        // )
-
-        // db.collection("Groups")
-        // .get()
-        // .then(
-        //     function (querySnapshot) {
-        //         querySnapshot.forEach(function (doc) {
-        //             let group = doc.data()
-        //             if (group.Group_ID!=undefined)
-        //             {
-        //                 group.groupID=group.Group_ID
-        //                 delete group.Group_ID
-        //             }
-        //             if (group.Group_Name!=undefined)
-        //             {
-        //                 group.groupName=group.Group_Name
-        //                 delete group.Group_Name
-        //             }
-                    
-        //             groups.doc(doc.id).set(group)
-        //         });
-
-        //     }
-        // )
+// { //transver
 
 
-        // db.collection("Animals")
-        // .get()
-        // .then(
-        //     function (querySnapshot) {
-        //         querySnapshot.forEach(function (doc) {
-        //             let animal = doc.data()
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//         db.collection("Animals")
+//         .get()
+//         .then(
+//             function (querySnapshot) {
+//                 querySnapshot.forEach(function (doc) {
+//                     let animal = doc.data()
+//                     if (animal.Animal_ID!=undefined)
+//                     {
+//                         animal.animalID =animal.Animal_ID
+//                         delete animal.Animal_ID
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.Common_Name!=undefined)
+//                     {
+//                         animal.commonName =animal.Common_Name
+//                         delete animal.Common_Name
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.Group_ID!=undefined)
+//                     {
+//                         animal.groupID =animal.Group_ID
+//                         delete animal.Group_ID
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.Habitats!=undefined)
+//                     {
+//                         animal.habitats =animal.Habitats
+//                         delete animal.Habitats
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.HeightF!=undefined)
+//                     {
+//                         animal.heightF =animal.HeightF
+//                         delete animal.HeightF
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.HeightM!=undefined)
+//                     {
+//                         animal.heightM =animal.HeightM
+//                         delete animal.HeightM
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.Diet_Type!=undefined)
+//                     {
+//                         animal.dietType =animal.Diet_Type
+//                         delete animal.Diet_Type
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.Life_Span!=undefined)
+//                     {
+//                         animal.lifeSpan =animal.Life_Span
+//                         delete animal.Life_Span
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.Pictures!=undefined)
+//                     {
+//                         animal.pictures =animal.Pictures
+//                         delete animal.Pictures
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.Gestation_Period!=undefined)
+//                     {
+//                         animal.gestationPeriod =animal.Gestation_Period
+//                         delete animal.Gestation_Period
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.Typical_Behaviour!=undefined)
+//                     {                        
+//                         animal.typicalBehaviourM={behaviour:"",threatLevel:""}
+//                         animal.typicalBehaviourF={behaviour:"",threatLevel:""}
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                         animal.typicalBehaviourM.behaviour =animal.Typical_Behaviour
+//                         animal.typicalBehaviourF.behaviour =animal.Typical_Behaviour
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                         animal.typicalBehaviourM.threatLevel =animal.Typical_Behaviour
+//                         animal.typicalBehaviourF.threatLevel =animal.Typical_Behaviour
+                        
+                        
+//                         delete animal.Typical_Behaviour
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.WeightF!=undefined)
+//                     {
+//                         animal.WeightF =animal.WeightF
+//                         delete animal.WeightF
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.WeightM!=undefined)
+//                     {
+//                         animal.weightM =animal.WeightM
+//                         delete animal.WeightM
+//                     }
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     if (animal.Animal_ID!=undefined)
+//                     {
+//                         animal.animalID =animal.Animal_ID
+//                         delete animal.Animal_ID
+//                     }
+//                     animal.classification =doc.id
+//                     animal.numOffspring=0 
+//                     animal.vulnerabilityStatus=""
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
+//                     animals.doc(doc.id).set(animal)
+//                 });
 
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
-
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
-
-        //             if (animal.Animal_ID!=undefined)
-        //             {
-        //                 animal.animalID =animal.Animal_ID
-        //                 delete animal.Animal_ID
-        //             }
-
-
-
-                    
-
-                    
-        //             animals.doc(doc.id).set(animal)
-        //         });
-
-        //     }
-        // )
-}
+//             }
+//         )
+// }
