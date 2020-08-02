@@ -430,6 +430,7 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 return groupData.length()
+            }
         },
         users: {
             type: GraphQLList(USER_TYPE),
