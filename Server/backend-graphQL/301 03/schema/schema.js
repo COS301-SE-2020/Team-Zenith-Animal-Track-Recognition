@@ -362,7 +362,7 @@ const RootQuery = new GraphQLObjectType({
             }
 
         },
-        DASlogin: {
+        wdbLogin: {
             type: USER_TYPE,
             args: {
                 eMail: {
