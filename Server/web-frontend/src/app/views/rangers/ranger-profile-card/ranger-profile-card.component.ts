@@ -10,25 +10,21 @@ import { DeleteRangerComponent } from './../delete-ranger/delete-ranger.componen
 	selector: 'app-ranger-profile-card',
 	templateUrl: './ranger-profile-card.component.html',
 	styleUrls: ['./ranger-profile-card.component.css'],
-	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RangerProfileCardComponent implements OnInit {
 
 	@Input() searchText: string;
 	@Input() rangers;
+	numRangers: any;
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	sorted: string;
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef) { }
 	
-	ngOnInit(): void { this.startLoader(); }
+	ngOnInit(): void {this.startLoader();}
+
 
 	public ngOnChanges(changes: SimpleChanges) {
-		this.startLoader();
-		if ('rangers' in changes) {
-			//If rangers has updated
-			this.changeDetection.markForCheck();
-		}
 		this.stopLoader();
 	}
 
@@ -71,7 +67,7 @@ export class RangerProfileCardComponent implements OnInit {
 				if (result == "success") {
 					//If ranger was successfully deleted
 					//Refresh component and notify parent
-					this.rangersOnChange.emit("update");
+					this.rangersOnChange.emit("delete");
 				}
 				else {
 					console.log("Error deleting ranger: ", result);

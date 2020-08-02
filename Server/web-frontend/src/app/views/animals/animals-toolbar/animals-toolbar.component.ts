@@ -26,7 +26,7 @@ export class AnimalsToolbarComponent implements OnInit {
   openAddAnimalDialog() {
 		const dialogConfig = new MatDialogConfig();
 
-		const addDialogRef = this.dialog.open(AddAnimalComponent, { height: '85%', width: '70%', panelClass: 'add-ranger-modal', autoFocus: true, disableClose: true });
+		const addDialogRef = this.dialog.open(AddAnimalComponent, { height: '85%', width: '65%', panelClass: 'add-ranger-modal', autoFocus: true, disableClose: true });
 		addDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
 			if (result == 'success') {

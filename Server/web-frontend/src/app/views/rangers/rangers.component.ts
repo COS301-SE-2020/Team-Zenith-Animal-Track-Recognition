@@ -11,6 +11,7 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 	styleUrls: ['./rangers.component.css']
 })
 export class RangersComponent implements OnInit {
+	
 	@ViewChild('sidenav') sidenav;
 	rangers: any;
 	searchText: string;
@@ -35,22 +36,61 @@ export class RangersComponent implements OnInit {
 		this.searchText = event;
 	}
 
-	refresh() {
+	refresh(updateOp: string) {
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
-				this.rangers = null;
-				this.rangers = temp[0];
+				var newRangerList = temp[0];
+				switch(updateOp)
+				{
+					case "update":
+						this.rangers = null;
+						this.rangers = newRangerList;
+					break;
+					case "add":
+						newRangerList.forEach(x => this.addIfNewRanger(x));
+					break;
+					case "delete":
+						let removedRanger = this.rangers.filter(x => !newRangerList.some(y => y.Token == x.Token));
+						this.removeRanger(removedRanger[0].Token);
+					break;
+				}
+				newRangerList = null;
 				this.sort(this.sortBySurname);
 			});
 	}
-
-	updateRangerList(updatedList) {
-		if (updatedList == 'update') {
-			this.refresh();
-		}
+	
+	//Ranger CRUD Operations
+	updateRangerList(updatedList: string) {
+		this.refresh(updatedList);
 	}
+	addIfNewRanger(x: any)
+	{
+		let isNotNew = false;
+		for (let i = 0; i < this.rangers.length; i++)
+			if (x.Token == this.rangers[i].Token)
+				isNotNew = true;
+			
+		if (!isNotNew)
+			this.rangers.push(x);
+	}
+	removeRanger(t: string){
+		this.rangers.splice(this.rangers.findIndex(x => x.Token == t), 1);
+	}
+	deleteRanger(x: any){
+		var isNotNew = false;
+			for (let i = 0; i < this.rangers.length; i++)
+			{
+				if (x.Token == this.rangers[i].Token)
+				{
+					isNotNew = true;
+				}
+			}
+		if (!isNotNew)
+			this.rangers.push(x);
+	}
+
 
 	//Ranger Search sidenav
 	openSidenav() {

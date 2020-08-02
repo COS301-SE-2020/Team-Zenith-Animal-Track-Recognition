@@ -9,7 +9,6 @@
 	align-items: space-around;
 	overflow: auto;
 }
-
 /*
 .animal-profile-cards-container::after 
 {
@@ -26,6 +25,11 @@
 	align-items: center;
 	margin: 1% 0;
 }
+@keyframes fadePop
+{
+  from {opacity: 0.1; transform: translateY(10%);}
+  to {opacity: 1.0; transform: translateY(0%);}
+}
 .animal-profile-card
 {
 	height: 90%;
@@ -37,6 +41,7 @@
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out; 
     -o-transition: all 0.3s ease-in-out;
+	animation: fadePop 0.7s ease-out 0s 1 normal none;
 }
 .animal-profile-card:hover
 {

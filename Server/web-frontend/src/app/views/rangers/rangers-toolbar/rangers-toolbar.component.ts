@@ -24,12 +24,6 @@ export class RangersToolbarComponent implements OnInit {
 	
 	ngOnInit(): void { }
 
-	public ngOnChanges(changes: SimpleChanges) {
-		if ('rangers' in changes) {
-			//If rangers has updated
-		}
-	}
-
 	openAddRangerDialog() {
 		const dialogConfig = new MatDialogConfig();
 
@@ -39,7 +33,7 @@ export class RangersToolbarComponent implements OnInit {
 			//Refresh component and notify parent
 			if (result == 'success') {
 				//If ranger was successfully added, refresh component and notify parent
-				this.rangersOnChange.emit('update');
+				this.rangersOnChange.emit('add');
 			}
 			else {
 				this.snackBar.open('An error occured when adding the new ranger. Please try again.', "Dismiss", { duration: 5000, });

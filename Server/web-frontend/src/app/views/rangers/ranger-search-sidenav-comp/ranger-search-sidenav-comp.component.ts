@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './ranger-search-sidenav-comp.component.html',
   styleUrls: ['./ranger-search-sidenav-comp.component.css']
 })
+
+	
 export class RangerSearchSidenavCompComponent implements OnInit {
 
   @Input() rangers;

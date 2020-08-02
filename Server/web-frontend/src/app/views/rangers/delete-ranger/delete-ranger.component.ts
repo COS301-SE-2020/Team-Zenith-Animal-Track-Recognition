@@ -31,12 +31,10 @@ export class DeleteRangerComponent implements OnInit {
     //Loader
 	startLoader()
 	{
-		console.log("Starting Loader");
 		document.getElementById("loader-container").style.visibility = "visible";
 	}  
 	stopLoader()
 	{
-	  	console.log("Stopping Loader");
 		document.getElementById("loader-container").style.visibility = "hidden";
 	}
 }
