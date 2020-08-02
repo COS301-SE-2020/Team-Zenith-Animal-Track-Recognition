@@ -283,10 +283,10 @@ const ANIMAL_TYPE = new GraphQLObjectType({
         typicalBehaviourF : {
             type: BEHAVIOUR_TYPE
         },
-        OverviewOfTheAnimal: {
+        animalOverview: {
             type: GraphQLString
         },
-        DescriptionOfAnimal: {
+        animalDescription: {
             type: GraphQLString
         },
         pictures: {
@@ -1067,10 +1067,10 @@ const Mutation = new GraphQLObjectType({
                 typicalThreatLevelF: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                OverviewOfTheAnimal: {
+                animalOverview: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                DescriptionOfAnimal: {
+                animalDescription: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 pictures: {
@@ -1119,8 +1119,8 @@ const Mutation = new GraphQLObjectType({
                         behaviour: args.typicalBehaviourF,
                         threatLevel: args.typicalThreatLevelF
                     },
-                    OverviewOfTheAnimal: args.OverviewOfTheAnimal,
-                    DescriptionOfAnimal: args.DescriptionOfAnimal
+                    animalOverview: args.animalOverview,
+                    animalDescription: args.animalDescription
                 }
                 if (args.pictures != undefined) {
                     newAnimal.pictures = args.pictures
@@ -1188,10 +1188,10 @@ const Mutation = new GraphQLObjectType({
                 typicalThreatLevelF: {
                     type: GraphQLString
                 },
-                OverviewOfTheAnimal: {
+                animalOverview: {
                     type: GraphQLString
                 },
-                DescriptionOfAnimal: {
+                animalDescription: {
                     type: GraphQLString
                 },
                 pictures: {
@@ -1264,8 +1264,8 @@ const Mutation = new GraphQLObjectType({
                 if (args.vulnerabilityStatus != undefined) {
                     updatedAnimal.vulnerabilityStatus = args.vulnerabilityStatus
                 }
-                if (args.descriptionOfAnimal != undefined) {
-                    updatedAnimal.descriptionOfAnimal = args.descriptionOfAnimal
+                if (args.animalDescription != undefined) {
+                    updatedAnimal.animalDescription = args.animalDescription
                 }
                 animals.doc(args.classification).set(updatedAnimal)
                 newAnimal.classification = args.classification
@@ -1442,8 +1442,8 @@ if (CACHE) {
                 lifeSpan: doc.data().lifeSpan,
                 gestationPeriod: doc.data().gestationPeriod,
                 typicalBehaviour: doc.data().typicalBehaviour,
-                OverviewOfTheAnimal: doc.data().OverviewOfTheAnimal,
-                DescriptionOfAnimal: doc.data().DescriptionOfAnimal,
+                animalOverview: doc.data().animalOverview,
+                animalDescription: doc.data().animalDescription,
                 pictures: doc.data().pictures
             }
             animalData.push(temp);
