@@ -135,9 +135,9 @@ const SPOOR_IDENTIFICATION_TYPE = new GraphQLObjectType({
         },
         ranger: {
             type: USER_TYPE,
-            resolve(parent, args){
-                return _.find(usersData,{
-                    token:parent.ranger
+            resolve(parent, args) {
+                return _.find(usersData, {
+                    token: parent.ranger
                 })
             }
         },
@@ -173,9 +173,9 @@ const USER_TYPE = new GraphQLObjectType({
         },
         activity: {
             type: new GraphQLList(SPOOR_IDENTIFICATION_TYPE),
-            resolve(parent, args){
-                return _.filter(spoorIdentificationData,{
-                    ranger:parent.token
+            resolve(parent, args) {
+                return _.filter(spoorIdentificationData, {
+                    ranger: parent.token
                 })
             }
         }
@@ -441,19 +441,19 @@ const RootQuery = new GraphQLObjectType({
                     let temp = usersData;
 
                     if (args.tokenSearch != undefined)
-                    temp = _.filter(temp, {
+                        temp = _.filter(temp, {
                             token: args.tokenSearch
                         })
                     if (args.password != undefined)
-                    temp = _.filter(temp, {
+                        temp = _.filter(temp, {
                             password: args.password
                         })
                     if (args.accessLevel != undefined)
-                    temp = _.filter(temp, {
-                        accessLevel: args.accessLevel
+                        temp = _.filter(temp, {
+                            accessLevel: args.accessLevel
                         })
                     if (args.eMail != undefined)
-                    temp = _.filter(temp, {
+                        temp = _.filter(temp, {
                             eMail: args.eMail
                         })
                     if (args.phoneNumber != undefined) {
@@ -573,23 +573,21 @@ const RootQuery = new GraphQLObjectType({
                 if (a == null) {
                     return null;
                 }
-                let temp=spoorIdentificationData
-                if(args.ranger!=undefined)
-                {
-                    if (args.negat==undefined){
-                        temp=_.filter(temp,{
-                            ranger:args.ranger
+                let temp = spoorIdentificationData
+                if (args.ranger != undefined) {
+                    if (args.negat == undefined) {
+                        temp = _.filter(temp, {
+                            ranger: args.ranger
                         })
-                    }else{
-                        temp=_.reject(temp,{
-                            ranger:args.ranger
+                    } else {
+                        temp = _.reject(temp, {
+                            ranger: args.ranger
                         })
                     }
-                }
-                else{
+                } else {
                     return temp
                 }
-                
+
             }
         },
     }
@@ -939,7 +937,7 @@ const Mutation = new GraphQLObjectType({
             }
 
         },
-        AddHabitat: {
+        addHabitat: {
             type: HABITAT_TYPE,
             args: {
                 token: {
@@ -990,7 +988,7 @@ const Mutation = new GraphQLObjectType({
                 return newHabitat;
             }
         },
-        AddAnimal: {
+        addAnimal: {
             type: ANIMAL_TYPE,
             args: {
                 token: {
@@ -1126,22 +1124,22 @@ const Mutation = new GraphQLObjectType({
                     type: new GraphQLList(new GraphQLNonNull(GraphQLInt))
                 },
                 DietType: {
-                    type:GraphQLString
+                    type: GraphQLString
                 },
                 LifeSpan: {
-                    type:GraphQLString
+                    type: GraphQLString
                 },
                 gestationPeriod: {
-                    type:GraphQLString
+                    type: GraphQLString
                 },
                 TypicalBehaviour: {
-                    type:GraphQLString
+                    type: GraphQLString
                 },
                 OverviewOfTheAnimal: {
-                    type:GraphQLString
+                    type: GraphQLString
                 },
                 DescriptionOfAnimal: {
-                    type:GraphQLString
+                    type: GraphQLString
                 },
                 pictures: {
                     type: new GraphQLList(GraphQLInt)
@@ -1158,59 +1156,124 @@ const Mutation = new GraphQLObjectType({
                 if (a.accessLevel <= 2) {
                     return null
                 }
-                let  updatedAnimal=_.find(animalData,{
-                    classification:args.classification
+                let updatedAnimal = _.find(animalData, {
+                    classification: args.classification
                 })
                 delete updatedAnimal.classification
-                if (args.commonName!=undefined){
-                    updatedAnimal.commonName =args.commonName
+                if (args.commonName != undefined) {
+                    updatedAnimal.commonName = args.commonName
                 }
-                if (args.groupID !=undefined){
-                    updatedAnimal.groupID  =args.groupID 
+                if (args.groupID != undefined) {
+                    updatedAnimal.groupID = args.groupID
                 }
-                if (args.heightM !=undefined){
-                    updatedAnimal.heightM  =args.heightM 
+                if (args.heightM != undefined) {
+                    updatedAnimal.heightM = args.heightM
                 }
-                if (args.heightF !=undefined){
-                    updatedAnimal.heightF  =args.heightF 
+                if (args.heightF != undefined) {
+                    updatedAnimal.heightF = args.heightF
                 }
-                if (args.weightM !=undefined){
-                    updatedAnimal.weightM  =args.weightM 
+                if (args.weightM != undefined) {
+                    updatedAnimal.weightM = args.weightM
                 }
-                if (args.weightF !=undefined){
-                    updatedAnimal.weightF  =args.weightF 
+                if (args.weightF != undefined) {
+                    updatedAnimal.weightF = args.weightF
                 }
-                if (args.habitats !=undefined){
-                    updatedAnimal.habitats  =args.habitats 
+                if (args.habitats != undefined) {
+                    updatedAnimal.habitats = args.habitats
                 }
-                if (args.dietType !=undefined){
-                    updatedAnimal.dietType  =args.dietType 
+                if (args.dietType != undefined) {
+                    updatedAnimal.dietType = args.dietType
                 }
-                if (args.lifeSpan !=undefined){
-                    updatedAnimal.lifeSpan  =args.lifeSpan 
+                if (args.lifeSpan != undefined) {
+                    updatedAnimal.lifeSpan = args.lifeSpan
                 }
-                if (args.gestationPeriod !=undefined){
-                    updatedAnimal.gestationPeriod  =args.gestationPeriod 
+                if (args.gestationPeriod != undefined) {
+                    updatedAnimal.gestationPeriod = args.gestationPeriod
                 }
-                if (args.numOffspring!=undefined){
-                    updatedAnimal.numOffspring =args.numOffspring
+                if (args.numOffspring != undefined) {
+                    updatedAnimal.numOffspring = args.numOffspring
                 }
-                if (args.typicalBehaviourM !=undefined){
-                    updatedAnimal.typicalBehaviourM  =args.typicalBehaviourM 
+                if (args.typicalBehaviourM != undefined) {
+                    updatedAnimal.typicalBehaviourM = args.typicalBehaviourM
                 }
-                if (args.typicalBehaviourF !=undefined){
-                    updatedAnimal.typicalBehaviourF  =args.typicalBehaviourF 
+                if (args.typicalBehaviourF != undefined) {
+                    updatedAnimal.typicalBehaviourF = args.typicalBehaviourF
                 }
-                if (args.overviewOfAnimal!=undefined){
-                    updatedAnimal.overviewOfAnimal =args.overviewOfAnimal
+                if (args.overviewOfAnimal != undefined) {
+                    updatedAnimal.overviewOfAnimal = args.overviewOfAnimal
                 }
-                if (args.vulnerabilityStatus!=undefined){
-                    updatedAnimal.vulnerabilityStatus =args.vulnerabilityStatus
+                if (args.vulnerabilityStatus != undefined) {
+                    updatedAnimal.vulnerabilityStatus = args.vulnerabilityStatus
                 }
-                if (args.descriptionOfAnimal!=undefined){
-                    updatedAnimal.descriptionOfAnimal =args.descriptionOfAnimal
+                if (args.descriptionOfAnimal != undefined) {
+                    updatedAnimal.descriptionOfAnimal = args.descriptionOfAnimal
                 }
                 animals.doc(args.classification).set(updatedAnimal)
+                newAnimal.classification = args.classification
+                animalData.push(newAnimal)
+                return newAnimal;
+            }
+        },
+
+
+
+        identificationBase64: {
+            type: SPOOR_IDENTIFICATION_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                base64imge: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.accessLevel <= 2) {
+                    return null
+                }
+                let HID = ((animalData.length + 1))
+                let b = _.find(habitatData, {
+                    animalID: HID.toString()
+                })
+                while (b != null) {
+                    HID++
+                    b = _.find(habitatData, {
+                        animalID: HID.toString()
+                    })
+                }
+
+                let newAnimal = {
+                    animalID: HID,
+                    commonName: args.commonName,
+                    groupID: args.groupID,
+                    heightM: args.heightM,
+                    heightF: args.heightF,
+                    weightM: args.weightM,
+                    weightF: args.weightF,
+                    habitats: args.habitats,
+                    dietType: args.dietType,
+                    lifeSpan: args.lifeSpan,
+                    gestationPeriod: args.gestationPeriod,
+                    typicalBehaviour: args.typicalBehaviour,
+                    Overview_of_the_animal: args.Overview_of_the_animal,
+                    DescriptionOfAnimal: args.DescriptionOfAnimal
+                }
+                if (args.pictures != undefined) {
+                    newAnimal.pictures = args.pictures
+                } else {
+                    newAnimal.pictures = []
+                    newAnimal.pictures.push(1)
+                }
+
+                animals.doc(args.classification).set(newAnimal).then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                })
                 newAnimal.classification = args.classification
                 animalData.push(newAnimal)
                 return newAnimal;
@@ -1228,62 +1291,12 @@ module.exports = new GraphQLSchema({
     mutation: Mutation
 });
 
-// db.collection('AnimalInfo').get()
-//     .then((snapshot) => {
-//         snapshot.forEach((doc) => {
-//             console.log(doc.id, '=>', doc.data());
-//         });
-//     })
-//     .catch((err) => {
-//         console.log('Error getting documents', err);
-//     });
 
-users.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-            let newuser = {
-                password: doc.data().password,
-                token: doc.id,
-                accessLevel: doc.data().accessLevel,
-                eMail: doc.data().eMail,
-                firstName: doc.data().firstName,
-                lastName: doc.data().lastName,
-                phoneNumber: doc.data().phoneNumber
-            }
-            usersData.push(newuser)
-        });
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
-    });
-    groups.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-            let newGoupe = {
-                groupID: doc.data().groupID,
-                groupName: doc.data().groupName
-            }
-            groupData.push(newGoupe)
-        });
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
-    });
-
-    habitats.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-            let newHabitat = {
-                habitatID: doc.data().habitatID,
-                habitatName: doc.data().habitatName
-            }
-            habitatData.push(newHabitat)
-        });
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
-    });
-
-    animals.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-            let newAnimal = {
+if (CACHE) {
+    animals.onSnapshot(function (querySnapshot) {
+        animalData = [];
+        querySnapshot.forEach(function (doc) {
+            let temp = {
                 classification: doc.id,
                 animalID: doc.data().animalID,
                 commonName: doc.data().commonName,
@@ -1301,9 +1314,66 @@ users.get().then((snapshot) => {
                 DescriptionOfAnimal: doc.data().DescriptionOfAnimal,
                 pictures: doc.data().pictures
             }
-            animalData.push(newAnimal)
+            animalData.push(temp);
+        });
+    });
+
+    users.onSnapshot(function (querySnapshot) {
+        usersData = [];
+        querySnapshot.forEach(function (doc) {
+            let newuser = {
+                password: doc.data().password,
+                token: doc.id,
+                accessLevel: doc.data().accessLevel,
+                eMail: doc.data().eMail,
+                firstName: doc.data().firstName,
+                lastName: doc.data().lastName,
+                phoneNumber: doc.data().phoneNumber
+            }
+            usersData.push(newuser)
+        });
+    });
+
+
+    groups.onSnapshot(function (querySnapshot) {
+        usersData = [];
+        querySnapshot.forEach(function (doc) {
+            let newGoupe = {
+                groupID: doc.data().groupID,
+                groupName: doc.data().groupName
+            }
+            groupData.push(newGoupe)
+        });
+    });
+
+}
+
+
+let habitats = db.collection("habitats");
+let pictures = db.collection("pictures");
+let spoorIdentifications = db.collection("spoorIdentifications");
+
+
+
+groups.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+            
         });
     })
     .catch((err) => {
         console.log('Error getting documents', err);
     });
+
+habitats.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+            let newHabitat = {
+                habitatID: doc.data().habitatID,
+                habitatName: doc.data().habitatName
+            }
+            habitatData.push(newHabitat)
+        });
+    })
+    .catch((err) => {
+        console.log('Error getting documents', err);
+    });
+
