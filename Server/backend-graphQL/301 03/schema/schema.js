@@ -421,7 +421,7 @@ const RootQuery = new GraphQLObjectType({
                 return null;
             }
         },
-        nuberGroups: {
+        numberGroups: {
             type: GraphQLInt,
             args: {
                 token: {
