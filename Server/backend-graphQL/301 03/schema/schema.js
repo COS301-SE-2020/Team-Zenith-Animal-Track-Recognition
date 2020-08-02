@@ -845,12 +845,12 @@ const Mutation = new GraphQLObjectType({
                 }
                 let GID = ((groupData.length + 1))
                 let b = _.find(groupData, {
-                    GeotagID: GID.toString()
+                    groupID: GID.toString()
                 })
                 while (b != null) {
                     GID++
                     b = _.find(groupData, {
-                        GeotagID: GID.toString()
+                        groupID: GID.toString()
                     })
                 }
 
@@ -1446,6 +1446,29 @@ function getSimilarimg(ImgID) {
                         user.accessLevel == "0"
                     }
                     users.doc(doc.id).set(user)
+                });
+
+            }
+        )
+
+        db.collection("Pictures")
+        .get()
+        .then(
+            function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+                    let puter = doc.data()
+                    if (puter.GeotagID!=undefined)
+                    {
+                        puter.picturesID=doc.id
+                        delete puter.GeotagID
+                    }
+                    if (puter.Kind_Of_Picture!=undefined)
+                    {
+                        puter.kindOfPicture=puter.Kind_Of_Picture
+                        delete puter.Kind_Of_Picture
+                    }
+                    
+                    pictures.doc(doc.id).set(puter)
                 });
 
             }
