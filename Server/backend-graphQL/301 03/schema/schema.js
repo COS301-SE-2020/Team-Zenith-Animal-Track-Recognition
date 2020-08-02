@@ -421,6 +421,16 @@ const RootQuery = new GraphQLObjectType({
                 return null;
             }
         },
+        nuberGroups: {
+            type: GraphQLInt,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                return groupData.length()
+        },
         users: {
             type: GraphQLList(USER_TYPE),
             args: {
