@@ -277,7 +277,7 @@ const ANIMAL_TYPE = new GraphQLObjectType({
         gestationPeriod: {
             type: BEHAVIOUR_TYPE
         },
-        typicalBehaviourM : {
+        typicalBehaviourM: {
             type: BEHAVIOUR_TYPE
         },
         OverviewOfTheAnimal: {
@@ -1043,10 +1043,10 @@ const Mutation = new GraphQLObjectType({
                 TypicalBehaviourM: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                typicalBehaviourF : {
+                typicalBehaviourF: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                typicalThreatLevelM : {
+                typicalThreatLevelM: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 typicalThreatLevelF: {
@@ -1097,12 +1097,12 @@ const Mutation = new GraphQLObjectType({
                     lifeSpan: args.lifeSpan,
                     gestationPeriod: args.gestationPeriod,
                     typicalBehaviourM: {
-                        behaviour:args.TypicalBehaviourM,
-                        threatLevel:args.typicalThreatLevelM
+                        behaviour: args.TypicalBehaviourM,
+                        threatLevel: args.typicalThreatLevelM
                     },
                     typicalBehaviourF: {
-                        behaviour:args.typicalBehaviourF,
-                        threatLevel:args.typicalThreatLevelF
+                        behaviour: args.typicalBehaviourF,
+                        threatLevel: args.typicalThreatLevelF
                     },
                     OverviewOfTheAnimal: args.OverviewOfTheAnimal,
                     DescriptionOfAnimal: args.DescriptionOfAnimal
@@ -1164,10 +1164,10 @@ const Mutation = new GraphQLObjectType({
                 TypicalBehaviourM: {
                     type: GraphQLString
                 },
-                typicalBehaviourF : {
+                typicalBehaviourF: {
                     type: GraphQLString
                 },
-                typicalThreatLevelM : {
+                typicalThreatLevelM: {
                     type: GraphQLString
                 },
                 typicalThreatLevelF: {
@@ -1332,14 +1332,26 @@ const Mutation = new GraphQLObjectType({
             type: SPOOR_IDENTIFICATION_TYPE,
             args: {
                 token: {
-                    type: new GraphQLNonNull(GraphQLString)
+                    type: GraphQLString
                 },
                 latitude: {
-                    type: new GraphQLNonNull(GraphQLFloat)
+                    type: GraphQLFloat
                 },
                 longitude: {
-                    type: new GraphQLNonNull(GraphQLFloat)
+                    type: GraphQLFloat
                 },
+                SpoorIdentificationID: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                ranger: {
+                    type: GraphQLString
+                },
+                animal: {
+                    type: GraphQLString
+                },
+                tags: {
+                    type: new GraphQLList(new GraphQLNonNull(GraphQLString))
+                }
             },
             resolve(parent, args) {
                 let a = _.find(usersData, {
@@ -1351,40 +1363,28 @@ const Mutation = new GraphQLObjectType({
                 if (a.accessLevel <= 1) {
                     return null
                 }
-                let IDID = ((spoorIdentificationData.length + 1))
-                let b = _.find(spoorIdentificationData, {
-                    SpoorIdentificationID: IDID.toString()
+                let newSpoorIdentification = _.find(spoorIdentificationData, {
+                    SpoorIdentificationID: args.SpoorIdentificationID
                 })
-                while (b != null) {
-                    IDID++
-                    b = _.find(spoorIdentificationData, {
-                        SpoorIdentificationID: IDID.toString()
-                    })
+                if (newSpoorIdentification == null)
+                    return null;
+
+                if (args.latitude != undefined) {
+                    newSpoorIdentification.location.latitude = args.latitude
                 }
-                let potentialMatchesarry = AIIterface(args.base64imge)
-                potentialMatchesarry = _.sortBy(potentialMatchesarry, ["confidence", "animal"])
-                let newingID = uplodeBase64(args.base64imge)
-                let newSpoorIdentification = {
-                    SpoorIdentificationID: IDID,
-                    dateAndTime: {
-                        year: dateOBJ.getFullYear() + 0,
-                        month: dateOBJ.getMonth() + 1,
-                        day: dateOBJ.getDate() + 0,
-                        hour: dateOBJ.getHours() + 0,
-                        min: getMinutes() + 0,
-                        second: getSeconds() + 0
-                    },
-                    location: {
-                        latitude: args.latitude,
-                        longitude: args.longitude
-                    },
-                    ranger: args.token,
-                    potentialMatches: potentialMatchesarry,
-                    animal: potentialMatchesarry[0][animal].animalID,
-                    track: newingID,
-                    similar: getSimilarimg(newingID),
-                    tags: [0]
+                if (args.longitude != undefined) {
+                    newSpoorIdentification.location.longitude = args.longitude
                 }
+                if (args.ranger != undefined) {
+                    newSpoorIdentification.ranger = args.ranger
+                }
+                if (args.animal != undefined) {
+                    newSpoorIdentification.animal = args.animal
+                }
+                if (args.tags != undefined) {
+                    newSpoorIdentification.tags = args.tags
+                }
+
 
                 spoorIdentifications.doc(SpoorIdentificationID).set(newSpoorIdentification).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
@@ -1605,8 +1605,8 @@ function getSimilarimg(ImgID) {
 
 //                         animal.typicalBehaviourM.threatLevel =animal.Typical_Behaviour
 //                         animal.typicalBehaviourF.threatLevel =animal.Typical_Behaviour
-                        
-                        
+
+
 //                         delete animal.Typical_Behaviour
 //                     }
 
