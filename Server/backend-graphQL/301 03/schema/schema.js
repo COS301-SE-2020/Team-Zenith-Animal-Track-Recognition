@@ -197,6 +197,18 @@ const PICTURES_TYPE = new GraphQLObjectType({
 
     })
 });
+
+const BEHAVIOUR_TYPE = new GraphQLObjectType({
+    name: "Behaviour",
+    fields: () => ({
+        behaviour: {
+            type: GraphQLString
+        },
+        threatLevel: {
+            type: GraphQLString
+        }
+    })
+});
 //animals
 const ANIMAL_TYPE = new GraphQLObjectType({
     name: 'animal',
@@ -263,12 +275,12 @@ const ANIMAL_TYPE = new GraphQLObjectType({
             type: GraphQLString
         },
         gestationPeriod: {
-            type: GraphQLString
+            type: BEHAVIOUR_TYPE
         },
-        typicalBehaviour: {
-            type: GraphQLString
+        typicalBehaviourM : {
+            type: BEHAVIOUR_TYPE
         },
-        Overview_of_the_animal: {
+        OverviewOfTheAnimal: {
             type: GraphQLString
         },
         DescriptionOfAnimal: {
@@ -1028,7 +1040,16 @@ const Mutation = new GraphQLObjectType({
                 gestationPeriod: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                TypicalBehaviour: {
+                TypicalBehaviourM: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                typicalBehaviourF : {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                typicalThreatLevelM : {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                typicalThreatLevelF: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 OverviewOfTheAnimal: {
@@ -1075,8 +1096,15 @@ const Mutation = new GraphQLObjectType({
                     dietType: args.dietType,
                     lifeSpan: args.lifeSpan,
                     gestationPeriod: args.gestationPeriod,
-                    typicalBehaviour: args.typicalBehaviour,
-                    Overview_of_the_animal: args.Overview_of_the_animal,
+                    typicalBehaviourM: {
+                        behaviour:args.TypicalBehaviourM,
+                        threatLevel:args.typicalThreatLevelM
+                    },
+                    typicalBehaviourF: {
+                        behaviour:args.typicalBehaviourF,
+                        threatLevel:args.typicalThreatLevelF
+                    },
+                    OverviewOfTheAnimal: args.OverviewOfTheAnimal,
                     DescriptionOfAnimal: args.DescriptionOfAnimal
                 }
                 if (args.pictures != undefined) {
@@ -1133,7 +1161,16 @@ const Mutation = new GraphQLObjectType({
                 gestationPeriod: {
                     type: GraphQLString
                 },
-                TypicalBehaviour: {
+                TypicalBehaviourM: {
+                    type: GraphQLString
+                },
+                typicalBehaviourF : {
+                    type: GraphQLString
+                },
+                typicalThreatLevelM : {
+                    type: GraphQLString
+                },
+                typicalThreatLevelF: {
                     type: GraphQLString
                 },
                 OverviewOfTheAnimal: {
@@ -1195,10 +1232,16 @@ const Mutation = new GraphQLObjectType({
                     updatedAnimal.numOffspring = args.numOffspring
                 }
                 if (args.typicalBehaviourM != undefined) {
-                    updatedAnimal.typicalBehaviourM = args.typicalBehaviourM
+                    updatedAnimal.typicalBehaviourM.behaviour = args.typicalBehaviourM
                 }
                 if (args.typicalBehaviourF != undefined) {
-                    updatedAnimal.typicalBehaviourF = args.typicalBehaviourF
+                    updatedAnimal.typicalBehaviourF.behaviour = args.typicalBehaviourF
+                }
+                if (args.typicalThreatLevelM != undefined) {
+                    updatedAnimal.typicalBehaviourM.threatLevel = args.typicalThreatLevelM
+                }
+                if (args.typicalThreatLevelF != undefined) {
+                    updatedAnimal.typicalBehaviourF.threatLevel = args.typicalThreatLevelF
                 }
                 if (args.overviewOfAnimal != undefined) {
                     updatedAnimal.overviewOfAnimal = args.overviewOfAnimal
@@ -1215,9 +1258,6 @@ const Mutation = new GraphQLObjectType({
                 return newAnimal;
             }
         },
-
-
-
         identificationBase64: {
             type: SPOOR_IDENTIFICATION_TYPE,
             args: {
@@ -1288,6 +1328,75 @@ const Mutation = new GraphQLObjectType({
             }
         },
 
+        updateIdentification: {
+            type: SPOOR_IDENTIFICATION_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                latitude: {
+                    type: new GraphQLNonNull(GraphQLFloat)
+                },
+                longitude: {
+                    type: new GraphQLNonNull(GraphQLFloat)
+                },
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.accessLevel <= 1) {
+                    return null
+                }
+                let IDID = ((spoorIdentificationData.length + 1))
+                let b = _.find(spoorIdentificationData, {
+                    SpoorIdentificationID: IDID.toString()
+                })
+                while (b != null) {
+                    IDID++
+                    b = _.find(spoorIdentificationData, {
+                        SpoorIdentificationID: IDID.toString()
+                    })
+                }
+                let potentialMatchesarry = AIIterface(args.base64imge)
+                potentialMatchesarry = _.sortBy(potentialMatchesarry, ["confidence", "animal"])
+                let newingID = uplodeBase64(args.base64imge)
+                let newSpoorIdentification = {
+                    SpoorIdentificationID: IDID,
+                    dateAndTime: {
+                        year: dateOBJ.getFullYear() + 0,
+                        month: dateOBJ.getMonth() + 1,
+                        day: dateOBJ.getDate() + 0,
+                        hour: dateOBJ.getHours() + 0,
+                        min: getMinutes() + 0,
+                        second: getSeconds() + 0
+                    },
+                    location: {
+                        latitude: args.latitude,
+                        longitude: args.longitude
+                    },
+                    ranger: args.token,
+                    potentialMatches: potentialMatchesarry,
+                    animal: potentialMatchesarry[0][animal].animalID,
+                    track: newingID,
+                    similar: getSimilarimg(newingID),
+                    tags: [0]
+                }
+
+                spoorIdentifications.doc(SpoorIdentificationID).set(newSpoorIdentification).then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+                newSpoorIdentification.SpoorIdentificationID = SpoorIdentificationID
+                spoorIdentificationData.push(newSpoorIdentification)
+                return newSpoorIdentification;
+            }
+        },
+
+
+
 
     }
 });
@@ -1318,7 +1427,7 @@ if (CACHE) {
                 lifeSpan: doc.data().lifeSpan,
                 gestationPeriod: doc.data().gestationPeriod,
                 typicalBehaviour: doc.data().typicalBehaviour,
-                Overview_of_the_animal: doc.data().Overview_of_the_animal,
+                OverviewOfTheAnimal: doc.data().OverviewOfTheAnimal,
                 DescriptionOfAnimal: doc.data().DescriptionOfAnimal,
                 pictures: doc.data().pictures
             }
@@ -1418,59 +1527,255 @@ function getSimilarimg(ImgID) {
 }
 
 { //transver
-    db.collection("users")
-        .get()
-        .then(
-            function (querySnapshot) {
-                querySnapshot.forEach(function (doc) {
-                    let user = doc.data()
-                    if (user.Password != undefined) {
-                        user.password = user.Password
-                        delete user.Password
-                    }
-                    if (user.e_mail != undefined) {
-                        user.eMail = user.e_mail
-                        delete user.e_mail
-                    }
-                    if (user.Access_Level != undefined) {
-                        user.accessLevel = user.Access_Level
-                        delete user.Access_Level
-                    }
-                    if (user.password == undefined) {
-                        user.password == "12345"
-                    }
-                    if (user.eMail == undefined) {
-                        user.eMail == "replas me"
-                    }
-                    if (user.accessLevel == undefined) {
-                        user.accessLevel == "0"
-                    }
-                    users.doc(doc.id).set(user)
-                });
+    // db.collection("users")
+    //     .get()
+    //     .then(
+    //         function (querySnapshot) {
+    //             querySnapshot.forEach(function (doc) {
+    //                 let user = doc.data()
+    //                 if (user.Password != undefined) {
+    //                     user.password = user.Password
+    //                     delete user.Password
+    //                 }
+    //                 if (user.e_mail != undefined) {
+    //                     user.eMail = user.e_mail
+    //                     delete user.e_mail
+    //                 }
+    //                 if (user.Access_Level != undefined) {
+    //                     user.accessLevel = user.Access_Level
+    //                     delete user.Access_Level
+    //                 }
+    //                 if (user.password == undefined) {
+    //                     user.password == "12345"
+    //                 }
+    //                 if (user.eMail == undefined) {
+    //                     user.eMail == "replas me"
+    //                 }
+    //                 if (user.accessLevel == undefined) {
+    //                     user.accessLevel == "0"
+    //                 }
+    //                 users.doc(doc.id).set(user)
+    //             });
 
-            }
-        )
+    //         }
+    //     )
 
-        db.collection("Pictures")
-        .get()
-        .then(
-            function (querySnapshot) {
-                querySnapshot.forEach(function (doc) {
-                    let puter = doc.data()
-                    if (puter.GeotagID!=undefined)
-                    {
-                        puter.picturesID=doc.id
-                        delete puter.GeotagID
-                    }
-                    if (puter.Kind_Of_Picture!=undefined)
-                    {
-                        puter.kindOfPicture=puter.Kind_Of_Picture
-                        delete puter.Kind_Of_Picture
-                    }
+        // db.collection("Pictures")
+        // .get()
+        // .then(
+        //     function (querySnapshot) {
+        //         querySnapshot.forEach(function (doc) {
+        //             let puter = doc.data()
+        //             if (puter.GeotagID!=undefined)
+        //             {
+        //                 puter.picturesID=doc.id
+        //                 delete puter.GeotagID
+        //             }
+        //             if (puter.Kind_Of_Picture!=undefined)
+        //             {
+        //                 puter.kindOfPicture=puter.Kind_Of_Picture
+        //                 delete puter.Kind_Of_Picture
+        //             }
                     
-                    pictures.doc(doc.id).set(puter)
-                });
+        //             pictures.doc(doc.id).set(puter)
+        //         });
 
-            }
-        )
+        //     }
+        // )
+
+        // db.collection("Habitats")
+        // .get()
+        // .then(
+        //     function (querySnapshot) {
+        //         querySnapshot.forEach(function (doc) {
+        //             let Habitat = doc.data()
+        //             if (Habitat.Habitat_ID!=undefined)
+        //             {
+        //                 Habitat.habitatID=doc.id
+        //                 delete Habitat.Habitat_ID
+        //             }
+
+        //             if (Habitat.Broad_Description!=undefined)
+        //             {
+        //                 Habitat.description=Habitat.Broad_Description
+        //                 delete Habitat.Broad_Description
+        //             }
+
+        //             if (Habitat.Habitat_Name!=undefined)
+        //             {
+        //                 Habitat.habitatName=Habitat.Habitat_Name
+        //                 delete Habitat.Habitat_Name
+        //             }
+        //             if (Habitat.Distinguishing_Features!=undefined)
+        //             {
+        //                 Habitat.distinguishingFeatures=Habitat.Distinguishing_Features
+        //                 delete Habitat.Distinguishing_Features
+        //             }
+                    
+        //             habitats.doc(doc.id).set(Habitat)
+        //         });
+
+        //     }
+        // )
+
+        // db.collection("Groups")
+        // .get()
+        // .then(
+        //     function (querySnapshot) {
+        //         querySnapshot.forEach(function (doc) {
+        //             let group = doc.data()
+        //             if (group.Group_ID!=undefined)
+        //             {
+        //                 group.groupID=group.Group_ID
+        //                 delete group.Group_ID
+        //             }
+        //             if (group.Group_Name!=undefined)
+        //             {
+        //                 group.groupName=group.Group_Name
+        //                 delete group.Group_Name
+        //             }
+                    
+        //             groups.doc(doc.id).set(group)
+        //         });
+
+        //     }
+        // )
+
+
+        // db.collection("Animals")
+        // .get()
+        // .then(
+        //     function (querySnapshot) {
+        //         querySnapshot.forEach(function (doc) {
+        //             let animal = doc.data()
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+        //             if (animal.Animal_ID!=undefined)
+        //             {
+        //                 animal.animalID =animal.Animal_ID
+        //                 delete animal.Animal_ID
+        //             }
+
+
+
+                    
+
+                    
+        //             animals.doc(doc.id).set(animal)
+        //         });
+
+        //     }
+        // )
 }
