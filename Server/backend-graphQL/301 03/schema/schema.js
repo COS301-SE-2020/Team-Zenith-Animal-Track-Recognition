@@ -1,4 +1,5 @@
 const CACHE = true;
+var dateOBJ = new Date();
 
 const graphql = require('graphql');
 const {
@@ -43,7 +44,7 @@ let habitatData = []
 let usersData = []
 let groupData = []
 let animalData = []
-let dictureData = []
+let pictureData = []
 let spoorIdentificationData = []
 
 const MES_TYPE = new GraphQLObjectType({
@@ -1225,7 +1226,13 @@ const Mutation = new GraphQLObjectType({
                 },
                 base64imge: {
                     type: new GraphQLNonNull(GraphQLString)
-                }
+                },
+                latitude: {
+                    type: new GraphQLNonNull(GraphQLFloat)
+                },
+                longitude: {
+                    type: new GraphQLNonNull(GraphQLFloat)
+                },
             },
             resolve(parent, args) {
                 let a = _.find(usersData, {
@@ -1234,49 +1241,50 @@ const Mutation = new GraphQLObjectType({
                 if (a == undefined) {
                     return null
                 }
-                if (a.accessLevel <= 2) {
+                if (a.accessLevel <= 1) {
                     return null
                 }
-                let HID = ((animalData.length + 1))
-                let b = _.find(habitatData, {
-                    animalID: HID.toString()
+                let IDID = ((spoorIdentificationData.length + 1))
+                let b = _.find(spoorIdentificationData, {
+                    SpoorIdentificationID: IDID.toString()
                 })
                 while (b != null) {
-                    HID++
-                    b = _.find(habitatData, {
-                        animalID: HID.toString()
+                    IDID++
+                    b = _.find(spoorIdentificationData, {
+                        SpoorIdentificationID: IDID.toString()
                     })
                 }
-
-                let newAnimal = {
-                    animalID: HID,
-                    commonName: args.commonName,
-                    groupID: args.groupID,
-                    heightM: args.heightM,
-                    heightF: args.heightF,
-                    weightM: args.weightM,
-                    weightF: args.weightF,
-                    habitats: args.habitats,
-                    dietType: args.dietType,
-                    lifeSpan: args.lifeSpan,
-                    gestationPeriod: args.gestationPeriod,
-                    typicalBehaviour: args.typicalBehaviour,
-                    Overview_of_the_animal: args.Overview_of_the_animal,
-                    DescriptionOfAnimal: args.DescriptionOfAnimal
+                let potentialMatchesarry = AIIterface(args.base64imge)
+                potentialMatchesarry = _.sortBy(potentialMatchesarry, ["confidence", "animal"])
+                let newingID = uplodeBase64(args.base64imge)
+                let newSpoorIdentification = {
+                    SpoorIdentificationID: IDID,
+                    dateAndTime: {
+                        year: dateOBJ.getFullYear() + 0,
+                        month: dateOBJ.getMonth() + 1,
+                        day: dateOBJ.getDate() + 0,
+                        hour: dateOBJ.getHours() + 0,
+                        min: getMinutes() + 0,
+                        second: getSeconds() + 0
+                    },
+                    location: {
+                        latitude: args.latitude,
+                        longitude: args.longitude
+                    },
+                    ranger: args.token,
+                    potentialMatches: potentialMatchesarry,
+                    animal: potentialMatchesarry[0][animal].animalID,
+                    track: newingID,
+                    similar: getSimilarimg(newingID),
+                    tags: [0]
                 }
-                if (args.pictures != undefined) {
-                    newAnimal.pictures = args.pictures
-                } else {
-                    newAnimal.pictures = []
-                    newAnimal.pictures.push(1)
-                }
 
-                animals.doc(args.classification).set(newAnimal).then(function (docRef) {
+                spoorIdentifications.doc(SpoorIdentificationID).set(newSpoorIdentification).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
-                newAnimal.classification = args.classification
-                animalData.push(newAnimal)
-                return newAnimal;
+                newSpoorIdentification.SpoorIdentificationID = SpoorIdentificationID
+                spoorIdentificationData.push(newSpoorIdentification)
+                return newSpoorIdentification;
             }
         },
 
@@ -1336,7 +1344,7 @@ if (CACHE) {
 
 
     groups.onSnapshot(function (querySnapshot) {
-        usersData = [];
+        groupData = [];
         querySnapshot.forEach(function (doc) {
             let newGoupe = {
                 groupID: doc.data().groupID,
@@ -1346,34 +1354,100 @@ if (CACHE) {
         });
     });
 
-}
-
-
-let habitats = db.collection("habitats");
-let pictures = db.collection("pictures");
-let spoorIdentifications = db.collection("spoorIdentifications");
-
-
-
-groups.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-            
-        });
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
-    });
-
-habitats.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
+    habitats.onSnapshot(function (querySnapshot) {
+        habitatData = []
+        querySnapshot.forEach(function (doc) {
             let newHabitat = {
                 habitatID: doc.data().habitatID,
                 habitatName: doc.data().habitatName
             }
             habitatData.push(newHabitat)
         });
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
     });
 
+    pictures.onSnapshot(function (querySnapshot) {
+        pictureData = []
+        querySnapshot.forEach(function (doc) {
+            let newPicture = {
+                pictureID: doc.data().pictureID,
+                URL: doc.data().URL,
+                kindOfPicture: doc.data().kindOfPicture
+            }
+            habitatData.push(newPicture)
+        });
+    });
+
+    spoorIdentifications.onSnapshot(function (querySnapshot) {
+        spoorIdentificationData = []
+        querySnapshot.forEach(function (doc) {
+            let newHabitat = {
+                habitatID: doc.data().habitatID,
+                habitatName: doc.data().habitatName
+            }
+            habitatData.push(newHabitat)
+        });
+    });
+
+}
+
+
+
+
+function AIIterface(Img) {
+    potentialMatches = []
+    for (let i = 0; i < animalData.length; i++) {
+        let newPM = {
+            animal: i,
+            confidence: parseFloat(Math.random().toFixed(2))
+        }
+        potentialMatches.push(newPM)
+    }
+    return potentialMatches
+}
+
+function uplodeBase64(Img) {
+    return 1
+}
+
+function getSimilarimg(ImgID) {
+    obj = []
+    obj.push(1)
+    obj.push(2)
+    obj.push(3)
+    return obj
+}
+
+{ //transver
+    db.collection("users")
+        .get()
+        .then(
+            function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+                    let user = doc.data()
+                    if (user.Password != undefined) {
+                        user.password = user.Password
+                        delete user.Password
+                    }
+                    if (user.e_mail != undefined) {
+                        user.eMail = user.e_mail
+                        delete user.e_mail
+                    }
+                    if (user.Access_Level != undefined) {
+                        user.accessLevel = user.Access_Level
+                        delete user.Access_Level
+                    }
+                    if (user.password == undefined) {
+                        user.password == "12345"
+                    }
+                    if (user.eMail == undefined) {
+                        user.eMail == "replas me"
+                    }
+                    if (user.accessLevel == undefined) {
+                        user.accessLevel == "0"
+                    }
+                    users.doc(doc.id).set(user)
+                });
+
+            }
+        )
+}
