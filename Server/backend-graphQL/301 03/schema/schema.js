@@ -275,9 +275,12 @@ const ANIMAL_TYPE = new GraphQLObjectType({
             type: GraphQLString
         },
         gestationPeriod: {
-            type: BEHAVIOUR_TYPE
+            type: GraphQLString
         },
         typicalBehaviourM : {
+            type: BEHAVIOUR_TYPE
+        },
+        typicalBehaviourF : {
             type: BEHAVIOUR_TYPE
         },
         OverviewOfTheAnimal: {
