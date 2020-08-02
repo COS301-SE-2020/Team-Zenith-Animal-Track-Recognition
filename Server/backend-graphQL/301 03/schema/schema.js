@@ -17,15 +17,15 @@ const {
 } = require('lodash');
 
 //google db
-const admin = require('firebase-admin');
+const ADMIN = require('firebase-admin');
 let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+ADMIN.initializeApp({
+    credential: ADMIN.credential.cert(serviceAccount),
 });
 
 
 
-let db = admin.firestore();
+let db = ADMIN.firestore();
 let animals = db.collection("animals");
 let users = db.collection("users");
 let groups = db.collection("groups");
@@ -46,7 +46,7 @@ let animalData = []
 let dictureData = []
 let spoorIdentificationData = []
 
-const MesType = new GraphQLObjectType({
+const MES_TYPE = new GraphQLObjectType({
     name: "mesig",
     fields: () => ({
         msg: {
@@ -54,7 +54,7 @@ const MesType = new GraphQLObjectType({
         }
     })
 });
-const locationType = new GraphQLObjectType({
+const LOCATION_TYPE = new GraphQLObjectType({
     name: "location",
     fields: () => ({
         latitude: {
@@ -65,7 +65,7 @@ const locationType = new GraphQLObjectType({
         }
     })
 });
-const dateAndTimeType = new GraphQLObjectType({
+const DATE_AND_TIME_TYPE = new GraphQLObjectType({
     name: "dateAndTime",
     fields: () => ({
         year: {
@@ -88,16 +88,16 @@ const dateAndTimeType = new GraphQLObjectType({
         },
     })
 });
-const potentialMatchesType = new GraphQLObjectType({
+const POTENTIAL_MATCHES_TYPE = new GraphQLObjectType({
     name: "potentialMatches",
     fields: () => ({
         animals: {
-            type: new GraphQLList(AnimalType),
+            type: new GraphQLList(ANIMAL_TYPE),
             resolve(parent, args) {
                 let temp = [];
                 parent.animals.forEach(element => {
-                    temp.push(_.find(animaldata, {
-                        AnimalID: element
+                    temp.push(_.find(animalData, {
+                        animalID: element
                     }))
                 });
             }
@@ -107,20 +107,19 @@ const potentialMatchesType = new GraphQLObjectType({
         }
     })
 });
-
-const SpoorIdentificationType = new GraphQLObjectType({
+const SPOOR_IDENTIFICATION_TYPE = new GraphQLObjectType({
     name: "SpoorIdentification",
     fields: () => ({
-        SpoorIdentificationID: {
+        spoorIdentificationID: {
             type: GraphQLString
         },
         animal: {
-            type: AnimalType,
+            type: ANIMAL_TYPE,
             resolve(parent, args) {
                 let temp = undefined;
                 if (CACHE) {
-                    temp = _.find(animaldata, {
-                        AnimalID: parent.animal
+                    temp = _.find(animalData, {
+                        animalID: parent.animal
                     })
                 } else {
                     //todo
@@ -129,26 +128,26 @@ const SpoorIdentificationType = new GraphQLObjectType({
             }
         },
         dateAndTime: {
-            type: dateAndTimeType
+            type: DATE_AND_TIME_TYPE
         },
         location: {
-            type: locationType
+            type: LOCATION_TYPE
         },
         ranger: {
-            type: UserType,
+            type: USER_TYPE,
             resolve(parent, args){
-                return _.find(usersdata,{
-                    Token:parent.ranger
+                return _.find(usersData,{
+                    token:parent.ranger
                 })
             }
         },
         potentialMatches: {
-            type: potentialMatchesType
+            type: POTENTIAL_MATCHES_TYPE
         }
     })
 });
 //user 
-const userType = new GraphQLObjectType({
+const USER_TYPE = new GraphQLObjectType({
     name: 'user',
     fields: () => ({
         password: {
@@ -173,20 +172,19 @@ const userType = new GraphQLObjectType({
             type: GraphQLString
         },
         activity: {
-            type: new GraphQLList(SpoorIdentificationType),
+            type: new GraphQLList(SPOOR_IDENTIFICATION_TYPE),
             resolve(parent, args){
-                return _.filter(SpoorIdentificationData,{
-                    ranger:parent.Token
+                return _.filter(spoorIdentificationData,{
+                    ranger:parent.token
                 })
             }
         }
     })
 });
-
-const picturesType = new GraphQLObjectType({
+const PICTURES_TYPE = new GraphQLObjectType({
     name: 'picture',
     fields: () => ({
-        ID: {
+        picturesID: {
             type: GraphQLID
         },
         URL: {
@@ -198,30 +196,28 @@ const picturesType = new GraphQLObjectType({
 
     })
 });
-
 //animals
-
-const AnimalType = new GraphQLObjectType({
+const ANIMAL_TYPE = new GraphQLObjectType({
     name: 'animal',
     fields: () => ({
-        Classification: {
+        classification: {
             type: GraphQLString
         },
-        Animal_ID: {
+        animalID: {
             type: GraphQLString
         },
-        Common_Name: {
+        commonName: {
             type: GraphQLString
         },
-        Group_ID: {
-            type: new GraphQLList(GroupType),
+        groupID: {
+            type: new GraphQLList(GROUP_TYPE),
             resolve(parent, args) {
                 let a = []
-                let d = parent.Group_ID
+                let d = parent.groupID
                 d.forEach(b => {
 
-                    let c = _.find(GroupData, {
-                        Group_ID: b.toString()
+                    let c = _.find(groupData, {
+                        groupID: b.toString()
                     })
 
                     a.push(c)
@@ -230,27 +226,27 @@ const AnimalType = new GraphQLObjectType({
                 return a
             }
         },
-        HeightM: {
+        heightM: {
             type: GraphQLFloat
         },
-        HeightF: {
+        heightF: {
             type: GraphQLFloat
         },
-        WeightM: {
+        weightM: {
             type: GraphQLFloat
         },
-        WeightF: {
+        weightF: {
             type: GraphQLFloat
         },
         habitats: {
-            type: new GraphQLList(HabitatType),
+            type: new GraphQLList(HABITAT_TYPE),
             resolve(parent, args) {
                 let a = []
                 let d = parent.habitats
                 d.forEach(b => {
 
-                    let c = _.find(HabitatData, {
-                        ID: b.toString()
+                    let c = _.find(habitatData, {
+                        habitatID: b.toString()
                     })
 
                     a.push(c)
@@ -259,33 +255,33 @@ const AnimalType = new GraphQLObjectType({
                 return a
             }
         },
-        Diet_Type: {
+        dietType: {
             type: GraphQLString
         },
-        Life_Span: {
+        lifeSpan: {
             type: GraphQLString
         },
-        Gestation_Period: {
+        gestationPeriod: {
             type: GraphQLString
         },
-        Typical_Behaviour: {
+        typicalBehaviour: {
             type: GraphQLString
         },
         Overview_of_the_animal: {
             type: GraphQLString
         },
-        Description_of_animal: {
+        DescriptionOfAnimal: {
             type: GraphQLString
         },
         pictures: {
-            type: new GraphQLList(PicturesType),
+            type: new GraphQLList(PICTURES_TYPE),
             resolve(parent, args) {
                 let a = []
                 let d = parent.pictures
                 d.forEach(b => {
 
-                    let c = _.find(PictureData, {
-                        ID: b.toString()
+                    let c = _.find(pictureData, {
+                        picturesID: b.toString()
                     })
 
                     a.push(c)
@@ -296,116 +292,112 @@ const AnimalType = new GraphQLObjectType({
         }
     })
 });
-
-
-
-const GroupType = new GraphQLObjectType({
+const GROUP_TYPE = new GraphQLObjectType({
     name: "Group",
     fields: () => ({
-        Group_ID: {
+        groupID: {
             type: GraphQLString
         },
-        Group_Name: {
+        groupName: {
             type: GraphQLString
         }
     })
 })
-
-const HabitatType = new GraphQLObjectType({
+const HABITAT_TYPE = new GraphQLObjectType({
     name: "Habitat",
     fields: () => ({
-        Habitat_ID: {
+        habitatID: {
             type: GraphQLID
         },
-        Habitat_Name: {
+        habitatName: {
             type: GraphQLString
         },
         description: {
             type: GraphQLString
         },
-        Distinguishing_Features: {
+        distinguishingFeatures: {
             type: GraphQLString
         }
     })
 })
 
-
+// RootQuery name divinf in grahpQL
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
         login: {
-            type: UserType,
+            type: USER_TYPE,
             args: {
-                e_mail: {
+                eMail: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Password: {
+                password: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
 
-                let a = _.find(usersdata, {
-                    e_mail: args.e_mail
+                let a = _.find(usersData, {
+                    eMail: args.eMail
 
                 })
                 if (a === undefined)
                     return null
-                else if (a.Password == args.Password)
+                else if (a.password == args.password)
                     return a
                 else return null
             }
 
         },
         DASlogin: {
-            type: UserType,
+            type: USER_TYPE,
             args: {
-                e_mail: {
+                eMail: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Password: {
+                password: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
-                let a = _.find(usersdata, {
-                    e_mail: args.e_mail
+                let a = _.find(usersData, {
+                    eMail: args.eMail
                 })
                 if (a === undefined)
                     return null
-                else if (a.Password == args.Password && a.Access_Level > 2)
+                else if (a.password == args.password && a.accessLevel > 2)
                     return a
                 else return null
             }
 
         },
         groups: {
-            type: GraphQLList(GroupType),
+            type: GraphQLList(GROUP_TYPE),
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Group_ID: {
+                groupID: {
                     type: GraphQLString
                 },
-                Group_Name: {
+                groupName: {
                     type: GraphQLString
                 },
             },
             resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.Token
+                a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a != null) {
-                    const newLocal = GroupData;
-                    if (Group_ID != undefined) {
+                    const newLocal = groupData;
+                    if (args.groupID != undefined) {
                         newLocal = _.filter(newLocal, {
-                            Group_ID: args.Group_ID
+                            groupID: args.groupID
                         })
                     }
-                    if (Group_Name != undefined) {
+                    if (args.groupName != undefined) {
                         newLocal = _.filter(newLocal, {
-                            Group_Name: args.Group_Name
+                            groupName: args.groupName
                         })
                     }
                     return newLocal;
@@ -414,21 +406,21 @@ const RootQuery = new GraphQLObjectType({
             }
         },
         users: {
-            type: GraphQLList(UserType),
+            type: GraphQLList(USER_TYPE),
             args: {
-                TokenIn: {
+                tokenIn: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                TokenSearch: {
+                tokenSearch: {
                     type: GraphQLString
                 },
-                Password: {
+                password: {
                     type: GraphQLString
                 },
-                Access_Level: {
+                accessLevel: {
                     type: GraphQLString
                 },
-                e_mail: {
+                eMail: {
                     type: GraphQLString
                 },
                 firstName: {
@@ -442,71 +434,70 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.TokenIn
+                a = _.find(usersData, {
+                    token: args.tokenIn
                 })
                 if (a != null) {
-                    // const newLocal = usersdata;
-                    let newLocal = usersdata;
+                    let temp = usersData;
 
-                    if (args.TokenSearch != undefined)
-                        newLocal = _.filter(newLocal, {
-                            Token: args.TokenSearch
+                    if (args.tokenSearch != undefined)
+                    temp = _.filter(temp, {
+                            token: args.tokenSearch
                         })
-                    if (args.Password != undefined)
-                        newLocal = _.filter(newLocal, {
-                            Password: args.Password
+                    if (args.password != undefined)
+                    temp = _.filter(temp, {
+                            password: args.password
                         })
-                    if (args.Access_Level != undefined)
-                        newLocal = _.filter(newLocal, {
-                            Access_Level: args.Access_Level
+                    if (args.accessLevel != undefined)
+                    temp = _.filter(temp, {
+                        accessLevel: args.accessLevel
                         })
-                    if (args.e_mail != undefined)
-                        newLocal = _.filter(newLocal, {
-                            e_mail: args.e_mail
+                    if (args.eMail != undefined)
+                    temp = _.filter(temp, {
+                            eMail: args.eMail
                         })
                     if (args.phoneNumber != undefined) {
-                        newLocal = _.filter(newLocal, {
+                        temp = _.filter(temp, {
                             phoneNumber: args.phoneNumber
                         })
-                        newLocal = newLocal.trim();
+                        temp = temp.trim();
                     }
-                    return newLocal;
+                    return temp;
                 }
                 return null;
             }
         },
         habitats: {
-            type: GraphQLList(HabitatType),
+            type: GraphQLList(HABITAT_TYPE),
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.Token
+                a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a != null) {
-                    const newLocal = HabitatData;
+                    const newLocal = habitatData;
                     return newLocal;
                 }
                 return null;
             }
         },
         animals: {
-            type: GraphQLList(AnimalType),
+            type: GraphQLList(ANIMAL_TYPE),
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.Token
+                a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a != null) {
-                    const newLocal = animaldata;
+                    const newLocal = animalData;
                     return newLocal;
                 }
 
@@ -514,42 +505,42 @@ const RootQuery = new GraphQLObjectType({
             }
         },
         pictures: {
-            type: GraphQLList(PicturesType),
+            type: GraphQLList(PICTURES_TYPE),
             args: {
-                Classification: {
+                classification: {
                     type: (GraphQLString)
                 },
-                Common_Name: {
+                commonName: {
                     type: (GraphQLString)
                 }
             },
             resolve(parent, args) {
                 let a = []
-                if (args.Classification == undefined && args.Common_Name == undefined) {
-                    let a = PictureData
+                if (args.classification == undefined && args.commonName == undefined) {
+                    let a = pictureData
                     return a
                 }
-                animaldata.forEach(val => {
+                animalData.forEach(val => {
 
-                    if (args.Classification != undefined)
-                        if (args.Classification == val.Classification) {
+                    if (args.classification != undefined)
+                        if (args.classification == val.classification) {
                             let b = val.pictures
                             console.log(b)
                             b.forEach(c => {
                                 console.log(c)
-                                let d = _.find(PictureData, {
-                                    ID: c.toString()
+                                let d = _.find(pictureData, {
+                                    picturesID: c.toString()
                                 })
                                 console.log(d)
                                 a.push(d)
                             })
                         }
-                    if (args.Common_Name != undefined) {
-                        if (args.Common_Name == val.Common_Name) {
+                    if (args.commonName != undefined) {
+                        if (args.commonName == val.commonName) {
                             let b = val.pictures
                             console.log(b)
                             b.forEach(c => {
-                                let d = _.find(PictureData, {
+                                let d = _.find(pictureData, {
                                     ID: c.toString()
                                 })
                                 a.push(d)
@@ -561,7 +552,46 @@ const RootQuery = new GraphQLObjectType({
                 })
                 return a
             }
-        }
+        },
+        spoorIdentification: {
+            type: GraphQLList(SPOOR_IDENTIFICATION_TYPE),
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                ranger: {
+                    type: GraphQLString
+                },
+                negat: {
+                    type: GraphQLString
+                }
+            },
+            resolve(parent, args) {
+                a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == null) {
+                    return null;
+                }
+                let temp=spoorIdentificationData
+                if(args.ranger!=undefined)
+                {
+                    if (args.negat==undefined){
+                        temp=_.filter(temp,{
+                            ranger:args.ranger
+                        })
+                    }else{
+                        temp=_.reject(temp,{
+                            ranger:args.ranger
+                        })
+                    }
+                }
+                else{
+                    return temp
+                }
+                
+            }
+        },
     }
 })
 
@@ -570,25 +600,25 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        AddUser: {
-            type: UserType,
+        addUser: {
+            type: USER_TYPE,
             args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
                 firstName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 lastName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Password: {
+                password: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Access_Level: {
+                accessLevel: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                e_mail: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                Token: {
+                eMail: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 phoneNumber: {
@@ -597,17 +627,17 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
-                let a = _.find(usersdata, {
-                    Token: args.Token
+                let a = _.find(usersData, {
+                    token: args.token
                 })
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
 
                 let newuser = {
-                    Password: args.Password,
-                    Access_Level: args.Access_Level,
-                    e_mail: args.e_mail,
+                    password: args.password,
+                    accessLevel: args.accessLevel,
+                    eMail: args.eMail,
                     firstName: args.firstName,
                     lastName: args.lastName,
                     phoneNumber: args.phoneNumber
@@ -616,32 +646,32 @@ const Mutation = new GraphQLObjectType({
                 let x = users.add(newuser).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                     let newuser2 = {
-                        Password: args.Password,
-                        Access_Level: args.Access_Level,
-                        e_mail: args.e_mail,
+                        password: args.password,
+                        accessLevel: args.accessLevel,
+                        eMail: args.eMail,
                         firstName: args.firstName,
                         lastName: args.lastName,
                         phoneNumber: args.phoneNumber,
-                        Token: docRef.id
+                        token: docRef.id
                     }
-                    usersdata.push(newuser2)
+                    usersData.push(newuser2)
                 })
 
                 console.log(x)
-                a = _.find(usersdata, {
-                    Token: x
+                a = _.find(usersData, {
+                    token: x
                 })
                 console.log(a)
                 return a;
             }
         },
-        UpdateLevel: {
-            type: UserType,
+        updateLevel: {
+            type: USER_TYPE,
             args: {
-                TokenSend: {
+                tokenSend: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                TokenChange: {
+                tokenChange: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 Level: {
@@ -649,42 +679,40 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                let a = _.find(usersdata, {
-                    Token: args.TokenSend
+                let a = _.find(usersData, {
+                    token: args.tokenSend
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null;
                 }
 
-                // users.doc(TokenChange).update({"Access_Level":Level})
-
-                b = _.findIndex(usersdata, {
-                    Token: args.TokenChange
+                b = _.findIndex(usersData, {
+                    token: args.tokenChange
                 })
-                usersdata[b].Access_Level = args.Level
-                return usersdata[b]
+                usersData[b].accessLevel = args.Level
+                return usersData[b]
             }
 
         },
-        UpdateUser: {
-            type: UserType,
+        updateUser: {
+            type: USER_TYPE,
             args: {
-                TokenSend: {
+                tokenSend: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                TokenChange: {
+                tokenChange: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Password: {
+                password: {
                     type: GraphQLString
                 },
-                Access_Level: {
+                accessLevel: {
                     type: GraphQLString
                 },
-                e_mail: {
+                eMail: {
                     type: GraphQLString
                 },
                 firstName: {
@@ -698,292 +726,292 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                let a = _.find(usersdata, {
-                    Token: args.TokenSend
+                let a = _.find(usersData, {
+                    token: args.tokenSend
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
-                b = _.findIndex(usersdata, {
-                    Token: args.TokenChange
+                b = _.findIndex(usersData, {
+                    token: args.tokenChange
                 })
 
 
-                if (args.Access_Level != undefined) {
-                    usersdata[b].Access_Level = args.Access_Level
-                    users.doc(args.TokenChange).update({
-                        "Access_Level": args.Access_Level
+                if (args.accessLevel != undefined) {
+                    usersData[b].accessLevel = args.accessLevel
+                    users.doc(args.tokenChange).update({
+                        "accessLevel": args.accessLevel
                     })
                 }
-                if (args.Password != undefined) {
-                    usersdata[b].Password = args.Password
-                    users.doc(args.TokenChange).update({
-                        "Password": args.Password
+                if (args.password != undefined) {
+                    usersData[b].password = args.password
+                    users.doc(args.tokenChange).update({
+                        "password": args.password
                     })
                 }
-                if (args.e_mail != undefined) {
-                    usersdata[b].e_mail = args.e_mail
-                    users.doc(args.TokenChange).update({
-                        "e_mail": args.e_mail
+                if (args.eMail != undefined) {
+                    usersData[b].eMail = args.eMail
+                    users.doc(args.tokenChange).update({
+                        "eMail": args.eMail
                     })
                 }
                 if (args.firstName != undefined) {
-                    usersdata[b].firstName = args.firstName
-                    users.doc(args.TokenChange).update({
+                    usersData[b].firstName = args.firstName
+                    users.doc(args.tokenChange).update({
                         "firstName": args.firstName
                     })
                 }
                 if (args.lastName != undefined) {
-                    usersdata[b].lastName = args.lastName
-                    users.doc(args.TokenChange).update({
+                    usersData[b].lastName = args.lastName
+                    users.doc(args.tokenChange).update({
                         "lastName": args.lastName
                     })
                 }
                 if (args.phoneNumber != undefined) {
-                    usersdata[b].phoneNumber = args.phoneNumber
-                    users.doc(args.TokenChange).update({
+                    usersData[b].phoneNumber = args.phoneNumber
+                    users.doc(args.tokenChange).update({
                         "phoneNumber": args.phoneNumber
                     })
                 }
 
-                return usersdata[b]
+                return usersData[b]
             }
 
         },
-        DeleteUser: {
-            type: MesType,
+        deleteUser: {
+            type: MES_TYPE,
             args: {
-                TokenIn: {
+                tokenIn: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                TokenDelete: {
+                tokenDelete: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
-                let a = _.find(usersdata, {
-                    Token: args.TokenIn
+                let a = _.find(usersData, {
+                    token: args.tokenIn
                 })
                 if (a == undefined) {
                     console.log("deleted aberted 1");
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     console.log("deleted aberted 2");
                     return null
                 }
-                if (args.TokenDelete == args.TokenIn) {
+                if (args.tokenDelete == args.tokenIn) {
                     console.log("deleted aberted 3");
                     return null
                 }
                 console.log("hello")
-                let b = _.findIndex(usersdata, {
-                    Token: args.TokenDelete
+                let b = _.findIndex(usersData, {
+                    token: args.tokenDelete
                 })
 
-                usersdata.splice(b, 1)
+                usersData.splice(b, 1)
 
-                users.doc(args.TokenDelete).delete().then(function () {
+                users.doc(args.tokenDelete).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
 
-                console.log(usersdata);
-                return MesTypeData[0];
+                console.log(usersData);
+                return MesData[0];
             }
 
         },
-        AddGroup: {
-            type: GroupType,
+        addGroup: {
+            type: GROUP_TYPE,
             args: {
-                Group_Name: {
+                groupName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
 
             },
             resolve(parent, args) {
-                let a = _.find(usersdata, {
-                    Token: args.Token
+                let a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
-                let GID = ((GroupData.length + 1))
-                let b = _.find(GroupData, {
+                let GID = ((groupData.length + 1))
+                let b = _.find(groupData, {
                     GeotagID: GID.toString()
                 })
                 while (b != null) {
                     GID++
-                    b = _.find(GroupData, {
+                    b = _.find(groupData, {
                         GeotagID: GID.toString()
                     })
                 }
 
                 let newGroup = {
-                    Group_Name: args.Group_Name,
-                    Group_ID: GID.toString()
+                    groupName: args.groupName,
+                    groupID: GID.toString()
                 }
                 console.log(GID.toString())
                 groups.doc(GID.toString()).set(newGroup)
 
-                GroupData.push(newGroup)
+                groupData.push(newGroup)
                 return newGroup;
             }
         },
-        UpdateGroup: {
-            type: UserType,
+        apdateGroup: {
+            type: USER_TYPE,
             args: {
-                Group_Name: {
+                groupName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Group_ID: {
+                groupID: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
-                let a = _.find(GroupData, {
-                    Token: args.TokenSend
+                let a = _.find(groupData, {
+                    token: args.tokenSend
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
-                b = _.findIndex(GroupData, {
-                    Token: args.Group_ID
+                b = _.findIndex(groupData, {
+                    token: args.groupID
                 })
-                GroupData[b].Group_Name = args.Group_Name
-                users.doc(args.Group_ID).update({
-                    "Group_Name": args.Group_Name
+                groupData[b].groupName = args.groupName
+                users.doc(args.groupID).update({
+                    "groupName": args.groupName
                 })
 
-                return usersdata[b]
+                return usersData[b]
             }
 
         },
-        DeleteGroup: {
-            type: MesType,
+        deleteGroup: {
+            type: MES_TYPE,
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Group_ID: {
+                groupID: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
-                let a = _.find(usersdata, {
-                    Token: args.TokenIn
+                let a = _.find(usersData, {
+                    token: args.tokenIn
                 })
                 if (a == undefined) {
                     console.log("deleted aberted 1");
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     console.log("deleted aberted 2");
                     return null
                 }
                 console.log("hello")
-                let b = _.findIndex(GroupData, {
-                    Token: args.Group_ID
+                let b = _.findIndex(groupData, {
+                    token: args.groupID
                 })
 
-                usersdata.splice(b, 1)
+                usersData.splice(b, 1)
 
-                users.doc(args.Group_ID).delete().then(function () {
+                users.doc(args.groupID).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
 
-                console.log(usersdata);
-                return MesTypeData[0];
+                console.log(usersData);
+                return MesData[0];
             }
 
         },
         AddHabitat: {
-            type: HabitatType,
+            type: HABITAT_TYPE,
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Habitat_Name: {
+                habitatName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 Broad_Description: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Distinguishing_Features: {
+                distinguishingFeatures: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
 
 
             },
             resolve(parent, args) {
-                let a = _.find(usersdata, {
-                    Token: args.Token
+                let a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
-                let HID = ((HabitatData.length + 1))
-                let b = _.find(HabitatData, {
-                    Habitat_ID: HID.toString()
+                let HID = ((habitatData.length + 1))
+                let b = _.find(habitatData, {
+                    habitatID: HID.toString()
                 })
                 while (b != null) {
                     HID++
-                    b = _.find(HabitatData, {
-                        Habitat_ID: HID.toString()
+                    b = _.find(habitatData, {
+                        habitatID: HID.toString()
                     })
                 }
 
                 let newHabitat = {
-                    Habitat_Name: args.Habitat_Name,
-                    Habitat_ID: HID.toString(),
+                    habitatName: args.habitatName,
+                    habitatID: HID.toString(),
                     Broad_Description: args.Broad_Description,
-                    Distinguishing_Features: args.Distinguishing_Features
+                    distinguishingFeatures: args.distinguishingFeatures
                 }
                 console.log(HID.toString())
                 habitats.doc(HID.toString()).set(newHabitat)
-                HabitatData.push(newHabitat)
+                habitatData.push(newHabitat)
                 return newHabitat;
             }
         },
         AddAnimal: {
-            type: AnimalType,
+            type: ANIMAL_TYPE,
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Classification: {
+                classification: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                CommonName: {
+                commonName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                HeightM: {
+                heightM: {
                     type: new GraphQLNonNull(GraphQLInt)
                 },
-                HeightF: {
+                heightF: {
                     type: new GraphQLNonNull(GraphQLInt)
                 },
-                WeightF: {
+                weightF: {
                     type: new GraphQLNonNull(GraphQLInt)
                 },
-                WeightM: {
+                weightM: {
                     type: new GraphQLNonNull(GraphQLInt)
                 },
                 habitats: {
@@ -998,7 +1026,7 @@ const Mutation = new GraphQLObjectType({
                 LifeSpan: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                GestationPeriod: {
+                gestationPeriod: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 TypicalBehaviour: {
@@ -1016,41 +1044,41 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
-                let a = _.find(usersdata, {
-                    Token: args.Token
+                let a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
-                let HID = ((animaldata.length + 1))
-                let b = _.find(HabitatData, {
-                    AnimalID: HID.toString()
+                let HID = ((animalData.length + 1))
+                let b = _.find(habitatData, {
+                    animalID: HID.toString()
                 })
                 while (b != null) {
                     HID++
-                    b = _.find(HabitatData, {
-                        Animal_ID: HID.toString()
+                    b = _.find(habitatData, {
+                        animalID: HID.toString()
                     })
                 }
 
                 let newAnimal = {
-                    Animal_ID: HID,
-                    Common_Name: args.Common_Name,
-                    Group_ID: args.Group_ID,
-                    HeightM: args.HeightM,
-                    HeightF: args.HeightF,
-                    WeightM: args.WeightM,
-                    WeightF: args.WeightF,
+                    animalID: HID,
+                    commonName: args.commonName,
+                    groupID: args.groupID,
+                    heightM: args.heightM,
+                    heightF: args.heightF,
+                    weightM: args.weightM,
+                    weightF: args.weightF,
                     habitats: args.habitats,
-                    Diet_Type: args.Diet_Type,
-                    Life_Span: args.Life_Span,
-                    Gestation_Period: args.Gestation_Period,
-                    Typical_Behaviour: args.Typical_Behaviour,
+                    dietType: args.dietType,
+                    lifeSpan: args.lifeSpan,
+                    gestationPeriod: args.gestationPeriod,
+                    typicalBehaviour: args.typicalBehaviour,
                     Overview_of_the_animal: args.Overview_of_the_animal,
-                    Description_of_animal: args.Description_of_animal
+                    DescriptionOfAnimal: args.DescriptionOfAnimal
                 }
                 if (args.pictures != undefined) {
                     newAnimal.pictures = args.pictures
@@ -1059,36 +1087,36 @@ const Mutation = new GraphQLObjectType({
                     newAnimal.pictures.push(1)
                 }
 
-                animals.doc(args.Classification).set(newAnimal).then(function (docRef) {
+                animals.doc(args.classification).set(newAnimal).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
-                newAnimal.Classification = args.Classification
-                animaldata.push(newAnimal)
+                newAnimal.classification = args.classification
+                animalData.push(newAnimal)
                 return newAnimal;
             }
         },
         updateAnimal: {
-            type: AnimalType,
+            type: ANIMAL_TYPE,
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Classification: {
+                classification: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                CommonName: {
+                commonName: {
                     type: GraphQLString
                 },
-                HeightM: {
+                heightM: {
                     type: GraphQLInt
                 },
-                HeightF: {
+                heightF: {
                     type: GraphQLInt
                 },
-                WeightF: {
+                weightF: {
                     type: GraphQLInt
                 },
-                WeightM: {
+                weightM: {
                     type: GraphQLInt
                 },
                 habitats: {
@@ -1103,7 +1131,7 @@ const Mutation = new GraphQLObjectType({
                 LifeSpan: {
                     type:GraphQLString
                 },
-                GestationPeriod: {
+                gestationPeriod: {
                     type:GraphQLString
                 },
                 TypicalBehaviour: {
@@ -1121,19 +1149,19 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
-                let a = _.find(usersdata, {
-                    Token: args.Token
+                let a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
-                let  updatedAnimal=_.find(animaldata,{
-                    Classification:args.Classification
+                let  updatedAnimal=_.find(animalData,{
+                    classification:args.classification
                 })
-                delete updatedAnimal.Classification
+                delete updatedAnimal.classification
                 if (args.commonName!=undefined){
                     updatedAnimal.commonName =args.commonName
                 }
@@ -1182,9 +1210,9 @@ const Mutation = new GraphQLObjectType({
                 if (args.descriptionOfAnimal!=undefined){
                     updatedAnimal.descriptionOfAnimal =args.descriptionOfAnimal
                 }
-                animals.doc(args.Classification).set(updatedAnimal)
-                newAnimal.Classification = args.Classification
-                animaldata.push(newAnimal)
+                animals.doc(args.classification).set(updatedAnimal)
+                newAnimal.classification = args.classification
+                animalData.push(newAnimal)
                 return newAnimal;
             }
         },
@@ -1213,15 +1241,15 @@ module.exports = new GraphQLSchema({
 users.get().then((snapshot) => {
         snapshot.forEach((doc) => {
             let newuser = {
-                Password: doc.data().Password,
-                Token: doc.id,
-                Access_Level: doc.data().Access_Level,
-                e_mail: doc.data().e_mail,
+                password: doc.data().password,
+                token: doc.id,
+                accessLevel: doc.data().accessLevel,
+                eMail: doc.data().eMail,
                 firstName: doc.data().firstName,
                 lastName: doc.data().lastName,
                 phoneNumber: doc.data().phoneNumber
             }
-            usersdata.push(newuser)
+            usersData.push(newuser)
         });
     })
     .catch((err) => {
@@ -1230,10 +1258,10 @@ users.get().then((snapshot) => {
     groups.get().then((snapshot) => {
         snapshot.forEach((doc) => {
             let newGoupe = {
-                Group_ID: doc.data().Group_ID,
-                Group_Name: doc.data().Group_Name
+                groupID: doc.data().groupID,
+                groupName: doc.data().groupName
             }
-            GroupData.push(newGoupe)
+            groupData.push(newGoupe)
         });
     })
     .catch((err) => {
@@ -1243,10 +1271,10 @@ users.get().then((snapshot) => {
     habitats.get().then((snapshot) => {
         snapshot.forEach((doc) => {
             let newHabitat = {
-                Habitat_ID: doc.data().Habitat_ID,
-                Habitat_Name: doc.data().Habitat_Name
+                habitatID: doc.data().habitatID,
+                habitatName: doc.data().habitatName
             }
-            HabitatData.push(newHabitat)
+            habitatData.push(newHabitat)
         });
     })
     .catch((err) => {
@@ -1256,26 +1284,25 @@ users.get().then((snapshot) => {
     animals.get().then((snapshot) => {
         snapshot.forEach((doc) => {
             let newAnimal = {
-                Classification: doc.id,
-                Animal_ID: doc.data().Animal_ID,
-                Common_Name: doc.data().Common_Name,
-                Group_ID: doc.data().Group_ID,
-                HeightM: doc.data().HeightM,
-                HeightF: doc.data().HeightF,
-                WeightM: doc.data().WeightM,
-                WeightF: doc.data().WeightF,
+                classification: doc.id,
+                animalID: doc.data().animalID,
+                commonName: doc.data().commonName,
+                groupID: doc.data().groupID,
+                heightM: doc.data().heightM,
+                heightF: doc.data().heightF,
+                weightM: doc.data().weightM,
+                weightF: doc.data().weightF,
                 habitats: doc.data().habitats,
-                Diet_Type: doc.data().Diet_Type,
-                Life_Span: doc.data().Life_Span,
-                Gestation_Period: doc.data().Gestation_Period,
-                Typical_Behaviour: doc.data().Typical_Behaviour,
+                dietType: doc.data().dietType,
+                lifeSpan: doc.data().lifeSpan,
+                gestationPeriod: doc.data().gestationPeriod,
+                typicalBehaviour: doc.data().typicalBehaviour,
                 Overview_of_the_animal: doc.data().Overview_of_the_animal,
-                Description_of_animal: doc.data().Description_of_animal,
+                DescriptionOfAnimal: doc.data().DescriptionOfAnimal,
                 pictures: doc.data().pictures
             }
-            animaldata.push(newAnimal)
+            animalData.push(newAnimal)
         });
-        // console.log(animaldata)
     })
     .catch((err) => {
         console.log('Error getting documents', err);
