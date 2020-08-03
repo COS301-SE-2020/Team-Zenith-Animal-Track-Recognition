@@ -296,11 +296,11 @@ const ANIMAL_TYPE = new GraphQLObjectType({
                 let pictures = parent.pictures
                 // console.log(pictureData)
                 pictures.forEach(b => {
-                    console.log(b)
+                    // console.log(b)
                     let c = _.find(pictureData, {
-                        picturesID: b.toString()
+                        pictureID: b
                     })
-                    console.log(c)
+                    // console.log(c)
                     picturesReturn.push(c)
                 })
                 return picturesReturn
