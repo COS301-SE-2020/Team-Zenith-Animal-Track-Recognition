@@ -186,7 +186,7 @@ const PICTURES_TYPE = new GraphQLObjectType({
     name: 'picture',
     fields: () => ({
         picturesID: {
-            type: GraphQLID
+            type: GraphQLString
         },
         URL: {
             type: GraphQLString
@@ -294,14 +294,14 @@ const ANIMAL_TYPE = new GraphQLObjectType({
             resolve(parent, args) {
                 let picturesReturn = []
                 let pictures = parent.pictures
+                // console.log(pictureData)
                 pictures.forEach(b => {
-
+                    console.log(b)
                     let c = _.find(pictureData, {
                         picturesID: b.toString()
                     })
-
+                    console.log(c)
                     picturesReturn.push(c)
-
                 })
                 return picturesReturn
             }
@@ -536,17 +536,17 @@ const RootQuery = new GraphQLObjectType({
 
                             try {
                                 animal.groupID.forEach(element => {
-                                    if (element == args.group){
+                                    if (element == args.group) {
                                         temp.push(animal)
                                         throw BreakException;
-                                    } 
+                                    }
                                 });
                             } catch (e) {
                                 if (e !== BreakException) throw e;
                             }
                         });
-                    }else{
-                        temp=animalData
+                    } else {
+                        temp = animalData
                     }
                     return temp;
                 }
@@ -1323,26 +1323,27 @@ const Mutation = new GraphQLObjectType({
                 }
                 let IDID = ((spoorIdentificationData.length + 1))
                 let b = _.find(spoorIdentificationData, {
-                    SpoorIdentificationID: IDID.toString()
+                    spoorIdentificationID: IDID.toString()
                 })
                 while (b != null) {
                     IDID++
                     b = _.find(spoorIdentificationData, {
-                        SpoorIdentificationID: IDID.toString()
+                        spoorIdentificationID: IDID.toString()
                     })
                 }
-                let potentialMatchesarry = AIIterface(args.base64imge)
-                potentialMatchesarry = _.sortBy(potentialMatchesarry, ["confidence", "animal"])
+              
+                let potentialMatchesarry = _.sortBy( AIIterface(args.base64imge), ["confidence"])
                 let newingID = uplodeBase64(args.base64imge)
+                
                 let newSpoorIdentification = {
-                    SpoorIdentificationID: IDID,
+                    spoorIdentificationID: IDID.toString(),
                     dateAndTime: {
                         year: dateOBJ.getFullYear() + 0,
                         month: dateOBJ.getMonth() + 1,
                         day: dateOBJ.getDate() + 0,
                         hour: dateOBJ.getHours() + 0,
-                        min: getMinutes() + 0,
-                        second: getSeconds() + 0
+                        min: dateOBJ.getMinutes() + 0,
+                        second: dateOBJ.getSeconds() + 0
                     },
                     location: {
                         latitude: args.latitude,
@@ -1350,16 +1351,17 @@ const Mutation = new GraphQLObjectType({
                     },
                     ranger: args.token,
                     potentialMatches: potentialMatchesarry,
-                    animal: potentialMatchesarry[0][animal].animalID,
+                    animal: _.last(potentialMatchesarry).animal,
                     track: newingID,
                     similar: getSimilarimg(newingID),
                     tags: [0]
                 }
-
-                spoorIdentifications.doc(SpoorIdentificationID).set(newSpoorIdentification).then(function (docRef) {
+                let tempID =IDID.toString()
+               
+                spoorIdentifications.doc(tempID).set(newSpoorIdentification).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
-                newSpoorIdentification.SpoorIdentificationID = SpoorIdentificationID
+                
                 spoorIdentificationData.push(newSpoorIdentification)
                 return newSpoorIdentification;
             }
@@ -1519,7 +1521,10 @@ if (CACHE) {
                 URL: doc.data().URL,
                 kindOfPicture: doc.data().kindOfPicture
             }
-            habitatData.push(newPicture)
+            if (newPicture.pictureID == undefined)
+                newPicture.pictureID = doc.id
+            // console.log(newPicture)
+            pictureData.push(newPicture)
         });
     });
 
@@ -1530,7 +1535,7 @@ if (CACHE) {
                 habitatID: doc.data().habitatID,
                 habitatName: doc.data().habitatName
             }
-            habitatData.push(newHabitat)
+            spoorIdentificationData.push(newHabitat)
         });
     });
 
