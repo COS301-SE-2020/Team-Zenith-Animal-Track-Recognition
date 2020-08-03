@@ -280,7 +280,7 @@ const ANIMAL_TYPE = new GraphQLObjectType({
         typicalBehaviourM: {
             type: BEHAVIOUR_TYPE
         },
-        typicalBehaviourF : {
+        typicalBehaviourF: {
             type: BEHAVIOUR_TYPE
         },
         OverviewOfTheAnimal: {
@@ -429,7 +429,7 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                let a =groupData.length
+                let a = groupData.length
                 return a
             }
         },
@@ -518,6 +518,9 @@ const RootQuery = new GraphQLObjectType({
             args: {
                 token: {
                     type: new GraphQLNonNull(GraphQLString)
+                },
+                group: {
+                    type: GraphQLString
                 }
             },
             resolve(parent, args) {
@@ -525,8 +528,28 @@ const RootQuery = new GraphQLObjectType({
                     token: args.token
                 })
                 if (a != null) {
-                    const newLocal = animalData;
-                    return newLocal;
+                    let temp = [];
+                    if (group != undefined) {
+                        animalData.forEach(animal => {
+
+                            var BreakException = {};
+
+                            try {
+                                animal.groupID.forEach(element => {
+                                    console.log(el);
+                                    if (element == args.group){
+                                        temp.push(animal)
+                                        throw BreakException;
+                                    } 
+                                });
+                            } catch (e) {
+                                if (e !== BreakException) throw e;
+                            }
+                        });
+                    }else{
+                        temp=animalData
+                    }
+                    return temp;
                 }
 
                 return null;
