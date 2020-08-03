@@ -1571,108 +1571,20 @@ function getSimilarimg(ImgID) {
 // { //transver
 
 
-//         db.collection("Animals")
+//         animals
 //         .get()
 //         .then(
 //             function (querySnapshot) {
 //                 querySnapshot.forEach(function (doc) {
 //                     let animal = doc.data()
-//                     if (animal.Animal_ID!=undefined)
-//                     {
-//                         animal.animalID =animal.Animal_ID
-//                         delete animal.Animal_ID
-//                     }
-
-//                     if (animal.Common_Name!=undefined)
-//                     {
-//                         animal.commonName =animal.Common_Name
-//                         delete animal.Common_Name
-//                     }
-
-//                     if (animal.Group_ID!=undefined)
-//                     {
-//                         animal.groupID =animal.Group_ID
-//                         delete animal.Group_ID
-//                     }
-
-//                     if (animal.Habitats!=undefined)
-//                     {
-//                         animal.habitats =animal.Habitats
-//                         delete animal.Habitats
-//                     }
-
-//                     if (animal.HeightF!=undefined)
-//                     {
-//                         animal.heightF =animal.HeightF
-//                         delete animal.HeightF
-//                     }
-
-//                     if (animal.HeightM!=undefined)
-//                     {
-//                         animal.heightM =animal.HeightM
-//                         delete animal.HeightM
-//                     }
-
-//                     if (animal.Diet_Type!=undefined)
-//                     {
-//                         animal.dietType =animal.Diet_Type
-//                         delete animal.Diet_Type
-//                     }
-
-//                     if (animal.Life_Span!=undefined)
-//                     {
-//                         animal.lifeSpan =animal.Life_Span
-//                         delete animal.Life_Span
-//                     }
-
-//                     if (animal.Pictures!=undefined)
-//                     {
-//                         animal.pictures =animal.Pictures
-//                         delete animal.Pictures
-//                     }
-
-//                     if (animal.Gestation_Period!=undefined)
-//                     {
-//                         animal.gestationPeriod =animal.Gestation_Period
-//                         delete animal.Gestation_Period
-//                     }
-
-//                     if (animal.Typical_Behaviour!=undefined)
-//                     {                        
-//                         animal.typicalBehaviourM={behaviour:"",threatLevel:""}
-//                         animal.typicalBehaviourF={behaviour:"",threatLevel:""}
-
-//                         animal.typicalBehaviourM.behaviour =animal.Typical_Behaviour
-//                         animal.typicalBehaviourF.behaviour =animal.Typical_Behaviour
-
-//                         animal.typicalBehaviourM.threatLevel =animal.Typical_Behaviour
-//                         animal.typicalBehaviourF.threatLevel =animal.Typical_Behaviour
-
-
-//                         delete animal.Typical_Behaviour
-//                     }
-
-//                     if (animal.WeightF!=undefined)
-//                     {
-//                         animal.WeightF =animal.WeightF
-//                         delete animal.WeightF
-//                     }
-
-//                     if (animal.WeightM!=undefined)
-//                     {
-//                         animal.weightM =animal.WeightM
-//                         delete animal.WeightM
-//                     }
-
-//                     if (animal.Animal_ID!=undefined)
-//                     {
-//                         animal.animalID =animal.Animal_ID
-//                         delete animal.Animal_ID
-//                     }
-//                     animal.classification =doc.id
-//                     animal.numOffspring=0 
-//                     animal.vulnerabilityStatus=""
-
+//                     let old =animal.pictures
+//                     let newarr=[]
+//                     old.forEach(element => {
+//                         newarr.push(element.toString())
+//                     });
+//                     delete(animal.pictures)
+//                     animal.pictures=newarr
+//                     console.log(animal)
 //                     animals.doc(doc.id).set(animal)
 //                 });
 
