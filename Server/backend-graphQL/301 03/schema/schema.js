@@ -702,7 +702,7 @@ const Mutation = new GraphQLObjectType({
                         phoneNumber: args.phoneNumber,
                         token: docRef.id
                     }
-                    usersData.push(newuser2)
+                    // usersData.push(newuser2)
                 })
 
                 console.log(x)
