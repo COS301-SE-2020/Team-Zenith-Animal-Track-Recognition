@@ -1,4 +1,44 @@
 <h1 mat-dialog-title>Add New Animal</h1>
+<mat-dialog-content>
+	<form [formGroup]="addAnimalForm" id="add-animal-form-container">
+		<div id="add-animal-form-overview">
+			<div class="add-animal-form-content">
+				<div id="overview-classification-group">
+					<mat-form-field appearance="outline">
+						<mat-label>Group Name</mat-label>
+						<input matInput formControlName="Group_Name">
+						<mat-hint>Required</mat-hint>
+					</mat-form-field>
+					<mat-form-field appearance="outline">
+						<mat-label>Common Name</mat-label>
+						<input matInput formControlName="Common_Name">
+						<mat-hint>Required</mat-hint>
+					</mat-form-field>
+					<mat-form-field appearance="outline">
+						<mat-label>Classification</mat-label>
+						<input matInput formControlName="Classification">
+						<mat-hint>Required</mat-hint>
+					</mat-form-field>
+				</div>
+			</div>
+		</div>
+		<div id="add-animal-form-descr">
+			<div class="add-animal-form-content add-animal-form-descr">
+				<mat-form-field appearance="outline" id="add-animal-form-descr-textarea">
+					<mat-label>Animal Description</mat-label>
+					<textarea rows="5" matInput #charTa formControlName="Description_of_animal"></textarea>
+					<mat-hint align="start">{{charTa.value?.length || 0}}/300  (Required)</mat-hint>
+				</mat-form-field>
+			</div>
+		</div>
+	</form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>
+    <button type="submit" mat-button (click)="onSubmit(false)" id="add-animal-btn" class="fontSB">ADD ANIMAL</button>
+</mat-dialog-actions>
+<!--
+<h1 mat-dialog-title>Add New Animal</h1>
 <mat-horizontal-stepper linear labelPosition="end">
 	<form [formGroup]="addAnimalForm" id="add-animal-form-container">
 		<mat-step formGroupName="animalOverview" [stepControl]="addAnimalForm">
@@ -174,10 +214,5 @@
 			</div>
 		</mat-step>
 	</form>
-<!--<mat-dialog-actions align="center">
-	<button mat-button matStepperPrevious type="button">Back</button>
-	<button mat-button matStepperNext  id="add-ranger-btn" class="fontSB" type="button">Next</button>
-    <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
-    <button type="submit" mat-button (click)="onSubmit()" id="add-ranger-btn" class="fontSB">ADD ANIMAL</button>
-</mat-dialog-actions>-->
 </mat-horizontal-stepper>
+-->

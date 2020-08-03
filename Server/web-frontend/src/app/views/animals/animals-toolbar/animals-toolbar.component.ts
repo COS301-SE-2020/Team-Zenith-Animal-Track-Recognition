@@ -26,16 +26,16 @@ export class AnimalsToolbarComponent implements OnInit {
   openAddAnimalDialog() {
 		const dialogConfig = new MatDialogConfig();
 
-		const addDialogRef = this.dialog.open(AddAnimalComponent, { height: '85%', width: '65%', panelClass: 'add-ranger-modal', autoFocus: true, disableClose: true });
+		//const addDialogRef = this.dialog.open(AddAnimalComponent, { height: '85%', width: '65%', panelClass: 'add-ranger-modal', autoFocus: true, disableClose: true });
+		const addDialogRef = this.dialog.open(AddAnimalComponent, { height: '70%', width: '50%', panelClass: 'add-ranger-modal', autoFocus: true, disableClose: true });
 		addDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
 			if (result == 'success') {
 				//If ranger was successfully added, refresh component and notify parent
 				this.animalsOnChange.emit('update');
 			}
-			else {
+			else if (result == 'error') {
 				this.snackBar.open('An error occured when adding the new animal. Please try again.', "Dismiss", { duration: 5000, });
-				//console.log('Error adding animal: ', result);
 			}
 		});
   }
