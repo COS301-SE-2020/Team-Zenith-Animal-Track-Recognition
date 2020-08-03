@@ -1,3 +1,4 @@
+/*
 .mat-dialog-title
 {
 	font-size: 120%;
@@ -178,4 +179,93 @@
 :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
 {
 	padding: 0.2em 0 0.8em 0;
+}
+*/
+
+
+.mat-dialog-title
+{
+	font-size: 120%;
+}
+.mat-dialog-content
+{
+	height: 80%;
+}
+#add-animal-form-container
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+#add-animal-form-overview, #add-animal-form-descr
+{
+	height: 30%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+#add-animal-form-descr
+{
+	height: 70%;
+}
+.add-animal-form-content
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+}
+#add-animal-form-descr > .add-animal-form-descr
+{
+	justify-content: center;
+}
+:host ::ng-deep .mat-form-field-wrapper
+{
+	margin-bottom: 0 !important;
+}
+#overview-classification-group
+{
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+#overview-classification-group > .mat-form-field
+{
+	width: 30%;
+}
+.add-animal-form-descr > .mat-form-field
+{
+	width: 100%;
+}
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
+{
+	padding: 0.2em 0 0.8em 0;
+}
+.mat-dialog-actions
+{
+	border-top: 1px solid #CCCCCC;
+	height: 15%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.mat-dialog-actions > .mat-button
+{
+	width: 25%;
+}
+#cancel-btn
+{
+	border: 2px solid #CCCCCC;
+}
+#add-animal-btn
+{
+	background-color: #686E79;
+	color: white;
 }

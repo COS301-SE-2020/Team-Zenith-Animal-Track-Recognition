@@ -44,6 +44,7 @@ export class RangersComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				var newRangerList = temp[0];
+				console.log("newRangerList length: " + newRangerList.length);
 				switch (updateOp) {
 					case "update":
 						this.rangers = null;
@@ -64,6 +65,7 @@ export class RangersComponent implements OnInit {
 
 	//Ranger CRUD Operations
 	updateRangerList(updatedList: string) {
+		console.log("rangers length: " + this.rangers.length);
 		this.refresh(updatedList);
 	}
 	addIfNewRanger(x: any) {
@@ -73,7 +75,10 @@ export class RangersComponent implements OnInit {
 				isNotNew = true;
 
 		if (!isNotNew)
+		{
+			console.log("adding new ranger: " + x.lastName);
 			this.rangers.push(x);
+		}
 	}
 	removeRanger(t: string) {
 		this.rangers.splice(this.rangers.findIndex(x => x.token == t), 1);
