@@ -35,7 +35,7 @@ export class RangerPermissionsComponent implements OnInit {
 	permissionsColumns: string[] = ['Permissions', 'Level 1 Rangers', 'Level 2 Rangers', 'Level 3 Rangers'];
 	permissionsDataSource = PERMISSIONS;
 	rangerPermissionsColumns: string[] = ['Ranger', 'Level 1 Ranger', 'Level 2 Ranger', 'Level 3 Ranger', 'Assigned Level'];
-	rangerPermissionsDataSource;
+	rangerPermissionsDataSource: any;
 
 	constructor(private router: Router, private http: HttpClient) { }
 
@@ -62,7 +62,8 @@ export class RangerPermissionsComponent implements OnInit {
 
 		var count = 1;
 		//Replace Permissions with appropiate radio button
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Access_Level,firstName,lastName}}')
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'"){token,accessLevel,firstName,lastName}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -103,7 +104,7 @@ export class RangerPermissionsComponent implements OnInit {
 		} else {
 			for (let i = 0; i < this.rangerPermissionsDataSource.length - 1; i++) {
 				for (let j = i + 1; j < this.rangerPermissionsDataSource.length; j++) {
-					if (this.rangerPermissionsDataSource[i].Access_Level > this.rangerPermissionsDataSource[j].Access_Level) {
+					if (this.rangerPermissionsDataSource[i].accessLevel > this.rangerPermissionsDataSource[j].accessLevel) {
 						let temp = this.rangerPermissionsDataSource[i];
 						this.rangerPermissionsDataSource[i] = this.rangerPermissionsDataSource[j];
 						this.rangerPermissionsDataSource[j] = temp;
@@ -115,13 +116,13 @@ export class RangerPermissionsComponent implements OnInit {
 	}
 
 	updateLevel(tkn: string, lvl: string) {
-		let temp = this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{UpdateUser('
-			+ 'TokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
-			+ 'TokenChange:"' + tkn + '",'
-			+ 'Access_Level:"' + lvl + '"){lastName,Token}}', '').subscribe((data: any[]) => {
-			let t = [];
-			t = Object.values(Object.values(data)[0]);
-		});
+		let temp = this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{updateUser('
+			+ 'tokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
+			+ 'tokenChange:"' + tkn + '",'
+			+ 'accessLevel:"' + lvl + '"){lastName,token}}', '').subscribe((data: any[]) => {
+				let t = [];
+				t = Object.values(Object.values(data)[0]);
+			});
 
 		this.router.navigate(["/geotags"], { queryParams: { reloadPerms: "true" } });
 	}

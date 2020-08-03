@@ -11,7 +11,6 @@ export class AnimalsComponent implements OnInit {
 
 
 	@ViewChild('sidenav') sidenav;
-
 	animals;
 	sortByCommonName: boolean = true;
 	searchText: string;
@@ -25,18 +24,19 @@ export class AnimalsComponent implements OnInit {
 	ngOnInit(): void {
 		this.test = true;
 		document.getElementById("animals-route").classList.add("activeRoute");
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'"){Classification,Animal_ID,Common_Name,Group_ID{Group_Name},HeightM,HeightF,WeightM,WeightF,Habitats{Habitat_ID},Diet_Type,Life_Span,Gestation_Period,Typical_Behaviour,' +
-			'Overview_of_the_animal,Description_of_animal,Pictures{URL}}}')
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
+			'lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{URL}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.animals = temp[0];
+				console.log(this.animals);
 				this.sort(true);
 			});
 
 	}
-	
+
 	openSidenav() {
 		this.sidenav.open();
 		document.getElementById("sidenav-open-btn-container").style.transitionDuration = "0.2s";
@@ -53,14 +53,15 @@ export class AnimalsComponent implements OnInit {
 	}
 
 	refresh() {
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(Token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'"){Classification,Animal_ID,Common_Name,Group_ID{Group_Name},HeightM,HeightF,WeightM,WeightF,Habitats{Habitat_ID},Diet_Type,Life_Span,Gestation_Period,Typical_Behaviour,' +
-			'Overview_of_the_animal,Description_of_animal,Pictures{URL}}}')
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
+			'lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{URL}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.animals = null;
 				this.animals = temp[0];
+				console.log(this.animals);
 				this.sort(true);
 			});
 	}

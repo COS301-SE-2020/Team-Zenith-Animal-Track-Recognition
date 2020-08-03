@@ -39,26 +39,27 @@ export class AuthService {
   }
 
   login(username, password) {
-    return this.http.get<any>(ROOT_QUERY_STRING + '?query=query{DASlogin(e_mail:"' + username + '",Password:"' + password + '"){Token, firstName, lastName}}')
+    return this.http.get<any>(ROOT_QUERY_STRING + '?query=query{wdbLogin(eMail:"' + username + '",password:"' + password + '"){token, firstName, lastName}}')
       .pipe(map(user => {
-        if (null === user.data.DASlogin) {
+        if (null === user.data.wdbLogin) {
           this.isAuthorized = false;
           return null;
         }
 
         const now = new Date();
+
         const tkn = {
-          value: user.data.DASlogin.Token,
+          value: user.data.wdbLogin.token,
           expiry: now.getTime() + 3600000,
-          fullName: user.data.DASlogin.firstName + ' ' + user.data.DASlogin.lastName
-        }
+          fullName: user.data.wdbLogin.firstName + ' ' + user.data.wdbLogin.lastName
+        };
 
         localStorage.setItem('currentToken', JSON.stringify(tkn));
         this.currentUserSubject.next(user);
         this.isAuthorized = true;
-		
-		//Save last name to use for Profile name
-		localStorage.setItem('userLastName', user.data.DASlogin.lastName);
+
+        //Save last name to use for Profile name
+        localStorage.setItem('userLastName', user.data.wdbLogin.lastName);
 
         return user;
       }));

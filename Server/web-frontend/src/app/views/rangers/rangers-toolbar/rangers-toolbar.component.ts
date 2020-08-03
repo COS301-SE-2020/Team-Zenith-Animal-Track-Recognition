@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { AddRangerComponent } from './../add-ranger/add-ranger.component';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-rangers-toolbar',
@@ -13,19 +14,15 @@ export class RangersToolbarComponent implements OnInit {
 	@Input() rangers;
 	@Input() sortBySurname: boolean;
 	@Output() rangersOnChange: EventEmitter<string> = new EventEmitter();
-  currentAlphabet: any;
-  sortByLevel: boolean = false;
 	@Output() sBSOnChange: EventEmitter<string> = new EventEmitter();
+	currentAlphabet: any;
+	sortByLevel: boolean = false;
 	sorted: string;
 	display: boolean = false;
-	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient) { }
+	
+	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { }
+	
 	ngOnInit(): void { }
-
-	public ngOnChanges(changes: SimpleChanges) {
-		if ('rangers' in changes) {
-			//If rangers has updated
-		}
-	}
 
 	openAddRangerDialog() {
 		const dialogConfig = new MatDialogConfig();
@@ -35,12 +32,12 @@ export class RangersToolbarComponent implements OnInit {
 			this.stopLoader();
 			//Refresh component and notify parent
 			if (result == 'success') {
-				//If ranger was successfully added
-				//Refresh component and notify parent
-				this.rangersOnChange.emit('update');
+				//If ranger was successfully added, refresh component and notify parent
+				this.rangersOnChange.emit('add');
 			}
 			else {
-				console.log('Error adding ranger: ', result);
+				this.snackBar.open('An error occured when adding the new ranger. Please try again.', "Dismiss", { duration: 5000, });
+				//console.log('Error adding ranger: ', result);
 			}
 		});
 	}
@@ -54,15 +51,7 @@ export class RangersToolbarComponent implements OnInit {
 
 		this.router.navigate([location]);
 	}
-
-	//Loader
-	startLoader() {
-		document.getElementById('loader-container').style.visibility = 'visible';
-	}
-	stopLoader() {
-		document.getElementById('loader-container').style.visibility = 'hidden';
-	}
-
+	
 	toggle(bool: boolean) {
 		this.sortBySurname = bool;
 		this.sort(bool);
@@ -96,6 +85,14 @@ export class RangersToolbarComponent implements OnInit {
 		}
 		this.sorted = temp;
 		return temp;
+	}
+	
+	//Loader
+	startLoader() {
+		document.getElementById('loader-container').style.visibility = 'visible';
+	}
+	stopLoader() {
+		document.getElementById('loader-container').style.visibility = 'hidden';
 	}
 }
 

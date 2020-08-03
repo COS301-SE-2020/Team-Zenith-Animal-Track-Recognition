@@ -37,19 +37,20 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import {MatCardModule} from '@angular/material/card'; 
-import {MatMenuModule} from '@angular/material/menu'; 
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatBadgeModule} from '@angular/material/badge';
-import {MatExpansionModule} from '@angular/material/expansion'; 
-import {MatTableModule} from '@angular/material/table'; 
-import {MatRadioModule} from '@angular/material/radio';
-import {MatTabsModule} from '@angular/material/tabs'; 
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatSnackBarModule} from '@angular/material/snack-bar'; 
+import { MatCardModule } from '@angular/material/card'; 
+import { MatMenuModule } from '@angular/material/menu'; 
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatExpansionModule } from '@angular/material/expansion'; 
+import { MatTableModule } from '@angular/material/table'; 
+import { MatRadioModule } from '@angular/material/radio';
+import { MatTabsModule } from '@angular/material/tabs'; 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSnackBarModule } from '@angular/material/snack-bar'; 
+import { MatStepperModule } from '@angular/material/stepper'; 
 
 @NgModule({
   declarations: [
@@ -103,7 +104,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 	MatTabsModule,
 	MatProgressSpinnerModule,
 	MatAutocompleteModule,
-	MatSnackBarModule
+	MatSnackBarModule,
+	MatStepperModule
   ],
   providers: [AuthGuardService],
   entryComponents: [
