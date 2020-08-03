@@ -6,35 +6,41 @@ import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angu
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
 @Component({
-  selector: 'app-delete-ranger',
-  templateUrl: './delete-ranger.component.html',
-  styleUrls: ['./delete-ranger.component.css']
+	selector: 'app-delete-ranger',
+	templateUrl: './delete-ranger.component.html',
+	styleUrls: ['./delete-ranger.component.css']
 })
 export class DeleteRangerComponent implements OnInit {
 
-  temp: boolean;
+	temp: boolean;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private router: Router, public dialogRef: MatDialogRef<DeleteRangerComponent>) { }
+	constructor(
+		@Inject(MAT_DIALOG_DATA) public data: any,
+		private http: HttpClient,
+		private router: Router,
+		public dialogRef: MatDialogRef<DeleteRangerComponent>) { }
 
-  ngOnInit(): void {
-    this.temp = false;
-  }
-
-	confirmDelete(test: boolean) 
-	{
-		if (test) {return true;}
-		this.startLoader();
-		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{DeleteUser('+ 'TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",' + 'TokenDelete:"' + this.data.Token + '"){msg}}', '')
-		.subscribe({next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message)});
+	ngOnInit(): void {
+		this.temp = false;
 	}
-	
-    //Loader
-	startLoader()
-	{
+
+	confirmDelete(test: boolean) {
+		if (test) { return true; }
+		this.startLoader();
+		console.log(this.data.token);
+		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{deleteUser(' + 'tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'",' + 'tokenDelete:"' + this.data.token + '"){msg}}', '')
+			.subscribe({
+				next: data => this.dialogRef.close("success"),
+				error: error => this.dialogRef.close("Error " + error.message)
+			});
+	}
+
+	//Loader
+	startLoader() {
 		document.getElementById("loader-container").style.visibility = "visible";
-	}  
-	stopLoader()
-	{
+	}
+	stopLoader() {
 		document.getElementById("loader-container").style.visibility = "hidden";
 	}
 }

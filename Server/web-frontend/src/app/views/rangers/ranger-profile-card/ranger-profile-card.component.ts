@@ -20,8 +20,8 @@ export class RangerProfileCardComponent implements OnInit {
 	sorted: string;
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef) { }
-	
-	ngOnInit(): void {this.startLoader();}
+
+	ngOnInit(): void { this.startLoader(); }
 
 
 	public ngOnChanges(changes: SimpleChanges) {
@@ -34,6 +34,7 @@ export class RangerProfileCardComponent implements OnInit {
 	openEditRangerDialog(rangerID) {
 		const dialogConfig = new MatDialogConfig();
 
+		console.log(rangerID);
 		//Get ranger information for chosen card
 		var rangerFullName = document.getElementById("ranger" + rangerID + "Name").innerHTML;
 		var rangerName = rangerFullName.split("&nbsp;");
@@ -41,7 +42,20 @@ export class RangerProfileCardComponent implements OnInit {
 		var rangerPhone = document.getElementById("ranger" + rangerID + "PhoneNumber").textContent;
 		var rangerEmail = document.getElementById("ranger" + rangerID + "Email").textContent;
 
-		const editDialogRef = this.dialog.open(EditRangerInfoComponent, { height: '55%', width: '35%', autoFocus: true, disableClose: true, data: { Token: rangerID, firstName: rangerName[0], lastName: rangerName[1], level: rangerLevel, phoneNumber: rangerPhone.replace("call", ""), email: rangerEmail.replace("mail", "") }, });
+		const editDialogRef = this.dialog.open(EditRangerInfoComponent, {
+			height: '55%',
+			width: '35%',
+			autoFocus: true,
+			disableClose: true,
+			data: {
+				token: rangerID,
+				firstName: rangerName[0],
+				lastName: rangerName[1],
+				level: rangerLevel,
+				phoneNumber: rangerPhone.replace("call", ""),
+				email: rangerEmail.replace("mail", "")
+			},
+		});
 		editDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
 			if (result == "success") {
@@ -61,7 +75,16 @@ export class RangerProfileCardComponent implements OnInit {
 
 			var rangerFullName = document.getElementById("ranger" + rangerID + "Name").textContent;
 
-			const deleteDialogRef = this.dialog.open(DeleteRangerComponent, { height: '45%', width: '30%', autoFocus: true, disableClose: true, data: { name: rangerFullName, Token: rangerID }, });
+			const deleteDialogRef = this.dialog.open(DeleteRangerComponent, {
+				height: '45%',
+				width: '30%',
+				autoFocus: true,
+				disableClose: true,
+				data: {
+					name: rangerFullName,
+					token: rangerID
+				},
+			});
 			deleteDialogRef.afterClosed().subscribe(result => {
 				this.stopLoader();
 				if (result == "success") {

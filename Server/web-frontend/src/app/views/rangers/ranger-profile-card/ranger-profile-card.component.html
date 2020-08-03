@@ -3,18 +3,18 @@
         <mat-spinner id="loader"></mat-spinner>
     </div>
     <div class="ranger-profile-card-container" *ngFor="let ranger of rangers | filter:searchText">
-        <mat-card class="ranger-profile-card" id="ranger{{ranger.Token}}ProfileCard">
+        <mat-card class="ranger-profile-card" id="ranger{{ranger.token}}ProfileCard">
             <div class="ranger-profile-card-header">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
-                    <mat-card-title class="fontSB" id="ranger{{ranger.Token}}Name">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</mat-card-title>
-                    <mat-card-subtitle class="fontM" id="ranger{{ranger.Token}}RangerLevel">Level {{ranger.Access_Level}} Ranger</mat-card-subtitle>
+                    <mat-card-title class="fontSB" id="ranger{{ranger.token}}Name">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</mat-card-title>
+                    <mat-card-subtitle class="fontM" id="ranger{{ranger.token}}RangerLevel">Level {{ranger.accessLevel}} Ranger</mat-card-subtitle>
                 </mat-card-header>
                 <button mat-icon-button [matMenuTriggerFor]="menu" class="ranger-profile-card-contextMenu">
 					<mat-icon>more_vert</mat-icon>
 				</button>
                 <mat-menu #menu="matMenu" xPosition="before">
-                    <button mat-menu-item (click)="openEditRangerDialog(ranger.Token)">
+                    <button mat-menu-item (click)="openEditRangerDialog(ranger.token)">
 						<span>Edit Information</span>
 					</button>
                     <button mat-menu-item>
@@ -23,7 +23,7 @@
                     <button mat-menu-item (click)="route('rangers/permissions')">
 						<span>Change Level</span>
 					</button>
-                    <button mat-menu-item (click)="openDeleteRangerDialog(ranger.Token)">
+                    <button mat-menu-item (click)="openDeleteRangerDialog(ranger.token)">
 						<span>Delete Ranger</span>
 					</button>
                 </mat-menu>
@@ -31,10 +31,10 @@
             <mat-card-content>
                 <div class="ranger-profile-card-contact-container">
                     <p class="fontSB">Contact Information</p>
-                    <p class="ranger-profile-card-phone" id="ranger{{ranger.Token}}PhoneNumber">
+                    <p class="ranger-profile-card-phone" id="ranger{{ranger.token}}PhoneNumber">
                         <mat-icon>call</mat-icon>{{ranger.phoneNumber}}</p>
-                    <p class="ranger-profile-card-email" id="ranger{{ranger.Token}}Email">
-                        <mat-icon>mail</mat-icon>{{ranger.e_mail}}</p>
+                    <p class="ranger-profile-card-email" id="ranger{{ranger.token}}Email">
+                        <mat-icon>mail</mat-icon>{{ranger.eMail}}</p>
                 </div>
                 <div class="ranger-profile-card-activity-container">
                     <p class="fontSB">Recent Activity</p>

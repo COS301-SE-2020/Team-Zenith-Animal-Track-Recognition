@@ -61,7 +61,7 @@ export class RangerSearchSidenavCompComponent implements OnInit {
     } else {
       for (let i = 0; i < this.rangers.length - 1; i++) {
         for (let j = i + 1; j < this.rangers.length; j++) {
-          if (this.rangers[i].Access_Level > this.rangers[j].Access_Level) {
+          if (this.rangers[i].accessLevel > this.rangers[j].accessLevel) {
             let temp = this.rangers[i];
             this.rangers[i] = this.rangers[j];
             this.rangers[j] = temp;
