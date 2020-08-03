@@ -292,18 +292,18 @@ const ANIMAL_TYPE = new GraphQLObjectType({
         pictures: {
             type: new GraphQLList(PICTURES_TYPE),
             resolve(parent, args) {
-                let a = []
-                let d = parent.pictures
-                d.forEach(b => {
+                let picturesReturn = []
+                let pictures = parent.pictures
+                pictures.forEach(b => {
 
                     let c = _.find(pictureData, {
                         picturesID: b.toString()
                     })
 
-                    a.push(c)
+                    picturesReturn.push(c)
 
                 })
-                return a
+                return picturesReturn
             }
         }
     })
@@ -529,14 +529,13 @@ const RootQuery = new GraphQLObjectType({
                 })
                 if (a != null) {
                     let temp = [];
-                    if (group != undefined) {
+                    if (args.group != undefined) {
                         animalData.forEach(animal => {
 
                             var BreakException = {};
 
                             try {
                                 animal.groupID.forEach(element => {
-                                    console.log(el);
                                     if (element == args.group){
                                         temp.push(animal)
                                         throw BreakException;
