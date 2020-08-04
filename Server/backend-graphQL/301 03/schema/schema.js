@@ -554,6 +554,30 @@ const RootQuery = new GraphQLObjectType({
                 return null;
             }
         },
+        animalsbyByClassification: {
+            type: ANIMAL_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                classification: {
+                    type: GraphQLString
+                }
+            },
+            resolve(parent, args) {
+                a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a != null) {
+                    return _.find(animalData,{
+                        classification:args.classification
+                    })
+                    
+                }
+
+                return null;
+            }
+        },
         pictures: {
             type: GraphQLList(PICTURES_TYPE),
             args: {
@@ -690,7 +714,7 @@ const Mutation = new GraphQLObjectType({
                     lastName: args.lastName,
                     phoneNumber: args.phoneNumber
                 }
-
+                
                 let x = users.add(newuser).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                     let newuser2 = {
@@ -1159,6 +1183,9 @@ const Mutation = new GraphQLObjectType({
                 return newAnimal;
             }
         },
+
+
+        
         updateAnimal: {
             type: ANIMAL_TYPE,
             args: {
