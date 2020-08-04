@@ -1062,6 +1062,87 @@ const Mutation = new GraphQLObjectType({
                 return newHabitat;
             }
         },
+        wdbAddAnimal: {
+            type: ANIMAL_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                classification: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                commonName: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                animalDescription: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.accessLevel <= 2) {
+                    return null
+                }
+                let HID = ((animalData.length + 1))
+                let b = _.find(animalData, {
+                    animalID: HID.toString()
+                })
+                while (b != null) {
+                    HID++
+                    b = _.find(animalData, {
+                        animalID: HID.toString()
+                    })
+                }
+
+                let newAnimal = {
+                    animalID: HID,
+                    commonName: args.commonName,
+                    animalDescription: args.animalDescription,
+                    classification: args.classification
+                }
+
+                newAnimal.pictures = []
+                newAnimal.pictures.push(1)
+
+                newAnimal.heightM = "0"
+                newAnimal.heightF = "0"
+                newAnimal.weightF = "0"
+                newAnimal.weightM = "0"
+
+                newAnimal.habitats = []
+                newAnimal.habitats.push(1)
+
+                newAnimal.groupID = []
+                newAnimal.groupID.push(1)
+
+                newAnimal.dietType = "Food eater"
+                newAnimal.lifeSpan = "Long"
+                newAnimal.gestationPeriod = "Also long"
+                newAnimal.animalOverview = "Fluffy"
+
+                newAnimal.typicalBehaviourM = {
+                    behaviour: "naughty",
+                    threatLevel: "yes"
+                }
+                newAnimal.typicalBehaviourF = {
+                    behaviour: "naughty",
+                    threatLevel: "yes"
+                }
+
+                animals.doc(args.classification).set(newAnimal).then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+                
+                animalData.push(newAnimal)
+                return newAnimal;
+            }
+        },
         addAnimal: {
             type: ANIMAL_TYPE,
             args: {
@@ -1358,10 +1439,10 @@ const Mutation = new GraphQLObjectType({
                         spoorIdentificationID: IDID.toString()
                     })
                 }
-              
-                let potentialMatchesarry = _.sortBy( AIIterface(args.base64imge), ["confidence"])
+
+                let potentialMatchesarry = _.sortBy(AIIterface(args.base64imge), ["confidence"])
                 let newingID = uplodeBase64(args.base64imge)
-                
+
                 let newSpoorIdentification = {
                     spoorIdentificationID: IDID.toString(),
                     dateAndTime: {
@@ -1383,12 +1464,12 @@ const Mutation = new GraphQLObjectType({
                     similar: getSimilarimg(newingID),
                     tags: [0]
                 }
-                let tempID =IDID.toString()
-               
+                let tempID = IDID.toString()
+
                 spoorIdentifications.doc(tempID).set(newSpoorIdentification).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
-                
+
                 spoorIdentificationData.push(newSpoorIdentification)
                 return newSpoorIdentification;
             }
@@ -1460,10 +1541,6 @@ const Mutation = new GraphQLObjectType({
                 return newSpoorIdentification;
             }
         },
-
-
-
-
     }
 });
 
