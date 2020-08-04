@@ -1,0 +1,128 @@
+#ranger-profile-workspace-container
+{
+    height: 88vh;
+    width: 85vw;
+	background-color: #F5F6FA;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+#rangers-toolbar-container
+{
+	height: 12%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	border-bottom: 2px solid #CCCCCC;
+	background-color: white;
+}
+#rangers-toolbar-navigationtree-container
+{
+	height: 100%;
+	width: 60%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	padding-left: 2%;
+}
+#rangers-toolbar-navigation
+{
+	height: 100%;
+	width: auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+#rangers-toolbar-navigation > a
+{
+	color: #AAAAAA;
+	font-size: 130%;
+	text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out; 
+    -o-transition: all 0.2s ease-in-out;
+}
+#rangers-toolbar-navigation > a:hover
+{
+	color: #1A1A1A;
+	cursor: pointer;
+}
+#rangers-toolbar-navigation > a.activeView
+{
+	color: #1A1A1A;
+}
+#rangers-toolbar
+{
+	height: 100%;
+	width: 40%;
+	font-size: 120%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+}
+#rangers-toolbar-actions-btn
+{
+	background: rgba(104, 110, 121, 1);
+	width: 30%;
+	border: 1px solid #CCCCCC;
+	padding: 0.5em 0.5em;
+	border-radius: 5px;
+	margin-right: 5%;
+}
+:host ::ng-deep #rangers-toolbar-sortby-btn .mat-select-value-text, :host ::ng-deep #rangers-toolbar-sortby-btn .mat-select-placeholder {
+  color: #1C1C1C !important;
+}
+:host ::ng-deep #rangers-toolbar-actions-btn .mat-select-value-text, :host ::ng-deep #rangers-toolbar-actions-btn .mat-select-placeholder {
+  color: white !important;
+}
+#ranger-profile-view-workspace
+{
+	height: 88%;
+	width: 100%;
+	overflow: scroll;
+}
+#ranger-profile-info-container
+{
+	height: 45%;
+	width: 100%;
+	background-color: white;
+	border-bottom: 3px solid #CCC;
+}
+#ranger-profile-feed-container
+{
+	height: 55%;
+	width: 100%;
+	background-color: #F5F6FA;
+	display: flex;
+	flex-direction: row;
+}
+.mat-tab-group
+{
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+:host ::ng-deep .mat-tab-body-wrapper
+{
+	height: 100%;
+	width: 100%;
+	border: 1px solid orange;
+}
+#ranger-profile-spoor-feed-container
+{
+	height: 100%;
+	width: 60%;
+	border: 1px solid red;
+}
+#ranger-profile-activity-feed-container
+{
+	height: 100%;
+	width: 40%;
+	border: 1px solid blue;
+}

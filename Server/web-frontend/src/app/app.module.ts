@@ -23,6 +23,7 @@ import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/
 import { AddRangerComponent } from './views/rangers/add-ranger/add-ranger.component';
 import { EditRangerInfoComponent } from './views/rangers/edit-ranger-info/edit-ranger-info.component'; 
 import { DeleteRangerComponent } from './views/rangers/delete-ranger/delete-ranger.component';
+import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.component'; 
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
 import { GeotagsComponent } from './views/geotags/geotags.component';
 import { SettingsComponent } from './views/settings/settings.component';
@@ -50,7 +51,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar'; 
-import { MatStepperModule } from '@angular/material/stepper'; 
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     AnimalSearchSidenavComponent,
     AnimalInfoCardComponent,
 	EditAnimalInfoComponent,
-	AddAnimalComponent
+	AddAnimalComponent,
+	RangerProfileComponent
   ],
   imports: [
     BrowserModule,
