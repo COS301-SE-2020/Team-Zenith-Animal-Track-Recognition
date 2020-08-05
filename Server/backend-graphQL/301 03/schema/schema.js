@@ -1109,7 +1109,7 @@ const Mutation = new GraphQLObjectType({
                 }
 
                 newAnimal.pictures = []
-                newAnimal.pictures.push("1")
+                newAnimal.pictures.push("19")
 
                 newAnimal.heightM = "0"
                 newAnimal.heightF = "0"
@@ -1117,23 +1117,23 @@ const Mutation = new GraphQLObjectType({
                 newAnimal.weightM = "0"
 
                 newAnimal.habitats = []
-                newAnimal.habitats.push(1)
+                newAnimal.habitats.push(2)
 
                 newAnimal.groupID = []
-                newAnimal.groupID.push(1)
+                newAnimal.groupID.push(5)
 
-                newAnimal.dietType = "Food eater"
-                newAnimal.lifeSpan = "Long"
-                newAnimal.gestationPeriod = "Also long"
-                newAnimal.animalOverview = "Fluffy"
+                newAnimal.dietType = "TBA"
+                newAnimal.lifeSpan = "TBA"
+                newAnimal.gestationPeriod = "TBA"
+                newAnimal.animalOverview = "TBA"
 
                 newAnimal.typicalBehaviourM = {
-                    behaviour: "naughty",
-                    threatLevel: "yes"
+                    behaviour: "TBA",
+                    threatLevel: "TBA"
                 }
                 newAnimal.typicalBehaviourF = {
-                    behaviour: "naughty",
-                    threatLevel: "yes"
+                    behaviour: "TBA",
+                    threatLevel: "TBA"
                 }
 
                 animals.doc(args.classification).set(newAnimal).then(function (docRef) {
