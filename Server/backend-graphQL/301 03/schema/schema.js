@@ -585,6 +585,10 @@ const RootQuery = new GraphQLObjectType({
                 commonName: {
                     type: (GraphQLString)
                 }
+                ,
+                kindOfPicture: {
+                    type: (GraphQLString)
+                }
             },
             resolve(parent, args) {
                 let a = []
@@ -619,7 +623,11 @@ const RootQuery = new GraphQLObjectType({
                             })
                         }
                     }
-
+                    if (args.kindOfPicture!=undefined){
+                        a=_.filter(a,{
+                            kindOfPicture:args.kindOfPicture
+                        })
+                    }
 
                 })
                 return a
