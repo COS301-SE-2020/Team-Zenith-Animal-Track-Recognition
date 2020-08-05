@@ -18,6 +18,7 @@ export class RangerProfileComponent implements OnInit {
 	constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, public dialog: MatDialog) { }
 
 	ngOnInit(): void {
+		this.startLoader();
 		document.getElementById('rangers-route').classList.add('activeRoute');
 		//Determine which user was navigated to and fetch their information
 		this.userToken = this.activatedRoute.snapshot.paramMap.get("user");
@@ -27,11 +28,19 @@ export class RangerProfileComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.user = temp[0][0];
+				this.stopLoader();
 			});
 	}
 
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}
-
+	
+	//Loader
+	startLoader() {
+		document.getElementById('loader-container').style.visibility = 'visible';
+	}
+	stopLoader() {
+		document.getElementById('loader-container').style.visibility = 'hidden';
+	}
 }

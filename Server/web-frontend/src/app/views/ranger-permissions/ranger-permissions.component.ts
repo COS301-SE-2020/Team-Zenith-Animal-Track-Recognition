@@ -40,6 +40,7 @@ export class RangerPermissionsComponent implements OnInit {
 	constructor(private router: Router, private http: HttpClient) { }
 
 	ngOnInit(): void {
+		this.startLoader();
 		document.getElementById("rangers-route").classList.add("activeRoute");
 
 		//Replace Permissions with appropiate icon
@@ -68,6 +69,7 @@ export class RangerPermissionsComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.printOut(temp);
+				this.stopLoader();
 			});
 	}
 
@@ -125,5 +127,12 @@ export class RangerPermissionsComponent implements OnInit {
 			});
 
 		this.router.navigate(["/geotags"], { queryParams: { reloadPerms: "true" } });
+	}
+	//Loader
+	startLoader() {
+		document.getElementById('loader-container').style.visibility = 'visible';
+	}
+	stopLoader() {
+		document.getElementById('loader-container').style.visibility = 'hidden';
 	}
 }

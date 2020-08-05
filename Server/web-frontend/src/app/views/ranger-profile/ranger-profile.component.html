@@ -1,4 +1,7 @@
 <div id="ranger-profile-workspace-container">
+    <div id="loader-container">
+        <mat-spinner id="loader"></mat-spinner>
+    </div>
     <div id="rangers-toolbar-container">
         <div id="rangers-toolbar-navigationtree-container">
             <div id="rangers-toolbar-navigation">
@@ -24,7 +27,11 @@
 				</div>
 				<div id="ranger-profile-info-text">
 					<div id="ranger-profile-info-details">
-						<h1 class="fontSB">{{user.firstName}}&nbsp;{{user.lastName}}</h1>
+						<h1 class="fontSB">{{user.firstName}}&nbsp;{{user.lastName}} 
+							<span class="editQuickBtn">    
+								<button mat-stroked-button color="primary">Edit</button>
+							</span>
+						</h1>
 						<p class="fontM">Level {{user.accessLevel}} Ranger</p>
 					</div>
 					<div id="ranger-profile-info-contact-container">

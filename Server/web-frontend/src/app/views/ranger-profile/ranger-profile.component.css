@@ -140,6 +140,18 @@
 	font-size: 120%;
 	margin-bottom: 1%;
 }
+.editQuickBtn
+{
+	height: 50px;
+	margin-left: 10%;
+	border: 1px solid red;
+}
+.editQuickBtn > .mat-stroked-button
+{
+	height: 100%;
+	font-size: 80%;
+	border-radius: 25%;
+}
 #ranger-profile-info-details > p
 {
 	font-size: 95%;
