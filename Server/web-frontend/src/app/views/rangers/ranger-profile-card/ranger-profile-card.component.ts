@@ -11,32 +11,25 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	selector: 'app-ranger-profile-card',
 	templateUrl: './ranger-profile-card.component.html',
 	styleUrls: ['./ranger-profile-card.component.css'],
-	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RangerProfileCardComponent implements OnInit {
 
 	@Input() searchText: string;
 	@Input() rangers;
-	rangerList: any;
 	numRangers: any;
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	sorted: string;
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
 
-	ngOnInit(): void { 
-		this.startLoader(); 
-		if (this.rangers)
-			this.rangerList = this.rangers;
-		this.stopLoader();
-	}
+	ngOnInit(): void { this.startLoader();}
 
 
 	public ngOnChanges(changes: SimpleChanges) {
 		this.startLoader();
 		if (changes.rangers) {
 		  //If rangers has updated
-		  this.changeDetection.markForCheck();
+		  this.changeDetection.detectChanges();
 		  this.ngOnInit();
 		}
 		this.stopLoader();
@@ -48,7 +41,6 @@ export class RangerProfileCardComponent implements OnInit {
 	openEditRangerDialog(rangerID) {
 		const dialogConfig = new MatDialogConfig();
 
-		console.log(rangerID);
 		//Get ranger information for chosen card
 		var rangerFullName = document.getElementById("ranger" + rangerID + "Name").innerHTML;
 		var rangerName = rangerFullName.split("&nbsp;");

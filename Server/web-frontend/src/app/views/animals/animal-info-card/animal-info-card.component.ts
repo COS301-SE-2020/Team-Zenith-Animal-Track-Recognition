@@ -14,7 +14,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AnimalInfoCardComponent implements OnInit {
 
-	animalList: any;
   @Input() animals: any;
   @Input() searchText: string;
   @Input() sortByCommonName: boolean;
@@ -25,9 +24,6 @@ export class AnimalInfoCardComponent implements OnInit {
   ngOnInit(): void {
     this.startLoader();
     console.log(this.animals);
-	if (this.animals)
-		this.animalList = this.animals;
-	this.stopLoader();
   }
 
 	public ngOnChanges(changes: SimpleChanges) {
