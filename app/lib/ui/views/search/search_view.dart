@@ -38,7 +38,7 @@ class SearchView extends StatelessWidget {
                   appBar: AppBar(
                     backgroundColor: Colors.black,
                     title: text18LeftBoldWhite("Search View"),
-                    actions: <Widget>[IconBuilder(icon: Icons.search, colors: Colors.grey,index: 0)],
+                    actions: <Widget>[IconBuilder(icon: Icons.search, colors: Colors.grey,index: 0), IconBuilder(icon:Icons.more_vert,index: 1)],
                     bottom: TabBar(tabs: [text14CenterBoldGrey("ANIMAL"),text14CenterBoldGrey("SPECIES"),]),
                   ),
                   body: Container(

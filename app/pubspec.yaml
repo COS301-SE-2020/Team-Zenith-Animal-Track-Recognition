@@ -51,6 +51,10 @@ dependencies:
 
   # image picker
   image_picker: ^0.6.3+4
+
+  # download
+  dio: any
+  path_provider: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -182,6 +182,12 @@
       "languageVersion": "2.7"
     },
     {
+      "name": "dio",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/dio-3.0.9",
+      "packageUri": "lib/",
+      "languageVersion": "2.4"
+    },
+    {
       "name": "file",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/file-5.2.1",
       "packageUri": "lib/",
@@ -692,7 +698,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-08-05T19:08:36.777319Z",
+  "generated": "2020-08-05T21:50:49.924809Z",
   "generator": "pub",
   "generatorVersion": "2.8.4"
 }

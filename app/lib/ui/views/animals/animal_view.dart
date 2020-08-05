@@ -162,7 +162,7 @@ Widget getWidget(var animalTabList){
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.grey[200] , width: 2,style: BorderStyle.solid)
+         // border: Border.all(color: Colors.grey[200] , width: 2,style: BorderStyle.solid)
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -5,8 +5,10 @@ import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/animals/animal_view.dart';
 import 'package:ERP_RANGER/ui/views/identification/identification_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:stacked/stacked.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:stacked_hooks/stacked_hooks.dart';
 
 
 class IdentificationView extends StatelessWidget {
@@ -51,7 +53,7 @@ class IdentificationView extends StatelessWidget {
                     ),
                   ),
                   backButton(context),
-                  SpoorListBody(confident: model.confident,list: model.recentIdentifications, similarSpoorModel: model.similarSpoorModel,),
+                  SpoorListBody(),
                 ],
               ),
             ),
@@ -67,561 +69,66 @@ class IdentificationView extends StatelessWidget {
 }
 
 class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
-  SpoorModel confident;
-  List<SpoorModel> list;
-  SimilarSpoorModel similarSpoorModel;
-  SpoorListBody({Key key, this.list,this.similarSpoorModel,this.confident}) : super(reactive: true);
+  SpoorListBody({Key key,}) : super(reactive: true);
 
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
-    return NotificationListener<DraggableScrollableNotification>(
-      child: DraggableScrollableSheet(
-        initialChildSize: 0.10,
-        minChildSize: 0.10,
-        maxChildSize: 0.99,
-        builder: (BuildContext context, ScrollController myscrollController) {
-          return Scaffold(
-              body: Stack(
-                children: <Widget>[
-                  Container(
-                    padding: new EdgeInsets.all(0.0),
-                    margin: new EdgeInsets.all(0.0),
-                    decoration: BoxDecoration(color: Colors.white),
-                    child: ListView(
-                      padding: new EdgeInsets.only(top: 10.0),
-                      controller: myscrollController,
-                      children: <Widget>[
-                        Container(
-                          color: Colors.grey[850],
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(flex: 1, child: icon),
-                              SizedBox(height: 1.0),
-                              Expanded(flex: 4, child: text(model.confident.name,context)),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        barInfo(context),
-                        Divider(thickness: 2),
-                        Column(
-                          children: <Widget>[
-                            identifyText(context),
-                            Row(
-                              children: <Widget>[
-                                Expanded(flex: 1, child: confidentImageBlock(confident.pic)),
-                                Expanded(flex: 1, child: confidentImageDetails(confident,context)),
-                              ],
-                            )
-                          ],
-                        ),
-                        //Divider(thickness: 2),
-                        Column(
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Expanded(flex: 1, child: OtherMatches(list:list))
-                              ],
-                            )
-                          ],
-                        ),
-                        //Divider(thickness: 2),
-                        Column(
-                          children: <Widget>[
-                            similarSpoors(context),
-                            Row(
-                              children: <Widget>[
-                                Expanded(flex: 1, child: similarSpoor(similarSpoorModel))
-                              ],
-                            )
-                          ],
-                        ),
-                        Divider(thickness: 2),
-                        Column(
-                          children: <Widget>[
-                            attachATag(context),
-                          ],
-                        ),
-                        Divider(thickness: 2),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(flex: 1, child: button1(context)),
-                              SizedBox(height: 1.0),
-                              Expanded(flex: 1, child: button2(context)),
-                              SizedBox(height: 1.0),
-                              Expanded(flex: 1, child: button3(context)),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+    return DraggableScrollableSheet(
+      initialChildSize: 0.10,
+      minChildSize: 0.10,
+      maxChildSize: 0.99,
+      builder: (BuildContext context, ScrollController myscrollController) {
+        return Container(
+          padding: new EdgeInsets.all(0.0),
+          margin: new EdgeInsets.all(0.0),
+          decoration: BoxDecoration(color: Colors.white),
+          child: ListView(
+            padding: new EdgeInsets.only(top: 0.0),
+            controller: myscrollController,
+            children: <Widget>[
+              Container(color: Colors.grey[850],
+                child: Row(
+                children: <Widget>[Expanded(flex: 1, child: icon),SizedBox(height: 1.0),Expanded(flex: 4, child: text(model.confident.name,context)),],
+              )),
+              SizedBox(height: 10),
+              BarInfo(),
+              Divider(thickness: 2),
+              Column(
+                children: <Widget>[identifyText(context),
+                  Row(children: <Widget>[
+                    Expanded(flex: 1, child: confidentImageBlock(model.confident.pic)),Expanded(flex: 1, child: ConfidentAnimalIdentiication()),
+                  ])],
+              ),
+              Column(children: <Widget>[
+                Row(children: <Widget>[Expanded(flex: 1, child: OtherMatches(list:model.recentIdentifications))],)
+              ],),
+              Column(children: <Widget>[similarSpoors(context),
+                Row(children: <Widget>[Expanded(flex: 1, child: similarSpoor(model.similarSpoorModel))],)
+              ]),
+              Divider(thickness: 2),
+              Column(children: <Widget>[
+                attachATag(context),
+              ],),
+              Divider(thickness: 2),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child:Row(
+                    children: <Widget>[
+                     // Expanded(flex: 1, child: EditSpoorFunctionality(title:"Edit Spoor",)),
+                     // SizedBox(height: 1.0),
+                      Expanded(flex: 1, child: ViewInfoFunctionality(title:"View Animal Info",)),
+                      SizedBox(height: 1.0),
+                      Expanded(flex: 1, child: DownloadFunctionality(title:"Download Image",)),
+                    ],
                   ),
-                ],
-              ));
-        },
-      ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }
-
-
-//_____________________________________________________________________________//
-Widget icon = new Container(
-  alignment: Alignment(0, 0),
-  margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
-  decoration: BoxDecoration(
-      color: Colors.grey[850],
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: Colors.grey[850])),
-  child: Center(
-    child: IconButton(
-      alignment: Alignment(0, 0),
-      icon: Icon(
-        Icons.keyboard_arrow_up,
-        color: Colors.white,
-      ),
-      onPressed: () {},
-    ),
-  ),
-);
-
-Widget barInfo(var context){
-return Container(
-  alignment: Alignment(0, 0),
-  margin: new EdgeInsets.only(bottom: 3, left: 10, right: 3),
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.center,
-    mainAxisSize: MainAxisSize.min,
-    children: <Widget>[
-      Container(
-        child: Row(
-          children: <Widget>[
-            Expanded(
-                flex: 1,
-                child: Container(
-                  padding: new EdgeInsets.only(left:10),
-                  alignment: Alignment.centerLeft,
-                  child: Icon(
-                    Icons.location_on,
-                    color: Colors.black,
-                  ),
-                )),
-            Expanded(
-              flex: 8,
-              child: text12LeftNormGrey("Spoor Location")
-            ),
-          ],
-        ),
-      ),
-      SizedBox(
-        height: 10,
-      ),
-      Container(
-        alignment: Alignment.centerLeft,
-        margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-        padding: new EdgeInsets.all(5),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: text12LeftNormGrey('Kruger National Park'),
-            )
-          ],
-        ),
-      ),
-      Container(
-        alignment: Alignment.centerLeft,
-        margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-        padding: new EdgeInsets.all(5),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: text12LeftNormGrey( 'Date: '),
-            ),
-            Expanded(
-              flex: 3,
-              child: text12LeftNormBlack('09/09/2020')
-            )
-          ],
-        ),
-      ),
-      Container(
-        alignment: Alignment.centerLeft,
-        margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-        padding: new EdgeInsets.all(5),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: text12LeftNormGrey('Coordinates: '),
-            ),
-            Expanded(
-              flex: 3,
-              child: text12LeftNormBlack('-240.19097, 31.559270'),
-            )
-          ],
-        ),
-      )
-    ],
-  ),
-);
-}
-
-Widget text(String name, var context){
-  return Container(
-    alignment: Alignment(0, 0),
-    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 3),
-    decoration: BoxDecoration(
-      color: Colors.grey[850],
-      borderRadius: BorderRadius.circular(10),
-    ),
-    height: 50,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: Container(
-            alignment: Alignment.centerLeft,
-            child: text22LeftBoldWhite('$name Spoor identified'),
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Container(
-            alignment: Alignment.centerLeft,
-            child: text16LeftBoldWhite('Swipe up for more options'),
-          ),
-        )
-      ],
-    ),
-  );
-} 
-
-//================================
-
-Widget button1(var context) {
-
-  return Container(
-    margin: new EdgeInsets.only(bottom: 0, left: 3, right: 3),
-    padding: new EdgeInsets.all(0.0),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: IconButton(
-            icon: Icon(Icons.sync_problem),
-            onPressed: () {},
-          ),
-        ),
-        text14LeftBoldGrey("Edit Spoor"),
-      ],
-    ),
-  );
-}
-
-Widget button2(var context){
-  return Container(
-    margin: new EdgeInsets.only(bottom: 0, left: 3, right: 3),
-    padding: new EdgeInsets.all(0.0),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: IconButton(
-            icon: Icon(Icons.pets),
-            onPressed: () {},
-          ),
-        ),
-        text14LeftBoldGrey("View Animal Info")
-      ],
-    ),
-  );
-} 
-
-Widget button3(var context){ 
-return Container(
-  margin: new EdgeInsets.only(bottom: 0, left: 3, right: 3),
-  padding: new EdgeInsets.all(0.0),
-  decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(20),
-  ),
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.center,
-    mainAxisSize: MainAxisSize.min,
-    children: <Widget>[
-      Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: IconButton(
-          icon: Icon(Icons.file_download),
-          onPressed: () {},
-        ),
-      ),
-      text14LeftBoldGrey("Download Image")
-    ],
-  ),
-);
-}
-
-Widget backButton(context) {
-  return Container(
-      padding: new EdgeInsets.all(0.0),
-      height: 50,
-      width: 50,
-      alignment: Alignment(0.0, 0.0),
-      margin: new EdgeInsets.only(
-        top: 10,
-        left: 10,
-      ),
-      decoration: BoxDecoration(
-          color: Colors.grey[850],
-          borderRadius: BorderRadius.circular(13),
-          border: Border.all(color: Colors.grey[850])),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Center(
-          child: Icon(Icons.arrow_back, color: Colors.white),
-        ),
-      ));
-}
-
- //===============================
-
- Widget identifyText(var context){
- return Container(
-   alignment: Alignment.centerLeft,
-   margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-   padding: new EdgeInsets.all(5),
-   decoration: BoxDecoration(
-     color: Colors.white,
-     borderRadius: BorderRadius.circular(10),
-   ),
-   //height: 0,
-   child: text18LeftBoldBlack("Spoor Identification Results"),
- );
- }
-
- Widget confidentImageBlock(String image){
-    return Container(
-      alignment: Alignment.center,
-      margin: new EdgeInsets.only(bottom: 10, left: 15, right: 10, top: 10),
-      //padding: new EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-              image),
-          fit: BoxFit.fill,
-        ),
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      height: 170,
-      width: 130,
-    );
- } 
-
- Widget confidentImageDetails(SpoorModel confidentAnimal, var context){
-    return Container(
-      alignment: Alignment.center,
-      margin: new EdgeInsets.all(10),
-      padding: new EdgeInsets.only(left: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      height: 170,
-      width: 130,
-      child: Column(children: <Widget>[
-        Expanded(
-            flex: 1,
-            child: Row(
-              children: <Widget>[
-                Expanded(flex: 1, child: animal(context)),
-                Expanded(flex: 1, child: animalVal(confidentAnimal.name, context)),
-              ],
-            )),
-        Expanded(
-            flex: 1,
-            child: Row(
-              children: <Widget>[
-                Expanded(flex: 1, child: species(context)),
-                Expanded(flex: 1, child: speciesVal(confidentAnimal.species,context)),
-              ],
-            )),
-        Expanded(flex: 1, child: accuracy(context)),
-        Expanded(flex: 2, child: score(confidentAnimal.score)),
-      ]),
-    );
- } 
-
- Widget animal(var context) {
-    return Container(
-    alignment: Alignment.centerLeft,
-    padding: new EdgeInsets.all(0),
-    child: text14LeftBoldBlack("Animal: "),
-  );
- }
-
- Widget animalVal(String name, var context) {
-   return new Container(
-     alignment: Alignment.centerLeft,
-     padding: new EdgeInsets.all(0),
-     child: text14LeftBoldGrey(name),
-   );
- }
-
- Widget species(var context){
-  return Container(
-    alignment: Alignment.centerLeft,
-    padding: new EdgeInsets.all(0),
-    child: text14LeftBoldBlack("Species:")
-  );
- }
-
- Widget speciesVal(String species,var context) {
-   return new Container(
-     alignment: Alignment.centerLeft,
-     padding: new EdgeInsets.all(0),
-     child: text14LeftBoldGrey(species),
-   );
- }
-
- Widget accuracy(var context) {
-   return Container(
-   alignment: Alignment.centerLeft,
-   padding: new EdgeInsets.all(0),
-   child: text14LeftBoldBlack("Accuracy Score:")
- );
- }
- 
- Widget score(String score){
-  return Container(
-    alignment: Alignment.centerLeft,
-    padding: new EdgeInsets.all(0),
-    child: percentageText("$score", 45)
-  );
- }
- //===============================
-
-
- Widget similarSpoors (var context){
-  return Container(
-    alignment: Alignment.centerLeft,
-    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-    padding: new EdgeInsets.all(5),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-    ),
-    //height: 0,
-    child: text18LeftBoldBlack("Similar Spoors",),
-  );
- } 
-
- Widget innerImageBlock(String link) {
-   return new Container(
-     alignment: Alignment.center,
-     margin: new EdgeInsets.all(5),
-     padding: new EdgeInsets.all(5),
-     decoration: BoxDecoration(
-       color: Colors.grey,
-       borderRadius: BorderRadius.circular(10),
-       image: DecorationImage(
-         image: AssetImage(link),
-         fit: BoxFit.fill,
-       ),
-     ),
-     height: 150,
-     width: 150,
-   );
- }
-
- Widget name(String name, var context) {
-   return new Container(
-     alignment: Alignment.centerLeft,
-     padding: new EdgeInsets.all(5),
-     margin: new EdgeInsets.only(left: 2),
-     child: text14LeftBoldBlack(name));
- }
-
- Widget animalSpecies(String species,var context) {
-   return  Container(
-     alignment: Alignment.centerLeft,
-     margin: new EdgeInsets.only(left: 2),
-     padding: new EdgeInsets.all(5),
-     child: text14LeftBoldGrey(species),
-   );
- }
-
- Widget accuracyScore(String score, var context) {
-   return new Container(
-     alignment: Alignment.centerLeft,
-     margin: new EdgeInsets.only(left: 2),
-     padding: new EdgeInsets.all(5),
-     child: text14LeftBoldGrey(score),
-   );
- }
-
- //===============================
- Widget similarSpoor(SimilarSpoorModel similarSpoorModel) {
-   return Container(
-     height: 150,
-     color: Colors.white,
-     child: ListView.builder(
-         shrinkWrap: true,
-         scrollDirection: Axis.horizontal,
-         itemCount: similarSpoorModel.similarSpoors.length,
-         itemBuilder: (BuildContext context, int index) {
-           return Container(
-             alignment: Alignment.center,
-             decoration: BoxDecoration(
-               color: Colors.white,
-               borderRadius: BorderRadius.circular(10),
-             ),
-             height: 100,
-             width: 150,
-             child: Column(
-               children: <Widget>[
-                 Expanded(child: innerImageBlock(similarSpoorModel.similarSpoors[index]), flex: 4),
-               ],
-             ),
-           );
-         }),
-   );
- }
 
 class OtherMatches  extends ViewModelWidget<IdentificationViewModel> {
   List<SpoorModel>list;
@@ -643,6 +150,33 @@ class OtherMatches  extends ViewModelWidget<IdentificationViewModel> {
            }),
         )]
    );
+  }
+}
+
+class Tags extends ViewModelWidget<IdentificationViewModel> {
+  Tags({Key key}) : super(key: key, reactive:true);
+  
+  @override
+  Widget build(BuildContext context,IdentificationViewModel model) {
+    model.setTags();
+    return ListView.builder(
+      padding: new EdgeInsets.all(0),
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemCount: model.tags.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Chip(
+          avatar: CircleAvatar(
+            radius: 10,
+            backgroundColor: Colors.grey.
+            shade600,
+            child: text12LeftNormBlack(model.tags[index][0].toUpperCase())
+          ),
+          label: text12LeftNormBlack(model.tags[index]),
+          backgroundColor: Colors.grey[100],
+        );     
+      }
+    );
   }
 }
 
@@ -706,103 +240,780 @@ class ChildPopup  extends ViewModelWidget<IdentificationViewModel>{
   }
 }
 
- //===============================
-Widget attachATag(var context){
-return Container(
-  height: 55,
-  alignment: Alignment.centerLeft,
-  padding: EdgeInsets.all(5),
-  margin: EdgeInsets.all(5),
-  decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-    border: Border.all(color: Colors.white)
-  ),
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: <Widget>[
-      Expanded(flex:1,child: attachATagButton(context)),
-      Expanded(flex:1,child: Tags()),
-    ],
-  ),
-);
-} 
-
-Widget attachATagButton(var context){
-return Container(
-    child: Row(children: <Widget>[
-      Expanded(flex:1,child: containerTitle("Spoor Tags", context)),
-    ],),
-);
-} 
-
-Widget containerTitle(String title, var context){
-  return Container(
-    margin: EdgeInsets.only(left:7),
-    alignment: Alignment.centerLeft,
-    child: text18LeftBoldBlack(title)
-  );
-} 
-
-class Tags extends ViewModelWidget<IdentificationViewModel> {
-  Tags({Key key}) : super(key: key, reactive:true);
+class EditSpoorFunctionality extends ViewModelWidget<IdentificationViewModel> {
+  String title;
+  EditSpoorFunctionality({Key key,this.title}) : super(key: key, reactive:true);
   
   @override
   Widget build(BuildContext context,IdentificationViewModel model) {
-    model.setTags();
-    return ListView.builder(
-      padding: new EdgeInsets.all(0),
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemCount: model.tags.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Chip(
-          avatar: CircleAvatar(
-            radius: 10,
-            backgroundColor: Colors.grey.
-            shade600,
-            child: text12LeftNormBlack(model.tags[index][0].toUpperCase())
+    return Container(
+    margin: new EdgeInsets.only(bottom: 0, left: 3, right: 3),
+    padding: new EdgeInsets.all(0.0),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
           ),
-          label: text12LeftNormBlack(model.tags[index]),
-          backgroundColor: Colors.grey[100],
-        );     
-      }
+          child: IconButton(
+            icon: Icon(Icons.sync_problem),
+            onPressed: () {
+             //model.setEditSpoor();
+            },
+          ),
+        ),
+        text14LeftBoldGrey("$title"),
+      ],
+    ),
+  );
+  }
+}
+
+class ViewInfoFunctionality extends ViewModelWidget<IdentificationViewModel> {
+  String title;
+  ViewInfoFunctionality({Key key,this.title}) : super(key: key, reactive:true);
+  
+  @override
+  Widget build(BuildContext context,IdentificationViewModel model) {
+    return Container(
+    margin: new EdgeInsets.only(bottom: 0, left: 3, right: 3),
+    padding: new EdgeInsets.all(0.0),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: IconButton(
+            icon: Icon(Icons.pets),
+            onPressed: () {
+              navigateToInfo(model.confident.name.toLowerCase());
+            },
+          ),
+        ),
+        text14LeftBoldGrey("$title"),
+      ],
+    ),
+  );
+  }
+}
+
+class DownloadFunctionality extends ViewModelWidget<IdentificationViewModel> {
+  String title;
+  DownloadFunctionality({Key key,this.title}) : super(key: key, reactive:true);
+  
+  @override
+  Widget build(BuildContext context,IdentificationViewModel model) {
+    return Container(
+    margin: new EdgeInsets.only(bottom: 0, left: 3, right: 3),
+    padding: new EdgeInsets.all(0.0),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: IconButton(
+            icon: Icon(Icons.file_download),
+            onPressed: () {
+              model.downloadImage();
+            },
+          ),
+        ),
+        text14LeftBoldGrey("$title"),
+      ],
+    ),
+  );
+  }
+}
+
+class SaveFunvtionality extends ViewModelWidget<IdentificationViewModel> {
+  SaveFunvtionality({Key key}) : super(key: key, reactive:true);
+  
+  @override
+  Widget build(BuildContext context,IdentificationViewModel model) {
+    return Container(
+      margin: new EdgeInsets.only(bottom: 0, left: 3, right: 3),
+      padding: new EdgeInsets.all(0.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child:Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: IconButton(
+          icon: Icon(Icons.check),
+          onPressed: () {
+            //model.setEditSpoor();
+          },
+        ),
+      ),
     );
   }
 }
-    // int defualtChoiceIndex = model.tagIndex;
-    // model.setTags();
-    // return ListView.builder(
-    //   shrinkWrap: true,
-    //   scrollDirection: Axis.horizontal,
-    //   itemCount: model.tags.length,
-    //   itemBuilder: (BuildContext context, int index) {
-    //     return Container(
-    //       margin: new EdgeInsets.only(right:5),
-    //       child: ChoiceChip(
-    //         avatar: CircleAvatar(
-    //           radius: 10,
-    //           backgroundColor: Colors.black,
-    //           child: text14CenterNormWhite(model.tags[index][0].toUpperCase())
-    //         ),
-    //         label: text14CenterBoldGrey(model.tags[index]),
-    //         backgroundColor: Colors.grey[100],
-    //         selected: defualtChoiceIndex==index,
-    //         selectedColor: Colors.blue.shade100,
-    //         elevation: 2,
-    //         onSelected: (bool selected){
-    //           print(index);
-    //           defualtChoiceIndex = selected ? index : null;
-    //           if(defualtChoiceIndex == null){
-    //             model.setTag(null);
-    //             model.setTagIndex(null);                  
-    //           }else{
-    //             model.setTag(model.tags[index]);
-    //             model.setTagIndex(index);
-    //           }
-    //           model.notifyListeners();
-    //         },
-    //       ),
-    //     );     
-    //   }
-    // );
+
+class DiscardFunctionality extends ViewModelWidget<IdentificationViewModel> {
+  DiscardFunctionality({Key key}) : super(key: key, reactive:true);
+  
+  @override
+  Widget build(BuildContext context,IdentificationViewModel model) {
+    return Container(
+      margin: new EdgeInsets.only(bottom: 0, left: 3, right: 3),
+      padding: new EdgeInsets.all(0.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child:Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: IconButton(
+          icon: Icon(Icons.cancel),
+          onPressed: () {
+           // model.setEditSpoor();
+          },
+        ),
+      ),
+    );
+  }
+}
+ 
+class ConfidentAnimalIdentiication extends ViewModelWidget<IdentificationViewModel> {
+  ConfidentAnimalIdentiication({Key key}) : super(key: key, reactive:true);
+  
+  @override
+  Widget build(BuildContext context,IdentificationViewModel model) {
+    return Container(
+      alignment: Alignment.center,
+      margin: new EdgeInsets.all(10),
+      padding: new EdgeInsets.only(left: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      height: 170,
+      width: 130,
+      child: Column(children: <Widget>[
+        Expanded(
+            flex: 1,
+            child: GestureDetector(
+              onLongPress: (){
+                model.setEditSpoorName();
+              },
+              child: Row(
+                children: <Widget>[
+                  Expanded(flex: 1, child: animal(context)),
+                  Expanded(flex: 2, 
+                    child: GestureDetector(
+                      onLongPress: (){
+                        model.setEditSpoorName();
+                      },
+                      child: model.editSpoorNameBool 
+                      ? TextInputField(indexIdentifier:3)
+                      :animalVal(model.confident.name, context)
+                    )
+                  ),
+                ],
+              ),
+            )),
+        Expanded(
+            flex: 1,
+            child: GestureDetector(
+              onLongPress: (){
+                model.setEditSpoorSpecies();
+              },
+              child: Row(
+                children: <Widget>[
+                  Expanded(flex: 1, child: species(context)),
+                  Expanded(flex: 2, 
+                    child: GestureDetector(
+                      onLongPress: (){
+                        model.setEditSpoorSpecies();
+                      },
+                      child: model.editSpoorSpeciesBool
+                      ? TextInputField(indexIdentifier:4)
+                      : speciesVal(model.confident.species,context)
+                    )
+                  ),
+                ],
+              ),
+            )),
+        Expanded(flex: 1, child: accuracy(context)),
+        Expanded(flex: 2, child: score(model.confident.score)),
+      ]),
+    );
+  }
+}
+
+class BarInfo extends ViewModelWidget<IdentificationViewModel> {
+  BarInfo({Key key}) : super(key: key, reactive:true);
+  
+  @override
+  Widget build(BuildContext context,IdentificationViewModel model) {
+    return Container(
+      alignment: Alignment(0, 0),
+      margin: new EdgeInsets.only(bottom: 3, left: 10, right: 3),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: new EdgeInsets.only(left:10),
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        Icons.location_on,
+                        color: Colors.black,
+                      ),
+                    )),
+                Expanded(
+                  flex: 8,
+                  child: text12LeftNormGrey("Spoor Location")
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+            padding: new EdgeInsets.all(5),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: text12LeftNormGrey('Kruger National Park'),
+                )
+              ],
+            ),
+          ),
+          GestureDetector(
+            onLongPress: (){
+              model.setEditDate();
+            },
+            child: Container(
+              alignment: Alignment.centerLeft,
+              margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+              padding: new EdgeInsets.all(5),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: text12LeftNormGrey( 'Date: '),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: model.editDateBool 
+                    ? TextInputField(indexIdentifier: 0,)
+                    : text12LeftNormBlack(model.getDate)
+                  )
+                ],
+              ),
+            ),
+          ),
+          Container(
+              alignment: Alignment.centerLeft,
+              margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+              padding: new EdgeInsets.all(5),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: text12LeftNormGrey('Coordinates: '),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Row(
+                      children:[
+                        Expanded(
+                          flex:1,
+                          child: GestureDetector(
+                            onLongPress: (){
+                              model.setEditSpoorCoordLat();
+                            },
+                            child: Container(
+                              margin: new EdgeInsets.only(right:2),
+                              child: model.editSpoorCoordLat
+                              ? TextInputField(indexIdentifier: 1)
+                              :text12LeftNormBlack("Latitude: "+model.getCoordLat)
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            onLongPress: (){
+                              model.setEditSpoorCoordLong();
+                            },
+                            child: Container(
+                              margin: new EdgeInsets.only(left:2),
+                              child: model.editSpoorCoordLong
+                              ? TextInputField(indexIdentifier: 2)
+                              :text12LeftNormBlack("Longitude: "+model.getCoordLong)
+                            ),
+                          ),
+                        ),
+                      ])
+                  )
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class TextInputField extends HookViewModelWidget<IdentificationViewModel>{
+  int indexIdentifier;
+  TextInputField({Key key,this.indexIdentifier}) :super(reactive: true);
+
+  @override
+  Widget buildViewModelWidget(BuildContext context, IdentificationViewModel model) {
+    var text = useTextEditingController();
+    if(indexIdentifier == 0){
+      return Container(
+        alignment: Alignment.centerLeft,
+        child: TextField(
+          controller: text,
+          textAlign: TextAlign.left,
+          decoration: InputDecoration(
+            isDense: true,
+            focusColor: Colors.blue,
+            hoverColor: Colors.blue,
+            errorText: model.isDateValid ? null : model.userDateErrorString,
+            errorStyle: TextStyle(
+              fontFamily: 'MavenPro',
+              fontWeight: FontWeight.normal,
+              color: Colors.red
+            ),  
+            hintText: model.date,
+            filled: true,
+            fillColor: Colors.grey[50]
+          ),
+          onSubmitted: (value) => {
+              model.setDate(value)
+          },
+          style: TextStyle(
+            fontFamily: 'MavenPro',
+            fontWeight: FontWeight.normal,
+            color: Colors.black
+          ),
+        ),
+      );
+    }else if(indexIdentifier == 1){
+      return Container(
+        alignment: Alignment.centerLeft,
+        child: TextField(
+          controller: text,
+          textAlign: TextAlign.left,
+          decoration: InputDecoration(
+            isDense: true,
+            focusColor: Colors.blue,
+            hoverColor: Colors.blue,
+            errorText: model.isLatValid ? null : model.userLatErrorString,
+            errorStyle: TextStyle(
+              fontFamily: 'MavenPro',
+              fontWeight: FontWeight.normal,
+              color: Colors.red
+            ),  
+            hintText: model.getCoordLat,
+            filled: true,
+            fillColor: Colors.grey[50]
+          ),
+          onSubmitted: (value) => {
+            model.setLat(value)
+          },
+          style: TextStyle(
+            fontFamily: 'MavenPro',
+            fontWeight: FontWeight.normal,
+            color: Colors.black
+          ),
+        ),
+      );
+    }else if(indexIdentifier == 2){
+      return Container(
+        alignment: Alignment.centerLeft,
+        child: TextField(
+          controller: text,
+          textAlign: TextAlign.left,
+          decoration: InputDecoration(
+            isDense: true,
+            focusColor: Colors.blue,
+            hoverColor: Colors.blue,
+            errorText: model.isLongValid ? null : model.userLongErrorString,
+            errorStyle: TextStyle(
+              fontFamily: 'MavenPro',
+              fontWeight: FontWeight.normal,
+              color: Colors.red
+            ), 
+            hintText: model.getCoordLong,
+            filled: true,
+            fillColor: Colors.grey[50]
+          ),
+          onSubmitted: (value) => {
+            model.setLong(value)
+          },
+          style: TextStyle(
+            fontFamily: 'MavenPro',
+            fontWeight: FontWeight.normal,
+            color: Colors.black
+          ),
+        ),
+      );
+    }else if(indexIdentifier == 3){
+      return Container(
+        alignment: Alignment.centerLeft,
+        child: TextField(
+          controller: text,
+          textAlign: TextAlign.left,
+          decoration: InputDecoration(
+            isDense: true,
+            focusColor: Colors.blue,
+            hoverColor: Colors.blue,
+            hintText: model.confident.name,
+            filled: true,
+            fillColor: Colors.grey[50]
+          ),
+          onSubmitted: (value) => {
+            model.setConfidentName(value)
+          },
+          style: TextStyle(
+            fontFamily: 'MavenPro',
+            fontWeight: FontWeight.normal,
+            color: Colors.black
+          ),
+        ),
+      );
+    }else if(indexIdentifier == 4){
+      return Container(
+        alignment: Alignment.centerLeft,
+        child: TextField(
+          controller: text,
+          textAlign: TextAlign.left,
+          decoration: InputDecoration(
+            isDense: true,
+            focusColor: Colors.blue,
+            hoverColor: Colors.blue,
+            hintText: model.confident.species,
+            filled: true,
+            fillColor: Colors.grey[50]
+          ),
+          onSubmitted: (value) => {
+            model.setConfidentSpecies(value)
+          },
+          style: TextStyle(
+            fontFamily: 'MavenPro',
+            fontWeight: FontWeight.normal,
+            color: Colors.black
+          ),
+        ),
+      );
+    }
+
+  }
+}
+
+//=====================================================
+Widget attachATag(var context){
+  return Container(
+    height: 55,
+    alignment: Alignment.centerLeft,
+    padding: EdgeInsets.all(5),
+    margin: EdgeInsets.all(5),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(color: Colors.white)
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Expanded(flex:1,child: attachATagButton(context)),
+        Expanded(flex:1,child: Tags()),
+      ],
+    ),
+  );
+} 
+
+Widget attachATagButton(var context){
+  return Container(
+    margin: EdgeInsets.only(left:7),
+    alignment: Alignment.centerLeft,
+    child: text18LeftBoldBlack("Spoor Tags")
+  );
+} 
+
+Widget similarSpoor(SimilarSpoorModel similarSpoorModel) {
+   return Container(
+     height: 150,
+     color: Colors.white,
+     child: ListView.builder(
+         shrinkWrap: true,
+         scrollDirection: Axis.horizontal,
+         itemCount: similarSpoorModel.similarSpoors.length,
+         itemBuilder: (BuildContext context, int index) {
+           return Container(
+             alignment: Alignment.center,
+             decoration: BoxDecoration(
+               color: Colors.white,
+               borderRadius: BorderRadius.circular(10),
+             ),
+             height: 100,
+             width: 150,
+             child: Column(
+               children: <Widget>[
+                 Expanded(child: innerImageBlock(similarSpoorModel.similarSpoors[index]), flex: 4),
+               ],
+             ),
+           );
+         }),
+   );
+ }
+
+Widget name(String name, var context) {
+   return new Container(
+     alignment: Alignment.centerLeft,
+     padding: new EdgeInsets.all(5),
+     margin: new EdgeInsets.only(left: 2),
+     child: text14LeftBoldBlack(name));
+ }
+
+Widget animalSpecies(String species,var context) {
+   return  Container(
+     alignment: Alignment.centerLeft,
+     margin: new EdgeInsets.only(left: 2),
+     padding: new EdgeInsets.all(5),
+     child: text14LeftBoldGrey(species),
+   );
+ }
+
+Widget accuracyScore(String score, var context) {
+   return new Container(
+     alignment: Alignment.centerLeft,
+     margin: new EdgeInsets.only(left: 2),
+     padding: new EdgeInsets.all(5),
+     child: text14LeftBoldGrey(score),
+   );
+ }
+
+Widget similarSpoors (var context){
+  return Container(
+    alignment: Alignment.centerLeft,
+    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+    padding: new EdgeInsets.all(5),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+    ),
+    //height: 0,
+    child: text18LeftBoldBlack("Similar Spoors",),
+  );
+ } 
+
+Widget innerImageBlock(String link) {
+   return new Container(
+     alignment: Alignment.center,
+     margin: new EdgeInsets.all(5),
+     padding: new EdgeInsets.all(5),
+     decoration: BoxDecoration(
+       color: Colors.grey,
+       borderRadius: BorderRadius.circular(10),
+       image: DecorationImage(
+         image: AssetImage(link),
+         fit: BoxFit.fill,
+       ),
+     ),
+     height: 150,
+     width: 150,
+   );
+ }
+
+Widget icon = new Container(
+  alignment: Alignment(0, 0),
+  margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
+  decoration: BoxDecoration(
+      color: Colors.grey[850],
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(color: Colors.grey[850])),
+  child: Center(
+    child: IconButton(
+      alignment: Alignment(0, 0),
+      icon: Icon(
+        Icons.keyboard_arrow_up,
+        color: Colors.white,
+      ),
+      onPressed: () {},
+    ),
+  ),
+);
+
+Widget text(String name, var context){
+  return Container(
+    alignment: Alignment(0, 0),
+    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 3),
+    decoration: BoxDecoration(
+      color: Colors.grey[850],
+      borderRadius: BorderRadius.circular(10),
+    ),
+    height: 50,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Container(
+            alignment: Alignment.centerLeft,
+            child: text22LeftBoldWhite('$name Spoor identified'),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(
+            alignment: Alignment.centerLeft,
+            child: text16LeftBoldWhite('Swipe up for more options'),
+          ),
+        )
+      ],
+    ),
+  );
+} 
+
+Widget backButton(context) {
+  return Container(
+      padding: new EdgeInsets.all(0.0),
+      height: 50,
+      width: 50,
+      alignment: Alignment(0.0, 0.0),
+      margin: new EdgeInsets.only(
+        top: 10,
+        left: 10,
+      ),
+      decoration: BoxDecoration(
+          color: Colors.grey[850],
+          borderRadius: BorderRadius.circular(13),
+          border: Border.all(color: Colors.grey[850])),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Center(
+          child: Icon(Icons.arrow_back, color: Colors.white),
+        ),
+      ));
+}
+
+Widget identifyText(var context){
+ return Container(
+   alignment: Alignment.centerLeft,
+   margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+   padding: new EdgeInsets.all(5),
+   decoration: BoxDecoration(
+     color: Colors.white,
+     borderRadius: BorderRadius.circular(10),
+   ),
+   //height: 0,
+   child: text18LeftBoldBlack("Spoor Identification Results"),
+ );
+ }
+
+Widget confidentImageBlock(String image){
+    return Container(
+      alignment: Alignment.center,
+      margin: new EdgeInsets.only(bottom: 10, left: 15, right: 10, top: 10),
+      //padding: new EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+              image),
+          fit: BoxFit.fill,
+        ),
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      height: 170,
+      width: 130,
+    );
+ } 
+
+Widget animal(var context) {
+    return Container(
+    alignment: Alignment.centerLeft,
+    padding: new EdgeInsets.all(0),
+    child: text14LeftBoldBlack("Animal: "),
+  );
+ }
+ 
+Widget animalVal(String name, var context) {
+   return new Container(
+     alignment: Alignment.centerLeft,
+     padding: new EdgeInsets.all(0),
+     child: text14LeftBoldGrey(name),
+   );
+ }
+
+Widget species(var context){
+  return Container(
+    alignment: Alignment.centerLeft,
+    padding: new EdgeInsets.all(0),
+    child: text14LeftBoldBlack("Species:")
+  );
+ }
+
+Widget speciesVal(String species,var context) {
+   return new Container(
+     alignment: Alignment.centerLeft,
+     padding: new EdgeInsets.all(0),
+     child: text14LeftBoldGrey(species),
+   );
+ }
+
+Widget accuracy(var context) {
+   return Container(
+   alignment: Alignment.centerLeft,
+   padding: new EdgeInsets.all(0),
+   child: text14LeftBoldBlack("Accuracy Score:")
+ );
+ }
+ 
+Widget score(String score){
+  return Container(
+    alignment: Alignment.centerLeft,
+    padding: new EdgeInsets.all(0),
+    child: percentageText("$score", 45)
+  );
+ }
