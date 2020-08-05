@@ -11,6 +11,7 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 	styleUrls: ['./rangers.component.css']
 })
 export class RangersComponent implements OnInit {
+
 	@ViewChild('sidenav') sidenav;
 	rangers: any;
 	searchText: string;
@@ -22,7 +23,8 @@ export class RangersComponent implements OnInit {
 
 	ngOnInit(): void {
 		document.getElementById('rangers-route').classList.add('activeRoute');
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'"){token,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -35,22 +37,63 @@ export class RangersComponent implements OnInit {
 		this.searchText = event;
 	}
 
-	refresh() {
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{Users(TokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '"){Token,Password,Access_Level,e_mail,firstName,lastName,phoneNumber}}')
+	refresh(updateOp: string) {
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'"){token,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
-				this.rangers = null;
-				this.rangers = temp[0];
+				var newRangerList = temp[0];
+				console.log("newRangerList length: " + newRangerList.length);
+				switch (updateOp) {
+					case "update":
+						this.rangers = null;
+						this.rangers = newRangerList;
+						break;
+					case "add":
+						newRangerList.forEach(x => this.addIfNewRanger(x));
+						break;
+					case "delete":
+						let removedRanger = this.rangers.filter(x => !newRangerList.some(y => y.token == x.token));
+						this.removeRanger(removedRanger[0].token);
+						break;
+				}
+				newRangerList = null;
 				this.sort(this.sortBySurname);
 			});
 	}
 
-	updateRangerList(updatedList) {
-		if (updatedList == 'update') {
-			this.refresh();
+	//Ranger CRUD Operations
+	updateRangerList(updatedList: string) {
+		console.log("rangers length: " + this.rangers.length);
+		this.refresh(updatedList);
+	}
+	addIfNewRanger(x: any) {
+		let isNotNew = false;
+		for (let i = 0; i < this.rangers.length; i++)
+			if (x.token == this.rangers[i].token)
+				isNotNew = true;
+
+		if (!isNotNew)
+		{
+			console.log("adding new ranger: " + x.lastName);
+			this.rangers.push(x);
 		}
 	}
+	removeRanger(t: string) {
+		this.rangers.splice(this.rangers.findIndex(x => x.token == t), 1);
+	}
+	deleteRanger(x: any) {
+		var isNotNew = false;
+		for (let i = 0; i < this.rangers.length; i++) {
+			if (x.token == this.rangers[i].token) {
+				isNotNew = true;
+			}
+		}
+		if (!isNotNew)
+			this.rangers.push(x);
+	}
+
 
 	//Ranger Search sidenav
 	openSidenav() {
@@ -86,7 +129,7 @@ export class RangersComponent implements OnInit {
 		} else {
 			for (let i = 0; i < this.rangers.length - 1; i++) {
 				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].Access_Level > this.rangers[j].Access_Level) {
+					if (this.rangers[i].accessLevel > this.rangers[j].accessLevel2) {
 						let temp = this.rangers[i];
 						this.rangers[i] = this.rangers[j];
 						this.rangers[j] = temp;

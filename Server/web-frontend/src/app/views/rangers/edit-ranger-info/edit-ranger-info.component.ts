@@ -5,23 +5,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
 @Component({
-  selector: 'app-edit-ranger-info',
-  templateUrl: './edit-ranger-info.component.html',
-  styleUrls: ['./edit-ranger-info.component.css']
+	selector: 'app-edit-ranger-info',
+	templateUrl: './edit-ranger-info.component.html',
+	styleUrls: ['./edit-ranger-info.component.css']
 })
-export class EditRangerInfoComponent implements OnInit 
-{
+export class EditRangerInfoComponent implements OnInit {
 	editUserForm: FormGroup;
 
 	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<EditRangerInfoComponent>) { }
 
-	ngOnInit(): void 
-	{
+	ngOnInit(): void {
 		this.editUserForm = this.formBuilder.group({
-		firstName: [this.data.firstName, Validators.required],
-		lastName: [this.data.lastName, Validators.required],
-		email: [this.data.email, Validators.required],
-		phoneNumber: [this.data.phoneNumber, Validators.required]
+			firstName: [this.data.firstName, Validators.required],
+			lastName: [this.data.lastName, Validators.required],
+			email: [this.data.email, Validators.required],
+			phoneNumber: [this.data.phoneNumber, Validators.required]
 		});
 	}
 
@@ -30,23 +28,26 @@ export class EditRangerInfoComponent implements OnInit
 	onSubmit(test: boolean) {
 		if (false === test) {
 			this.startLoader();
-			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{UpdateUser('+ 'TokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'+ 'TokenChange:"' + this.data.Token + '",' + 'e_mail:"' + this.f.email.value + '",'+ 'lastName:"' + this.f.lastName.value + '",' + 'phoneNumber:"' + this.f.phoneNumber.value + '",'+ 'firstName:"' + this.f.firstName.value + '"){lastName,Token}}', '')
-			.subscribe({next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message)});
+			// console.log(ROOT_QUERY_STRING + '?query=mutation{updateUser(' + 'tokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			// 	'",' + 'tokenChange:"' + this.data.token + '",' + 'eMail:"' + this.f.email.value + '",' + 'lastName:"' + this.f.lastName.value + '",' +
+			// 	'phoneNumber:"' + this.f.phoneNumber.value + '",' + 'firstName:"' + this.f.firstName.value + '"){lastName,token}}');
+			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateUser(' + 'tokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+				'",' + 'tokenChange:"' + this.data.token + '",' + 'eMail:"' + this.f.email.value + '",' + 'lastName:"' + this.f.lastName.value + '",' +
+				'phoneNumber:"' + this.f.phoneNumber.value + '",' + 'firstName:"' + this.f.firstName.value + '"){lastName,token}}', '')
+				.subscribe({ next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message) });
 		}
 		else {
 			return true;
 		}
 	}
-	
-    //Loader
-	startLoader()
-	{
+
+	//Loader
+	startLoader() {
 		console.log("Starting Loader");
 		document.getElementById("loader-container").style.visibility = "visible";
-	}  
-	stopLoader()
-	{
-	  	console.log("Stopping Loader");
+	}
+	stopLoader() {
+		console.log("Stopping Loader");
 		document.getElementById("loader-container").style.visibility = "hidden";
 	}
 }

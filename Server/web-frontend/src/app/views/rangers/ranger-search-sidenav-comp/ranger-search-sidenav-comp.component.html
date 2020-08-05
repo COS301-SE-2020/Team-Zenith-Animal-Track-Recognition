@@ -16,11 +16,11 @@
                     <div mat-subheader class="ranger-search-resultgroup-subheader" *ngIf="checkIfNew(ranger.lastName, 0)">{{ ranger.lastName.charAt(0).toUpperCase() }}</div>
                 </ng-container>
                 <ng-template #sortedByLevels>
-                    <div mat-subheader class="ranger-search-resultgroup-subheader" *ngIf='checkIfNew("Level " + ranger.Access_Level + " Ranger", 6)'>Level {{ ranger.Access_Level }} Ranger</div>
+                    <div mat-subheader class="ranger-search-resultgroup-subheader" *ngIf='checkIfNew("Level " + ranger.accessLevel + " Ranger", 6)'>Level {{ ranger.accessLevel }} Ranger</div>
                 </ng-template>
                 <mat-list-option class="fontM" [value]="ranger">
                     <p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
-                    <p class="ranger-search-resultgroup-subentry">Level {{ranger.Access_Level}} Ranger</p>
+                    <p class="ranger-search-resultgroup-subentry">Level {{ranger.accessLevel}} Ranger</p>
                 </mat-list-option>
             </div>
         </mat-selection-list>

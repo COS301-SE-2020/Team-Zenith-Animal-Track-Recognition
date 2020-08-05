@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, Inject} from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
@@ -59,11 +59,15 @@ export class EditAnimalInfoComponent implements OnInit {
 			this.startLoader();
 			//@Zach Please change the query string. 
 			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{UpdateUser('+ 'TokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'+ 'TokenChange:"' + this.data.Token + '"){lastName,Token}}', '')
-			.subscribe({next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message)});
+			.subscribe({next: data => this.dialogRef.close('success'), error: error => this.dialogRef.close('error') });
 		}
 		else {
 			return true;
 		}
+	}
+	closeDialog()
+	{
+		this.dialogRef.close("cancel");
 	}
 	
 	//Loader
@@ -75,5 +79,4 @@ export class EditAnimalInfoComponent implements OnInit {
 	{
 		document.getElementById("loader-container").style.visibility = "hidden";
 	}
-
 }
