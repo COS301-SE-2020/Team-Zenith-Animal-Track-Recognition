@@ -30,10 +30,9 @@ export class RangersToolbarComponent implements OnInit {
 		const addDialogRef = this.dialog.open(AddRangerComponent, { height: '55%', width: '35%', panelClass: 'add-ranger-modal', autoFocus: true, disableClose: true });
 		addDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
-			//Refresh component and notify parent
 			if (result == 'success') {
 				//If ranger was successfully added, refresh component and notify parent
-				this.rangersOnChange.emit('update');
+				this.rangersOnChange.emit('add');
 			}
 			else if (result == 'error') {
 				this.snackBar.open('An error occured when adding the new ranger. Please try again.', "Dismiss", { duration: 5000, });

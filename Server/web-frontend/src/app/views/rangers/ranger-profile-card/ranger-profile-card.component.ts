@@ -11,11 +11,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	selector: 'app-ranger-profile-card',
 	templateUrl: './ranger-profile-card.component.html',
 	styleUrls: ['./ranger-profile-card.component.css'],
-})
+ })
 export class RangerProfileCardComponent implements OnInit {
 
 	@Input() searchText: string;
-	@Input() rangers;
+	@Input() rangersList;
 	numRangers: any;
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	sorted: string;
@@ -30,7 +30,6 @@ export class RangerProfileCardComponent implements OnInit {
 		if (changes.rangers) {
 		  //If rangers has updated
 		  this.changeDetection.detectChanges();
-		  this.ngOnInit();
 		}
 		this.stopLoader();
 	}
@@ -119,23 +118,23 @@ export class RangerProfileCardComponent implements OnInit {
 	sort(bool: boolean) {
 		let temp: string;
 		if (bool) {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
+			for (let i = 0; i < this.rangersList.length - 1; i++) {
+				for (let j = i + 1; j < this.rangersList.length; j++) {
+					if (this.rangersList[i].lastName.toUpperCase() > this.rangersList[j].lastName.toUpperCase()) {
+						let temp = this.rangersList[i];
+						this.rangersList[i] = this.rangersList[j];
+						this.rangersList[j] = temp;
 					}
 				}
 			}
 			temp = "Sorted alphabetically";
 		} else {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].rangerLevel > this.rangers[j].rangerLevel) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
+			for (let i = 0; i < this.rangersList.length - 1; i++) {
+				for (let j = i + 1; j < this.rangersList.length; j++) {
+					if (this.rangersList[i].rangerLevel > this.rangersList[j].rangerLevel) {
+						let temp = this.rangersList[i];
+						this.rangersList[i] = this.rangersList[j];
+						this.rangersList[j] = temp;
 					}
 				}
 			}

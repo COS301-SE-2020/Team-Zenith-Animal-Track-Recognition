@@ -43,18 +43,40 @@ export class RangersComponent implements OnInit {
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
-				let refreshRanger = true;
-				this.rangers = refreshRanger;
-				this.rangers = temp[0];
+				var newRangerList = temp[0];
+				switch (updateOp) {
+					case "update":
+						this.rangers = null;
+						this.rangers = newRangerList;
+						break;
+					case "add":
+						newRangerList.forEach(x => this.addIfNewRanger(x));
+						break;
+					case "delete":
+						let removedRanger = this.rangers.filter(x => !newRangerList.some(y => y.token == x.token));
+						this.removeRanger(removedRanger[0].token);
+						break;
+				}
 				this.sort(this.sortBySurname);
 			});
 	}
-
 	//Ranger CRUD Operations
 	updateRangerList(updatedList: string) {
 		this.refresh(updatedList);
 	}
+	addIfNewRanger(x: any) {
+		let isNotNew = false;
+		for (let i = 0; i < this.rangers.length; i++)
+			if (x.token == this.rangers[i].token)
+				isNotNew = true;
 
+		if (!isNotNew)
+			this.rangers.push(x);
+	}
+	removeRanger(t: string) {
+		this.rangers.splice(this.rangers.findIndex(x => x.token == t), 1);
+	}
+	
 	//Ranger Search sidenav
 	openSidenav() {
 		this.sidenav.open();

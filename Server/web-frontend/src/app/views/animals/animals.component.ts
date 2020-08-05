@@ -52,24 +52,38 @@ export class AnimalsComponent implements OnInit {
 		this.searchText = event;
 	}
 
-	refresh() {
+	refresh(updateOp: string) {
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
 			'lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{URL}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
-				let refreshAnimals = true;
-				this.animals = refreshAnimals;
-				this.animals = temp[0];
+				var newAnimalList = temp[0];
+				switch (updateOp) {
+					case "update":
+						this.animals = null;
+						this.animals = newAnimalList;
+						break;
+					case "add":
+						newAnimalList.forEach(x => this.addIfNewAnimal(x));
+						break;
+				}
 				this.sort(true);
 			});
 	}
 
 	updateAnimalList(updatedList) {
-		if (updatedList == 'update') {
-			this.refresh();
-		}
+		this.refresh(updatedList);
+	}
+	addIfNewAnimal(x: any) {
+		let isNotNew = false;
+		for (let i = 0; i < this.animals.length; i++)
+			if (x.token == this.animals[i].token)
+				isNotNew = true;
+
+		if (!isNotNew)
+			this.animals.push(x);
 	}
 
 	//Sorting and Filtering

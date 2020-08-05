@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AnimalInfoCardComponent implements OnInit {
 
-  @Input() animals: any;
+  @Input() animalsList: any;
   @Input() searchText: string;
   @Input() sortByCommonName: boolean;
   @Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
@@ -23,15 +23,14 @@ export class AnimalInfoCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.startLoader();
-    console.log(this.animals);
+    console.log(this.animalsList);
   }
 
 	public ngOnChanges(changes: SimpleChanges) {
 		this.startLoader();
 		if (changes.animals) {
 		  //If animals has updated
-		  this.changeDetection.markForCheck();
-		  this.ngOnInit();
+		  this.changeDetection.detectChanges();
 		}
 		this.stopLoader();
 	}
@@ -45,44 +44,43 @@ export class AnimalInfoCardComponent implements OnInit {
 
     //Get animal information for chosen card
     var chosenAnimal;
-    for (let i = 0; i < this.animals.length; i++) {
-      if (animalID == this.animals[i].Animal_ID) {
-        chosenAnimal = this.animals[i];
-        i = this.animals[i].length;
+    for (let i = 0; i < this.animalsList.length; i++) {
+      if (animalID == this.animalsList[i].Animal_ID) {
+        chosenAnimal = this.animalsList[i];
+        i = this.animalsList[i].length;
       }
     }
     const editDialogRef = this.dialog.open(EditAnimalInfoComponent, { height: '85%', width: '60%', autoFocus: true, disableClose: true, data: { animal: chosenAnimal }, });
     editDialogRef.afterClosed().subscribe(result => {
       this.stopLoader();
-      if (result == "success") {
-        //If animal was successfully edited
-        //Refresh component and notify parent
-        this.animalsOnChange.emit("update");
-      }
-      else if (result == 'error') {
-		this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });
-      }
+		if (result == "success") {
+			//If animal was successfully edited refresh component and notify parent
+			this.animalsOnChange.emit("update");
+		}
+		else if (result == 'error') {
+			this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });
+		}
     });
   }
 
   sort(bool: boolean) {
     if (bool) {
-      for (let i = 0; i < this.animals.length - 1; i++) {
-        for (let j = i + 1; j < this.animals.length; j++) {
-          if (this.animals[i].Common_Name.toUpperCase() > this.animals[j].Common_Name.toUpperCase()) {
-            let temp = this.animals[i];
-            this.animals[i] = this.animals[j];
-            this.animals[j] = temp;
+      for (let i = 0; i < this.animalsList.length - 1; i++) {
+        for (let j = i + 1; j < this.animalsList.length; j++) {
+          if (this.animalsList[i].Common_Name.toUpperCase() > this.animalsList[j].Common_Name.toUpperCase()) {
+            let temp = this.animalsList[i];
+            this.animalsList[i] = this.animalsList[j];
+            this.animalsList[j] = temp;
           }
         }
       }
     } else {
-      for (let i = 0; i < this.animals.length - 1; i++) {
-        for (let j = i + 1; j < this.animals.length; j++) {
-          if (this.animals[i].Access_Level > this.animals[j].Access_Level) {
-            let temp = this.animals[i];
-            this.animals[i] = this.animals[j];
-            this.animals[j] = temp;
+      for (let i = 0; i < this.animalsList.length - 1; i++) {
+        for (let j = i + 1; j < this.animalsList.length; j++) {
+          if (this.animalsList[i].Access_Level > this.animalsList[j].Access_Level) {
+            let temp = this.animalsList[i];
+            this.animalsList[i] = this.animalsList[j];
+            this.animalsList[j] = temp;
           }
         }
       }

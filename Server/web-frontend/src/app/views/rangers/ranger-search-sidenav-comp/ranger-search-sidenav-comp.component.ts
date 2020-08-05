@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy  } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -19,12 +19,12 @@ export class RangerSearchSidenavCompComponent implements OnInit {
   currentAlphabet: any;
   sorted: string;
 
-  constructor(private http: HttpClient, private changeDetection: ChangeDetectorRef) { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void { 
     this.sortBySurname = true;
   }
-
+  
   checkIfNew(title: string, pos: number) {
     if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {
       return false;
