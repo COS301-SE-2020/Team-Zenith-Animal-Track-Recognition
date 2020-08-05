@@ -1,8 +1,10 @@
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/animals/animal_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AnimalView extends StatelessWidget {
   AnimalView({Key key}) : super(key: key);
@@ -14,28 +16,27 @@ class AnimalView extends StatelessWidget {
 
     return ViewModelBuilder<AnimalViewModel>.reactive(
       builder: (context, model, child) => FutureBuilder(
-        future: model.getCategories(),
+        future: model.getCategories(context),
         // ignore: missing_return
         builder: (context, snapshot){
           if(snapshot.hasError){
-             return text("Error", 20);
+             return progressIndicator();
           }
           if(snapshot.hasData){
-            return WillPopScope(
+            return snapshot.hasData? WillPopScope(
               onWillPop:() async{
                 if(Navigator.canPop(context)){
-                  model.navigate(context);
+                  navigate(context);
                 }
                 return;
               },
               child: DefaultTabController(
                 length: 3,
                 child: Scaffold(
+                  drawer: NavDrawer(),
                   appBar: AppBar(
-                    leading: null,
-                    automaticallyImplyLeading: false,
                     backgroundColor: Colors.black,
-                    title: text("Animal Information", 22),
+                    title: text18LeftBoldWhite("Animal Information"),
                     actions: <Widget>[IconBuilder(icon:Icons.search,type:"search"), IconBuilder(icon:Icons.more_vert,type:"vert")],
                     bottom: TabBar(tabs: snapshot.data.tabs,indicatorWeight: 3,),
                   ),
@@ -47,9 +48,11 @@ class AnimalView extends StatelessWidget {
                   bottomNavigationBar: BottomNavigation(),
                 ),
               ), 
-            );
+            )
+            : progressIndicator();
+
           }else{
-            return text("Null no Data", 20);
+            return progressIndicator();
           }
         }
       ),
@@ -57,6 +60,59 @@ class AnimalView extends StatelessWidget {
     );
   }
 }
+
+class NavDrawer extends ViewModelWidget<AnimalViewModel> {
+  //List<HomeModel> animalList;
+  NavDrawer({Key key}) : super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, AnimalViewModel model) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: text22LeftBoldWhite("Side Menu"),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage('assets/images/springbok.jpg')
+              )
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.verified_user),
+            title: text16LeftBoldGrey("Profile"),
+            onTap: () =>{
+              navigateToProfile()
+            }
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: text16LeftBoldGrey("Settings"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: text16LeftBoldGrey("Preference"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: text16LeftBoldGrey("Logout"),
+            onTap: ()async{
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("loggedIn", false);
+              navigateToLogin(context);
+            }
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 //========================== APPBAR ICONS =======================
 // ignore: must_be_immutable
@@ -75,7 +131,7 @@ class IconBuilder extends ViewModelWidget<AnimalViewModel> {
         icon: Icon(icon, color: Colors.white),
         onPressed: (){
           if(type == "search"){
-            model.navigateToSearchView();
+            navigateToSearchView();
           }else{
 
           }
@@ -106,7 +162,7 @@ Widget getWidget(var animalTabList){
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.grey[200] , width: 2,style: BorderStyle.solid)
+         // border: Border.all(color: Colors.grey[200] , width: 2,style: BorderStyle.solid)
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -116,11 +172,11 @@ Widget getWidget(var animalTabList){
             ListTileTheme(dense:true,child: Row( children:[
               Expanded(flex:2,child: imageBlock(animalTabList[index].image)),
               Expanded(flex:4,child: cardText(animalTabList[index].animalName, animalTabList[index].sizeM, animalTabList[index].sizeF, 
-                animalTabList[index].weightM, animalTabList[index].weightF, animalTabList[index].diet, animalTabList[index].gestation)),
+                animalTabList[index].weightM, animalTabList[index].weightF, animalTabList[index].diet, animalTabList[index].gestation,context)),
             ])),
-            ListTileTheme(dense:true,child: description(animalTabList[index].description)),
-            ListTileTheme(dense:true,child: behaviour(animalTabList[index].behaviour)),
-            ListTileTheme(dense:true,child: habitats(animalTabList[index].habitats)),
+            ListTileTheme(dense:true,child: description(animalTabList[index].description,context)),
+            ListTileTheme(dense:true,child: behaviour(animalTabList[index].behaviour, context)),
+            ListTileTheme(dense:true,child: habitats(animalTabList[index].habitats, context)),
             ListTileTheme(dense:true,child: ViewButton(name:animalTabList[index].animalName)),
           ]
         ),
@@ -139,11 +195,11 @@ class ViewButton extends ViewModelWidget<AnimalViewModel> {
   return ButtonTheme(
       minWidth: 200,
       child: RaisedButton(
-      child: text("VIEW INFO",15),
+      child: text12CenterBoldWhite("VIEW INFO"),
       color: Colors.grey,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       padding: EdgeInsets.all(10),
-      onPressed: (){model.navigateToInfo(name);}
+      onPressed: (){navigateToInfo(name);}
     ),
   );
   }
@@ -170,7 +226,7 @@ Widget imageBlock (String imageLink) {
 //=============================IMAGE BLOCK======================
 
 //=============================ANIMAL DETAILS===================
-Widget cardText(String name, double sizeM, double sizeF, int weightM, int weightF,String diet, String gestation ){
+Widget cardText(String name, double sizeM, double sizeF, int weightM, int weightF,String diet, String gestation,context ){
   return Container(
     margin: EdgeInsets.all(0),
     alignment: Alignment.center,
@@ -178,15 +234,15 @@ Widget cardText(String name, double sizeM, double sizeF, int weightM, int weight
     width: 75,
     child: Column(
       children:<Widget>[
-        Expanded(flex:1,child: Container(alignment: Alignment.centerLeft,margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: text4(name,16))),
-        Expanded(flex:2,child: Container(margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: middleRow(sizeM, sizeF, weightM, weightF))),
-        Expanded(flex:1,child: Container(margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: bottomRow(diet, gestation))),
+        Expanded(flex:1,child: Container(alignment: Alignment.centerLeft,margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: text14RightBoldGrey(name))),
+        Expanded(flex:2,child: Container(margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: middleRow(sizeM, sizeF, weightM, weightF,context))),
+        Expanded(flex:1,child: Container(margin: EdgeInsets.all(0),padding: EdgeInsets.all(0),child: bottomRow(diet, gestation,context))),
       ]
     )
   );
 }
 
-Widget middleRow(double sizeM, double sizeF, int weightM, int weightF){
+Widget middleRow(double sizeM, double sizeF, int weightM, int weightF,var context){
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
@@ -198,13 +254,13 @@ Widget middleRow(double sizeM, double sizeF, int weightM, int weightF){
             Expanded(
               flex: 1,
               child: Container(
-                child: text4("Size:", 10),
+                child: text12LeftNormGrey("Size:"),
               )
             ),
             Expanded(
               flex: 2,
               child: Container(
-                child: column2(sizeF, sizeM),
+                child: column2(sizeF, sizeM, context),
               )
             ),
           ],),
@@ -215,15 +271,15 @@ Widget middleRow(double sizeM, double sizeF, int weightM, int weightF){
           margin: EdgeInsets.only(right:10),
           child: Row(children: <Widget>[
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Container(
-                child: text4("Weight:", 10),
+                child: text12LeftNormGrey("Weight:"),
               )
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Container(
-                child: column(weightF, weightM),
+                child: column(weightF, weightM,context),
               )
             ), 
           ],),
@@ -233,13 +289,13 @@ Widget middleRow(double sizeM, double sizeF, int weightM, int weightF){
   );
 }
 
-Widget column(int metricF, int metricM){
+Widget column(int metricF, int metricM, var context){
   return Column(
     children: <Widget>[
       Expanded(
         flex: 1,
           child: Row(children: <Widget>[
-            Expanded(flex:2,child: Container(child: text3('$metricF kg', 12),)),
+            Expanded(flex:2,child: Container(child: text12RighttNormGrey('$metricF kg'),)),
             Expanded(flex:1,child: Container(child: Icon(Icons.person_pin,color: Colors.pink[200],size: 13,),)),
           ],
         ),
@@ -247,7 +303,7 @@ Widget column(int metricF, int metricM){
       Expanded(
         flex: 1,
           child: Row(children: <Widget>[
-            Expanded(flex:2,child: Container(child: text3('$metricM kg', 12),)),
+            Expanded(flex:2,child: Container(child: text12RighttNormGrey('$metricM kg'),)),
             Expanded(flex:1,child: Container(child: Icon(Icons.person_pin,color: Colors.blue,size: 13,),)),
           ],
         ),
@@ -256,13 +312,13 @@ Widget column(int metricF, int metricM){
   );
 }
 
-Widget column2(double metricF, double metricM){
+Widget column2(double metricF, double metricM, var context){
   return Column(
     children: <Widget>[
       Expanded(
         flex: 1,
           child: Row(children: <Widget>[
-            Expanded(flex:2,child: Container(child: text3('$metricF m', 14),)),
+            Expanded(flex:2,child: Container(child: text12RighttNormGrey('$metricF m'),)),
             Expanded(flex:1,child: Container(child: Icon(Icons.person_pin,color: Colors.pink[200],size: 14,),)),
           ],
         ),
@@ -270,7 +326,7 @@ Widget column2(double metricF, double metricM){
       Expanded(
         flex: 1,
           child: Row(children: <Widget>[
-            Expanded(flex:2,child: Container(child: text3('$metricM m', 14),)),
+            Expanded(flex:2,child: Container(child: text12RighttNormGrey('$metricM m'),)),
             Expanded(flex:1,child: Container(child: Icon(Icons.person_pin,color: Colors.blue,size: 14,),)),
           ],
         ),
@@ -279,7 +335,7 @@ Widget column2(double metricF, double metricM){
   );
 }
 
-Widget bottomRow(String diet, String gestation){
+Widget bottomRow(String diet, String gestation,var context){
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
@@ -288,8 +344,8 @@ Widget bottomRow(String diet, String gestation){
         child: Container(
           margin: EdgeInsets.only(right:10),
           child: Row(children: <Widget>[
-            Expanded(flex: 1,child: text4("Diet:",12),),
-            Expanded(flex: 2,child: text3(diet, 12),),
+            Expanded(flex: 1,child: text12LeftNormGrey("Diet: ")),
+            Expanded(flex: 2,child: text12RighttNormGrey(diet),),
           ],),
         ),
       ),
@@ -298,8 +354,8 @@ Widget bottomRow(String diet, String gestation){
         child: Container(
           margin: EdgeInsets.only(right:10),
           child: Row(children: <Widget>[
-            Expanded(flex: 1,child: text4("Gestation:",12),),
-            Expanded(flex: 1,child: text3(gestation, 12),),
+            Expanded(flex: 1,child: text12LeftNormGrey("Gestation: ")),
+            Expanded(flex: 1,child: text12RighttNormGrey(gestation),),
           ],),
         ),
       ),
@@ -307,97 +363,29 @@ Widget bottomRow(String diet, String gestation){
   );
 }
 //=============================ANIMAL DETAILS===================
+
 //=============================EXPANSION TILE===================
-Widget description (String bodyText){
+Widget description (String bodyText, var context){
   return ExpansionTile(
-    title: text4("Description", 15),
-    children: <Widget>[expansionTileBodyTemplate(text4(bodyText,11))],
+    title: text14LeftBoldGrey("Description"),
+    children: <Widget>[expansionTileBodyTemplate(text12LeftNormGrey(bodyText))],
   );
 }
 
-Widget behaviour (String bodyText){
+Widget behaviour (String bodyText, var context){
   return ExpansionTile(
-    title: text4("Behaviour", 15),
-    children: <Widget>[expansionTileBodyTemplate(text4(bodyText,11))],
+    title: text14LeftBoldGrey("Behaviour",),
+    children: <Widget>[expansionTileBodyTemplate(text12LeftNormGrey(bodyText))],
   );
 }
 
-Widget habitats (String bodyText){
+Widget habitats (String bodyText, var context){
   return ExpansionTile(
-    title: text4("Habitats", 15),
-    children: <Widget>[expansionTileBodyTemplate(text4(bodyText,11))],
+    title: text14LeftBoldGrey("Habitats"),
+    children: <Widget>[expansionTileBodyTemplate(text12LeftNormGrey(bodyText))],
   );
 }
 //=============================EXPANSION TILE===================
-
-//============================================TEMPLATES================================================
-
-//================================== TEXT TEMPLATES =============================
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.white
-    ),
-  );
-}
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text3(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text4(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text5(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-//================================== TEXT TEMPLATES =============================
 
 //================================== EXPANSION TILE TEMPLATES =============================
 Widget expansionTileBodyTemplate(Widget body){
@@ -409,4 +397,3 @@ Widget expansionTileBodyTemplate(Widget body){
 } 
 //================================== EXPANSION TILE TEMPLATES =============================
 
-//============================================TEMPLATES================================================

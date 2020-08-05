@@ -3,6 +3,7 @@ import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/fake_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -18,23 +19,15 @@ class GalleryViewModel extends BaseViewModel{
   int _counter = 0;
   int get counter => _counter;
 
-  Future<TempObject>getSpoor() async{
+  Future<TempObject>getSpoor(var context) async{
       TabModel tabModel = await _api.getTabModel("Appearance", "Tracks","Droppings");
       List<Tab> tabs = new List();
       for(int i = 0; i < tabModel.categories.length; i++){
-        tabs.add( Tab( child: Text( tabModel.categories[i], style: TextStyle( color:Colors.white, fontWeight: FontWeight.bold, fontSize: 10,)),));
+        tabs.add( Tab(child: text12CenterBoldWhite( tabModel.categories[i])));
       }
       return TempObject(tabs: tabs,length: tabModel.length);
   }
-
-  void navigate(context) {
-     Navigator.of(context).pop();
-  }
-
-  void updateCounter(){
-    _counter++;
-    notifyListeners();
-  }
+  
 }
 
 class TempObject{

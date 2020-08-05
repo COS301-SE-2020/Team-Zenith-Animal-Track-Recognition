@@ -18,18 +18,6 @@ class InformationViewModel extends BaseViewModel {
     this._animalInfo = _animalInfo;
   }
 
-  void navigateToGalleryView(String i)async{
-
-    GalleryModel galleryModel = await _api.getGalleryModel(i.toLowerCase());
-    _navigationService.navigateTo(Routes.gallerylViewRoute,
-      arguments: GalleryViewArguments(galleryModel: galleryModel)
-    );
-  }
-
-  void navigate(context) {
-     Navigator.of(context).pop();
-  }
-
   Future<int>getInfo() async{
     return 0;
   }

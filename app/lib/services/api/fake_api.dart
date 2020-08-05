@@ -1,7 +1,7 @@
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
-import 'package:ERP_RANGER/ui/views/identification/identification_view.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'api.dart';
 
 @lazySingleton
@@ -714,7 +714,7 @@ class FakeApi implements Api {
   }
 
   @override
-  Future<LoginResponse> getLoginModel() async {
+  Future<LoginResponse> getLoginModel(String email, String password) async {
     // TODO: implement getLoginModel
     throw UnimplementedError();
   }
@@ -857,8 +857,9 @@ class FakeApi implements Api {
 
   @override
   Future<int> getUserLevel() async {
-    int userlevel = 2;
-    return userlevel;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt("accessLevel", 2);
+    return prefs.getInt("accessLevel");
   }
 
   @override

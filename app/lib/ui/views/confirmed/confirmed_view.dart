@@ -1,3 +1,4 @@
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/confirmed/confirmed_viewmodel.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class ConfirmedView extends StatelessWidget {
         future: model.getConfirm(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if(snapshot.hasError){
-             return text("Error", 20);
+             return progressIndicator();
           }
           if(snapshot.hasData){
             if(model.loaded == false){
@@ -29,7 +30,7 @@ class ConfirmedView extends StatelessWidget {
             return WillPopScope(
               onWillPop:() async{
                 if(Navigator.canPop(context)){
-                  model.navigate(context);
+                  navigate(context);
                 }
                 return;
               }, 
@@ -44,7 +45,7 @@ class ConfirmedView extends StatelessWidget {
               ),
             );
           }else{
-            return text("Null no Data", 20);
+            return progressIndicator();
           }
         },
       ),
@@ -83,7 +84,7 @@ class BackButton extends ViewModelWidget<ConfirmedViewModel> {
     ),
     child: GestureDetector(
       onTap: (){
-        model.navigate(context);
+        navigateBack(context);
       },
       child: Center(
         child:Icon(Icons.arrow_back, color:Colors.black),
@@ -121,7 +122,7 @@ class Scroll extends ViewModelWidget<ConfirmedViewModel> {
                 children: <Widget>[
                   Expanded(flex:1 ,child: LeadingIcon()),
                   SizedBox(height: 1.0,),
-                  Expanded(flex:4 ,child: textDisplay(model.confidentAnimal.species +" "+ model.confidentAnimal.animalName)),
+                  Expanded(flex:4 ,child: textDisplay(model.confidentAnimal.species +" "+ model.confidentAnimal.animalName,context)),
                   SizedBox(height: 1.0,),
                   Expanded(flex:1 ,child: blocks(model.confidentAnimal.accuracyScore)),
                 ],
@@ -129,26 +130,26 @@ class Scroll extends ViewModelWidget<ConfirmedViewModel> {
               Divider(),
               Column(
                 children: <Widget>[
-                  identifyText,
+                  identifyText(context),
                   SpoorIdentification(),
                 ],
               ),
               Divider(),
               Column(children: <Widget>[
-                otherMatches,
+                otherMatches(context),
                 Row(children: <Widget>[Expanded(flex:1, child: SimilarSpoor(),)],)]
               ,),
               Divider(),
               Column(
                 children: <Widget>[
-                  tagText,
+                  tagText(context),
                   Tags(tags:finalObject.tags)
                 ],
               ),
               Divider(),
               Row(children: <Widget>[
                 Expanded(flex:1,child: IconButtons(iconData:Icons.check,subTitle:"CONFIRM SPOOR",index:0)),
-                //Expanded(flex:1,child: IconButtons(iconData:Icons.search,subTitle:"EDIT GEOTAG",index:1)),
+                Expanded(flex:1,child: IconButtons(iconData:Icons.search,subTitle:"EDIT GEOTAG",index:1)),
                 Expanded(flex:1,child: IconButtons(iconData:Icons.camera_alt,subTitle:"RECAPTURE SPOOR",index:2)),
                 Expanded(flex:1,child: IconButtons(iconData:Icons.file_download,subTitle:"DOWNLOAD IMAGE",index:3)),
               ],)
@@ -168,7 +169,7 @@ class SpoorIdentification extends ViewModelWidget<ConfirmedViewModel> {
     return Container(
       child: Row(children: <Widget>[
         Expanded(flex:1,child: confidentImageBlock(model.confidentAnimal.image)),
-        Expanded(flex:1,child: confidentImageDetails(model.confidentAnimal.type, model.confidentAnimal.animalName, model.confidentAnimal.species, model.confidentAnimal.accuracyScore))
+        Expanded(flex:1,child: confidentImageDetails(model.confidentAnimal.type, model.confidentAnimal.animalName, model.confidentAnimal.species, model.confidentAnimal.accuracyScore,context))
       ],),
     );
   }
@@ -206,16 +207,16 @@ class IconButtons extends ViewModelWidget<ConfirmedViewModel> {
               }else if(index == 1){
 
               }else if(index == 2){
-                model.recapture(context);
+                recapture(context);
               }else if(index == 3){
                 
               }
             },
           ),
         ),
-        text2(subTitle, 13)
+        text12LeftNormGrey(subTitle)
       ],
-  ),
+    ),
     );
   }
 }
@@ -258,15 +259,15 @@ class PossibleTags extends ViewModelWidget<ConfirmedViewModel> {
       itemBuilder: (context) => [
         PopupMenuItem(
           value: 1,
-          child: Text('Reclassify', style: TextStyle(color: Colors.black)),
+          child: text14LeftNormBlack('Reclassify'),
         ),
         PopupMenuItem(
           value: 2,
-          child: Text('View Info', style: TextStyle(color: Colors.black)),
+          child: text14LeftNormBlack('View Info'),
         ),
         PopupMenuItem(
           value: 3,
-          child: Text('View Photos', style: TextStyle(color: Colors.black)),
+          child: text14LeftNormBlack('View Photos'),
         ),
       ],
       child: Container(
@@ -280,18 +281,18 @@ class PossibleTags extends ViewModelWidget<ConfirmedViewModel> {
         width: 110,
         child: Column(children: <Widget>[
           Expanded(child: Container(alignment: Alignment.centerLeft, child: innerImageBlock(image)) ,flex:4),
-          Expanded(child: Container(alignment: Alignment.centerLeft,margin: new EdgeInsets.only(left:8),child: text3(name,15)),flex:1),
-          Expanded(child: Container(alignment: Alignment.centerLeft,margin: new EdgeInsets.only(left:8),child: text4(species,15)),flex:1),
-          Expanded(child: Container(alignment: Alignment.centerLeft,margin: new EdgeInsets.only(left:8),child: text4("$score%",15)),flex:1),
+          Expanded(child: Container(alignment: Alignment.centerLeft,margin: new EdgeInsets.only(left:8),child: text12LeftNormBlack(name)),flex:1),
+          Expanded(child: Container(alignment: Alignment.centerLeft,margin: new EdgeInsets.only(left:8),child: text12LeftNormGrey(species)),flex:1),
+          Expanded(child: Container(alignment: Alignment.centerLeft,margin: new EdgeInsets.only(left:8),child: text12LeftNormGrey("$score%")),flex:1),
         ],),
       ),
       onSelected: (value){
         if(value == 1){
           model.reclassify(index);
         }else if(value == 2){
-          model.navigateToInfo(name.toLowerCase());
+          navigateToInfo(name.toLowerCase());
         }else{
-          model.navigateToGallery(name.toLowerCase());
+          navigateToGallery(name.toLowerCase());
         }
         //different fuctionality insert here
       },
@@ -338,7 +339,7 @@ Widget confidentImageBlock(String image){
   );
 } 
 
-Widget confidentImageDetails (String type, String name, String species, int score){
+Widget confidentImageDetails (String type, String name, String species, int score, var context){
   return Container(
     alignment: Alignment.center,
     margin: new EdgeInsets.all(10),
@@ -350,43 +351,43 @@ Widget confidentImageDetails (String type, String name, String species, int scor
     height: 130,
     child: Column(
       children:<Widget>[
-        Expanded(flex:1,child: Row(children: <Widget>[Expanded(flex:1,child: text3("Type:", 16)),Expanded(flex:1,child: text4(type, 16))])),
-        Expanded(flex:1,child: Row(children: <Widget>[Expanded(flex:1,child: text3("Animal:", 16)),Expanded(flex:1,child: text4(name,16))])),
-        Expanded(flex:1,child: Row(children: <Widget>[ Expanded(flex:1,child: text3("Species", 16)),Expanded(flex:1,child: text4(species, 12))])),
-        Expanded(flex:1,child: Container(alignment: Alignment.centerLeft,child: text3("Accuracy Score:", 17))),
-        Expanded(flex:2,child: Container(alignment: Alignment.centerLeft,child: text3("$score%", 47))),      
+        Expanded(flex:1,child: Row(children: <Widget>[Expanded(flex:1,child: text12LeftNormBlack("Type: ",)),Expanded(flex:1,child: text12RighttNormGrey(type))])),
+        Expanded(flex:1,child: Row(children: <Widget>[Expanded(flex:1,child: text12LeftNormBlack("Animal: ")),Expanded(flex:1,child: text12RighttNormGrey(name))])),
+        Expanded(flex:1,child: Row(children: <Widget>[ Expanded(flex:1,child: text12LeftNormBlack("Species: ")),Expanded(flex:1,child: text12RighttNormGrey(species))])),
+        Expanded(flex:1,child: Container(alignment: Alignment.centerLeft,child: text12LeftNormBlack("Accuracy Score:"))),
+        Expanded(flex:2,child: Container(alignment: Alignment.centerLeft,child: percentageText("$score%", 47))),      
       ]
     ),
   );
 } 
 
-Widget otherMatches = new Container(
-  alignment: Alignment.centerLeft,
-  margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-  padding: new EdgeInsets.all(5) ,
-    decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-  ),
-  //height: 0,
-  child: text("Other Possible Matches", 20),
-);
-
-Widget tagText = new Container(
-  alignment: Alignment.centerLeft,
-  margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-  padding: new EdgeInsets.all(5) ,
-    decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-  ),
-  //height: 0,
-  child: text("Attach A Tag", 20),
-);
-
-Widget similarSpoor (List<ConfirmModel> possibleAnimals){
-
+Widget otherMatches (var context){
+  return Container(
+    alignment: Alignment.centerLeft,
+    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+    padding: new EdgeInsets.all(5) ,
+      decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+    ),
+    //height: 0,
+    child: text18LeftBoldBlack("Other Possible Matches"),
+  );
 } 
+
+Widget tagText(var context){
+ return Container(
+  alignment: Alignment.centerLeft,
+  margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+  padding: new EdgeInsets.all(5) ,
+    decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(10),
+  ),
+  //height: 0,
+  child: text18LeftBoldBlack("Attach A Tag"),
+);
+}
 
 Widget innerImageBlock (String link){
     return new Container(
@@ -419,13 +420,13 @@ Widget blocks(int percentage){
     height: 50,
     child: Column(
       children: <Widget>[
-        Expanded(flex: 2,child: text("$percentage%",30)),
-        Expanded(flex: 1, child: text("MATCH",15)),
+        Expanded(flex: 2,child: percentageText("$percentage%",30)),
+        Expanded(flex: 1, child: percentageText("MATCH",15)),
     ],)
   );
 } 
 
-Widget textDisplay (String name){
+Widget textDisplay (String name,var context){
   return Container(
     alignment: Alignment(0.0,0.0),
     margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
@@ -440,79 +441,28 @@ Widget textDisplay (String name){
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
           Expanded(flex:1,
-          child: Container(alignment: Alignment.centerLeft,child: text(name,20))
+          child: Container(alignment: Alignment.centerLeft,child: text18LeftBoldBlack(name))
           ),
           Expanded(flex:1,
-            child: Container( alignment: Alignment.centerLeft, child: text2("Swipe up for more options", 13))
+            child: Container( alignment: Alignment.centerLeft, child: text14LeftBoldGrey("Swipe up for more options"))
           )
       ],
     )
   );
 }
 
-Widget identifyText = new Container(
-  alignment: Alignment.centerLeft,
-  margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-  padding: new EdgeInsets.all(5) ,
-    decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-  ),
-  child: text("Spoor Identification Results",20),
-);
-
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.black
+Widget identifyText(var context){
+  return Container(
+    alignment: Alignment.centerLeft,
+    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+    padding: new EdgeInsets.all(5) ,
+      decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
     ),
+    child: text18LeftBoldBlack("Spoor Identification Results"),
   );
-}
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text3(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.black
-    ),
-  );
-}
-
-Widget text4(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-//================================== TEXT TEMPLATES =============================
+} 
 
 // ignore: must_be_immutable
 class Tags extends ViewModelWidget<ConfirmedViewModel> {
@@ -530,9 +480,9 @@ class Tags extends ViewModelWidget<ConfirmedViewModel> {
         return ChoiceChip(
           avatar: CircleAvatar(
             backgroundColor: Colors.grey.shade600,
-            child: Text(tags[index][0].toUpperCase())
+            child: text12LeftNormBlack(tags[index][0].toUpperCase())
           ),
-          label: text(tags[index], 10),
+          label:text12LeftNormBlack(tags[index]),
           backgroundColor: Colors.grey[100],
           selected: defualtChoiceIndex==index,
           selectedColor: Colors.grey.shade600,

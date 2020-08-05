@@ -1,8 +1,11 @@
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/home/home_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class HomeView extends StatelessWidget {
   const HomeView({Key key}) : super(key: key);
@@ -17,14 +20,15 @@ class HomeView extends StatelessWidget {
         future: model.getRecentIdentifications(),
         builder: (context, snapshot){
           if(snapshot.hasError){
-             return Center(child: text("Error", 20));
+             return progressIndicator();
           }
           if(snapshot.hasData){
-            return Scaffold(
+            return snapshot.hasData ? Scaffold(
+              drawer: NavDrawer(),
               appBar: AppBar(
-                automaticallyImplyLeading: false,
+                //automaticallyImplyLeading: true,
                 backgroundColor: Colors.black,
-                title: text("Recent Indentifications", 20),
+                title: text18LeftBoldWhite("Recent Indentifications",),
                 actions: <Widget>[IconBuilder(icon:Icons.search,type:"search"), IconBuilder(icon:Icons.more_vert,type:"vert")],
               ),
               body: Container(
@@ -35,15 +39,16 @@ class HomeView extends StatelessWidget {
               bottomNavigationBar: BottomNavigation(),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
-                  model.captureImage();
+                  captureImage();
                 },
                 child: Icon(Icons.camera_alt,),
                 backgroundColor: Colors.black,
               ),
-            );
+            )
+            : progressIndicator();
           }
           else{
-            return Center(child: text("Null no Data", 20));
+            return progressIndicator();
           }
         }
       ),
@@ -67,7 +72,7 @@ class IconBuilder extends ViewModelWidget<HomeViewModel> {
         icon: Icon(icon, color: Colors.white),
         onPressed: (){
           if(type == "search"){
-            model.navigateToSearchView();
+            navigateToSearchView();
           }else{
           }
         }
@@ -88,11 +93,11 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
       itemBuilder: (context, index){
         return GestureDetector(
           onTap: (){
-            model.navigateToIdentification(animalList[index].name.toLowerCase());
+            navigateToIdentification(animalList[index].name.toLowerCase());
           },
           child: Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            elevation: 4,
+            elevation: 0,
             margin: new EdgeInsets.all(10),
             child: Container(
               padding: new EdgeInsets.all(0),
@@ -114,7 +119,7 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
                       Expanded(flex: 1,child: Container(
                         alignment: Alignment.center, margin: new EdgeInsets.only(left:15,right:10,bottom: 6),
                         decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(10)),
-                        child: text(animalList[index].tag, 13),
+                        child: text12LeftBoldWhite(animalList[index].tag,),
                       ),),
                       Expanded(flex: 2,child: Container(
                         alignment: Alignment.center, margin: new EdgeInsets.only(right:10,bottom: 6),
@@ -133,132 +138,54 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
   }
 }
 
-Widget imageBlock (String imageLink) {
-    return Container(
-    alignment: Alignment.center,
-    margin: new EdgeInsets.only(left:15,right:10,),
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage(imageLink),
-        fit: BoxFit.fill,
+class NavDrawer extends ViewModelWidget<HomeViewModel> {
+  //List<HomeModel> animalList;
+  NavDrawer({Key key}) : super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, HomeViewModel model) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: text22LeftBoldWhite("Side Menu"),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage('assets/images/springbok.jpg')
+              )
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.verified_user),
+            title: text16LeftBoldGrey("Profile"),
+            onTap: () =>{
+              navigateToProfile()
+            }
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: text16LeftBoldGrey("Settings"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: text16LeftBoldGrey("Preference"),
+            onTap: () =>{}
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: text16LeftBoldGrey("Logout"),
+            onTap: ()async{
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("loggedIn", false);
+              navigateToLogin(context);
+            }
+          ),
+        ],
       ),
-      color: Colors.grey,
-      borderRadius: BorderRadius.circular(15),
-    ),
-    height: 75,
-  );
+    );
+  }
 }
-
-Widget textColumn(String name, String time, String species, String location, String capturedBy){
-  return Container(
-    height: 75,
-    margin: new EdgeInsets.only(right:10,),
-    child: Column(
-      children: <Widget>[
-        Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: text2(name, 18),)),
-          Expanded(flex:1,child: Container(color: Colors.white,child: text5(time, 13),)),
-        ],)),
-        Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: text2("Species: ", 12),)),
-          Expanded(flex:2,child: Container(color: Colors.white,child: text3(species, 12),)),
-        ],)),      
-        Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: text2("Location: ", 12),)),
-          Expanded(flex:2,child: Container(color: Colors.white,child: text3(location, 12),)),
-        ],)),
-        Expanded(flex:1,child:Row(children: <Widget>[
-          Expanded(flex:1,child: Container(color: Colors.white,child: text2("Captured by: ", 12),)),
-          Expanded(flex:2,child: Container(color: Colors.white,child: text3(capturedBy, 12),)),
-        ],)),    ],
-    ),
-  );
-}
-
-Widget textRow(String accuracy){
-  return Row(children: <Widget>[
-    Expanded(flex: 2,child: text3("ACCURACY SCORE", 14),),
-    Expanded(flex: 1,child: text6(accuracy, 14),),
-  ],);
-}
-//================================== TEXT TEMPLATES =============================
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.white
-    ),
-  );
-}
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.black
-    ),
-  );
-}
-
-Widget text3(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text4(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text5(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.normal,
-      color: Colors.grey
-    ),
-  );
-}
-
-Widget text6(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-//================================== TEXT TEMPLATES =============================
-
-

@@ -45,26 +45,7 @@ class ConfirmedViewModel extends BaseViewModel{
     Navigator.of(context).pop();
   }
 
-  void recapture(var context) async{
-    File image;
-    final picker = ImagePicker();
-    
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    if(pickedFile != null){
-      image = File(pickedFile.path);
-      String url = base64Encode(image.readAsBytesSync());
-      List<ConfirmModel> animals = await _api.identifyImage(url);
-      if(animals != null){
-        _navigationService.navigateTo(Routes.confirmlViewRoute,
-          arguments: ConfirmedViewArguments(image: image, confirmedAnimals:animals )
-        );
-      }else{
-         //Navigator.of(context).popAndPushNamed("/confirmed-view");
-         Navigator.of(context).popAndPushNamed("/not-confirmed-view",arguments:image);
-      }
-    }
-  }
-     
+ 
 
   void setTag(String  tag){
     this.tag = tag;
@@ -73,11 +54,7 @@ class ConfirmedViewModel extends BaseViewModel{
   void setTagIndex(int index){
     _tagIndex = index;
   }
-  
-  void navigate(context) {
-     Navigator.of(context).pop();
-  }
- 
+   
   Future<FinalObject> getConfirm() async{
     List<String> tags = await _api.getTags();
     FinalObject finalObject = new FinalObject(tags: tags);
@@ -91,21 +68,8 @@ class ConfirmedViewModel extends BaseViewModel{
     _confirmedList.removeAt(index);
     notifyListeners();
   }
-
-  void navigateToInfo(String name) async{
-    print(name);
-    InfoModel infoModel = await _api.getInfoModel(name);
-    _navigationService.navigateTo(Routes.informationViewRoute,
-      arguments: InformationViewArguments(animalInfo:infoModel)
-    );
-  }
   
-  void navigateToGallery(String i)async{
-    GalleryModel galleryModel = await _api.getGalleryModel(i);
-    _navigationService.navigateTo(Routes.gallerylViewRoute,
-      arguments: GalleryViewArguments(galleryModel: galleryModel)
-    );
-  }
+
 
 }
 

@@ -73,17 +73,6 @@ class SearchViewModel extends BaseViewModel{
     return tempObject;
   }
 
- void navigate(context) {
-     Navigator.of(context).pop();
-  }
-
-  void navigateToInfo(String name) async{
-    InfoModel infoModel = await _api.getInfoModel(name);
-    _navigationService.navigateTo(Routes.informationViewRoute,
-      arguments: InformationViewArguments(animalInfo:infoModel)
-    );
-  }
-
 }
 
 class TempObject{
