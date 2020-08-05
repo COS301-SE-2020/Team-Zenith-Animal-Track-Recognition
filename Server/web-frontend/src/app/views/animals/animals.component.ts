@@ -10,11 +10,11 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 export class AnimalsComponent implements OnInit {
 
 
-	@ViewChild('sidenav') sidenav;
-	animals;
+	@ViewChild('sidenav') sidenav: any;
+	animals: any;
 	sortByCommonName: boolean = true;
 	searchText: string;
-	currentAlphabet;
+	currentAlphabet: any;
 	surnames: boolean = true;
 	levels: boolean = false;
 	test: boolean;
@@ -91,7 +91,7 @@ export class AnimalsComponent implements OnInit {
 		if (bool) {
 			for (let i = 0; i < this.animals.length - 1; i++) {
 				for (let j = i + 1; j < this.animals.length; j++) {
-					if (this.animals[i].Common_Name.toUpperCase() > this.animals[j].Common_Name.toUpperCase()) {
+					if (this.animals[i].commonName.toUpperCase() > this.animals[j].commonName.toUpperCase()) {
 						let temp = this.animals[i];
 						this.animals[i] = this.animals[j];
 						this.animals[j] = temp;
@@ -101,7 +101,7 @@ export class AnimalsComponent implements OnInit {
 		} else {
 			for (let i = 0; i < this.animals.length - 1; i++) {
 				for (let j = i + 1; j < this.animals.length; j++) {
-					if (this.animals[i].Group_ID[0].Group_Name > this.animals[j].Group_ID[0].Group_Name) {
+					if (this.animals[i].groupID[0].groupName > this.animals[j].groupID[0].groupName) {
 						let temp = this.animals[i];
 						this.animals[i] = this.animals[j];
 						this.animals[j] = temp;
