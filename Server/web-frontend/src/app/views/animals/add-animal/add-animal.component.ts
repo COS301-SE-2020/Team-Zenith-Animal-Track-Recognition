@@ -70,8 +70,9 @@ export class AddAnimalComponent implements OnInit {
 			this.startLoader();
 			//@Zach Please change the query string. 
 			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{wdbAddAnimal(token:"' +
-				JSON.parse(localStorage.getItem('currentToken'))['value'] + '",classification:"' + this.f.classification +
-				'",commonName:"' + this.f.commonName + '",animalDescription:"' + this.f.animalDescription + '"){animalID}}', '')
+				JSON.parse(localStorage.getItem('currentToken'))['value'] + '",classification:"' + encodeURIComponent(this.f.classification.value) +
+				'",commonName:"' + encodeURIComponent(this.f.commonName.value) + '",animalDescription:"' +
+				encodeURIComponent(this.f.animalDescription.value) + '"){animalID}}', '')
 				.subscribe({ next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("error") });
 		}
 		else {
