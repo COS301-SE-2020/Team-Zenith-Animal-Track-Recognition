@@ -5,26 +5,40 @@ import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { EditRangerInfoComponent } from './../edit-ranger-info/edit-ranger-info.component';
 import { DeleteRangerComponent } from './../delete-ranger/delete-ranger.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-ranger-profile-card',
 	templateUrl: './ranger-profile-card.component.html',
 	styleUrls: ['./ranger-profile-card.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RangerProfileCardComponent implements OnInit {
 
 	@Input() searchText: string;
 	@Input() rangers;
+	rangerList: any;
 	numRangers: any;
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	sorted: string;
 
-	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef) { }
+	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
 
-	ngOnInit(): void { this.startLoader(); }
+	ngOnInit(): void { 
+		this.startLoader(); 
+		if (this.rangers)
+			this.rangerList = this.rangers;
+		this.stopLoader();
+	}
 
 
 	public ngOnChanges(changes: SimpleChanges) {
+		this.startLoader();
+		if (changes.rangers) {
+		  //If rangers has updated
+		  this.changeDetection.markForCheck();
+		  this.ngOnInit();
+		}
 		this.stopLoader();
 	}
 
@@ -63,8 +77,8 @@ export class RangerProfileCardComponent implements OnInit {
 				//Refresh component and notify parent
 				this.rangersOnChange.emit("update");
 			}
-			else {
-				console.log("Error editing ranger: ", result);
+			else if (result == 'error') {
+				this.snackBar.open('An error occured when editting ranger. Please try again.', "Dismiss", { duration: 5000, });
 			}
 		});
 	}
@@ -90,10 +104,10 @@ export class RangerProfileCardComponent implements OnInit {
 				if (result == "success") {
 					//If ranger was successfully deleted
 					//Refresh component and notify parent
-					this.rangersOnChange.emit("delete");
+					this.rangersOnChange.emit('delete');
 				}
-				else {
-					console.log("Error deleting ranger: ", result);
+				else if (result == 'error') {
+					this.snackBar.open('An error occured when deleting ranger. Please try again.', "Dismiss", { duration: 5000, });
 				}
 			});
 		}

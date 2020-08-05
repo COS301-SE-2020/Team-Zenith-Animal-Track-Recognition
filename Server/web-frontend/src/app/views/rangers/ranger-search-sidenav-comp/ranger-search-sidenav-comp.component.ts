@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy  } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-ranger-search-sidenav-comp',
   templateUrl: './ranger-search-sidenav-comp.component.html',
-  styleUrls: ['./ranger-search-sidenav-comp.component.css']
+  styleUrls: ['./ranger-search-sidenav-comp.component.css'],
 })
 
 	
@@ -19,7 +19,7 @@ export class RangerSearchSidenavCompComponent implements OnInit {
   currentAlphabet: any;
   sorted: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private changeDetection: ChangeDetectorRef) { }
 
   ngOnInit(): void { 
     this.sortBySurname = true;

@@ -47,9 +47,15 @@ export class AddRangerComponent implements OnInit {
 			'",lastName:"' + encodeURIComponent(this.f.lastName.value) + '",password:"' + encodeURIComponent(this.f.password.value) +
 			'",token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",accessLevel:"1",eMail:"' +
 			encodeURIComponent(this.f.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}', '')
-			.subscribe({ next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message) });
+			.subscribe({ 
+				next: data => this.dialogRef.close("success"), 
+				error: error => this.dialogRef.close("error")
+			});
 	}
-
+	closeDialog() {
+		this.dialogRef.close("cancel");
+	}
+	
 	//Loader
 	startLoader() {
 		document.getElementById("loader-container").style.visibility = "visible";

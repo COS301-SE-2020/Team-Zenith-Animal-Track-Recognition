@@ -32,8 +32,11 @@ export class DeleteRangerComponent implements OnInit {
 			'",' + 'tokenDelete:"' + this.data.token + '"){msg}}', '')
 			.subscribe({
 				next: data => this.dialogRef.close("success"),
-				error: error => this.dialogRef.close("Error " + error.message)
+				error: error => this.dialogRef.close("error")
 			});
+	}
+	closeDialog() {
+		this.dialogRef.close("cancel");
 	}
 
 	//Loader

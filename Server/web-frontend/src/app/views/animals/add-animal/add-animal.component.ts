@@ -73,7 +73,10 @@ export class AddAnimalComponent implements OnInit {
 				JSON.parse(localStorage.getItem('currentToken'))['value'] + '",classification:"' + encodeURIComponent(this.f.classification.value) +
 				'",commonName:"' + encodeURIComponent(this.f.commonName.value) + '",animalDescription:"' +
 				encodeURIComponent(this.f.animalDescription.value) + '"){animalID}}', '')
-				.subscribe({ next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("error") });
+				.subscribe({ 
+					next: data => this.dialogRef.close("success"), 
+					error: error => this.dialogRef.close("error") 
+				});
 		}
 		else {
 			return true;

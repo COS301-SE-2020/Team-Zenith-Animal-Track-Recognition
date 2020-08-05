@@ -25,6 +25,6 @@
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
-    <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
+    <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>
     <button type="submit" mat-button (click)="onSubmit(false)" id="add-ranger-btn" class="fontSB">SAVE CHANGES</button>
 </mat-dialog-actions>

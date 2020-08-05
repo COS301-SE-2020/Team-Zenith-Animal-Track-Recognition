@@ -59,7 +59,10 @@ export class EditAnimalInfoComponent implements OnInit {
 			this.startLoader();
 			//@Zach Please change the query string. 
 			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{UpdateUser('+ 'TokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'+ 'TokenChange:"' + this.data.Token + '"){lastName,Token}}', '')
-			.subscribe({next: data => this.dialogRef.close('success'), error: error => this.dialogRef.close('error') });
+			.subscribe({
+				next: data => this.dialogRef.close('success'), 
+				error: error => this.dialogRef.close('error') 
+			});
 		}
 		else {
 			return true;

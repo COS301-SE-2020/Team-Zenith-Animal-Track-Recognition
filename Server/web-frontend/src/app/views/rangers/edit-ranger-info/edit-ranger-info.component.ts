@@ -34,20 +34,24 @@ export class EditRangerInfoComponent implements OnInit {
 			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateUser(' + 'tokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 				'",' + 'tokenChange:"' + this.data.token + '",' + 'eMail:"' + this.f.email.value + '",' + 'lastName:"' + this.f.lastName.value + '",' +
 				'phoneNumber:"' + this.f.phoneNumber.value + '",' + 'firstName:"' + this.f.firstName.value + '"){lastName,token}}', '')
-				.subscribe({ next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message) });
+				.subscribe({ 
+					next: data => this.dialogRef.close("success"), 
+					error: error => this.dialogRef.close("error")
+				});
 		}
 		else {
 			return true;
 		}
 	}
+	closeDialog() {
+		this.dialogRef.close("cancel");
+	}
 
 	//Loader
 	startLoader() {
-		console.log("Starting Loader");
 		document.getElementById("loader-container").style.visibility = "visible";
 	}
 	stopLoader() {
-		console.log("Stopping Loader");
 		document.getElementById("loader-container").style.visibility = "hidden";
 	}
 }

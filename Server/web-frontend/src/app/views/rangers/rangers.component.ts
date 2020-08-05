@@ -43,57 +43,17 @@ export class RangersComponent implements OnInit {
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
-				var newRangerList = temp[0];
-				console.log("newRangerList length: " + newRangerList.length);
-				switch (updateOp) {
-					case "update":
-						this.rangers = null;
-						this.rangers = newRangerList;
-						break;
-					case "add":
-						newRangerList.forEach(x => this.addIfNewRanger(x));
-						break;
-					case "delete":
-						let removedRanger = this.rangers.filter(x => !newRangerList.some(y => y.token == x.token));
-						this.removeRanger(removedRanger[0].token);
-						break;
-				}
-				newRangerList = null;
+				let refreshRanger = true;
+				this.rangers = refreshRanger;
+				this.rangers = temp[0];
 				this.sort(this.sortBySurname);
 			});
 	}
 
 	//Ranger CRUD Operations
 	updateRangerList(updatedList: string) {
-		console.log("rangers length: " + this.rangers.length);
 		this.refresh(updatedList);
 	}
-	addIfNewRanger(x: any) {
-		let isNotNew = false;
-		for (let i = 0; i < this.rangers.length; i++)
-			if (x.token == this.rangers[i].token)
-				isNotNew = true;
-
-		if (!isNotNew)
-		{
-			console.log("adding new ranger: " + x.lastName);
-			this.rangers.push(x);
-		}
-	}
-	removeRanger(t: string) {
-		this.rangers.splice(this.rangers.findIndex(x => x.token == t), 1);
-	}
-	deleteRanger(x: any) {
-		var isNotNew = false;
-		for (let i = 0; i < this.rangers.length; i++) {
-			if (x.token == this.rangers[i].token) {
-				isNotNew = true;
-			}
-		}
-		if (!isNotNew)
-			this.rangers.push(x);
-	}
-
 
 	//Ranger Search sidenav
 	openSidenav() {

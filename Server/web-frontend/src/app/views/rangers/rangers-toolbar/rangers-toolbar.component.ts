@@ -33,11 +33,10 @@ export class RangersToolbarComponent implements OnInit {
 			//Refresh component and notify parent
 			if (result == 'success') {
 				//If ranger was successfully added, refresh component and notify parent
-				this.rangersOnChange.emit('add');
+				this.rangersOnChange.emit('update');
 			}
-			else {
+			else if (result == 'error') {
 				this.snackBar.open('An error occured when adding the new ranger. Please try again.', "Dismiss", { duration: 5000, });
-				//console.log('Error adding ranger: ', result);
 			}
 		});
 	}

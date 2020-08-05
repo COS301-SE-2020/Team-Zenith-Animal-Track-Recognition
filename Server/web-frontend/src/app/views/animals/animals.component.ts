@@ -59,9 +59,9 @@ export class AnimalsComponent implements OnInit {
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
-				this.animals = null;
+				let refreshAnimals = true;
+				this.animals = refreshAnimals;
 				this.animals = temp[0];
-				console.log(this.animals);
 				this.sort(true);
 			});
 	}

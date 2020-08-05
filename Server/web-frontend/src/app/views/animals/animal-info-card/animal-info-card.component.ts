@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { EditAnimalInfoComponent } from './../edit-animal-info/edit-animal-info.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-animal-info-card',
@@ -12,26 +14,31 @@ import { EditAnimalInfoComponent } from './../edit-animal-info/edit-animal-info.
 })
 export class AnimalInfoCardComponent implements OnInit {
 
+	animalList: any;
   @Input() animals: any;
   @Input() searchText: string;
   @Input() sortByCommonName: boolean;
   @Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
 
-  constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef) { }
+  constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.startLoader();
     console.log(this.animals);
+	if (this.animals)
+		this.animalList = this.animals;
+	this.stopLoader();
   }
 
-  public ngOnChanges(changes: SimpleChanges) {
-    this.startLoader();
-    if ('rangers' in changes) {
-      //If rangers has updated
-      this.changeDetection.markForCheck();
-    }
-    this.stopLoader();
-  }
+	public ngOnChanges(changes: SimpleChanges) {
+		this.startLoader();
+		if (changes.animals) {
+		  //If animals has updated
+		  this.changeDetection.markForCheck();
+		  this.ngOnInit();
+		}
+		this.stopLoader();
+	}
 
   //Animal CRUD Quick-Actions
 
@@ -56,8 +63,8 @@ export class AnimalInfoCardComponent implements OnInit {
         //Refresh component and notify parent
         this.animalsOnChange.emit("update");
       }
-      else {
-        console.log("Error editing animal: ", result);
+      else if (result == 'error') {
+		this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });
       }
     });
   }

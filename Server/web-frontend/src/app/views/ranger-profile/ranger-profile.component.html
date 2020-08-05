@@ -17,10 +17,29 @@
     </div>
     <div id="ranger-profile-view-workspace">
 		<div id="ranger-profile-info-container">
+			<div id="ranger-profile-info">
+				<div id="ranger-profile-info-image-container">
+					<div id="ranger-profile-info-image">
+					</div>
+				</div>
+				<div id="ranger-profile-info-text">
+					<div id="ranger-profile-info-details">
+						<h1 class="fontSB">{{user.firstName}}&nbsp;{{user.lastName}}</h1>
+						<p class="fontM">Level {{user.accessLevel}} Ranger</p>
+					</div>
+					<div id="ranger-profile-info-contact-container">
+						<p class="fontM">Contact Information</p>
+						<p class="ranger-profile-info-phone fontM"><mat-icon>call</mat-icon>{{user.phoneNumber}}</p>
+						<p class="ranger-profile-info-email fontM"><mat-icon>mail</mat-icon>{{user.eMail}}</p>
+					</div>
+				</div>
+			</div>
+			<div id="ranger-profile-statistics">
+			</div>
 		</div>
 		<div id="ranger-profile-feed-container">
 			<mat-tab-group mat-align-tabs="center" dynamicHeight>
-				<mat-tab label="Overview">
+				<mat-tab label="Overview" id="ranger-profile-overview-tab">
 					<div id="ranger-profile-spoor-feed-container">
 					</div>			
 					<div id="ranger-profile-activity-feed-container">

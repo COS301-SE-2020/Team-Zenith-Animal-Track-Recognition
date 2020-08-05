@@ -21,14 +21,12 @@ export class RangerProfileComponent implements OnInit {
 		document.getElementById('rangers-route').classList.add('activeRoute');
 		//Determine which user was navigated to and fetch their information
 		this.userToken = this.activatedRoute.snapshot.paramMap.get("user");
-		console.log(this.userToken);
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'", tokenSearch:"' + this.userToken + '"){token,accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.user = temp[0][0];
-				console.log(Object.values(this.user));
 			});
 	}
 
