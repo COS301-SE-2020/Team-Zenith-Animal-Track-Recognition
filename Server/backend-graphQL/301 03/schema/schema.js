@@ -295,12 +295,13 @@ const ANIMAL_TYPE = new GraphQLObjectType({
                 let picturesReturn = []
                 let pictures = parent.pictures
                 // console.log(pictureData)
+                //console.log(parent.classification)
                 pictures.forEach(b => {
-                    // console.log(b)
+                    //console.log(b)
                     let c = _.find(pictureData, {
                         pictureID: b
                     })
-                    // console.log(c)
+                     //console.log(c)
                     picturesReturn.push(c)
                 })
                 return picturesReturn
@@ -569,10 +570,10 @@ const RootQuery = new GraphQLObjectType({
                     token: args.token
                 })
                 if (a != null) {
-                    return _.find(animalData,{
-                        classification:args.classification
+                    return _.find(animalData, {
+                        classification: args.classification
                     })
-                    
+
                 }
 
                 return null;
@@ -714,7 +715,7 @@ const Mutation = new GraphQLObjectType({
                     lastName: args.lastName,
                     phoneNumber: args.phoneNumber
                 }
-                
+
                 let x = users.add(newuser).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                     let newuser2 = {
@@ -1108,7 +1109,7 @@ const Mutation = new GraphQLObjectType({
                 }
 
                 newAnimal.pictures = []
-                newAnimal.pictures.push(1)
+                newAnimal.pictures.push("1")
 
                 newAnimal.heightM = "0"
                 newAnimal.heightF = "0"
@@ -1138,7 +1139,7 @@ const Mutation = new GraphQLObjectType({
                 animals.doc(args.classification).set(newAnimal).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
-                
+
                 animalData.push(newAnimal)
                 return newAnimal;
             }
@@ -1266,7 +1267,7 @@ const Mutation = new GraphQLObjectType({
         },
 
 
-        
+
         updateAnimal: {
             type: ANIMAL_TYPE,
             args: {
