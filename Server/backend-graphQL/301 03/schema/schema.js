@@ -584,8 +584,7 @@ const RootQuery = new GraphQLObjectType({
                 },
                 commonName: {
                     type: (GraphQLString)
-                }
-                ,
+                },
                 kindOfPicture: {
                     type: (GraphQLString)
                 }
@@ -623,9 +622,9 @@ const RootQuery = new GraphQLObjectType({
                             })
                         }
                     }
-                    if (args.kindOfPicture!=undefined){
-                        a=_.filter(a,{
-                            kindOfPicture:args.kindOfPicture
+                    if (args.kindOfPicture != undefined) {
+                        a = _.filter(a, {
+                            kindOfPicture: args.kindOfPicture
                         })
                     }
 
@@ -709,28 +708,31 @@ const Mutation = new GraphQLObjectType({
                 if (a.accessLevel <= 2) {
                     return null
                 }
+                UID=userID();
+                testt=_.find(usersData,{
+                    token:UID
+                })
+                while(testt!=null){
+                    UID=userID();
+                testt=_.find(usersData,{
+                    token:UID
+                })
+                }
 
                 let newuser = {
+
                     password: args.password,
                     accessLevel: args.accessLevel,
                     eMail: args.eMail,
                     firstName: args.firstName,
                     lastName: args.lastName,
-                    phoneNumber: args.phoneNumber
-                }
+                    phoneNumber: args.phoneNumber,
+                    token:UID
+                } 
+                usersData.push(newuser)
 
-                let x = users.add(newuser).then(function (docRef) {
+                let x = users.doc(UID).set(newuser).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
-                    let newuser2 = {
-                        password: args.password,
-                        accessLevel: args.accessLevel,
-                        eMail: args.eMail,
-                        firstName: args.firstName,
-                        lastName: args.lastName,
-                        phoneNumber: args.phoneNumber,
-                        token: docRef.id
-                    }
-                    // usersData.push(newuser2)
                 })
 
                 console.log(x)
@@ -1690,3 +1692,11 @@ function getSimilarimg(ImgID) {
 //             }
 //         )
 // }
+function userID() {
+    const alphanumeric = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let id = "";
+    for (let i = 0; i < 20; i++) {
+        id += alphanumeric[Math.floor(Math.random() * alphanumeric.length)];
+    }
+    return id
+}
