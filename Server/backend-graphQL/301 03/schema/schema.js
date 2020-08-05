@@ -24,8 +24,6 @@ ADMIN.initializeApp({
     credential: ADMIN.credential.cert(serviceAccount),
 });
 
-
-
 let db = ADMIN.firestore();
 let animals = db.collection("animals");
 let users = db.collection("users");
@@ -35,7 +33,6 @@ let pictures = db.collection("pictures");
 let spoorIdentifications = db.collection("spoorIdentifications");
 
 //google db
-
 
 let mesData = [{
     msg: "deleted"
@@ -301,7 +298,7 @@ const ANIMAL_TYPE = new GraphQLObjectType({
                     let c = _.find(pictureData, {
                         pictureID: b
                     })
-                     //console.log(c)
+                    //console.log(c)
                     picturesReturn.push(c)
                 })
                 return picturesReturn
@@ -668,8 +665,6 @@ const RootQuery = new GraphQLObjectType({
     }
 })
 
-
-
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
@@ -939,7 +934,7 @@ const Mutation = new GraphQLObjectType({
                 return newGroup;
             }
         },
-        apdateGroup: {
+        updateGroup: {
             type: USER_TYPE,
             args: {
                 groupName: {
@@ -1265,9 +1260,6 @@ const Mutation = new GraphQLObjectType({
                 return newAnimal;
             }
         },
-
-
-
         updateAnimal: {
             type: ANIMAL_TYPE,
             args: {
@@ -1295,19 +1287,19 @@ const Mutation = new GraphQLObjectType({
                 habitats: {
                     type: new GraphQLList(new GraphQLNonNull(GraphQLInt))
                 },
-                GroupID: {
+                groupID: {
                     type: new GraphQLList(new GraphQLNonNull(GraphQLInt))
                 },
-                DietType: {
+                dietType: {
                     type: GraphQLString
                 },
-                LifeSpan: {
+                lifeSpan: {
                     type: GraphQLString
                 },
                 gestationPeriod: {
                     type: GraphQLString
                 },
-                TypicalBehaviourM: {
+                typicalBehaviourM: {
                     type: GraphQLString
                 },
                 typicalBehaviourF: {
@@ -1475,7 +1467,6 @@ const Mutation = new GraphQLObjectType({
                 return newSpoorIdentification;
             }
         },
-
         updateIdentification: {
             type: SPOOR_IDENTIFICATION_TYPE,
             args: {
@@ -1545,13 +1536,11 @@ const Mutation = new GraphQLObjectType({
     }
 });
 
-
 module.exports = new GraphQLSchema({
     query: RootQuery,
 
     mutation: Mutation
 });
-
 
 if (CACHE) {
     animals.onSnapshot(function (querySnapshot) {
@@ -1645,9 +1634,6 @@ if (CACHE) {
     });
 
 }
-
-
-
 
 function AIIterface(Img) {
     potentialMatches = []
