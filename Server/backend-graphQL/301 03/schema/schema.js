@@ -708,15 +708,15 @@ const Mutation = new GraphQLObjectType({
                 if (a.accessLevel <= 2) {
                     return null
                 }
-                UID=userID();
-                testt=_.find(usersData,{
-                    token:UID
+                UID = userID();
+                testt = _.find(usersData, {
+                    token: UID
                 })
-                while(testt!=null){
-                    UID=userID();
-                testt=_.find(usersData,{
-                    token:UID
-                })
+                while (testt != null) {
+                    UID = userID();
+                    testt = _.find(usersData, {
+                        token: UID
+                    })
                 }
 
                 let newuser = {
@@ -727,8 +727,8 @@ const Mutation = new GraphQLObjectType({
                     firstName: args.firstName,
                     lastName: args.lastName,
                     phoneNumber: args.phoneNumber,
-                    token:UID
-                } 
+                    token: UID
+                }
                 usersData.push(newuser)
 
                 let x = users.doc(UID).set(newuser).then(function (docRef) {
@@ -1221,6 +1221,7 @@ const Mutation = new GraphQLObjectType({
                 if (a.accessLevel <= 2) {
                     return null
                 }
+                
                 let HID = ((animalData.length + 1))
                 let b = _.find(habitatData, {
                     animalID: HID.toString()
@@ -1261,12 +1262,12 @@ const Mutation = new GraphQLObjectType({
                     newAnimal.pictures = []
                     newAnimal.pictures.push(1)
                 }
-
+                newAnimal.classification = args.classification
+                animalData.push(newAnimal)
                 animals.doc(args.classification).set(newAnimal).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
-                newAnimal.classification = args.classification
-                animalData.push(newAnimal)
+
                 return newAnimal;
             }
         },
