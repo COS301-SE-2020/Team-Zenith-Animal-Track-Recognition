@@ -196,7 +196,8 @@ Widget getWidget(var animalTabList) {
                     child: habitats(animalTabList[index].habitats, context)),
                 ListTileTheme(
                     dense: true,
-                    child: ViewButton(name: animalTabList[index].animalName)),
+                    child:
+                        ViewButton(name: animalTabList[index].classification)),
               ]),
         );
       });
