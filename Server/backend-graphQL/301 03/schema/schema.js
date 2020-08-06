@@ -1221,7 +1221,11 @@ const Mutation = new GraphQLObjectType({
                 if (a.accessLevel <= 2) {
                     return null
                 }
-                
+                if (_.find(animalData, {
+                        classification: args.classification
+                    }) != null) {
+                        return null
+                }
                 let HID = ((animalData.length + 1))
                 let b = _.find(habitatData, {
                     animalID: HID.toString()
