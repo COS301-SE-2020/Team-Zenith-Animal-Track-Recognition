@@ -27,7 +27,13 @@ export class RangersToolbarComponent implements OnInit {
 	openAddRangerDialog() {
 		const dialogConfig = new MatDialogConfig();
 
-		const addDialogRef = this.dialog.open(AddRangerComponent, { height: '55%', width: '35%', panelClass: 'add-ranger-modal', autoFocus: true, disableClose: true });
+		const addDialogRef = this.dialog.open(AddRangerComponent, { 
+			height: '55%', 
+			width: '35%', 
+			id: 'add-ranger-dialog', 
+			autoFocus: true, 
+			disableClose: true 
+		});
 		addDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
 			if (result == 'success') {

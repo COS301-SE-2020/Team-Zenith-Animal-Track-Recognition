@@ -3,6 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import {MatProgressBarModule} from '@angular/material/progress-bar'; 
 
 @Component({
 	selector: 'app-edit-ranger-info',
@@ -21,6 +22,7 @@ export class EditRangerInfoComponent implements OnInit {
 			email: [this.data.email, Validators.required],
 			phoneNumber: [this.data.phoneNumber, Validators.required]
 		});
+		document.getElementById('edit-ranger-dialog').style.overflow = "hidden";
 	}
 
 	get f() { return this.editUserForm.controls; }
@@ -46,12 +48,21 @@ export class EditRangerInfoComponent implements OnInit {
 	closeDialog() {
 		this.dialogRef.close("cancel");
 	}
+	
+	attachProgressbar()
+	{
+		//Append progress bar to dialog
+		let matDialog = document.getElementById('edit-ranger-dialog');
+		let progressBar = document.getElementById("dialog-progressbar-container");
+		matDialog.insertBefore(progressBar, matDialog.firstChild);
+	}
 
-	//Loader
+	//Loader - Progress bar
 	startLoader() {
-		document.getElementById("loader-container").style.visibility = "visible";
+		this.attachProgressbar();
+		document.getElementById("dialog-progressbar-container").style.visibility = "visible";
 	}
 	stopLoader() {
-		document.getElementById("loader-container").style.visibility = "hidden";
+		document.getElementById("dialog-progressbar-container").style.visibility = "hidden";
 	}
 }

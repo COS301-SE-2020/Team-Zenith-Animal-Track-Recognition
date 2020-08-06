@@ -49,9 +49,11 @@ import { MatTableModule } from '@angular/material/table';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs'; 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
+import {MatProgressBarModule} from '@angular/material/progress-bar'; 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar'; 
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatChipsModule } from '@angular/material/chips'; 
 
 @NgModule({
   declarations: [
@@ -107,7 +109,9 @@ import { MatStepperModule } from '@angular/material/stepper';
 	MatProgressSpinnerModule,
 	MatAutocompleteModule,
 	MatSnackBarModule,
-	MatStepperModule
+	MatStepperModule,
+	MatChipsModule,
+	MatProgressBarModule
   ],
   providers: [AuthGuardService],
   entryComponents: [

@@ -12,9 +12,9 @@
         </div>
 		<div id="rangers-toolbar">
 			<mat-select id="rangers-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
-				<mat-option>Edit Information</mat-option>
-				<mat-option>Change Level</mat-option>
-				<mat-option>Delete Ranger</mat-option>
+				<mat-option (click)="openEditRangerDialog(user.token)">Edit Information</mat-option>
+				<mat-option (click)="route('rangers/permissions')">Change Level</mat-option>
+				<mat-option (click)="openDeleteRangerDialog(user.token)">Delete Ranger</mat-option>
 			</mat-select>
 		</div>
     </div>
@@ -27,21 +27,72 @@
 				</div>
 				<div id="ranger-profile-info-text">
 					<div id="ranger-profile-info-details">
-						<h1 class="fontSB">{{user.firstName}}&nbsp;{{user.lastName}} 
-							<span class="editQuickBtn">    
-								<button mat-stroked-button color="primary">Edit</button>
-							</span>
-						</h1>
+						<div>
+							<h1 class="fontSB">{{user.firstName}}&nbsp;{{user.lastName}}</h1>
+							<button mat-flat-button (click)="openEditRangerDialog(user.token)">Edit</button>						
+						</div>
 						<p class="fontM">Level {{user.accessLevel}} Ranger</p>
 					</div>
 					<div id="ranger-profile-info-contact-container">
-						<p class="fontM">Contact Information</p>
+						<p id="ranger-profile-info-contact-title" class="fontM">Contact Information</p>
 						<p class="ranger-profile-info-phone fontM"><mat-icon>call</mat-icon>{{user.phoneNumber}}</p>
 						<p class="ranger-profile-info-email fontM"><mat-icon>mail</mat-icon>{{user.eMail}}</p>
 					</div>
 				</div>
 			</div>
-			<div id="ranger-profile-statistics">
+			<div id="ranger-profile-statistics-container">
+				<div id="ranger-profile-statistics-title">
+					<h1 class="fontSB">Statistics</h1>
+				</div>
+				<div id="ranger-profile-statistics">
+					<div class="ranger-profile-stats-container">
+						<div class="ranger-profile-stats-icon-container">
+							<div class="ranger-profile-stats-icon"></div>
+						</div>
+						<div class="ranger-profile-stats-info">
+							<p class="ranger-profile-stat-text fontM">Spoors Identified</p>
+							<p class="ranger-profile-stat-num fontSB">150</p>
+						</div>
+					</div>					
+					<div class="ranger-profile-stats-container">
+						<div class="ranger-profile-stats-icon-container">
+							<div class="ranger-profile-stats-icon"></div>
+						</div>
+						<div class="ranger-profile-stats-info">
+							<p class="ranger-profile-stat-text fontM">Animals Tracked</p>
+							<p class="ranger-profile-stat-num fontSB">17</p>
+						</div>
+					</div>					
+					<div class="ranger-profile-stats-container">
+						<div class="ranger-profile-stats-icon-container">
+							<div class="ranger-profile-stats-icon"></div>
+						</div>
+						<div class="ranger-profile-stats-info">
+							<p class="ranger-profile-stat-text fontM">Groups Tracked</p>
+							<p class="ranger-profile-stat-num fontSB">150</p>
+						</div>
+					</div>					
+					<div class="ranger-profile-stats-container">
+						<div class="ranger-profile-stats-icon-container">
+							<div class="ranger-profile-stats-icon"></div>
+						</div>
+						<div class="ranger-profile-stats-info">
+							<p class="ranger-profile-stat-text fontM">Most Tracked Species</p>
+							<p class="ranger-profile-stat-num fontSB">Black Rhino</p>
+						</div>
+					</div>					
+					<div class="ranger-profile-stats-container">
+						<div class="ranger-profile-stats-icon-container">
+							<div class="ranger-profile-stats-icon"></div>
+						</div>
+						<div class="ranger-profile-stats-info">
+							<p class="ranger-profile-stat-text fontM">Locations</p>
+							<p class="ranger-profile-stat-num fontSB">2</p>
+						</div>
+					</div>					
+					<div class="ranger-profile-stats-container">
+					</div>
+				</div>
 			</div>
 		</div>
 		<div id="ranger-profile-feed-container">

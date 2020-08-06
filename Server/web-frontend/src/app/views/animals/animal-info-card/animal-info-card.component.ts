@@ -42,20 +42,29 @@ export class AnimalInfoCardComponent implements OnInit {
 
     const dialogConfig = new MatDialogConfig();
 
-    //Get animal information for chosen card
+ //Get animal information for chosen card
     var chosenAnimal;
     for (let i = 0; i < this.animalsList.length; i++) {
-      if (animalID == this.animalsList[i].Animal_ID) {
+      if (animalID == this.animalsList[i].animalID) {
         chosenAnimal = this.animalsList[i];
         i = this.animalsList[i].length;
       }
     }
-    const editDialogRef = this.dialog.open(EditAnimalInfoComponent, { height: '85%', width: '60%', autoFocus: true, disableClose: true, data: { animal: chosenAnimal }, });
+    const editDialogRef = this.dialog.open(EditAnimalInfoComponent, {
+		height: '85%', 
+		width: '60%', 
+		autoFocus: true, 
+		disableClose: true,
+		id: 'edit-animal-dialog',
+		data: { 
+			animal: chosenAnimal 
+		},
+    });
     editDialogRef.afterClosed().subscribe(result => {
       this.stopLoader();
 		if (result == "success") {
 			//If animal was successfully edited refresh component and notify parent
-			this.animalsOnChange.emit("update");
+			this.animalsOnChange.emit('update');
 		}
 		else if (result == 'error') {
 			this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });
@@ -65,9 +74,9 @@ export class AnimalInfoCardComponent implements OnInit {
 
   sort(bool: boolean) {
     if (bool) {
-      for (let i = 0; i < this.animalsList.length - 1; i++) {
+     for (let i = 0; i < this.animalsList.length - 1; i++) {
         for (let j = i + 1; j < this.animalsList.length; j++) {
-          if (this.animalsList[i].Common_Name.toUpperCase() > this.animalsList[j].Common_Name.toUpperCase()) {
+          if (this.animalsList[i].commonName.toUpperCase() > this.animalsList[j].commonName.toUpperCase()) {
             let temp = this.animalsList[i];
             this.animalsList[i] = this.animalsList[j];
             this.animalsList[j] = temp;
@@ -75,9 +84,9 @@ export class AnimalInfoCardComponent implements OnInit {
         }
       }
     } else {
-      for (let i = 0; i < this.animalsList.length - 1; i++) {
+   for (let i = 0; i < this.animalsList.length - 1; i++) {
         for (let j = i + 1; j < this.animalsList.length; j++) {
-          if (this.animalsList[i].Access_Level > this.animalsList[j].Access_Level) {
+          if (this.animalsList[i].accessLevel > this.animalsList[j].accessLevel) {
             let temp = this.animalsList[i];
             this.animalsList[i] = this.animalsList[j];
             this.animalsList[j] = temp;

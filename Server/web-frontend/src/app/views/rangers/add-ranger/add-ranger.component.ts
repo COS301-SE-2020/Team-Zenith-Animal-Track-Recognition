@@ -27,7 +27,8 @@ export class AddRangerComponent implements OnInit {
 			phoneNumber: ['', Validators.required],
 			password: ['', Validators.required],
 			dob: ['', Validators.required]
-		});
+		});		
+		document.getElementById('add-ranger-dialog').style.overflow = "hidden";
 	}
 
 	get f() { return this.addUserForm.controls; }
@@ -56,11 +57,21 @@ export class AddRangerComponent implements OnInit {
 		this.dialogRef.close("cancel");
 	}
 	
-	//Loader
+	
+	attachProgressbar()
+	{
+		//Append progress bar to dialog
+		let matDialog = document.getElementById('add-ranger-dialog');
+		let progressBar = document.getElementById("dialog-progressbar-container");
+		matDialog.insertBefore(progressBar, matDialog.firstChild);
+	}
+
+	//Loader - Progress bar
 	startLoader() {
-		document.getElementById("loader-container").style.visibility = "visible";
+		this.attachProgressbar();
+		document.getElementById("dialog-progressbar-container").style.visibility = "visible";
 	}
 	stopLoader() {
-		document.getElementById("loader-container").style.visibility = "hidden";
+		document.getElementById("dialog-progressbar-container").style.visibility = "hidden";
 	}
 }

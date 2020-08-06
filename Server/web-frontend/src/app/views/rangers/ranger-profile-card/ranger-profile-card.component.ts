@@ -52,11 +52,11 @@ export class RangerProfileCardComponent implements OnInit {
 			width: '35%',
 			autoFocus: true,
 			disableClose: true,
+			id: 'edit-ranger-dialog',
 			data: {
 				token: rangerID,
 				firstName: rangerName[0],
 				lastName: rangerName[1],
-				level: rangerLevel,
 				phoneNumber: rangerPhone.replace("call", ""),
 				email: rangerEmail.replace("mail", "")
 			},
@@ -64,8 +64,7 @@ export class RangerProfileCardComponent implements OnInit {
 		editDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
 			if (result == "success") {
-				//If ranger was successfully edited
-				//Refresh component and notify parent
+				//If ranger was successfully edited refresh component and notify parent
 				this.rangersOnChange.emit("update");
 			}
 			else if (result == 'error') {
@@ -85,6 +84,7 @@ export class RangerProfileCardComponent implements OnInit {
 				width: '30%',
 				autoFocus: true,
 				disableClose: true,
+				id: 'delete-ranger-dialog',
 				data: {
 					name: rangerFullName,
 					token: rangerID
