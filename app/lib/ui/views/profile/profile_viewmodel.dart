@@ -22,42 +22,6 @@ class ProfileViewModel extends BaseViewModel{
     return temp;
   }
 
-  void navigateToSearchView(){
-    _navigationService.navigateTo(Routes.searchViewRoute);
-  }
- 
-  void navigateToInfo(){
-    _navigationService.navigateTo(Routes.identificationViewRoute);
-  }
-
-  void navigateToConfirmView(){
-    _navigationService.navigateTo(Routes.confirmlViewRoute);
-  }
- 
-  void navigateToNotConfirmView(){
-    _navigationService.navigateTo(Routes.notConfirmedViewRoute);
-  }
-
-  void captureImage() async
-  {
-    File image;
-    final picker = ImagePicker();
-    
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-    if(pickedFile != null){
-      image = File(pickedFile.path);
-      String url = base64Encode(image.readAsBytesSync());
-      List<ConfirmModel> animals = await _api.identifyImage(url);
-      if(animals != null){
-        navigateToConfirmView();
-      }else{
-        navigateToNotConfirmView();
-      }
-    }
-
-    return null;
-  }
-
 }
 
 class TempObject {
