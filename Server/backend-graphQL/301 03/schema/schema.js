@@ -676,12 +676,14 @@ const RootQuery = new GraphQLObjectType({
 
             }
         },
-        dietType:{
-            type:new GraphQLList(GraphQLString),
-            args:{
-                token:{type: GraphQLString}
+        dietType: {
+            type: new GraphQLList(GraphQLString),
+            args: {
+                token: {
+                    type: GraphQLString
+                }
             },
-            resolve(parent, args){
+            resolve(parent, args) {
                 a = _.find(usersData, {
                     token: args.token
                 })
@@ -692,7 +694,7 @@ const RootQuery = new GraphQLObjectType({
                 return dietTypeData
             }
         }
-        
+
     }
 })
 
@@ -1607,19 +1609,18 @@ const Mutation = new GraphQLObjectType({
                 if (a.accessLevel <= 2) {
                     return null
                 }
-                if (dietTypeData.includes(args.dietName))
-                {
+                if (dietTypeData.includes(args.dietName)) {
                     return null
                 }
-                let newDiet ={
-                    diet:args.dietName
+                let newDiet = {
+                    diet: args.dietName
                 }
                 dietTypes.add(newDiet)
                 dietTypeData.push(args.dietName)
                 return args.dietName;
 
             }
-        
+
         },
         deleteDiet: {
             type: MES_TYPE,
@@ -1643,20 +1644,19 @@ const Mutation = new GraphQLObjectType({
                     console.log("deleted aberted 2");
                     return null
                 }
-                let b = _.findIndex(dietTypeData,args.dietName)
+                let b = _.findIndex(dietTypeData, args.dietName)
 
                 dietTypeData.splice(b, 1)
 
-                dietTypes.where("diet","==",args.dietName)
-                .get()
-                .then(
-                    function(querySnapshot)
-                    {
-                        querySnapshot.forEach(function(doc) {
-                            dietTypes.doc(doc.id).delete()
-                        });
-                    }
-                )
+                dietTypes.where("diet", "==", args.dietName)
+                    .get()
+                    .then(
+                        function (querySnapshot) {
+                            querySnapshot.forEach(function (doc) {
+                                dietTypes.doc(doc.id).delete()
+                            });
+                        }
+                    )
                 return MesData[0];
             }
 
@@ -1691,6 +1691,13 @@ if (CACHE) {
                 animalOverview: doc.data().animalOverview,
                 animalDescription: doc.data().animalDescription,
                 pictures: doc.data().pictures
+            }
+            if (!dietTypeData.includes(doc.data().dietType)) {
+                let newDiet = {
+                    diet: doc.data().dietType
+                }
+                dietTypes.add(newDiet)
+                dietTypeData.push(doc.data().dietType)
             }
             animalData.push(temp);
         });
@@ -1764,8 +1771,8 @@ if (CACHE) {
     dietTypes.onSnapshot(function (querySnapshot) {
         dietTypeData = []
         querySnapshot.forEach(function (doc) {
-            let diet= doc.data().diet
-            
+            let diet = doc.data().diet
+
             dietTypeData.push(diet)
         });
     });
