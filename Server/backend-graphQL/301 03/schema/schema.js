@@ -341,6 +341,32 @@ const HABITAT_TYPE = new GraphQLObjectType({
         }
     })
 })
+const RANGERS_STATS_TYPE = new GraphQLObjectType({
+    name: "rangersStats",
+    fields: () => ({
+        mostTrackedAnimal: {
+            type: ANIMAL_TYPE,
+            resolve(parent, args) {
+                let temp = undefined;
+                if (CACHE) {
+                    temp = _.find(animalData, {
+                        animalID: parent.animal
+                    })
+                } else {
+                    //todo
+                }
+                return temp;
+            }
+        },
+        spoors: {
+            type: GraphQLString
+        },
+        nuberOfanamils: {
+            type: GraphQLString
+        }
+    })
+})
+
 
 // RootQuery name divinf in grahpQL
 const RootQuery = new GraphQLObjectType({
@@ -391,6 +417,58 @@ const RootQuery = new GraphQLObjectType({
                 else return null
             }
 
+        },
+        rangersStats: {
+            type: RANGERS_STATS_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                rangerID: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.rangerID
+                })
+                a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == null) {
+                    return null;
+                }
+                let events = _.filter(spoorIdentificationData, {
+                    ranger: rangerID
+                })
+                if (events != undefined && events.length != 0) {
+                    let stast = [
+                        [],
+                        []
+                    ]
+                    events.forEach(element => {
+                        if (stast[0].includes(element.animal)) {
+                            let indx = _.indexOf(stast[0], element.animal)
+                            stast[1][indx] = stast[1][indx] + 1
+                        } else {
+                            stast[0].push(element.animal)
+                            stast[1].push(1)
+                        }
+                    });
+                    let indx = 0
+                    if (stast[1].length > 1)
+                        for (let i = 1;i<=stast[1].length;i++) {
+                            if (stast[1][i]>stast[1][indx])
+                            indx=i
+                        }
+
+                    stastsRerurnd={
+                        mostTrackedAnimal:stast[1][indx],
+                        spoors:events.length,
+                        nuberOfanamils:stast[1].length
+                    }
+                } else return null
+            }
         },
         groups: {
             type: GraphQLList(GROUP_TYPE),
