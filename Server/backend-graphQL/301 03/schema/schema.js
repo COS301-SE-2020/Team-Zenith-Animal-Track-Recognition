@@ -31,6 +31,7 @@ let groups = db.collection("groups");
 let habitats = db.collection("habitats");
 let pictures = db.collection("pictures");
 let spoorIdentifications = db.collection("spoorIdentifications");
+let dietTypes = db.collection("dietTypes");
 
 //google db
 
@@ -43,6 +44,7 @@ let groupData = []
 let animalData = []
 let pictureData = []
 let spoorIdentificationData = []
+let dietTypeData = []
 
 const MES_TYPE = new GraphQLObjectType({
     name: "mesig",
@@ -63,6 +65,7 @@ const LOCATION_TYPE = new GraphQLObjectType({
         }
     })
 });
+
 const DATE_AND_TIME_TYPE = new GraphQLObjectType({
     name: "dateAndTime",
     fields: () => ({
@@ -271,6 +274,9 @@ const ANIMAL_TYPE = new GraphQLObjectType({
         lifeSpan: {
             type: GraphQLString
         },
+        Offspring: {
+            type: GraphQLString
+        },
         gestationPeriod: {
             type: GraphQLString
         },
@@ -303,7 +309,8 @@ const ANIMAL_TYPE = new GraphQLObjectType({
                 })
                 return picturesReturn
             }
-        }
+        },
+
     })
 });
 const GROUP_TYPE = new GraphQLObjectType({
@@ -334,6 +341,32 @@ const HABITAT_TYPE = new GraphQLObjectType({
         }
     })
 })
+const RANGERS_STATS_TYPE = new GraphQLObjectType({
+    name: "rangersStats",
+    fields: () => ({
+        mostTrackedAnimal: {
+            type: ANIMAL_TYPE,
+            resolve(parent, args) {
+                let temp = undefined;
+                if (CACHE) {
+                    temp = _.find(animalData, {
+                        animalID: parent.animal
+                    })
+                } else {
+                    //todo
+                }
+                return temp;
+            }
+        },
+        spoors: {
+            type: GraphQLString
+        },
+        nuberOfanamils: {
+            type: GraphQLString
+        }
+    })
+})
+
 
 // RootQuery name divinf in grahpQL
 const RootQuery = new GraphQLObjectType({
@@ -384,6 +417,58 @@ const RootQuery = new GraphQLObjectType({
                 else return null
             }
 
+        },
+        rangersStats: {
+            type: RANGERS_STATS_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                rangerID: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.rangerID
+                })
+                a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == null) {
+                    return null;
+                }
+                let events = _.filter(spoorIdentificationData, {
+                    ranger: rangerID
+                })
+                if (events != undefined && events.length != 0) {
+                    let stast = [
+                        [],
+                        []
+                    ]
+                    events.forEach(element => {
+                        if (stast[0].includes(element.animal)) {
+                            let indx = _.indexOf(stast[0], element.animal)
+                            stast[1][indx] = stast[1][indx] + 1
+                        } else {
+                            stast[0].push(element.animal)
+                            stast[1].push(1)
+                        }
+                    });
+                    let indx = 0
+                    if (stast[1].length > 1)
+                        for (let i = 1;i<=stast[1].length;i++) {
+                            if (stast[1][i]>stast[1][indx])
+                            indx=i
+                        }
+
+                    stastsRerurnd={
+                        mostTrackedAnimal:stast[1][indx],
+                        spoors:events.length,
+                        nuberOfanamils:stast[1].length
+                    }
+                } else return null
+            }
         },
         groups: {
             type: GraphQLList(GROUP_TYPE),
@@ -669,6 +754,25 @@ const RootQuery = new GraphQLObjectType({
 
             }
         },
+        dietType: {
+            type: new GraphQLList(GraphQLString),
+            args: {
+                token: {
+                    type: GraphQLString
+                }
+            },
+            resolve(parent, args) {
+                a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == null) {
+                    return null;
+                }
+                console.log(dietTypeData)
+                return dietTypeData
+            }
+        }
+
     }
 })
 
@@ -945,7 +1049,7 @@ const Mutation = new GraphQLObjectType({
             }
         },
         updateGroup: {
-            type: USER_TYPE,
+            type: GROUP_TYPE,
             args: {
                 groupName: {
                     type: new GraphQLNonNull(GraphQLString)
@@ -1115,7 +1219,7 @@ const Mutation = new GraphQLObjectType({
 
                 newAnimal.pictures = []
                 newAnimal.pictures.push("19")
-
+                newAnimal.Offspring = "probably"
                 newAnimal.heightM = "0"
                 newAnimal.heightF = "0"
                 newAnimal.weightF = "0"
@@ -1208,6 +1312,9 @@ const Mutation = new GraphQLObjectType({
                 },
                 pictures: {
                     type: new GraphQLList(GraphQLInt)
+                },
+                Offspring: {
+                    type: GraphQLString
                 }
 
             },
@@ -1224,7 +1331,7 @@ const Mutation = new GraphQLObjectType({
                 if (_.find(animalData, {
                         classification: args.classification
                     }) != null) {
-                        return null
+                    return null
                 }
                 let HID = ((animalData.length + 1))
                 let b = _.find(habitatData, {
@@ -1265,6 +1372,11 @@ const Mutation = new GraphQLObjectType({
                 } else {
                     newAnimal.pictures = []
                     newAnimal.pictures.push(1)
+                }
+                if (args.Offspring != undefined) {
+                    newAnimal.Offspring = args.Offspring
+                } else {
+                    newAnimal.Offspring = "probably"
                 }
                 newAnimal.classification = args.classification
                 animalData.push(newAnimal)
@@ -1334,6 +1446,9 @@ const Mutation = new GraphQLObjectType({
                 },
                 pictures: {
                     type: new GraphQLList(GraphQLInt)
+                },
+                Offspring: {
+                    type: GraphQLString
                 }
 
             },
@@ -1404,6 +1519,9 @@ const Mutation = new GraphQLObjectType({
                 }
                 if (args.animalDescription != undefined) {
                     updatedAnimal.animalDescription = args.animalDescription
+                }
+                if (args.Offspring != undefined) {
+                    updatedAnimal.Offspring = args.Offspring
                 }
                 animals.doc(args.classification).set(updatedAnimal)
                 newAnimal.classification = args.classification
@@ -1548,6 +1666,79 @@ const Mutation = new GraphQLObjectType({
                 return newSpoorIdentification;
             }
         },
+        addDiet: {
+            type: GraphQLString,
+            args: {
+                dietName: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.accessLevel <= 2) {
+                    return null
+                }
+                if (dietTypeData.includes(args.dietName)) {
+                    return null
+                }
+                let newDiet = {
+                    diet: args.dietName
+                }
+                dietTypes.add(newDiet)
+                dietTypeData.push(args.dietName)
+                return args.dietName;
+
+            }
+
+        },
+        deleteDiet: {
+            type: MES_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                dietName: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    console.log("deleted aberted 1");
+                    return null
+                }
+                if (a.accessLevel <= 2) {
+                    console.log("deleted aberted 2");
+                    return null
+                }
+                let b = _.findIndex(dietTypeData, args.dietName)
+
+                dietTypeData.splice(b, 1)
+
+                dietTypes.where("diet", "==", args.dietName)
+                    .get()
+                    .then(
+                        function (querySnapshot) {
+                            querySnapshot.forEach(function (doc) {
+                                dietTypes.doc(doc.id).delete()
+                            });
+                        }
+                    )
+                return MesData[0];
+            }
+
+        },
     }
 });
 
@@ -1578,6 +1769,13 @@ if (CACHE) {
                 animalOverview: doc.data().animalOverview,
                 animalDescription: doc.data().animalDescription,
                 pictures: doc.data().pictures
+            }
+            if (!dietTypeData.includes(doc.data().dietType)) {
+                let newDiet = {
+                    diet: doc.data().dietType
+                }
+                dietTypes.add(newDiet)
+                dietTypeData.push(doc.data().dietType)
             }
             animalData.push(temp);
         });
@@ -1645,6 +1843,15 @@ if (CACHE) {
                 habitatName: doc.data().habitatName
             }
             spoorIdentificationData.push(newHabitat)
+        });
+    });
+
+    dietTypes.onSnapshot(function (querySnapshot) {
+        dietTypeData = []
+        querySnapshot.forEach(function (doc) {
+            let diet = doc.data().diet
+
+            dietTypeData.push(diet)
         });
     });
 
