@@ -7,6 +7,7 @@
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
+	overflow: hidden;
 }
 #rangers-toolbar-container
 {
@@ -85,11 +86,17 @@
 {
 	height: 88%;
 	width: 100%;
-	overflow: scroll;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 #ranger-profile-info-container
 {
-	height: 40%;
+	height: 200px;
+	min-height: 200px;
 	width: 100%;
 	background-color: white;
 	display: flex;
@@ -268,7 +275,6 @@
 }
 #ranger-profile-feed-container
 {
-	height: 60%;
 	width: 100%;
 	background-color: #F5F6FA;
 }
@@ -277,7 +283,6 @@
 	height: 100%;
 	width: 100%;
 	background-color: white;
-	overflow: hidden;
 	padding-top: 1%;
 }
 :host ::ng-deep .mat-tab-labels
@@ -290,20 +295,420 @@
 	height: 100%;
 	width: 100%;
 }
-#ranger-profile-overview-tab
+:host ::ng-deep .mat-tab-body-content
 {
-	height: auto;
+	background-color: #F5F6FA;
+}
+#ranger-profile-overview-container
+{
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+#ranger-profile-spoor-feed-container
+{
+	width: 55%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 3%;
+}
+#ranger-profile-spoor-feed-title
+{
+	height: 15%;
+	width: 85%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+#ranger-profile-spoor-feed-title > h2
+{
+	color: #AAA;
+	font-size: 100%;
+	margin-bottom: 0;
+}
+#ranger-profile-spoor-feed-title > .mat-flat-button
+{
+	height: 55%;
+	color: #AAA;
+	background-color: transparent;
+	font-size: 90%;
+	padding: 0;
+	line-height: 16px;
+}
+#ranger-profile-spoors-container
+{
+	width: 85%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	padding-top: 2%;
+}
+.ranger-profile-spoor-container
+{
+	height: 180px;
+	width: 100%;
+	background-color: white;
+	border-radius: 15px;
+	box-shadow: 0px 2px 8px #BBB;
+	display: flex;
+	flex-direction: column;
+	margin: 3% 0;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out; 
+    -o-transition: all 0.3s ease-in-out;
+}
+.ranger-profile-spoor-container:hover
+{
+	box-shadow: 0px 3px 8px #AAA;
+	transform: translateY(-4%);
+}
+.ranger-profile-spoor-info-container
+{
+	height: 75%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	padding: 1% 0;
+}
+.ranger-profile-spoor-image-container
+{
+	height: 100%;
+	width: 25%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.ranger-profile-spoor-image
+{
+	height: 110px;
+	width: 110px;
+	background-color: #AAA;
+	border-radius: 15%;
+}
+.ranger-profile-spoor-info
+{
+	height: 100%;
+	width: 40%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+.ranger-profile-spoor-animal-name
+{
+	height: 40%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+.ranger-profile-spoor-animal-name > .fontSB
+{
+	color: #686E79;
+	font-family: "Maven Pro", sans-serif;
+	font-size: 115%;
+	margin: 0;
+	padding: 0;
+}
+.ranger-profile-spoor-animal-name > .fontM
+{
+	font-size: 100%;
+	color: #AAA;
+	margin: 0;
+	padding: 0;
+}
+.ranger-profile-spoor-date
+{
+	color: #AAA;
+	height: 30%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.ranger-profile-spoor-date > .mat-icon
+{
+	color: #686E79;
+	font-size: 140%;
+	margin-right: 2%;
+}
+.ranger-profile-spoor-date > p
+{
+	font-size: 100%;
+	margin: 0;
+	padding: 0;
+}
+.ranger-profile-spoor-location
+{
+	height: 25%;
+	width: 100%;
+	color: #AAA;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.ranger-profile-spoor-location> .mat-icon
+{
+	color: #686E79;
+	font-size: 140%;
+}
+.ranger-profile-spoor-location > p
+{
+	font-size: 100%;
+	margin: 0;
+	padding: 0;
+}
+.ranger-profile-spoor-accuracy-container
+{
+	height: 100%;
+	width: 30%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.ranger-profile-spoor-accuracy
+{
+	color: #686E79;
+	height: 100px;
+	width: 100px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: center;
+	border: 4px solid #CCC;
+	border-radius: 15px;
+}
+.ranger-profile-spoor-accuracyscore > p
+{
+	font-size: 250%;
+	padding: 0;
+	text-align: center;
+}
+.ranger-profile-spoor-accuracy-title > p
+{
+	font-size: 90%;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+.ranger-profile-spoor-options-container
+{
+	height: 100%;
+	width: 5%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+.ranger-profile-spoor-tags-container
+{
+	height: 25%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.ranger-profile-spoor-tags-title
+{
+	height: 100%;
+	width: 15%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.ranger-profile-spoor-tags-title > p
+{
+	color: #686E79;
+	font-size: 110%;
+	padding: 0;
+	margin: 0;
+}
+.ranger-profile-spoor-tags
+{
+	height: 100%;
+	width: 85%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 2% 0;
+}
+.mat-standard-chip
+{
+	padding: 3px 12px;
+	height: 85%;
+	min-height: 85%;
+}
+#ranger-profile-activity-feed-container
+{
+	width: 45%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #F5F6FA;
+	padding-top: 3%;
+}
+#ranger-profile-activity-feed-title
+{
+	height: 15%;
+	width: 80%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+#ranger-profile-activity-feed-title > h2
+{
+	color: #AAA;
+	font-size: 100%;
+	margin-bottom: 0;
+}
+#ranger-profile-activity-feed-title > .mat-flat-button
+{
+	height: 55%;
+	color: #AAA;
+	background-color: transparent;
+	font-size: 90%;
+	padding: 0;
+	line-height: 16px;
+}
+#ranger-profile-activity-container
+{
+	height: 80%;
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	padding-top: 2%;
+}
+.ranger-profile-activity-container
+{
+	height: 90px;
+	width: 100%;
+	background-color: white;
+	border-radius: 15px;
+	box-shadow: 0px 2px 8px #BBB;
+	margin: 3% 0;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out; 
+    -o-transition: all 0.3s ease-in-out;
+}
+.ranger-profile-activity-container:hover
+{
+	box-shadow: 0px 3px 8px #AAA;
+	transform: translateY(-8%);
+}
+.ranger-profile-activity-info-container
+{
+	height: 100%;
 	width: 100%;
 	display: flex;
 	flex-direction: row;
 }
-#ranger-profile-spoor-feed-container
+.ranger-profile-activity-details-container
 {
-	height: 1000px;
-	width: 60%;
+	height: 100%;
+	width: 90%;
+	display: flex;
+	flex-direction: row;
+	padding: 2%;
 }
-#ranger-profile-activity-feed-container
+.ranger-profile-activity-image-container
 {
-	height: 800px;
-	width: 40%;
+	height: 100%;
+	width: 20%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.ranger-profile-activity-image
+{
+	height: 65px;
+	width: 65px;
+	background-color: #AAA;
+	border-radius: 15%;
+}
+.ranger-profile-activity-info
+{
+	height: 100%;
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: flex-end;
+}
+.ranger-profile-activity-type
+{
+	height: 30%;
+	width: 95%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+.ranger-profile-activity-type > .fontSB
+{
+	color: #686E79;
+	font-family: "Maven Pro", sans-serif;
+	font-size: 110%;
+	margin: 0;
+	padding: 0;
+}
+.ranger-profile-activity-date
+{
+	color: #AAA;
+	height: 30%;
+	width: 95%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.ranger-profile-activity-date > .mat-icon
+{
+	color: #686E79;
+	font-size: 140%;
+	margin-right: 2%;
+}
+.ranger-profile-activity-date > p
+{
+	font-size: 100%;
+	margin: 0;
+	padding: 0;
+}
+.ranger-profile-activity-summary
+{
+	height: 30%;
+	width: 95%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+.ranger-profile-activity-summary > p
+{
+	font-size: 100%;
+	margin: 0;
+	padding: 0;
+}
+.ranger-profile-activity-summary > .mat-icon
+{
+	color: #686E79;
+}
+.ranger-profile-activity-options-container
+{
+	height: 100%;
+	width: 10%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
 }

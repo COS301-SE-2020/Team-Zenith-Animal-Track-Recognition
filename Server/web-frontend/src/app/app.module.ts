@@ -54,6 +54,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar'; 
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips'; 
+import { MatDividerModule } from '@angular/material/divider'; 
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import { MatChipsModule } from '@angular/material/chips';
 	MatSnackBarModule,
 	MatStepperModule,
 	MatChipsModule,
-	MatProgressBarModule
+	MatProgressBarModule,
+	MatDividerModule
   ],
   providers: [AuthGuardService],
   entryComponents: [

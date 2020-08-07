@@ -18,6 +18,103 @@ export class RangerProfileComponent implements OnInit {
 
 	user: any;
 	userToken: string;
+	
+	/*Place holder values*/
+	spoorIdentifications = [
+		{
+			commonName: 'Elephant',
+			classification: 'Loxodonta Africanus',
+			dateTime: '09:13, 12th Dec 2020',
+			coordinates: '-24.019097, 31.559270',
+			accuracyScore: '67%'
+		},		
+		{
+			commonName: 'Black Rhinoceros',
+			classification: 'Diceros Bicornis',
+			dateTime: '09:13, 12th Dec 2020',
+			coordinates: '-24.019097, 31.559270',
+			accuracyScore: '97%'
+		},		
+		{
+			commonName: 'Cape Buffalo',
+			classification: 'Syncerus Caffer',
+			dateTime: '09:13, 12th Dec 2020',
+			coordinates: '-24.019097, 31.559270',
+			accuracyScore: '73%'
+		},		
+		{
+			commonName: 'Cheetah',
+			classification: 'Acinonyx Jubatus',
+			dateTime: '09:13, 12th Dec 2020',
+			coordinates: '-24.019097, 31.559270',
+			accuracyScore: '67%'
+		},		
+		{
+			commonName: 'Lion',
+			classification: 'Panthera Leo',
+			dateTime: '09:13, 12th Dec 2020',
+			coordinates: '-24.019097, 31.559270',
+			accuracyScore: '67%'
+		},		
+		{
+			commonName: 'Impala',
+			classification: 'Aepyceros Melampus',
+			dateTime: '09:13, 12th Dec 2020',
+			coordinates: '-24.019097, 31.559270',
+			accuracyScore: '59%'
+		}
+	];
+	activities = [
+		{
+			type: 'Reclassified Spoor',
+			dateTime: '09:13, 12th Dec 2020',
+			summary: {
+				info1: 'Diceros Bicornis',
+				info2: 'Syncerus Caffer'
+			}
+		},		
+		{
+			type: 'Captured Spoor',
+			dateTime: '09:13, 12th Dec 2020',
+			summary: {
+				info1: 'Diceros Bicornis',
+				info2: '67% Accuracy'
+			}
+		},			
+		{
+			type: 'Uploaded Spoor Image',
+			dateTime: '09:13, 12th Dec 2020',
+			summary: {
+				info1: 'Spoor Image',
+				info2: 'Syncerus Caffer'
+			}
+		},			
+		{
+			type: 'Uploaded Animal Image',
+			dateTime: '09:13, 12th Dec 2020',
+			summary: {
+				info1: 'Animal Photo',
+				info2: 'Syncerus Caffer'
+			}
+		},			
+		{
+			type: 'Edited Animal Info',
+			dateTime: '09:13, 12th Dec 2020',
+			summary: {
+				info1: 'Edit Information',
+				info2: 'Syncerus Caffer'
+			}
+		},			
+		{
+			type: 'Added New Animal',
+			dateTime: '09:13, 12th Dec 2020',
+			summary: {
+				info1: 'Add Animal',
+				info2: 'Syncerus Caffer'
+			}
+		},		
+	];
+  
 	constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, public dialog: MatDialog, private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
@@ -39,9 +136,7 @@ export class RangerProfileComponent implements OnInit {
 		this.router.navigate([temp]);
 	}
 	
-	
 	//Ranger CRUD Quick-Actions
-
 	//EDIT Ranger
 	openEditRangerDialog(rangerID) {
 		const dialogConfig = new MatDialogConfig();

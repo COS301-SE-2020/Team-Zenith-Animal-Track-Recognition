@@ -2,7 +2,6 @@
 /*---------------------------------------------------------------------------------------------*/
 /* Maven Pro Font-face */
 /*---------------------------------------------------------------------------------------------*/
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 /* Maven Pro Font Classes/Style Linking */
 *
 {
@@ -15,40 +14,45 @@
 /*Maven Pro Regular*/
 .fontR 
 {
-   font-weight: 400;
-   font-style: normal;
+	font-family: "Maven Pro", sans-serif;
+	font-weight: 400;
+	font-style: normal;
 }
 /*Maven Pro Medium*/
 .fontM 
 {
-   font-weight: 500;
-   font-style: normal;
+	font-family: "Maven Pro", sans-serif;
+	font-weight: 500;
+	font-style: normal;
 }
 /*Maven Pro SemiBold*/
 .fontSB 
 {
-   font-weight: 600;
-   font-style: normal;
+	font-family: "Maven Pro", sans-serif;
+	font-weight: 600;
+	font-style: normal;
 }
 /*Maven Pro Bold*/
 .fontB
 {
-   font-weight: 700;
-   font-style: normal;
+	font-family: "Maven Pro", sans-serif;
+	font-weight: 700;
+	font-style: normal;
 }
 /*Maven Pro ExtraBold*/
 .fontEB
 {
-   font-weight: 800;
-   font-style: normal;
+	font-family: "Maven Pro", sans-serif;
+	font-weight: 800;
+	font-style: normal;
 }
 /*Maven Pro Black*/
 .fontBlk
 {
-   font-weight: 900;
-   font-style: normal;
+	font-family: "Maven Pro", sans-serif;
+	font-weight: 900;
+	font-style: normal;
 }
-
 /*---------------------------------------------------------------------------------------------*/
 /* Page Sizing and Layout */
 /*---------------------------------------------------------------------------------------------*/
@@ -99,6 +103,4 @@ body
 html, body { height: 100%; }
 body { margin: 0; font-family: "Maven Pro", sans-serif; }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
