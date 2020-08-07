@@ -271,6 +271,9 @@ const ANIMAL_TYPE = new GraphQLObjectType({
         lifeSpan: {
             type: GraphQLString
         },
+        Offspring: {
+            type: GraphQLString
+        },
         gestationPeriod: {
             type: GraphQLString
         },
@@ -1115,7 +1118,7 @@ const Mutation = new GraphQLObjectType({
 
                 newAnimal.pictures = []
                 newAnimal.pictures.push("19")
-
+                newAnimal.Offspring="probably"
                 newAnimal.heightM = "0"
                 newAnimal.heightF = "0"
                 newAnimal.weightF = "0"
@@ -1208,6 +1211,8 @@ const Mutation = new GraphQLObjectType({
                 },
                 pictures: {
                     type: new GraphQLList(GraphQLInt)
+                },Offspring: {
+                    type: GraphQLString
                 }
 
             },
@@ -1224,7 +1229,7 @@ const Mutation = new GraphQLObjectType({
                 if (_.find(animalData, {
                         classification: args.classification
                     }) != null) {
-                        return null
+                    return null
                 }
                 let HID = ((animalData.length + 1))
                 let b = _.find(habitatData, {
@@ -1265,6 +1270,11 @@ const Mutation = new GraphQLObjectType({
                 } else {
                     newAnimal.pictures = []
                     newAnimal.pictures.push(1)
+                }
+                if (args.Offspring != undefined) {
+                    newAnimal.Offspring = args.Offspring
+                } else {
+                    newAnimal.Offspring ="probably"
                 }
                 newAnimal.classification = args.classification
                 animalData.push(newAnimal)
@@ -1334,6 +1344,8 @@ const Mutation = new GraphQLObjectType({
                 },
                 pictures: {
                     type: new GraphQLList(GraphQLInt)
+                },Offspring:{
+                    type:GraphQLString
                 }
 
             },
@@ -1404,6 +1416,9 @@ const Mutation = new GraphQLObjectType({
                 }
                 if (args.animalDescription != undefined) {
                     updatedAnimal.animalDescription = args.animalDescription
+                }
+                if (args.Offspring != undefined) {
+                    updatedAnimal.Offspring = args.Offspring
                 }
                 animals.doc(args.classification).set(updatedAnimal)
                 newAnimal.classification = args.classification
