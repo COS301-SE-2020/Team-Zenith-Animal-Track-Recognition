@@ -72,6 +72,17 @@ export class AnimalInfoCardComponent implements OnInit {
     });
   }
 
+	viewAnimalProfile(animalClassi: string) {
+		let classification = animalClassi.split(" ");
+		let classificationQuery = classification[0] + "_" + classification[1];
+		this.router.navigate(['animals/', classificationQuery]);
+	}
+
+	route(temp: string) {
+		this.router.navigate([temp]);
+	}
+
+
   sort(bool: boolean) {
     if (bool) {
      for (let i = 0; i < this.animalsList.length - 1; i++) {

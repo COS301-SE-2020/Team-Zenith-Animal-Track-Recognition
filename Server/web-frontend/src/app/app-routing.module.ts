@@ -7,6 +7,7 @@ import { OverviewComponent } from './views/overview/overview.component';
 import { LoginComponent } from './views/login/login.component';
 import { GeotagsComponent } from './views/geotags/geotags.component';
 import { AnimalsComponent } from './views/animals/animals.component';
+import { AnimalProfileComponent } from './views/animal-profile/animal-profile.component';
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
 
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'animals', component: AnimalsComponent, canActivate: [AuthGuard] },
+  { path: 'animals/:classification', component: AnimalProfileComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'rangers', component: RangersComponent, canActivate: [AuthGuard] },  
   { path: 'rangers/profiles/:user', component: RangerProfileComponent, canActivate: [AuthGuard] },
