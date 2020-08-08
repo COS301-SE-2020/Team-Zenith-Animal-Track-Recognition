@@ -98,132 +98,138 @@
 		<div id="ranger-profile-feed-container">
 			<mat-tab-group mat-align-tabs="center" dynamicHeight>
 				<mat-tab label="Overview" id="ranger-profile-overview-tab">
-					<div id="ranger-profile-overview-container">
-						<div id="ranger-profile-spoor-feed-container">
-							<div id="ranger-profile-spoor-feed-title">
-								<h2 class="fontSB">Recently Identified Spoors</h2>
-								<button mat-flat-button>View All</button>	
-							</div>
-							<div id="ranger-profile-spoors-container">
-								<div class="ranger-profile-spoor-container" *ngFor="let spoorId of spoorIdentifications">
-									<div class="ranger-profile-spoor-info-container">
-										<div class="ranger-profile-spoor-image-container">
-											<div class="ranger-profile-spoor-image"></div>
-										</div>
-										<div class="ranger-profile-spoor-info">
-											<div class="ranger-profile-spoor-animal-name">
-												<p class="fontSB">{{spoorId.commonName}}</p>
-												<p class="fontM">{{spoorId.classification}}</p>
+					<ng-template matTabContent>
+						<div id="ranger-profile-overview-container">
+							<div id="ranger-profile-spoor-feed-container">
+								<div id="ranger-profile-spoor-feed-title">
+									<h2 class="fontSB">Recently Identified Spoors</h2>
+									<button mat-flat-button>View All</button>	
+								</div>
+								<div id="ranger-profile-spoors-container">
+									<div class="ranger-profile-spoor-container" *ngFor="let spoorId of spoorIdentifications">
+										<div class="ranger-profile-spoor-info-container">
+											<div class="ranger-profile-spoor-image-container">
+												<div class="ranger-profile-spoor-image"></div>
 											</div>
-											<div class="ranger-profile-spoor-date">
-												<mat-icon>event</mat-icon>
-												<p class="fontM">{{spoorId.dateTime}}</p>
-											</div>
-											<div class="ranger-profile-spoor-location">
-												<mat-icon>room</mat-icon>
-												<p class="fontM">{{spoorId.coordinates}}</p>
-											</div>
-										</div>
-										<div class="ranger-profile-spoor-accuracy-container">
-											<div class="ranger-profile-spoor-accuracy">
-												<div class="ranger-profile-spoor-accuracyscore">
-													<p class="fontB">{{spoorId.accuracyScore}}</p>
+											<div class="ranger-profile-spoor-info">
+												<div class="ranger-profile-spoor-animal-name">
+													<p class="fontSB">{{spoorId.commonName}}</p>
+													<p class="fontM">{{spoorId.classification}}</p>
 												</div>
-												<div class="ranger-profile-spoor-accuracy-title">
-													<p class="fontSB">ACCURACY<br/>SCORE</p>
-												</div>
-											</div>
-										</div>										
-										<div class="ranger-profile-spoor-options-container">
-										    <button mat-icon-button [matMenuTriggerFor]="menu" class="ranger-profile-card-contextMenu">
-												<mat-icon>more_vert</mat-icon>
-											</button>
-											<mat-menu #menu="matMenu" xPosition="before">
-												<button mat-menu-item>
-													<span>View Information</span>
-												</button>
-												<button mat-menu-item>
-													<span>View Animal</span>
-												</button>
-												<button mat-menu-item>
-													<span>Edit Information</span>
-												</button>
-												<button mat-menu-item>
-													<span>Delete Identification</span>
-												</button>
-											</mat-menu>
-										</div>
-									</div>
-									<mat-divider></mat-divider>
-									<div class="ranger-profile-spoor-tags-container">
-										<div class="ranger-profile-spoor-tags-title">
-											<p class="fontB">Tags</p>
-										</div>
-										<div class="ranger-profile-spoor-tags">
-											<mat-chip-list>
-												<mat-chip selected>Found near riverbed</mat-chip>
-												<mat-chip color="warn" selected>Possible injury</mat-chip>
-												<mat-chip>Infant</mat-chip>
-											</mat-chip-list>
-										</div>
-									</div>
-								</div>						
-							</div>
-						</div>			
-						<div id="ranger-profile-activity-feed-container">
-							<div id="ranger-profile-activity-feed-title">
-								<h2 class="fontSB">Recent Activity</h2>
-								<button mat-flat-button>View All</button>	
-							</div>
-							<div id="ranger-profile-activity-container">								
-								<div class="ranger-profile-activity-container" *ngFor="let activity of activities">
-									<div class="ranger-profile-activity-info-container">
-										<div class="ranger-profile-activity-details-container">
-											<div class="ranger-profile-activity-image-container">
-												<div class="ranger-profile-activity-image"></div>
-											</div>
-											<div class="ranger-profile-activity-info">
-												<div class="ranger-profile-activity-type">
-													<p class="fontSB">{{activity.type}}</p>
-												</div>
-												<div class="ranger-profile-activity-date">
+												<div class="ranger-profile-spoor-date">
 													<mat-icon>event</mat-icon>
-													<p class="fontM">{{activity.dateTime}}</p>
+													<p class="fontM">{{spoorId.dateTime}}</p>
 												</div>
-												<div class="ranger-profile-activity-summary">
-													<p class="fontM">{{activity.summary.info1}}</p>
-													<mat-icon>arrow_right_alt</mat-icon>
-													<p class="fontM">{{activity.summary.info2}}</p>
+												<div class="ranger-profile-spoor-location">
+													<mat-icon>room</mat-icon>
+													<p class="fontM">{{spoorId.coordinates}}</p>
 												</div>
 											</div>
+											<div class="ranger-profile-spoor-accuracy-container">
+												<div class="ranger-profile-spoor-accuracy">
+													<div class="ranger-profile-spoor-accuracyscore">
+														<p class="fontB">{{spoorId.accuracyScore}}</p>
+													</div>
+													<div class="ranger-profile-spoor-accuracy-title">
+														<p class="fontSB">ACCURACY<br/>SCORE</p>
+													</div>
+												</div>
+											</div>										
+											<div class="ranger-profile-spoor-options-container">
+												<button mat-icon-button [matMenuTriggerFor]="menu" class="ranger-profile-card-contextMenu">
+													<mat-icon>more_vert</mat-icon>
+												</button>
+												<mat-menu #menu="matMenu" xPosition="before">
+													<button mat-menu-item>
+														<span>View Information</span>
+													</button>
+													<button mat-menu-item>
+														<span>View Animal</span>
+													</button>
+													<button mat-menu-item>
+														<span>Edit Information</span>
+													</button>
+													<button mat-menu-item>
+														<span>Delete Identification</span>
+													</button>
+												</mat-menu>
+											</div>
 										</div>
-										<div class="ranger-profile-activity-options-container">
-										    <button mat-icon-button [matMenuTriggerFor]="menu" class="ranger-profile-card-contextMenu">
-												<mat-icon>more_vert</mat-icon>
-											</button>
-											<mat-menu #menu="matMenu" xPosition="before">
-												<button mat-menu-item>
-													<span>View Information</span>
-												</button>
-												<button mat-menu-item>
-													<span>Edit Identification</span>
-												</button>
-												<button mat-menu-item>
-													<span>Delete Identification</span>
-												</button>
-											</mat-menu>
+										<mat-divider></mat-divider>
+										<div class="ranger-profile-spoor-tags-container">
+											<div class="ranger-profile-spoor-tags-title">
+												<p class="fontB">Tags</p>
+											</div>
+											<div class="ranger-profile-spoor-tags">
+												<mat-chip-list>
+													<mat-chip selected>Found near riverbed</mat-chip>
+													<mat-chip color="warn" selected>Possible injury</mat-chip>
+													<mat-chip>Infant</mat-chip>
+												</mat-chip-list>
+											</div>
 										</div>
-									</div>
-								</div>								
+									</div>						
+								</div>
+							</div>			
+							<div id="ranger-profile-activity-feed-container">
+								<div id="ranger-profile-activity-feed-title">
+									<h2 class="fontSB">Recent Activity</h2>
+									<button mat-flat-button>View All</button>	
+								</div>
+								<div id="ranger-profile-activity-container">								
+									<div class="ranger-profile-activity-container" *ngFor="let activity of activities">
+										<div class="ranger-profile-activity-info-container">
+											<div class="ranger-profile-activity-details-container">
+												<div class="ranger-profile-activity-image-container">
+													<div class="ranger-profile-activity-image"></div>
+												</div>
+												<div class="ranger-profile-activity-info">
+													<div class="ranger-profile-activity-type">
+														<p class="fontSB">{{activity.type}}</p>
+													</div>
+													<div class="ranger-profile-activity-date">
+														<mat-icon>event</mat-icon>
+														<p class="fontM">{{activity.dateTime}}</p>
+													</div>
+													<div class="ranger-profile-activity-summary">
+														<p class="fontM">{{activity.summary.info1}}</p>
+														<mat-icon>arrow_right_alt</mat-icon>
+														<p class="fontM">{{activity.summary.info2}}</p>
+													</div>
+												</div>
+											</div>
+											<div class="ranger-profile-activity-options-container">
+												<button mat-icon-button [matMenuTriggerFor]="menu" class="ranger-profile-card-contextMenu">
+													<mat-icon>more_vert</mat-icon>
+												</button>
+												<mat-menu #menu="matMenu" xPosition="before">
+													<button mat-menu-item>
+														<span>View Information</span>
+													</button>
+													<button mat-menu-item>
+														<span>Edit Identification</span>
+													</button>
+													<button mat-menu-item>
+														<span>Delete Identification</span>
+													</button>
+												</mat-menu>
+											</div>
+										</div>
+									</div>								
+								</div>
 							</div>
 						</div>
-					</div>
+					</ng-template>
 				</mat-tab>				
 				<mat-tab label="Activity">
 				</mat-tab>				
 				<mat-tab label="Identified Spoors">
 				</mat-tab>				
 				<mat-tab label="Permissions">
+					<ng-template matTabContent>
+						<div id="ranger-profile-permissions-container">
+						</div>
+					</ng-template>
 				</mat-tab>
 			</mat-tab-group>
 		</div>
