@@ -23,6 +23,7 @@ import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/
 import { AddRangerComponent } from './views/rangers/add-ranger/add-ranger.component';
 import { EditRangerInfoComponent } from './views/rangers/edit-ranger-info/edit-ranger-info.component'; 
 import { DeleteRangerComponent } from './views/rangers/delete-ranger/delete-ranger.component';
+import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.component'; 
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
 import { GeotagsComponent } from './views/geotags/geotags.component';
 import { SettingsComponent } from './views/settings/settings.component';
@@ -48,9 +49,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs'; 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
+import { MatProgressBarModule } from '@angular/material/progress-bar'; 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar'; 
-import { MatStepperModule } from '@angular/material/stepper'; 
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatChipsModule } from '@angular/material/chips'; 
+import { MatDividerModule } from '@angular/material/divider'; 
 
 @NgModule({
   declarations: [
@@ -74,7 +78,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     AnimalSearchSidenavComponent,
     AnimalInfoCardComponent,
 	EditAnimalInfoComponent,
-	AddAnimalComponent
+	AddAnimalComponent,
+	RangerProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -105,7 +110,10 @@ import { MatStepperModule } from '@angular/material/stepper';
 	MatProgressSpinnerModule,
 	MatAutocompleteModule,
 	MatSnackBarModule,
-	MatStepperModule
+	MatStepperModule,
+	MatChipsModule,
+	MatProgressBarModule,
+	MatDividerModule
   ],
   providers: [AuthGuardService],
   entryComponents: [

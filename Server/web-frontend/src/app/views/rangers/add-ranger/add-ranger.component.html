@@ -1,5 +1,7 @@
-<h1 mat-dialog-title>
-    Add New Ranger</h1>
+<div id="dialog-progressbar-container">
+	<mat-progress-bar mode="indeterminate" id="dialog-progressbar"></mat-progress-bar>
+</div>
+<h1 mat-dialog-title>Add New Ranger</h1>
 <mat-dialog-content id="add-ranger-form-container">
     <form [formGroup]="addUserForm" id="add-new-ranger-form" (ngSubmit)="onSubmit(false)">
         <div class="add-new-ranger-input-container">
@@ -37,6 +39,6 @@
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
-    <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
+    <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>
     <button type="submit" mat-button (click)="onSubmit(false)" id="add-ranger-btn" class="fontSB">ADD RANGER</button>
 </mat-dialog-actions>

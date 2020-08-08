@@ -61,6 +61,7 @@ export class AddAnimalComponent implements OnInit {
 			})
 		});	
 		*/
+		document.getElementById('add-animal-dialog').style.overflow = "hidden";
 	}
 
 	get f() { return this.addAnimalForm.controls; }
@@ -73,7 +74,10 @@ export class AddAnimalComponent implements OnInit {
 				JSON.parse(localStorage.getItem('currentToken'))['value'] + '",classification:"' + encodeURIComponent(this.f.classification.value) +
 				'",commonName:"' + encodeURIComponent(this.f.commonName.value) + '",animalDescription:"' +
 				encodeURIComponent(this.f.animalDescription.value) + '"){animalID}}', '')
-				.subscribe({ next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("error") });
+				.subscribe({ 
+					next: data => this.dialogRef.close("success"), 
+					error: error => this.dialogRef.close("error") 
+				});
 		}
 		else {
 			return true;
@@ -83,11 +87,19 @@ export class AddAnimalComponent implements OnInit {
 		this.dialogRef.close("cancel");
 	}
 
-	//Loader
+	attachProgressbar()
+	{
+		//Append progress bar to dialog
+		let matDialog = document.getElementById('add-animal-dialog');
+		let progressBar = document.getElementById("dialog-progressbar-container");
+		matDialog.insertBefore(progressBar, matDialog.firstChild);
+	}
+	//Loader - Progress bar
 	startLoader() {
-		document.getElementById("loader-container").style.visibility = "visible";
+		this.attachProgressbar();
+		document.getElementById("dialog-progressbar-container").style.visibility = "visible";
 	}
 	stopLoader() {
-		document.getElementById("loader-container").style.visibility = "hidden";
+		document.getElementById("dialog-progressbar-container").style.visibility = "hidden";
 	}
 }

@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-ranger-search-sidenav-comp',
   templateUrl: './ranger-search-sidenav-comp.component.html',
-  styleUrls: ['./ranger-search-sidenav-comp.component.css']
+  styleUrls: ['./ranger-search-sidenav-comp.component.css'],
 })
 
 	
@@ -24,7 +24,7 @@ export class RangerSearchSidenavCompComponent implements OnInit {
   ngOnInit(): void { 
     this.sortBySurname = true;
   }
-
+  
   checkIfNew(title: string, pos: number) {
     if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {
       return false;

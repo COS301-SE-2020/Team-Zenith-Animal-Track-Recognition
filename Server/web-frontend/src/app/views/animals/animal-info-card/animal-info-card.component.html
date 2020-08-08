@@ -2,7 +2,7 @@
     <div id="loader-container">
         <mat-spinner id="loader"></mat-spinner>
     </div>
-    <div class="animal-profile-card-container" *ngFor="let animal of animals | filter:searchText">
+    <div class="animal-profile-card-container" *ngFor="let animal of animalsList | filter:searchText">
         <mat-card class="animal-profile-card" id="animalID-{{animal.animalID}}">
             <img mat-card-image id="animal-info-card-picture" src="{{animal.pictures[0].URL}}">
             <div class="animal-profile-card-header">

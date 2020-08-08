@@ -5,26 +5,32 @@ import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { EditRangerInfoComponent } from './../edit-ranger-info/edit-ranger-info.component';
 import { DeleteRangerComponent } from './../delete-ranger/delete-ranger.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-ranger-profile-card',
 	templateUrl: './ranger-profile-card.component.html',
 	styleUrls: ['./ranger-profile-card.component.css'],
-})
+ })
 export class RangerProfileCardComponent implements OnInit {
 
 	@Input() searchText: string;
-	@Input() rangers;
+	@Input() rangersList;
 	numRangers: any;
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	sorted: string;
 
-	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef) { }
+	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
 
-	ngOnInit(): void { this.startLoader(); }
+	ngOnInit(): void { this.startLoader();}
 
 
 	public ngOnChanges(changes: SimpleChanges) {
+		this.startLoader();
+		if (changes.rangers) {
+		  //If rangers has updated
+		  this.changeDetection.detectChanges();
+		}
 		this.stopLoader();
 	}
 
@@ -34,7 +40,6 @@ export class RangerProfileCardComponent implements OnInit {
 	openEditRangerDialog(rangerID) {
 		const dialogConfig = new MatDialogConfig();
 
-		console.log(rangerID);
 		//Get ranger information for chosen card
 		var rangerFullName = document.getElementById("ranger" + rangerID + "Name").innerHTML;
 		var rangerName = rangerFullName.split("&nbsp;");
@@ -47,11 +52,11 @@ export class RangerProfileCardComponent implements OnInit {
 			width: '35%',
 			autoFocus: true,
 			disableClose: true,
+			id: 'edit-ranger-dialog',
 			data: {
 				token: rangerID,
 				firstName: rangerName[0],
 				lastName: rangerName[1],
-				level: rangerLevel,
 				phoneNumber: rangerPhone.replace("call", ""),
 				email: rangerEmail.replace("mail", "")
 			},
@@ -59,12 +64,11 @@ export class RangerProfileCardComponent implements OnInit {
 		editDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
 			if (result == "success") {
-				//If ranger was successfully edited
-				//Refresh component and notify parent
+				//If ranger was successfully edited refresh component and notify parent
 				this.rangersOnChange.emit("update");
 			}
-			else {
-				console.log("Error editing ranger: ", result);
+			else if (result == 'error') {
+				this.snackBar.open('An error occured when editting ranger. Please try again.', "Dismiss", { duration: 5000, });
 			}
 		});
 	}
@@ -80,6 +84,7 @@ export class RangerProfileCardComponent implements OnInit {
 				width: '30%',
 				autoFocus: true,
 				disableClose: true,
+				id: 'delete-ranger-dialog',
 				data: {
 					name: rangerFullName,
 					token: rangerID
@@ -90,16 +95,20 @@ export class RangerProfileCardComponent implements OnInit {
 				if (result == "success") {
 					//If ranger was successfully deleted
 					//Refresh component and notify parent
-					this.rangersOnChange.emit("delete");
+					this.rangersOnChange.emit('delete');
 				}
-				else {
-					console.log("Error deleting ranger: ", result);
+				else if (result == 'error') {
+					this.snackBar.open('An error occured when deleting ranger. Please try again.', "Dismiss", { duration: 5000, });
 				}
 			});
 		}
 		catch (e) {
 			return false;
 		}
+	}
+	
+	viewRangerProfile(token: string) {
+		this.router.navigate(['rangers/profiles', token]);
 	}
 
 	route(temp: string) {
@@ -109,23 +118,23 @@ export class RangerProfileCardComponent implements OnInit {
 	sort(bool: boolean) {
 		let temp: string;
 		if (bool) {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
+			for (let i = 0; i < this.rangersList.length - 1; i++) {
+				for (let j = i + 1; j < this.rangersList.length; j++) {
+					if (this.rangersList[i].lastName.toUpperCase() > this.rangersList[j].lastName.toUpperCase()) {
+						let temp = this.rangersList[i];
+						this.rangersList[i] = this.rangersList[j];
+						this.rangersList[j] = temp;
 					}
 				}
 			}
 			temp = "Sorted alphabetically";
 		} else {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].rangerLevel > this.rangers[j].rangerLevel) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
+			for (let i = 0; i < this.rangersList.length - 1; i++) {
+				for (let j = i + 1; j < this.rangersList.length; j++) {
+					if (this.rangersList[i].rangerLevel > this.rangersList[j].rangerLevel) {
+						let temp = this.rangersList[i];
+						this.rangersList[i] = this.rangersList[j];
+						this.rangersList[j] = temp;
 					}
 				}
 			}

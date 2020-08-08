@@ -27,17 +27,21 @@ export class RangersToolbarComponent implements OnInit {
 	openAddRangerDialog() {
 		const dialogConfig = new MatDialogConfig();
 
-		const addDialogRef = this.dialog.open(AddRangerComponent, { height: '55%', width: '35%', panelClass: 'add-ranger-modal', autoFocus: true, disableClose: true });
+		const addDialogRef = this.dialog.open(AddRangerComponent, { 
+			height: '55%', 
+			width: '35%', 
+			id: 'add-ranger-dialog', 
+			autoFocus: true, 
+			disableClose: true 
+		});
 		addDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
-			//Refresh component and notify parent
 			if (result == 'success') {
 				//If ranger was successfully added, refresh component and notify parent
 				this.rangersOnChange.emit('add');
 			}
-			else {
+			else if (result == 'error') {
 				this.snackBar.open('An error occured when adding the new ranger. Please try again.', "Dismiss", { duration: 5000, });
-				//console.log('Error adding ranger: ', result);
 			}
 		});
 	}

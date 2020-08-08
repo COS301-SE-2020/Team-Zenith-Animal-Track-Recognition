@@ -3,6 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import {MatProgressBarModule} from '@angular/material/progress-bar'; 
 
 @Component({
 	selector: 'app-edit-ranger-info',
@@ -21,6 +22,7 @@ export class EditRangerInfoComponent implements OnInit {
 			email: [this.data.email, Validators.required],
 			phoneNumber: [this.data.phoneNumber, Validators.required]
 		});
+		document.getElementById('edit-ranger-dialog').style.overflow = "hidden";
 	}
 
 	get f() { return this.editUserForm.controls; }
@@ -34,20 +36,33 @@ export class EditRangerInfoComponent implements OnInit {
 			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateUser(' + 'tokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 				'",' + 'tokenChange:"' + this.data.token + '",' + 'eMail:"' + this.f.email.value + '",' + 'lastName:"' + this.f.lastName.value + '",' +
 				'phoneNumber:"' + this.f.phoneNumber.value + '",' + 'firstName:"' + this.f.firstName.value + '"){lastName,token}}', '')
-				.subscribe({ next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message) });
+				.subscribe({ 
+					next: data => this.dialogRef.close("success"), 
+					error: error => this.dialogRef.close("error")
+				});
 		}
 		else {
 			return true;
 		}
 	}
+	closeDialog() {
+		this.dialogRef.close("cancel");
+	}
+	
+	attachProgressbar()
+	{
+		//Append progress bar to dialog
+		let matDialog = document.getElementById('edit-ranger-dialog');
+		let progressBar = document.getElementById("dialog-progressbar-container");
+		matDialog.insertBefore(progressBar, matDialog.firstChild);
+	}
 
-	//Loader
+	//Loader - Progress bar
 	startLoader() {
-		console.log("Starting Loader");
-		document.getElementById("loader-container").style.visibility = "visible";
+		this.attachProgressbar();
+		document.getElementById("dialog-progressbar-container").style.visibility = "visible";
 	}
 	stopLoader() {
-		console.log("Stopping Loader");
-		document.getElementById("loader-container").style.visibility = "hidden";
+		document.getElementById("dialog-progressbar-container").style.visibility = "hidden";
 	}
 }
