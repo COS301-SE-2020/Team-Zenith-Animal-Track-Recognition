@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs'; 
-import { EditRangerInfoComponent } from './../rangers/edit-ranger-info/edit-ranger-info.component';
+import { EditAnimalInfoComponent } from './../animals/edit-animal-info/edit-animal-info.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
@@ -140,35 +140,27 @@ export class AnimalProfileComponent implements OnInit {
 	
 	//Ranger CRUD Quick-Actions
 	//EDIT Ranger
-	openEditRangerDialog(rangerID) {
-		/*
-		const dialogConfig = new MatDialogConfig();
-
-		const editDialogRef = this.dialog.open(EditRangerInfoComponent, {
-			height: '55%',
-			width: '35%',
-			autoFocus: true,
+	openEditAnimalDialog() {
+		const editDialogRef = this.dialog.open(EditAnimalInfoComponent, {
+			height: '85%', 
+			width: '60%', 
+			autoFocus: true, 
 			disableClose: true,
-			id: 'edit-ranger-dialog',
-			data: {
-				token: this.user.token,
-				firstName: this.user.firstName,
-				lastName: this.user.lastName,
-				phoneNumber: this.user.phoneNumber,
-				email: this.user.eMail
+			id: 'edit-animal-dialog',
+			data: { 
+				animal: this.animal
 			},
 		});
 		editDialogRef.afterClosed().subscribe(result => {
-			this.stopLoader();
-			if (result == 'success') {
-				//If ranger was successfully edited refresh component
-				this.ngOnInit();
-				this.snackBar.open('Ranger information successfully edited.', 'Dismiss', { duration: 3000, });
+		  this.stopLoader();
+			if (result == "success") {
+				//If animal was successfully edited refresh component and notify parent
+				//this.animalsOnChange.emit('update');
 			}
 			else if (result == 'error') {
-				this.snackBar.open('An error occured when editting ranger. Please try again.', "Dismiss", { duration: 5000, });
+				this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });
 			}
-		});*/
+		});
 	}
 	//Loader
 	startLoader() {
