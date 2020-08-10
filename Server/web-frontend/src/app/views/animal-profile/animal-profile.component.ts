@@ -119,8 +119,10 @@ export class AnimalProfileComponent implements OnInit {
 		this.startLoader();
 		document.getElementById('animals-route').classList.add('activeRoute');
 		//Determine which user was navigated to and fetch their information
-		let classificationQuery = this.activatedRoute.snapshot.paramMap.get("classification").split("_");
-		this.animalClassi = classificationQuery[0] + " " + classificationQuery[1];
+		const classificationQuery = new URLSearchParams(window.location.search);
+		const animal = classificationQuery.get("classification").split("_");
+		
+		this.animalClassi = animal[0] + " " + animal[1];
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsbyByClassification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'", classification:"' + this.animalClassi + '"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
 			'lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{URL}}}')

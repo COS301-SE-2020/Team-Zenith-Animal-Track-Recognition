@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'animals', component: AnimalsComponent, canActivate: [AuthGuard] },
-  { path: 'animals/:classification', component: AnimalProfileComponent, canActivate: [AuthGuard] },
+  { path: 'animals/information', component: AnimalProfileComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'rangers', component: RangersComponent, canActivate: [AuthGuard] },  
   { path: 'rangers/profiles/:user', component: RangerProfileComponent, canActivate: [AuthGuard] },
