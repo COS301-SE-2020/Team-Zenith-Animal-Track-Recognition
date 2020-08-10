@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'animals', component: AnimalsComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'rangers', component: RangersComponent, canActivate: [AuthGuard] },  
-  { path: 'rangers/profiles/:user', component: RangerProfileComponent, canActivate: [AuthGuard] },
+  { path: 'rangers/profiles', component: RangerProfileComponent, canActivate: [AuthGuard] },
   { path: 'rangers/permissions', component: RangerPermissionsComponent, canActivate: [AuthGuard] },
   { path: 'geotags', component: GeotagsComponent, canActivate: [AuthGuard] },
   { path: 'overview', component: OverviewComponent, canActivate: [AuthGuard] },
