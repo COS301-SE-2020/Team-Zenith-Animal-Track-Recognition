@@ -2,7 +2,7 @@
     <div id="animal-search-controls-container">
         <mat-button-toggle-group id="animal-search-controls" #group="matButtonToggleGroup" name="sortResultsBy">
             <mat-button-toggle value="surname" checked (click)="toggle(true)">Animal</mat-button-toggle>
-            <mat-button-toggle value="level" (click)="toggle(false)">Species</mat-button-toggle>
+            <mat-button-toggle value="level" (click)="toggle(false)">Groups</mat-button-toggle>
         </mat-button-toggle-group>
         <mat-form-field appearance="outline">
             <input matInput id="search-sidenav-input" placeholder="Search animals..." type="text" name="search" [(ngModel)]="searchText" autocomplete="off" (ngModelChange)="updateSearchText($event)">

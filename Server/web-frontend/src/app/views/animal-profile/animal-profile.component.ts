@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs'; 
@@ -16,6 +17,8 @@ export class AnimalProfileComponent implements OnInit {
 
 	animal: any;
 	animalClassi: string;
+	femaleBehaviour: string;
+	maleBehaviour: string;
 	
 	/*Place holder values*/
 	spoorIdentifications = [
@@ -113,7 +116,14 @@ export class AnimalProfileComponent implements OnInit {
 		},		
 	];
   
-	constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, public dialog: MatDialog, private snackBar: MatSnackBar) { }
+	constructor(
+		private http: HttpClient, 
+		private router: Router, 
+		private activatedRoute: ActivatedRoute, 
+		public dialog: MatDialog, 
+		private snackBar: MatSnackBar,
+		private viewportScroller: ViewportScroller
+	) { }
 
 	ngOnInit(): void {
 		this.startLoader();
@@ -128,8 +138,28 @@ export class AnimalProfileComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.animal = temp[0];
-				console.log(this.animal);
-				console.log(Object.values(this.animal));
+				
+				//DUMMY DATA
+				
+				this.animal.animalOverview = "African Bush Elephants, also known as the African Savanna elephant," 
+					+ " is the largest living terrestrial animal. Both sexes have tusks, which erupt when they are 1 - 3 years old and grow throughout life.";
+					
+				this.animal.animalDescription = this.animal.animalOverview + " The African Bush Elephant is the largest of the three elephant species and can weigh up to 6000kg and live up to " +
+					+ "70 years - longer than any other mammal except humans." + " African Bush Elephants are herbivores and need to eat about " + "350 pounds of vegetation daily. The African Bush Elephant is "
+					+ " characterized by two prominent tusks (present in both sexes), " + "two large ears, pillar-like legs, thickset body and a large head " + "with muscular, mobile trunk.";
+				
+				this.femaleBehaviour = "The adult male elephant rarely joins a herd and leads a solitary life, only approaching herds during mating season. "
+					+ "In some cases adult bulls will join a small bachelor group of male elephants. Young bulls gradually separate from the "
+					+ "family unit when they are between 10 and 19 years old.\n\n"
+					+ "During musth manifestation periods, which may last from a few days to months, males show more aggression as a "
+					+ "result of increased testosterone. Bulls begin to experience musth by the age of 24 years.";
+				
+				this.maleBehaviour = "The adult male elephant rarely joins a herd and leads a solitary life, only approaching herds during mating season. "
+					+ "In some cases adult bulls will join a small bachelor group of male elephants. Young bulls gradually separate from the "
+					+ "family unit when they are between 10 and 19 years old.\n\n"
+					+ "During musth manifestation periods, which may last from a few days to months, males show more aggression as a"
+					+ "result of increased testosterone. Bulls begin to experience musth by the age of 24 years.";
+				
 				this.stopLoader();
 			});
 	}
@@ -162,6 +192,11 @@ export class AnimalProfileComponent implements OnInit {
 			}
 		});
 	}
+	navigateToSection(elementId: string): void { 
+		const elmnt = document.getElementById(elementId);
+		elmnt.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+	}
+  
 	//Loader
 	startLoader() {
 		document.getElementById('loader-container').style.visibility = 'visible';
