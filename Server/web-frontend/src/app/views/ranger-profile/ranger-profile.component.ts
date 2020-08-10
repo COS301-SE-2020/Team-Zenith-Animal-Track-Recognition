@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
 import { MatTabsModule } from '@angular/material/tabs'; 
 import { EditRangerInfoComponent } from './../rangers/edit-ranger-info/edit-ranger-info.component';
 import { DeleteRangerComponent } from './../rangers/delete-ranger/delete-ranger.component';

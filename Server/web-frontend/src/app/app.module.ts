@@ -12,6 +12,7 @@ import { LoginComponent } from './views/login/login.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { AnimalsToolbarComponent } from './views/animals/animals-toolbar/animals-toolbar.component';
 import { AnimalSearchSidenavComponent } from './views/animals/animal-search-sidenav/animal-search-sidenav.component';
+import { AnimalProfileComponent } from './views/animal-profile/animal-profile.component'; 
 import { AnimalInfoCardComponent } from './views/animals/animal-info-card/animal-info-card.component';
 import { EditAnimalInfoComponent } from './views/animals/edit-animal-info/edit-animal-info.component'; 
 import { AddAnimalComponent } from './views/animals/add-animal/add-animal.component';
@@ -54,7 +55,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar'; 
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips'; 
-import { MatDividerModule } from '@angular/material/divider'; 
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { MatDividerModule } from '@angular/material/divider';
     AnimalInfoCardComponent,
 	EditAnimalInfoComponent,
 	AddAnimalComponent,
-	RangerProfileComponent
+	RangerProfileComponent,
+	AnimalProfileComponent
   ],
   imports: [
     BrowserModule,
