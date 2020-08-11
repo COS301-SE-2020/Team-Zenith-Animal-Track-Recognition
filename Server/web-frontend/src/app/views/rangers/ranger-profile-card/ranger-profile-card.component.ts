@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	selector: 'app-ranger-profile-card',
 	templateUrl: './ranger-profile-card.component.html',
 	styleUrls: ['./ranger-profile-card.component.css'],
- })
+})
 export class RangerProfileCardComponent implements OnInit {
 
 	@Input() searchText: string;
@@ -22,14 +22,14 @@ export class RangerProfileCardComponent implements OnInit {
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
 
-	ngOnInit(): void { this.startLoader();}
+	ngOnInit(): void { this.startLoader(); }
 
 
 	public ngOnChanges(changes: SimpleChanges) {
 		this.startLoader();
 		if (changes.rangers) {
-		  //If rangers has updated
-		  this.changeDetection.detectChanges();
+			//If rangers has updated
+			this.changeDetection.detectChanges();
 		}
 		this.stopLoader();
 	}
@@ -106,9 +106,9 @@ export class RangerProfileCardComponent implements OnInit {
 			return false;
 		}
 	}
-	
+
 	viewRangerProfile(token: string) {
-		this.router.navigate(['rangers/profiles', token]);
+		this.router.navigate(['rangers/profiles'], { queryParams: { ranger: token } });
 	}
 
 	route(temp: string) {
