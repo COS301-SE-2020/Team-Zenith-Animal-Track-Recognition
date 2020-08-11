@@ -51,8 +51,8 @@ export class AnimalInfoCardComponent implements OnInit {
       }
     }
     const editDialogRef = this.dialog.open(EditAnimalInfoComponent, {
-      height: '85%',
-      width: '60%',
+      height: '80%',
+      width: '55%',
       autoFocus: true,
       disableClose: true,
       id: 'edit-animal-dialog',

@@ -175,7 +175,7 @@ export class AnimalProfileComponent implements OnInit {
 	openEditAnimalDialog() {
 		const editDialogRef = this.dialog.open(EditAnimalInfoComponent, {
 			height: '85%', 
-			width: '60%', 
+			width: '55%', 
 			autoFocus: true, 
 			disableClose: true,
 			id: 'edit-animal-dialog',
