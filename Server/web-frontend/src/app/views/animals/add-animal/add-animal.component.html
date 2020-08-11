@@ -1,36 +1,23 @@
 <h1 mat-dialog-title>Add New Animal</h1>
 <mat-dialog-content>
-    <form [formGroup]="addAnimalForm" id="add-animal-form-container">
-        <div id="add-animal-form-overview">
-            <div class="add-animal-form-content">
-                <div id="overview-classification-group">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Group Name</mat-label>
-                        <input matInput formControlName="groupName">
-                        <mat-hint>Required</mat-hint>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Common Name</mat-label>
-                        <input matInput formControlName="commonName">
-                        <mat-hint>Required</mat-hint>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Classification</mat-label>
-                        <input matInput formControlName="classification">
-                        <mat-hint>Required</mat-hint>
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-        <div id="add-animal-form-descr">
-            <div class="add-animal-form-content add-animal-form-descr">
-                <mat-form-field appearance="outline" id="add-animal-form-descr-textarea">
-                    <mat-label>Animal Description</mat-label>
-                    <textarea rows="5" matInput #charTa formControlName="animalDescription"></textarea>
-                    <mat-hint align="start">{{charTa.value?.length || 0}}/1500 (Required)</mat-hint>
-                </mat-form-field>
-            </div>
-        </div>
+    <form [formGroup]="addAnimalForm" id="add-animal-form">
+		<div id="add-animal-form-content">
+			<mat-form-field class="add-animal-form-input" appearance="outline">
+                <mat-label>Common Name</mat-label>
+                <input matInput formControlName="commonName" placeholder="i.e Elephant">
+                <mat-hint>Required</mat-hint>
+            </mat-form-field>
+            <mat-form-field class="add-animal-form-input" appearance="outline">
+                <mat-label>Classification</mat-label>
+                <input matInput formControlName="classification" placeholder="i.e Loxodonta Africanus">
+                <mat-hint>Required</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline" id="add-animal-form-descr">
+                <mat-label>Animal Description</mat-label>
+                <textarea rows="4" matInput #charTa formControlName="animalDescription"></textarea>
+                <mat-hint align="start">{{charTa.value?.length || 0}}/1500 (Required)</mat-hint>
+            </mat-form-field>
+		</div>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="center">

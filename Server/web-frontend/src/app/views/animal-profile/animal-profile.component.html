@@ -10,431 +10,433 @@
                 <a href="javascript:void(0)" class="fontM activeView" *ngIf="animal">{{animal.classification  | titlecase }}&nbsp;({{animal.commonName}})</a>
             </div>
         </div>
-		<div id="animals-toolbar">
-			<mat-select id="animals-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
-				<mat-option>Add New Image</mat-option>
-				<mat-option (click)="openEditAnimalDialog()">Edit Information</mat-option>
-				<mat-option>View Gallery</mat-option>
-				<mat-option>Upload Identification</mat-option>
-			</mat-select>
-		</div>
+        <div id="animals-toolbar">
+            <mat-select id="animals-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
+                <mat-option>Add New Image</mat-option>
+                <mat-option (click)="openEditAnimalDialog()">Edit Information</mat-option>
+                <mat-option>View Gallery</mat-option>
+                <mat-option>Upload Identification</mat-option>
+            </mat-select>
+        </div>
     </div>
     <div id="animal-profile-view-workspace">
-		<div id="animal-profile-info-container">
-			<div id="animal-profile-info">
-				<div id="animal-profile-info-image-container">
-					<div id="animal-profile-info-image">
-						<div id="animal-profile-info-image-wrapper">
-							<img src="{{animal.pictures[0].URL}}" alt="Picture of {{animal.commonName}}, {{animal.classification}}">
-						</div>
-					</div>
-				</div>
-				<div id="animal-profile-info-text">
-					<div id="animal-profile-info-details" class="animal-profile-title-container">
-						<div>
-							<h1 class="fontSB" *ngIf="animal">{{animal.classification | titlecase }}</h1>
-							<button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>						
-						</div>
-						<p class="fontM" *ngIf="animal">{{animal.commonName}}</p>
-					</div>
-					<div id="animal-profile-info-biometrics-container">
-						<div id="animal-profile-info-biometrics-height" class="animal-biometrics-container">
-							<p class="fontM">Avg. Height</p>
-							<div id="animal-height-female" class="animal-biometric-content">
-								<span>
+        <div id="animal-profile-info-container">
+            <div id="animal-profile-info">
+                <div id="animal-profile-info-image-container">
+                    <div id="animal-profile-info-image">
+                        <div id="animal-profile-info-image-wrapper">
+                            <img src="{{animal.pictures[0].URL}}" alt="Picture of {{animal.commonName}}, {{animal.classification}}">
+                        </div>
+                    </div>
+                </div>
+                <div id="animal-profile-info-text">
+                    <div id="animal-profile-info-details" class="animal-profile-title-container">
+                        <div>
+                            <h1 class="fontSB" *ngIf="animal">{{animal.classification | titlecase }}</h1>
+                            <button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>
+                        </div>
+                        <p class="fontM" *ngIf="animal">{{animal.commonName}}</p>
+                    </div>
+                    <div id="animal-profile-info-biometrics-container">
+                        <div id="animal-profile-info-biometrics-height" class="animal-biometrics-container">
+                            <p class="fontM">Avg. Height</p>
+                            <div id="animal-height-female" class="animal-biometric-content">
+                                <span>
 									<i class="fa fa-venus animal-female-icon" aria-hidden="true"></i>
 									<p class="fontM">{{animal.heightF}}m - {{animal.heightF}}m</p>
 								</span>
-							</div>
-							<div class="animal-biometric-content">
-								<span>
+                            </div>
+                            <div class="animal-biometric-content">
+                                <span>
 									<i class="fa fa-mars animal-male-icon" aria-hidden="true"></i>
 									<p class="fontM">{{animal.heightM}}m - {{animal.heightM}}m</p>
 								</span>
-							</div>
-						</div>						
-						<div id="animal-profile-info-biometrics-weight"  class="animal-biometrics-container">
-							<p class="fontM">Avg. Weight</p>
-							<div id="animal-weight-female" class="animal-biometric-content">
-								<span>
+                            </div>
+                        </div>
+                        <div id="animal-profile-info-biometrics-weight" class="animal-biometrics-container">
+                            <p class="fontM">Avg. Weight</p>
+                            <div id="animal-weight-female" class="animal-biometric-content">
+                                <span>
 									<i class="fa fa-venus animal-female-icon" aria-hidden="true"></i>
 									<p class="fontM">{{animal.weightF}}kg - {{animal.weightF}}kg</p>
 								</span>
-							</div>
-							<div class="animal-biometric-content">
-								<span>
+                            </div>
+                            <div class="animal-biometric-content">
+                                <span>
 									<i class="fa fa-mars animal-male-icon" aria-hidden="true"></i>
 									<p class="fontM">{{animal.weightM}}kg - {{animal.weightM}}kg</p>
 								</span>
-							</div>
-						</div>						
-						<div id="animal-profile-info-biometrics-gestation" class="animal-biometrics-container">
-							<p class="fontM">Gestation Period</p>
-							<div class="animal-biometric-content">
-								<p class="fontM">{{animal.gestationPeriod}}</p>
-							</div>
-							<div class="animal-biometric-content">
-								<p class="fontM">(Single Calf)</p>
-							</div>
-						</div>						
-						<div class="animal-biometrics-container">
-							<p class="fontM">Lifespan & Diet</p>
-							<div class="animal-biometric-content">
-								<p class="fontM">{{animal.lifeSpan}}</p>
-							</div>
-							<div class="animal-biometric-content">
-								<p class="fontM">{{animal.dietType}}</p>
-							</div>
-						</div>
-					</div>
-					<div id="animal-profile-info-overview-container">
-						<p id="animal-profile-info-contact-title" class="fontM">Overview</p>
-						<p class="animal-profile-info-overview-text fontM" *ngIf="animal">{{animal.animalOverview}}</p>
-					</div>
-				</div>
-			</div>
-			<div id="animal-profile-statistics-container">
-				<div id="animal-profile-statistics-title" class="animal-profile-title-container">
-					<div>
-						<h1 class="fontSB">Statistics</h1>
-					</div>
-					<div id="animal-profile-statistics-toggle">
-						<p class="fontM activeStat">Ranger Statistics</p>
-						<p class="fontM">Animal Statistics</p>
-					</div>
-				</div>
-				<div id="animal-profile-statistics">
-					<div class="animal-profile-stats-container">
-						<div class="animal-profile-stats-icon-container">
-							<div class="animal-profile-stats-icon"></div>
-						</div>
-						<div class="animal-profile-stats-info">
-							<p class="animal-profile-stat-text fontM">Population</p>
-							<p class="animal-profile-stat-num fontSB">36</p>
-						</div>
-					</div>					
-					<div class="animal-profile-stats-container">
-						<div class="animal-profile-stats-icon-container">
-							<div class="animal-profile-stats-icon"></div>
-						</div>
-						<div class="animal-profile-stats-info">
-							<p class="animal-profile-stat-text fontM">Locations</p>
-							<p class="animal-profile-stat-num fontSB">3</p>
-						</div>
-					</div>					
-					<div class="animal-profile-stats-container">
-						<div class="animal-profile-stats-icon-container">
-							<div class="animal-profile-stats-icon"></div>
-						</div>
-						<div class="animal-profile-stats-info">
-							<p class="animal-profile-stat-text fontM">Images</p>
-							<p class="animal-profile-stat-num fontSB">104</p>
-						</div>
-					</div>					
-					<div class="animal-profile-stats-container">
-						<div class="animal-profile-stats-icon-container">
-							<div class="animal-profile-stats-icon"></div>
-						</div>
-						<div class="animal-profile-stats-info">
-							<p class="animal-profile-stat-text fontM">Accuracy</p>
-							<p class="animal-profile-stat-num fontSB">98%</p>
-						</div>
-					</div>					
-					<div class="animal-profile-stats-container">
-						<div class="animal-profile-stats-icon-container">
-							<div class="animal-profile-stats-icon"></div>
-						</div>
-						<div class="animal-profile-stats-info">
-							<p class="animal-profile-stat-text fontM">Identifications</p>
-							<p class="animal-profile-stat-num fontSB">104</p>
-						</div>
-					</div>					
-					<div class="animal-profile-stats-container">
-					</div>	
-					<div class="animal-profile-stats-container">
-					</div>	
-					<div class="animal-profile-stats-container">
-					</div>	
-					<div class="animal-profile-stats-container">
-					</div>	
-				</div>
-			</div>
-		</div>
-		<div id="animal-profile-feed-container">
-			<mat-tab-group mat-align-tabs="center" dynamicHeight>
-				<mat-tab label="Animal Information">
-					<ng-template matTabContent>
-						<div id="animal-profile-information-tabcontainer">
-							<div id="animal-profile-information-quicklinks-container">
-								<div id="animal-profile-information-quicklinks-content">
-									<div id="animal-profile-information-quicklinks-title" class="animal-profile-information-content-title">
-										<h1 class="fontSB">Quicklinks</h1>
-									</div>
-									<mat-divider></mat-divider>
-									<div id="animal-profile-information-quicklinks-list">
-										<mat-selection-list #shoes [multiple]="false">
-											<div mat-subheader class="animal-profile-information-quicklinks-subheader">Animal Description</div>
-											<mat-list-option (click)="navigateToSection('animal-profile-information-overview-section')">Overview</mat-list-option>											
-											<mat-list-option (click)="navigateToSection('animal-profile-information-description-section')">Description</mat-list-option>											
-											<div mat-subheader class="animal-profile-information-quicklinks-subheader">Animal Behaviour</div>
-											<mat-list-option (click)="navigateToSection('animal-profile-information-fbehaviour-section')">Female Behaviour</mat-list-option>
-											<mat-list-option (click)="navigateToSection('animal-profile-information-mbehaviour-section')">Male Behaviour</mat-list-option>
-											<div mat-subheader class="animal-profile-information-quicklinks-subheader">Habitat Information</div>
-											<mat-list-option (click)="navigateToSection('animal-profile-information-habitatdescrip-section')">Habitat Description</mat-list-option>
-											<mat-list-option (click)="navigateToSection('animal-profile-information-habitatfeatures-section')">Distinguishing Features</mat-list-option>
-											<div mat-subheader class="animal-profile-information-quicklinks-subheader">Threat Information</div>
-											<mat-list-option (click)="navigateToSection('animal-profile-information-fthreat-section')">Female Behaviour</mat-list-option>
-											<mat-list-option (click)="navigateToSection('animal-profile-information-fthreat-section')">Threat Level</mat-list-option>
-											<mat-list-option (click)="navigateToSection('animal-profile-information-mthreat-section')">Male Behaviour</mat-list-option>
-											<mat-list-option (click)="navigateToSection('animal-profile-information-mthreat-section')">Threat Level</mat-list-option>
-										</mat-selection-list>
-									</div>
-								</div>
-							</div>
-							<div id="animal-profile-information-feed-container">
-								<div id="animal-profile-information-description-container" class="animal-profile-information-content-container">
-									<div id="animal-profile-information-description" class="animal-profile-information-content">
-										<div id="animal-profile-information-description-title" class="animal-profile-information-content-title">
-											<h1 class="fontSB">Animal Description</h1>
-											<button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>						
-										</div>
-										<mat-divider></mat-divider>
-										<div id="animal-profile-information-content">
-											<div id="animal-profile-information-overview-section" class="animal-profile-information-section">
-												<div class="animal-profile-information-subtitle">
-													<h2 class="fontSB">Overview</h2>
-												</div>											
-												<div class="animal-profile-information-text">
-													<p class="fontM" *ngIf="animal">{{animal.animalOverview}}</p>
-												</div>
-											</div>
-											<div id="animal-profile-information-description-section" class="animal-profile-information-section">
-												<div class="animal-profile-information-subtitle">
-													<h2 class="fontSB">Description</h2>
-												</div>											
-												<div class="animal-profile-information-text">
-													<p class="fontM" *ngIf="animal">{{animal.animalDescription}}</p>
-												</div>
-											</div>
-										</div>
-									</div>								
-								</div>
-								<div id="animal-profile-information-behaviour-container" class="animal-profile-information-content-container">
-									<div id="animal-profile-information-behaviour" class="animal-profile-information-content">
-										<div  id="animal-profile-information-behaviour-title" class="animal-profile-information-content-title">
-											<h1 class="fontSB">Behavioural Information</h1>
-											<button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>						
-										</div>
-										<mat-divider></mat-divider>
-										<div id="animal-profile-information-content">
-											<div id="animal-profile-information-fbehaviour-section" class="animal-profile-information-section">
-												<div class="animal-profile-information-subtitle">
-													<h2 class="fontSB">Female Behaviour</h2>
-												</div>											
-												<div class="animal-profile-information-text">
-													<p class="fontM" *ngIf="animal">{{femaleBehaviour}}</p>
-												</div>
-											</div>
-											<div id="animal-profile-information-mbehaviour-section" class="animal-profile-information-section">
-												<div class="animal-profile-information-subtitle">
-													<h2 class="fontSB">Male Behaviour</h2>
-												</div>											
-												<div class="animal-profile-information-text">
-													<p class="fontM" *ngIf="animal">{{maleBehaviour}}</p>
-												</div>
-											</div>
-										</div>
-									</div>								
-								</div>
-								<div id="animal-profile-information-habitat-container" class="animal-profile-information-content-container">
-									<div id="animal-profile-information-habitat" class="animal-profile-information-content">
-										<div class="animal-profile-information-content-title">
-											<h1 class="fontSB">Habitat Information</h1>
-										</div>
-										<mat-divider></mat-divider>
-										<div id="animal-profile-information-content">
-											<div id="animal-profile-information-habitatdescrip-section" class="animal-profile-information-section">
-												<div class="animal-profile-information-subtitle">
-													<h2 class="fontSB">Habitat Description</h2>
-												</div>											
-												<div class="animal-profile-information-text">
-													<p class="fontM" *ngIf="animal">{{femaleBehaviour}}</p>
-												</div>
-											</div>
-											<div id="animal-profile-information-habitatfeatures-section" class="animal-profile-information-section">
-												<div class="animal-profile-information-subtitle">
-													<h2 class="fontSB">Distinguishing Features</h2>
-												</div>											
-												<div class="animal-profile-information-text">
-													<p class="fontM" *ngIf="animal">{{maleBehaviour}}</p>
-												</div>
-											</div>
-										</div>
-									</div>								
-								</div>
-								<div id="animal-profile-information-threat-container" class="animal-profile-information-content-container">
-									<div id="animal-profile-information-threat" class="animal-profile-information-content">
-										<div class="animal-profile-information-content-title">
-											<h1 class="fontSB">Threat Information</h1>
-										</div>
-										<mat-divider></mat-divider>
-										<div id="animal-profile-information-content">
-											<div id="animal-profile-information-fthreat-section" class="animal-profile-information-section">
-												<div class="animal-profile-information-subtitle">
-													<h2 class="fontSB">Female Behaviour</h2>
-												</div>											
-												<div class="animal-profile-information-text">
-													<p class="fontM" *ngIf="animal">{{femaleBehaviour}}</p>
-												</div>
-											</div>
-											<div id="animal-profile-information-mthreat-section" class="animal-profile-information-section">
-												<div class="animal-profile-information-subtitle">
-													<h2 class="fontSB">Male Behaviour</h2>
-												</div>											
-												<div class="animal-profile-information-text">
-													<p class="fontM" *ngIf="animal">{{maleBehaviour}}</p>
-												</div>
-											</div>
-										</div>
-									</div>								
-								</div>
-							</div>
-						</div>
-					</ng-template>
-				</mat-tab>				
-				<mat-tab label="Spoor Identifications">
-					<ng-template matTabContent>
-						<div id="animal-profile-identifications-container">
-							<div id="animal-profile-spoor-feed-container">
-								<div id="animal-profile-spoor-feed-title">
-									<h2 class="fontSB">Recently Identified Spoors</h2>
-									<button mat-flat-button>View All</button>	
-								</div>
-								<div id="animal-profile-spoors-container">
-									<div class="animal-profile-spoor-container" *ngFor="let spoorId of spoorIdentifications">
-										<div class="animal-profile-spoor-info-container">
-											<div class="animal-profile-spoor-image-container">
-												<div class="animal-profile-spoor-image"></div>
-											</div>
-											<div class="animal-profile-spoor-info">
-												<div class="animal-profile-spoor-animal-name">
-													<p class="fontSB">{{spoorId.commonName}}</p>
-													<p class="fontM">{{spoorId.classification}}</p>
-												</div>
-												<div class="animal-profile-spoor-date">
-													<mat-icon>event</mat-icon>
-													<p class="fontM">{{spoorId.dateTime}}</p>
-												</div>
-												<div class="animal-profile-spoor-location">
-													<mat-icon>room</mat-icon>
-													<p class="fontM">{{spoorId.coordinates}}</p>
-												</div>
-											</div>
-											<div class="animal-profile-spoor-accuracy-container">
-												<div class="animal-profile-spoor-accuracy">
-													<div class="animal-profile-spoor-accuracyscore">
-														<p class="fontB">{{spoorId.accuracyScore}}</p>
-													</div>
-													<div class="animal-profile-spoor-accuracy-title">
-														<p class="fontSB">ACCURACY<br/>SCORE</p>
-													</div>
-												</div>
-											</div>										
-											<div class="animal-profile-spoor-options-container">
-												<button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
+                            </div>
+                        </div>
+                        <div id="animal-profile-info-biometrics-gestation" class="animal-biometrics-container">
+                            <p class="fontM">Gestation Period</p>
+                            <div class="animal-biometric-content">
+                                <p class="fontM">{{animal.gestationPeriod}}</p>
+                            </div>
+                            <div class="animal-biometric-content">
+                                <p class="fontM">(Single Calf)</p>
+                            </div>
+                        </div>
+                        <div class="animal-biometrics-container">
+                            <p class="fontM">Lifespan & Diet</p>
+                            <div class="animal-biometric-content">
+                                <p class="fontM">{{animal.lifeSpan}}</p>
+                            </div>
+                            <div class="animal-biometric-content">
+                                <p class="fontM">{{animal.dietType}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="animal-profile-info-overview-container">
+                        <p id="animal-profile-info-contact-title" class="fontM">Overview</p>
+                        <p class="animal-profile-info-overview-text fontM" *ngIf="animal">{{animal.animalOverview}}</p>
+                    </div>
+                </div>
+            </div>
+            <div id="animal-profile-statistics-container">
+                <div id="animal-profile-statistics-title" class="animal-profile-title-container">
+                    <div>
+                        <h1 class="fontSB">Statistics</h1>
+                    </div>
+                    <div id="animal-profile-statistics-toggle">
+                        <p class="fontM activeStat">Ranger Statistics</p>
+                        <p class="fontM">Animal Statistics</p>
+                    </div>
+                </div>
+                <div id="animal-profile-statistics">
+                    <div class="animal-profile-stats-container">
+                        <div class="animal-profile-stats-icon-container">
+                            <div class="animal-profile-stats-icon"></div>
+                        </div>
+                        <div class="animal-profile-stats-info">
+                            <p class="animal-profile-stat-text fontM">Population</p>
+                            <p class="animal-profile-stat-num fontSB">36</p>
+                        </div>
+                    </div>
+                    <div class="animal-profile-stats-container">
+                        <div class="animal-profile-stats-icon-container">
+                            <div class="animal-profile-stats-icon"></div>
+                        </div>
+                        <div class="animal-profile-stats-info">
+                            <p class="animal-profile-stat-text fontM">Locations</p>
+                            <p class="animal-profile-stat-num fontSB">3</p>
+                        </div>
+                    </div>
+                    <div class="animal-profile-stats-container">
+                        <div class="animal-profile-stats-icon-container">
+                            <div class="animal-profile-stats-icon"></div>
+                        </div>
+                        <div class="animal-profile-stats-info">
+                            <p class="animal-profile-stat-text fontM">Images</p>
+                            <p class="animal-profile-stat-num fontSB">104</p>
+                        </div>
+                    </div>
+                    <div class="animal-profile-stats-container">
+                        <div class="animal-profile-stats-icon-container">
+                            <div class="animal-profile-stats-icon"></div>
+                        </div>
+                        <div class="animal-profile-stats-info">
+                            <p class="animal-profile-stat-text fontM">Accuracy</p>
+                            <p class="animal-profile-stat-num fontSB">98%</p>
+                        </div>
+                    </div>
+                    <div class="animal-profile-stats-container">
+                        <div class="animal-profile-stats-icon-container">
+                            <div class="animal-profile-stats-icon"></div>
+                        </div>
+                        <div class="animal-profile-stats-info">
+                            <p class="animal-profile-stat-text fontM">Identifications</p>
+                            <p class="animal-profile-stat-num fontSB">104</p>
+                        </div>
+                    </div>
+                    <div class="animal-profile-stats-container">
+                    </div>
+                    <div class="animal-profile-stats-container">
+                    </div>
+                    <div class="animal-profile-stats-container">
+                    </div>
+                    <div class="animal-profile-stats-container">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="animal-profile-feed-container">
+            <mat-tab-group mat-align-tabs="center" dynamicHeight>
+                <mat-tab label="Animal Information">
+                    <ng-template matTabContent>
+                        <div id="animal-profile-information-tabcontainer">
+                            <div id="animal-profile-information-quicklinks-container">
+                                <div id="animal-profile-information-quicklinks-content">
+                                    <div id="animal-profile-information-quicklinks-title" class="animal-profile-information-content-title">
+                                        <h1 class="fontSB">Quicklinks</h1>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div id="animal-profile-information-quicklinks-list">
+                                        <mat-selection-list #shoes [multiple]="false">
+                                            <div mat-subheader class="animal-profile-information-quicklinks-subheader">Animal Description</div>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-overview-section')">Overview</mat-list-option>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-description-section')">Description</mat-list-option>
+                                            <div mat-subheader class="animal-profile-information-quicklinks-subheader">Animal Behaviour</div>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-fbehaviour-section')">Female Behaviour</mat-list-option>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-mbehaviour-section')">Male Behaviour</mat-list-option>
+                                            <div mat-subheader class="animal-profile-information-quicklinks-subheader">Habitat Information</div>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-habitatdescrip-section')">Habitat Description</mat-list-option>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-habitatfeatures-section')">Distinguishing Features</mat-list-option>
+                                            <div mat-subheader class="animal-profile-information-quicklinks-subheader">Threat Information</div>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-fthreat-section')">Female Behaviour</mat-list-option>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-fthreat-section')">Threat Level</mat-list-option>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-mthreat-section')">Male Behaviour</mat-list-option>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-mthreat-section')">Threat Level</mat-list-option>
+                                        </mat-selection-list>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="animal-profile-information-feed-container">
+                                <div id="animal-profile-information-description-container" class="animal-profile-information-content-container">
+                                    <div id="animal-profile-information-description" class="animal-profile-information-content">
+                                        <div id="animal-profile-information-description-title" class="animal-profile-information-content-title">
+                                            <h1 class="fontSB">Animal Description</h1>
+                                            <button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                        <div id="animal-profile-information-content">
+                                            <div id="animal-profile-information-overview-section" class="animal-profile-information-section">
+                                                <div class="animal-profile-information-subtitle">
+                                                    <h2 class="fontSB">Overview</h2>
+                                                </div>
+                                                <div class="animal-profile-information-text">
+                                                    <p class="fontM" *ngIf="animal">{{animal.animalOverview}}</p>
+                                                </div>
+                                            </div>
+                                            <div id="animal-profile-information-description-section" class="animal-profile-information-section">
+                                                <div class="animal-profile-information-subtitle">
+                                                    <h2 class="fontSB">Description</h2>
+                                                </div>
+                                                <div class="animal-profile-information-text">
+                                                    <p class="fontM" *ngIf="animal">{{animal.animalDescription}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="animal-profile-information-behaviour-container" class="animal-profile-information-content-container">
+                                    <div id="animal-profile-information-behaviour" class="animal-profile-information-content">
+                                        <div id="animal-profile-information-behaviour-title" class="animal-profile-information-content-title">
+                                            <h1 class="fontSB">Behavioural Information</h1>
+                                            <button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                        <div id="animal-profile-information-content">
+                                            <div id="animal-profile-information-fbehaviour-section" class="animal-profile-information-section">
+                                                <div class="animal-profile-information-subtitle">
+                                                    <h2 class="fontSB">Female Behaviour</h2>
+                                                </div>
+                                                <div class="animal-profile-information-text">
+                                                    <p class="fontM" *ngIf="animal">{{femaleBehaviour}}</p>
+                                                </div>
+                                            </div>
+                                            <div id="animal-profile-information-mbehaviour-section" class="animal-profile-information-section">
+                                                <div class="animal-profile-information-subtitle">
+                                                    <h2 class="fontSB">Male Behaviour</h2>
+                                                </div>
+                                                <div class="animal-profile-information-text">
+                                                    <p class="fontM" *ngIf="animal">{{maleBehaviour}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="animal-profile-information-habitat-container" class="animal-profile-information-content-container">
+                                    <div id="animal-profile-information-habitat" class="animal-profile-information-content">
+                                        <div class="animal-profile-information-content-title">
+                                            <h1 class="fontSB">Habitat Information</h1>
+											<button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>											
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                        <div id="animal-profile-information-content">
+                                            <div id="animal-profile-information-habitatdescrip-section" class="animal-profile-information-section">
+                                                <div class="animal-profile-information-subtitle">
+                                                    <h2 class="fontSB">Habitat Description</h2>
+                                                </div>
+                                                <div class="animal-profile-information-text">
+                                                    <p class="fontM" *ngIf="animal">{{femaleBehaviour}}</p>
+                                                </div>
+                                            </div>
+                                            <div id="animal-profile-information-habitatfeatures-section" class="animal-profile-information-section">
+                                                <div class="animal-profile-information-subtitle">
+                                                    <h2 class="fontSB">Distinguishing Features</h2>
+                                                </div>
+                                                <div class="animal-profile-information-text">
+                                                    <p class="fontM" *ngIf="animal">{{maleBehaviour}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="animal-profile-information-threat-container" class="animal-profile-information-content-container">
+                                    <div id="animal-profile-information-threat" class="animal-profile-information-content">
+                                        <div class="animal-profile-information-content-title">
+                                            <h1 class="fontSB">Threat Information</h1>
+											<button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>											    
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                        <div id="animal-profile-information-content">
+                                            <div id="animal-profile-information-fthreat-section" class="animal-profile-information-section">
+                                                <div class="animal-profile-information-subtitle">
+                                                    <h2 class="fontSB">Female Behaviour</h2>
+                                                </div>
+                                                <div class="animal-profile-information-text">
+                                                    <p class="fontM" *ngIf="animal">{{femaleBehaviour}}</p>
+                                                </div>
+                                            </div>
+                                            <div id="animal-profile-information-mthreat-section" class="animal-profile-information-section">
+                                                <div class="animal-profile-information-subtitle">
+                                                    <h2 class="fontSB">Male Behaviour</h2>
+                                                </div>
+                                                <div class="animal-profile-information-text">
+                                                    <p class="fontM" *ngIf="animal">{{maleBehaviour}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Spoor Identifications">
+                    <ng-template matTabContent>
+                        <div id="animal-profile-identifications-container">
+                            <div id="animal-profile-spoor-feed-container">
+                                <div id="animal-profile-spoor-feed-title">
+                                    <h2 class="fontSB">Recently Identified Spoors</h2>
+                                    <button mat-flat-button>View All</button>
+                                </div>
+                                <div id="animal-profile-spoors-container">
+                                    <div class="animal-profile-spoor-container" *ngFor="let spoorId of spoorIdentifications">
+                                        <div class="animal-profile-spoor-info-container">
+                                            <div class="animal-profile-spoor-image-container">
+                                                <div class="animal-profile-spoor-image"></div>
+                                            </div>
+                                            <div class="animal-profile-spoor-info">
+                                                <div class="animal-profile-spoor-animal-name">
+                                                    <p class="fontSB">{{spoorId.commonName}}</p>
+                                                    <p class="fontM">{{spoorId.classification}}</p>
+                                                </div>
+                                                <div class="animal-profile-spoor-date">
+                                                    <mat-icon>event</mat-icon>
+                                                    <p class="fontM">{{spoorId.dateTime}}</p>
+                                                </div>
+                                                <div class="animal-profile-spoor-location">
+                                                    <mat-icon>room</mat-icon>
+                                                    <p class="fontM">{{spoorId.coordinates}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="animal-profile-spoor-accuracy-container">
+                                                <div class="animal-profile-spoor-accuracy">
+                                                    <div class="animal-profile-spoor-accuracyscore">
+                                                        <p class="fontB">{{spoorId.accuracyScore}}</p>
+                                                    </div>
+                                                    <div class="animal-profile-spoor-accuracy-title">
+                                                        <p class="fontSB">ACCURACY<br/>SCORE</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="animal-profile-spoor-options-container">
+                                                <button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
 													<mat-icon>more_vert</mat-icon>
 												</button>
-												<mat-menu #menu="matMenu" xPosition="before">
-													<button mat-menu-item>
+                                                <mat-menu #menu="matMenu" xPosition="before">
+                                                    <button mat-menu-item>
 														<span>View Information</span>
 													</button>
-													<button mat-menu-item>
+                                                    <button mat-menu-item>
 														<span>View Animal</span>
 													</button>
-													<button mat-menu-item>
+                                                    <button mat-menu-item>
 														<span>Edit Information</span>
 													</button>
-													<button mat-menu-item>
+                                                    <button mat-menu-item>
 														<span>Delete Identification</span>
 													</button>
-												</mat-menu>
-											</div>
-										</div>
-										<mat-divider></mat-divider>
-										<div class="animal-profile-spoor-tags-container">
-											<div class="animal-profile-spoor-tags-title">
-												<p class="fontB">Tags</p>
-											</div>
-											<div class="animal-profile-spoor-tags">
-												<mat-chip-list>
-													<mat-chip selected>Found near riverbed</mat-chip>
-													<mat-chip color="warn" selected>Possible injury</mat-chip>
-													<mat-chip>Infant</mat-chip>
-												</mat-chip-list>
-											</div>
-										</div>
-									</div>						
-								</div>
-							</div>			
-							<div id="animal-profile-activity-feed-container">
-								<div id="animal-profile-activity-feed-title">
-									<h2 class="fontSB">Recent Activity</h2>
-									<button mat-flat-button>View All</button>	
-								</div>
-								<div id="animal-profile-activity-container">								
-									<div class="animal-profile-activity-container" *ngFor="let activity of activities">
-										<div class="animal-profile-activity-info-container">
-											<div class="animal-profile-activity-details-container">
-												<div class="animal-profile-activity-image-container">
-													<div class="animal-profile-activity-image"></div>
-												</div>
-												<div class="animal-profile-activity-info">
-													<div class="animal-profile-activity-type">
-														<p class="fontSB">{{activity.type}}</p>
-													</div>
-													<div class="animal-profile-activity-date">
-														<mat-icon>event</mat-icon>
-														<p class="fontM">{{activity.dateTime}}</p>
-													</div>
-													<div class="animal-profile-activity-summary">
-														<p class="fontM">{{activity.summary.info1}}</p>
-														<mat-icon>arrow_right_alt</mat-icon>
-														<p class="fontM">{{activity.summary.info2}}</p>
-													</div>
-												</div>
-											</div>
-											<div class="animal-profile-activity-options-container">
-												<button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
+                                                </mat-menu>
+                                            </div>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                        <div class="animal-profile-spoor-tags-container">
+                                            <div class="animal-profile-spoor-tags-title">
+                                                <p class="fontB">Tags</p>
+                                            </div>
+                                            <div class="animal-profile-spoor-tags">
+                                                <mat-chip-list>
+                                                    <mat-chip selected>Found near riverbed</mat-chip>
+                                                    <mat-chip color="warn" selected>Possible injury</mat-chip>
+                                                    <mat-chip>Infant</mat-chip>
+                                                </mat-chip-list>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="animal-profile-activity-feed-container">
+                                <div id="animal-profile-activity-feed-title">
+                                    <h2 class="fontSB">Recent Activity</h2>
+                                    <button mat-flat-button>View All</button>
+                                </div>
+                                <div id="animal-profile-activity-container">
+                                    <div class="animal-profile-activity-container" *ngFor="let activity of activities">
+                                        <div class="animal-profile-activity-info-container">
+                                            <div class="animal-profile-activity-details-container">
+                                                <div class="animal-profile-activity-image-container">
+                                                    <div class="animal-profile-activity-image"></div>
+                                                </div>
+                                                <div class="animal-profile-activity-info">
+                                                    <div class="animal-profile-activity-type">
+                                                        <p class="fontSB">{{activity.type}}</p>
+                                                    </div>
+                                                    <div class="animal-profile-activity-date">
+                                                        <mat-icon>event</mat-icon>
+                                                        <p class="fontM">{{activity.dateTime}}</p>
+                                                    </div>
+                                                    <div class="animal-profile-activity-summary">
+                                                        <p class="fontM">{{activity.summary.info1}}</p>
+                                                        <mat-icon>arrow_right_alt</mat-icon>
+                                                        <p class="fontM">{{activity.summary.info2}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="animal-profile-activity-options-container">
+                                                <button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
 													<mat-icon>more_vert</mat-icon>
 												</button>
-												<mat-menu #menu="matMenu" xPosition="before">
-													<button mat-menu-item>
+                                                <mat-menu #menu="matMenu" xPosition="before">
+                                                    <button mat-menu-item>
 														<span>View Information</span>
 													</button>
-													<button mat-menu-item>
+                                                    <button mat-menu-item>
 														<span>Edit Identification</span>
 													</button>
-													<button mat-menu-item>
+                                                    <button mat-menu-item>
 														<span>Delete Identification</span>
 													</button>
-												</mat-menu>
-											</div>
-										</div>
-									</div>								
-								</div>
-							</div>
-						</div>
-					</ng-template>
-				</mat-tab>				
-				<mat-tab label="Activity">
-				</mat-tab>				
-				<mat-tab label="Group Management">
-					<ng-template matTabContent>
-						<div id="animal-profile-groups-container">
-						</div>
-					</ng-template>
-				</mat-tab>
-			</mat-tab-group>
-		</div>
+                                                </mat-menu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Activity">
+                </mat-tab>
+                <mat-tab label="Group Management">
+                    <ng-template matTabContent>
+                        <div id="animal-profile-groups-container">
+                        </div>
+                    </ng-template>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
     </div>
 </div>

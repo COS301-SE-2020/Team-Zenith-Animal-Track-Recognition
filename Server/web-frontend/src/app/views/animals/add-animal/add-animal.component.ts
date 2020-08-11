@@ -16,51 +16,11 @@ export class AddAnimalComponent implements OnInit {
 	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddAnimalComponent>) { }
 
 	ngOnInit(): void {
-
-		//---- API Call to get list of all Animal groups should be here -----
-		//To be implemented after the changes to the API are complete
-		//-----------------------------------------------------------
-
 		this.addAnimalForm = this.formBuilder.group({
-			groupName: ['', Validators.required],
 			commonName: ['', Validators.required],
 			classification: ['', Validators.required],
 			animalDescription: ['', Validators.required]
 		});
-
-		//The Add Animal Form is made up of mat-steps. Each mat-step needs to have all fields filled in before you can proceed to the next one
-		//FOR DEBUGGING PURPOSES if you want to be able to skip filling in the fields, remove the Validators.required for that field
-		/*
-		this.addAnimalForm = this.formBuilder.group({
-			'animalOverview': new FormGroup({
-				'Group_Name': new FormControl(null),
-				'Common_Name': new FormControl(null), 
-				'Classification': new FormControl(null),
-				'HeightF': new FormControl(null),
-				'HeightM': new FormControl(null),
-				'WeightF': new FormControl(null),
-				'WeightM': new FormControl(null),
-				'Gestation_Period': new FormControl(null),
-				'Diet_Type': new FormControl(null)
-			}),
-			'animalDescrip': new FormGroup({
-				'Life_Span': new FormControl(null),
-				'Overview_of_animal': new FormControl(null),
-				'Description_of_animal': new FormControl(null)
-			}),
-			'animalBehaviour': new FormGroup({
-				'Typical_BehaviourF': new FormControl(null),
-				'Typical_BehaviourM': new FormControl(null)
-			}),
-			'animalHabitat': new FormGroup({
-				'Habitat': new FormControl(null)
-			}),
-			'rangerThreats': new FormGroup({
-				'Typical_BehaviourThreatF': new FormControl(null),
-				'Typical_BehaviourThreatM': new FormControl(null)
-			})
-		});	
-		*/
 		document.getElementById('add-animal-dialog').style.overflow = "hidden";
 	}
 

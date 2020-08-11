@@ -10,46 +10,51 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 	styleUrls: ['./edit-animal-info.component.css']
 })
 export class EditAnimalInfoComponent implements OnInit {
-	overviewForm: FormGroup;
-	descrForm: FormGroup;
-	behaviourForm: FormGroup;
-	habitatForm: FormGroup;
-	threatForm: FormGroup;
-	diet: string;
 
+	editAnimalForm: FormGroup;
+	diet: string;
+	//DUMMY DATA
+	dietTypeList = [
+		{
+			displayValue: 'Herbivorous'
+		},			
+		{
+			displayValue: 'Carnivorous'
+		},			
+		{
+			displayValue: 'Omnivorous'
+		},			
+		{
+			displayValue: 'Insectivorous'
+		}
+	];
+	
 	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<EditAnimalInfoComponent>) { }
 
 	ngOnInit(): void {
-		this.overviewForm = this.formBuilder.group({
-			groupName: [this.data.animal.groupID[0].groupName, Validators.required],
-			commonName: [this.data.animal.commonName, Validators.required],
-			classification: [this.data.animal.classification, Validators.required],
-			heightF: [this.data.animal.heightF, Validators.required],
-			heightM: [this.data.animal.heightM, Validators.required],
-			weightF: [this.data.animal.weightF, Validators.required],
-			weightM: [this.data.animal.weightM, Validators.required],
-			gestationPeriod: [this.data.animal.gestationPeriod, Validators.required],
-			dietType: [this.data.animal.dietType, Validators.required],
-			//Typical_Behaviour: [this.data.animal.Typical_Behaviour, Validators.required],
-		});
-		/*this.descrForm = this.formBuilder.group({
-			Life_Span: [this.data.animal.Life_Span, Validators.required],
-			Overview_of_animal: [this.data.animal.Overview_of_animal, Validators.required],
-			Description_of_animal: [this.data.animal.Description_of_animal, Validators.required],
-		});		
-		this.behaviourForm = this.formBuilder.group({
-			//Typical_Behaviour: [this.data.animal.Typical_Behaviour, Validators.required]
-		});		
-		this.habitatForm = this.formBuilder.group({
-			Habitat: [this.data.animal.Habitat, Validators.required]
-		});
-		this.threatForm = this.formBuilder.group({
-			//Typical_Behaviour: [this.data.animal.Typical_Behaviour, Validators.required]
-		});	*/
+		this.editAnimalForm = this.formBuilder.group({
+			commonName: [this.data.animal.commonName],
+			classification: [this.data.animal.classification],
+			animalDescription: [this.data.animal.animalDescription],
+			heightF: [this.data.animal.heightF],
+			heightM: [this.data.animal.heightM],
+			weightF: [this.data.animal.weightF],
+			weightM: [this.data.animal.weightM],
+			gestationPeriod: [this.data.animal.gestationPeriod],
+			numOffspring: [''],
+			lifeSpan: [this.data.animal.lifeSpan],
+			dietType: [this.data.animal.dietType],
+			femaleBehaviour: [''],
+			maleBehaviour: [''],
+			habitatDescrip: [''],
+			habitatFeatures: [''],
+			femaleThreat: [''],
+			maleThreat: ['']
+		});			
 		document.getElementById('edit-animal-dialog').style.overflow = "hidden";
 	}
 
-	get f() { return this.overviewForm.controls; }
+	get f() { return this.editAnimalForm.controls; }
 
 	onSubmit(test: boolean) {
 
