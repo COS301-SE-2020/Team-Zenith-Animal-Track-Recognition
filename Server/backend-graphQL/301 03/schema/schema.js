@@ -2009,7 +2009,7 @@ function uplodeBase64(Img) {
         console.log(`${filename} uploaded to ${bucketName}.`);
     }
 
-    uploadFile().catch(console.error);
+    // uploadFile().catch(console.error);
 
 
     // storage.upload("test.jpg").catch(console.log("faild"))
