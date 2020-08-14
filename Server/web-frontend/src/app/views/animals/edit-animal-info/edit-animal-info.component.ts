@@ -60,11 +60,12 @@ export class EditAnimalInfoComponent implements OnInit {
 
 		if (false === test) {
 			this.startLoader();
-			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{token:"' + encodeURIComponent(JSON.parse(localStorage.getItem('currentToken'))['value']) +
-				'",' + 'classification:"' + encodeURIComponent(this.f.classification.value) + '",commonName:"' + encodeURIComponent(this.f.commonName.value) +
+			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateAnimal(token:"' + encodeURIComponent(JSON.parse(localStorage.getItem('currentToken'))['value']) +
+				'",classification:"' + encodeURIComponent(this.f.classification.value) + '",commonName:"' + encodeURIComponent(this.f.commonName.value) +
+				'",lifeSpan:"' + encodeURIComponent(this.f.classification.value) + '",animalDescription:"' + encodeURIComponent(this.f.animalDescription.value) +
 				'",heightF:"' + encodeURIComponent(this.f.heightF.value) + '",heightM:"' + encodeURIComponent(this.f.heightM.value) + '",weightM:"' +
-				encodeURIComponent(this.f.weightM.value) + '",weightF:"' + encodeURIComponent(this.f.weightF.value) + '",gestationPeriod"' +
-				encodeURIComponent(this.f.gestationPeriod.value) + '",dietType:"' + encodeURIComponent(this.diet) + '"){animalID}}', '')
+				encodeURIComponent(this.f.weightM.value) + '",weightF:"' + encodeURIComponent(this.f.weightF.value) + '",gestationPeriod:"' +
+				encodeURIComponent(this.f.gestationPeriod.value) + '",dietType:"' + encodeURIComponent(this.diet) + '")}{animalID}}', '')
 				.subscribe({
 					next: data => this.dialogRef.close('success'),
 					error: error => this.dialogRef.close('error')
