@@ -15,11 +15,18 @@ class GraphQL implements Api {
     List<String> categories = new List();
     List<AnimalModel> animalList = new List();
 
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // String token = prefs.getString("Token");
+    // token = Uri.encodeFull(token);
+
+    // print("Here is the token: " + token);
+
     String token = "h10hYNuJeTbmWH1ZSi5R";
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get(
-        "http://putch.dyndns.org:55555/graphql?query=query{groups(token:\"$token\"){groupName}}");
+        "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{groups(token:\"$token\"){groupName}}");
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
@@ -38,7 +45,7 @@ class GraphQL implements Api {
       if (category == categories[i]) {
         i++;
         final http.Response res = await http.get(
-            "http://putch.dyndns.org:55555/graphql?query=query{animals(token:\"$token\", group:\"$i\" ){pictures{URL},classification, commonName , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
+            "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{animals(token:\"$token\", group:\"$i\" ){pictures{URL},classification, commonName , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
 
         for (int j = 0; j < categories.length; j++) {
           if (res.statusCode == 200) {
@@ -84,7 +91,7 @@ class GraphQL implements Api {
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get(
-        "http://putch.dyndns.org:55555/graphql?query=query{animalsbyByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
+        "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{animalsbyByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
@@ -158,7 +165,7 @@ class GraphQL implements Api {
     email = Uri.encodeFull(email);
     password = Uri.encodeFull(password);
     final http.Response response = await http.get(
-      "http://putch.dyndns.org:55555/graphql?query=query{login(e_mail:\"$email\",Password:\"$password\"){Token,Access_Level}}",
+      "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{login(e_mail:\"$email\",Password:\"$password\"){Token,Access_Level}}",
     );
 
     if (response.statusCode == 200) {
@@ -187,7 +194,7 @@ class GraphQL implements Api {
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get(
-        "http://putch.dyndns.org:55555/graphql?query=query{animals(token:\"$token\"){commonName, classification, pictures{URL}}}");
+        "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{animals(token:\"$token\"){commonName, classification, pictures{URL}}}");
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
@@ -207,7 +214,7 @@ class GraphQL implements Api {
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get(
-        "http://putch.dyndns.org:55555/graphql?query=query{groups(token:\"$token\"){groupName}}");
+        "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{groups(token:\"$token\"){groupName}}");
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);

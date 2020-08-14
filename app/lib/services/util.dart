@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:progress_indicators/progress_indicators.dart';
+import 'package:ERP_RANGER/assets/my_custom_icons.dart';
 
 import 'api/graphQL.dart';
 
@@ -134,13 +137,17 @@ Widget tabBarTitles(String title, var context) {
 
 Widget progressIndicator() {
   return Container(
-    color: Colors.white,
-    child: Center(
-        child: CircularProgressIndicator(
-      value: 5,
-      backgroundColor: Colors.blue,
-    )),
-  );
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: HeartbeatProgressIndicator(
+              child: Icon(MyCustomIcons.logo),
+            ),
+          ),
+        ],
+      ));
 }
 
 Widget appBarTitle(String title, var context) {
