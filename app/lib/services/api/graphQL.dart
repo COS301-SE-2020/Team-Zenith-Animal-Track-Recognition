@@ -70,8 +70,33 @@ class GraphQL implements Api {
 
   @override
   Future<GalleryModel> getGalleryModel(String i) async {
-    // TODO: implement getGalleryModel
-    throw UnimplementedError();
+    List<String> appearance = new List();
+    List<String> tracks = new List();
+    List<String> droppings = new List();
+    List<List<String>> gallery = new List();
+    String name;
+
+    if (i == "diceros bicornis") {
+      appearance.add("assets/images/appearance/rhino/p1.jpg");
+      appearance.add("assets/images/appearance/rhino/p2.jpg");
+      appearance.add("assets/images/appearance/rhino/p3.jpg");
+      appearance.add("assets/images/appearance/rhino/p4.jpg");
+
+      tracks.add("assets/images/print/rhino/print1.jpg");
+      tracks.add("assets/images/print/rhino/print2.jpg");
+      tracks.add("assets/images/print/rhino/print3.jpg");
+      tracks.add("assets/images/print/rhino/print4.jpg");
+
+      droppings.add("assets/images/droppings/rhino/drop1.jpg");
+      droppings.add("assets/images/droppings/rhino/drop2.jpg");
+      droppings.add("assets/images/droppings/rhino/drop3.jpg");
+      name = "Black Rhinoceroses";
+    }
+
+    gallery.add(appearance);
+    gallery.add(tracks);
+    gallery.add(droppings);
+    return GalleryModel(galleryList: gallery, name: name);
   }
 
   @override

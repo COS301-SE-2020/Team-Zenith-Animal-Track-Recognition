@@ -904,9 +904,9 @@ class FakeApi implements Api {
   @override
   Future<TabModel> getTabModel() async {
     List<String> categories = new List();
-    categories.add("Big Five");
-    categories.add("Big Cats");
-    categories.add("Large Antelopes");
+    categories.add("Appearance");
+    categories.add("Tracks");
+    categories.add("Droppings");
 
     return TabModel(categories: categories, length: categories.length);
   }

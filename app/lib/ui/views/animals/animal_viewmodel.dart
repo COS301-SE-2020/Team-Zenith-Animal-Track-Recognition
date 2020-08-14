@@ -12,7 +12,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 class AnimalViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
-  final Api _api = locator<FakeApi>();
+  //final Api _api = locator<FakeApi>();
   final Api api = locator<GraphQL>();
 
   Future<TempObject> getCategories(var context) async {
