@@ -30,7 +30,7 @@ export class DeleteRangerComponent implements OnInit {
 		this.startLoader();
 		console.log(this.data.token);
 		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{deleteUser(' + 'tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'",' + 'tokenDelete:"' + this.data.token + '"){msg}}', '')
+			'",' + 'rangerID:"' + this.data.token + '"){msg}}', '')
 			.subscribe({
 				next: data => this.dialogRef.close("success"),
 				error: error => this.dialogRef.close("error")
