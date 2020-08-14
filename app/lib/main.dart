@@ -36,7 +36,7 @@ class _MyApp extends State<MyApp> {
         if(snapshot.hasData) {
           return snapshot.hasData == true ? MaterialApp(
             theme: basicTheme(),
-            initialRoute: snapshot.data ? Routes.homeViewRoute : Routes.loginViewRoute,
+            initialRoute: snapshot.data ? Routes.homeViewRoute : Routes.homeViewRoute,
             onGenerateRoute: Router().onGenerateRoute,
             navigatorKey: locator<NavigationService>().navigatorKey,
           )
