@@ -118,6 +118,7 @@ class GraphQL implements Api {
     final http.Response response = await http.get(
         "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{animalsbyByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
 
+    print("Response status: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
 

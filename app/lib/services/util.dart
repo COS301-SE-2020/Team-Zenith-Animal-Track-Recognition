@@ -139,15 +139,12 @@ Widget tabBarTitles(String title, var context) {
 Widget progressIndicator() {
   return Container(
       color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Center(
-            child: HeartbeatProgressIndicator(
-              child: Icon(MyCustomIcons.logo),
-            ),
-          ),
-        ],
+      child: Center(
+        child: HeartbeatProgressIndicator(
+          child: new Directionality(
+              textDirection: TextDirection.rtl,
+              child: Icon(MyCustomIcons.logo)),
+        ),
       ));
 }
 
