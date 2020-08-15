@@ -1563,7 +1563,8 @@ const Mutation = new GraphQLObjectType({
                 let updatedAnimal = _.find(animalData, {
                     classification: args.classification
                 })
-                delete updatedAnimal.classification
+                console.log(updatedAnimal)
+                //delete updatedAnimal.classification
                 if (args.commonName != undefined) {
                     updatedAnimal.commonName = args.commonName
                 }
@@ -1621,9 +1622,10 @@ const Mutation = new GraphQLObjectType({
                 if (args.Offspring != undefined) {
                     updatedAnimal.Offspring = args.Offspring
                 }
+                console.log(updatedAnimal)
                 animals.doc(args.classification).set(updatedAnimal)
                 newAnimal.classification = args.classification
-                animalData.push(newAnimal)
+                animalData.push(updatedAnimal)
                 return newAnimal;
             }
         },
@@ -1847,37 +1849,7 @@ module.exports = new GraphQLSchema({
 });
 
 if (CACHE) {
-    animals.onSnapshot(function (querySnapshot) {
-        animalData = [];
-        querySnapshot.forEach(function (doc) {
-            let temp = {
-                classification: doc.id,
-                animalID: doc.data().animalID,
-                commonName: doc.data().commonName,
-                groupID: doc.data().groupID,
-                heightM: doc.data().heightM,
-                heightF: doc.data().heightF,
-                weightM: doc.data().weightM,
-                weightF: doc.data().weightF,
-                habitats: doc.data().habitats,
-                dietType: doc.data().dietType,
-                lifeSpan: doc.data().lifeSpan,
-                gestationPeriod: doc.data().gestationPeriod,
-                typicalBehaviour: doc.data().typicalBehaviour,
-                animalOverview: doc.data().animalOverview,
-                animalDescription: doc.data().animalDescription,
-                pictures: doc.data().pictures
-            }
-            if (!dietTypeData.includes(doc.data().dietType)) {
-                let newDiet = {
-                    diet: doc.data().dietType
-                }
-                dietTypes.add(newDiet)
-                dietTypeData.push(doc.data().dietType)
-            }
-            animalData.push(temp);
-        });
-    });
+    
 
     users.onSnapshot(function (querySnapshot) {
         usersData = [];
@@ -1970,7 +1942,46 @@ if (CACHE) {
         querySnapshot.forEach(function (doc) {
             let diet = doc.data().diet
 
-            dietTypeData.push(diet)
+            if (!dietTypeData.includes(diet)) {
+                dietTypeData.push(diet)
+            }else{
+                dietTypes.doc(doc.id).delete();
+            }
+            
+        });
+    })
+
+    animals.onSnapshot(function (querySnapshot) {
+        animalData = [];
+        querySnapshot.forEach(function (doc) {
+            let temp = {
+                classification: doc.id,
+                animalID: doc.data().animalID,
+                commonName: doc.data().commonName,
+                groupID: doc.data().groupID,
+                heightM: doc.data().heightM,
+                heightF: doc.data().heightF,
+                weightM: doc.data().weightM,
+                weightF: doc.data().weightF,
+                habitats: doc.data().habitats,
+                dietType: doc.data().dietType,
+                lifeSpan: doc.data().lifeSpan,
+                gestationPeriod: doc.data().gestationPeriod,
+                
+                typicalBehaviourF:{
+                    behaviour:doc.data().typicalBehaviourF.behaviour,
+                    threatLevel:doc.data().typicalBehaviourF.threatLevel
+                },
+                typicalBehaviourM:{
+                    behaviour:doc.data().typicalBehaviourM.behaviour,
+                    threatLevel:doc.data().typicalBehaviourM.threatLevel
+                },
+
+                animalOverview: doc.data().animalOverview,
+                animalDescription: doc.data().animalDescription,
+                pictures: doc.data().pictures
+            }
+            animalData.push(temp);
         });
     });
 
