@@ -24,7 +24,7 @@ export class RangersComponent implements OnInit {
 	ngOnInit(): void {
 		document.getElementById('rangers-route').classList.add('activeRoute');
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'"){token,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
+			'"){rangerID,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -39,7 +39,7 @@ export class RangersComponent implements OnInit {
 
 	refresh(updateOp: string) {
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'"){token,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
+			'"){rangerID,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -53,8 +53,8 @@ export class RangersComponent implements OnInit {
 						newRangerList.forEach(x => this.addIfNewRanger(x));
 						break;
 					case "delete":
-						let removedRanger = this.rangers.filter(x => !newRangerList.some(y => y.token == x.token));
-						this.removeRanger(removedRanger[0].token);
+						let removedRanger = this.rangers.filter(x => !newRangerList.some(y => y.rangerID == x.rangerID));
+						this.removeRanger(removedRanger[0].rangerID);
 						break;
 				}
 				this.sort(this.sortBySurname);
