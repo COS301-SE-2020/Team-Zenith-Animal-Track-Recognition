@@ -1,6 +1,7 @@
-const graphql = require('graphql');
+const CACHE = true;
+var dateOBJ = new Date();
 
-const _ = require('lodash')
+const graphql = require('graphql');
 const {
     GraphQLObjectType,
     GraphQLString,
@@ -11,205 +12,155 @@ const {
     GraphQLFloat,
     GraphQLNonNull
 } = graphql;
-
-
-
-//google db
-
-const admin = require('firebase-admin');
-
-let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
+const _ = require('lodash')
 const {
     toNumber
 } = require('lodash');
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-
+//google db
+const ADMIN = require('firebase-admin');
+let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
+ADMIN.initializeApp({
+    credential: ADMIN.credential.cert(serviceAccount),
 });
 
-let db = admin.firestore();
-let users = db.collection("Users");
-let Animals = db.collection("Animals");
-let Groups = db.collection("Groups");
-let Habitats = db.collection("Habitats");
+
+
+let db = ADMIN.firestore();
+let animals = db.collection("animals");
+let users = db.collection("users");
+let groups = db.collection("groups");
+let habitats = db.collection("habitats");
+let pictures = db.collection("pictures");
+let spoorIdentifications = db.collection("spoorIdentifications");
 
 //google db
 
-const GessType = new GraphQLObjectType({
-    name: "gess",
-    fields: () => ({
-        animal: {
-            type: AnimalType
-        },
-        confidence: {
-            type: GraphQLFloat
-        }
-    })
-})
 
-var MesTypeData = [{
+let mesData = [{
     msg: "deleted"
 }]
-var HabitatData = []
-var usersdata = []
-var GroupData = []
-var animaldata = []
+let habitatData = []
+let usersData = []
+let groupData = []
+let animalData = []
+let pictureData = []
+let spoorIdentificationData = []
 
-
-var PictureData = [{
-    ID: "1",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/panthera_leo%2FLion_waiting_in_Namibia.jpg?alt=media&token=548e4d88-4c6e-4b79-9318-e34de2cce11f",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "2",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Lioness.jpg?alt=media&token=ee206a62-4ada-49fb-ab2a-5a8c1c64e71a",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "3",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/lion-3.jpg?alt=media&token=bb20992a-6e66-4315-b335-7c90095e5dc2",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "4",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Leopard-Preview.jpg?alt=media&token=6324c77a-c8a4-491e-93f4-158c1dfaaf93",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "5",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/images.jpg?alt=media&token=8285358f-8d7d-4614-a81a-9b00f70d500b",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "6",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/leopard-africa-safari.jpg?alt=media&token=1cd99d5c-ee4a-49ae-8053-a17cd73a6898",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "7",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/download.jpg?alt=media&token=ce7bb440-5a2c-4d94-8e4a-28dab9b761c8",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "8",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/32cb44cc3846beda8dcfb89c9ab69711.jpg?alt=media&token=de4777e1-24dc-4b1f-a406-53f33da0aa01",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "9",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Cheetah.jpg?alt=media&token=66f2a822-2f16-4eaa-a0af-66009bb4dfce",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "10",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/unnamed.jpg?alt=media&token=4bc8bcf7-6af8-49a5-ab32-d86cf934ea9f",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "11",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/images%20(1).jpg?alt=media&token=985d5b66-bf0b-437a-8613-d7e3cefbf687",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "12",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/KambakuP.jpg?alt=media&token=315d73e1-92b1-4df4-a736-9ca32db52df0",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "13",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/65555323_2448143245245563_5682639601198432256_o.jpg?alt=media&token=bb86c99b-9d92-4d83-b29b-06cb3ff426b7",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "14",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/BlackMichaelWain_large.jpg?alt=media&token=7a01bcb7-ac23-4204-b606-a764010b440c",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "15",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/black-rhino-on-the-masai-mara-sandra-bronstein.jpg?alt=media&token=a0f146b2-f91c-46f4-b91c-95f77c1c42d7",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "16",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Impala-Saddleback.jpg?alt=media&token=f7b222d1-80cd-42a1-b652-988e4a5c6d7e",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "17",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Impala_ram.jpg?alt=media&token=1d63f203-8cda-4698-8255-b7c4796b9a74",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}, {
-    ID: "18",
-    URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/unnamed%20(1).jpg?alt=media&token=12519e85-9b6a-4b20-9857-0bee3da43c82",
-    Kind_Of_Picture: "Animal",
-    GeotagID: ""
-}]
-var GeotagData = [{
-        ID: 1,
-        Reporting_User_Name: "root",
-        Classification: 'Panthera leo',
-        Geotag: {
-            long: 0,
-            lat: 0
-        },
-        timestamp: {
-            timestamp: 0
-        }
-
-    },
-    {
-        ID: 2,
-        Reporting_User_Name: "root",
-        Classification: 'Panthera leo',
-        Geotag: {
-            long: 0,
-            lat: 0
-        },
-        timestamp: {
-            timestamp: 0
-        }
-
-    }, {
-        ID: 3,
-        Reporting_User_Name: "root",
-        Classification: 'Panthera leo',
-        Geotag: {
-            long: 0,
-            lat: 0
-        },
-        timestamp: {
-            timestamp: 0
-        }
-
-    }
-]
-const MesType = new GraphQLObjectType({
+const MES_TYPE = new GraphQLObjectType({
     name: "mesig",
     fields: () => ({
         msg: {
             type: GraphQLString
         }
     })
-})
-
+});
+const LOCATION_TYPE = new GraphQLObjectType({
+    name: "location",
+    fields: () => ({
+        latitude: {
+            type: GraphQLFloat
+        },
+        longitude: {
+            type: GraphQLFloat
+        }
+    })
+});
+const DATE_AND_TIME_TYPE = new GraphQLObjectType({
+    name: "dateAndTime",
+    fields: () => ({
+        year: {
+            type: GraphQLInt
+        },
+        month: {
+            type: GraphQLInt
+        },
+        day: {
+            type: GraphQLInt
+        },
+        hour: {
+            type: GraphQLInt
+        },
+        min: {
+            type: GraphQLInt
+        },
+        second: {
+            type: GraphQLInt
+        },
+    })
+});
+const POTENTIAL_MATCHES_TYPE = new GraphQLObjectType({
+    name: "potentialMatches",
+    fields: () => ({
+        animals: {
+            type: new GraphQLList(ANIMAL_TYPE),
+            resolve(parent, args) {
+                let temp = [];
+                parent.animals.forEach(element => {
+                    temp.push(_.find(animalData, {
+                        animalID: element
+                    }))
+                });
+            }
+        },
+        Confidence: {
+            type: new GraphQLList(GraphQLFloat)
+        }
+    })
+});
+const SPOOR_IDENTIFICATION_TYPE = new GraphQLObjectType({
+    name: "SpoorIdentification",
+    fields: () => ({
+        spoorIdentificationID: {
+            type: GraphQLString
+        },
+        animal: {
+            type: ANIMAL_TYPE,
+            resolve(parent, args) {
+                let temp = undefined;
+                if (CACHE) {
+                    temp = _.find(animalData, {
+                        animalID: parent.animal
+                    })
+                } else {
+                    //todo
+                }
+                return temp;
+            }
+        },
+        dateAndTime: {
+            type: DATE_AND_TIME_TYPE
+        },
+        location: {
+            type: LOCATION_TYPE
+        },
+        ranger: {
+            type: USER_TYPE,
+            resolve(parent, args) {
+                return _.find(usersData, {
+                    token: parent.ranger
+                })
+            }
+        },
+        potentialMatches: {
+            type: POTENTIAL_MATCHES_TYPE
+        }
+    })
+});
 //user 
-const UserType = new GraphQLObjectType({
+const USER_TYPE = new GraphQLObjectType({
     name: 'user',
     fields: () => ({
-        Password: {
+        password: {
             type: GraphQLString
         },
-        Token: {
+        token: {
             type: GraphQLString
         },
-        Access_Level: {
+        accessLevel: {
             type: GraphQLString
         },
-        e_mail: {
+        eMail: {
             type: GraphQLString
         },
         firstName: {
@@ -221,59 +172,65 @@ const UserType = new GraphQLObjectType({
         phoneNumber: {
             type: GraphQLString
         },
-        // activity:{
-        //     type:new GraphQLList(OBJTypeRI)
-        // }
+        activity: {
+            type: new GraphQLList(SPOOR_IDENTIFICATION_TYPE),
+            resolve(parent, args) {
+                return _.filter(spoorIdentificationData, {
+                    ranger: parent.token
+                })
+            }
+        }
     })
 });
-
-const PicturesType = new GraphQLObjectType({
-    name: 'Picture',
+const PICTURES_TYPE = new GraphQLObjectType({
+    name: 'picture',
     fields: () => ({
-        ID: {
-            type: GraphQLID
+        picturesID: {
+            type: GraphQLString
         },
         URL: {
             type: GraphQLString
         },
-        GeotagID: {
-            type: GeotagType,
-            resolve(parent, args) {
-                return _.find(GeotagData, {
-                    ID: parent.GeotagID
-                })
-            }
-        },
-        Kind_Of_Picture: {
+        kindOfPicture: {
             type: GraphQLString
         }
 
     })
 });
 
+const BEHAVIOUR_TYPE = new GraphQLObjectType({
+    name: "Behaviour",
+    fields: () => ({
+        behaviour: {
+            type: GraphQLString
+        },
+        threatLevel: {
+            type: GraphQLString
+        }
+    })
+});
 //animals
-
-const AnimalType = new GraphQLObjectType({
+const ANIMAL_TYPE = new GraphQLObjectType({
     name: 'animal',
     fields: () => ({
-        Classification: {
+        classification: {
             type: GraphQLString
         },
-        Animal_ID: {
+        animalID: {
             type: GraphQLString
         },
-        Common_Name: {
+        commonName: {
             type: GraphQLString
         },
-        Group_ID: {
-            type: new GraphQLList(GroupType),
+        groupID: {
+            type: new GraphQLList(GROUP_TYPE),
             resolve(parent, args) {
                 let a = []
-                let d = parent.Group_ID
+                let d = parent.groupID
                 d.forEach(b => {
 
-                    let c = _.find(GroupData, {
-                        Group_ID: b.toString()
+                    let c = _.find(groupData, {
+                        groupID: b.toString()
                     })
 
                     a.push(c)
@@ -282,27 +239,27 @@ const AnimalType = new GraphQLObjectType({
                 return a
             }
         },
-        HeightM: {
+        heightM: {
             type: GraphQLFloat
         },
-        HeightF: {
+        heightF: {
             type: GraphQLFloat
         },
-        WeightM: {
+        weightM: {
             type: GraphQLFloat
         },
-        WeightF: {
+        weightF: {
             type: GraphQLFloat
         },
-        Habitats: {
-            type: new GraphQLList(HabitatType),
+        habitats: {
+            type: new GraphQLList(HABITAT_TYPE),
             resolve(parent, args) {
                 let a = []
-                let d = parent.Habitats
+                let d = parent.habitats
                 d.forEach(b => {
 
-                    let c = _.find(HabitatData, {
-                        ID: b.toString()
+                    let c = _.find(habitatData, {
+                        habitatID: b.toString()
                     })
 
                     a.push(c)
@@ -311,210 +268,153 @@ const AnimalType = new GraphQLObjectType({
                 return a
             }
         },
-        Diet_Type: {
+        dietType: {
             type: GraphQLString
         },
-        Life_Span: {
+        lifeSpan: {
             type: GraphQLString
         },
-        Gestation_Period: {
+        gestationPeriod: {
             type: GraphQLString
         },
-        Typical_Behaviour: {
+        typicalBehaviourM: {
+            type: BEHAVIOUR_TYPE
+        },
+        typicalBehaviourF: {
+            type: BEHAVIOUR_TYPE
+        },
+        animalOverview: {
             type: GraphQLString
         },
-        Overview_of_the_animal: {
+        animalDescription: {
             type: GraphQLString
         },
-        Description_of_animal: {
-            type: GraphQLString
-        },
-        Pictures: {
-            type: new GraphQLList(PicturesType),
+        pictures: {
+            type: new GraphQLList(PICTURES_TYPE),
             resolve(parent, args) {
-                let a = []
-                let d = parent.Pictures
-                d.forEach(b => {
-
-                    let c = _.find(PictureData, {
-                        ID: b.toString()
+                let picturesReturn = []
+                let pictures = parent.pictures
+                // console.log(pictureData)
+                //console.log(parent.classification)
+                pictures.forEach(b => {
+                    //console.log(b)
+                    let c = _.find(pictureData, {
+                        pictureID: b
                     })
-
-                    a.push(c)
-
+                     //console.log(c)
+                    picturesReturn.push(c)
                 })
-                return a
+                return picturesReturn
             }
         }
     })
 });
-const GeotagDefType = new GraphQLObjectType({
-    name: "GeotagDef",
-    fields: () => ({
-        lat: {
-            type: GraphQLFloat
-        },
-        long: {
-            type: GraphQLFloat
-        }
-
-    })
-})
-
-const timestampType = new GraphQLObjectType({
-    name: "timestamp",
-    fields: () => ({
-        timestamp: {
-            type: GraphQLInt
-        }
-    })
-})
-
-
-const GeotagType = new GraphQLObjectType({
-    name: 'Geotag',
-    fields: () => ({
-        ID: {
-            type: GraphQLID
-        },
-        Reporting_User_Name: {
-            type: UserType,
-            resolve(parent, args) {
-                return _.find(users, {
-                    User_Name: parent.Reporting_User_Name
-                })
-            }
-        },
-        Classification: {
-            type: AnimalType,
-            resolve(parent, args) {
-                return _.find(animaldata, {
-                    Classification: parent.Classification
-
-                })
-            }
-        },
-        Geotag: {
-            type: GeotagDefType
-        },
-        timestamp: {
-            type: timestampType
-        }
-    })
-
-})
-
-const GroupType = new GraphQLObjectType({
+const GROUP_TYPE = new GraphQLObjectType({
     name: "Group",
     fields: () => ({
-        Group_ID: {
+        groupID: {
             type: GraphQLString
         },
-        Group_Name: {
+        groupName: {
             type: GraphQLString
         }
     })
 })
-
-const HabitatType = new GraphQLObjectType({
+const HABITAT_TYPE = new GraphQLObjectType({
     name: "Habitat",
     fields: () => ({
-        Habitat_ID: {
+        habitatID: {
             type: GraphQLID
         },
-        Habitat_Name: {
+        habitatName: {
             type: GraphQLString
         },
-        Broad_Description: {
+        description: {
             type: GraphQLString
         },
-        Distinguishing_Features: {
+        distinguishingFeatures: {
             type: GraphQLString
-        },
-        Pictures: {
-            type: new GraphQLList(PicturesType),
-            //TODO
         }
     })
 })
 
-
+// RootQuery name divinf in grahpQL
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
         login: {
-            type: UserType,
+            type: USER_TYPE,
             args: {
-                e_mail: {
+                eMail: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Password: {
+                password: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
 
-                var a = _.find(usersdata, {
-                    e_mail: args.e_mail
+                let a = _.find(usersData, {
+                    eMail: args.eMail
 
                 })
                 if (a === undefined)
                     return null
-                else if (a.Password == args.Password)
+                else if (a.password == args.password)
                     return a
                 else return null
             }
 
         },
-        DASlogin: {
-            type: UserType,
+        wdbLogin: {
+            type: USER_TYPE,
             args: {
-                e_mail: {
+                eMail: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Password: {
+                password: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
-                    e_mail: args.e_mail
+                let a = _.find(usersData, {
+                    eMail: args.eMail
                 })
                 if (a === undefined)
                     return null
-                else if (a.Password == args.Password && a.Access_Level > 2)
+                else if (a.password == args.password && a.accessLevel > 2)
                     return a
                 else return null
             }
 
         },
-        Groups: {
-            type: GraphQLList(GroupType),
+        groups: {
+            type: GraphQLList(GROUP_TYPE),
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Group_ID: {
+                groupID: {
                     type: GraphQLString
                 },
-                Group_Name: {
+                groupName: {
                     type: GraphQLString
                 },
             },
             resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.Token
+                a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a != null) {
-                    const newLocal = GroupData;
-                    if (Group_ID != undefined) {
+                    const newLocal = groupData;
+                    if (args.groupID != undefined) {
                         newLocal = _.filter(newLocal, {
-                            Group_ID: args.Group_ID
+                            groupID: args.groupID
                         })
                     }
-                    if (Group_Name != undefined) {
+                    if (args.groupName != undefined) {
                         newLocal = _.filter(newLocal, {
-                            Group_Name: args.Group_Name
+                            groupName: args.groupName
                         })
                     }
                     return newLocal;
@@ -522,22 +422,34 @@ const RootQuery = new GraphQLObjectType({
                 return null;
             }
         },
-        Users: {
-            type: GraphQLList(UserType),
+        numberGroups: {
+            type: GraphQLInt,
             args: {
-                TokenIn: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                let a = groupData.length
+                return a
+            }
+        },
+        users: {
+            type: GraphQLList(USER_TYPE),
+            args: {
+                tokenIn: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Token: {
+                tokenSearch: {
                     type: GraphQLString
                 },
-                Password: {
+                password: {
                     type: GraphQLString
                 },
-                Access_Level: {
+                accessLevel: {
                     type: GraphQLString
                 },
-                e_mail: {
+                eMail: {
                     type: GraphQLString
                 },
                 firstName: {
@@ -551,165 +463,159 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.TokenIn
+                a = _.find(usersData, {
+                    token: args.tokenIn
                 })
                 if (a != null) {
-                    // const newLocal = usersdata;
-                    let newLocal = usersdata;
+                    let temp = usersData;
 
-                    if (args.Token != undefined)
-                        newLocal = _.filter(newLocal, {
-                            Token: args.Token
+                    if (args.tokenSearch != undefined)
+                        temp = _.filter(temp, {
+                            token: args.tokenSearch
                         })
-                    if (args.Password != undefined)
-                        newLocal = _.filter(newLocal, {
-                            Password: args.Password
+                    if (args.password != undefined)
+                        temp = _.filter(temp, {
+                            password: args.password
                         })
-                    if (args.Access_Level != undefined)
-                        newLocal = _.filter(newLocal, {
-                            Access_Level: args.Access_Level
+                    if (args.accessLevel != undefined)
+                        temp = _.filter(temp, {
+                            accessLevel: args.accessLevel
                         })
-                    if (args.e_mail != undefined)
-                        newLocal = _.filter(newLocal, {
-                            e_mail: args.e_mail
+                    if (args.eMail != undefined)
+                        temp = _.filter(temp, {
+                            eMail: args.eMail
                         })
                     if (args.phoneNumber != undefined) {
-                        newLocal = _.filter(newLocal, {
+                        temp = _.filter(temp, {
                             phoneNumber: args.phoneNumber
                         })
-                        newLocal = newLocal.trim();
+                        temp = temp.trim();
                     }
-                    return newLocal;
+                    return temp;
                 }
                 return null;
             }
         },
-        Habitats: {
-            type: GraphQLList(HabitatType),
+        habitats: {
+            type: GraphQLList(HABITAT_TYPE),
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.Token
+                a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a != null) {
-                    const newLocal = HabitatData;
+                    const newLocal = habitatData;
                     return newLocal;
-                }
-                return null;
-            }
-        },
-
-        imageID: {
-            type: new GraphQLList(GessType),
-            args: {
-                img: {
-                    type: GraphQLString
-                },
-                Token: {
-                    type: new GraphQLNonNull(GraphQLString)
-                }
-            },
-            resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.Token
-                })
-                if (a != null) {
-                    const newLocal = animaldata;
-                    let b = []
-                    newLocal.forEach(val => {
-                        let c = {}
-                        c.animal = val;
-                        c.confidence = Math.random();
-                        b.push(c)
-                    })
-                    b.sort((a, b) => (a.confidence > b.confidence) ? 1 : -1)
-                    console.log(b)
-                    return b;
                 }
                 return null;
             }
         },
         animals: {
-            type: GraphQLList(AnimalType),
+            type: GraphQLList(ANIMAL_TYPE),
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
+                },
+                group: {
+                    type: GraphQLString
                 }
             },
             resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.Token
+                a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a != null) {
-                    const newLocal = animaldata;
-                    return newLocal;
+                    let temp = [];
+                    if (args.group != undefined) {
+                        animalData.forEach(animal => {
+
+                            var BreakException = {};
+
+                            try {
+                                animal.groupID.forEach(element => {
+                                    if (element == args.group) {
+                                        temp.push(animal)
+                                        throw BreakException;
+                                    }
+                                });
+                            } catch (e) {
+                                if (e !== BreakException) throw e;
+                            }
+                        });
+                    } else {
+                        temp = animalData
+                    }
+                    return temp;
                 }
 
                 return null;
             }
         },
-        Geotags: {
-            type: GraphQLList(GeotagType),
+        animalsbyByClassification: {
+            type: ANIMAL_TYPE,
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
+                },
+                classification: {
+                    type: GraphQLString
                 }
             },
             resolve(parent, args) {
-                a = _.find(usersdata, {
-                    Token: args.Token
+                a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a != null) {
-                    const newLocal = GeotagData;
-                    return newLocal;
+                    return _.find(animalData, {
+                        classification: args.classification
+                    })
+
                 }
+
                 return null;
             }
         },
-
-
-        Pictures: {
-            type: GraphQLList(PicturesType),
+        pictures: {
+            type: GraphQLList(PICTURES_TYPE),
             args: {
-                Classification: {
+                classification: {
                     type: (GraphQLString)
                 },
-                Common_Name: {
+                commonName: {
                     type: (GraphQLString)
                 }
             },
             resolve(parent, args) {
                 let a = []
-                if (args.Classification == undefined && args.Common_Name == undefined) {
-                    let a = PictureData
+                if (args.classification == undefined && args.commonName == undefined) {
+                    let a = pictureData
                     return a
                 }
-                animaldata.forEach(val => {
+                animalData.forEach(val => {
 
-                    if (args.Classification != undefined)
-                        if (args.Classification == val.Classification) {
-                            let b = val.Pictures
+                    if (args.classification != undefined)
+                        if (args.classification == val.classification) {
+                            let b = val.pictures
                             console.log(b)
                             b.forEach(c => {
                                 console.log(c)
-                                let d = _.find(PictureData, {
-                                    ID: c.toString()
+                                let d = _.find(pictureData, {
+                                    picturesID: c.toString()
                                 })
                                 console.log(d)
                                 a.push(d)
                             })
                         }
-                    if (args.Common_Name != undefined) {
-                        if (args.Common_Name == val.Common_Name) {
-                            let b = val.Pictures
+                    if (args.commonName != undefined) {
+                        if (args.commonName == val.commonName) {
+                            let b = val.pictures
                             console.log(b)
                             b.forEach(c => {
-                                let d = _.find(PictureData, {
+                                let d = _.find(pictureData, {
                                     ID: c.toString()
                                 })
                                 a.push(d)
@@ -721,129 +627,71 @@ const RootQuery = new GraphQLObjectType({
                 })
                 return a
             }
-        }
+        },
+        spoorIdentification: {
+            type: GraphQLList(SPOOR_IDENTIFICATION_TYPE),
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                ranger: {
+                    type: GraphQLString
+                },
+                negat: {
+                    type: GraphQLString
+                }
+            },
+            resolve(parent, args) {
+                a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == null) {
+                    return null;
+                }
+                let temp = spoorIdentificationData
+                if (args.ranger != undefined) {
+                    if (args.negat == undefined) {
+                        temp = _.filter(temp, {
+                            ranger: args.ranger
+                        })
+                    } else {
+                        temp = _.reject(temp, {
+                            ranger: args.ranger
+                        })
+                    }
+                } else {
+                    return temp
+                }
 
+            }
+        },
     }
 })
+
+
 
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        // AddGeotags: {
-        //     type: GeotagType,
-        //     args: {
-        //         ID: {
-        //             type: GraphQLString
-        //         },
-        //         Reporting_User_Name: {
-        //             type: new GraphQLNonNull(GraphQLString)
-        //         },
-        //         Classification: {
-        //             type: new GraphQLNonNull(GraphQLString)
-        //         },
-        //         lat: {
-        //             type: new GraphQLNonNull(GraphQLFloat)
-        //         },
-        //         long: {
-        //             type: new GraphQLNonNull(GraphQLFloat)
-        //         },
-        //         timestamp: {
-        //             type: new GraphQLNonNull(GraphQLInt)
-        //         },
-        //         Img_ID: {
-        //             type: GraphQLID
-        //         }
-
-
-        //     },
-        //     resolve(parent, args) {
-        //         let id2 = GeotagData.length + 1;
-        //         if (args.Img != undefined) {
-
-        //         }
-
-        //         if (args.ID += undefined)
-        //             id2 = args.ID;
-        //         console.log(id2)
-        //         var newGeotag = {
-        //             ID: id2,
-        //             Reporting_User_Name: args.Reporting_User_Name,
-        //             Classification: args.Classification,
-        //             Geotag: {
-        //                 long: args.long,
-        //                 lat: args.lat
-        //             },
-        //             timestamp: {
-        //                 timestamp: args.timestamp
-        //             }
-        //         }
-
-        //         GeotagData.push(newGeotag)
-        //         if (args.Img_ID != undefined) {
-        //             i = _.find(PictureData, {
-        //                 ID: args.Img_ID
-        //             })
-        //             i[GeotagID] = id2;
-        //         }
-        //         return _.find(GeotagData, {
-        //             ID: id2
-        //         })
-        //     }
-        // },
-        AddIMG: {
-            type: PicturesType,
+        addUser: {
+            type: USER_TYPE,
             args: {
-                img: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Classification: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                GeotagID: {
-                    type: GraphQLString
-                },
-                Token: {
-                    type: new GraphQLNonNull(GraphQLString)
-                }
-
-            },
-            resolve(parent, args) {
-                if (args.GeotagID == undefined)
-                    args.GeotagID = "";
-                a = _.find(usersdata, {
-                    Token: args.Token
-                })
-                if (a.Access_Level <= 2)
-                    return null
-                var newPicture = {
-                    ID: (PictureData.length + 1),
-                    URL: "",
-                    GeotagID: args.GeotagID
-                }
-                PictureData.push(newPicture)
-
-                return newPicture
-            }
-        },
-        AddUser: {
-            type: UserType,
-            args: {
                 firstName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 lastName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Password: {
+                password: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Access_Level: {
+                accessLevel: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                e_mail: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                Token: {
+                eMail: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 phoneNumber: {
@@ -852,51 +700,51 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
-                    Token: args.Token
+                let a = _.find(usersData, {
+                    token: args.token
                 })
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
 
-                var newuser = {
-                    Password: args.Password,
-                    Access_Level: args.Access_Level,
-                    e_mail: args.e_mail,
+                let newuser = {
+                    password: args.password,
+                    accessLevel: args.accessLevel,
+                    eMail: args.eMail,
                     firstName: args.firstName,
                     lastName: args.lastName,
                     phoneNumber: args.phoneNumber
                 }
 
-                var x = users.add(newuser).then(function (docRef) {
+                let x = users.add(newuser).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
-                    var newuser2 = {
-                        Password: args.Password,
-                        Access_Level: args.Access_Level,
-                        e_mail: args.e_mail,
+                    let newuser2 = {
+                        password: args.password,
+                        accessLevel: args.accessLevel,
+                        eMail: args.eMail,
                         firstName: args.firstName,
                         lastName: args.lastName,
                         phoneNumber: args.phoneNumber,
-                        Token: docRef.id
+                        token: docRef.id
                     }
-                    usersdata.push(newuser2)
+                    // usersData.push(newuser2)
                 })
 
                 console.log(x)
-                a = _.find(usersdata, {
-                    Token: x
+                a = _.find(usersData, {
+                    token: x
                 })
                 console.log(a)
                 return a;
             }
         },
-        UpdateLevel: {
-            type: UserType,
+        updateLevel: {
+            type: USER_TYPE,
             args: {
-                TokenSend: {
+                tokenSend: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                TokenChange: {
+                tokenChange: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 Level: {
@@ -904,42 +752,40 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
-                    Token: args.TokenSend
+                let a = _.find(usersData, {
+                    token: args.tokenSend
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
-                    return null
+                if (a.accessLevel <= 2) {
+                    return null;
                 }
 
-                // users.doc(TokenChange).update({"Access_Level":Level})
-
-                b = _.findIndex(usersdata, {
-                    Token: args.TokenChange
+                b = _.findIndex(usersData, {
+                    token: args.tokenChange
                 })
-                usersdata[b].Access_Level = args.Level
-                return usersdata[b]
+                usersData[b].accessLevel = args.Level
+                return usersData[b]
             }
 
         },
-        UpdateUser: {
-            type: UserType,
+        updateUser: {
+            type: USER_TYPE,
             args: {
-                TokenSend: {
+                tokenSend: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                TokenChange: {
+                tokenChange: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Password: {
+                password: {
                     type: GraphQLString
                 },
-                Access_Level: {
+                accessLevel: {
                     type: GraphQLString
                 },
-                e_mail: {
+                eMail: {
                     type: GraphQLString
                 },
                 firstName: {
@@ -953,380 +799,749 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
-                    Token: args.TokenSend
+                let a = _.find(usersData, {
+                    token: args.tokenSend
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
-                b = _.findIndex(usersdata, {
-                    Token: args.TokenChange
+                b = _.findIndex(usersData, {
+                    token: args.tokenChange
                 })
 
 
-                if (args.Access_Level != undefined) {
-                    usersdata[b].Access_Level = args.Access_Level
-                    users.doc(args.TokenChange).update({
-                        "Access_Level": args.Access_Level
+                if (args.accessLevel != undefined) {
+                    usersData[b].accessLevel = args.accessLevel
+                    users.doc(args.tokenChange).update({
+                        "accessLevel": args.accessLevel
                     })
                 }
-                if (args.Password != undefined) {
-                    usersdata[b].Password = args.Password
-                    users.doc(args.TokenChange).update({
-                        "Password": args.Password
+                if (args.password != undefined) {
+                    usersData[b].password = args.password
+                    users.doc(args.tokenChange).update({
+                        "password": args.password
                     })
                 }
-                if (args.e_mail != undefined) {
-                    usersdata[b].e_mail = args.e_mail
-                    users.doc(args.TokenChange).update({
-                        "e_mail": args.e_mail
+                if (args.eMail != undefined) {
+                    usersData[b].eMail = args.eMail
+                    users.doc(args.tokenChange).update({
+                        "eMail": args.eMail
                     })
                 }
                 if (args.firstName != undefined) {
-                    usersdata[b].firstName = args.firstName
-                    users.doc(args.TokenChange).update({
+                    usersData[b].firstName = args.firstName
+                    users.doc(args.tokenChange).update({
                         "firstName": args.firstName
                     })
                 }
                 if (args.lastName != undefined) {
-                    usersdata[b].lastName = args.lastName
-                    users.doc(args.TokenChange).update({
+                    usersData[b].lastName = args.lastName
+                    users.doc(args.tokenChange).update({
                         "lastName": args.lastName
                     })
                 }
                 if (args.phoneNumber != undefined) {
-                    usersdata[b].phoneNumber = args.phoneNumber
-                    users.doc(args.TokenChange).update({
+                    usersData[b].phoneNumber = args.phoneNumber
+                    users.doc(args.tokenChange).update({
                         "phoneNumber": args.phoneNumber
                     })
                 }
 
-                return usersdata[b]
+                return usersData[b]
             }
 
         },
-        DeleteUser: {
-            type: MesType,
+        deleteUser: {
+            type: MES_TYPE,
             args: {
-                TokenIn: {
+                tokenIn: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                TokenDelete: {
+                tokenDelete: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
-                    Token: args.TokenIn
+                let a = _.find(usersData, {
+                    token: args.tokenIn
                 })
                 if (a == undefined) {
                     console.log("deleted aberted 1");
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     console.log("deleted aberted 2");
                     return null
                 }
-                if (args.TokenDelete == args.TokenIn) {
+                if (args.tokenDelete == args.tokenIn) {
                     console.log("deleted aberted 3");
                     return null
                 }
                 console.log("hello")
-                var b = _.findIndex(usersdata, {
-                    Token: args.TokenDelete
+                let b = _.findIndex(usersData, {
+                    token: args.tokenDelete
                 })
 
-                usersdata.splice(b, 1)
+                usersData.splice(b, 1)
 
-                users.doc(args.TokenDelete).delete().then(function () {
+                users.doc(args.tokenDelete).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
 
-                console.log(usersdata);
-                return MesTypeData[0];
+                console.log(usersData);
+                return MesData[0];
             }
 
         },
-        AddGroup: {
-            type: GroupType,
+        addGroup: {
+            type: GROUP_TYPE,
             args: {
-                Group_Name: {
+                groupName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
 
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
-                    Token: args.Token
+                let a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
-                var GID = ((GroupData.length + 1))
-                var b = _.find(GroupData, {
-                    GeotagID: GID.toString()
+                let GID = ((groupData.length + 1))
+                let b = _.find(groupData, {
+                    groupID: GID.toString()
                 })
                 while (b != null) {
                     GID++
-                    b = _.find(GroupData, {
-                        GeotagID: GID.toString()
+                    b = _.find(groupData, {
+                        groupID: GID.toString()
                     })
                 }
 
-                var newGroup = {
-                    Group_Name: args.Group_Name,
-                    Group_ID: GID.toString()
+                let newGroup = {
+                    groupName: args.groupName,
+                    groupID: GID.toString()
                 }
                 console.log(GID.toString())
-                Groups.doc(GID.toString()).set(newGroup)
+                groups.doc(GID.toString()).set(newGroup)
 
-                GroupData.push(newGroup)
+                groupData.push(newGroup)
                 return newGroup;
             }
         },
-        UpdateGroup: {
-            type: UserType,
+        apdateGroup: {
+            type: USER_TYPE,
             args: {
-                Group_Name: {
+                groupName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Group_ID: {
+                groupID: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
-                var a = _.find(GroupData, {
-                    Token: args.TokenSend
+                let a = _.find(groupData, {
+                    token: args.tokenSend
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
-                b = _.findIndex(GroupData, {
-                    Token: args.Group_ID
+                b = _.findIndex(groupData, {
+                    token: args.groupID
                 })
-                GroupData[b].Group_Name = args.Group_Name
-                users.doc(args.Group_ID).update({
-                    "Group_Name": args.Group_Name
+                groupData[b].groupName = args.groupName
+                users.doc(args.groupID).update({
+                    "groupName": args.groupName
                 })
 
-                return usersdata[b]
+                return usersData[b]
             }
 
         },
-        DeleteGroup: {
-            type: MesType,
+        deleteGroup: {
+            type: MES_TYPE,
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Group_ID: {
+                groupID: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
-                    Token: args.TokenIn
+                let a = _.find(usersData, {
+                    token: args.tokenIn
                 })
                 if (a == undefined) {
                     console.log("deleted aberted 1");
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     console.log("deleted aberted 2");
                     return null
                 }
                 console.log("hello")
-                var b = _.findIndex(GroupData, {
-                    Token: args.Group_ID
+                let b = _.findIndex(groupData, {
+                    token: args.groupID
                 })
 
-                usersdata.splice(b, 1)
+                usersData.splice(b, 1)
 
-                users.doc(args.Group_ID).delete().then(function () {
+                users.doc(args.groupID).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
 
-                console.log(usersdata);
-                return MesTypeData[0];
+                console.log(usersData);
+                return MesData[0];
             }
 
         },
-        AddHabitat: {
-            type: HabitatType,
+        addHabitat: {
+            type: HABITAT_TYPE,
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Habitat_Name: {
+                habitatName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 Broad_Description: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Distinguishing_Features: {
+                distinguishingFeatures: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
 
 
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
-                    Token: args.Token
+                let a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
-                var HID = ((HabitatData.length + 1))
-                var b = _.find(HabitatData, {
-                    Habitat_ID: HID.toString()
+                let HID = ((habitatData.length + 1))
+                let b = _.find(habitatData, {
+                    habitatID: HID.toString()
                 })
                 while (b != null) {
                     HID++
-                    b = _.find(HabitatData, {
-                        Habitat_ID: HID.toString()
+                    b = _.find(habitatData, {
+                        habitatID: HID.toString()
                     })
                 }
 
-                var newHabitat = {
-                    Habitat_Name: args.Habitat_Name,
-                    Habitat_ID: HID.toString(),
+                let newHabitat = {
+                    habitatName: args.habitatName,
+                    habitatID: HID.toString(),
                     Broad_Description: args.Broad_Description,
-                    Distinguishing_Features: args.Distinguishing_Features
+                    distinguishingFeatures: args.distinguishingFeatures
                 }
                 console.log(HID.toString())
-                Habitats.doc(HID.toString()).set(newHabitat)
-                HabitatData.push(newHabitat)
+                habitats.doc(HID.toString()).set(newHabitat)
+                habitatData.push(newHabitat)
                 return newHabitat;
             }
         },
-        AddAnimal: {
-            type: AnimalType,
+        wdbAddAnimal: {
+            type: ANIMAL_TYPE,
             args: {
-                Token: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Classification: {
+                classification: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                Common_Name: {
+                commonName: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                HeightM: {
-                    type: new GraphQLNonNull(GraphQLInt)
-                },
-                HeightF: {
-                    type: new GraphQLNonNull(GraphQLInt)
-                },
-                WeightF: {
-                    type: new GraphQLNonNull(GraphQLInt)
-                },
-                WeightM: {
-                    type: new GraphQLNonNull(GraphQLInt)
-                },
-                Habitats: {
-                    type:new GraphQLNonNull(new GraphQLList( new GraphQLNonNull(GraphQLInt)))
-                },
-                Group_ID: {
-                    type:new GraphQLNonNull(new GraphQLList( new GraphQLNonNull(GraphQLInt)))
-                },
-                Diet_Type: {
+                animalDescription: {
                     type: new GraphQLNonNull(GraphQLString)
-                },
-                Life_Span: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                Gestation_Period: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                Typical_Behaviour: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                Overview_of_the_animal: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                Description_of_animal: {
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                Pictures: {
-                    type:new GraphQLList(GraphQLInt)
                 }
 
             },
             resolve(parent, args) {
-                var a = _.find(usersdata, {
-                    Token: args.Token
+                let a = _.find(usersData, {
+                    token: args.token
                 })
                 if (a == undefined) {
                     return null
                 }
-                if (a.Access_Level <= 2) {
+                if (a.accessLevel <= 2) {
                     return null
                 }
-                var HID = ((animaldata.length + 1))
-                var b = _.find(HabitatData, {
-                    Animal_ID: HID.toString()
+                let HID = ((animalData.length + 1))
+                let b = _.find(animalData, {
+                    animalID: HID.toString()
                 })
                 while (b != null) {
                     HID++
-                    b = _.find(HabitatData, {
-                        Animal_ID: HID.toString()
+                    b = _.find(animalData, {
+                        animalID: HID.toString()
                     })
                 }
 
-                var newAnimal = {
-                    Animal_ID:HID,
-                    Common_Name:args.Common_Name,
-                    Group_ID:args.Group_ID,
-                    HeightM:args.HeightM,
-                    HeightF:args.HeightF,
-                    WeightM:args.WeightM,
-                    WeightF:args.WeightF,
-                    Habitats:args.Habitats,
-                    Diet_Type:args.Diet_Type,
-                    Life_Span:args.Life_Span,
-                    Gestation_Period:args.Gestation_Period,
-                    Typical_Behaviour:args.Typical_Behaviour,
-                    Overview_of_the_animal:args.Overview_of_the_animal,
-                    Description_of_animal:args.Description_of_animal
+                let newAnimal = {
+                    animalID: HID,
+                    commonName: args.commonName,
+                    animalDescription: args.animalDescription,
+                    classification: args.classification
                 }
-                if(args.Pictures!=undefined)
-                {
-                    newAnimal.Pictures=args.Pictures
+
+                newAnimal.pictures = []
+                newAnimal.pictures.push("1")
+
+                newAnimal.heightM = "0"
+                newAnimal.heightF = "0"
+                newAnimal.weightF = "0"
+                newAnimal.weightM = "0"
+
+                newAnimal.habitats = []
+                newAnimal.habitats.push(1)
+
+                newAnimal.groupID = []
+                newAnimal.groupID.push(1)
+
+                newAnimal.dietType = "Food eater"
+                newAnimal.lifeSpan = "Long"
+                newAnimal.gestationPeriod = "Also long"
+                newAnimal.animalOverview = "Fluffy"
+
+                newAnimal.typicalBehaviourM = {
+                    behaviour: "naughty",
+                    threatLevel: "yes"
                 }
-                else
-                {
-                    newAnimal.Pictures=[]
-                    newAnimal.Pictures.push(1)
+                newAnimal.typicalBehaviourF = {
+                    behaviour: "naughty",
+                    threatLevel: "yes"
                 }
-                
-                Animals.doc(args.Classification).set(newAnimal).then(function (docRef) {
+
+                animals.doc(args.classification).set(newAnimal).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
-                newAnimal.Classification=args.Classification
-                animaldata.push(newAnimal)
+
+                animalData.push(newAnimal)
                 return newAnimal;
             }
         },
-        
+        addAnimal: {
+            type: ANIMAL_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                classification: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                commonName: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                heightM: {
+                    type: new GraphQLNonNull(GraphQLInt)
+                },
+                heightF: {
+                    type: new GraphQLNonNull(GraphQLInt)
+                },
+                weightF: {
+                    type: new GraphQLNonNull(GraphQLInt)
+                },
+                weightM: {
+                    type: new GraphQLNonNull(GraphQLInt)
+                },
+                habitats: {
+                    type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLInt)))
+                },
+                GroupID: {
+                    type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLInt)))
+                },
+                DietType: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                LifeSpan: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                gestationPeriod: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                TypicalBehaviourM: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                typicalBehaviourF: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                typicalThreatLevelM: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                typicalThreatLevelF: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                animalOverview: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                animalDescription: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                pictures: {
+                    type: new GraphQLList(GraphQLInt)
+                }
 
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.accessLevel <= 2) {
+                    return null
+                }
+                let HID = ((animalData.length + 1))
+                let b = _.find(habitatData, {
+                    animalID: HID.toString()
+                })
+                while (b != null) {
+                    HID++
+                    b = _.find(habitatData, {
+                        animalID: HID.toString()
+                    })
+                }
+
+                let newAnimal = {
+                    animalID: HID,
+                    commonName: args.commonName,
+                    groupID: args.groupID,
+                    heightM: args.heightM,
+                    heightF: args.heightF,
+                    weightM: args.weightM,
+                    weightF: args.weightF,
+                    habitats: args.habitats,
+                    dietType: args.dietType,
+                    lifeSpan: args.lifeSpan,
+                    gestationPeriod: args.gestationPeriod,
+                    typicalBehaviourM: {
+                        behaviour: args.TypicalBehaviourM,
+                        threatLevel: args.typicalThreatLevelM
+                    },
+                    typicalBehaviourF: {
+                        behaviour: args.typicalBehaviourF,
+                        threatLevel: args.typicalThreatLevelF
+                    },
+                    animalOverview: args.animalOverview,
+                    animalDescription: args.animalDescription
+                }
+                if (args.pictures != undefined) {
+                    newAnimal.pictures = args.pictures
+                } else {
+                    newAnimal.pictures = []
+                    newAnimal.pictures.push(1)
+                }
+
+                animals.doc(args.classification).set(newAnimal).then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+                newAnimal.classification = args.classification
+                animalData.push(newAnimal)
+                return newAnimal;
+            }
+        },
+
+
+
+        updateAnimal: {
+            type: ANIMAL_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                classification: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                commonName: {
+                    type: GraphQLString
+                },
+                heightM: {
+                    type: GraphQLInt
+                },
+                heightF: {
+                    type: GraphQLInt
+                },
+                weightF: {
+                    type: GraphQLInt
+                },
+                weightM: {
+                    type: GraphQLInt
+                },
+                habitats: {
+                    type: new GraphQLList(new GraphQLNonNull(GraphQLInt))
+                },
+                GroupID: {
+                    type: new GraphQLList(new GraphQLNonNull(GraphQLInt))
+                },
+                DietType: {
+                    type: GraphQLString
+                },
+                LifeSpan: {
+                    type: GraphQLString
+                },
+                gestationPeriod: {
+                    type: GraphQLString
+                },
+                TypicalBehaviourM: {
+                    type: GraphQLString
+                },
+                typicalBehaviourF: {
+                    type: GraphQLString
+                },
+                typicalThreatLevelM: {
+                    type: GraphQLString
+                },
+                typicalThreatLevelF: {
+                    type: GraphQLString
+                },
+                animalOverview: {
+                    type: GraphQLString
+                },
+                animalDescription: {
+                    type: GraphQLString
+                },
+                pictures: {
+                    type: new GraphQLList(GraphQLInt)
+                }
+
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.accessLevel <= 2) {
+                    return null
+                }
+                let updatedAnimal = _.find(animalData, {
+                    classification: args.classification
+                })
+                delete updatedAnimal.classification
+                if (args.commonName != undefined) {
+                    updatedAnimal.commonName = args.commonName
+                }
+                if (args.groupID != undefined) {
+                    updatedAnimal.groupID = args.groupID
+                }
+                if (args.heightM != undefined) {
+                    updatedAnimal.heightM = args.heightM
+                }
+                if (args.heightF != undefined) {
+                    updatedAnimal.heightF = args.heightF
+                }
+                if (args.weightM != undefined) {
+                    updatedAnimal.weightM = args.weightM
+                }
+                if (args.weightF != undefined) {
+                    updatedAnimal.weightF = args.weightF
+                }
+                if (args.habitats != undefined) {
+                    updatedAnimal.habitats = args.habitats
+                }
+                if (args.dietType != undefined) {
+                    updatedAnimal.dietType = args.dietType
+                }
+                if (args.lifeSpan != undefined) {
+                    updatedAnimal.lifeSpan = args.lifeSpan
+                }
+                if (args.gestationPeriod != undefined) {
+                    updatedAnimal.gestationPeriod = args.gestationPeriod
+                }
+                if (args.numOffspring != undefined) {
+                    updatedAnimal.numOffspring = args.numOffspring
+                }
+                if (args.typicalBehaviourM != undefined) {
+                    updatedAnimal.typicalBehaviourM.behaviour = args.typicalBehaviourM
+                }
+                if (args.typicalBehaviourF != undefined) {
+                    updatedAnimal.typicalBehaviourF.behaviour = args.typicalBehaviourF
+                }
+                if (args.typicalThreatLevelM != undefined) {
+                    updatedAnimal.typicalBehaviourM.threatLevel = args.typicalThreatLevelM
+                }
+                if (args.typicalThreatLevelF != undefined) {
+                    updatedAnimal.typicalBehaviourF.threatLevel = args.typicalThreatLevelF
+                }
+                if (args.overviewOfAnimal != undefined) {
+                    updatedAnimal.overviewOfAnimal = args.overviewOfAnimal
+                }
+                if (args.vulnerabilityStatus != undefined) {
+                    updatedAnimal.vulnerabilityStatus = args.vulnerabilityStatus
+                }
+                if (args.animalDescription != undefined) {
+                    updatedAnimal.animalDescription = args.animalDescription
+                }
+                animals.doc(args.classification).set(updatedAnimal)
+                newAnimal.classification = args.classification
+                animalData.push(newAnimal)
+                return newAnimal;
+            }
+        },
+        identificationBase64: {
+            type: SPOOR_IDENTIFICATION_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                base64imge: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                latitude: {
+                    type: new GraphQLNonNull(GraphQLFloat)
+                },
+                longitude: {
+                    type: new GraphQLNonNull(GraphQLFloat)
+                },
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.accessLevel <= 1) {
+                    return null
+                }
+                let IDID = ((spoorIdentificationData.length + 1))
+                let b = _.find(spoorIdentificationData, {
+                    spoorIdentificationID: IDID.toString()
+                })
+                while (b != null) {
+                    IDID++
+                    b = _.find(spoorIdentificationData, {
+                        spoorIdentificationID: IDID.toString()
+                    })
+                }
+
+                let potentialMatchesarry = _.sortBy(AIIterface(args.base64imge), ["confidence"])
+                let newingID = uplodeBase64(args.base64imge)
+
+                let newSpoorIdentification = {
+                    spoorIdentificationID: IDID.toString(),
+                    dateAndTime: {
+                        year: dateOBJ.getFullYear() + 0,
+                        month: dateOBJ.getMonth() + 1,
+                        day: dateOBJ.getDate() + 0,
+                        hour: dateOBJ.getHours() + 0,
+                        min: dateOBJ.getMinutes() + 0,
+                        second: dateOBJ.getSeconds() + 0
+                    },
+                    location: {
+                        latitude: args.latitude,
+                        longitude: args.longitude
+                    },
+                    ranger: args.token,
+                    potentialMatches: potentialMatchesarry,
+                    animal: _.last(potentialMatchesarry).animal,
+                    track: newingID,
+                    similar: getSimilarimg(newingID),
+                    tags: [0]
+                }
+                let tempID = IDID.toString()
+
+                spoorIdentifications.doc(tempID).set(newSpoorIdentification).then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+
+                spoorIdentificationData.push(newSpoorIdentification)
+                return newSpoorIdentification;
+            }
+        },
+
+        updateIdentification: {
+            type: SPOOR_IDENTIFICATION_TYPE,
+            args: {
+                token: {
+                    type: GraphQLString
+                },
+                latitude: {
+                    type: GraphQLFloat
+                },
+                longitude: {
+                    type: GraphQLFloat
+                },
+                SpoorIdentificationID: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                ranger: {
+                    type: GraphQLString
+                },
+                animal: {
+                    type: GraphQLString
+                },
+                tags: {
+                    type: new GraphQLList(new GraphQLNonNull(GraphQLString))
+                }
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.accessLevel <= 1) {
+                    return null
+                }
+                let newSpoorIdentification = _.find(spoorIdentificationData, {
+                    SpoorIdentificationID: args.SpoorIdentificationID
+                })
+                if (newSpoorIdentification == null)
+                    return null;
+
+                if (args.latitude != undefined) {
+                    newSpoorIdentification.location.latitude = args.latitude
+                }
+                if (args.longitude != undefined) {
+                    newSpoorIdentification.location.longitude = args.longitude
+                }
+                if (args.ranger != undefined) {
+                    newSpoorIdentification.ranger = args.ranger
+                }
+                if (args.animal != undefined) {
+                    newSpoorIdentification.animal = args.animal
+                }
+                if (args.tags != undefined) {
+                    newSpoorIdentification.tags = args.tags
+                }
+
+
+                spoorIdentifications.doc(SpoorIdentificationID).set(newSpoorIdentification).then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+                newSpoorIdentification.SpoorIdentificationID = SpoorIdentificationID
+                spoorIdentificationData.push(newSpoorIdentification)
+                return newSpoorIdentification;
+            }
+        },
     }
 });
 
@@ -1337,92 +1552,147 @@ module.exports = new GraphQLSchema({
     mutation: Mutation
 });
 
-// db.collection('AnimalInfo').get()
-//     .then((snapshot) => {
-//         snapshot.forEach((doc) => {
-//             console.log(doc.id, '=>', doc.data());
-//         });
-//     })
-//     .catch((err) => {
-//         console.log('Error getting documents', err);
-//     });
 
-users.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-            var newuser = {
-                Password: doc.data().Password,
-                Token: doc.id,
-                Access_Level: doc.data().Access_Level,
-                e_mail: doc.data().e_mail,
+if (CACHE) {
+    animals.onSnapshot(function (querySnapshot) {
+        animalData = [];
+        querySnapshot.forEach(function (doc) {
+            let temp = {
+                classification: doc.id,
+                animalID: doc.data().animalID,
+                commonName: doc.data().commonName,
+                groupID: doc.data().groupID,
+                heightM: doc.data().heightM,
+                heightF: doc.data().heightF,
+                weightM: doc.data().weightM,
+                weightF: doc.data().weightF,
+                habitats: doc.data().habitats,
+                dietType: doc.data().dietType,
+                lifeSpan: doc.data().lifeSpan,
+                gestationPeriod: doc.data().gestationPeriod,
+                typicalBehaviour: doc.data().typicalBehaviour,
+                animalOverview: doc.data().animalOverview,
+                animalDescription: doc.data().animalDescription,
+                pictures: doc.data().pictures
+            }
+            animalData.push(temp);
+        });
+    });
+
+    users.onSnapshot(function (querySnapshot) {
+        usersData = [];
+        querySnapshot.forEach(function (doc) {
+            let newuser = {
+                password: doc.data().password,
+                token: doc.id,
+                accessLevel: doc.data().accessLevel,
+                eMail: doc.data().eMail,
                 firstName: doc.data().firstName,
                 lastName: doc.data().lastName,
                 phoneNumber: doc.data().phoneNumber
             }
-            usersdata.push(newuser)
+            usersData.push(newuser)
         });
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
     });
 
 
-Groups.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-            var newGoupe = {
-                Group_ID: doc.data().Group_ID,
-                Group_Name: doc.data().Group_Name
+    groups.onSnapshot(function (querySnapshot) {
+        groupData = [];
+        querySnapshot.forEach(function (doc) {
+            let newGoupe = {
+                groupID: doc.data().groupID,
+                groupName: doc.data().groupName
             }
-            GroupData.push(newGoupe)
+            groupData.push(newGoupe)
         });
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
     });
 
-Habitats.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-            var newHabitat = {
-                Habitat_ID: doc.data().Habitat_ID,
-                Habitat_Name: doc.data().Habitat_Name
+    habitats.onSnapshot(function (querySnapshot) {
+        habitatData = []
+        querySnapshot.forEach(function (doc) {
+            let newHabitat = {
+                habitatID: doc.data().habitatID,
+                habitatName: doc.data().habitatName
             }
-            HabitatData.push(newHabitat)
+            habitatData.push(newHabitat)
         });
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
     });
 
-Animals.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-            var newAnimal = {
-                Classification: doc.id,
-                Animal_ID: doc.data().Animal_ID,
-                Common_Name: doc.data().Common_Name,
-                Group_ID: doc.data().Group_ID,
-                HeightM: doc.data().HeightM,
-                HeightF: doc.data().HeightF,
-                WeightM: doc.data().WeightM,
-                WeightF: doc.data().WeightF,
-                Habitats: doc.data().Habitats,
-                Diet_Type: doc.data().Diet_Type,
-                Life_Span: doc.data().Life_Span,
-                Gestation_Period: doc.data().Gestation_Period,
-                Typical_Behaviour: doc.data().Typical_Behaviour,
-                Overview_of_the_animal: doc.data().Overview_of_the_animal,
-                Description_of_animal: doc.data().Description_of_animal,
-                Pictures: doc.data().Pictures
+    pictures.onSnapshot(function (querySnapshot) {
+        pictureData = []
+        querySnapshot.forEach(function (doc) {
+            let newPicture = {
+                pictureID: doc.data().pictureID,
+                URL: doc.data().URL,
+                kindOfPicture: doc.data().kindOfPicture
             }
-            animaldata.push(newAnimal)
+            if (newPicture.pictureID == undefined)
+                newPicture.pictureID = doc.id
+            // console.log(newPicture)
+            pictureData.push(newPicture)
         });
-        // console.log(animaldata)
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
     });
 
-// animaldata2.forEach((doc)=>{
-//     var newLocal=doc
-//     docid =newLocal.Classification
-//     delete newLocal.Classification
-//     Animals.doc(docid).set(newLocal)
-// })
+    spoorIdentifications.onSnapshot(function (querySnapshot) {
+        spoorIdentificationData = []
+        querySnapshot.forEach(function (doc) {
+            let newHabitat = {
+                habitatID: doc.data().habitatID,
+                habitatName: doc.data().habitatName
+            }
+            spoorIdentificationData.push(newHabitat)
+        });
+    });
+
+}
+
+
+
+
+function AIIterface(Img) {
+    potentialMatches = []
+    for (let i = 0; i < animalData.length; i++) {
+        let newPM = {
+            animal: i,
+            confidence: parseFloat(Math.random().toFixed(2))
+        }
+        potentialMatches.push(newPM)
+    }
+    return potentialMatches
+}
+
+function uplodeBase64(Img) {
+    return 1
+}
+
+function getSimilarimg(ImgID) {
+    obj = []
+    obj.push(1)
+    obj.push(2)
+    obj.push(3)
+    return obj
+}
+
+// { //transver
+
+
+//         animals
+//         .get()
+//         .then(
+//             function (querySnapshot) {
+//                 querySnapshot.forEach(function (doc) {
+//                     let animal = doc.data()
+//                     let old =animal.pictures
+//                     let newarr=[]
+//                     old.forEach(element => {
+//                         newarr.push(element.toString())
+//                     });
+//                     delete(animal.pictures)
+//                     animal.pictures=newarr
+//                     console.log(animal)
+//                     animals.doc(doc.id).set(animal)
+//                 });
+
+//             }
+//         )
+// }
