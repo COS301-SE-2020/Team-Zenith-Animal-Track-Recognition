@@ -1,4 +1,3 @@
-
 .mat-dialog-title
 {
 	font-size: 120%;
@@ -6,6 +5,14 @@
 .mat-dialog-content
 {
 	height: 80%;
+}
+#edit-animal-form
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
 }
 .mat-tab-group
 {
@@ -17,6 +24,106 @@
 	height: 100%;
 	width: 100%;
 }
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
+{
+	padding: 0.2em 0 0.8em 0;
+}
+.edit-animal-form-content
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: flex-start;
+	padding: 2%;
+}
+.add-animal-form-input
+{
+	width: 40%;
+}
+.edit-animal-form-texarea
+{
+	width: 100%;
+}
+textarea.mat-input-element
+{
+	resize: none;
+}
+.edit-animal-form-gender-container
+{
+	height: 50%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+.edit-animal-form-gender-title 
+{
+	height: 1.5em;
+	width: 100%;
+	color: rgba(0,0,0,.65);
+	font-size: 100%;
+	padding: 0;
+	margin: 0;
+}
+.edit-animal-form-gender-content
+{
+	width: 100%;
+	display: flex;
+	flex-direction: row;	
+	padding: 2%;
+}
+.edit-animal-range-container
+{
+	width: 50%;
+	display: flex;
+	flex-direction: column;
+}
+.edit-animal-range-title
+{
+	height: 1.5em;
+	width: 100%;
+	color: rgba(0,0,0,.65);
+	font-size: 90%;
+}
+.edit-animal-ranges
+{
+	width: 80%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+.edit-animal-ranges > .mat-form-field
+{
+	width: 40%;
+}
+#edit-animal-diet-select
+{
+	width: 35%;
+	border: 1px solid #CCCCCC;
+	padding: 0.5em 0.5em;
+	border-radius: 5px;
+}
+:host ::ng-deep #edit-animal-diet-select .mat-select-value-text, :host ::ng-deep #edit-animal-diet-select .mat-select-placeholder {
+  color: #1C1C1C !important;
+}
+.edit-animal-form-textarea-container
+{
+	height: 50%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+.edit-animal-form-textarea-content
+{
+	width: 100%;
+	display: flex;
+	flex-direction: row;	
+}
+/*
 #add-new-ranger-form
 {
 	display: flex;
@@ -55,33 +162,6 @@
 }
 #overview-physical-char-group
 {
-}
-.edit-animal-range-container
-{
-	height: 100%;
-	width: 50%;
-	display: flex;
-	flex-direction: column;
-}
-.edit-animal-range-title
-{
-	height: 15%;
-	width: 100%;
-	font-size: 95%;
-	color: #AAA;
-}
-.edit-animal-ranges
-{
-	height: 85%;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	align-items: center;
-}
-.edit-animal-ranges > .mat-form-field
-{
-	width: 40%;
 }
 .edit-animal-input-container
 {
@@ -142,7 +222,7 @@
 :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
 {
 	padding: 0.2em 0 0.8em 0;
-}
+}*/
 .mat-dialog-actions
 {
 	border-top: 1px solid #CCCCCC;

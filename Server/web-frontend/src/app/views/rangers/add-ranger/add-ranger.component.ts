@@ -27,7 +27,8 @@ export class AddRangerComponent implements OnInit {
 			phoneNumber: ['', Validators.required],
 			password: ['', Validators.required],
 			dob: ['', Validators.required]
-		});
+		});		
+		document.getElementById('add-ranger-dialog').style.overflow = "hidden";
 	}
 
 	get f() { return this.addUserForm.controls; }
@@ -47,14 +48,30 @@ export class AddRangerComponent implements OnInit {
 			'",lastName:"' + encodeURIComponent(this.f.lastName.value) + '",password:"' + encodeURIComponent(this.f.password.value) +
 			'",token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",accessLevel:"1",eMail:"' +
 			encodeURIComponent(this.f.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}', '')
-			.subscribe({ next: data => this.dialogRef.close("success"), error: error => this.dialogRef.close("Error " + error.message) });
+			.subscribe({ 
+				next: data => this.dialogRef.close("success"), 
+				error: error => this.dialogRef.close("error")
+			});
+	}
+	closeDialog() {
+		this.dialogRef.close("cancel");
+	}
+	
+	
+	attachProgressbar()
+	{
+		//Append progress bar to dialog
+		let matDialog = document.getElementById('add-ranger-dialog');
+		let progressBar = document.getElementById("dialog-progressbar-container");
+		matDialog.insertBefore(progressBar, matDialog.firstChild);
 	}
 
-	//Loader
+	//Loader - Progress bar
 	startLoader() {
-		document.getElementById("loader-container").style.visibility = "visible";
+		this.attachProgressbar();
+		document.getElementById("dialog-progressbar-container").style.visibility = "visible";
 	}
 	stopLoader() {
-		document.getElementById("loader-container").style.visibility = "hidden";
+		document.getElementById("dialog-progressbar-container").style.visibility = "hidden";
 	}
 }
