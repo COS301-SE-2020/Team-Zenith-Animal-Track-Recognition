@@ -1624,9 +1624,9 @@ const Mutation = new GraphQLObjectType({
                 }
                 console.log(updatedAnimal)
                 animals.doc(args.classification).set(updatedAnimal)
-                newAnimal.classification = args.classification
+                updatedAnimal.classification = args.classification
                 animalData.push(updatedAnimal)
-                return newAnimal;
+                return updatedAnimal;
             }
         },
         identificationBase64: {
