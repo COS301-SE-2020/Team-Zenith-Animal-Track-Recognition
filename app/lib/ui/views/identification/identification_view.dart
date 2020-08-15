@@ -74,7 +74,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.10,
+      initialChildSize: 0.32,
       minChildSize: 0.10,
       maxChildSize: 0.99,
       builder: (BuildContext context, ScrollController myscrollController) {
@@ -96,9 +96,9 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
                           flex: 4, child: text(model.confident.name, context)),
                     ],
                   )),
-              SizedBox(height: 10),
-              BarInfo(),
-              Divider(thickness: 2),
+              // SizedBox(height: 10),
+              // BarInfo(),
+              // Divider(thickness: 2),
               Column(
                 children: <Widget>[
                   identifyText(context),
@@ -110,6 +110,10 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
                   ])
                 ],
               ),
+              Divider(thickness: 2),
+              SizedBox(height: 10),
+              BarInfo(),
+              Divider(thickness: 2),
               Column(
                 children: <Widget>[
                   Row(
@@ -122,6 +126,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
                   )
                 ],
               ),
+              Divider(thickness: 2),
               Column(children: <Widget>[
                 similarSpoors(context),
                 Row(
@@ -153,7 +158,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
                     Expanded(
                         flex: 1,
                         child: DownloadFunctionality(
-                          title: "Download Image",
+                          title: "Share Image",
                         )),
                   ],
                 ),
@@ -172,26 +177,31 @@ class OtherMatches extends ViewModelWidget<IdentificationViewModel> {
 
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
-    return ExpansionTile(
-        title: text18LeftBoldBlack("Other Possible Matches"),
-        children: <Widget>[
-          Container(
-            height: 250,
-            color: Colors.white,
-            child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: list.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ChildPopup(
-                      pic: list[index].pic,
-                      aname: list[index].name,
-                      species: list[index].species,
-                      score: list[index].score,
-                      index: index);
-                }),
-          )
-        ]);
+    final theme = Theme.of(context).copyWith(dividerColor: Colors.white);
+    return Theme(
+      data: theme,
+      child: ExpansionTile(
+          title: text18LeftBoldBlack("Other Possible Matches"),
+          backgroundColor: Colors.white,
+          children: <Widget>[
+            Container(
+              height: 250,
+              color: Colors.white,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: list.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ChildPopup(
+                        pic: list[index].pic,
+                        aname: list[index].name,
+                        species: list[index].species,
+                        score: list[index].score,
+                        index: index);
+                  }),
+            )
+          ]),
+    );
   }
 }
 
@@ -207,14 +217,22 @@ class Tags extends ViewModelWidget<IdentificationViewModel> {
         scrollDirection: Axis.horizontal,
         itemCount: model.tags.length,
         itemBuilder: (BuildContext context, int index) {
-          return Chip(
-            avatar: CircleAvatar(
-                radius: 10,
-                backgroundColor: Colors.grey.shade600,
-                child: text12LeftNormBlack(model.tags[index][0].toUpperCase())),
-            label: text12LeftNormBlack(model.tags[index]),
-            backgroundColor: Colors.grey[100],
+          return Expanded(
+            flex: 1,
+            child: GestureDetector(
+                onLongPress: () {
+                  model.setEditSpoorCoordLong();
+                },
+                child: text16LeftNormBlack(model.tags[index] + "    ")),
           );
+          // return Chip(
+          //   avatar: CircleAvatar(
+          //       radius: 10,
+          //       backgroundColor: Colors.grey.shade600,
+          //       child: text12LeftNormBlack(model.tags[index][0].toUpperCase())),
+          //   label: text12LeftNormBlack(model.tags[index]),
+          //   backgroundColor: Colors.grey[100],
+          // );
         });
   }
 }
@@ -233,50 +251,22 @@ class ChildPopup extends ViewModelWidget<IdentificationViewModel> {
 
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
-    return PopupMenuButton<int>(
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          value: 1,
-          child: text14LeftNormBlack('Reclassify'),
-        ),
-        PopupMenuItem(
-          value: 2,
-          child: text14LeftNormBlack('View Info'),
-        ),
-        PopupMenuItem(
-          value: 3,
-          child: text14LeftNormBlack('View Photos'),
-        ),
-      ],
-      child: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        height: 110,
-        width: 150,
-        child: Column(
-          children: <Widget>[
-            Expanded(child: innerImageBlock(pic), flex: 4),
-            Expanded(child: name(aname, context), flex: 1),
-            Expanded(child: animalSpecies(species, context), flex: 1),
-            Expanded(child: accuracyScore(score, context), flex: 1),
-          ],
-        ),
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
       ),
-      onSelected: (value) {
-        if (value == 1) {
-          model.reclassify(index);
-        } else if (value == 2) {
-          navigateToInfo(aname.toLowerCase());
-        } else {
-          navigateToGallery(aname.toLowerCase());
-        }
-        //different fuctionality insert here
-      },
-      offset: Offset(120, 40),
-      color: Colors.white,
+      height: 110,
+      width: 150,
+      child: Column(
+        children: <Widget>[
+          Expanded(child: swapImageBlock(pic, index, model), flex: 4),
+          Expanded(child: name(aname, context), flex: 1),
+          Expanded(child: animalSpecies(species, context), flex: 1),
+          Expanded(child: accuracyScore(score, context), flex: 1),
+        ],
+      ),
     );
   }
 }
@@ -520,8 +510,9 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
     return Container(
-      alignment: Alignment(0, 0),
-      margin: new EdgeInsets.only(bottom: 3, left: 10, right: 3),
+      alignment: Alignment.centerLeft,
+      margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+      padding: new EdgeInsets.all(5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -530,17 +521,7 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
           Container(
             child: Row(
               children: <Widget>[
-                Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: new EdgeInsets.only(left: 10),
-                      alignment: Alignment.centerLeft,
-                      child: Icon(
-                        Icons.location_on,
-                        color: Colors.black,
-                      ),
-                    )),
-                Expanded(flex: 8, child: text12LeftNormGrey("Spoor Location")),
+                Expanded(flex: 8, child: text18LeftBoldBlack("Track Location")),
               ],
             ),
           ),
@@ -554,8 +535,15 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: text12LeftNormGrey('Kruger National Park'),
-                )
+                  child: text16LeftBoldBlack('Location:          '),
+                ),
+                Expanded(
+                    flex: 3,
+                    child: model.editDateBool
+                        ? TextInputField(
+                            indexIdentifier: 0,
+                          )
+                        : text16LeftNormBlack("Kruger National Park"))
               ],
             ),
           ),
@@ -571,7 +559,7 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
                 children: <Widget>[
                   Expanded(
                     flex: 1,
-                    child: text12LeftNormGrey('Date: '),
+                    child: text16LeftBoldBlack('Date: '),
                   ),
                   Expanded(
                       flex: 3,
@@ -579,56 +567,56 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
                           ? TextInputField(
                               indexIdentifier: 0,
                             )
-                          : text12LeftNormBlack(model.getDate))
+                          : text16LeftNormBlack(model.getDate))
                 ],
               ),
             ),
           ),
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-            padding: new EdgeInsets.all(5),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: text12LeftNormGrey('Coordinates: '),
-                ),
-                Expanded(
-                    flex: 3,
-                    child: Row(children: [
-                      Expanded(
-                        flex: 1,
-                        child: GestureDetector(
-                          onLongPress: () {
-                            model.setEditSpoorCoordLat();
-                          },
-                          child: Container(
-                              margin: new EdgeInsets.only(right: 2),
-                              child: model.editSpoorCoordLat
-                                  ? TextInputField(indexIdentifier: 1)
-                                  : text12LeftNormBlack(
-                                      "Latitude: " + model.getCoordLat)),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: GestureDetector(
-                          onLongPress: () {
-                            model.setEditSpoorCoordLong();
-                          },
-                          child: Container(
-                              margin: new EdgeInsets.only(left: 2),
-                              child: model.editSpoorCoordLong
-                                  ? TextInputField(indexIdentifier: 2)
-                                  : text12LeftNormBlack(
-                                      "Longitude: " + model.getCoordLong)),
-                        ),
-                      ),
-                    ]))
-              ],
-            ),
-          ),
+          // Container(
+          //   alignment: Alignment.centerLeft,
+          //   margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+          //   padding: new EdgeInsets.all(5),
+          //   child: Row(
+          //     children: <Widget>[
+          //       Expanded(
+          //         flex: 1,
+          //         child: text12LeftNormGrey('Coordinates: '),
+          //       ),
+          //       Expanded(
+          //           flex: 3,
+          //           child: Row(children: [
+          //             Expanded(
+          //               flex: 1,
+          //               child: GestureDetector(
+          //                 onLongPress: () {
+          //                   model.setEditSpoorCoordLat();
+          //                 },
+          //                 child: Container(
+          //                     margin: new EdgeInsets.only(right: 2),
+          //                     child: model.editSpoorCoordLat
+          //                         ? TextInputField(indexIdentifier: 1)
+          //                         : text12LeftNormBlack(
+          //                             "Latitude: " + model.getCoordLat)),
+          //               ),
+          //             ),
+          //             Expanded(
+          //               flex: 1,
+          //               child: GestureDetector(
+          //                 onLongPress: () {
+          //                   model.setEditSpoorCoordLong();
+          //                 },
+          //                 child: Container(
+          //                     margin: new EdgeInsets.only(left: 2),
+          //                     child: model.editSpoorCoordLong
+          //                         ? TextInputField(indexIdentifier: 2)
+          //                         : text12LeftNormBlack(
+          //                             "Longitude: " + model.getCoordLong)),
+          //               ),
+          //             ),
+          //           ]))
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );
@@ -787,7 +775,7 @@ Widget attachATagButton(var context) {
   return Container(
       margin: EdgeInsets.only(left: 7),
       alignment: Alignment.centerLeft,
-      child: text18LeftBoldBlack("Spoor Tags"));
+      child: text18LeftBoldBlack("Track Tags"));
 }
 
 Widget similarSpoor(SimilarSpoorModel similarSpoorModel) {
@@ -857,26 +845,50 @@ Widget similarSpoors(var context) {
     ),
     //height: 0,
     child: text18LeftBoldBlack(
-      "Similar Spoors",
+      "Similar Tracks",
+    ),
+  );
+}
+
+Widget swapImageBlock(String link, int index, IdentificationViewModel model) {
+  return InkWell(
+    onLongPress: () => model.reclassify(index),
+    child: new Container(
+      alignment: Alignment.center,
+      margin: new EdgeInsets.all(5),
+      padding: new EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(
+          image: AssetImage(link),
+          fit: BoxFit.fill,
+        ),
+      ),
+      height: 150,
+      width: 150,
     ),
   );
 }
 
 Widget innerImageBlock(String link) {
-  return new Container(
-    alignment: Alignment.center,
-    margin: new EdgeInsets.all(5),
-    padding: new EdgeInsets.all(5),
-    decoration: BoxDecoration(
-      color: Colors.grey,
-      borderRadius: BorderRadius.circular(10),
-      image: DecorationImage(
-        image: AssetImage(link),
-        fit: BoxFit.fill,
+  return InkWell(
+    onTap: () => print(""),
+    child: new Container(
+      alignment: Alignment.center,
+      margin: new EdgeInsets.all(5),
+      padding: new EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(
+          image: AssetImage(link),
+          fit: BoxFit.fill,
+        ),
       ),
+      height: 150,
+      width: 150,
     ),
-    height: 150,
-    width: 150,
   );
 }
 
@@ -917,7 +929,7 @@ Widget text(String name, var context) {
           flex: 1,
           child: Container(
             alignment: Alignment.centerLeft,
-            child: text22LeftBoldWhite('$name Spoor identified'),
+            child: text22LeftBoldWhite('$name Track identified'),
           ),
         ),
         Expanded(
@@ -966,7 +978,7 @@ Widget identifyText(var context) {
       borderRadius: BorderRadius.circular(10),
     ),
     //height: 0,
-    child: text18LeftBoldBlack("Spoor Identification Results"),
+    child: text18LeftBoldBlack("Track Identification Results"),
   );
 }
 
