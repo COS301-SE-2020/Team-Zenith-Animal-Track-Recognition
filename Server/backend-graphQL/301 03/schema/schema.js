@@ -1610,8 +1610,8 @@ const Mutation = new GraphQLObjectType({
                 if (args.typicalThreatLevelF != undefined) {
                     updatedAnimal.typicalBehaviourF.threatLevel = args.typicalThreatLevelF
                 }
-                if (args.overviewOfAnimal != undefined) {
-                    updatedAnimal.overviewOfAnimal = args.overviewOfAnimal
+                if (args.animalOverview != undefined) {
+                    updatedAnimal.animalOverview = args.animalOverview
                 }
                 if (args.vulnerabilityStatus != undefined) {
                     updatedAnimal.vulnerabilityStatus = args.vulnerabilityStatus
