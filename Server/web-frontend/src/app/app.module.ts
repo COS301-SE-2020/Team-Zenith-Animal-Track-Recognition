@@ -25,10 +25,12 @@ import { EditRangerInfoComponent } from './views/rangers/edit-ranger-info/edit-r
 import { DeleteRangerComponent } from './views/rangers/delete-ranger/delete-ranger.component';
 import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.component'; 
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
+import { PersonalRangerPermissionComponentComponent } from './views/personal-ranger-permission-component/personal-ranger-permission-component.component'; 
 import { GeotagsComponent } from './views/geotags/geotags.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 import { UtilityNavigationComponent } from './components/utility-navigation/utility-navigation.component';
+
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -54,12 +56,12 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar'; 
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips'; 
-import { MatDividerModule } from '@angular/material/divider'; 
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
     AppComponent,
-	AddRangerComponent,
+	  AddRangerComponent,
     LoginComponent,
     OverviewComponent,
     AnimalsComponent,
@@ -79,7 +81,8 @@ import { MatDividerModule } from '@angular/material/divider';
     AnimalInfoCardComponent,
 	EditAnimalInfoComponent,
 	AddAnimalComponent,
-	RangerProfileComponent
+	RangerProfileComponent,
+	PersonalRangerPermissionComponentComponent
   ],
   imports: [
     BrowserModule,
