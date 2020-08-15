@@ -1622,10 +1622,11 @@ const Mutation = new GraphQLObjectType({
                 if (args.Offspring != undefined) {
                     updatedAnimal.Offspring = args.Offspring
                 }
-                console.log(updatedAnimal)
-                animals.doc(args.classification).set(updatedAnimal)
                 updatedAnimal.classification = args.classification
                 animalData.push(updatedAnimal)
+                animals.doc(args.classification).set(updatedAnimal)
+                
+                
                 return updatedAnimal;
             }
         },
