@@ -15,11 +15,18 @@ class GraphQL implements Api {
     List<String> categories = new List();
     List<AnimalModel> animalList = new List();
 
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // String token = prefs.getString("Token");
+    // token = Uri.encodeFull(token);
+
+    // print("Here is the token: " + token);
+
     String token = "h10hYNuJeTbmWH1ZSi5R";
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get(
-        "http://putch.dyndns.org:55555/graphql?query=query{groups(token:\"$token\"){groupName}}");
+        "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{groups(token:\"$token\"){groupName}}");
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
@@ -38,7 +45,7 @@ class GraphQL implements Api {
       if (category == categories[i]) {
         i++;
         final http.Response res = await http.get(
-            "http://putch.dyndns.org:55555/graphql?query=query{animals(token:\"$token\", group:\"$i\" ){pictures{URL},classification, commonName , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
+            "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{animals(token:\"$token\", group:\"$i\" ){pictures{URL},classification, commonName , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
 
         for (int j = 0; j < categories.length; j++) {
           if (res.statusCode == 200) {
@@ -63,8 +70,33 @@ class GraphQL implements Api {
 
   @override
   Future<GalleryModel> getGalleryModel(String i) async {
-    // TODO: implement getGalleryModel
-    throw UnimplementedError();
+    List<String> appearance = new List();
+    List<String> tracks = new List();
+    List<String> droppings = new List();
+    List<List<String>> gallery = new List();
+    String name;
+
+    if (i == "diceros bicornis") {
+      appearance.add("assets/images/appearance/rhino/p1.jpg");
+      appearance.add("assets/images/appearance/rhino/p2.jpg");
+      appearance.add("assets/images/appearance/rhino/p3.jpg");
+      appearance.add("assets/images/appearance/rhino/p4.jpg");
+
+      tracks.add("assets/images/print/rhino/print1.jpg");
+      tracks.add("assets/images/print/rhino/print2.jpg");
+      tracks.add("assets/images/print/rhino/print3.jpg");
+      tracks.add("assets/images/print/rhino/print4.jpg");
+
+      droppings.add("assets/images/droppings/rhino/drop1.jpg");
+      droppings.add("assets/images/droppings/rhino/drop2.jpg");
+      droppings.add("assets/images/droppings/rhino/drop3.jpg");
+      name = "Black Rhinoceroses";
+    }
+
+    gallery.add(appearance);
+    gallery.add(tracks);
+    gallery.add(droppings);
+    return GalleryModel(galleryList: gallery, name: name);
   }
 
   @override
@@ -84,8 +116,9 @@ class GraphQL implements Api {
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get(
-        "http://putch.dyndns.org:55555/graphql?query=query{animalsbyByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
+        "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{animalsbyByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
 
+    print("Response status: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
 
@@ -158,7 +191,7 @@ class GraphQL implements Api {
     email = Uri.encodeFull(email);
     password = Uri.encodeFull(password);
     final http.Response response = await http.get(
-      "http://putch.dyndns.org:55555/graphql?query=query{login(e_mail:\"$email\",Password:\"$password\"){Token,Access_Level}}",
+      "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{login(e_mail:\"$email\",Password:\"$password\"){Token,Access_Level}}",
     );
 
     if (response.statusCode == 200) {
@@ -187,7 +220,7 @@ class GraphQL implements Api {
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get(
-        "http://putch.dyndns.org:55555/graphql?query=query{animals(token:\"$token\"){commonName, classification, pictures{URL}}}");
+        "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{animals(token:\"$token\"){commonName, classification, pictures{URL}}}");
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
@@ -207,7 +240,7 @@ class GraphQL implements Api {
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get(
-        "http://putch.dyndns.org:55555/graphql?query=query{groups(token:\"$token\"){groupName}}");
+        "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{groups(token:\"$token\"){groupName}}");
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);

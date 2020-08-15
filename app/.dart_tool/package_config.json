@@ -224,6 +224,12 @@
       "languageVersion": "2.1"
     },
     {
+      "name": "flutter_spinkit",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_spinkit-4.1.2+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.5"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///C:/src/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -320,6 +326,12 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "image_downloader",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/image_downloader-0.20.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "image_picker",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.6.7+4",
       "packageUri": "lib/",
@@ -396,6 +408,12 @@
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/nested-0.0.4",
       "packageUri": "lib/",
       "languageVersion": "2.2"
+    },
+    {
+      "name": "network_to_file_image",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/network_to_file_image-2.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.8"
     },
     {
       "name": "node_interop",
@@ -488,6 +506,12 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "progress_indicators",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/progress_indicators-0.1.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "provider",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/provider-4.3.1",
       "packageUri": "lib/",
@@ -564,6 +588,12 @@
       "rootUri": "file:///C:/src/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "1.11"
+    },
+    {
+      "name": "social_share",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/social_share-2.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
     },
     {
       "name": "source_gen",
@@ -698,7 +728,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-08-15T20:04:03.247746Z",
+  "generated": "2020-08-15T10:00:30.591333Z",
   "generator": "pub",
   "generatorVersion": "2.8.4"
 }

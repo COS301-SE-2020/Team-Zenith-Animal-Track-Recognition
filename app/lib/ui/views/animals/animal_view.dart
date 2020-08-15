@@ -184,16 +184,16 @@ Widget getWidget(var animalTabList) {
                               animalTabList[index].gestation,
                               context)),
                     ])),
-                ListTileTheme(
-                    dense: true,
-                    child:
-                        description(animalTabList[index].description, context)),
-                ListTileTheme(
-                    dense: true,
-                    child: behaviour(animalTabList[index].behaviour, context)),
-                ListTileTheme(
-                    dense: true,
-                    child: habitats(animalTabList[index].habitats, context)),
+                // ListTileTheme(
+                //     dense: true,
+                //     child:
+                //         description(animalTabList[index].description, context)),
+                // ListTileTheme(
+                //     dense: true,
+                //     child: behaviour(animalTabList[index].behaviour, context)),
+                // ListTileTheme(
+                //     dense: true,
+                //     child: habitats(animalTabList[index].habitats, context)),
                 ListTileTheme(
                     dense: true,
                     child:

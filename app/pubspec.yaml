@@ -24,6 +24,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #SpinKit
+  flutter_spinkit: ^4.1.2
+  progress_indicators: ^0.1.5
+  social_share: ^2.0.5
+  network_to_file_image: ^2.3.2
+  image_downloader: ^0.20.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -105,6 +111,9 @@ flutter:
         - asset: fonts/MavenPro-Medium.ttf
         - asset: fonts/MavenPro-Regular.ttf
         - asset: fonts/MavenPro-SemiBold.ttf
+    - family: MyCustomIcons
+      fonts:
+        - asset: fonts/MyFlutterApp.ttf
     # - family: Schyler
     #   fonts:
     #     - asset: fonts/Schyler-Regular.ttf
