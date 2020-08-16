@@ -82,8 +82,8 @@ export class RangerProfileComponent implements OnInit {
 		const userId = url.get('ranger');
 
 
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'",rangerID:"' + userId + '"){accessLevel,eMail,firstName,lastName,phoneNumber}}')
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + 
+			'",rangerID:"' + userToken + '"){rangerID,accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
