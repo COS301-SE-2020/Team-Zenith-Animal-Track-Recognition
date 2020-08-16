@@ -107,8 +107,8 @@ export class RangerProfileCardComponent implements OnInit {
 		}
 	}
 
-	viewRangerProfile(token: string) {
-		this.router.navigate(['rangers/profiles'], { queryParams: { ranger: token } });
+	viewRangerProfile(userId: string) {
+		this.router.navigate(['rangers/profiles'], { queryParams: { ranger: userId } });
 	}
 
 	route(temp: string) {

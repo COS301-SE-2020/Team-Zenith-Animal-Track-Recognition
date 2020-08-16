@@ -16,7 +16,7 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 export class RangerProfileComponent implements OnInit {
 
 	user: any;
-	userToken: string;
+	userId: string;
 	spoorIdentifications: any;
 	activities = [
 		{
@@ -79,18 +79,18 @@ export class RangerProfileComponent implements OnInit {
 		document.getElementById('rangers-route').classList.add('activeRoute');
 		//Determine which user was navigated to and fetch their information
 		const url = new URLSearchParams(window.location.search);
-		const userToken = url.get('ranger');
+		const userId = url.get('ranger');
 
 
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'",tokenSearch:"' + userToken + '"){token,accessLevel,eMail,firstName,lastName,phoneNumber}}')
+			'",rangerID:"' + userId + '"){accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.user = temp[0][0];
 				this.stopLoader();
 			});
-
+/*
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'",ranger:"' + userToken + '"){spoorIdentificationID,animal{commonName,classification},dateAndTime{year,month,day,hour,min,second},' +
 			'location{latitude,longitude},potentialMatches{animals{classification},Confidence}}}')
@@ -103,7 +103,7 @@ export class RangerProfileComponent implements OnInit {
 					this.spoorIdentifications = [];
 				}
 				this.stopLoader();
-			});
+			});*/
 	}
 
 	route(temp: string) {

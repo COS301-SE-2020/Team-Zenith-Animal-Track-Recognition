@@ -26,7 +26,7 @@ import { EditRangerInfoComponent } from './views/rangers/edit-ranger-info/edit-r
 import { DeleteRangerComponent } from './views/rangers/delete-ranger/delete-ranger.component';
 import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.component';
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
-import { GeotagsComponent } from './views/geotags/geotags.component';
+import { TrackIdentificationsComponent } from './views/track-identifications/track-identifications.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 import { UtilityNavigationComponent } from './components/utility-navigation/utility-navigation.component';
@@ -68,7 +68,7 @@ import { MatDividerModule } from '@angular/material/divider';
     RangersToolbarComponent,
     RangerSearchSidenavCompComponent,
     RangerProfileCardComponent,
-    GeotagsComponent,
+    TrackIdentificationsComponent,
     SettingsComponent,
     SideNavigationComponent,
     UtilityNavigationComponent,
@@ -81,8 +81,8 @@ import { MatDividerModule } from '@angular/material/divider';
     EditAnimalInfoComponent,
     AddAnimalComponent,
     RangerProfileComponent,
-    AnimalProfileComponent
-  ],
+    AnimalProfileComponent  
+	],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
