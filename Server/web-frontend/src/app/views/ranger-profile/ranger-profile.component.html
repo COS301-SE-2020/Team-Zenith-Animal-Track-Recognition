@@ -12,9 +12,9 @@
         </div>
         <div id="rangers-toolbar">
             <mat-select id="rangers-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
-                <mat-option (click)="openEditRangerDialog(user.token)">Edit Information</mat-option>
+                <mat-option (click)="openEditRangerDialog(user.rangerID)">Edit Information</mat-option>
                 <mat-option (click)="route('rangers/permissions')">Change Level</mat-option>
-                <mat-option (click)="openDeleteRangerDialog(user.token)">Delete Ranger</mat-option>
+                <mat-option (click)="openDeleteRangerDialog(user.rangerID)">Delete Ranger</mat-option>
             </mat-select>
         </div>
     </div>
@@ -29,7 +29,7 @@
                     <div id="ranger-profile-info-details">
                         <div>
                             <h1 class="fontSB" *ngIf="user">{{user.firstName}}&nbsp;{{user.lastName}}</h1>
-                            <button mat-flat-button (click)="openEditRangerDialog(user.token)">Edit</button>
+                            <button mat-flat-button (click)="openEditRangerDialog(user.rangerID)">Edit</button>
                         </div>
                         <p class="fontM" *ngIf="user">Level {{user.accessLevel}} Ranger</p>
                     </div>
