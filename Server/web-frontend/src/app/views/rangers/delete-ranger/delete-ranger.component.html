@@ -1,3 +1,6 @@
+<div id="dialog-progressbar-container">
+	<mat-progress-bar mode="indeterminate" id="dialog-progressbar"></mat-progress-bar>
+</div>
 <h1 mat-dialog-title>
     Confirm Delete Ranger</h1>
 <mat-dialog-content id="delete-ranger-container">
@@ -7,6 +10,6 @@
     <p class="fontR" id="delete-ranger-clause">*This does not include any captured spoors or geotags.</p>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
-    <button mat-button mat-dialog-close id="cancel-btn" class="fontSB">CANCEL</button>
+    <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>
     <button mat-button id="add-ranger-btn" (click)="confirmDelete(false)" class="fontSB">DELETE RANGER</button>
 </mat-dialog-actions>

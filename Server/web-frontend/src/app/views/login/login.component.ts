@@ -59,8 +59,17 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.snackBar.open("Signed in.", "Dismiss", { duration: 2500, });
-          this.router.navigate([this.returnUrl]);
+			if (data != null)
+			{
+				this.snackBar.open("Signed in.", "Dismiss", { duration: 2500, });
+				this.router.navigate([this.returnUrl]);
+			}
+			else
+			{
+				this.loading = false;
+				this.stopLoader();
+				this.snackBar.open('User not found. Please ensure that your sign in details are correct and try again.', "Dismiss", { duration: 7000, });				
+			}
         },
         error => {
           this.loading = false;

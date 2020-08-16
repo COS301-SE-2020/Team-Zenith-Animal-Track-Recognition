@@ -22,6 +22,7 @@ export class DeleteRangerComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.temp = false;
+		document.getElementById('delete-ranger-dialog').style.overflow = "hidden";
 	}
 
 	confirmDelete(test: boolean) {
@@ -29,18 +30,30 @@ export class DeleteRangerComponent implements OnInit {
 		this.startLoader();
 		console.log(this.data.token);
 		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{deleteUser(' + 'tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'",' + 'tokenDelete:"' + this.data.token + '"){msg}}', '')
+			'",' + 'rangerID:"' + this.data.token + '"){msg}}', '')
 			.subscribe({
 				next: data => this.dialogRef.close("success"),
-				error: error => this.dialogRef.close("Error " + error.message)
+				error: error => this.dialogRef.close("error")
 			});
 	}
+	closeDialog() {
+		this.dialogRef.close("cancel");
+	}
 
-	//Loader
+	attachProgressbar()
+	{
+		//Append progress bar to dialog
+		let matDialog = document.getElementById('delete-ranger-dialog');
+		let progressBar = document.getElementById("dialog-progressbar-container");
+		matDialog.insertBefore(progressBar, matDialog.firstChild);
+	}
+
+	//Loader - Progress bar
 	startLoader() {
-		document.getElementById("loader-container").style.visibility = "visible";
+		this.attachProgressbar();
+		document.getElementById("dialog-progressbar-container").style.visibility = "visible";
 	}
 	stopLoader() {
-		document.getElementById("loader-container").style.visibility = "hidden";
+		document.getElementById("dialog-progressbar-container").style.visibility = "hidden";
 	}
 }

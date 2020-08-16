@@ -1,144 +1,210 @@
-<h1 mat-dialog-title>Edit Animal Information - {{data.animal.Common_Name}} ({{data.animal.Classification}})</h1>
-<mat-dialog-content id="add-ranger-form-container">
-	<mat-tab-group mat-align-tabs="start">
-		<mat-tab label="Overview">
-			<form [formGroup]="overviewForm" id="edit-animal-form-overview">
-				<div id="overview-classification-group">
-					<mat-form-field appearance="outline">
-						<mat-label>Group Name</mat-label>
-						<input matInput formControlName="Group_Name" value="{{data.animal.Group_ID[0].Group_Name}}">
-						<mat-hint>Optional</mat-hint>
-					</mat-form-field>
-					<mat-form-field appearance="outline">
+<div id="dialog-progressbar-container">
+	<mat-progress-bar mode="indeterminate" id="dialog-progressbar"></mat-progress-bar>
+</div>
+<h1 mat-dialog-title>Edit Animal Information - {{data.animal.classification | titlecase}} ({{data.animal.commonName}})</h1>
+<mat-dialog-content>
+    <form [formGroup]="editAnimalForm" id="edit-animal-form">
+		<mat-tab-group mat-align-tabs="start">
+			<mat-tab label="Description">
+				<div class="edit-animal-form-content">
+					<mat-form-field class="add-animal-form-input" appearance="outline">
 						<mat-label>Common Name</mat-label>
-						<input matInput formControlName="Common_Name" value="{{data.animal.Common_Name}}">
+						<input matInput formControlName="commonName" value="{{data.animal.commonName}}">
 						<mat-hint>Optional</mat-hint>
 					</mat-form-field>
-					<mat-form-field appearance="outline">
+					<mat-form-field class="add-animal-form-input" appearance="outline">
 						<mat-label>Classification</mat-label>
-						<input matInput formControlName="Classification" value="{{data.animal.Classification}}">
+						<input matInput formControlName="classification" value="{{data.animal.classification}}">
 						<mat-hint>Optional</mat-hint>
+					</mat-form-field>
+					<mat-form-field appearance="outline" class="edit-animal-form-texarea">
+						<mat-label>Animal Description</mat-label>
+						<textarea rows="5" matInput #animalDescrip formControlName="animalDescription" value="{{data.animal.animalDescription}}"></textarea>
+						<mat-hint align="start">{{animalDescrip.value?.length || 0}}/1500 (Optional)</mat-hint>
 					</mat-form-field>
 				</div>
-				<div id="overview-physical-char-group">
-					<div class="edit-animal-range-container">
-						<div mat-subheader class="edit-animal-range-title fontSB">Average Height Range</div>
-						<div class="edit-animal-ranges">
-							<mat-form-field appearance="outline">
-								<input type="number" step ="0.1" matInput formControlName="HeightF" value="{{data.animal.HeightF}}">
-								<span matSuffix>m</span>
-							    <mat-hint>Optional</mat-hint>
-							</mat-form-field>
-							<mat-form-field appearance="outline">
-								<input type="number" step ="0.1" matInput formControlName="HeightM" value="{{data.animal.HeightM}}">
-							    <span matSuffix>m</span>
-								<mat-hint>Optional</mat-hint>
-							</mat-form-field>
+			</mat-tab>
+			<mat-tab label="Biometrics">
+				<div class="edit-animal-form-content">
+					<div class="edit-animal-form-gender-container">
+						<p class="edit-animal-form-gender-title fontSB">Female Biometrics</p>
+						<div class="edit-animal-form-gender-content">
+							<div class="edit-animal-range-container">
+								<p class="edit-animal-range-title fontM">Average Height Range</p>
+								<div class="edit-animal-ranges">
+									<mat-form-field appearance="outline">
+										<input type="number" step="0.1" matInput formControlName="heightF" value="{{data.animal.heightF}}">
+										<span matSuffix>m</span>
+										<mat-hint>Optional</mat-hint>
+									</mat-form-field>
+									<p>to</p>
+									<mat-form-field appearance="outline">
+										<input type="number" step="0.1" matInput formControlName="heightF" value="{{data.animal.heightF}}">
+										<span matSuffix>m</span>
+										<mat-hint>Optional</mat-hint>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="edit-animal-range-container">
+								<p class="edit-animal-range-title fontM">Average Weight Range</p>
+								<div class="edit-animal-ranges">
+									<mat-form-field appearance="outline">
+										<input type="number" matInput formControlName="weightF" value="{{data.animal.weightF}}">
+										<span matSuffix>kg</span>
+										<mat-hint>Optional</mat-hint>
+									</mat-form-field>
+									<p>to</p>
+									<mat-form-field appearance="outline">
+										<input type="number" matInput formControlName="weightF" value="{{data.animal.weightF}}">
+										<span matSuffix>kg</span>
+										<mat-hint>Optional</mat-hint>
+									</mat-form-field>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="edit-animal-range-container">
-						<div mat-subheader class="edit-animal-range-title fontSB">Average Weight Range</div>
-						<div class="edit-animal-ranges">
-							<mat-form-field appearance="outline">
-								<input type="number" matInput formControlName="WeightF" value="{{data.animal.WeightF}}">
-								<span matSuffix>kg</span>
-								<mat-hint>Optional</mat-hint>
-							</mat-form-field>
-							<mat-form-field appearance="outline">
-								<input type="number" matInput formControlName="WeightM" value="{{data.animal.WeightM}}">
-								<span matSuffix>kg</span>
-								<mat-hint>Optional</mat-hint>
-							</mat-form-field>
+                    <mat-divider></mat-divider>
+					<div class="edit-animal-form-gender-container">
+						<p class="edit-animal-form-gender-title fontSB">Male Biometrics</p>
+						<div class="edit-animal-form-gender-content">
+							<div class="edit-animal-range-container">
+								<p class="edit-animal-range-title fontM">Average Height Range</p>
+								<div class="edit-animal-ranges">
+									<mat-form-field appearance="outline">
+										<input type="number" step="0.1" matInput formControlName="heightM" value="{{data.animal.heightM}}">
+										<span matSuffix>m</span>
+										<mat-hint>Optional</mat-hint>
+									</mat-form-field>
+									<p>to</p>
+									<mat-form-field appearance="outline">
+										<input type="number" step="0.1" matInput formControlName="heightM" value="{{data.animal.heightM}}">
+										<span matSuffix>m</span>
+										<mat-hint>Optional</mat-hint>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="edit-animal-range-container">
+								<p class="edit-animal-range-title fontM">Average Weight Range</p>
+								<div class="edit-animal-ranges">
+									<mat-form-field appearance="outline">
+										<input type="number" matInput formControlName="weightM" value="{{data.animal.weightM}}">
+										<span matSuffix>kg</span>
+										<mat-hint>Optional</mat-hint>
+									</mat-form-field>
+									<p>to</p>
+									<mat-form-field appearance="outline">
+										<input type="number" matInput formControlName="weightM" value="{{data.animal.weightM}}">
+										<span matSuffix>kg</span>
+										<mat-hint>Optional</mat-hint>
+									</mat-form-field>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>				
-				<div id="overview-other-group">
+				</div>
+			</mat-tab>
+			<mat-tab label="Characteristics">
+				<div class="edit-animal-form-content">
+					<mat-form-field class="add-animal-form-input" appearance="outline">
+						<mat-label>Avg. Lifespan</mat-label>
+						<input matInput class="add-animal-form-input" formControlName="lifeSpan" value="{{data.animal.lifeSpan}}">
+						<mat-hint>Optional</mat-hint>
+					</mat-form-field>
+					<mat-form-field class="add-animal-form-input" appearance="outline">
+						<mat-label>Diet Type</mat-label>
+						<mat-select class="fontR" placeholder="Diet Type" disableOptionCentering value="{{data.animal.dietType}}">
+							<mat-option *ngFor="let dietType of dietTypeList" [value]="dietType.displayValue">{{dietType.displayValue}}</mat-option>
+						</mat-select>		
+						<mat-hint>Optional</mat-hint>
+					</mat-form-field>
 					<div class="edit-animal-range-container">
-						<div mat-subheader class="edit-animal-range-title fontSB">Gestation Period</div>
+						<p class="edit-animal-range-title fontM">Gestation Period & Avg. Litter Size</p>
 						<div class="edit-animal-ranges">
-							<mat-form-field appearance="outline">
+							<mat-form-field class="add-animal-form-input" appearance="outline">
 								<mat-label>Duration</mat-label>
-								<input matInput formControlName="Gestation_Period" value="{{data.animal.Gestation_Period}}">
+								<input matInput formControlName="gestationPeriod" value="{{data.animal.gestationPeriod}}">
 								<mat-hint>Optional</mat-hint>
-							</mat-form-field>						
+							</mat-form-field>
 							<mat-form-field appearance="outline">
 								<mat-label>Offspring</mat-label>
-								<input type="number" matInput formControlName="Gestation_Period" value="6">
+								<input type="number" matInput formControlName="numOffspring">
 								<mat-hint>Optional</mat-hint>
 							</mat-form-field>
 						</div>
 					</div>
-					<div class="edit-animal-range-container">
-						<div mat-subheader class="edit-animal-range-title fontSB">Diet Type</div>
-						<div class="edit-animal-ranges edit-animal-inputbtn-container">
-							<mat-button-toggle-group id="ranger-search-controls" #group="matButtonToggleGroup" value="{{data.animal.Diet_Type}}">
-								<mat-button-toggle value="Herbivorous">Herbivorous</mat-button-toggle>
-								<mat-button-toggle value="Carnivorous">Carnivorous</mat-button-toggle>
-								<mat-button-toggle value="Omnivorous">Omnivorous</mat-button-toggle>
-								<mat-button-toggle value="Insectivorous">Insectivorous</mat-button-toggle>
-							</mat-button-toggle-group>
+				</div>
+			</mat-tab>
+			<mat-tab label="Behavioural Information">
+				<div class="edit-animal-form-content">
+					<div class="edit-animal-form-textarea-container">
+						<p class="edit-animal-form-gender-title fontSB">Female Behavioural Information</p>
+						<div class="edit-animal-form-textarea-content">
+							<mat-form-field appearance="outline" class="edit-animal-form-texarea">
+								<textarea rows="4" matInput #femaleBehaviour formControlName="femaleBehaviour"></textarea>
+								<mat-hint align="start">{{femaleBehaviour.value?.length || 0}}/1500 (Optional)</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+                    <mat-divider></mat-divider>
+					<div class="edit-animal-form-textarea-container">
+						<p class="edit-animal-form-gender-title fontSB">Male Behavioural Information</p>
+						<div class="edit-animal-form-textarea-content">
+							<mat-form-field appearance="outline" class="edit-animal-form-texarea">
+								<textarea rows="4" matInput #maleBehaviour formControlName="maleBehaviour"></textarea>
+								<mat-hint align="start">{{maleBehaviour.value?.length || 0}}/1500 (Optional)</mat-hint>
+							</mat-form-field>
 						</div>
 					</div>
 				</div>
-			</form>
-		</mat-tab>
-		<mat-tab label="Description">
-			<form [formGroup]="descrForm" id="edit-animal-form-descr">
-					<mat-form-field appearance="outline">
-						<mat-label>Life Span</mat-label>
-						<input matInput formControlName="Life_Span" value="{{data.animal.Life_Span}}">
-						<mat-hint>Optional</mat-hint>
-					</mat-form-field>
-					<mat-form-field appearance="outline" id="edit-animal-form-descr-textarea">
-						<mat-label>Animal Description</mat-label>
-						<textarea rows="5" matInput #charTa formControlName="Description_of_animal" value="{{data.animal.Description_of_animal}}"></textarea>
-						<mat-hint align="start">{{charTa.value?.length || 0}}/300  (Optional)</mat-hint>
-					</mat-form-field>
-			</form>
-		</mat-tab>
-		<mat-tab label="Behavioural Information">
-			<form [formGroup]="behaviourForm" id="edit-animal-form-behaviour">
-				<mat-form-field appearance="outline">
-					<mat-label>Female Behavioural Information</mat-label>
-					<textarea rows="5" matInput #femaleTa formControlName="Typical_Behaviour" placeholder="Please enter female behavioural information." value="{{data.animal.Typical_Behaviour}}"></textarea>
-					<mat-hint align="start">{{femaleTa.value?.length || 0}}/300</mat-hint>
-				</mat-form-field>
-				<mat-form-field appearance="outline">
-					<mat-label>Male Behavioural Information</mat-label>
-					<textarea rows="5" matInput #maleTa formControlName="Typical_Behaviour" placeholder="Please enter male behavioural information." value="{{data.animal.Typical_Behaviour}}"></textarea>
-					<mat-hint align="start">{{maleTa.value?.length || 0}}/300</mat-hint>
-				</mat-form-field>
-			</form>
-		</mat-tab>
-		<mat-tab label="Habitat & Distribution">
-		<form [formGroup]="habitatForm" id="edit-animal-form-habitat">
-				<mat-form-field appearance="outline">
-					<mat-label>Habitat</mat-label>
-					<input matInput formControlName="Habitat" value="Savannah/Grasslands">
-					<mat-hint>Optional</mat-hint>
-				</mat-form-field>
-				<mat-form-field appearance="outline"  id="edit-animal-form-habitat-textarea">
-					<mat-label>Habitat Description</mat-label>
-					<textarea rows="5" matInput #habitatDescr formControlName="Habitat" placeholder="Please enter information about the animal's habitat."></textarea>
-					<mat-hint align="start">{{habitatDescr.value?.length || 0}}/300</mat-hint>
-				</mat-form-field>
-			</form>
-		</mat-tab>
-		<mat-tab label="Threats">
-			<form [formGroup]="threatForm" id="edit-animal-form-threat">
-				<mat-form-field appearance="outline">
-					<mat-label>Female Behavioural Information</mat-label>
-					<textarea rows="5" matInput #femaleTa formControlName="Typical_Behaviour" placeholder="Please enter female behavioural information." value="{{data.animal.Typical_Behaviour}}"></textarea>
-					<mat-hint align="start">{{femaleTa.value?.length || 0}}/300</mat-hint>
-				</mat-form-field>
-				<mat-form-field appearance="outline">
-					<mat-label>Male Behavioural Information</mat-label>
-					<textarea rows="5" matInput #maleTa formControlName="Typical_Behaviour" placeholder="Please enter male behavioural information." value="{{data.animal.Typical_Behaviour}}"></textarea>
-					<mat-hint align="start">{{maleTa.value?.length || 0}}/300</mat-hint>
-				</mat-form-field>
-			</form>
-		</mat-tab>
-	</mat-tab-group>
+			</mat-tab>
+			<mat-tab label="Habitat Information">
+				<div class="edit-animal-form-content">
+					<div class="edit-animal-form-textarea-container">
+						<p class="edit-animal-form-gender-title fontSB">Habitat Description</p>
+						<div class="edit-animal-form-textarea-content">
+							<mat-form-field appearance="outline" class="edit-animal-form-texarea">
+								<textarea rows="4" matInput #habitatDescrip formControlName="habitatDescrip"></textarea>
+								<mat-hint align="start">{{habitatDescrip.value?.length || 0}}/1500 (Optional)</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+                    <mat-divider></mat-divider>
+					<div class="edit-animal-form-textarea-container">
+						<p class="edit-animal-form-gender-title fontSB">Distinguishing Features</p>
+						<div class="edit-animal-form-textarea-content">
+							<mat-form-field appearance="outline" class="edit-animal-form-texarea">
+								<textarea rows="4" matInput #habitatFeat formControlName="habitatFeatures"></textarea>
+								<mat-hint align="start">{{habitatFeat.value?.length || 0}}/1500 (Optional)</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</mat-tab>
+			<mat-tab label="Potential Threats">
+				<div class="edit-animal-form-content">
+					<div class="edit-animal-form-textarea-container">
+						<p class="edit-animal-form-gender-title fontSB">Female Threat Behaviour</p>
+						<div class="edit-animal-form-textarea-content">
+							<mat-form-field appearance="outline" class="edit-animal-form-texarea">
+								<textarea rows="4" matInput #femaleThreats formControlName="femaleThreat"></textarea>
+								<mat-hint align="start">{{femaleThreats.value?.length || 0}}/1500 (Optional)</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+                    <mat-divider></mat-divider>
+					<div class="edit-animal-form-textarea-container">
+						<p class="edit-animal-form-gender-title fontSB">Male Threat Behaviour</p>
+						<div class="edit-animal-form-textarea-content">
+							<mat-form-field appearance="outline" class="edit-animal-form-texarea">
+								<textarea rows="4" matInput #maleThreat formControlName="maleThreat"></textarea>
+								<mat-hint align="start">{{maleThreat.value?.length || 0}}/1500 (Optional)</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</mat-tab>
+		</mat-tab-group>
+    </form>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
     <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>

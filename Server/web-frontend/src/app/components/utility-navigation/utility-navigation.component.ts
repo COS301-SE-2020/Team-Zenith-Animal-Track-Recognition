@@ -22,4 +22,9 @@ export class UtilityNavigationComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+  	
+	viewRangerProfile() {
+		let token = JSON.parse(localStorage.getItem('currentToken'))['value'];
+		this.router.navigate(['rangers/profiles', token]);
+	}
 }

@@ -4,7 +4,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatAccordion } from '@angular/material/expansion';
 
-
 export interface Permissions {
 	permission: string;
 	level1: string;
@@ -40,6 +39,7 @@ export class RangerPermissionsComponent implements OnInit {
 	constructor(private router: Router, private http: HttpClient) { }
 
 	ngOnInit(): void {
+		this.startLoader();
 		document.getElementById("rangers-route").classList.add("activeRoute");
 
 		//Replace Permissions with appropiate icon
@@ -68,6 +68,7 @@ export class RangerPermissionsComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.printOut(temp);
+				this.stopLoader();
 			});
 	}
 
@@ -116,7 +117,7 @@ export class RangerPermissionsComponent implements OnInit {
 	}
 
 	updateLevel(tkn: string, lvl: string) {
-		let temp = this.http.post<any>('http://putch.dyndns.org:55555/graphql?query=mutation{updateUser('
+		let temp = this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateUser('
 			+ 'tokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
 			+ 'tokenChange:"' + tkn + '",'
 			+ 'accessLevel:"' + lvl + '"){lastName,token}}', '').subscribe((data: any[]) => {
@@ -125,5 +126,17 @@ export class RangerPermissionsComponent implements OnInit {
 			});
 
 		this.router.navigate(["/geotags"], { queryParams: { reloadPerms: "true" } });
+	}
+	
+	viewRangerProfile(token: string) {
+		this.router.navigate(['rangers/profiles', token]);
+	}
+	
+	//Loader
+	startLoader() {
+		document.getElementById('loader-container').style.visibility = 'visible';
+	}
+	stopLoader() {
+		document.getElementById('loader-container').style.visibility = 'hidden';
 	}
 }
