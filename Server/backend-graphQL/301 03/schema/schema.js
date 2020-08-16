@@ -2149,6 +2149,9 @@ if (CACHE) {
                 updated=true
             }
 
+            if (updated)
+            animals.doc(doc.id).set(temp)
+
             animalData.push(temp);
         });
     });
