@@ -1,0 +1,25 @@
+<div id="ranger-search-sidenav">
+    <div id="ranger-search-controls-container">
+        <mat-form-field appearance="outline">
+            <input id="search-sidenav-input" matInput placeholder="Search Rangers..." type="text" name="search" [(ngModel)]="searchText" autocomplete="off" (ngModelChange)="updateSearchText($event)">
+            <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+    </div>
+    <div id="ranger-search-results-container">
+        <mat-selection-list id="rangers-by-surnames" [multiple]="false" class="ranger-search-results-entries">
+		<!--
+            <div class="ranger-search-result-entry" *ngFor="let ranger of rangers | filter:searchText">
+                <ng-container *ngIf="sortBySurname; else sortedByLevels">
+                    <div mat-subheader class="ranger-search-resultgroup-subheader" *ngIf="checkIfNew(ranger.lastName, 0)">{{ ranger.lastName.charAt(0).toUpperCase() }}</div>
+                </ng-container>
+                <ng-template #sortedByLevels>
+                    <div mat-subheader class="ranger-search-resultgroup-subheader" *ngIf='checkIfNew("Level " + ranger.accessLevel + " Ranger", 6)'>Level {{ ranger.accessLevel }} Ranger</div>
+                </ng-template>
+                <mat-list-option class="fontM" [value]="ranger">
+                    <p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
+                    <p class="ranger-search-resultgroup-subentry">Level {{ranger.accessLevel}} Ranger</p>
+                </mat-list-option>
+            </div>-->
+        </mat-selection-list>
+    </div>
+</div>

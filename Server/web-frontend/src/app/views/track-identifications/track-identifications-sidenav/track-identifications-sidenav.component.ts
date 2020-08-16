@@ -2,12 +2,12 @@ import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-ranger-search-sidenav-comp',
-  templateUrl: './ranger-search-sidenav-comp.component.html',
-  styleUrls: ['./ranger-search-sidenav-comp.component.css'],
+  selector: 'app-track-identifications-sidenav',
+  templateUrl: './track-identifications-sidenav.component.html',
+  styleUrls: ['./track-identifications-sidenav.component.css']
 })
 
-export class RangerSearchSidenavCompComponent implements OnInit {
+export class TrackIdentificationsSidenavComponent implements OnInit {
 
 	@Input() rangers;
 	@Input() searchText: string;
@@ -17,14 +17,13 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 
 	currentAlphabet: any;
 	sorted: string;
-
+  
 	constructor(private http: HttpClient) { }
 
-	ngOnInit(): void { 
-		this.sortBySurname = true;
+	ngOnInit(): void {
 	}
-  
- 	checkIfNew(title: string, pos: number) {
+	
+	checkIfNew(title: string, pos: number) {
 		if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {
 			return false;
 		} 
