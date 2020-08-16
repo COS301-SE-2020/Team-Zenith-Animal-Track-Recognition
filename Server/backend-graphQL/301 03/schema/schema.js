@@ -951,7 +951,7 @@ const Mutation = new GraphQLObjectType({
                 tokenSend: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                tokenChange: {
+                rangerID: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 Level: {
@@ -970,7 +970,7 @@ const Mutation = new GraphQLObjectType({
                 }
 
                 b = _.findIndex(usersData, {
-                    token: args.tokenChange
+                    rangerID: args.rangerID
                 })
                 usersData[b].accessLevel = args.Level
                 return usersData[b]
@@ -983,7 +983,7 @@ const Mutation = new GraphQLObjectType({
                 tokenSend: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                tokenChange: {
+                rangerID: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 password: {
@@ -1016,43 +1016,46 @@ const Mutation = new GraphQLObjectType({
                     return null
                 }
                 b = _.findIndex(usersData, {
-                    token: args.tokenChange
+                    rangerID: args.rangerID
                 })
 
+                tokenChange=_.find(usersData,{
+                    rangerID:args.rangerID
+                })
 
                 if (args.accessLevel != undefined) {
                     usersData[b].accessLevel = args.accessLevel
-                    users.doc(args.tokenChange).update({
+                    users.doc(tokenChange.token).update({
                         "accessLevel": args.accessLevel
                     })
                 }
                 if (args.password != undefined) {
                     usersData[b].password = args.password
-                    users.doc(args.tokenChange).update({
+                    users.doc(tokenChange.token).update({
                         "password": args.password
                     })
                 }
                 if (args.eMail != undefined) {
                     usersData[b].eMail = args.eMail
-                    users.doc(args.tokenChange).update({
+                    users.doc(tokenChange.token).update({
                         "eMail": args.eMail
                     })
                 }
                 if (args.firstName != undefined) {
                     usersData[b].firstName = args.firstName
-                    users.doc(args.tokenChange).update({
+                    users.doc(tokenChange.token).update({
                         "firstName": args.firstName
                     })
                 }
                 if (args.lastName != undefined) {
                     usersData[b].lastName = args.lastName
-                    users.doc(args.tokenChange).update({
+                    users.doc(tokenChange.token).update({
                         "lastName": args.lastName
                     })
                 }
                 if (args.phoneNumber != undefined) {
                     usersData[b].phoneNumber = args.phoneNumber
-                    users.doc(args.tokenChange).update({
+                    users.doc(tokenChange.token).update({
                         "phoneNumber": args.phoneNumber
                     })
                 }
