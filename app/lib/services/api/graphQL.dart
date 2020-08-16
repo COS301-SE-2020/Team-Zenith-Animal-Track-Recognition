@@ -119,13 +119,13 @@ class GraphQL implements Api {
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get("$domain" +
-        "graphql?query=query{animalsbyByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
+        "graphql?query=query{animalsByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
 
     print("Response status: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
 
-      var list = body['data']['animalsbyByClassification']['pictures'] as List;
+      var list = body['data']['animalsByClassification']['pictures'] as List;
 
       String temp;
       int count;
@@ -136,34 +136,31 @@ class GraphQL implements Api {
       }
 
       String species =
-          body["data"]["animalsbyByClassification"]["commonName"].toString();
-      String commonName = body["data"]["animalsbyByClassification"]
-              ["classification"]
-          .toString();
-      String gestation = body["data"]["animalsbyByClassification"]
-              ["gestationPeriod"]
-          .toString();
+          body["data"]["animalsByClassification"]["commonName"].toString();
+      String commonName =
+          body["data"]["animalsByClassification"]["classification"].toString();
+      String gestation =
+          body["data"]["animalsByClassification"]["gestationPeriod"].toString();
       String diet =
-          body["data"]["animalsbyByClassification"]["dietType"].toString();
-      String overview = body["data"]["animalsbyByClassification"]
-              ["animalOverview"]
-          .toString();
-      String description = body["data"]["animalsbyByClassification"]
+          body["data"]["animalsByClassification"]["dietType"].toString();
+      String overview =
+          body["data"]["animalsByClassification"]["animalOverview"].toString();
+      String description = body["data"]["animalsByClassification"]
               ["animalDescription"]
           .toString();
-      String behaviour = body["data"]["animalsbyByClassification"]
+      String behaviour = body["data"]["animalsByClassification"]
               ["typicalBehaviourM"]
           .toString();
       String habitat = "Habitat";
       String threat = "INSERT API";
       String heightF =
-          body["data"]["animalsbyByClassification"]["heightF"].toString();
+          body["data"]["animalsByClassification"]["heightF"].toString();
       String heightM =
-          body["data"]["animalsbyByClassification"]["heightM"].toString();
+          body["data"]["animalsByClassification"]["heightM"].toString();
       String weightF =
-          body["data"]["animalsbyByClassification"]["weightF"].toString();
+          body["data"]["animalsByClassification"]["weightF"].toString();
       String weightM =
-          body["data"]["animalsbyByClassification"]["weightM"].toString();
+          body["data"]["animalsByClassification"]["weightM"].toString();
 
       infoModel = new InfoModel(
           commonName: commonName,
