@@ -646,7 +646,7 @@ const RootQuery = new GraphQLObjectType({
 
                     if (args.rangerID != undefined)
                         temp = _.filter(temp, {
-                            token: args.rangerID
+                            rangerID: args.rangerID
                         })
                     if (args.password != undefined)
                         temp = _.filter(temp, {
