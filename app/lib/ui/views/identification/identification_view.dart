@@ -6,6 +6,7 @@ import 'package:ERP_RANGER/ui/views/animals/animal_view.dart';
 import 'package:ERP_RANGER/ui/views/identification/identification_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:stacked/stacked.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
@@ -160,6 +161,12 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
                         child: DownloadFunctionality(
                           title: "Share Image",
                         )),
+                    Expanded(
+                        flex: 1,
+                        child: ViewMapFunctionality(
+                          title: "View Location",
+                        )),
+                    SizedBox(height: 1.0),
                   ],
                 ),
               )
@@ -271,10 +278,9 @@ class ChildPopup extends ViewModelWidget<IdentificationViewModel> {
   }
 }
 
-class EditSpoorFunctionality extends ViewModelWidget<IdentificationViewModel> {
+class ViewMapFunctionality extends ViewModelWidget<IdentificationViewModel> {
   String title;
-  EditSpoorFunctionality({Key key, this.title})
-      : super(key: key, reactive: true);
+  ViewMapFunctionality({Key key, this.title}) : super(key: key, reactive: true);
 
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
@@ -295,10 +301,9 @@ class EditSpoorFunctionality extends ViewModelWidget<IdentificationViewModel> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: IconButton(
-              icon: Icon(Icons.sync_problem),
-              onPressed: () {
-                //model.setEditSpoor();
-              },
+              icon: Icon(Icons.location_on),
+              onPressed: () => MapsLauncher.launchCoordinates(
+                  37.4220041, -122.0862462, 'Google Headquarters are here'),
             ),
           ),
           text14LeftBoldGrey("$title"),
@@ -382,8 +387,8 @@ class DownloadFunctionality extends ViewModelWidget<IdentificationViewModel> {
   }
 }
 
-class SaveFunvtionality extends ViewModelWidget<IdentificationViewModel> {
-  SaveFunvtionality({Key key}) : super(key: key, reactive: true);
+class SaveFunctionality extends ViewModelWidget<IdentificationViewModel> {
+  SaveFunctionality({Key key}) : super(key: key, reactive: true);
 
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {

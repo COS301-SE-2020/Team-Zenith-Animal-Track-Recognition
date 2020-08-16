@@ -7,6 +7,9 @@ import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:injectable/injectable.dart';
 import 'api.dart';
 
+final String domain =
+    "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/";
+
 @lazySingleton
 class GraphQL implements Api {
   GraphQLConfiguration graphQLConfiguration = GraphQLConfiguration();
@@ -26,7 +29,7 @@ class GraphQL implements Api {
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get(
-        "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{groups(token:\"$token\"){groupName}}");
+        "$domain" + "graphql?query=query{groups(token:\"$token\"){groupName}}");
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
@@ -44,8 +47,8 @@ class GraphQL implements Api {
     for (int i = 0; i < categories.length; i++) {
       if (category == categories[i]) {
         i++;
-        final http.Response res = await http.get(
-            "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{animals(token:\"$token\", group:\"$i\" ){pictures{URL},classification, commonName , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
+        final http.Response res = await http.get("$domain" +
+            "graphql?query=query{animals(token:\"$token\", group:\"$i\" ){pictures{URL},classification, commonName , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
 
         for (int j = 0; j < categories.length; j++) {
           if (res.statusCode == 200) {
@@ -115,14 +118,14 @@ class GraphQL implements Api {
     String token = "h10hYNuJeTbmWH1ZSi5R";
     token = Uri.encodeFull(token);
 
-    final http.Response response = await http.get(
-        "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{animalsbyByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
+    final http.Response response = await http.get("$domain" +
+        "graphql?query=query{animalsByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
 
     print("Response status: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
 
-      var list = body['data']['animalsbyByClassification']['pictures'] as List;
+      var list = body['data']['animalsByClassification']['pictures'] as List;
 
       String temp;
       int count;
@@ -133,34 +136,31 @@ class GraphQL implements Api {
       }
 
       String species =
-          body["data"]["animalsbyByClassification"]["commonName"].toString();
-      String commonName = body["data"]["animalsbyByClassification"]
-              ["classification"]
-          .toString();
-      String gestation = body["data"]["animalsbyByClassification"]
-              ["gestationPeriod"]
-          .toString();
+          body["data"]["animalsByClassification"]["commonName"].toString();
+      String commonName =
+          body["data"]["animalsByClassification"]["classification"].toString();
+      String gestation =
+          body["data"]["animalsByClassification"]["gestationPeriod"].toString();
       String diet =
-          body["data"]["animalsbyByClassification"]["dietType"].toString();
-      String overview = body["data"]["animalsbyByClassification"]
-              ["animalOverview"]
-          .toString();
-      String description = body["data"]["animalsbyByClassification"]
+          body["data"]["animalsByClassification"]["dietType"].toString();
+      String overview =
+          body["data"]["animalsByClassification"]["animalOverview"].toString();
+      String description = body["data"]["animalsByClassification"]
               ["animalDescription"]
           .toString();
-      String behaviour = body["data"]["animalsbyByClassification"]
+      String behaviour = body["data"]["animalsByClassification"]
               ["typicalBehaviourM"]
           .toString();
       String habitat = "Habitat";
       String threat = "INSERT API";
       String heightF =
-          body["data"]["animalsbyByClassification"]["heightF"].toString();
+          body["data"]["animalsByClassification"]["heightF"].toString();
       String heightM =
-          body["data"]["animalsbyByClassification"]["heightM"].toString();
+          body["data"]["animalsByClassification"]["heightM"].toString();
       String weightF =
-          body["data"]["animalsbyByClassification"]["weightF"].toString();
+          body["data"]["animalsByClassification"]["weightF"].toString();
       String weightM =
-          body["data"]["animalsbyByClassification"]["weightM"].toString();
+          body["data"]["animalsByClassification"]["weightM"].toString();
 
       infoModel = new InfoModel(
           commonName: commonName,
@@ -191,7 +191,8 @@ class GraphQL implements Api {
     email = Uri.encodeFull(email);
     password = Uri.encodeFull(password);
     final http.Response response = await http.get(
-      "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{login(e_mail:\"$email\",Password:\"$password\"){Token,Access_Level}}",
+      "$domain" +
+          "graphql?query=query{login(e_mail:\"$email\",Password:\"$password\"){Token,Access_Level}}",
     );
 
     if (response.statusCode == 200) {
@@ -219,8 +220,8 @@ class GraphQL implements Api {
     String token = "h10hYNuJeTbmWH1ZSi5R";
     token = Uri.encodeFull(token);
 
-    final http.Response response = await http.get(
-        "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{animals(token:\"$token\"){commonName, classification, pictures{URL}}}");
+    final http.Response response = await http.get("$domain" +
+        "graphql?query=query{animals(token:\"$token\"){commonName, classification, pictures{URL}}}");
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
@@ -240,7 +241,7 @@ class GraphQL implements Api {
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get(
-        "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/graphql?query=query{groups(token:\"$token\"){groupName}}");
+        "$domain" + "graphql?query=query{groups(token:\"$token\"){groupName}}");
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);

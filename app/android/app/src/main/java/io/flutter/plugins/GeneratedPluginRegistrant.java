@@ -20,8 +20,10 @@ public final class GeneratedPluginRegistrant {
     flutterEngine.getPlugins().add(new io.flutter.plugins.googlemaps.GoogleMapsPlugin());
       com.ko2ic.imagedownloader.ImageDownloaderPlugin.registerWith(shimPluginRegistry.registrarFor("com.ko2ic.imagedownloader.ImageDownloaderPlugin"));
     flutterEngine.getPlugins().add(new io.flutter.plugins.imagepicker.ImagePickerPlugin());
+    flutterEngine.getPlugins().add(new com.example.maps_launcher.MapsLauncherPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.pathprovider.PathProviderPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin());
       com.shekarmudaliyar.social_share.SocialSharePlugin.registerWith(shimPluginRegistry.registrarFor("com.shekarmudaliyar.social_share.SocialSharePlugin"));
+    flutterEngine.getPlugins().add(new io.flutter.plugins.urllauncher.UrlLauncherPlugin());
   }
 }
