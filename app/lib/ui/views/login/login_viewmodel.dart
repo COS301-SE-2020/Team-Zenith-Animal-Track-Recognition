@@ -6,14 +6,14 @@ import 'package:ERP_RANGER/app/locator.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginViewModel extends BaseViewModel{
+class LoginViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final Api _api = locator<GraphQL>();
-  
-  String _username ;
+
+  String _username;
   String get username => _username;
 
-  String _password ;
+  String _password;
   String get passwords => _password;
 
   bool _obscureText = true;
@@ -25,12 +25,12 @@ class LoginViewModel extends BaseViewModel{
   String _userNameErrorString = "";
   String get userNameErrorString => _userNameErrorString;
 
-  bool _errorPassStringBool = false ;
+  bool _errorPassStringBool = false;
   bool get errorPassStringBool => _errorPassStringBool;
 
   String _passErrorString = "";
   String get passErrorString => _passErrorString;
-  
+
   bool _isPassEmpty = true;
   bool get isPassEmpty => _isPassEmpty;
 
@@ -39,9 +39,9 @@ class LoginViewModel extends BaseViewModel{
 
   void userName(String value) {
     _username = value;
-    if(value == ""){
+    if (value == "") {
       _isUserNameEmpty = true;
-    }else{
+    } else {
       _isUserNameEmpty = false;
     }
     notifyListeners();
@@ -49,9 +49,9 @@ class LoginViewModel extends BaseViewModel{
 
   void password(String value) {
     _password = value;
-    if(value == ""){
+    if (value == "") {
       _isPassEmpty = true;
-    }else{
+    } else {
       _isPassEmpty = false;
     }
     notifyListeners();
@@ -62,50 +62,50 @@ class LoginViewModel extends BaseViewModel{
     notifyListeners();
   }
 
-  void navigateToForget(){
+  void navigateToForget() {
     _navigationService.navigateTo(Routes.forgetViewRoute);
   }
 
-  void passEmptyChecker(){
-    if(_isPassEmpty){
+  void passEmptyChecker() {
+    if (_isPassEmpty) {
       _passErrorString = "Password Field Cannnot Be Left Empty!";
       _errorPassStringBool = true;
-    }else{
+    } else {
       _errorPassStringBool = false;
     }
   }
 
-  void userNameErrorChecker(){
-    
-    if(_username == "" || _username == null){
+  void userNameErrorChecker() {
+    if (_username == "" || _username == null) {
       print("$_username=============");
       valid = false;
       _userNameErrorString = "Username Field Cannot Be left Empty";
-    }else if(_username != ""){
+    } else if (_username != "") {
       print("$_username=============");
-      valid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(_username);
-      if(valid == false){
+      valid = RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+          .hasMatch(_username);
+      if (valid == false) {
         _userNameErrorString = "Invalid Email Input";
       }
     }
-    
   }
 
-  void login()async {
+  void login() async {
     userNameErrorChecker();
     passEmptyChecker();
 
-    if(_isPassEmpty != true && isUserNameEmpty == false && valid == true){
+    if (_isPassEmpty != true && isUserNameEmpty == false && valid == true) {
       print("success");
-      _username = "";
-      _password = "";
+      // _username = "";
+      // _password = "";
       valid = true;
       _isPassEmpty = true;
       _isUserNameEmpty = true;
-     // _api.getLoginModel(_username, _password);
+      _api.getLoginModel(_username, _password);
       _navigationService.navigateTo(Routes.homeViewRoute);
       notifyListeners();
-    }else{
+    } else {
       notifyListeners();
     }
   }

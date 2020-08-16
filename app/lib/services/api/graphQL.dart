@@ -186,24 +186,24 @@ class GraphQL implements Api {
 
   @override
   Future<LoginResponse> getLoginModel(String email, String password) async {
-    print(email);
-    print(password);
+    print("Here is the password: " + password);
+    print("Here is the email: " + email);
+
     email = Uri.encodeFull(email);
     password = Uri.encodeFull(password);
     final http.Response response = await http.get(
       "$domain" +
-          "graphql?query=query{login(e_mail:\"$email\",Password:\"$password\"){Token,Access_Level}}",
+          "graphql?query=query{login(eMail:\"$email\",password:\"$password\"){token,accessLevel}}",
     );
 
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
-      print(body["data"]["login"]["Token"]);
-      print(body["data"]["login"]["Access_Level"]);
-      int accessLevel = int.parse(body["data"]["login"]["Access_Level"]);
+
+      int accessLevel = int.parse(body["data"]["login"]["accessLevel"]);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setInt("accessLevel", accessLevel);
-      prefs.setString("Token", body["data"]["login"]["Token"]);
-      // return true;
+      prefs.setString("Token", body["data"]["login"]["token"]);
+      return new LoginResponse();
     }
   }
 
