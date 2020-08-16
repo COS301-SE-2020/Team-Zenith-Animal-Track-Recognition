@@ -488,14 +488,15 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 let a = _.find(usersData, {
-                    token: args.rangerID
-                })
-                a = _.find(usersData, {
                     token: args.token
                 })
                 if (a == null) {
                     return null;
                 }
+                a = _.find(usersData, {
+                    token: args.rangerID
+                })
+                
                 let events = _.filter(spoorIdentificationData, {
                     ranger: args.rangerID
                 })
@@ -1689,6 +1690,10 @@ const Mutation = new GraphQLObjectType({
                     })
                 }
 
+                let rangera= _.find(usersData,{
+                    token:args.token
+                })
+
                 let potentialMatchesarry = _.sortBy(AIIterface(args.base64imge), ["confidence"])
                 let newingID = uplodeBase64(args.base64imge)
 
@@ -1706,7 +1711,7 @@ const Mutation = new GraphQLObjectType({
                         latitude: args.latitude,
                         longitude: args.longitude
                     },
-                    ranger: args.token,
+                    ranger: rangera.rangerID,
                     potentialMatches: potentialMatchesarry,
                     animal: _.last(potentialMatchesarry).animal,
                     track: newingID,
