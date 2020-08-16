@@ -1,0 +1,144 @@
+#ranger-permissions-view-workspace
+{
+	height: auto;
+	width: 100%;
+	background-color: #F5F6FA;
+}
+
+#expansion-panel-separator
+{
+	height: 15px;
+	/* background-color: black; */
+}
+
+#ranger-permissions-levelKey-container
+{
+	height: 25%;
+	width: 98%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+}
+.ranger-permissions-levelKey
+{
+	height: 65%;
+	width: 17%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	box-shadow: 0px 1px 5px #CCCCCC;
+	border-radius: 10px;
+	margin: 0 3%;
+	background-color: white;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out; 
+    -o-transition: all 0.3s ease-in-out;
+}
+.ranger-permissions-levelKey:hover
+{
+	transform: translateY(-3%);
+	box-shadow: 0px 2px 7px #898989;
+	color: black;
+}
+.ranger-permissions-level
+{
+	font-size: 110%;
+	color: #686E79;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 30%;
+	width: 90%;
+	padding-left: 5%;
+}
+.ranger-permissions-levelKey > p
+{
+	font-size: 100%;
+	padding-left: 5%;
+	color: #AAAAAA;
+	height: 30%;
+	width: 90%;
+	margin: 0;
+}
+
+.ranger-permissions-acl
+{
+	font-size: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	color: #BBBBBB;
+	height: 30%;
+	width: 90%;
+	padding-left: 5%;
+}
+.ranger-permissions-acl > .mat-icon
+{
+	color: rgba(104, 110, 121, 1);
+	font-size: 130%;
+}
+
+#ranger-permissions-controls-container
+{
+	height: 75%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	/* border: 2px solid red; */
+}
+.mat-accordion
+{
+	width: 90%;
+}
+.mat-expansion-panel
+{
+	width: 100%;
+}
+.mat-expansion-panel-header-title
+{
+	color: #686E79; 
+}
+.mat-table
+{
+	width: 100%;
+	box-shadow: none;
+}
+.mat-column-Level-1-Rangers, .mat-column-Level-2-Rangers, .mat-column-Level-3-Rangers
+{
+	width: 25%;
+	text-align: center;
+}
+.mat-column-Level-1-Ranger, .mat-column-Level-2-Ranger, .mat-column-Level-3-Ranger, .mat-column-Assigned-Level
+{
+	width: 20%;
+	text-align: center;
+}
+.ranger-cell
+{
+	color: #1D1D1D;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out; 
+    -o-transition: all 0.3s ease-in-out;
+}
+.ranger-cell:hover
+{
+	color: black;
+	cursor: pointer;
+	text-decoration: underline;
+}
+:host ::ng-deep .mat-cell > span.allowed
+{
+	color: #01B200;
+}
+:host ::ng-deep .mat-cell > span.notAllowed
+{
+	color: red;
+}

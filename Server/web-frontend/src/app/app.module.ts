@@ -12,8 +12,9 @@ import { LoginComponent } from './views/login/login.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { AnimalsToolbarComponent } from './views/animals/animals-toolbar/animals-toolbar.component';
 import { AnimalSearchSidenavComponent } from './views/animals/animal-search-sidenav/animal-search-sidenav.component';
+import { AnimalProfileComponent } from './views/animal-profile/animal-profile.component'; 
 import { AnimalInfoCardComponent } from './views/animals/animal-info-card/animal-info-card.component';
-import { EditAnimalInfoComponent } from './views/animals/edit-animal-info/edit-animal-info.component'; 
+import { EditAnimalInfoComponent } from './views/animals/edit-animal-info/edit-animal-info.component';
 import { AddAnimalComponent } from './views/animals/add-animal/add-animal.component';
 import { AnimalsComponent } from './views/animals/animals.component';
 import { RangersComponent } from './views/rangers/rangers.component';
@@ -21,11 +22,11 @@ import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers
 import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
 import { RangerProfileCardComponent } from './views/rangers/ranger-profile-card/ranger-profile-card.component';
 import { AddRangerComponent } from './views/rangers/add-ranger/add-ranger.component';
-import { EditRangerInfoComponent } from './views/rangers/edit-ranger-info/edit-ranger-info.component'; 
+import { EditRangerInfoComponent } from './views/rangers/edit-ranger-info/edit-ranger-info.component';
 import { DeleteRangerComponent } from './views/rangers/delete-ranger/delete-ranger.component';
-import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.component'; 
+import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.component';
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
-import { PersonalRangerPermissionComponentComponent } from './views/personal-ranger-permission-component/personal-ranger-permission-component.component'; 
+import { PersonalRangerPermissionComponentComponent } from './views/personal-ranger-permission-component/personal-ranger-permission-component.component';
 import { GeotagsComponent } from './views/geotags/geotags.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
@@ -40,28 +41,28 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import { MatCardModule } from '@angular/material/card'; 
-import { MatMenuModule } from '@angular/material/menu'; 
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatBadgeModule } from '@angular/material/badge';
-import { MatExpansionModule } from '@angular/material/expansion'; 
-import { MatTableModule } from '@angular/material/table'; 
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTableModule } from '@angular/material/table';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatTabsModule } from '@angular/material/tabs'; 
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
-import { MatProgressBarModule } from '@angular/material/progress-bar'; 
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatSnackBarModule } from '@angular/material/snack-bar'; 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatChipsModule } from '@angular/material/chips'; 
+import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
     AppComponent,
-	  AddRangerComponent,
+    AddRangerComponent,
     LoginComponent,
     OverviewComponent,
     AnimalsComponent,
@@ -79,15 +80,16 @@ import { MatDividerModule } from '@angular/material/divider';
     AnimalsToolbarComponent,
     AnimalSearchSidenavComponent,
     AnimalInfoCardComponent,
-	EditAnimalInfoComponent,
-	AddAnimalComponent,
-	RangerProfileComponent,
-	PersonalRangerPermissionComponentComponent
+    EditAnimalInfoComponent,
+    AddAnimalComponent,
+    RangerProfileComponent,
+  	AnimalProfileComponent,
+    PersonalRangerPermissionComponentComponent
   ],
   imports: [
     BrowserModule,
-	BrowserAnimationsModule,
-	FormsModule,
+    BrowserAnimationsModule,
+    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
@@ -101,30 +103,30 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSidenavModule,
     MatListModule,
     MatCardModule,
-	MatMenuModule,
-	MatDialogModule,
-	MatDatepickerModule,
-	MatNativeDateModule,
-	MatBadgeModule,
-	MatExpansionModule,
-	MatTableModule,
-	MatRadioModule,
-	MatTabsModule,
-	MatProgressSpinnerModule,
-	MatAutocompleteModule,
-	MatSnackBarModule,
-	MatStepperModule,
-	MatChipsModule,
-	MatProgressBarModule,
-	MatDividerModule
+    MatMenuModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatBadgeModule,
+    MatExpansionModule,
+    MatTableModule,
+    MatRadioModule,
+    MatTabsModule,
+    MatProgressSpinnerModule,
+    MatAutocompleteModule,
+    MatSnackBarModule,
+    MatStepperModule,
+    MatChipsModule,
+    MatProgressBarModule,
+    MatDividerModule
   ],
   providers: [AuthGuardService],
   entryComponents: [
-	AddRangerComponent, 
-	EditRangerInfoComponent, 
-	DeleteRangerComponent, 
-	EditAnimalInfoComponent,
-	AddAnimalComponent
+    AddRangerComponent,
+    EditRangerInfoComponent,
+    DeleteRangerComponent,
+    EditAnimalInfoComponent,
+    AddAnimalComponent
   ],
   bootstrap: [AppComponent]
 })
