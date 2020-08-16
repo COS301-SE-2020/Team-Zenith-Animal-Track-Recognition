@@ -1374,7 +1374,7 @@ const Mutation = new GraphQLObjectType({
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 heightF: {
-                    type: new GraphQLNonNull(GrapGraphQLStringhQLInt)
+                    type: new GraphQLNonNull(GraphQLString)
                 },
                 weightF: {
                     type: new GraphQLNonNull(GraphQLString)
