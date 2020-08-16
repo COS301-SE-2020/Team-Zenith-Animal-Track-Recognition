@@ -83,7 +83,7 @@ export class RangerProfileComponent implements OnInit {
 
 
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'",tokenSearch:"' + userToken + '"){token,accessLevel,eMail,firstName,lastName,phoneNumber}}')
+			'",rangerID:"' + userToken + '"){rangerID,accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
