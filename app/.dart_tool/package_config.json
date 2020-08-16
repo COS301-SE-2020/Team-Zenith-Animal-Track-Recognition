@@ -386,6 +386,12 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "maps_launcher",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/maps_launcher-1.2.2+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
       "name": "matcher",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.6",
       "packageUri": "lib/",
@@ -486,6 +492,12 @@
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/platform-2.2.1",
       "packageUri": "lib/",
       "languageVersion": "1.24"
+    },
+    {
+      "name": "platform_detect",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/platform_detect-1.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.4"
     },
     {
       "name": "plugin_platform_interface",
@@ -674,6 +686,36 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "url_launcher",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "url_launcher_linux",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_linux-0.0.1+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "url_launcher_macos",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-0.0.1+7",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "url_launcher_platform_interface",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_platform_interface-1.0.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "url_launcher_web",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-0.1.2+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
+    },
+    {
       "name": "uuid_enhanced",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/uuid_enhanced-3.0.2",
       "packageUri": "lib/",
@@ -728,7 +770,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-08-15T10:00:30.591333Z",
+  "generated": "2020-08-16T13:51:03.493082Z",
   "generator": "pub",
   "generatorVersion": "2.8.4"
 }

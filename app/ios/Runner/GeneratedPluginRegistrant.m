@@ -28,6 +28,12 @@
 @import image_picker;
 #endif
 
+#if __has_include(<maps_launcher/MapsLauncherPlugin.h>)
+#import <maps_launcher/MapsLauncherPlugin.h>
+#else
+@import maps_launcher;
+#endif
+
 #if __has_include(<path_provider/FLTPathProviderPlugin.h>)
 #import <path_provider/FLTPathProviderPlugin.h>
 #else
@@ -46,6 +52,12 @@
 @import social_share;
 #endif
 
+#if __has_include(<url_launcher/FLTURLLauncherPlugin.h>)
+#import <url_launcher/FLTURLLauncherPlugin.h>
+#else
+@import url_launcher;
+#endif
+
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
@@ -53,9 +65,11 @@
   [FLTGoogleMapsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleMapsPlugin"]];
   [ImageDownloaderPlugin registerWithRegistrar:[registry registrarForPlugin:@"ImageDownloaderPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
+  [MapsLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"MapsLauncherPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
   [SocialSharePlugin registerWithRegistrar:[registry registrarForPlugin:@"SocialSharePlugin"]];
+  [FLTURLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTURLLauncherPlugin"]];
 }
 
 @end
