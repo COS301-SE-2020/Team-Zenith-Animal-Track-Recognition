@@ -1,0 +1,13 @@
+<div class="animals-gallery-cards-container">
+    <div id="loader-container">
+        <mat-spinner id="loader"></mat-spinner>
+    </div>
+    <div class="animals-gallery-card-container" *ngFor="let animal of animalsList">
+        <mat-card class="animals-gallery-card" id="animalID-{{animal.animalID}}">
+            <img mat-card-image id="animal-info-card-picture" src="{{animal.pictures[0].URL}}">
+            <mat-card-content>
+                <p class="animals-gallery-card-phone fontSB" id="{{animal.classification}}Descr">{{animal.commonName | uppercase}}</p>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

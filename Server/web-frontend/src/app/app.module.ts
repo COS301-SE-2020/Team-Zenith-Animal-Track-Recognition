@@ -17,6 +17,9 @@ import { AnimalInfoCardComponent } from './views/animals/animal-info-card/animal
 import { EditAnimalInfoComponent } from './views/animals/edit-animal-info/edit-animal-info.component';
 import { AddAnimalComponent } from './views/animals/add-animal/add-animal.component';
 import { AnimalsComponent } from './views/animals/animals.component';
+import { AnimalsGalleryComponent } from './views/animals/animals-gallery/animals-gallery.component';
+import { AnimalsGalleryToolbarComponent } from './views/animals/animals-gallery/animals-gallery-toolbar/animals-gallery-toolbar.component';
+import { AnimalsGalleryCardComponent } from './views/animals/animals-gallery/animals-gallery-card/animals-gallery-card.component';
 import { RangersComponent } from './views/rangers/rangers.component';
 import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
 import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
@@ -64,6 +67,9 @@ import { MatDividerModule } from '@angular/material/divider';
     LoginComponent,
     OverviewComponent,
     AnimalsComponent,
+	AnimalsGalleryComponent,
+    AnimalsGalleryToolbarComponent,
+    AnimalsGalleryCardComponent,
     RangersComponent,
     RangersToolbarComponent,
     RangerSearchSidenavCompComponent,

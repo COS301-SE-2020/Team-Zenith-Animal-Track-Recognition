@@ -127,7 +127,7 @@ export class AnimalProfileComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.startLoader();
-		document.getElementById('animals-route').classList.add('activeRoute');
+		document.getElementById('animals-route-link').classList.add('activeRoute');
 		//Determine which user was navigated to and fetch their information
 		const classificationQuery = new URLSearchParams(window.location.search);
 		const animal = classificationQuery.get("classification").split("_");
