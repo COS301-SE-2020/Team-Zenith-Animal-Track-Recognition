@@ -101,7 +101,6 @@ const POTENTIAL_MATCHES_TYPE = new GraphQLObjectType({
         animal: {
             type:ANIMAL_TYPE,
             resolve(parent, args) {
-                console.log( parent.animal.toString())
                 let temp = _.find(animalData, {
                     animalID: parent.animal.toString()
                 })
@@ -144,6 +143,15 @@ const SPOOR_IDENTIFICATION_TYPE = new GraphQLObjectType({
         },
         potentialMatches: {
             type:new GraphQLList( POTENTIAL_MATCHES_TYPE)
+        },
+        picture:
+        {
+            type:PICTURES_TYPE,
+            resolve(parent, args){
+                return _.find(pictureData,{
+                    pictureID:parent.picture
+                })
+            }
         }
     })
 });
@@ -406,10 +414,11 @@ const RANGERS_STATS_TYPE = new GraphQLObjectType({
         mostTrackedAnimal: {
             type: ANIMAL_TYPE,
             resolve(parent, args) {
+                
                 let temp = undefined;
                 if (CACHE) {
                     temp = _.find(animalData, {
-                        animalID: parent.animal
+                        animalID: parent.mostTrackedAnimal.toString()
                     })
                 } else {
                     //todo
@@ -777,20 +786,16 @@ const RootQuery = new GraphQLObjectType({
                     if (args.classification != undefined)
                         if (args.classification == val.classification) {
                             let b = val.pictures
-                            console.log(b)
                             b.forEach(c => {
-                                console.log(c)
                                 let d = _.find(pictureData, {
                                     picturesID: c.toString()
                                 })
-                                console.log(d)
                                 a.push(d)
                             })
                         }
                     if (args.commonName != undefined) {
                         if (args.commonName == val.commonName) {
                             let b = val.pictures
-                            console.log(b)
                             b.forEach(c => {
                                 let d = _.find(pictureData, {
                                     ID: c.toString()
@@ -860,7 +865,6 @@ const RootQuery = new GraphQLObjectType({
                 if (a == null) {
                     return null;
                 }
-                console.log(dietTypeData)
                 return dietTypeData
             }
         }
@@ -950,11 +954,9 @@ const Mutation = new GraphQLObjectType({
                     console.log("Document written with ID: ", docRef.id);
                 })
 
-                console.log(x)
                 a = _.find(usersData, {
                     token: x
                 })
-                console.log(a)
                 return a;
             }
         },
@@ -1112,7 +1114,6 @@ const Mutation = new GraphQLObjectType({
                     console.log("deleted aberted 3");
                     return null
                 }
-                console.log("hello")
                 let b = _.findIndex(usersData, {
                     token: args.tokenDelete
                 })
@@ -1289,7 +1290,6 @@ const Mutation = new GraphQLObjectType({
                     Broad_Description: args.Broad_Description,
                     distinguishingFeatures: args.distinguishingFeatures
                 }
-                console.log(HID.toString())
                 habitats.doc(HID.toString()).set(newHabitat)
                 habitatData.push(newHabitat)
                 return newHabitat;
@@ -1599,7 +1599,6 @@ const Mutation = new GraphQLObjectType({
                 let updatedAnimal = _.find(animalData, {
                     classification: args.classification
                 })
-                console.log(updatedAnimal)
                 //delete updatedAnimal.classification
                 if (args.commonName != undefined) {
                     updatedAnimal.commonName = args.commonName
@@ -1691,9 +1690,6 @@ const Mutation = new GraphQLObjectType({
                     token: args.token
                 })
                 if (a == undefined) {
-                    return null
-                }
-                if (a.accessLevel <= 1) {
                     return null
                 }
                 let IDID = ((spoorIdentificationData.length + 1))
@@ -1984,6 +1980,8 @@ if (CACHE) {
         spoorIdentificationData = []
         querySnapshot.forEach(function (doc) {
             let newSpoorID = doc.data()
+            if (doc.data().picture==undefined)
+            newSpoorID.picture="19"
             spoorIdentificationData.push(newSpoorID)
         });
     });
@@ -2258,29 +2256,6 @@ function getSimilarimg(ImgID) {
     return obj
 }
 
-// { //transver
-
-
-//         animals
-//         .get()
-//         .then(
-//             function (querySnapshot) {
-//                 querySnapshot.forEach(function (doc) {
-//                     let animal = doc.data()
-//                     let old =animal.pictures
-//                     let newarr=[]
-//                     old.forEach(element => {
-//                         newarr.push(element.toString())
-//                     });
-//                     delete(animal.pictures)
-//                     animal.pictures=newarr
-//                     console.log(animal)
-//                     animals.doc(doc.id).set(animal)
-//                 });
-
-//             }
-//         )
-// }
 function userID() {
     const alphanumeric = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let id = "";
