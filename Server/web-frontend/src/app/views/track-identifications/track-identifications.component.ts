@@ -12,11 +12,6 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 export class TrackIdentificationsComponent implements OnInit {
 	
 	@ViewChild('sidenav') sidenav;
-	rangers: any;
-	searchText: string;
-	sortBySurname: boolean = true;
-	currentAlphabet;
-	sorted: string;
 	
 	constructor(private http: HttpClient) { }
 
@@ -31,94 +26,38 @@ export class TrackIdentificationsComponent implements OnInit {
 				this.sort(this.sortBySurname);
 			});*/
 	}
-	updateSearchText(event) {
-		this.searchText = event;
-	}
-
-	refresh(updateOp: string) {
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'"){rangerID,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
-			.subscribe((data: any[]) => {
-				let temp = [];
-				temp = Object.values(Object.values(data)[0]);
-				var newRangerList = temp[0];
-				switch (updateOp) {
-					case "update":
-						this.rangers = null;
-						this.rangers = newRangerList;
-						break;
-					case "add":
-						newRangerList.forEach(x => this.addIfNewRanger(x));
-						break;
-					case "delete":
-						let removedRanger = this.rangers.filter(x => !newRangerList.some(y => y.rangerID == x.rangerID));
-						this.removeRanger(removedRanger[0].rangerID);
-						break;
-				}
-				this.sort(this.sortBySurname);
-			});
-	}
-	//Ranger CRUD Operations
-	updateRangerList(updatedList: string) {
-		this.refresh(updatedList);
-	}
-	addIfNewRanger(x: any) {
-		let isNotNew = false;
-		for (let i = 0; i < this.rangers.length; i++)
-			if (x.token == this.rangers[i].token)
-				isNotNew = true;
-
-		if (!isNotNew)
-			this.rangers.push(x);
-	}
-	removeRanger(t: string) {
-		this.rangers.splice(this.rangers.findIndex(x => x.token == t), 1);
-	}
 	
-	//Ranger Search sidenav
-	openSidenav() {
-		this.sidenav.open();
-		document.getElementById('sidenav-open-btn-container').style.transitionDuration = '0.2s';
-		document.getElementById('sidenav-open-btn-container').style.left = '-10%';
-	}
-	closeSidenav() {
-		this.sidenav.close();
+	showOpenBtn() {
+		//Show Open Button
+		document.getElementById('sidenav-open-btn-container').style.visibility = 'visible';
 		document.getElementById('sidenav-open-btn-container').style.transitionDuration = '0.8s';
 		document.getElementById('sidenav-open-btn-container').style.left = '0%';
+		
+		//Hide Closed Button
+		document.getElementById('sidenav-close-btn-container').style.transitionDuration = '0.2s';
+		document.getElementById('sidenav-close-btn-container').style.left = '-10%';	
+		document.getElementById('sidenav-close-btn-container').style.visibility = 'hidden';
+	}
+	
+	showCloseBtn() {
+		//Show Close Button
+		document.getElementById('sidenav-close-btn-container').style.visibility = 'visible';
+		document.getElementById('sidenav-close-btn-container').style.transitionDuration = '0.8s';
+		document.getElementById('sidenav-close-btn-container').style.left = '0%';		
+		
+		//Hide Open Button
+		document.getElementById('sidenav-open-btn-container').style.transitionDuration = '0.2s';
+		document.getElementById('sidenav-open-btn-container').style.left = '-10%';
+		document.getElementById('sidenav-open-btn-container').style.visibility = 'hidden';
 	}
 
-	//Sorting and Filtering
-	toggle(bool: boolean) {
-		this.sortBySurname = bool;
-		this.sort(bool);
+	openSidenav() {
+		this.sidenav.open();
+		this.showCloseBtn();
 	}
-
-	sort(bool: boolean) {
-		let temp: string;
-		if (bool) {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
-					}
-				}
-			}
-			temp = "Sorted alphabetically";
-		} else {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].accessLevel > this.rangers[j].accessLevel2) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
-					}
-				}
-			}
-			temp = "Sorted by ranger level";
-		}
-		this.sorted = temp;
-		return temp;
+	
+	closeSidenav() {
+		this.sidenav.close();
+		this.showOpenBtn();
 	}
 }

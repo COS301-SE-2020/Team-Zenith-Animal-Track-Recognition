@@ -28,10 +28,10 @@
 #identifications-search-sidenav
 {
 	height: 100%;
-	width: 300px;
+	width: 350px;
 	border-right: 2px solid #CCCCCC;
 	box-shadow: 1px 0px 5px #DDDDDD;
-}
+}/*
 #sidenav-close-btn-container
 {
 	height: 10%;
@@ -40,11 +40,11 @@
 	flex-direction: row;
 	justify-content: flex-end;
 	align-items: center;
-}
-#sidenav-open-btn-container
+}*/
+#sidenav-open-btn-container, #sidenav-close-btn-container
 {
 	position: absolute;
-	bottom: 3%;
+	top: 5%;
 	left: 0%;
 	height: 6%;
 	width: 40px;

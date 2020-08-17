@@ -1,18 +1,17 @@
 #ranger-search-sidenav
 {
-	height: 90%;
+	height: 100%;
 	width: 100%;
 }
 #ranger-search-controls-container
 {
-	height: 30%;
+	height: 15%;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
 	align-items: center;
 	border-bottom: 2px solid #CCCCCC;
-	overflow: hidden;
 }
 .mat-form-field
 {
@@ -27,72 +26,99 @@
 {
     padding-bottom: 0;
 }
-#ranger-search-controls
-{
-	height: 25%;
-	width: 90%;
-	border: 2px solid #A8ACB2;
-}
-#ranger-search-controls > .mat-button-toggle
-{
-	width: 50%;
-}
-:host ::ng-deep .mat-button-toggle-label-content 
-{
-	font-weight: 600;
-    line-height: 32px;
-}
-:host ::ng-deep .mat-button-toggle-checked
-{
-	color: white;
-	background-color: #A8ACB2;
-}
 #ranger-search-results-container
 {
-	height: 70%;
+	height: 85%;
 	width: 100%;
-	border-bottom: 2px solid #CCCCCC;
 	overflow: auto;
 	display: flex;
 	flex-direction: column;
-	padding: 5% 0;
 }
-.ranger-search-results-entries
+#track-identification-search-results
+{
+	overflow-y: auto;
+	padding: 0 4%;
+}
+.track-identification-container
+{
+	height: 85px;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	margin: 10% 0;
+    transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -ms-transition: all 0.4s ease-in-out; 
+    -o-transition: all 0.4s ease-in-out;
+	transform: translateY(0%);
+}
+.track-identification-container:hover
+{
+	cursor: pointer;
+	transform: translateY(-10%);
+}
+.track-identification-image-container
+{
+	height: 85px;
+	width: 85px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	background-color: #CCC;
+	border-radius: 5%;
+}
+.track-identification-info-container
+{
+	height: 100%;
+	width: 70%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding-left: 2%;
+}
+.track-identification-animal-name > span
 {
 	height: auto;
 	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }
-.ranger-search-result-entry
+.track-identification-animal-commonName 
 {
-	height: auto;
-	width: 100%;
+	color: #686E79;
+	font-size: 100%;
 }
-:host ::ng-deep .mat-list-base .mat-subheader:first-child
+.track-identification-capture-date
+{
+	font-size: 80%;
+}
+.track-identification-animal-classification, .track-identification-capture-ranger
+{
+	color: #AAA;
+}
+.track-identification-animal-name > p, .track-identification-animal-name > span > p, .track-identification-capture-ranger, .track-identification-info-container > span > p
 {
 	margin: 0;
+	padding: 0;
 }
-.mat-list-base .mat-subheader
+.track-identification-capture-ranger, .track-identification-info-container > span > p
 {
-	height: 20%;
-	margin-top: 5%;
+	font-size: 80%;
 }
-.ranger-search-resultgroup-subheader
+.track-identification-info-container > span
 {
-	font-size: 100%;
-	height: 10%;
+	height: auto;
 	width: 100%;
-	padding: 0.2em 1em;
-}
-.mat-list-option
-{
-	font-size: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 :host ::ng-deep .mat-list-text
 {
 	padding-left: 10% !important;
 	padding-right: 0 !important;
-}
-.ranger-search-resultgroup-subentry
-{
-	color: #AAAAAA;
 }

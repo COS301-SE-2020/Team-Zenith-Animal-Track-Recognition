@@ -16,7 +16,7 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 export class RangerProfileComponent implements OnInit {
 
 	user: any;
-	userId: string;
+	userToken: string;
 	spoorIdentifications: any;
 	activities = [
 		{
@@ -79,7 +79,7 @@ export class RangerProfileComponent implements OnInit {
 		document.getElementById('rangers-route').classList.add('activeRoute');
 		//Determine which user was navigated to and fetch their information
 		const url = new URLSearchParams(window.location.search);
-		const userId = url.get('ranger');
+		const userToken = url.get('ranger');
 
 
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + 

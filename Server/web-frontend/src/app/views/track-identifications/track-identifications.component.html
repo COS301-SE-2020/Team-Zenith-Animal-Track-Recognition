@@ -2,17 +2,17 @@
     <app-track-identifications-toolbar></app-track-identifications-toolbar>
     <div id="identifications-view-workspace">
         <mat-drawer-container id="identifications-search-sidenav-container">
-            <mat-drawer id="identifications-search-sidenav" #sidenav mode="side">
-                <app-track-identifications-sidenav [rangers]="rangers" (rangersOnChange)="updateRangerList($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"></app-track-identifications-sidenav>
+            <mat-drawer id="identifications-search-sidenav" #sidenav mode="side" opened="true" (opened)="showCloseBtn()" (closed)="showOpenBtn()">
+                <app-track-identifications-sidenav></app-track-identifications-sidenav>
+            </mat-drawer>
+            <mat-drawer-content id="identifications-search-sidenav-content">
                 <div id="sidenav-close-btn-container" (click)="closeSidenav()">
                     <button id="side-nav-close-btn" mat-icon-button><mat-icon>chevron_left</mat-icon></button>
                 </div>
-            </mat-drawer>
-            <mat-drawer-content id="identifications-search-sidenav-content">
                 <div id="sidenav-open-btn-container" (click)="openSidenav()">
                     <button id="side-nav-open-btn" mat-icon-button><mat-icon>chevron_right</mat-icon></button>
                 </div>
-                <app-track-identifications-map [rangersList]="rangers" (rangersOnChange)="updateRangerList($event)" [searchText]="searchText"></app-track-identifications-map>
+                <app-track-identifications-map></app-track-identifications-map>
             </mat-drawer-content>
         </mat-drawer-container>
     </div>
