@@ -45,6 +45,8 @@
 	width: 100%;
 	display: flex;
 	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 	margin: 10% 0;
     transition: all 0.4s ease-in-out;
     -webkit-transition: all 0.4s ease-in-out;
@@ -60,8 +62,8 @@
 }
 .track-identification-image-container
 {
-	height: 85px;
-	width: 85px;
+	height: 80px;
+	width: 80px;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -76,7 +78,6 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	padding-left: 2%;
 }
 .track-identification-animal-name > span
 {
