@@ -54,7 +54,7 @@ export class RangerProfileCardComponent implements OnInit {
 			disableClose: true,
 			id: 'edit-ranger-dialog',
 			data: {
-				token: rangerID,
+				rangerID: rangerID,
 				firstName: rangerName[0],
 				lastName: rangerName[1],
 				phoneNumber: rangerPhone.replace("call", ""),
