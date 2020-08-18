@@ -165,6 +165,11 @@ export class AnimalProfileComponent implements OnInit {
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}
+	viewAnimalPhotos(animalClassi: string) {
+		let classification = animalClassi.split(" ");
+		let classificationQuery = classification[0] + "_" + classification[1];
+		this.router.navigate(['animals/gallery/photos'], { queryParams: { classification: classificationQuery } });
+	}
 
 	//Ranger CRUD Quick-Actions
 	//EDIT Ranger
@@ -202,5 +207,4 @@ export class AnimalProfileComponent implements OnInit {
 	stopLoader() {
 		document.getElementById('loader-container').style.visibility = 'hidden';
 	}
-
 }

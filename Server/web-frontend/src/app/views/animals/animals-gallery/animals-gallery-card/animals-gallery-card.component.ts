@@ -76,14 +76,21 @@ export class AnimalsGalleryCardComponent implements OnInit {
 		}
 		});
 	}
-
-	viewAnimalProfile(animalClassi: string) {
+	*/
+	viewAnimalPhotos(animalClassi: string) {
 		let classification = animalClassi.split(" ");
 		let classificationQuery = classification[0] + "_" + classification[1];
-		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
-	}*/
+		this.router.navigate(['animals/gallery/photos'], { queryParams: { classification: classificationQuery } });
+	}
 
 	route(temp: string) {
+		document.getElementById("animals-route-link").classList.remove("activeRoute");
+		document.getElementById("animals-gallery-route").classList.remove("activeRoute");
+		document.getElementById("overview-route").classList.remove("activeRoute");
+		document.getElementById("rangers-route").classList.remove("activeRoute");
+		document.getElementById("geotags-route").classList.remove("activeRoute");
+		document.getElementById("settings-route").classList.remove("activeRoute");
+		
 		this.router.navigate([temp]);
 	}
 

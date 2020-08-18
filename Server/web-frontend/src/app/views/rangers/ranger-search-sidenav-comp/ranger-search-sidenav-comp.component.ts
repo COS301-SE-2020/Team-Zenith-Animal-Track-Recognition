@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -19,11 +20,19 @@ export class RangerSearchSidenavCompComponent implements OnInit {
   currentAlphabet: any;
   sorted: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void { 
     this.sortBySurname = true;
   }
+  
+ 	viewRangerProfile(rangerID: string) {
+		this.router.navigate(['rangers/profiles'], { queryParams: { ranger: rangerID } });
+	}
+
+	route(temp: string) {
+		this.router.navigate([temp]);
+	}
   
   checkIfNew(title: string, pos: number) {
     if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {

@@ -20,6 +20,7 @@ import { AnimalsComponent } from './views/animals/animals.component';
 import { AnimalsGalleryComponent } from './views/animals/animals-gallery/animals-gallery.component';
 import { AnimalsGalleryToolbarComponent } from './views/animals/animals-gallery/animals-gallery-toolbar/animals-gallery-toolbar.component';
 import { AnimalsGalleryCardComponent } from './views/animals/animals-gallery/animals-gallery-card/animals-gallery-card.component';
+import { AnimalPhotosComponent } from './views/animals/animals-gallery/animal-photos/animal-photos.component';
 import { RangersComponent } from './views/rangers/rangers.component';
 import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
 import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
@@ -59,6 +60,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list'; 
 
 @NgModule({
   declarations: [
@@ -70,6 +72,7 @@ import { MatDividerModule } from '@angular/material/divider';
 	AnimalsGalleryComponent,
     AnimalsGalleryToolbarComponent,
     AnimalsGalleryCardComponent,
+    AnimalPhotosComponent,
     RangersComponent,
     RangersToolbarComponent,
     RangerSearchSidenavCompComponent,
@@ -121,7 +124,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatStepperModule,
     MatChipsModule,
     MatProgressBarModule,
-    MatDividerModule
+    MatDividerModule,
+	MatGridListModule
   ],
   providers: [AuthGuardService],
   entryComponents: [

@@ -82,6 +82,11 @@ export class AnimalInfoCardComponent implements OnInit {
 		let classificationQuery = classification[0] + "_" + classification[1];
 		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
 	}
+	viewAnimalPhotos(animalClassi: string) {
+		let classification = animalClassi.split(" ");
+		let classificationQuery = classification[0] + "_" + classification[1];
+		this.router.navigate(['animals/gallery/photos'], { queryParams: { classification: classificationQuery } });
+	}
 
 	route(temp: string) {
 		this.router.navigate([temp]);
