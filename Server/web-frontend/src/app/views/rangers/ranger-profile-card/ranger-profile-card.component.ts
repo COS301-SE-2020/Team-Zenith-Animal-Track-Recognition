@@ -22,7 +22,9 @@ export class RangerProfileCardComponent implements OnInit {
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
 
-	ngOnInit(): void { this.startLoader(); }
+	ngOnInit(): void { 
+		this.startLoader(); 
+	}
 
 
 	public ngOnChanges(changes: SimpleChanges) {

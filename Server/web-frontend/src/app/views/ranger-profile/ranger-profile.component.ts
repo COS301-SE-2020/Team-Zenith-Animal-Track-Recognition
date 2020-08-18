@@ -91,7 +91,7 @@ export class RangerProfileComponent implements OnInit {
 				this.user = temp[0][0];
 				this.stopLoader();
 			});
-
+/*
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'",ranger:"' + this.userToken + '"){spoorIdentificationID,animal{commonName,classification},dateAndTime{year,month,day,hour,min,second},' +
 			'location{latitude,longitude},potentialMatches{animals{classification},Confidence}}}')
@@ -104,7 +104,7 @@ export class RangerProfileComponent implements OnInit {
 					this.spoorIdentifications = [];
 				}
 				this.stopLoader();
-			});
+			});*/
 	}
 
 	route(temp: string) {

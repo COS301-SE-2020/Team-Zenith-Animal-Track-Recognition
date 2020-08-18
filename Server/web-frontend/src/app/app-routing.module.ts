@@ -5,7 +5,7 @@ import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.co
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { LoginComponent } from './views/login/login.component';
-import { GeotagsComponent } from './views/geotags/geotags.component';
+import { TrackIdentificationsComponent } from './views/track-identifications/track-identifications.component';
 import { AnimalsComponent } from './views/animals/animals.component';
 import { AnimalProfileComponent } from './views/animal-profile/animal-profile.component';
 import { AnimalsGalleryComponent } from './views/animals/animals-gallery/animals-gallery.component';
@@ -24,7 +24,7 @@ const routes: Routes = [
   { path: 'rangers', component: RangersComponent, canActivate: [AuthGuard] },  
   { path: 'rangers/profiles', component: RangerProfileComponent, canActivate: [AuthGuard] },
   { path: 'rangers/permissions', component: RangerPermissionsComponent, canActivate: [AuthGuard] },
-  { path: 'geotags', component: GeotagsComponent, canActivate: [AuthGuard] },
+  { path: 'identifications', component: TrackIdentificationsComponent, canActivate: [AuthGuard] },
   { path: 'overview', component: OverviewComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full'}
 ];
