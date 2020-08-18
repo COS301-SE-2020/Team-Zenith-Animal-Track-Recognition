@@ -1914,7 +1914,7 @@ if (CACHE) {
             }
             let pictureURL = "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/ERP_v2-08..jpg?alt=media&token=25ea80bd-3cc9-4d28-8f0b-89ee16a4aaf5"
 
-            if (doc.data().rangerID == undefined) {
+            if (doc.data().pictureURL == undefined) {
                 updated = true;
             } else {
                 pictureURL = doc.data().pictureURL
