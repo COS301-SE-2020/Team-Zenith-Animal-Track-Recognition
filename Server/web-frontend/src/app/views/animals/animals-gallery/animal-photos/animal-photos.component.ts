@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AnimalPhotoDetailsComponent } from './animal-photo-details/animal-photo-details.component'; 
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
 @Component({
@@ -19,80 +20,6 @@ export class AnimalPhotosComponent implements OnInit {
 	maleBehaviour: string;
 	
 	/*Place holder values*/
-	animalPhotos = [
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},	
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		},		
-		{
-			placeholderImage: 'Reclassified Spoor',
-		}
-	];
 	trackImages = [
 		{
 			imagePlaceholder: 'Elephant',
@@ -201,7 +128,32 @@ export class AnimalPhotosComponent implements OnInit {
 				this.stopLoader();
 			});
 	}
-
+	
+	openPhotoDetails(photoUrl: any, photoIndex: number) {
+		const animalPhotoDetailsDialogRef = this.dialog.open(AnimalPhotoDetailsComponent, {
+			height: '100%',
+			width: '100%',
+			autoFocus: true,
+			disableClose: true,
+			id: 'animal-photo-details-dialog',
+			data: {
+				currentImage: photoUrl,
+				currentIndex: photoIndex,
+				imageList: this.animal.pictures,
+				animal: this.animal
+			},
+		});
+		animalPhotoDetailsDialogRef.afterClosed().subscribe(result => {
+			this.stopLoader();
+			if (result == "success") {
+				//If animal was successfully edited refresh component and notify parent
+				//this.animalsOnChange.emit('update');
+			}
+			else if (result == 'error') {
+				//this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });
+			}
+		});
+	}
 	route(temp: string) {
 		document.getElementById("animals-route-link").classList.remove("activeRoute");
 		document.getElementById("animals-gallery-route").classList.remove("activeRoute");

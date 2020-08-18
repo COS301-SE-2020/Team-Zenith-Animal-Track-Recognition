@@ -21,6 +21,7 @@ import { AnimalsGalleryComponent } from './views/animals/animals-gallery/animals
 import { AnimalsGalleryToolbarComponent } from './views/animals/animals-gallery/animals-gallery-toolbar/animals-gallery-toolbar.component';
 import { AnimalsGalleryCardComponent } from './views/animals/animals-gallery/animals-gallery-card/animals-gallery-card.component';
 import { AnimalPhotosComponent } from './views/animals/animals-gallery/animal-photos/animal-photos.component';
+import { AnimalPhotoDetailsComponent } from './views/animals/animals-gallery/animal-photos/animal-photo-details/animal-photo-details.component'; 
 import { RangersComponent } from './views/rangers/rangers.component';
 import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
 import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
@@ -60,7 +61,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatGridListModule } from '@angular/material/grid-list'; 
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     AnimalsGalleryToolbarComponent,
     AnimalsGalleryCardComponent,
     AnimalPhotosComponent,
+    AnimalPhotoDetailsComponent,
     RangersComponent,
     RangersToolbarComponent,
     RangerSearchSidenavCompComponent,
@@ -133,7 +135,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     EditRangerInfoComponent,
     DeleteRangerComponent,
     EditAnimalInfoComponent,
-    AddAnimalComponent
+    AddAnimalComponent,
+	AnimalPhotoDetailsComponent
   ],
   bootstrap: [AppComponent]
 })
