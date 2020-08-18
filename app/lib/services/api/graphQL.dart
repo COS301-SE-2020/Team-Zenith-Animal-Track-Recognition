@@ -196,6 +196,7 @@ class GraphQL implements Api {
           "graphql?query=query{login(eMail:\"$email\",password:\"$password\"){token,accessLevel}}",
     );
 
+    print("Response: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
 

@@ -98,6 +98,12 @@
       "languageVersion": "2.3"
     },
     {
+      "name": "camera",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/camera-0.5.8+5",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "carousel_slider",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/carousel_slider-2.2.1",
       "packageUri": "lib/",
@@ -770,7 +776,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-08-16T17:17:43.173659Z",
+  "generated": "2020-08-17T19:52:19.967639Z",
   "generator": "pub",
   "generatorVersion": "2.8.4"
 }
