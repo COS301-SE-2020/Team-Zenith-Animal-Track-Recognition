@@ -1101,7 +1101,7 @@ const Mutation = new GraphQLObjectType({
                 let a = _.find(usersData, {
                     token: args.tokenIn
                 })
-                if (a == undefined) {
+                if (a == undefined||a==null) {
                     console.log("deleted aberted 1");
                     return null
                 }
@@ -1114,17 +1114,17 @@ const Mutation = new GraphQLObjectType({
                     return null
                 }
                 let b = _.findIndex(usersData, {
-                    token: args.tokenDelete
+                    rangerID: args.rangerID
                 })
 
                 usersData.splice(b, 1)
 
-                users.doc(args.tokenDelete).delete().then(function () {
+                users.doc(args.rangerID).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
 
                 console.log(usersData);
-                return MesData[0];
+                return mesData[0];
             }
 
         },
