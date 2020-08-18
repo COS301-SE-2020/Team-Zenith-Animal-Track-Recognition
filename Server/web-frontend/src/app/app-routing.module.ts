@@ -8,6 +8,8 @@ import { LoginComponent } from './views/login/login.component';
 import { GeotagsComponent } from './views/geotags/geotags.component';
 import { AnimalsComponent } from './views/animals/animals.component';
 import { AnimalProfileComponent } from './views/animal-profile/animal-profile.component';
+import { AnimalsGalleryComponent } from './views/animals/animals-gallery/animals-gallery.component';
+import { AnimalPhotosComponent } from './views/animals/animals-gallery/animal-photos/animal-photos.component';
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
 
@@ -16,6 +18,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'animals', component: AnimalsComponent, canActivate: [AuthGuard] },
   { path: 'animals/information', component: AnimalProfileComponent, canActivate: [AuthGuard] },
+  { path: 'animals/gallery', component: AnimalsGalleryComponent, canActivate: [AuthGuard] },
+  { path: 'animals/gallery/photos', component: AnimalPhotosComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'rangers', component: RangersComponent, canActivate: [AuthGuard] },  
   { path: 'rangers/profiles', component: RangerProfileComponent, canActivate: [AuthGuard] },

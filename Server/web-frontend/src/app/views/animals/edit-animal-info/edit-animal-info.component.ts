@@ -29,7 +29,11 @@ export class EditAnimalInfoComponent implements OnInit {
 		}
 	];
 
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<EditAnimalInfoComponent>) { }
+	constructor(
+		@Inject(MAT_DIALOG_DATA) public data: any, 
+		private http: HttpClient, 
+		private formBuilder: FormBuilder, 
+		public dialogRef: MatDialogRef<EditAnimalInfoComponent>) { }
 
 	ngOnInit(): void {
 		this.editAnimalForm = this.formBuilder.group({
