@@ -1,20 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
+import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-side-navigation',
-  templateUrl: './side-navigation.component.html',
-  styleUrls: ['./side-navigation.component.css']
+  selector: 'app-animals-gallery-toolbar',
+  templateUrl: './animals-gallery-toolbar.component.html',
+  styleUrls: ['./animals-gallery-toolbar.component.css']
 })
-export class SideNavigationComponent implements OnInit {
-  test: boolean = false;
+export class AnimalsGalleryToolbarComponent implements OnInit {
 
-	@ViewChild('animalsPanel') animalsPanel: any;
-
-	constructor(private router: Router) { }
+	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
-		this.test = true;
 	}
 
 	route(location: string) {
@@ -24,13 +23,7 @@ export class SideNavigationComponent implements OnInit {
 		document.getElementById("rangers-route").classList.remove("activeRoute");
 		document.getElementById("geotags-route").classList.remove("activeRoute");
 		document.getElementById("settings-route").classList.remove("activeRoute");
-
+		
 		this.router.navigate([location]);
-	}
-	
-	toggleAnimalsPanel()
-	{
-		this.animalsPanel.toggle();
-		document.getElementById("animals-expand-btn-icon").classList.toggle("rotateIcon");
 	}
 }

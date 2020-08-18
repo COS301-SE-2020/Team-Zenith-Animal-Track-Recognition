@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
 @Component({
-	selector: 'app-animals',
-	templateUrl: './animals.component.html',
-	styleUrls: ['./animals.component.css']
+  selector: 'app-animals-gallery',
+  templateUrl: './animals-gallery.component.html',
+  styleUrls: ['./animals-gallery.component.css']
 })
-export class AnimalsComponent implements OnInit {
 
+export class AnimalsGalleryComponent implements OnInit {
 
 	@ViewChild('sidenav') sidenav: any;
 	animals: any;
@@ -18,12 +18,13 @@ export class AnimalsComponent implements OnInit {
 	surnames: boolean = true;
 	levels: boolean = false;
 	test: boolean;
-
-	constructor(private http: HttpClient) { }
+	
+	constructor(private http: HttpClient) { }	
 
 	ngOnInit(): void {
 		this.test = true;
 		document.getElementById("animals-route-link").classList.add("activeRoute");
+		document.getElementById("animals-gallery-route").classList.add("activeRoute");
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
 			'lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{URL}}}')
@@ -58,31 +59,13 @@ export class AnimalsComponent implements OnInit {
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
-				var newAnimalList = temp[0];
-				switch (updateOp) {
-					case "update":
-						this.animals = null;
-						this.animals = newAnimalList;
-						break;
-					case "add":
-						newAnimalList.forEach(x => this.addIfNewAnimal(x));
-						break;
-				}
+				this.animals = temp[0];
 				this.sort(true);
 			});
 	}
 
 	updateAnimalList(updatedList) {
 		this.refresh(updatedList);
-	}
-	addIfNewAnimal(x: any) {
-		let isNotNew = false;
-		for (let i = 0; i < this.animals.length; i++)
-			if (x.token == this.animals[i].token)
-				isNotNew = true;
-
-		if (!isNotNew)
-			this.animals.push(x);
 	}
 
 	//Sorting and Filtering
@@ -122,5 +105,13 @@ export class AnimalsComponent implements OnInit {
 				}
 			}
 		}
+	}
+	
+	//Loader
+	startLoader() {
+		document.getElementById("loader-container").style.visibility = "visible";
+	}
+	stopLoader() {
+		document.getElementById("loader-container").style.visibility = "hidden";
 	}
 }

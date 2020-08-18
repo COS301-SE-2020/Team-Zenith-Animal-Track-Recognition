@@ -1,0 +1,26 @@
+<div id="animal-photo-details-container">
+	<div id="animal-photo-details-toolbar">
+		<button mat-icon-button aria-label="Back Button" (click)="closeDialog()">
+			<mat-icon>arrow_back</mat-icon>
+		</button>
+		<div>
+			<button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
+				<mat-icon>more_vert</mat-icon>
+			</button>
+			<mat-menu #menu="matMenu" xPosition="before">
+				<button mat-menu-item (click)="viewAnimalProfile(data.animal.classification)">
+					<span>View Information</span>
+				</button>
+			</mat-menu>
+		</div>
+	</div>
+	<button id="animal-photo-navigation-btn-left" class="animal-photo-navigation-btn" (click)="prevImage()" mat-icon-button aria-label="Previous Image Button">
+		<mat-icon>chevron_left</mat-icon>
+	</button>	
+	<div id="animal-photo-image-container">
+		<img src="{{data.currentImage}}">
+	</div>
+	<button id="animal-photo-navigation-btn-right" class="animal-photo-navigation-btn" (click)="nextImage()" mat-icon-button aria-label="Previous Image Button">
+		<mat-icon>chevron_right</mat-icon>
+	</button>	
+</div>

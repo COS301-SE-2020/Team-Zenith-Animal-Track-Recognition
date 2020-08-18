@@ -127,7 +127,7 @@ export class AnimalProfileComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.startLoader();
-		document.getElementById('animals-route').classList.add('activeRoute');
+		document.getElementById('animals-route-link').classList.add('activeRoute');
 		//Determine which user was navigated to and fetch their information
 		const classificationQuery = new URLSearchParams(window.location.search);
 		const animal = classificationQuery.get("classification").split("_");
@@ -164,6 +164,11 @@ export class AnimalProfileComponent implements OnInit {
 
 	route(temp: string) {
 		this.router.navigate([temp]);
+	}
+	viewAnimalPhotos(animalClassi: string) {
+		let classification = animalClassi.split(" ");
+		let classificationQuery = classification[0] + "_" + classification[1];
+		this.router.navigate(['animals/gallery/photos'], { queryParams: { classification: classificationQuery } });
 	}
 
 	//Ranger CRUD Quick-Actions
@@ -202,5 +207,4 @@ export class AnimalProfileComponent implements OnInit {
 	stopLoader() {
 		document.getElementById('loader-container').style.visibility = 'hidden';
 	}
-
 }

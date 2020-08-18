@@ -70,6 +70,7 @@ export class RangerProfileComponent implements OnInit {
 	];
 
 
+
 	/*Place holder values*/
 
 	constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, public dialog: MatDialog, private snackBar: MatSnackBar) { }
@@ -79,11 +80,11 @@ export class RangerProfileComponent implements OnInit {
 		document.getElementById('rangers-route').classList.add('activeRoute');
 		//Determine which user was navigated to and fetch their information
 		const url = new URLSearchParams(window.location.search);
-		const userToken = url.get('ranger');
+		this.userToken = url.get('ranger');
 
 
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + 
-			'",rangerID:"' + userToken + '"){rangerID,accessLevel,eMail,firstName,lastName,phoneNumber}}')
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'",rangerID:"' + this.userToken + '"){rangerID,accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -92,7 +93,7 @@ export class RangerProfileComponent implements OnInit {
 			});
 /*
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'",ranger:"' + userToken + '"){spoorIdentificationID,animal{commonName,classification},dateAndTime{year,month,day,hour,min,second},' +
+			'",ranger:"' + this.userToken + '"){spoorIdentificationID,animal{commonName,classification},dateAndTime{year,month,day,hour,min,second},' +
 			'location{latitude,longitude},potentialMatches{animals{classification},Confidence}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
@@ -122,7 +123,7 @@ export class RangerProfileComponent implements OnInit {
 			disableClose: true,
 			id: 'edit-ranger-dialog',
 			data: {
-				token: this.user.token,
+				rangerID: this.userToken,
 				firstName: this.user.firstName,
 				lastName: this.user.lastName,
 				phoneNumber: this.user.phoneNumber,
@@ -154,7 +155,7 @@ export class RangerProfileComponent implements OnInit {
 				id: 'delete-ranger-dialog',
 				data: {
 					name: this.user.firstName + " " + this.user.lastName,
-					token: this.user.token
+					rangerID: this.userToken
 				},
 			});
 			deleteDialogRef.afterClosed().subscribe(result => {

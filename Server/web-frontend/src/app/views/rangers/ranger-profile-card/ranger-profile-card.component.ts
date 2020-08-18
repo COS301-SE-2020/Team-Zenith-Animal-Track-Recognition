@@ -1,5 +1,5 @@
-import { Router } from '@angular/router';
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
@@ -56,7 +56,7 @@ export class RangerProfileCardComponent implements OnInit {
 			disableClose: true,
 			id: 'edit-ranger-dialog',
 			data: {
-				token: rangerID,
+				rangerID: rangerID,
 				firstName: rangerName[0],
 				lastName: rangerName[1],
 				phoneNumber: rangerPhone.replace("call", ""),

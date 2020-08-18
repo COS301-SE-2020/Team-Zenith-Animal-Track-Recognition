@@ -3,16 +3,14 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-import { EditAnimalInfoComponent } from './../edit-animal-info/edit-animal-info.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-
 @Component({
-  selector: 'app-animal-info-card',
-  templateUrl: './animal-info-card.component.html',
-  styleUrls: ['./animal-info-card.component.css']
+  selector: 'app-animals-gallery-card',
+  templateUrl: './animals-gallery-card.component.html',
+  styleUrls: ['./animals-gallery-card.component.css']
 })
-export class AnimalInfoCardComponent implements OnInit {
+export class AnimalsGalleryCardComponent implements OnInit {
 
 	@Input() animalsList: any;
 	@Input() searchText: string;
@@ -29,6 +27,7 @@ export class AnimalInfoCardComponent implements OnInit {
 	ngOnInit(): void {
 		this.startLoader();
 	}
+	
 
 	public ngOnChanges(changes: SimpleChanges) {
 		this.startLoader();
@@ -42,6 +41,7 @@ export class AnimalInfoCardComponent implements OnInit {
 	//Animal CRUD Quick-Actions
 
 	//EDIT 
+	/*
 	openEditAnimalDialog(animalID) {
 
 		const dialogConfig = new MatDialogConfig();
@@ -76,12 +76,7 @@ export class AnimalInfoCardComponent implements OnInit {
 		}
 		});
 	}
-
-	viewAnimalProfile(animalClassi: string) {
-		let classification = animalClassi.split(" ");
-		let classificationQuery = classification[0] + "_" + classification[1];
-		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
-	}
+	*/
 	viewAnimalPhotos(animalClassi: string) {
 		let classification = animalClassi.split(" ");
 		let classificationQuery = classification[0] + "_" + classification[1];
@@ -89,6 +84,13 @@ export class AnimalInfoCardComponent implements OnInit {
 	}
 
 	route(temp: string) {
+		document.getElementById("animals-route-link").classList.remove("activeRoute");
+		document.getElementById("animals-gallery-route").classList.remove("activeRoute");
+		document.getElementById("overview-route").classList.remove("activeRoute");
+		document.getElementById("rangers-route").classList.remove("activeRoute");
+		document.getElementById("geotags-route").classList.remove("activeRoute");
+		document.getElementById("settings-route").classList.remove("activeRoute");
+		
 		this.router.navigate([temp]);
 	}
 
@@ -124,4 +126,5 @@ export class AnimalInfoCardComponent implements OnInit {
 	stopLoader() {
 		document.getElementById("loader-container").style.visibility = "hidden";
 	}
+
 }

@@ -79,27 +79,27 @@
                     <table mat-table [dataSource]="rangerPermissionsDataSource" class="mat-elevation-z8">
                         <ng-container matColumnDef="Ranger">
                             <th mat-header-cell *matHeaderCellDef>Ranger</th>
-                            <td mat-cell *matCellDef="let element" class="ranger-cell" (click)="viewRangerProfile(element.token)">{{element.firstName}}&nbsp;{{element.lastName}}</td>
+                            <td mat-cell *matCellDef="let element" class="ranger-cell" (click)="viewRangerProfile(element.rangerID)">{{element.firstName}}&nbsp;{{element.lastName}}</td>
                         </ng-container>
                         <ng-container matColumnDef="Level 1 Ranger">
                             <th mat-header-cell *matHeaderCellDef>Level 1 Ranger</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-radio-button name="{{element.lastName}}" *ngIf="isLevel(element.accessLevel, 1)" checked="true"></mat-radio-button>
-                                <mat-radio-button name="{{element.lastName}}" *ngIf="!isLevel(element.accessLevel, 1)" checked="false" (change)="updateLevel(element.token, 1)"></mat-radio-button>
+                                <mat-radio-button name="{{element.lastName}}" *ngIf="!isLevel(element.accessLevel, 1)" checked="false" (change)="updateLevel(element.rangerID, 1)"></mat-radio-button>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="Level 2 Ranger">
                             <th mat-header-cell *matHeaderCellDef>Level 2 Ranger</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-radio-button name="{{element.lastName}}" *ngIf="isLevel(element.accessLevel, 2)" checked="true"></mat-radio-button>
-                                <mat-radio-button name="{{element.lastName}}" *ngIf="!isLevel(element.accessLevel, 2)" checked="false" (change)="updateLevel(element.token, 2)"></mat-radio-button>
+                                <mat-radio-button name="{{element.lastName}}" *ngIf="!isLevel(element.accessLevel, 2)" checked="false" (change)="updateLevel(element.rangerID, 2)"></mat-radio-button>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="Level 3 Ranger">
                             <th mat-header-cell *matHeaderCellDef>Level 3 Ranger</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-radio-button name="{{element.lastName}}" *ngIf="isLevel(element.accessLevel, 3)" checked="true"></mat-radio-button>
-                                <mat-radio-button name="{{element.lastName}}" *ngIf="!isLevel(element.accessLevel, 3)" checked="false" (change)="updateLevel(element.token, 3)"></mat-radio-button>
+                                <mat-radio-button name="{{element.lastName}}" *ngIf="!isLevel(element.accessLevel, 3)" checked="false" (change)="updateLevel(element.rangerID, 3)"></mat-radio-button>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="Assigned Level">

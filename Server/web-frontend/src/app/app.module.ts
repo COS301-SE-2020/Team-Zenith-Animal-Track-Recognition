@@ -17,6 +17,11 @@ import { AnimalInfoCardComponent } from './views/animals/animal-info-card/animal
 import { EditAnimalInfoComponent } from './views/animals/edit-animal-info/edit-animal-info.component';
 import { AddAnimalComponent } from './views/animals/add-animal/add-animal.component';
 import { AnimalsComponent } from './views/animals/animals.component';
+import { AnimalsGalleryComponent } from './views/animals/animals-gallery/animals-gallery.component';
+import { AnimalsGalleryToolbarComponent } from './views/animals/animals-gallery/animals-gallery-toolbar/animals-gallery-toolbar.component';
+import { AnimalsGalleryCardComponent } from './views/animals/animals-gallery/animals-gallery-card/animals-gallery-card.component';
+import { AnimalPhotosComponent } from './views/animals/animals-gallery/animal-photos/animal-photos.component';
+import { AnimalPhotoDetailsComponent } from './views/animals/animals-gallery/animal-photos/animal-photo-details/animal-photo-details.component'; 
 import { RangersComponent } from './views/rangers/rangers.component';
 import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
 import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
@@ -59,6 +64,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -67,6 +73,11 @@ import { MatDividerModule } from '@angular/material/divider';
     LoginComponent,
     OverviewComponent,
     AnimalsComponent,
+	AnimalsGalleryComponent,
+    AnimalsGalleryToolbarComponent,
+    AnimalsGalleryCardComponent,
+    AnimalPhotosComponent,
+    AnimalPhotoDetailsComponent,
     RangersComponent,
     RangersToolbarComponent,
     RangerSearchSidenavCompComponent,
@@ -121,7 +132,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatStepperModule,
     MatChipsModule,
     MatProgressBarModule,
-    MatDividerModule
+    MatDividerModule,
+	MatGridListModule
   ],
   providers: [AuthGuardService],
   entryComponents: [
@@ -129,7 +141,8 @@ import { MatDividerModule } from '@angular/material/divider';
     EditRangerInfoComponent,
     DeleteRangerComponent,
     EditAnimalInfoComponent,
-    AddAnimalComponent
+    AddAnimalComponent,
+	AnimalPhotoDetailsComponent
   ],
   bootstrap: [AppComponent]
 })
