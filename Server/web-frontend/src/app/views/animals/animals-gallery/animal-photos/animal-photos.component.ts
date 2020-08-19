@@ -20,6 +20,7 @@ export class AnimalPhotosComponent implements OnInit {
 	maleBehaviour: string;
 	
 	/*Place holder values*/
+	defaultImage = "https://upload.wikimedia.org/wikipedia/commons/8/86/Solid_grey.svg";
 	trackImages = [
 		{
 			imagePlaceholder: 'Elephant',
@@ -129,7 +130,7 @@ export class AnimalPhotosComponent implements OnInit {
 			});
 	}
 	
-	openPhotoDetails(photoUrl: any, photoIndex: number) {
+	openPhotoDetails(isTrack: boolean, photoUrl: any, photoIndex: number) {
 		const animalPhotoDetailsDialogRef = this.dialog.open(AnimalPhotoDetailsComponent, {
 			height: '100%',
 			width: '100%',
@@ -137,6 +138,7 @@ export class AnimalPhotosComponent implements OnInit {
 			disableClose: true,
 			id: 'animal-photo-details-dialog',
 			data: {
+				isTrack: isTrack,
 				currentImage: photoUrl,
 				currentIndex: photoIndex,
 				imageList: this.animal.pictures,

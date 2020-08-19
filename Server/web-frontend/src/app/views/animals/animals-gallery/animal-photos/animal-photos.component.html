@@ -30,7 +30,7 @@
 				<mat-tab label="Photos">
 					<ng-template matTabContent>
 						<mat-grid-list cols="3" rowHeight="1:1" gutterSize="10px">
-						  <mat-grid-tile *ngFor="let animalPhoto of animal.pictures;let indexOfelement=index;" (click)="openPhotoDetails(animalPhoto.URL, indexOfelement)">
+						  <mat-grid-tile *ngFor="let animalPhoto of animal.pictures;let photoIndex=index;" (click)="openPhotoDetails(false, animalPhoto.URL, photoIndex)">
 								<img class="animal-photo" src="{{animalPhoto.URL}}" alt="Picture of {{animal.commonName}} - {{animal.classification}}">
 						  </mat-grid-tile>
 						</mat-grid-list>
@@ -39,7 +39,9 @@
 				<mat-tab label="Tracks">
 					<ng-template matTabContent>
 						<mat-grid-list class="animal-track-photo" cols="3" rowHeight="1:1" gutterSize="10px">
-						  <mat-grid-tile *ngFor="let trackImage of trackImages"></mat-grid-tile>
+						  <mat-grid-tile *ngFor="let trackImage of trackImages;let trackIndex=index;" (click)="openPhotoDetails(true, defaultImage, trackIndex)">
+						  	<!-- Img of Track	<img class="animal-photo" src="{{animalPhoto.URL}}" alt="Picture of {{animal.commonName}} - {{animal.classification}}"> -->
+						  </mat-grid-tile>
 						</mat-grid-list>
 					</ng-template>
 				</mat-tab>
