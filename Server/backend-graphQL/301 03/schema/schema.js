@@ -1986,8 +1986,9 @@ if (CACHE) {
         spoorIdentificationData = []
         querySnapshot.forEach(function (doc) {
             let newSpoorID = doc.data()
-            if (doc.data().picture == undefined)
-                newSpoorID.picture = "19"
+            if (doc.data().picture == undefined){
+                newSpoorID.picture = "elT7anFNk6ynpTnegdiX"
+            }
             spoorIdentificationData.push(newSpoorID)
         });
     });
