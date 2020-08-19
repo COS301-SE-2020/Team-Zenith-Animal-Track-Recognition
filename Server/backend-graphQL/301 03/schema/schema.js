@@ -1101,7 +1101,7 @@ const Mutation = new GraphQLObjectType({
                 let a = _.find(usersData, {
                     token: args.tokenIn
                 })
-                if (a == undefined||a==null) {
+                if (a == undefined || a == null) {
                     console.log("deleted aberted 1");
                     return null
                 }
@@ -1681,8 +1681,8 @@ const Mutation = new GraphQLObjectType({
                 longitude: {
                     type: new GraphQLNonNull(GraphQLFloat)
                 },
-                tgas:{
-                    type:new GraphQLList(new GraphQLNonNull(GraphQLString))
+                tgas: {
+                    type: new GraphQLList(new GraphQLNonNull(GraphQLString))
                 }
             },
             resolve(parent, args) {
@@ -1701,12 +1701,12 @@ const Mutation = new GraphQLObjectType({
                     b = _.find(spoorIdentificationData, {
                         spoorIdentificationID: IDID.toString()
                     })
-                } 
-                let tag ="0"
-                if(args.tags!=undefined)
-                tag=args.tags;
+                }
+                let tag = "0"
+                if (args.tags != undefined)
+                    tag = args.tags;
 
-                
+
 
                 let rangera = _.find(usersData, {
                     token: args.token
@@ -2219,15 +2219,15 @@ function uplodeBase64(Img) {
             console.error(err)
         }
     }).catch(console.error);
-    
-    newPicture={
-        picturesID:newImgID,
-        kindOfPicture:"trak",
-        URL:"https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/trak%2F"+newImgID+".jpeg?alt=media"
+
+    newPicture = {
+        picturesID: newImgID,
+        kindOfPicture: "trak",
+        URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/trak%2F" + newImgID + ".jpeg?alt=media"
     }
     pictureData.push(newPicture)
     pictures.doc(newImgID).set(newPicture)
-    
+
     return newImgID
 }
 
@@ -2294,14 +2294,14 @@ function saveBase64File(contentBase64, fileName) {
     })
 }
 
-function selerRandomImg(){
+function selerRandomImg() {
     var myArray = [
         "Ygztrt8aBnD9qetiRjw0",
         "bfMb2MzxIKZdAd8YPCBh",
         "eWqIATG1iNwH2yB0i8ch",
 
-      ];
-      
-      var randomItem = myArray[Math.floor(Math.random()*myArray.length)];
-      return randomItem
+    ];
+
+    var randomItem = myArray[Math.floor(Math.random() * myArray.length)];
+    return randomItem
 }
