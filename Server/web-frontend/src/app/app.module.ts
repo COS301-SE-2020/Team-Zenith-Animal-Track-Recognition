@@ -58,6 +58,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -118,7 +119,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatStepperModule,
     MatChipsModule,
     MatProgressBarModule,
-    MatDividerModule
+    MatDividerModule,
+    NgbModule
   ],
   providers: [AuthGuardService],
   entryComponents: [

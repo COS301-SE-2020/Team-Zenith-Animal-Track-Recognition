@@ -1,106 +1,75 @@
-<div id="ranger-permissions-view-workspace">
-    <div id="expansion-panel-separator"></div>
-    <div id="ranger-permissions-levelKey-container">
-        <div class="ranger-permissions-levelKey">
-            <div class="ranger-permissions-level fontSB">
-                <mat-icon>looks_one</mat-icon>&nbsp;Level 1 Ranger</div>
-            <p class="fontM">Access Control Level</p>
-            <div class="ranger-permissions-acl">Low:&nbsp;
-                <mat-icon>lens</mat-icon>
-                <mat-icon>panorama_fish_eye</mat-icon>
-                <mat-icon>panorama_fish_eye</mat-icon>
-            </div>
-        </div>
-        <div class="ranger-permissions-levelKey">
-            <div class="ranger-permissions-level fontSB">
-                <mat-icon>looks_two</mat-icon>&nbsp;Level 2 Ranger</div>
-            <p class="fontM">Access Control Level</p>
-            <div class="ranger-permissions-acl">Medium:&nbsp;
-                <mat-icon>lens</mat-icon>
-                <mat-icon>lens</mat-icon>
-                <mat-icon>panorama_fish_eye</mat-icon>
-            </div>
-        </div>
-        <div class="ranger-permissions-levelKey">
-            <div class="ranger-permissions-level fontSB">
-                <mat-icon>looks_3</mat-icon>&nbsp;Level 3 Ranger</div>
-            <p class="fontM">Access Control Level</p>
-            <div class="ranger-permissions-acl">High:&nbsp;
-                <mat-icon>lens</mat-icon>
-                <mat-icon>lens</mat-icon>
-                <mat-icon>lens</mat-icon>
-            </div>
-        </div>
-    </div>  
-    <div id="expansion-panel-separator"></div>
-    <div id="ranger-permissions-controls-container">
-        <mat-accordion multi>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title class="fontSB">View All Permissions</mat-panel-title>
-                </mat-expansion-panel-header>
-                <table mat-table [dataSource]="permissionsDataSource" class="mat-elevation-z8">
-                    <ng-container matColumnDef="Permissions">
-                        <th mat-header-cell *matHeaderCellDef>Permission</th>
-                        <td mat-cell *matCellDef="let element"> {{element.permission}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Level 1 Rangers">
-                        <th mat-header-cell *matHeaderCellDef>Level 1 Rangers</th>
-                        <td mat-cell *matCellDef="let element" innerHTML="{{element.level1}}"></td>
-                    </ng-container>
-                    <ng-container matColumnDef="Level 2 Rangers">
-                        <th mat-header-cell *matHeaderCellDef>Level 2 Rangers</th>
-                        <td mat-cell *matCellDef="let element" innerHTML="{{element.level2}}"></td>
-                    </ng-container>
-                    <ng-container matColumnDef="Level 3 Rangers">
-                        <th mat-header-cell *matHeaderCellDef>Level 3 Rangers</th>
-                        <td mat-cell *matCellDef="let element" innerHTML="{{element.level3}}"></td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="permissionsColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: permissionsColumns;"></tr>
-                </table>
-            </mat-expansion-panel>
-            
-            <mat-expansion-panel [expanded]="true">
-                <mat-expansion-panel-header>
-                    <mat-panel-title class="fontSB">Rangers</mat-panel-title>
-                    <mat-panel-description>Set Ranger Permissions</mat-panel-description>
-                </mat-expansion-panel-header>
-                <table mat-table [dataSource]="rangerPermissionsDataSource" class="mat-elevation-z8">
-                    <ng-container matColumnDef="Ranger">
-                        <th mat-header-cell *matHeaderCellDef>Ranger</th>
-                        <td mat-cell *matCellDef="let element" class="ranger-cell" (click)="viewRangerProfile(element.token)">{{element.firstName}}&nbsp;{{element.lastName}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="Level 1 Ranger">
-                        <th mat-header-cell *matHeaderCellDef>Level 1 Ranger</th>
-                        <td mat-cell *matCellDef="let element">
-                            <mat-radio-button name="{{element.lastName}}" *ngIf="isLevel(element.accessLevel, 1)" checked="true"></mat-radio-button>
-                            <mat-radio-button name="{{element.lastName}}" *ngIf="!isLevel(element.accessLevel, 1)" checked="false" (change)="updateLevel(element.token, 1)"></mat-radio-button>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Level 2 Ranger">
-                        <th mat-header-cell *matHeaderCellDef>Level 2 Ranger</th>
-                        <td mat-cell *matCellDef="let element">
-                            <mat-radio-button name="{{element.lastName}}" *ngIf="isLevel(element.accessLevel, 2)" checked="true"></mat-radio-button>
-                            <mat-radio-button name="{{element.lastName}}" *ngIf="!isLevel(element.accessLevel, 2)" checked="false" (change)="updateLevel(element.token, 2)"></mat-radio-button>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Level 3 Ranger">
-                        <th mat-header-cell *matHeaderCellDef>Level 3 Ranger</th>
-                        <td mat-cell *matCellDef="let element">
-                            <mat-radio-button name="{{element.lastName}}" *ngIf="isLevel(element.accessLevel, 3)" checked="true"></mat-radio-button>
-                            <mat-radio-button name="{{element.lastName}}" *ngIf="!isLevel(element.accessLevel, 3)" checked="false" (change)="updateLevel(element.token, 3)"></mat-radio-button>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Assigned Level">
-                        <th mat-header-cell *matHeaderCellDef>Assigned Level</th>
-                        <td mat-cell *matCellDef="let element">Level {{element.accessLevel}}</td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="rangerPermissionsColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: rangerPermissionsColumns;"></tr>
-                </table>
-            </mat-expansion-panel>
-        </mat-accordion>
+<div class="modal-header">
+    <h2 class="modal-title"> Edit Ranger Persmissions </h2>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true" >&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row" >
+        <div class="col" id="ranger-header-text"><h3>Ranger</h3></div>
+        <div class="col" id="access-control-header-text"><h3>Access Control</h3></div>
     </div>
-    <div id="expansion-panel-separator"></div>
+    <div class ="row">
+        <div class="col">            
+            <div class="col-3" id="image-container">
+                <img class="rounded-circle z-depth-2" src="https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg" alt="ranger image" data-holder-rendered="true">
+            </div>
+            <div class="col-9" id="ranger-details-text">
+                <div class="row" id="ranger-name-text">
+                    <div><h4>Phahladira Moja</h4></div>
+                </div>
+                <div class="row" id="ranger-level-text">
+                    <div><h5>Level 2 Ranger</h5></div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="col" id="level-1-container">
+                <div class="ranger-level-identifier"><h4>Level 1</h4></div>
+                <div class="ranger-level-identifier-2"><span id="dot-1"></span></div>
+            </div>
+            <div class="col" id="level-2-container">
+                <div class="ranger-level-identifier"><h4>Level 2</h4></div>
+                <div class="ranger-level-identifier-2"><span id="dot-2"></span></div>
+            </div>
+            <div class="col" id="level-3-container">
+                <div class="ranger-level-identifier"><h4>Level 3</h4></div>
+                <div class="ranger-level-identifier-2"><span id="dot-3"></span></div>
+            </div>    
+        </div>
+    </div>
+    <div class="row" id="permission-title">
+        <div class="col-10"><h2>Permissions</h2></div>
+        <div class="col-2">
+            <button type="button" class="drop-down">
+                <i class="arrow down"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row" id="permissions-display">
+        <table mat-table [dataSource]="permissionsDataSource" class="mat-elevation-z8">
+            <ng-container matColumnDef="Permissions">
+                <th mat-header-cell *matHeaderCellDef>Permission</th>
+                <td mat-cell *matCellDef="let element"> {{element.permission}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Level 1 Rangers">
+                <th mat-header-cell *matHeaderCellDef>Level 1 Rangers</th>
+                <td mat-cell *matCellDef="let element" innerHTML="{{element.level1}}"></td>
+            </ng-container>
+            <ng-container matColumnDef="Level 2 Rangers">
+                <th mat-header-cell *matHeaderCellDef>Level 2 Rangers</th>
+                <td mat-cell *matCellDef="let element" innerHTML="{{element.level2}}"></td>
+            </ng-container>
+            <ng-container matColumnDef="Level 3 Rangers">
+                <th mat-header-cell *matHeaderCellDef>Level 3 Rangers</th>
+                <td mat-cell *matCellDef="let element" innerHTML="{{element.level3}}"></td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="permissionsColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: permissionsColumns;"></tr>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" id="cancel-btn" (click)="activeModal.close('Close click')">CANCEL</button>
+    <button type="button" class="btn btn-outline-dark" id="save-btn" (click)="onSubmit(false)">SAVE CHANGES</button>
 </div>

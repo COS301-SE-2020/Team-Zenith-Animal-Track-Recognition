@@ -1,5 +1,7 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild , Input } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export interface Permissions {
 	permission: string;
@@ -8,7 +10,6 @@ export interface Permissions {
 	level3: string;
 }
 
-//Default Ranger Permissions  
 const PERMISSIONS: Permissions[] = [
 	{ permission: "Spoor Capture & Identification", level1: "1", level2: "1", level3: "1" },
 	{ permission: "View Spoor Geotag Information", level1: "1", level2: "1", level3: "1" },
@@ -24,18 +25,21 @@ const PERMISSIONS: Permissions[] = [
   templateUrl: './personal-ranger-permission-component.component.html',
   styleUrls: ['./personal-ranger-permission-component.component.css']
 })
+
 export class PersonalRangerPermissionComponentComponent implements OnInit {
 
 	@ViewChild(MatAccordion) accordion: MatAccordion;
-	permissionsColumns: string[] = ['Permissions', 'Level 1 Rangers', 'Level 2 Rangers', 'Level 3 Rangers'];
-	permissionsDataSource = PERMISSIONS;
-	rangerPermissionsColumns: string[] = ['Ranger', 'Level 1 Ranger', 'Level 2 Ranger', 'Level 3 Ranger', 'Assigned Level'];
-	rangerPermissionsDataSource: any;
+  @Input() name;
 
-  constructor() { }
+  permissionsColumns: string[] = ['Permissions', 'Level 1 Rangers', 'Level 2 Rangers', 'Level 3 Rangers'];
+	permissionsDataSource = PERMISSIONS;
+  
+	constructor(public activeModal: NgbActiveModal) {}
+
 
   ngOnInit(): void {
-    PERMISSIONS.forEach(function (perm) {
+
+		PERMISSIONS.forEach(function (perm) {
 			if (perm.level1 == "1")
 				perm.level1 = "<span class='material-icons allowed'>check_circle</span>";
 			else if (perm.level1 == "0")
@@ -51,6 +55,10 @@ export class PersonalRangerPermissionComponentComponent implements OnInit {
 			else if (perm.level3 == "0")
 				perm.level3 = "<span class='material-icons notAllowed'>cancel</span>";
 		});
+
   }
 
+  onSubmit(test: boolean){
+
+  }
 }

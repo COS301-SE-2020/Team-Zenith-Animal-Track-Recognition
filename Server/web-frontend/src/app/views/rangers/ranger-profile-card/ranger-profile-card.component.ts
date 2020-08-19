@@ -5,7 +5,10 @@ import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { EditRangerInfoComponent } from './../edit-ranger-info/edit-ranger-info.component';
 import { DeleteRangerComponent } from './../delete-ranger/delete-ranger.component';
+import { PersonalRangerPermissionComponentComponent } from './../../personal-ranger-permission-component/personal-ranger-permission-component.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
 	selector: 'app-ranger-profile-card',
@@ -20,10 +23,15 @@ export class RangerProfileCardComponent implements OnInit {
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	sorted: string;
 
-	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
+	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar, private modalService: NgbModal) { }
 
 	ngOnInit(): void { this.startLoader(); }
 
+	
+	open() {
+		const modalRef = this.modalService.open( PersonalRangerPermissionComponentComponent ,{ centered: true });
+		modalRef.componentInstance.name = 'World';
+	  }
 
 	public ngOnChanges(changes: SimpleChanges) {
 		this.startLoader();
