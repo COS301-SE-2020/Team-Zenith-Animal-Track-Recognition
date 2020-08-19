@@ -189,6 +189,7 @@ sentence=sentence.replace(" ", "")
 sentence=sentence.replace(":", "")
 model.save(sentence) 
 
+print (model.metrics_names)
 
 
 
