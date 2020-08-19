@@ -1987,7 +1987,7 @@ if (CACHE) {
         querySnapshot.forEach(function (doc) {
             let newSpoorID = doc.data()
             if (doc.data().picture == undefined)
-                newSpoorID.picture = "Ygztrt8aBnD9qetiRjw0"
+                newSpoorID.picture = selerRandomImg()
             spoorIdentificationData.push(newSpoorID)
         });
     });
@@ -2292,4 +2292,15 @@ function saveBase64File(contentBase64, fileName) {
         if (err) return console.error(err)
         console.log('file saved to ', fileName)
     })
+}
+
+function selerRandomImg(){
+    var myArray = [
+        "Ygztrt8aBnD9qetiRjw0",
+        "bfMb2MzxIKZdAd8YPCBh",
+        "eWqIATG1iNwH2yB0i8ch",
+        
+      ];
+      
+      var randomItem = myArray[Math.floor(Math.random()*myArray.length)];
 }
