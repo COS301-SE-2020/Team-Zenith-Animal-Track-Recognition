@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -8,8 +8,23 @@ import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angu
   styleUrls: ['./animal-photo-details.component.css']
 })
 export class AnimalPhotoDetailsComponent implements OnInit {
-
+	
+	@ViewChild('sidenav') sidenav: any;
 	currentImageIndex: number;
+
+	/*Place holder values*/
+	trackInfoPlaceholder = [
+		{
+			commonName: 'Elephant',
+			classification: 'Loxodonta Africanus',
+			trackLocation: 'Kruger National Park',
+			coordinates: '-24.019097, 31.559270',
+			accuracyScore: '67%',
+			capturedBy: 'Kagiso Ndlovu',
+			date: '09/09/2020',
+			dayTime: 'Fri, 09:17'
+		}
+	];
 	
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any, 
@@ -30,6 +45,23 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 		this.currentImageIndex = this.data.currentIndex;
 	}
 	
+	toggleSidenav() {
+		this.sidenav.toggle();
+	}
+	fillHeight()
+	{
+		if (!this.data.isTrack)
+			document.getElementById("animal-photo-detail-current-image").style.height = '100%';
+	}
+	fillWidth()
+	{
+		if (!this.data.isTrack)
+			document.getElementById("animal-photo-detail-current-image").style.height = '80%';
+	}
+	isTrack()
+	{
+		return this.data.isTrack;
+	}
 	viewAnimalProfile(animalClassi: string) {
 		this.dialogRef.close("cancel");	
 		let classification = animalClassi.split(" ");
@@ -42,22 +74,34 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 	
 	prevImage()
 	{
-		if (this.currentImageIndex >= 1)
-			this.currentImageIndex -= 1;
-		else if (this.currentImageIndex < 1)
-			this.currentImageIndex = this.data.imageList.length - 1;
+		if (this.data.isTrack)
+		{
+		}
+		else 
+		{
+			if (this.currentImageIndex >= 1)
+				this.currentImageIndex -= 1;
+			else if (this.currentImageIndex < 1)
+				this.currentImageIndex = this.data.imageList.length - 1;
 
-		this.data.currentImage = this.data.imageList[this.currentImageIndex].URL;
+			this.data.currentImage = this.data.imageList[this.currentImageIndex].URL;
+		}
 	}
 	
 	nextImage()
 	{
-		if (this.currentImageIndex >= (this.data.imageList.length - 1))
-			this.currentImageIndex = 0;
-		else if (this.currentImageIndex < (this.data.imageList.length - 1))
-			this.currentImageIndex += 1;
+		if (this.data.isTrack)
+		{
+		}
+		else 
+		{
+			if (this.currentImageIndex >= (this.data.imageList.length - 1))
+				this.currentImageIndex = 0;
+			else if (this.currentImageIndex < (this.data.imageList.length - 1))
+				this.currentImageIndex += 1;
 
-		this.data.currentImage = this.data.imageList[this.currentImageIndex].URL;
+			this.data.currentImage = this.data.imageList[this.currentImageIndex].URL;
+		}
 	}
 	
 	closeDialog()
