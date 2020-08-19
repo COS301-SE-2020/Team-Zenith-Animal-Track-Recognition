@@ -1,7 +1,5 @@
 import { map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { Ranger } from './../../models/ranger';
-import { RANGERS } from './../../models/mock-rangers';
 import { HttpClient } from '@angular/common/http';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 

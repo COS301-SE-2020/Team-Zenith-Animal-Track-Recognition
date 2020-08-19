@@ -22,7 +22,9 @@ export class RangerProfileCardComponent implements OnInit {
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
 
-	ngOnInit(): void { this.startLoader(); }
+	ngOnInit(): void { 
+		this.startLoader(); 
+	}
 
 
 	public ngOnChanges(changes: SimpleChanges) {
@@ -54,7 +56,7 @@ export class RangerProfileCardComponent implements OnInit {
 			disableClose: true,
 			id: 'edit-ranger-dialog',
 			data: {
-				token: rangerID,
+				rangerID: rangerID,
 				firstName: rangerName[0],
 				lastName: rangerName[1],
 				phoneNumber: rangerPhone.replace("call", ""),

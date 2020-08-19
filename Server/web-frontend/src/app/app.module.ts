@@ -31,7 +31,10 @@ import { EditRangerInfoComponent } from './views/rangers/edit-ranger-info/edit-r
 import { DeleteRangerComponent } from './views/rangers/delete-ranger/delete-ranger.component';
 import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.component';
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
-import { GeotagsComponent } from './views/geotags/geotags.component';
+import { TrackIdentificationsComponent } from './views/track-identifications/track-identifications.component';
+import { TrackIdentificationsToolbarComponent } from './views/track-identifications/track-identifications-toolbar/track-identifications-toolbar.component';
+import { TrackIdentificationsMapComponent } from './views/track-identifications/track-identifications-map/track-identifications-map.component';
+import { TrackIdentificationsSidenavComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-sidenav.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 import { UtilityNavigationComponent } from './components/utility-navigation/utility-navigation.component';
@@ -79,7 +82,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
     RangersToolbarComponent,
     RangerSearchSidenavCompComponent,
     RangerProfileCardComponent,
-    GeotagsComponent,
+    TrackIdentificationsComponent,
+    TrackIdentificationsToolbarComponent,
+    TrackIdentificationsMapComponent,
+    TrackIdentificationsSidenavComponent,
     SettingsComponent,
     SideNavigationComponent,
     UtilityNavigationComponent,
@@ -93,7 +99,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     AddAnimalComponent,
     RangerProfileComponent,
     AnimalProfileComponent
-  ],
+	],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
