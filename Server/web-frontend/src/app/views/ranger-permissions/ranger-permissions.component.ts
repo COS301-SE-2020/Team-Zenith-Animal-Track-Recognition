@@ -63,7 +63,7 @@ export class RangerPermissionsComponent implements OnInit {
 		var count = 1;
 		//Replace Permissions with appropiate radio button
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'"){rangerID,accessLevel,firstName,lastName}}')
+			'"){rangerID,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);

@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
 	selector: 'app-animal-search-sidenav',
@@ -15,10 +17,19 @@ export class AnimalSearchSidenavComponent implements OnInit {
 
 	currentAlphabet: any;
 
-	constructor() { }
+	constructor(private http: HttpClient, private router: Router) { }
 
 	ngOnInit(): void {
 		this.sortByCommonName = true;
+	}
+	
+	route(temp: string) {
+		this.router.navigate([temp]);
+	}
+	viewAnimalProfile(animalClassi: string) {
+		let classification = animalClassi.split(" ");
+		let classificationQuery = classification[0] + "_" + classification[1];
+		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
 	}
 
 	checkIfNew(title: string) {

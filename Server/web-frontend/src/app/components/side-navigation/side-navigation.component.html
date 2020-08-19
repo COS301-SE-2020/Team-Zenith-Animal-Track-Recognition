@@ -7,11 +7,24 @@
 			<div class="side-navigation-wireframeIcon"></div>
 			<p class="fontM">Overview</p>
 		</div>
-		<div (click)='route("animals")' id="animals-route" class="side-navigation-route-container">
-			<div class="side-navigation-wireframeIcon"></div>
-			<p class="fontM">Animals</p>
-		</div>
-		<div (click)='route("geotags")' id="geotags-route" class="side-navigation-route-container">
+		<mat-expansion-panel #animalsPanel id="animals-route-container" disabled hideToggle>
+			<mat-expansion-panel-header>
+				<div id="animals-route-link">
+					<div id="animals-route" (click)='route("animals")'>
+						<div class="side-navigation-wireframeIcon"></div>
+						<p class="fontM">Animals</p>
+					</div>
+					<div id="side-navigation-expansion-btn"  (click)='toggleAnimalsPanel()'>
+						<mat-icon id="animals-expand-btn-icon">expand_more</mat-icon>
+					</div>
+				</div>
+			</mat-expansion-panel-header>
+			<div (click)='route("animals/gallery")' id="animals-gallery-route" class="animals-route-links">
+				<div class="side-navigation-wireframeIcon"></div>
+				<p class="fontM">Animals Gallery</p>
+			</div>
+		</mat-expansion-panel>
+		<div (click)='route("identifications")' id="geotags-route" class="side-navigation-route-container">
 			<div class="side-navigation-wireframeIcon"></div>
 			<p class="fontM">Identifications</p>
 		</div>

@@ -23,7 +23,7 @@ export class AnimalsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.test = true;
-		document.getElementById("animals-route").classList.add("activeRoute");
+		document.getElementById("animals-route-link").classList.add("activeRoute");
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
 			'lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{URL}}}')
@@ -31,9 +31,8 @@ export class AnimalsComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.animals = temp[0];
-				console.log(this.animals);
 				this.sort(true);
-			});
+		});
 
 	}
 
@@ -124,5 +123,4 @@ export class AnimalsComponent implements OnInit {
 			}
 		}
 	}
-
 }

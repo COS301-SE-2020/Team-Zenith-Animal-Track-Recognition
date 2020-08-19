@@ -12,11 +12,16 @@ import { LoginComponent } from './views/login/login.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { AnimalsToolbarComponent } from './views/animals/animals-toolbar/animals-toolbar.component';
 import { AnimalSearchSidenavComponent } from './views/animals/animal-search-sidenav/animal-search-sidenav.component';
-import { AnimalProfileComponent } from './views/animal-profile/animal-profile.component';
+import { AnimalProfileComponent } from './views/animal-profile/animal-profile.component'; 
 import { AnimalInfoCardComponent } from './views/animals/animal-info-card/animal-info-card.component';
 import { EditAnimalInfoComponent } from './views/animals/edit-animal-info/edit-animal-info.component';
 import { AddAnimalComponent } from './views/animals/add-animal/add-animal.component';
 import { AnimalsComponent } from './views/animals/animals.component';
+import { AnimalsGalleryComponent } from './views/animals/animals-gallery/animals-gallery.component';
+import { AnimalsGalleryToolbarComponent } from './views/animals/animals-gallery/animals-gallery-toolbar/animals-gallery-toolbar.component';
+import { AnimalsGalleryCardComponent } from './views/animals/animals-gallery/animals-gallery-card/animals-gallery-card.component';
+import { AnimalPhotosComponent } from './views/animals/animals-gallery/animal-photos/animal-photos.component';
+import { AnimalPhotoDetailsComponent } from './views/animals/animals-gallery/animal-photos/animal-photo-details/animal-photo-details.component'; 
 import { RangersComponent } from './views/rangers/rangers.component';
 import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
 import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
@@ -26,10 +31,15 @@ import { EditRangerInfoComponent } from './views/rangers/edit-ranger-info/edit-r
 import { DeleteRangerComponent } from './views/rangers/delete-ranger/delete-ranger.component';
 import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.component';
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
-import { GeotagsComponent } from './views/geotags/geotags.component';
+import { TrackIdentificationsComponent } from './views/track-identifications/track-identifications.component';
+import { TrackIdentificationsToolbarComponent } from './views/track-identifications/track-identifications-toolbar/track-identifications-toolbar.component';
+import { TrackIdentificationsMapComponent } from './views/track-identifications/track-identifications-map/track-identifications-map.component';
+import { TrackIdentificationsSidenavComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-sidenav.component';
+import { PersonalRangerPermissionComponentComponent } from './views/personal-ranger-permission-component/personal-ranger-permission-component.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 import { UtilityNavigationComponent } from './components/utility-navigation/utility-navigation.component';
+
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -56,6 +66,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -64,11 +77,19 @@ import { MatDividerModule } from '@angular/material/divider';
     LoginComponent,
     OverviewComponent,
     AnimalsComponent,
+	AnimalsGalleryComponent,
+    AnimalsGalleryToolbarComponent,
+    AnimalsGalleryCardComponent,
+    AnimalPhotosComponent,
+    AnimalPhotoDetailsComponent,
     RangersComponent,
     RangersToolbarComponent,
     RangerSearchSidenavCompComponent,
     RangerProfileCardComponent,
-    GeotagsComponent,
+    TrackIdentificationsComponent,
+    TrackIdentificationsToolbarComponent,
+    TrackIdentificationsMapComponent,
+    TrackIdentificationsSidenavComponent,
     SettingsComponent,
     SideNavigationComponent,
     UtilityNavigationComponent,
@@ -81,7 +102,8 @@ import { MatDividerModule } from '@angular/material/divider';
     EditAnimalInfoComponent,
     AddAnimalComponent,
     RangerProfileComponent,
-    AnimalProfileComponent
+  	AnimalProfileComponent,
+    PersonalRangerPermissionComponentComponent
   ],
   imports: [
     BrowserModule,
@@ -115,7 +137,9 @@ import { MatDividerModule } from '@angular/material/divider';
     MatStepperModule,
     MatChipsModule,
     MatProgressBarModule,
-    MatDividerModule
+    MatDividerModule,
+  	MatGridListModule,
+    NgbModule
   ],
   providers: [AuthGuardService],
   entryComponents: [
@@ -123,7 +147,8 @@ import { MatDividerModule } from '@angular/material/divider';
     EditRangerInfoComponent,
     DeleteRangerComponent,
     EditAnimalInfoComponent,
-    AddAnimalComponent
+    AddAnimalComponent,
+	AnimalPhotoDetailsComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,22 @@
+<div id="animals-gallery-toolbar-container">
+    <div id="animals-gallery-toolbar-navigationtree-container">
+        <div id="animals-gallery-toolbar-navigation">
+            <a (click)="route('animals')" class="fontM">Animals</a>
+            <mat-icon>chevron_right</mat-icon>
+            <a href="javascript:void(0)" class="fontM activeView">Animals Gallery</a>
+        </div>
+    </div>
+    <div id="animals-gallery-toolbar">
+        <mat-select id="animals-gallery-sortby-btn" class="animals-gallery-select-btn" class="fontR" placeholder="Sort By" disableOptionCentering>
+			<mat-option value="recentEdits">Recently Edited</mat-option>
+			<mat-option value="abc">Alphabetical</mat-option>
+			<mat-option value="height">Height</mat-option>
+			<mat-option value="weight">Weight</mat-option>
+			<mat-option value="status">Vulnerability Status</mat-option>
+        </mat-select>
+        <mat-select id="animals-gallery-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
+            <mat-option>Option 1</mat-option>
+            <mat-option>Option 2</mat-option>
+        </mat-select>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="modal-header">
+    <h2 class="modal-title"> Edit Ranger Persmissions </h2>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true" >&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row" >
+        <div class="col" id="ranger-header-text"><h3>Ranger</h3></div>
+        <div class="col" id="access-control-header-text"><h3>Access Control</h3></div>
+    </div>
+    <div class ="row">
+        <div class="col">            
+            <div class="col-3" id="image-container">
+                <img class="rounded-circle z-depth-2" src="https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg" alt="ranger image" data-holder-rendered="true">
+            </div>
+            <div class="col-9" id="ranger-details-text">
+                <div class="row" id="ranger-name-text">
+                    <div><h4>Phahladira Moja</h4></div>
+                </div>
+                <div class="row" id="ranger-level-text">
+                    <div><h5>Level 2 Ranger</h5></div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="col" id="level-1-container">
+                <div class="ranger-level-identifier"><h4>Level 1</h4></div>
+                <div class="ranger-level-identifier-2"><span id="dot-1"></span></div>
+            </div>
+            <div class="col" id="level-2-container">
+                <div class="ranger-level-identifier"><h4>Level 2</h4></div>
+                <div class="ranger-level-identifier-2"><span id="dot-2"></span></div>
+            </div>
+            <div class="col" id="level-3-container">
+                <div class="ranger-level-identifier"><h4>Level 3</h4></div>
+                <div class="ranger-level-identifier-2"><span id="dot-3"></span></div>
+            </div>    
+        </div>
+    </div>
+    <div class="row" id="permission-title">
+        <div class="col-10"><h2>Permissions</h2></div>
+        <div class="col-2">
+            <button type="button" class="drop-down">
+                <i class="arrow down"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row" id="permissions-display">
+        <table mat-table [dataSource]="permissionsDataSource" class="mat-elevation-z8">
+            <ng-container matColumnDef="Permissions">
+                <th mat-header-cell *matHeaderCellDef>Permission</th>
+                <td mat-cell *matCellDef="let element"> {{element.permission}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Level 1 Rangers">
+                <th mat-header-cell *matHeaderCellDef>Level 1 Rangers</th>
+                <td mat-cell *matCellDef="let element" innerHTML="{{element.level1}}"></td>
+            </ng-container>
+            <ng-container matColumnDef="Level 2 Rangers">
+                <th mat-header-cell *matHeaderCellDef>Level 2 Rangers</th>
+                <td mat-cell *matCellDef="let element" innerHTML="{{element.level2}}"></td>
+            </ng-container>
+            <ng-container matColumnDef="Level 3 Rangers">
+                <th mat-header-cell *matHeaderCellDef>Level 3 Rangers</th>
+                <td mat-cell *matCellDef="let element" innerHTML="{{element.level3}}"></td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="permissionsColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: permissionsColumns;"></tr>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" id="cancel-btn" (click)="activeModal.close('Close click')">CANCEL</button>
+    <button type="button" class="btn btn-outline-dark" id="save-btn" (click)="onSubmit(false)">SAVE CHANGES</button>
+</div>
