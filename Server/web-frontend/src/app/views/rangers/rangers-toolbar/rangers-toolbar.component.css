@@ -14,7 +14,7 @@
 #rangers-toolbar-navigationtree-container
 {
 	height: 100%;
-	width: 60%;
+	width: 40%;
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
@@ -52,24 +52,46 @@
 #rangers-toolbar
 {
 	height: 100%;
-	width: 40%;
+	width: 60%;
 	font-size: 120%;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
 	align-items: center;
+
 }
+
+#rangers-toolbar-search-bar
+{
+	width: 30%;
+	border-radius: 5px;
+	align-self: center;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
+{
+	padding: 0.2em 0.5em 0.5em;
+	height: 45px;
+	align-items: center;
+}
+:host ::ng-deep .mat-form-field-wrapper 
+{
+	padding-bottom: 0;
+	
+}
+
 #rangers-toolbar-sortby-btn
 {
-	width: 35%;
+	width: 25%;
 	border: 1px solid #CCCCCC;
 	padding: 0.5em 0.5em;
 	border-radius: 5px;
 }
+
 #rangers-toolbar-actions-btn
 {
 	background: rgba(104, 110, 121, 1);
-	width: 38%;
+	width: 25%;
 	border: 1px solid #CCCCCC;
 	padding: 0.5em 0.5em;
 	border-radius: 5px;

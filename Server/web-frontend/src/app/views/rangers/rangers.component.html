@@ -1,5 +1,5 @@
 <div id="rangers-view-workspace-container">
-    <app-rangers-toolbar [rangers]="rangers" (rangersOnChange)="updateRangerList($event)"></app-rangers-toolbar>
+    <app-rangers-toolbar [rangers]="rangers" (rangersOnChange)="updateRangerList($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"></app-rangers-toolbar>
     <div id="rangers-view-workspace">
         <mat-drawer-container id="ranger-search-sidenav-container">
             <mat-drawer id="ranger-search-sidenav" #sidenav mode="side">
