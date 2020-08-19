@@ -40,14 +40,6 @@ for i in fodertrain:
             pfrom =os.path.join(wdt,j)
             pto=os.path.join(wdv,j)
             os.replace(pfrom,pto)
-# print(fodertrain)
-# for i in fodervalidation:
-#     wd = cwd + dataset+"/validation/"+i
-#     temp = os.listdir(wd)
-#     for j in temp:
-#         if(random.random()<split):
-#             os.replace(cwd + dataset+"test/"+i+"/"+j,cwd + dataset+"validation/"+i+"/"+j)
-        
 
 
 print("redistabuting complet")
