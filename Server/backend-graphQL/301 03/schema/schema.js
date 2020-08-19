@@ -673,7 +673,7 @@ const RootQuery = new GraphQLObjectType({
                         temp = _.filter(temp, {
                             phoneNumber: args.phoneNumber
                         })
-                        temp = temp.trim();
+                        // temp = temp.trim();
                     }
                     return temp;
                 }
@@ -1116,9 +1116,7 @@ const Mutation = new GraphQLObjectType({
                 let b = _.findIndex(usersData, {
                     rangerID: args.rangerID
                 })
-
                 usersData.splice(b, 1)
-
                 users.doc(args.rangerID).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
@@ -1683,6 +1681,9 @@ const Mutation = new GraphQLObjectType({
                 longitude: {
                     type: new GraphQLNonNull(GraphQLFloat)
                 },
+                tgas:{
+                    type:new GraphQLList(new GraphQLNonNull(GraphQLString))
+                }
             },
             resolve(parent, args) {
                 let a = _.find(usersData, {
@@ -1700,7 +1701,12 @@ const Mutation = new GraphQLObjectType({
                     b = _.find(spoorIdentificationData, {
                         spoorIdentificationID: IDID.toString()
                     })
-                }
+                } 
+                let tag ="0"
+                if(args.tags!=undefined)
+                tag=args.tags;
+
+                
 
                 let rangera = _.find(usersData, {
                     token: args.token
@@ -1728,7 +1734,7 @@ const Mutation = new GraphQLObjectType({
                     animal: _.last(potentialMatchesarry).animal,
                     track: newingID,
                     similar: getSimilarimg(newingID),
-                    tags: [0],
+                    tags: tag,
                     picturesID: newingID,
                 }
                 let tempID = IDID.toString()
