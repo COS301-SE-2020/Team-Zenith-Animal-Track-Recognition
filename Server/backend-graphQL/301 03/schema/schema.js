@@ -2299,8 +2299,9 @@ function selerRandomImg(){
         "Ygztrt8aBnD9qetiRjw0",
         "bfMb2MzxIKZdAd8YPCBh",
         "eWqIATG1iNwH2yB0i8ch",
-        
+
       ];
       
       var randomItem = myArray[Math.floor(Math.random()*myArray.length)];
+      return randomItem
 }
