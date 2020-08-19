@@ -8,4 +8,5 @@
 	justify-content: space-around;
 	align-items: space-around;
 	overflow: auto;
+	background-color: grey;
 }
