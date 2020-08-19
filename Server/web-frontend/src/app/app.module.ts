@@ -65,6 +65,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
 
 @NgModule({
   declarations: [
@@ -98,7 +100,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     EditAnimalInfoComponent,
     AddAnimalComponent,
     RangerProfileComponent,
-    AnimalProfileComponent
+    AnimalProfileComponent,
+    RelativeTimeMPipe
 	],
   imports: [
     BrowserModule,
@@ -133,7 +136,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatChipsModule,
     MatProgressBarModule,
     MatDividerModule,
-	MatGridListModule
+	MatGridListModule,
+	GoogleMapsModule
   ],
   providers: [AuthGuardService],
   entryComponents: [
