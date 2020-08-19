@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input  } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
@@ -8,11 +8,15 @@ import { DeleteRangerComponent } from './../rangers/delete-ranger/delete-ranger.
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
+
+
 @Component({
 	selector: 'app-ranger-profile',
 	templateUrl: './ranger-profile.component.html',
 	styleUrls: ['./ranger-profile.component.css']
 })
+
+
 export class RangerProfileComponent implements OnInit {
 
 	user: any;
@@ -67,13 +71,11 @@ export class RangerProfileComponent implements OnInit {
 				info2: 'Syncerus Caffer'
 			}
 		},
-	];
-
+	];  
 
 
 	/*Place holder values*/
-
-	constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, public dialog: MatDialog, private snackBar: MatSnackBar) { }
+	constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, public dialog: MatDialog, private snackBar: MatSnackBar, ) { }
 
 	ngOnInit(): void {
 		this.startLoader();

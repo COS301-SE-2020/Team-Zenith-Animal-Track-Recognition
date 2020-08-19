@@ -12,7 +12,7 @@ import { LoginComponent } from './views/login/login.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { AnimalsToolbarComponent } from './views/animals/animals-toolbar/animals-toolbar.component';
 import { AnimalSearchSidenavComponent } from './views/animals/animal-search-sidenav/animal-search-sidenav.component';
-import { AnimalProfileComponent } from './views/animal-profile/animal-profile.component';
+import { AnimalProfileComponent } from './views/animal-profile/animal-profile.component'; 
 import { AnimalInfoCardComponent } from './views/animals/animal-info-card/animal-info-card.component';
 import { EditAnimalInfoComponent } from './views/animals/edit-animal-info/edit-animal-info.component';
 import { AddAnimalComponent } from './views/animals/add-animal/add-animal.component';
@@ -35,9 +35,11 @@ import { TrackIdentificationsComponent } from './views/track-identifications/tra
 import { TrackIdentificationsToolbarComponent } from './views/track-identifications/track-identifications-toolbar/track-identifications-toolbar.component';
 import { TrackIdentificationsMapComponent } from './views/track-identifications/track-identifications-map/track-identifications-map.component';
 import { TrackIdentificationsSidenavComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-sidenav.component';
+import { PersonalRangerPermissionComponentComponent } from './views/personal-ranger-permission-component/personal-ranger-permission-component.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 import { UtilityNavigationComponent } from './components/utility-navigation/utility-navigation.component';
+
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -65,6 +67,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -98,8 +102,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
     EditAnimalInfoComponent,
     AddAnimalComponent,
     RangerProfileComponent,
-    AnimalProfileComponent
-	],
+  	AnimalProfileComponent,
+    PersonalRangerPermissionComponentComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -133,7 +138,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatChipsModule,
     MatProgressBarModule,
     MatDividerModule,
-	MatGridListModule
+  	MatGridListModule,
+    NgbModule
   ],
   providers: [AuthGuardService],
   entryComponents: [
