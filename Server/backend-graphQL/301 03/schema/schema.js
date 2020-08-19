@@ -1986,9 +1986,8 @@ if (CACHE) {
         spoorIdentificationData = []
         querySnapshot.forEach(function (doc) {
             let newSpoorID = doc.data()
-            if (doc.data().picture == undefined){
-                newSpoorID.picture = "elT7anFNk6ynpTnegdiX"
-            }
+            if (doc.data().picture == undefined)
+                newSpoorID.picture = "Ygztrt8aBnD9qetiRjw0"
             spoorIdentificationData.push(newSpoorID)
         });
     });
@@ -2003,7 +2002,6 @@ if (CACHE) {
             } else {
                 dietTypes.doc(doc.id).delete();
             }
-
         });
     })
 
