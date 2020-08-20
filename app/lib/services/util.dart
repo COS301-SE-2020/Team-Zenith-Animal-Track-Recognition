@@ -6,8 +6,11 @@ import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/fake_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -27,6 +30,158 @@ Future<bool> getLoggedIn() async {
   return true;
 }
 
+void showOptions(BuildContext context) {
+  showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+            height: 150,
+            child: Column(children: <Widget>[
+              ListTile(
+                onTap: () {
+                  // close the modal
+                  Navigator.of(context).pop();
+                  // show the camera
+                  showCamera(context);
+                },
+                leading: Icon(Icons.photo_camera),
+                title: Text("Take a picture"),
+              ),
+              ListTile(
+                  onTap: () {
+                    Navigator.pop(context);
+                    showPhotoLibrary();
+                  },
+                  leading: Icon(Icons.photo_library),
+                  title: Text("Choose from photo library"))
+            ]));
+      });
+}
+
+class TakePicturePage extends StatefulWidget {
+  final CameraDescription camera;
+  TakePicturePage({@required this.camera});
+
+  @override
+  _TakePicturePageState createState() => _TakePicturePageState();
+}
+
+class _TakePicturePageState extends State<TakePicturePage> {
+  CameraController _cameraController;
+  Future<void> _initializeCameraControllerFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _cameraController =
+        CameraController(widget.camera, ResolutionPreset.medium);
+
+    _initializeCameraControllerFuture = _cameraController.initialize();
+  }
+
+  void _takePicture(BuildContext context) async {
+    try {
+      await _initializeCameraControllerFuture;
+
+      final path =
+          join((await getTemporaryDirectory()).path, '${DateTime.now()}.png');
+
+      await _cameraController.takePicture(path);
+
+      Navigator.pop(context, path);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: <Widget>[
+      FutureBuilder(
+        future: _initializeCameraControllerFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return CameraPreview(_cameraController);
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+      SafeArea(
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              backgroundColor: Colors.black,
+              child: Icon(Icons.camera),
+              onPressed: () {
+                _takePicture(context);
+              },
+            ),
+          ),
+        ),
+      )
+    ]);
+  }
+
+  @override
+  void dispose() {
+    _cameraController.dispose();
+    super.dispose();
+  }
+}
+
+void showCamera(BuildContext context) async {
+  final cameras = await availableCameras();
+  final camera = cameras.first;
+
+  final result = await Navigator.push(context,
+      MaterialPageRoute(builder: (context) => TakePicturePage(camera: camera)));
+
+  // setState(() {
+  //   _path = result;
+  // });
+
+  File image = File(result);
+  String url = base64Encode(image.readAsBytesSync());
+  List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
+
+  if (animals != null) {
+    _navigationService.navigateTo(Routes.confirmlViewRoute,
+        arguments:
+            ConfirmedViewArguments(image: image, confirmedAnimals: animals));
+  } else {
+    _navigationService.navigateTo(Routes.notConfirmedViewRoute,
+        arguments: NotConfirmedViewArguments(image: image));
+  }
+}
+
+void showPhotoLibrary() async {
+  File image;
+  final picker = ImagePicker();
+
+  final pickedFile = await picker.getImage(source: ImageSource.gallery);
+  if (pickedFile != null) {
+    image = File(pickedFile.path);
+    String url = base64Encode(image.readAsBytesSync());
+
+    List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
+
+    if (animals != null) {
+      _navigationService.navigateTo(Routes.confirmlViewRoute,
+          arguments:
+              ConfirmedViewArguments(image: image, confirmedAnimals: animals));
+    } else {
+      _navigationService.navigateTo(Routes.notConfirmedViewRoute,
+          arguments: NotConfirmedViewArguments(image: image));
+    }
+  }
+
+  return null;
+}
+
 void captureImage() async {
   File image;
   final picker = ImagePicker();
@@ -35,8 +190,8 @@ void captureImage() async {
   if (pickedFile != null) {
     image = File(pickedFile.path);
     String url = base64Encode(image.readAsBytesSync());
-    List<ConfirmModel> animals = await _api.identifyImage(url);
-    animals = null;
+    List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
+
     if (animals != null) {
       _navigationService.navigateTo(Routes.confirmlViewRoute,
           arguments:
@@ -58,7 +213,7 @@ void recapture(var context) async {
   if (pickedFile != null) {
     image = File(pickedFile.path);
     String url = base64Encode(image.readAsBytesSync());
-    List<ConfirmModel> animals = await _api.identifyImage(url);
+    List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
 
     if (animals != null) {
       _navigationService.navigateTo(Routes.confirmlViewRoute,
@@ -66,8 +221,8 @@ void recapture(var context) async {
               ConfirmedViewArguments(image: image, confirmedAnimals: animals));
       //Navigator.of(context).popAndPushNamed("/confirmed-view",arguments:image);
     } else {
-      Navigator.of(context)
-          .popAndPushNamed("/not-confirmed-view", arguments: image);
+      _navigationService.navigateTo(Routes.notConfirmedViewRoute,
+          arguments: NotConfirmedViewArguments(image: image));
     }
   }
 }
@@ -165,7 +320,7 @@ Widget imageBlock(String imageLink) {
     ),
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: AssetImage(imageLink),
+        image: NetworkImage(imageLink),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,

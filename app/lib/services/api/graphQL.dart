@@ -1,14 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:ERP_RANGER/services/api/api.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'graphQLConf.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:injectable/injectable.dart';
 import 'api.dart';
 
-final String domain =
-    "http://ec2-13-244-161-244.af-south-1.compute.amazonaws.com:55555/";
+final String domain = "http://putch.dyndns.org:55555/";
 
 @lazySingleton
 class GraphQL implements Api {
@@ -66,9 +68,78 @@ class GraphQL implements Api {
   }
 
   @override
-  Future<List<ConfirmModel>> getConfirmModel() async {
-    // TODO: implement getConfirmModel
-    throw UnimplementedError();
+  Future<List<ConfirmModel>> getConfirmModel(
+      String pic, String lat, String long) async {
+    List<ConfirmModel> identifiedList = new List();
+
+    String token = "h10hYNuJeTbmWH1ZSi5R";
+    token = Uri.encodeFull(token);
+
+    Map<String, String> headers = {"Content-type": "application/json"};
+
+    String link = "$domain" + "graphql?";
+    List<String> tag;
+
+    String query =
+        'mutation{identificationBase64(token: "$token" ,base64imge: "$pic", latitude: $lat, longitude: $long, tgas: $tag){spoorIdentificationID, potentialMatches{animal{commonName, classification, pictures{URL}}confidence}}}';
+
+    print(query);
+    final http.Response response = await http.post(
+      link,
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({'query': query}),
+    );
+
+    print("Response from ID: " + response.statusCode.toString());
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      var list =
+          body['data']['identificationBase64']['potentialMatches'] as List;
+
+      print("Response size: " + list.length.toString());
+
+      String score;
+      String type = "Track";
+      String cName;
+      String sName;
+      String pic;
+
+      double count;
+
+      print(body['data']['identificationBase64']['potentialMatches'][0]
+              ['confidence']
+          .toString());
+
+      for (int i = 0; i < list.length; i++) {
+        score = body['data']['identificationBase64']['potentialMatches'][i]
+                ['confidence']
+            .toString();
+        count = double.parse(score) * 100;
+        score = count.toString().substring(0, score.length - 1) + "%";
+
+        cName = body['data']['identificationBase64']['potentialMatches'][i]
+                ['animal']['commonName']
+            .toString();
+        sName = body['data']['identificationBase64']['potentialMatches'][i]
+                ['animal']['classification']
+            .toString();
+        pic = body['data']['identificationBase64']['potentialMatches'][i]
+                ['animal']['pictures'][0]['URL']
+            .toString();
+
+        identifiedList.add(new ConfirmModel(
+            accuracyScore: count,
+            animalName: cName,
+            image: pic,
+            species: sName,
+            type: type));
+      }
+    }
+
+    print("Animal list size: " + identifiedList.length.toString());
+    return identifiedList;
   }
 
   @override
@@ -104,8 +175,86 @@ class GraphQL implements Api {
 
   @override
   Future<List<HomeModel>> getHomeModel() async {
-    // TODO: implement getHomeModel
-    throw UnimplementedError();
+    List<HomeModel> _cards = new List();
+
+    String token = "h10hYNuJeTbmWH1ZSi5R";
+    token = Uri.encodeFull(token);
+
+    final http.Response response = await http.get("$domain" +
+        "graphql?query=query{spoorIdentification(token: \"$token\"){spoorIdentificationID,location{latitude, longitude}, dateAndTime{year, day, month},picture{URL}, ranger{firstName, lastName}, animal{commonName, classification},potentialMatches{confidence} }}");
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      var list = body['data']['spoorIdentification'] as List;
+
+      String cName;
+      String sName;
+      String location;
+      String ranger;
+      String date;
+      String tag = "TBD";
+      String pic;
+      String score;
+      double count;
+      DateTime now = DateTime.now();
+      DateTime track;
+      int mon;
+      int year;
+      int day;
+
+      for (int i = 0; i < 15; i++) {
+        cName = body['data']['spoorIdentification'][i]['animal']['commonName']
+            .toString();
+
+        sName = body['data']['spoorIdentification'][i]['animal']
+                ['classification']
+            .toString();
+        date = body['data']['spoorIdentification'][i]['dateAndTime']['day']
+                .toString() +
+            " " +
+            body['data']['spoorIdentification'][i]['dateAndTime']['month']
+                .toString();
+
+        mon = int.parse(body['data']['spoorIdentification'][i]['dateAndTime']
+                ['month']
+            .toString());
+        day = int.parse(body['data']['spoorIdentification'][i]['dateAndTime']
+                ['day']
+            .toString());
+        year = int.parse(body['data']['spoorIdentification'][i]['dateAndTime']
+                ['year']
+            .toString());
+
+        track = new DateTime(year, mon, day);
+        Duration difference = now.difference(track);
+        date = (difference.inDays / 365).floor().toString() + " days ago";
+
+        location = "Lat: " +
+            body['data']['spoorIdentification'][i]['location']['latitude']
+                .toString() +
+            " Long: " +
+            body['data']['spoorIdentification'][i]['location']['longitude']
+                .toString();
+        ranger = body['data']['spoorIdentification'][i]['ranger']['firstName']
+                .toString() +
+            " " +
+            body['data']['spoorIdentification'][i]['ranger']['lastName']
+                .toString();
+
+        pic =
+            body['data']['spoorIdentification'][i]['picture']['URL'].toString();
+        score = body['data']['spoorIdentification'][i]['potentialMatches'][0]
+                ['confidence']
+            .toString();
+        count = double.parse(score) * 100;
+        score = count.toString().substring(0, score.length - 1) + "%";
+        _cards.add(new HomeModel(
+            cName, sName, location, ranger, date, score, tag, pic));
+      }
+
+      return _cards;
+    }
   }
 
   @override
@@ -196,6 +345,7 @@ class GraphQL implements Api {
           "graphql?query=query{login(eMail:\"$email\",password:\"$password\"){token,accessLevel}}",
     );
 
+    print("Response: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
 
@@ -209,8 +359,93 @@ class GraphQL implements Api {
 
   @override
   Future<List<ProfileModel>> getProfileModel() async {
-    // TODO: implement getProfileModel
-    throw UnimplementedError();
+    List<ProfileModel> _cards = new List();
+
+    String token = "h10hYNuJeTbmWH1ZSi5R";
+    token = Uri.encodeFull(token);
+    String id = "PfPF3c4kjcsefABkEbw4";
+
+    final http.Response response = await http.get("$domain" +
+        "graphql?query=query{spoorIdentification(token: \"$token\"){spoorIdentificationID,location{latitude, longitude}, dateAndTime{year, day, month},picture{URL}, ranger{firstName, lastName}, animal{commonName, classification},potentialMatches{confidence} }}");
+
+    print("Response: " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      var list = body['data']['spoorIdentification'] as List;
+
+      print(body['data']['spoorIdentification'][0]['potentialMatches'][0]
+              ['confidence']
+          .toString());
+
+      String cName;
+      String sName;
+      String location;
+      String ranger;
+      String date;
+      String tag = "TBD";
+      String pic;
+      String score;
+      double count;
+      DateTime now = DateTime.now();
+      DateTime track;
+      int mon;
+      int year;
+      int day;
+
+      for (int i = 0; i < 15; i++) {
+        cName = body['data']['spoorIdentification'][i]['animal']['commonName']
+            .toString();
+
+        sName = body['data']['spoorIdentification'][i]['animal']
+                ['classification']
+            .toString();
+        date = body['data']['spoorIdentification'][i]['dateAndTime']['day']
+                .toString() +
+            " " +
+            body['data']['spoorIdentification'][i]['dateAndTime']['month']
+                .toString();
+
+        mon = int.parse(body['data']['spoorIdentification'][i]['dateAndTime']
+                ['month']
+            .toString());
+        day = int.parse(body['data']['spoorIdentification'][i]['dateAndTime']
+                ['day']
+            .toString());
+        year = int.parse(body['data']['spoorIdentification'][i]['dateAndTime']
+                ['year']
+            .toString());
+
+        track = new DateTime(year, mon, day);
+        Duration difference = now.difference(track);
+        date = (difference.inDays / 365).floor().toString() + " days ago";
+
+        location = "Lat: " +
+            body['data']['spoorIdentification'][i]['location']['latitude']
+                .toString() +
+            " Long: " +
+            body['data']['spoorIdentification'][i]['location']['longitude']
+                .toString();
+        ranger = body['data']['spoorIdentification'][i]['ranger']['firstName']
+                .toString() +
+            " " +
+            body['data']['spoorIdentification'][i]['ranger']['lastName']
+                .toString();
+
+        pic =
+            body['data']['spoorIdentification'][i]['picture']['URL'].toString();
+        score = body['data']['spoorIdentification'][i]['potentialMatches'][0]
+                ['confidence']
+            .toString();
+        count = double.parse(score) * 100;
+        score = count.toString().substring(0, score.length - 1) + "%";
+        _cards.add(new ProfileModel(
+            cName, sName, location, ranger, date, score, tag, pic));
+      }
+
+      print("List length: " + _cards.length.toString());
+      return _cards;
+    }
   }
 
   @override
@@ -263,9 +498,17 @@ class GraphQL implements Api {
   }
 
   @override
-  Future<List<String>> getTags() {
-    // TODO: implement getTags
-    throw UnimplementedError();
+  Future<List<String>> getTags() async {
+    List<String> tags = new List();
+
+    tags.add("Endagered");
+    tags.add("Dangerous");
+    tags.add("Infant");
+    // for (int i = 0; i < 5; i++) {
+    //   int j = i + 1;
+    //   tags.add("Tag $j");
+    // }
+    return tags;
   }
 
   @override
@@ -286,8 +529,9 @@ class GraphQL implements Api {
   }
 
   @override
-  Future<List<ConfirmModel>> identifyImage(String url) {
-    // TODO: implement identifyImage
+  Future<List<ConfirmModel>> identifyImage(
+      String pic, String lat, String long) async {
+    return getConfirmModel(pic, lat, long);
   }
 
   @override
