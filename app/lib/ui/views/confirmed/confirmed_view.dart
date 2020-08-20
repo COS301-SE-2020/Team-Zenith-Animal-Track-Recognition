@@ -47,6 +47,7 @@ class ConfirmedView extends StatelessWidget {
               ),
             );
           } else {
+            print(confirmedAnimals.length.toString());
             return progressIndicator();
           }
         },
@@ -181,21 +182,22 @@ class Scroll extends ViewModelWidget<ConfirmedViewModel> {
                     Expanded(
                         flex: 1,
                         child: IconButtons(
-                            iconData: Icons.search,
-                            subTitle: "EDIT GEOTAG",
-                            index: 1)),
+                          iconData: Icons.autorenew,
+                          subTitle: "CLASSIFY TRACK",
+                          index: 0,
+                        )),
                     Expanded(
                         flex: 1,
                         child: IconButtons(
                             iconData: Icons.camera_alt,
-                            subTitle: "RECAPTURE SPOOR",
-                            index: 2)),
+                            subTitle: "RECAPTURE TRACK",
+                            index: 1)),
                     Expanded(
                         flex: 1,
                         child: IconButtons(
-                            iconData: Icons.file_download,
-                            subTitle: "DOWNLOAD IMAGE",
-                            index: 3)),
+                            iconData: Icons.share,
+                            subTitle: "SHARE IMAGE",
+                            index: 2)),
                   ],
                 )
               ],
@@ -303,7 +305,7 @@ class PossibleTags extends ViewModelWidget<ConfirmedViewModel> {
   String image;
   String name;
   String species;
-  int score;
+  double score;
   int index;
   PossibleTags(
       {Key key, this.image, this.name, this.score, this.species, this.index})
@@ -416,7 +418,7 @@ Widget confidentImageBlock(String image) {
     //padding: new EdgeInsets.all(5),
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: AssetImage(image),
+        image: NetworkImage(image),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,
@@ -427,7 +429,7 @@ Widget confidentImageBlock(String image) {
 }
 
 Widget confidentImageDetails(
-    String type, String name, String species, int score, var context) {
+    String type, String name, String species, double score, var context) {
   return Container(
     alignment: Alignment.center,
     margin: new EdgeInsets.all(10),
@@ -511,7 +513,7 @@ Widget innerImageBlock(String link) {
       color: Colors.grey,
       borderRadius: BorderRadius.circular(10),
       image: DecorationImage(
-        image: AssetImage(link),
+        image: NetworkImage(link),
         fit: BoxFit.fill,
       ),
     ),
@@ -520,7 +522,7 @@ Widget innerImageBlock(String link) {
   );
 }
 
-Widget blocks(int percentage) {
+Widget blocks(double percentage) {
   return Container(
       alignment: Alignment(0.0, 0.0),
       margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),

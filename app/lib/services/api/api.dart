@@ -15,7 +15,8 @@ abstract class Api {
 
   Future<SimilarSpoorModel> getSpoorSimilarModel(String animal);
 
-  Future<List<ConfirmModel>> getConfirmModel();
+  Future<List<ConfirmModel>> getConfirmModel(
+      String pic, String lat, String long);
 
   Future<List<SearchModel>> getSearchModel();
 
@@ -31,7 +32,7 @@ abstract class Api {
 
   void sendConfirmationSpoor(List<ConfirmModel> list, String tag);
 
-  Future<List<ConfirmModel>> identifyImage(String url);
+  Future<List<ConfirmModel>> identifyImage(String pic, String lat, String long);
 
   Future<int> getUserLevel();
 }

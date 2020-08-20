@@ -146,8 +146,8 @@ void showCamera(BuildContext context) async {
 
   File image = File(result);
   String url = base64Encode(image.readAsBytesSync());
-  List<ConfirmModel> animals = await _api.identifyImage(url);
-  animals = null;
+  List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
+
   if (animals != null) {
     _navigationService.navigateTo(Routes.confirmlViewRoute,
         arguments:
@@ -166,8 +166,9 @@ void showPhotoLibrary() async {
   if (pickedFile != null) {
     image = File(pickedFile.path);
     String url = base64Encode(image.readAsBytesSync());
-    List<ConfirmModel> animals = await _api.identifyImage(url);
-    animals = null;
+
+    List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
+
     if (animals != null) {
       _navigationService.navigateTo(Routes.confirmlViewRoute,
           arguments:
@@ -189,8 +190,8 @@ void captureImage() async {
   if (pickedFile != null) {
     image = File(pickedFile.path);
     String url = base64Encode(image.readAsBytesSync());
-    List<ConfirmModel> animals = await _api.identifyImage(url);
-    animals = null;
+    List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
+
     if (animals != null) {
       _navigationService.navigateTo(Routes.confirmlViewRoute,
           arguments:
@@ -212,7 +213,7 @@ void recapture(var context) async {
   if (pickedFile != null) {
     image = File(pickedFile.path);
     String url = base64Encode(image.readAsBytesSync());
-    List<ConfirmModel> animals = await _api.identifyImage(url);
+    List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
 
     if (animals != null) {
       _navigationService.navigateTo(Routes.confirmlViewRoute,
@@ -220,8 +221,8 @@ void recapture(var context) async {
               ConfirmedViewArguments(image: image, confirmedAnimals: animals));
       //Navigator.of(context).popAndPushNamed("/confirmed-view",arguments:image);
     } else {
-      Navigator.of(context)
-          .popAndPushNamed("/not-confirmed-view", arguments: image);
+      _navigationService.navigateTo(Routes.notConfirmedViewRoute,
+          arguments: NotConfirmedViewArguments(image: image));
     }
   }
 }
@@ -319,7 +320,7 @@ Widget imageBlock(String imageLink) {
     ),
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: AssetImage(imageLink),
+        image: NetworkImage(imageLink),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,
