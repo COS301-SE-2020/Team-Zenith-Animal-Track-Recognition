@@ -13,6 +13,7 @@ export class TrackIdentificationsComponent implements OnInit {
 	
 	@ViewChild('sidenav') sidenav;
 	trackIdentifications: any;
+	tracksRetrieved = false;
 	searchText: string;
 	sortBySurname: boolean = true;
 	currentAlphabet;
@@ -29,6 +30,9 @@ export class TrackIdentificationsComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.trackIdentifications = temp[0];
+				console.log("Parent: " + this.trackIdentifications);
+				this.tracksRetrieved = true;
+				console.log("Tracks have been retrieved: " + this.tracksRetrieved);
 				this.timeToString();
 			});
 	}
