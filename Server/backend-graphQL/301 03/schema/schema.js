@@ -124,6 +124,13 @@ const SPOOR_IDENTIFICATION_TYPE = new GraphQLObjectType({
                 let temp = _.find(animalData, {
                     animalID: parent.animal.toString()
                 })
+
+                if (parent.spoorIdentificationID == "103") {
+                    console.log(parent)
+                    console.log(animalData)
+                    console.log(temp)
+                }
+
                 return temp;
             }
         },
@@ -1483,7 +1490,7 @@ const Mutation = new GraphQLObjectType({
                 }
 
                 let newAnimal = {
-                    animalID: HID,
+                    animalID: HID.toString(),
                     commonName: args.commonName,
                     groupID: args.groupID,
                     heightM: args.heightM,
@@ -2003,6 +2010,12 @@ if (CACHE) {
             let newSpoorID = doc.data()
             if (doc.data().picture == undefined)
                 newSpoorID.picture = selerRandomImg()
+            if (newSpoorID.location.latitude == 0.0 && newSpoorID.location.longitude == 0.0) {
+                newLocation = getRandomLocation()
+                newSpoorID.location.latitude = newLocation.latitude
+                newSpoorID.location.longitude = newLocation.longitude
+            }
+
             spoorIdentificationData.push(newSpoorID)
         });
     });
@@ -2314,6 +2327,68 @@ function selerRandomImg() {
         "Ygztrt8aBnD9qetiRjw0",
         "bfMb2MzxIKZdAd8YPCBh",
         "eWqIATG1iNwH2yB0i8ch",
+
+    ];
+
+    var randomItem = myArray[Math.floor(Math.random() * myArray.length)];
+    return randomItem
+}
+
+function getRandomLocation() {
+    var myArray = [{
+            latitude: -25.389,
+            longitude: 31.974
+        },
+        {
+            latitude: -24.994727,
+            longitude: 31.596844
+        },
+        {
+            latitude: -22.440,
+            longitude: 31.083
+        },
+        {
+            latitude: -25.389095,
+            longitude: 31.974704
+        },
+        {
+            latitude: -24.600824,
+            longitude: 31.629764
+        },
+        {
+            latitude: -25.389095,
+            longitude: 31.974704
+        }, {
+            latitude: -24.923853,
+            longitude: 31.659375
+        }, {
+            latitude: 25.364658,
+            longitude: 31.683832
+        }, {
+            latitude: -24.992296,
+            longitude: 31.598448
+        }, {
+            latitude: -24.992296,
+            longitude: 31.598448
+        }, {
+            latitude: -24.45083,
+            longitude: 31.9775
+        }, {
+            latitude: -24.450961,
+            longitude: 31.977753
+        }, {
+            latitude: -25.353957,
+            longitude: 31.990556
+        }, {
+            latitude: -25.307752,
+            longitude: 31.971838
+        }, {
+            latitude: -24.873248,
+            longitude: 31.656253
+        }, {
+            latitude: 25.13490,
+            longitude: 31.34007
+        }
 
     ];
 
