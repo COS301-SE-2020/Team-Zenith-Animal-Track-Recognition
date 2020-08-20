@@ -18,7 +18,7 @@ class ProfileViewModel extends BaseViewModel {
 
   Future<TempObject> getRecentIdentifications() async {
     List<ProfileModel> recentIdentifications = await api.getProfileModel();
-    ProfileInfoModel infoModel = await _api.getProfileInfoData();
+    ProfileInfoModel infoModel = await api.getProfileInfoData();
     int userlevel = await _api.getUserLevel();
     TempObject temp = TempObject(
         animalList: recentIdentifications,

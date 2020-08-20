@@ -100,11 +100,21 @@ class ProfileModel {
 }
 
 class ProfileInfoModel {
-  int spoorIdentified;
-  int animalsTracked;
-  int speciesTracked;
+  String name;
+  String number;
+  String email;
+  String picture;
+  String spoorIdentified;
+  String animalsTracked;
+  String speciesTracked;
   ProfileInfoModel(
-      {this.animalsTracked, this.speciesTracked, this.spoorIdentified});
+      {this.name,
+      this.number,
+      this.email,
+      this.picture,
+      this.animalsTracked,
+      this.speciesTracked,
+      this.spoorIdentified});
 }
 
 class ConfirmModel {

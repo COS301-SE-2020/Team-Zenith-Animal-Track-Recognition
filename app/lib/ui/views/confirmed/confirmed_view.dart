@@ -24,9 +24,9 @@ class ConfirmedView extends StatelessWidget {
           }
           if (snapshot.hasData) {
             if (model.loaded == false) {
-              model.setConfidentAnimal(confirmedAnimals[0]);
-              confirmedAnimals.removeAt(0);
               model.setConfirmedList(confirmedAnimals);
+              model.setConfidentAnimal(confirmedAnimals[0]);
+              //confirmedAnimals.removeAt(0);
               model.setLoaded(true);
             }
             return WillPopScope(

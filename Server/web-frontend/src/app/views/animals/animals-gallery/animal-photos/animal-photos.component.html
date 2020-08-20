@@ -1,0 +1,51 @@
+<div id="animal-photos-workspace-container">
+    <div id="loader-container">
+        <mat-spinner id="loader"></mat-spinner>
+    </div>
+    <div id="animals-toolbar-container">
+        <div id="animals-toolbar-navigationtree-container">
+            <div id="animals-toolbar-navigation">
+                <a (click)="route('animals')" class="fontM">Animals</a>
+                <mat-icon>chevron_right</mat-icon>
+                <a (click)="route('animals/gallery')" class="fontM">Animals Gallery</a>
+                <mat-icon>chevron_right</mat-icon>
+                <a href="javascript:void(0)" class="fontM activeView" *ngIf="animal">{{animal.commonName}} Photos & Tracks</a>
+            </div>
+        </div>
+        <div id="animals-toolbar">
+            <mat-select id="animals-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
+                <mat-option>Add New Image</mat-option>
+                <mat-option>Edit Information</mat-option>
+                <mat-option (click)="viewAnimalProfile(animal.classification)">View Information</mat-option>
+                <mat-option>Upload Identification</mat-option>
+            </mat-select>
+        </div>
+    </div>
+    <div id="animal-photos-view-workspace">
+		<div id="animal-photos-title-container">
+			<p class="fontSB" *ngIf="animal">{{animal.commonName}} Photos & Tracks</p>
+		</div>
+		<div id="animal-photos-feed-container">
+			<mat-tab-group mat-align-tabs="center" dynamicHeight> 
+				<mat-tab label="Photos">
+					<ng-template matTabContent>
+						<mat-grid-list cols="3" rowHeight="1:1" gutterSize="10px">
+						  <mat-grid-tile *ngFor="let animalPhoto of animal.pictures;let photoIndex=index;" (click)="openPhotoDetails(false, animalPhoto.URL, photoIndex)">
+								<img class="animal-photo" src="{{animalPhoto.URL}}" alt="Picture of {{animal.commonName}} - {{animal.classification}}">
+						  </mat-grid-tile>
+						</mat-grid-list>
+					</ng-template>
+				</mat-tab>
+				<mat-tab label="Tracks">
+					<ng-template matTabContent>
+						<mat-grid-list class="animal-track-photo" cols="3" rowHeight="1:1" gutterSize="10px">
+						  <mat-grid-tile *ngFor="let trackImage of trackImages;let trackIndex=index;" (click)="openPhotoDetails(true, defaultImage, trackIndex)">
+						  	<!-- Img of Track	<img class="animal-photo" src="{{animalPhoto.URL}}" alt="Picture of {{animal.commonName}} - {{animal.classification}}"> -->
+						  </mat-grid-tile>
+						</mat-grid-list>
+					</ng-template>
+				</mat-tab>
+			</mat-tab-group>
+		</div>
+    </div>
+</div>

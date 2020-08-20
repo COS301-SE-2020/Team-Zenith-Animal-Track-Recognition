@@ -35,10 +35,17 @@ class ConfirmedViewModel extends BaseViewModel {
 
   void setConfirmedList(List<ConfirmModel> _confirmedList) {
     this._confirmedList = _confirmedList;
+
+    int count = _confirmedList.length;
+
+    for (int i = 0; i < _confirmedList.length; i++) {
+      this._confirmedList.add(_confirmedList[count]);
+      count--;
+    }
   }
 
   void setConfidentAnimal(ConfirmModel _confidentAnimal) {
-    this._confidentAnimal = _confidentAnimal;
+    this._confidentAnimal = this._confirmedList[0];
   }
 
   void confirm(var context) {

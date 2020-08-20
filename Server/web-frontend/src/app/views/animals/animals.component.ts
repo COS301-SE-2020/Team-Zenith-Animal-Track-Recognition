@@ -23,15 +23,22 @@ export class AnimalsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.test = true;
-		document.getElementById("animals-route").classList.add("activeRoute");
+		document.getElementById("animals-route-link").classList.add("activeRoute");
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
-			'lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{URL}}}')
+			'lifeSpan,gestationPeriod,typicalBehaviourM{behaviour,threatLevel},typicalBehaviourF{behaviour,threatLevel},animalOverview,animalDescription,pictures{URL}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.animals = temp[0];
-				console.log(this.animals);
+				this.animals.forEach(animal => {
+					const cont: boolean = ('' + animal.animalDescription).includes('.');
+					if (cont) {
+						animal.animalOverview = ('' + animal.animalDescription).substring(0, ('' + animal.animalDescription).indexOf(' ', ('' + animal.animalDescription).length < 120 ? 0 : 120) + 1);
+					} else {
+						animal.animalOverview = "No description provided. Please update this animal in the edit animal screen.";
+					}
+				});
 				this.sort(true);
 			});
 
@@ -55,20 +62,20 @@ export class AnimalsComponent implements OnInit {
 	refresh(updateOp: string) {
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
-			'lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{URL}}}')
+			'lifeSpan,gestationPeriod,animalOverview,typicalBehaviourM{behaviour,threatLevel},typicalBehaviourF{behaviour,threatLevel},animalDescription,pictures{URL}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				var newAnimalList = temp[0];
-				switch (updateOp) {
+				this.animals = newAnimalList;
+				/*switch (updateOp) {
 					case "update":
 						this.animals = null;
-						this.animals = newAnimalList;
 						break;
 					case "add":
 						newAnimalList.forEach(x => this.addIfNewAnimal(x));
 						break;
-				}
+				}*/
 				this.sort(true);
 			});
 	}
@@ -124,5 +131,4 @@ export class AnimalsComponent implements OnInit {
 			}
 		}
 	}
-
 }

@@ -99,6 +99,7 @@ class GraphQL implements Api {
           body['data']['identificationBase64']['potentialMatches'] as List;
 
       print("Response size: " + list.length.toString());
+      print(body);
 
       String score;
       String type = "Track";
@@ -108,11 +109,14 @@ class GraphQL implements Api {
 
       double count;
 
-      print(body['data']['identificationBase64']['potentialMatches'][0]
-              ['confidence']
-          .toString());
+      print("Number of responses: " + list.length.toString());
 
       for (int i = 0; i < list.length; i++) {
+        print("It is.....: " +
+            body['data']['identificationBase64']['potentialMatches'][i]
+                    ['animal']['commonName']
+                .toString());
+
         score = body['data']['identificationBase64']['potentialMatches'][i]
                 ['confidence']
             .toString();
@@ -262,15 +266,12 @@ class GraphQL implements Api {
     InfoModel infoModel;
     List<String> appearance = new List();
 
-    print("In graph QL: " + name);
-
     String token = "h10hYNuJeTbmWH1ZSi5R";
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get("$domain" +
         "graphql?query=query{animalsByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
 
-    print("Response status: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
 
@@ -326,8 +327,6 @@ class GraphQL implements Api {
           weightF: weightF,
           weightM: weightM,
           carouselImages: appearance);
-
-      print("At the end: " + commonName);
     } else {}
 
     return infoModel;
@@ -335,24 +334,21 @@ class GraphQL implements Api {
 
   @override
   Future<LoginResponse> getLoginModel(String email, String password) async {
-    print("Here is the password: " + password);
-    print("Here is the email: " + email);
-
     email = Uri.encodeFull(email);
     password = Uri.encodeFull(password);
     final http.Response response = await http.get(
       "$domain" +
-          "graphql?query=query{login(eMail:\"$email\",password:\"$password\"){token,accessLevel}}",
+          "graphql?query=query{login(eMail:\"$email\",password:\"$password\"){token,accessLevel,rangerID}}",
     );
 
-    print("Response: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
 
       int accessLevel = int.parse(body["data"]["login"]["accessLevel"]);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setInt("accessLevel", accessLevel);
-      prefs.setString("Token", body["data"]["login"]["token"]);
+      prefs.setString("token", body["data"]["login"]["token"]);
+      prefs.setString("rangerID", body["data"]["login"]["rangerID"]);
       return new LoginResponse();
     }
   }
@@ -361,9 +357,10 @@ class GraphQL implements Api {
   Future<List<ProfileModel>> getProfileModel() async {
     List<ProfileModel> _cards = new List();
 
-    String token = "h10hYNuJeTbmWH1ZSi5R";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token");
     token = Uri.encodeFull(token);
-    String id = "PfPF3c4kjcsefABkEbw4";
 
     final http.Response response = await http.get("$domain" +
         "graphql?query=query{spoorIdentification(token: \"$token\"){spoorIdentificationID,location{latitude, longitude}, dateAndTime{year, day, month},picture{URL}, ranger{firstName, lastName}, animal{commonName, classification},potentialMatches{confidence} }}");
@@ -523,9 +520,49 @@ class GraphQL implements Api {
   }
 
   @override
-  Future<ProfileInfoModel> getProfileInfoData() {
-    // TODO: implement getProfileInfoData
-    throw UnimplementedError();
+  Future<ProfileInfoModel> getProfileInfoData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token");
+    token = Uri.encodeFull(token);
+    String id = prefs.getString("rangerID");
+    id = Uri.encodeFull(id);
+
+    String query =
+        'query{users(tokenIn: $token, rangerID: $id){firstName, lastName,phoneNumber, eMail, pictureURL}}';
+
+    final http.Response response = await http.get("$domain" +
+        "graphql?query=query{users(tokenIn: \"$token\", rangerID: \"$id\"){firstName, lastName,phoneNumber, eMail, pictureURL}}");
+
+    String name;
+    String numb;
+    String mail;
+    String pic;
+    String aTrack;
+    String sId;
+    String sTrack;
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      name = body['data']['users'][0]['firstName'].toString() +
+          " " +
+          body['data']['users'][0]['lastName'].toString();
+      numb = body['data']['users'][0]['phoneNumber'].toString();
+      mail = body['data']['users'][0]['eMail'].toString();
+      pic = body['data']['users'][0]['pictureURL'].toString();
+    }
+
+    ProfileInfoModel profileInfo = new ProfileInfoModel(
+        name: name,
+        number: numb,
+        email: mail,
+        picture: pic,
+        animalsTracked: "17",
+        spoorIdentified: "150",
+        speciesTracked: "38");
+
+    return profileInfo;
   }
 
   @override
@@ -535,10 +572,7 @@ class GraphQL implements Api {
   }
 
   @override
-  Future<List<SpoorModel>> getSpoorModel(String animal) {
-    // TODO: implement getSpoorModel
-    throw UnimplementedError();
-  }
+  Future<List<SpoorModel>> getSpoorModel(String animal) {}
 
   @override
   Future<SimilarSpoorModel> getSpoorSimilarModel(String animal) {
