@@ -14,7 +14,7 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 export class TrackIdentificationsMapComponent implements OnInit {
 	
 	@Input() searchText: string;
-	@Input() tracksList;
+	@Input() trackIds;
 	@Output() tracksOnChange: EventEmitter<Object> = new EventEmitter();
 	numRangers: any;
 	sorted: string;
@@ -123,6 +123,7 @@ export class TrackIdentificationsMapComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.initMap();
+		console.log("trackIds: " + this.trackIds);
 	}
 	
 	public ngOnChanges(changes: SimpleChanges) {
@@ -146,11 +147,20 @@ export class TrackIdentificationsMapComponent implements OnInit {
 		//Add markers
 		for (let i = 0; i < this.coordinates.length; i++)
 		{
+			//console.log("color: " +  this.tracksList[i].animal.animalMarkerColor);
+			var markerIcon = {
+				path: "M172.3,501.7C27,291,0,269.4,0,192C0,86,86,0,192,0s192,86,192,192c0,77.4-27,99-172.3,309.7 C202.2,515.4,181.8,515.4,172.3,501.7L172.3,501.7z M192,272c44.2,0,80-35.8,80-80s-35.8-80-80-80s-80,35.8-80,80S147.8,272,192,272",
+				fillColor: '#06BAFB',
+				fillOpacity: 1,
+				strokeWeight: 0,
+				scale: 0.1
+			}
+			//markerIcon.fillColor = 	this.tracksList[i].animal.animalMarkerColor;
 			let trackLocation = new google.maps.Marker({
 				map: this.map,
 				position: new google.maps.LatLng(this.coordinates[i].position.lat, this.coordinates[i].position.lng),
 				animation: google.maps.Animation.DROP,
-				//title: vm.userLocation.title
+				icon: markerIcon,
 			});
 
 		}
