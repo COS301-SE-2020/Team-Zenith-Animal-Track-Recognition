@@ -7,9 +7,10 @@ class HomeModel {
   String score;
   String tag;
   String pic;
+  String id;
 
   HomeModel(this.name, this.species, this.location, this.captured, this.time,
-      this.score, this.tag, this.pic);
+      this.score, this.tag, this.pic, this.id);
 }
 
 class SpoorModel {
@@ -21,9 +22,10 @@ class SpoorModel {
   String score;
   String tag;
   String pic;
+  String id;
 
   SpoorModel(this.name, this.species, this.location, this.captured, this.time,
-      this.score, this.tag, this.pic);
+      this.score, this.tag, this.pic, this.id);
 }
 
 class SimilarSpoorModel {

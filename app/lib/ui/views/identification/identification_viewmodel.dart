@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/fake_api.dart';
+import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,12 +20,18 @@ import '../../../main.dart';
 class IdentificationViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final DialogService _dialogService = locator<DialogService>();
-  final Api _api = locator<FakeApi>();
+  final Api _api = locator<GraphQL>();
 
   SpoorModel _confident;
   List<SpoorModel> _recentIdentifications;
   SimilarSpoorModel _similarSpoorModel;
   bool loaded = false;
+  String _location;
+  String _date;
+  String pic;
+
+  String get location => _location;
+  String get date => _date;
 
   SpoorModel get confident => _confident;
   List<SpoorModel> get recentIdentifications => _recentIdentifications;
@@ -37,8 +44,7 @@ class IdentificationViewModel extends BaseViewModel {
   Future<void> shareImage() async {
     try {
       // Saved with this method.
-      var imageId = await ImageDownloader.downloadImage(
-          "https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png");
+      var imageId = await ImageDownloader.downloadImage(pic);
       if (imageId == null) {
         return;
       }
@@ -55,8 +61,7 @@ class IdentificationViewModel extends BaseViewModel {
   }
 //=======================Date================================
 
-  String date = '09/09/2020';
-  String get getDate => date;
+  String get getDate => _date;
 
   bool editDate = false;
   bool get editDateBool => editDate;
@@ -80,7 +85,7 @@ class IdentificationViewModel extends BaseViewModel {
               r"^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$")
           .hasMatch(value);
       if (dateValid == true) {
-        date = value;
+        _date = value;
         setEditDate();
       } else {
         _userDateErrorString = "Invalid date format";
@@ -226,6 +231,9 @@ class IdentificationViewModel extends BaseViewModel {
     if (loaded == false) {
       _recentIdentifications = await _api.getSpoorModel(animal);
       _confident = recentIdentifications[0];
+      _location = _confident.location;
+      _date = _confident.time;
+      pic = _confident.pic;
       recentIdentifications.removeAt(0);
       _similarSpoorModel = await _api.getSpoorSimilarModel(animal);
       loaded = true;

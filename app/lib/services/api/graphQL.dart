@@ -108,15 +108,34 @@ class GraphQL implements Api {
       String pic;
 
       double count;
+      int temp = list.length - 1;
 
       print("Number of responses: " + list.length.toString());
 
-      for (int i = 0; i < list.length; i++) {
-        print("It is.....: " +
-            body['data']['identificationBase64']['potentialMatches'][i]
-                    ['animal']['commonName']
-                .toString());
+      score = body['data']['identificationBase64']['potentialMatches'][temp]
+              ['confidence']
+          .toString();
+      count = double.parse(score) * 100;
+      score = count.toString().substring(0, score.length - 1) + "%";
 
+      cName = body['data']['identificationBase64']['potentialMatches'][temp]
+              ['animal']['commonName']
+          .toString();
+      sName = body['data']['identificationBase64']['potentialMatches'][temp]
+              ['animal']['classification']
+          .toString();
+      pic = body['data']['identificationBase64']['potentialMatches'][temp]
+              ['animal']['pictures'][0]['URL']
+          .toString();
+
+      identifiedList.add(new ConfirmModel(
+          accuracyScore: count,
+          animalName: cName,
+          image: pic,
+          species: sName,
+          type: type));
+
+      for (int i = 0; i < list.length; i++) {
         score = body['data']['identificationBase64']['potentialMatches'][i]
                 ['confidence']
             .toString();
@@ -190,7 +209,9 @@ class GraphQL implements Api {
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
 
-      var list = body['data']['spoorIdentification'] as List;
+      var list =
+          body['data']['spoorIdentification'][0]['potentialMatches'] as List;
+      int temp = list.length - 1;
 
       String cName;
       String sName;
@@ -206,6 +227,7 @@ class GraphQL implements Api {
       int mon;
       int year;
       int day;
+      String id;
 
       for (int i = 0; i < 15; i++) {
         cName = body['data']['spoorIdentification'][i]['animal']['commonName']
@@ -248,13 +270,17 @@ class GraphQL implements Api {
 
         pic =
             body['data']['spoorIdentification'][i]['picture']['URL'].toString();
-        score = body['data']['spoorIdentification'][i]['potentialMatches'][0]
+        score = body['data']['spoorIdentification'][i]['potentialMatches'][temp]
                 ['confidence']
             .toString();
         count = double.parse(score) * 100;
         score = count.toString().substring(0, score.length - 1) + "%";
+
+        id = body['data']['spoorIdentification'][i]['spoorIdentificationID']
+            .toString();
+
         _cards.add(new HomeModel(
-            cName, sName, location, ranger, date, score, tag, pic));
+            cName, sName, location, ranger, date, score, tag, pic, id));
       }
 
       return _cards;
@@ -572,11 +598,145 @@ class GraphQL implements Api {
   }
 
   @override
-  Future<List<SpoorModel>> getSpoorModel(String animal) {}
+  Future<List<SpoorModel>> getSpoorModel(String animal) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<SpoorModel> _cards = new List();
+
+    String token = prefs.getString("token");
+    token = Uri.encodeFull(token);
+    String id = prefs.getString("rangerID");
+    id = Uri.encodeFull(id);
+
+    final http.Response response = await http.get("$domain" +
+        "graphql?query=query{spoorIdentification(token: \"$token\",spoorIdentificationID: \"$animal\" ){spoorIdentificationID,picture{URL},location{latitude, longitude}, dateAndTime{year, day, month}, ranger{firstName, lastName},potentialMatches{animal{commonName, classification, pictures{URL}},confidence} }}");
+
+    print("Response: " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      var list =
+          body['data']['spoorIdentification'][0]['potentialMatches'] as List;
+
+      String cName;
+      String sName;
+      String location;
+      String ranger;
+      String date;
+      String tag = "TBD";
+      String pic;
+      String score;
+      double count;
+      DateTime now = DateTime.now();
+      DateTime track;
+      int mon;
+      int year;
+      int day;
+
+      int temp = (list.length - 1);
+
+      mon = int.parse(body['data']['spoorIdentification'][0]['dateAndTime']
+              ['month']
+          .toString());
+      day = int.parse(body['data']['spoorIdentification'][0]['dateAndTime']
+              ['day']
+          .toString());
+      year = int.parse(body['data']['spoorIdentification'][0]['dateAndTime']
+              ['year']
+          .toString());
+
+      location = "Lat: " +
+          body['data']['spoorIdentification'][0]['location']['latitude']
+              .toString() +
+          " Long: " +
+          body['data']['spoorIdentification'][0]['location']['longitude']
+              .toString();
+      ranger = body['data']['spoorIdentification'][0]['ranger']['firstName']
+              .toString() +
+          " " +
+          body['data']['spoorIdentification'][0]['ranger']['lastName']
+              .toString();
+
+      track = new DateTime(year, mon, day);
+      Duration difference = now.difference(track);
+      date = (difference.inDays / 365).floor().toString() + " days ago";
+
+      cName = body['data']['spoorIdentification'][0]['potentialMatches'][temp]
+              ['animal']['commonName']
+          .toString();
+      sName = body['data']['spoorIdentification'][0]['potentialMatches'][temp]
+              ['animal']['classification']
+          .toString();
+
+      score = body['data']['spoorIdentification'][0]['potentialMatches'][temp]
+              ['confidence']
+          .toString();
+      count = double.parse(score) * 100;
+      score = count.toString().substring(0, score.length - 1) + "%";
+
+      print("Score: " + score);
+
+      pic = body['data']['spoorIdentification'][0]['picture']['URL'].toString();
+
+      _cards.add(new SpoorModel(
+          cName, sName, location, ranger, date, score, tag, pic, ""));
+
+      print("List length: " + temp.toString());
+
+      for (int i = 0; i < list.length; i++) {
+        cName = body['data']['spoorIdentification'][0]['potentialMatches'][i]
+                ['animal']['commonName']
+            .toString();
+        sName = body['data']['spoorIdentification'][0]['potentialMatches'][i]
+                ['animal']['classification']
+            .toString();
+
+        score = body['data']['spoorIdentification'][0]['potentialMatches'][i]
+                ['confidence']
+            .toString();
+        count = double.parse(score) * 100;
+        score = count.toString().substring(0, score.length - 1) + "%";
+
+        pic = body['data']['spoorIdentification'][0]['potentialMatches'][i]
+                ['animal']['pictures'][0]['URL']
+            .toString();
+
+        print(i);
+
+        _cards
+            .add(new SpoorModel(cName, sName, "", "", "", score, "", pic, ""));
+      }
+
+      print("List length at end: " + _cards.length.toString());
+      return _cards;
+    }
+  }
 
   @override
-  Future<SimilarSpoorModel> getSpoorSimilarModel(String animal) {
-    // TODO: implement getSpoorSimilarModel
-    throw UnimplementedError();
+  Future<SimilarSpoorModel> getSpoorSimilarModel(String animal) async {
+    List<String> similarSpoor = new List();
+    if (animal == "elephant") {
+      similarSpoor.add('assets/images/print/elephant/print1.jpg');
+      similarSpoor.add('assets/images/print/elephant/print2.jpg');
+      similarSpoor.add('assets/images/print/elephant/print3.jpg');
+      similarSpoor.add('assets/images/print/elephant/print4.jpg');
+    } else if (animal == "buffalo") {
+      similarSpoor.add('assets/images/print/buffalo/print1.jpg');
+      similarSpoor.add('assets/images/print/buffalo/print2.jpg');
+      similarSpoor.add('assets/images/print/buffalo/print3.jpg');
+      similarSpoor.add('assets/images/print/buffalo/print4.jpg');
+    } else if (animal == "rhino") {
+      similarSpoor.add('assets/images/print/rhino/print1.jpg');
+      similarSpoor.add('assets/images/print/rhino/print2.jpg');
+      similarSpoor.add('assets/images/print/rhino/print3.jpg');
+      similarSpoor.add('assets/images/print/rhino/print4.jpg');
+    } else {
+      similarSpoor.add('assets/images/print/rhino/print1.jpg');
+      similarSpoor.add('assets/images/print/rhino/print2.jpg');
+      similarSpoor.add('assets/images/print/rhino/print3.jpg');
+      similarSpoor.add('assets/images/print/rhino/print4.jpg');
+    }
+
+    SimilarSpoorModel similarSpoorModel = new SimilarSpoorModel(similarSpoor);
+    return similarSpoorModel;
   }
 }

@@ -97,7 +97,7 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              navigateToIdentification(animalList[index].name.toLowerCase());
+              navigateToIdentification(animalList[index].id);
             },
             child: Card(
               shape: RoundedRectangleBorder(
