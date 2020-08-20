@@ -31,9 +31,16 @@ export class AnimalsComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.animals = temp[0];
-				console.log(this.animals[0]['typicalBehaviourM']);
+				this.animals.forEach(animal => {
+					const cont: boolean = ('' + animal.animalDescription).includes('.');
+					if (cont) {
+						animal.animalOverview = ('' + animal.animalDescription).substring(0, ('' + animal.animalDescription).indexOf(' ', ('' + animal.animalDescription).length < 120 ? 0 : 120) + 1);
+					} else {
+						animal.animalOverview = "No description provided. Please update this animal in the edit animal screen.";
+					}
+				});
 				this.sort(true);
-		});
+			});
 
 	}
 
