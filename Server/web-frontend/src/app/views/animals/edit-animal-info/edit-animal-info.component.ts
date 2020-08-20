@@ -14,58 +14,125 @@ export class EditAnimalInfoComponent implements OnInit {
 	editAnimalForm: FormGroup;
 	diet: string;
 	//DUMMY DATA
-	dietTypeList = [
-		{
-			displayValue: 'Herbivorous'
-		},
-		{
-			displayValue: 'Carnivorous'
-		},
-		{
-			displayValue: 'Omnivorous'
-		},
-		{
-			displayValue: 'Insectivorous'
-		}
-	];
+	dietTypeList: string[];
 
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<EditAnimalInfoComponent>) { }
+	constructor(
+		@Inject(MAT_DIALOG_DATA) public data: any,
+		private http: HttpClient,
+		private formBuilder: FormBuilder,
+		public dialogRef: MatDialogRef<EditAnimalInfoComponent>) { }
 
 	ngOnInit(): void {
+
+		this.fillDietTypes();
+
+		const fheight: string = this.data.animal.heightF;
+		if (fheight.indexOf('-') > 0) {
+			this.data.animal.heightFLB = Number.parseFloat(fheight.substring(0, fheight.indexOf('-')));
+			this.data.animal.heightFUB = Number.parseFloat(fheight.substring(fheight.indexOf('-') + 1));
+		} else {
+			this.data.animal.heightFLB = this.data.animal.heightFUB = Number.parseFloat(fheight);
+		}
+		const mheight: string = this.data.animal.heightM;
+		if (mheight.indexOf('-') > 0) {
+			this.data.animal.heightMLB = Number.parseFloat(mheight.substring(0, mheight.indexOf('-')));
+			this.data.animal.heightMUB = Number.parseFloat(mheight.substring(mheight.indexOf('-') + 1));
+		} else {
+			this.data.animal.heightMLB = this.data.animal.heightMUB = Number.parseFloat(mheight);
+		}
+		const fweight: string = this.data.animal.weightF;
+		if (fweight.indexOf('-') > 0) {
+			this.data.animal.weightFLB = Number.parseFloat(fweight.substring(0, fweight.indexOf('-')));
+			this.data.animal.weightFUB = Number.parseFloat(fweight.substring(fweight.indexOf('-') + 1));
+		} else {
+			this.data.animal.weightFLB = this.data.animal.weightFUB = Number.parseFloat(fweight);
+		}
+		const mweight: string = this.data.animal.weightM;
+		if (mweight.indexOf('-') > 0) {
+			this.data.animal.weightMLB = Number.parseFloat(mweight.substring(0, mweight.indexOf('-')));
+			this.data.animal.weightMUB = Number.parseFloat(mweight.substring(mweight.indexOf('-') + 1));
+		} else {
+			this.data.animal.weightMLB = this.data.animal.weightMUB = Number.parseFloat(mweight);
+		}
+		
+		setTimeout(() => {
+			if (this.dietTypeList.includes(this.data.animal.dietType) == false) {
+				this.data.animal.dietType = "Not Specified";
+			}
+		}, 1000);
+
+
 		this.editAnimalForm = this.formBuilder.group({
 			commonName: [this.data.animal.commonName],
 			classification: [this.data.animal.classification],
 			animalDescription: [this.data.animal.animalDescription],
-			heightF: [this.data.animal.heightF],
-			heightM: [this.data.animal.heightM],
-			weightF: [this.data.animal.weightF],
-			weightM: [this.data.animal.weightM],
+			heightFLB: [this.data.animal.heightFLB],
+			heightFUB: [this.data.animal.heightFUB],
+			heightMLB: [this.data.animal.heightMLB],
+			heightMUB: [this.data.animal.heightMUB],
+			weightFLB: [this.data.animal.weightFLB],
+			weightFUB: [this.data.animal.weightFUB],
+			weightMLB: [this.data.animal.weightMLB],
+			weightMUB: [this.data.animal.weightMUB],
 			gestationPeriod: [this.data.animal.gestationPeriod],
-			numOffspring: [''],
+			numOffspring: [Number.parseInt(this.data.animal.Offspring)],
 			lifeSpan: [this.data.animal.lifeSpan],
 			dietType: [this.data.animal.dietType],
-			femaleBehaviour: [''],
-			maleBehaviour: [''],
+			femaleBehaviour: [this.data.animal.typicalBehaviourF['behaviour']],
+			maleBehaviour: [this.data.animal.typicalBehaviourM['behaviour']],
 			habitatDescrip: [''],
 			habitatFeatures: [''],
-			femaleThreat: [''],
-			maleThreat: ['']
+			femaleThreat: [this.data.animal.typicalBehaviourF['threatLevel']],
+			maleThreat: [this.data.animal.typicalBehaviourF['threatLevel']]
 		});
 		document.getElementById('edit-animal-dialog').style.overflow = "hidden";
+	}
+
+	fillDietTypes() {
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{dietType(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '")}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(data)[0]['dietType'];
+				this.dietTypeList = temp;
+			});
 	}
 
 	get f() { return this.editAnimalForm.controls; }
 
 	onSubmit(test: boolean) {
 
+		let heightF, heightM, weightF, weightM;
+		heightF = this.f.heightFLB.value + "-" + this.f.heightFUB.value;
+		heightM = this.f.heightMLB.value + "-" + this.f.heightMUB.value;
+		weightF = this.f.weightFLB.value + "-" + this.f.weightFUB.value;
+		weightM = this.f.weightMLB.value + "-" + this.f.weightMUB.value;
+
 		if (false === test) {
 			this.startLoader();
-			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateAnimal(token:"' + encodeURIComponent(JSON.parse(localStorage.getItem('currentToken'))['value']) +
-				'",classification:"' + encodeURIComponent(this.f.classification.value) + '",commonName:"' + encodeURIComponent(this.f.commonName.value) +
-				'",lifeSpan:"' + encodeURIComponent(this.f.classification.value) + '",animalDescription:"' + encodeURIComponent(this.f.animalDescription.value) +
-				'",heightF:' + encodeURIComponent(this.f.heightF.value) + ',heightM:' + encodeURIComponent(this.f.heightM.value) + ',weightM:' +
-				encodeURIComponent(this.f.weightM.value) + ',weightF:' + encodeURIComponent(this.f.weightF.value != null ? this.f.weightF.value : this.f.weightM.value) +
-				',gestationPeriod:"' + encodeURIComponent(this.f.gestationPeriod.value) + '",dietType:"' + encodeURIComponent(this.data.animal.dietType) + '",animalOverview:"' +
+
+			const desc: string = this.remQuotes(('' + this.f.animalDescription.value));
+			const mb: string = this.remQuotes(('' + this.f.maleBehaviour.value));
+			const fb: string = this.remQuotes(('' + this.f.femaleBehaviour.value));
+			const mt: string = this.remQuotes(('' + this.f.maleThreat.value));
+			const ft: string = this.remQuotes(('' + this.f.femaleThreat.value));
+
+			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{' +
+				'updateAnimal(token:"' + encodeURIComponent(JSON.parse(localStorage.getItem('currentToken'))['value']) +
+				'",classification:"' + encodeURIComponent(this.f.classification.value) +
+				'",commonName:"' + encodeURIComponent(this.f.commonName.value) +
+				'",lifeSpan:"' + encodeURIComponent(this.f.lifeSpan.value) +
+				'",animalDescription:"' + encodeURIComponent(desc) +
+				'",heightF:"' + encodeURIComponent(heightF) +
+				'",heightM:"' + encodeURIComponent(heightM) +
+				'",weightM:"' + encodeURIComponent(weightM) +
+				'",weightF:"' + encodeURIComponent(weightF) +
+				'",dietType:"' + encodeURIComponent(this.f.dietType.value) +
+				'",gestationPeriod:"' + encodeURIComponent(this.f.gestationPeriod.value) +
+				'",Offspring:"' + encodeURIComponent(this.f.numOffspring.value > 0 ? this.f.numOffspring.value : 1) +
+				'",typicalBehaviourM:"' + encodeURIComponent(mb) +
+				'",typicalBehaviourF:"' + encodeURIComponent(fb) +
+				'",typicalThreatLevelM:"' + encodeURIComponent(mt) +
+				'",typicalThreatLevelF:"' + encodeURIComponent(ft) +
 				'"){animalID}}', '')
 				.subscribe({
 					next: data => this.dialogRef.close('success'),
@@ -76,6 +143,26 @@ export class EditAnimalInfoComponent implements OnInit {
 			return true;
 		}
 	}
+
+	remQuotes(word: string) {
+		while (word.includes('"')) {
+			word = word.replace('"', '\'');
+		}
+		return word;
+	}
+
+	sort(): void {
+		for (let i = 0; i < this.dietTypeList.length - 1; i++) {
+			for (let j = i; j < this.dietTypeList.length; j++) {
+				if (('' + this.dietTypeList[i]) > ('' + this.dietTypeList[j])) {
+					let temp = this.dietTypeList[i];
+					this.dietTypeList[i] = this.dietTypeList[j];
+					this.dietTypeList[j] = temp;
+				}
+			}
+		}
+	}
+
 	closeDialog() {
 		this.dialogRef.close("cancel");
 	}

@@ -1,7 +1,5 @@
 import { map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { Ranger } from './../../models/ranger';
-import { RANGERS } from './../../models/mock-rangers';
 import { HttpClient } from '@angular/common/http';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
@@ -64,6 +62,7 @@ export class RangersComponent implements OnInit {
 	updateRangerList(updatedList: string) {
 		this.refresh(updatedList);
 	}
+	
 	addIfNewRanger(x: any) {
 		let isNotNew = false;
 		for (let i = 0; i < this.rangers.length; i++)
