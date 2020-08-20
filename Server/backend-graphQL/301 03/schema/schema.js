@@ -822,9 +822,13 @@ const RootQuery = new GraphQLObjectType({
                 ranger: {
                     type: GraphQLString
                 },
+                spoorIdentificationID: {
+                    type: GraphQLString
+                },
                 negat: {
                     type: GraphQLString
-                }
+                },
+
             },
             resolve(parent, args) {
                 a = _.find(usersData, {
@@ -844,9 +848,20 @@ const RootQuery = new GraphQLObjectType({
                             ranger: args.ranger
                         })
                     }
+                } else if (args.spoorIdentificationID != undefined) {
+                    if (args.negat == undefined) {
+                        temp = _.filter(temp, {
+                            spoorIdentificationID: args.spoorIdentificationID
+                        })
+                    } else {
+                        temp = _.reject(temp, {
+                            spoorIdentificationID: args.spoorIdentificationID
+                        })
+                    }
                 } else {
                     return temp
                 }
+                return temp
 
             }
         },
