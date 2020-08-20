@@ -936,7 +936,13 @@ class FakeApi implements Api {
   @override
   Future<ProfileInfoModel> getProfileInfoData() async {
     ProfileInfoModel profileInfo = new ProfileInfoModel(
-        animalsTracked: 17, spoorIdentified: 150, speciesTracked: 38);
+        name: "",
+        number: "",
+        email: "",
+        picture: "",
+        animalsTracked: "17",
+        spoorIdentified: "150",
+        speciesTracked: "38");
     return profileInfo;
   }
 
