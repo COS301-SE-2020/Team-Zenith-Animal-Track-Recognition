@@ -112,7 +112,7 @@ class ConfirmModel {
   String type;
   String animalName;
   String species;
-  int accuracyScore;
+  double accuracyScore;
 
   ConfirmModel(
       {this.accuracyScore,

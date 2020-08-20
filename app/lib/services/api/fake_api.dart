@@ -860,7 +860,8 @@ class FakeApi implements Api {
   }
 
   @override
-  Future<List<ConfirmModel>> getConfirmModel() async {
+  Future<List<ConfirmModel>> getConfirmModel(
+      String pic, String lat, String long) async {
     List<ConfirmModel> identifiedList = new List();
     ConfirmModel identifiedAnimal = ConfirmModel(
         accuracyScore: 82,
@@ -940,9 +941,10 @@ class FakeApi implements Api {
   }
 
   @override
-  Future<List<ConfirmModel>> identifyImage(String url) {
+  Future<List<ConfirmModel>> identifyImage(
+      String pic, String lat, String long) {
     if (true) {
-      return getConfirmModel();
+      return getConfirmModel("", "", "");
     } else {
       return null;
     }
