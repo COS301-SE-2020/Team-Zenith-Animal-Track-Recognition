@@ -67,15 +67,15 @@ export class AnimalsComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				var newAnimalList = temp[0];
-				switch (updateOp) {
+				this.animals = newAnimalList;
+				/*switch (updateOp) {
 					case "update":
 						this.animals = null;
-						this.animals = newAnimalList;
 						break;
 					case "add":
 						newAnimalList.forEach(x => this.addIfNewAnimal(x));
 						break;
-				}
+				}*/
 				this.sort(true);
 			});
 	}
