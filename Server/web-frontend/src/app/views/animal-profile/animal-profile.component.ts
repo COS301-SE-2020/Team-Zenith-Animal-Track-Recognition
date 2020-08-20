@@ -134,29 +134,20 @@ export class AnimalProfileComponent implements OnInit {
 
 		this.animalClassi = animal[0] + " " + animal[1];
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsByClassification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'", classification:"' + this.animalClassi + '"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
-			'lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{URL}}}')
+			'", classification:"' + this.animalClassi + '"){' +
+			'classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
+			'lifeSpan,gestationPeriod,Offspring,typicalBehaviourF{behaviour,threatLevel},typicalBehaviourM{behaviour,threatLevel},'+
+			'animalDescription,pictures{URL}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.animal = temp[0];
 
+				console.log(this.animal.typicalBehaviourF['behaviour']);
 				//DUMMY DATA
 				const desc = ("" + this.animal.animalDescription);
 
 				this.animal.animalOverview = desc.substring(0, desc.indexOf('.') + 1);
-
-				this.femaleBehaviour = "The adult male elephant rarely joins a herd and leads a solitary life, only approaching herds during mating season. "
-					+ "In some cases adult bulls will join a small bachelor group of male elephants. Young bulls gradually separate from the "
-					+ "family unit when they are between 10 and 19 years old.\n\n"
-					+ "During musth manifestation periods, which may last from a few days to months, males show more aggression as a "
-					+ "result of increased testosterone. Bulls begin to experience musth by the age of 24 years.";
-
-				this.maleBehaviour = "The adult male elephant rarely joins a herd and leads a solitary life, only approaching herds during mating season. "
-					+ "In some cases adult bulls will join a small bachelor group of male elephants. Young bulls gradually separate from the "
-					+ "family unit when they are between 10 and 19 years old.\n\n"
-					+ "During musth manifestation periods, which may last from a few days to months, males show more aggression as a"
-					+ "result of increased testosterone. Bulls begin to experience musth by the age of 24 years.";
 
 				this.stopLoader();
 			});
