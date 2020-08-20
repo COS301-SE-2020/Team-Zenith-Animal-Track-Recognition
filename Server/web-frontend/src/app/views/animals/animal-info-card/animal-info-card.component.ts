@@ -43,7 +43,6 @@ export class AnimalInfoCardComponent implements OnInit {
 
 	//EDIT 
 	openEditAnimalDialog(animalID) {
-
 		const dialogConfig = new MatDialogConfig();
 
 		//Get animal information for chosen card
@@ -91,7 +90,6 @@ export class AnimalInfoCardComponent implements OnInit {
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}
-
 
 	sort(bool: boolean) {
 		if (bool) {

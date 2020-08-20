@@ -10,17 +10,17 @@
 			<mat-spinner id="loader"></mat-spinner>
 		</div>
         <mat-selection-list id="track-identification-search-results" [multiple]="false" class="ranger-search-results-entries">
-			<div class="track-identification-container" *ngFor="let track of trackIdentifications">
+			<div class="track-identification-container" *ngFor="let track of trackIds; let trackTimeAgo of trackDateTimes">
 				<div class="track-identification-image-container">
-					<!-- @Zach, insert track image here <img src="" alt="Track image">-->
+					<img src="{{track.picture.URL}}" alt="Track image">
 				</div>
 				<div class="track-identification-info-container">
                     <div class="track-identification-animal-name">
-                        <span><p class="track-identification-animal-commonName fontSB">{{track.commonName}}</p><p class="track-identification-capture-date fontR">{{track.recentPlaceholder}}</p></span>
-                        <p class="track-identification-animal-classification fontM">{{track.classification}}</p>
+                        <span><p class="track-identification-animal-commonName fontSB">{{track.animal.commonName}}</p><p class="track-identification-capture-date fontR">{{trackTimeAgo.timeAsString | relativeTime }}</p></span>
+                        <p class="track-identification-animal-classification fontM">{{track.animal.classification}}</p>
                     </div>
-					<p class="track-identification-capture-ranger fontM">Captured by {{track.capturedBy}}</p>
-					<span><p class="fontSB">ACCURACY SCORE:&nbsp;</p><p class="track-identification-accuracy-score fontB">{{track.accuracyScore}}</p></span>
+					<p class="track-identification-capture-ranger fontM" *ngIf="track.ranger;">Captured by {{track.ranger.firstName}} {{track.ranger.lastName}}</p>
+					<span><p class="fontSB">ACCURACY SCORE:&nbsp;</p><p class="track-identification-accuracy-score fontB">{{track.potentialMatches[0].confidence | percent }}</p></span>
 				</div>
 			</div>
         </mat-selection-list>

@@ -70,6 +70,12 @@
 	align-items: center;
 	background-color: #CCC;
 	border-radius: 5%;
+	overflow: hidden;
+}
+.track-identification-image-container > img
+{
+	height: 100%;
+	width: 100%;
 }
 .track-identification-info-container
 {

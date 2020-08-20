@@ -24,6 +24,15 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #SpinKit
+  flutter_spinkit: ^4.1.2
+  progress_indicators: ^0.1.5
+  social_share: ^2.0.5
+  network_to_file_image: ^2.3.2
+  image_downloader: ^0.20.0
+  maps_launcher: ^1.2.2+1
+  camera: 
+  path:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -44,13 +53,17 @@ dependencies:
   get_it: ^4.0.2
   injectable: ^0.4.0+1
   provider: ^4.3.0
-  
+  http: ^0.12.2
 
   # grahpql
   graphql_flutter: ^3.0.0
 
   # image picker
   image_picker: ^0.6.3+4
+
+  # download
+  dio: any
+  path_provider: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -92,17 +105,28 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: MavenPro
+      fonts:
+        - asset: fonts/MavenPro-Black.ttf
+        - asset: fonts/MavenPro-Bold.ttf
+        - asset: fonts/MavenPro-ExtraBold.ttf
+        - asset: fonts/MavenPro-Medium.ttf
+        - asset: fonts/MavenPro-Regular.ttf
+        - asset: fonts/MavenPro-SemiBold.ttf
+    - family: MyCustomIcons
+      fonts:
+        - asset: fonts/MyFlutterApp.ttf
+    # - family: Schyler
+    #   fonts:
+    #     - asset: fonts/Schyler-Regular.ttf
+    #     - asset: fonts/Schyler-Italic.ttf
+    #       style: italic
+    # - family: Trajan Pro
+    #   fonts:
+    #     - asset: fonts/TrajanPro.ttf
+    #     - asset: fonts/TrajanPro_Bold.ttf
+    #       weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

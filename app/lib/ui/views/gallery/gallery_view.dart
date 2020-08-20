@@ -1,4 +1,5 @@
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/gallery/gallery_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
@@ -14,16 +15,16 @@ class GalleryView extends StatelessWidget {
     bottomNavigation.setIndex(1);
     return ViewModelBuilder<GalleryViewModel>.reactive(
       builder: (context, model, child) => FutureBuilder(
-        future: model.getSpoor(),
+        future: model.getSpoor(context),
         builder: (context, snapshot){
           if(snapshot.hasError){
-             return text("Error", 20);
+             return progressIndicator();
           }
           if(snapshot.hasData){
-            return WillPopScope(
+            return snapshot.hasData ? WillPopScope(
               onWillPop:() async{
                 if(Navigator.canPop(context)){
-                  model.navigate(context);
+                  navigate(context);
                 }
                 return;
               },
@@ -33,7 +34,7 @@ class GalleryView extends StatelessWidget {
                   appBar: AppBar(
                     leading: null,
                     backgroundColor: Colors.black,
-                    title: text(galleryModel.name, 22),
+                    title: appBarTitle(galleryModel.name, context),
                     actions: <Widget>[IconBuilder(icon:Icons.more_vert,type:"vert")],
                     bottom: TabBar(tabs: snapshot.data.tabs,indicatorWeight: 3,),
                   ),
@@ -45,9 +46,10 @@ class GalleryView extends StatelessWidget {
                   bottomNavigationBar: BottomNavigation(),                                
                 ),
               ),           
-            );
+            )
+            : progressIndicator();
           }else{
-            return text("Null no Data", 20);
+            return progressIndicator();
           }
         },
       ),
@@ -108,32 +110,4 @@ class IconBuilder extends ViewModelWidget<GalleryViewModel> {
 }
 //========================== APPBAR ICONS =======================
 
-
-//================================== TEXT TEMPLATES =============================
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.white
-    ),
-  );
-}
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-//================================== TEXT TEMPLATES =============================
 
