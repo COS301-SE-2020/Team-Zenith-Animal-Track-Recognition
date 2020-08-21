@@ -142,9 +142,11 @@ export class TrackIdentificationsComponent implements OnInit {
 	
 	//Loader
 	startLoader() {
+		console.log("starting loader");
 		document.getElementById('loader-container').style.visibility = 'visible';
 	}
 	stopLoader() {
+		console.log("stopping loader");
 		document.getElementById('loader-container').style.visibility = 'hidden';
 	}
 }
