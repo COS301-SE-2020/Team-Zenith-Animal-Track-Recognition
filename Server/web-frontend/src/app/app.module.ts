@@ -33,7 +33,6 @@ import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.co
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
 import { TrackIdentificationsComponent } from './views/track-identifications/track-identifications.component';
 import { TrackIdentificationsToolbarComponent } from './views/track-identifications/track-identifications-toolbar/track-identifications-toolbar.component';
-import { TrackIdentificationsMapComponent } from './views/track-identifications/track-identifications-map/track-identifications-map.component';
 import { TrackIdentificationsSidenavComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-sidenav.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
@@ -86,7 +85,6 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     RangerProfileCardComponent,
     TrackIdentificationsComponent,
     TrackIdentificationsToolbarComponent,
-    TrackIdentificationsMapComponent,
     TrackIdentificationsSidenavComponent,
     SettingsComponent,
     SideNavigationComponent,

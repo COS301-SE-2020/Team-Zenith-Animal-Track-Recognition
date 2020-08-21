@@ -19,8 +19,7 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 	constructor(private http: HttpClient) { }
 
 	ngOnInit(): void {
-		//this.startLoader();
-				console.log("Track Sidenav: " + this.trackIds);
+		this.startLoader();
 	}
 	
 	//Loader

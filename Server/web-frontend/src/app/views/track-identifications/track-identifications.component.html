@@ -12,7 +12,13 @@
                 <div id="sidenav-open-btn-container" (click)="openSidenav()">
                     <button id="side-nav-open-btn" mat-icon-button><mat-icon>chevron_right</mat-icon></button>
                 </div>
-				<app-track-identifications-map [tracksList]="trackIdentifications" [tracksExist]="tracksRetrieved" (tracksOnChange)="updateTrackList($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"></app-track-identifications-map>            
+				<div id="identifications-map-container">
+					<div id="loader-container">
+						<mat-spinner id="loader"></mat-spinner>
+					</div>
+					<div id="identifications-google-map-container">
+					</div>
+				</div>
 		</mat-drawer-content>
         </mat-drawer-container>
     </div>
