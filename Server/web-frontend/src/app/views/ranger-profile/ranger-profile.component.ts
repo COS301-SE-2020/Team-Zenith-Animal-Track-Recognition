@@ -98,20 +98,15 @@ export class RangerProfileComponent implements OnInit {
 				this.user = temp[0][0];
 				this.stopLoader();
 			});
-/*
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'",ranger:"' + this.userToken + '"){spoorIdentificationID,animal{commonName,classification},dateAndTime{year,month,day,hour,min,second},' +
-			'location{latitude,longitude},potentialMatches{animals{classification},Confidence}}}')
+
+			this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'"){spoorIdentificationID,animal{classification,animalID,commonName,heightM,heightF,weightM,weightF,dietType,lifeSpan,Offspring,gestationPeriod,animalOverview,animalDescription,animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName,pictureURL},potentialMatches{confidence},picture{picturesID,URL,kindOfPicture}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
-				if (temp[0] != null) {
-					this.spoorIdentifications = temp[0][0];
-				} else {
-					this.spoorIdentifications = [];
-				}
-				this.stopLoader();
-			});*/
+				this.spoorIdentifications = temp[0];
+				// this.timeToString();
+			});
 	}
 
 	route(temp: string) {
