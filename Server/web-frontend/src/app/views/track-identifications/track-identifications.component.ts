@@ -1,19 +1,17 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
 
 @Component({
-  selector: 'app-track-identifications',
-  templateUrl: './track-identifications.component.html',
-  styleUrls: ['./track-identifications.component.css']
+	selector: 'app-track-identifications',
+	templateUrl: './track-identifications.component.html',
+	styleUrls: ['./track-identifications.component.css']
 })
 
-//Nah wait, let me see th error first. Camn you show me it
-
 export class TrackIdentificationsComponent implements OnInit {
-	//One sec
+
 	@ViewChild('sidenav') sidenav;
 	trackIdentifications: any;
 	searchText: string;
@@ -21,8 +19,8 @@ export class TrackIdentificationsComponent implements OnInit {
 	currentAlphabet;
 	sorted: string;
 	timeAsString: any = [];
-	map: google.maps.Map = null; 
-	
+	map: google.maps.Map;
+
 	constructor(private http: HttpClient) { }
 
 	ngOnInit(): void {
@@ -38,7 +36,7 @@ export class TrackIdentificationsComponent implements OnInit {
 				this.initMap();
 			});
 	}
-	
+
 	initMap() {
 		this.map = new google.maps.Map(document.getElementById("identifications-google-map-container") as HTMLElement, {
 			center: { lat: -23.988, lng: 31.554 },
@@ -65,15 +63,15 @@ export class TrackIdentificationsComponent implements OnInit {
 		}
 		this.stopLoader();
 	}
-	
-	timeToString(){
+
+	timeToString() {
 		this.trackIdentifications.forEach(element => {
 			let temp = element.dateAndTime;
 			temp.month = temp.month < 10 ? '0' + temp.month : temp.month;
 			temp.day = temp.day < 10 ? '0' + temp.day : temp.day;
 			temp.hour = temp.hour < 10 ? '0' + temp.hour : temp.hour;
 			temp.min = temp.min < 10 ? '0' + temp.min : temp.min;
-			temp.second = temp.second < 10 ? '0' + temp.second : temp.second;        
+			temp.second = temp.second < 10 ? '0' + temp.second : temp.second;
 			const str: string = temp.year + "-" + temp.month + "-" + temp.day + "T" + temp.hour + ":" + temp.min + ":" + temp.second + ".000Z";
 			element.timeAsString = str;
 		});
@@ -81,10 +79,6 @@ export class TrackIdentificationsComponent implements OnInit {
 
 	updateSearchText(event) {
 		this.searchText = event;
-	}
-
-	updateTrackList(updatedList: string) {
-		this.refresh(updatedList);
 	}
 
 	refresh(updateOp: string) {
@@ -106,25 +100,29 @@ export class TrackIdentificationsComponent implements OnInit {
 				//this.sort(this.sortBySurname);
 			});
 	}
-	
+	//Ranger CRUD Operations
+	updateTrackList(updatedList: string) {
+		this.refresh(updatedList);
+	}
+
 	showOpenBtn() {
 		//Show Open Button
 		document.getElementById('sidenav-open-btn-container').style.visibility = 'visible';
 		document.getElementById('sidenav-open-btn-container').style.transitionDuration = '0.8s';
 		document.getElementById('sidenav-open-btn-container').style.left = '0%';
-		
+
 		//Hide Closed Button
 		document.getElementById('sidenav-close-btn-container').style.transitionDuration = '0.2s';
-		document.getElementById('sidenav-close-btn-container').style.left = '-10%';	
+		document.getElementById('sidenav-close-btn-container').style.left = '-10%';
 		document.getElementById('sidenav-close-btn-container').style.visibility = 'hidden';
 	}
-	
+
 	showCloseBtn() {
 		//Show Close Button
 		document.getElementById('sidenav-close-btn-container').style.visibility = 'visible';
 		document.getElementById('sidenav-close-btn-container').style.transitionDuration = '0.8s';
-		document.getElementById('sidenav-close-btn-container').style.left = '0%';		
-		
+		document.getElementById('sidenav-close-btn-container').style.left = '0%';
+
 		//Hide Open Button
 		document.getElementById('sidenav-open-btn-container').style.transitionDuration = '0.2s';
 		document.getElementById('sidenav-open-btn-container').style.left = '-10%';
@@ -135,13 +133,12 @@ export class TrackIdentificationsComponent implements OnInit {
 		this.sidenav.open();
 		this.showCloseBtn();
 	}
-	
+
 	closeSidenav() {
 		this.sidenav.close();
 		this.showOpenBtn();
 	}
-	
-	
+
 	//Loader
 	startLoader() {
 		console.log("starting loader");

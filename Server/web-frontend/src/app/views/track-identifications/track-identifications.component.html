@@ -1,9 +1,9 @@
 <div id="identifications-view-workspace-container">
-    <app-track-identifications-toolbar></app-track-identifications-toolbar>
+    <app-track-identifications-toolbar [trackIds]="trackIdentifications" (tracksOnChange)="updateTrackList($event)"></app-track-identifications-toolbar>
     <div id="identifications-view-workspace">
         <mat-drawer-container id="identifications-search-sidenav-container">
             <mat-drawer id="identifications-search-sidenav" #sidenav mode="side" opened="true" (opened)="showCloseBtn()" (closed)="showOpenBtn()">
-                <app-track-identifications-sidenav></app-track-identifications-sidenav>
+                <app-track-identifications-sidenav [trackDateTimes]="timeAsString" [trackIds]="trackIdentifications" (tracksOnChange)="updateTrackList($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"></app-track-identifications-sidenav>
             </mat-drawer>
             <mat-drawer-content id="identifications-search-sidenav-content">
                 <div id="sidenav-close-btn-container" (click)="closeSidenav()">

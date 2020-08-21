@@ -1,424 +1,438 @@
-#ranger-search-sidenav
-{
-	height: 100%;
-	width: 100%;
+#ranger-search-sidenav {
+    height: 100%;
+    width: 100%;
 }
-#ranger-search-controls-container
-{
-	height: 15%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	align-items: center;
-	border-bottom: 2px solid #CCCCCC;
+
+#ranger-search-controls-container {
+    height: 15%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 2px solid #CCCCCC;
 }
-.mat-form-field
-{
-	width: 90%;  
-	font-size: 105%;
+
+.mat-form-field {
+    width: 90%;
+    font-size: 105%;
 }
-:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
-{
-	padding: 0.2em 0 0.5em 0;
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.2em 0 0.5em 0;
 }
-:host ::ng-deep .mat-form-field-wrapper 
-{
+
+:host ::ng-deep .mat-form-field-wrapper {
     padding-bottom: 0;
 }
-#ranger-search-results-container
-{
-	height: 85%;
-	width: 100%;
-	overflow: auto;
-	display: flex;
-	flex-direction: column;
+
+#ranger-search-results-container {
+    height: 85%;
+    width: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
 }
-#track-identification-search-results
-{
-	overflow-y: auto;
-	padding: 0 4%;
+
+#track-identification-search-results {
+    overflow-y: auto;
+    padding: 0 4%;
 }
-.track-identification-container
-{
-	height: 85px;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	margin: 10% 0;
+
+.track-identification-container {
+    height: 85px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10% 0;
     transition: all 0.4s ease-in-out;
     -webkit-transition: all 0.4s ease-in-out;
     -moz-transition: all 0.4s ease-in-out;
-    -ms-transition: all 0.4s ease-in-out; 
+    -ms-transition: all 0.4s ease-in-out;
     -o-transition: all 0.4s ease-in-out;
-	transform: translateY(0%);
-}
-.track-identification-container:hover
-{
-	cursor: pointer;
-	transform: translateY(-10%);
-}
-.track-identification-image-container
-{
-	height: 80px;
-	width: 80px;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	background-color: #CCC;
-	border-radius: 5%;
-}
-.track-identification-info-container
-{
-	height: 100%;
-	width: 70%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-}
-.track-identification-animal-name > span
-{
-	height: auto;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-}
-.track-identification-animal-commonName 
-{
-	color: #686E79;
-	font-size: 100%;
-}
-.track-identification-capture-date
-{
-	font-size: 80%;
-}
-.track-identification-animal-classification, .track-identification-capture-ranger
-{
-	color: #AAA;
-}
-.track-identification-animal-name > p, .track-identification-animal-name > span > p, .track-identification-capture-ranger, .track-identification-info-container > span > p
-{
-	margin: 0;
-	padding: 0;
-}
-.track-identification-capture-ranger, .track-identification-info-container > span > p
-{
-	font-size: 80%;
-}
-.track-identification-info-container > span
-{
-	height: auto;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-:host ::ng-deep .mat-list-text
-{
-	padding-left: 10% !important;
-	padding-right: 0 !important;
+    transform: translateY(0%);
 }
 
-
-.mat-tab-group
-{
-	height: 100%;
-	width: 100%;
-	background-color: white;
+.track-identification-container:hover {
+    cursor: pointer;
+    transform: translateY(-10%);
 }
-:host ::ng-deep .mat-tab-header
-{
-	display: none;
+
+.track-identification-image-container {
+    height: 80px;
+    width: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #CCC;
+    border-radius: 5%;
+    overflow: hidden;
+}
+
+.track-identification-image-container>img {
+    height: 100%;
+    width: 100%;
+}
+
+.track-identification-info-container {
+    height: 100%;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.track-identification-animal-name>span {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.track-identification-animal-commonName {
+    color: #686E79;
+    font-size: 100%;
+}
+
+.track-identification-capture-date {
+    font-size: 80%;
+}
+
+.track-identification-animal-classification,
+.track-identification-capture-ranger {
+    color: #AAA;
+}
+
+.track-identification-animal-name>p,
+.track-identification-animal-name>span>p,
+.track-identification-capture-ranger,
+.track-identification-info-container>span>p {
+    margin: 0;
+    padding: 0;
+}
+
+.track-identification-capture-ranger,
+.track-identification-info-container>span>p {
+    font-size: 80%;
+}
+
+.track-identification-info-container>span {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+:host ::ng-deep .mat-list-text {
+    padding-left: 10% !important;
+    padding-right: 0 !important;
+}
+
+.mat-tab-group {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+}
+
+:host ::ng-deep .mat-tab-header {
+    display: none;
 }
 
 
 /* Track */
-#animal-search-sidenav-container
-{
-	height: 100%;
-	width: 100%;
-	background-color: black;
+
+#animal-search-sidenav-container {
+    height: 100%;
+    width: 100%;
+    background-color: black;
 }
-#animal-search-sidenav
-{
-	height: 100%;
-	width: 300px;
-	border-right: 2px solid #CCCCCC;
-	box-shadow: 1px 0px 5px #DDDDDD;
+
+#animal-search-sidenav {
+    height: 100%;
+    width: 300px;
+    border-right: 2px solid #CCCCCC;
+    box-shadow: 1px 0px 5px #DDDDDD;
 }
-#animal-photos-track-info-container
-{
-	height: 100%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
+
+#animal-photos-track-info-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
-#animal-photos-track-info-title
-{
-	height: 10%;
-	width: 100%;
-	border-bottom: 1px solid #CCC;
-	box-shadow: 0px 1px 5px #EEE;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: center;
+
+#animal-photos-track-info-title {
+    height: 10%;
+    width: 100%;
+    border-bottom: 1px solid #CCC;
+    box-shadow: 0px 1px 5px #EEE;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
 }
-#animal-photos-track-info-title > div
-{
-	margin-left: 5%;
-	display: flex;
-	flex-direction: column;
+
+#animal-photos-track-info-title>div {
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
 }
-#animal-photos-track-id-results
-{
-	height: 30%;
-	width: 100%;
-	border-bottom: 1px solid #CCC;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-	padding: 5% 5%;
+
+#animal-photos-track-id-results {
+    height: 30%;
+    width: 100%;
+    border-bottom: 1px solid #CCC;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 5% 5%;
 }
-#animal-photos-track-id-result
-{
-	height: 70%;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	align-items: flex-end;
+
+#animal-photos-track-id-result {
+    height: 70%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-end;
 }
-#animal-photos-track-id-image
-{
-	height: 100%;
-	width:  40%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: flex-end;
+
+#animal-photos-track-id-image {
+    height: 100%;
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
 }
-#animal-photos-track-id-image > div
-{
-	height: 100px;
-	width: 100px;
-	background-color: #CCC;
-	border-radius: 10%;
+
+#animal-photos-track-id-image>div {
+    height: 100px;
+    width: 100px;
+    background-color: #CCC;
+    border-radius: 10%;
 }
-#animal-photos-track-id-score
-{
-	height: 100%;
-	width:  50%;	
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
+
+#animal-photos-track-id-score {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
-#animal-photos-track-title-commonname, #animal-photos-track-title-classification
-{
-	color: #CCC;
+
+#animal-photos-track-title-commonname,
+#animal-photos-track-title-classification {
+    color: #CCC;
 }
-#animal-photos-track-title-commonname, #animal-photos-track-title-classification, #animal-photos-track-accuracyscore-title
-{
-	font-size: 90%;
+
+#animal-photos-track-title-commonname,
+#animal-photos-track-title-classification,
+#animal-photos-track-accuracyscore-title {
+    font-size: 90%;
 }
-#animal-photos-track-accuracy-score
-{
-	font-size: 300%;
+
+#animal-photos-track-accuracy-score {
+    font-size: 300%;
 }
+
+
 /*Track Geotag Information*/
-#animal-photos-track-geotag-container
-{
-	height: 30%;
-	width: 100%;
-	border-bottom: 1px solid #CCC;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-	padding: 5% 5%;
+
+#animal-photos-track-geotag-container {
+    height: 30%;
+    width: 100%;
+    border-bottom: 1px solid #CCC;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 5% 5%;
 }
-#animal-photos-geotag-container-title
-{
-	padding: 5% 0;
+
+#animal-photos-geotag-container-title {
+    padding: 5% 0;
 }
-#animal-photos-track-geotag-info
-{
-	height: 85%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
+
+#animal-photos-track-geotag-info {
+    height: 85%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
-#animal-photos-geotag-location-info, #animal-photos-geotag-date-info
-{
-	height: 40%;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
+
+#animal-photos-geotag-location-info,
+#animal-photos-geotag-date-info {
+    height: 40%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
-.animal-photos-geotag-entry-container
-{
-	height: 80%;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
+
+.animal-photos-geotag-entry-container {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
-.animal-photos-geotag-icon-container
-{
-	height: 100%;
-	width: 20%;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
+
+.animal-photos-geotag-icon-container {
+    height: 100%;
+    width: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
-.animal-photos-geotag-text-container
-{
-	height: 100%;
-	width: 80%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
+
+.animal-photos-geotag-text-container {
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
-.animal-photos-geotag-text-container > p
-{
-	padding: 0;
-	margin: 0;
+
+.animal-photos-geotag-text-container>p {
+    padding: 0;
+    margin: 0;
 }
 
 
 /*Tags Information*/
-#animal-photos-track-tags-container
-{
-	height: 30%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-	padding: 5% 5%;
-}
-#animal-photos-tags-container-title
-{
-	padding: 5% 0;
-}
-#animal-photos-track-tag-list
-{
-	height: 85%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-}
-.mat-standard-chip
-{
-	padding: 2px 10px;
-	height: 75%;
-	min-height: 75%;
+
+#animal-photos-track-tags-container {
+    height: 30%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 5% 5%;
 }
 
+#animal-photos-tags-container-title {
+    padding: 5% 0;
+}
 
-#animal-photo-details-container
-{
-	height: 100%;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
+#animal-photos-track-tag-list {
+    height: 85%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
-#animal-photos-track-title-animal, #animal-photos-track-title-capturedby, #animal-photos-track-title-commonname, 
-#animal-photos-track-title-classification, #animal-photos-track-id-title > p, #animal-photos-geotag-container-title > p
-{
-	padding: 0;
-	margin: 0;
+
+.mat-standard-chip {
+    padding: 2px 10px;
+    height: 75%;
+    min-height: 75%;
 }
-#animal-photos-track-title-capturedby
-{
-	color: #BBB;
-	font-size: 90%;
+
+#animal-photo-details-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
-#animal-photo-details-toolbar
-{
-	height: 10%;
-	width: 100%;
-	color: white;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0 1%;
-	position: absolute;
-	top: 0;
-	left: 0;
+
+#animal-photos-track-title-animal,
+#animal-photos-track-title-capturedby,
+#animal-photos-track-title-commonname,
+#animal-photos-track-title-classification,
+#animal-photos-track-id-title>p,
+#animal-photos-geotag-container-title>p {
+    padding: 0;
+    margin: 0;
 }
-.animal-photo-navigation-btn
-{
-	color: white;
-	background-color: #AAA;
-	position: absolute;
-	top: 50%;
+
+#animal-photos-track-title-capturedby {
+    color: #BBB;
+    font-size: 90%;
 }
-#animal-photo-navigation-btn-left
-{
-	left: 2%;
+
+#animal-photo-details-toolbar {
+    height: 10%;
+    width: 100%;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
-#animal-photo-navigation-btn-right
-{
-	right: 2%;
+
+.animal-photo-navigation-btn {
+    color: white;
+    background-color: #AAA;
+    position: absolute;
+    top: 50%;
 }
-#animal-photo-image-container
-{
-	height: 100%;
-	width: 80%;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	overflow: hidden;
+
+#animal-photo-navigation-btn-left {
+    left: 2%;
 }
-#animal-photo-detail-current-image
-{
-	height: 100%;
-	width: auto;
+
+#animal-photo-navigation-btn-right {
+    right: 2%;
+}
+
+#animal-photo-image-container {
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#animal-photo-detail-current-image {
+    height: 100%;
+    width: auto;
     transition: all 0.2s ease-out;
     -webkit-transition: all 0.2s ease-out;
     -moz-transition: all 0.2s ease-out;
-    -ms-transition: all 0.2s ease-out; 
+    -ms-transition: all 0.2s ease-out;
     -o-transition: all 0.2s ease-out;
 }
 
 
-
 /* Search sidenav loader */
-	
-#search-nav-loader-container
-{
-	position: absolute;
-	top: 0%;
-	left: 0%;
-	height: 100%;
-	width: 100%;
-	visibility: hidden;
-	background: rgba(1.0, 1.0, 1.0, 0.1);
-	z-index: 100;
-	transition: all 0.5s ease-out;
+
+#search-nav-loader-container {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    visibility: hidden;
+    background: rgba(1.0, 1.0, 1.0, 0.1);
+    z-index: 100;
+    transition: all 0.5s ease-out;
     -webkit-transition: all 0.5s ease-out;
     -moz-transition: all 0.5s ease-out;
-    -ms-transition: all 0.5s ease-out; 
+    -ms-transition: all 0.5s ease-out;
     -o-transition: all 0.5s ease-out;
 }
-#search-nav-loader-container > #loader
-{
-	left: 40%;
+
+#search-nav-loader-container>#loader {
+    left: 40%;
 }
