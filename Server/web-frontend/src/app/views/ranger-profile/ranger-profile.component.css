@@ -391,7 +391,14 @@
 	width: 110px;
 	background-color: #AAA;
 	border-radius: 15%;
+	overflow: hidden;
 }
+
+.ranger-profile-spoor-image > img {
+	height: 100%;
+	width: auto;
+}
+
 .ranger-profile-spoor-info
 {
 	height: 100%;

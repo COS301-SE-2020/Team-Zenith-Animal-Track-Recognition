@@ -7,6 +7,7 @@ import { EditRangerInfoComponent } from './../edit-ranger-info/edit-ranger-info.
 import { DeleteRangerComponent } from './../delete-ranger/delete-ranger.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+
 @Component({
 	selector: 'app-ranger-profile-card',
 	templateUrl: './ranger-profile-card.component.html',
@@ -16,8 +17,8 @@ export class RangerProfileCardComponent implements OnInit {
 
 	@Input() searchText: string;
 	@Input() rangersList;
-	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	numRangers: any;
+	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	sorted: string;
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }

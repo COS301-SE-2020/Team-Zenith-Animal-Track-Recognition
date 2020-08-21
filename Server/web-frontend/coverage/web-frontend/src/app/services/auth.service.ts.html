@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8% </span>
+                <span class="strong">7.41% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/25</span>
+                <span class='fraction'>2/27</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.17% </span>
+                <span class="strong">3.85% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/24</span>
+                <span class='fraction'>1/26</span>
             </div>
         
             
@@ -122,7 +122,15 @@
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
 <a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -166,16 +174,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -183,11 +184,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { logging } from 'protractor';
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import { logging } from 'protractor';
 import { User } from './../models/user';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -204,7 +219,7 @@ export class AuthService {
   private <span class="cstat-no" title="statement not covered" >isAuthorized = false;</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >  constructor(private <span class="cstat-no" title="statement not covered" >h</span>ttp: HttpClient)</span> {
-<span class="cstat-no" title="statement not covered" >    this.currentUserSubject = new BehaviorSubject&lt;User&gt;(JSON.parse(localStorage.getItem('currentUser')));</span>
+<span class="cstat-no" title="statement not covered" >    this.currentUserSubject = new BehaviorSubject&lt;User&gt;(JSON.parse(localStorage.getItem('currentToken')));</span>
 <span class="cstat-no" title="statement not covered" >    this.currentUser = this.currentUserSubject.asObservable();</span>
   }
 &nbsp;
@@ -227,21 +242,27 @@ export class AuthService {
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  login(</span>username, password) {
-<span class="cstat-no" title="statement not covered" >    return this.http.get&lt;any&gt;('http://putch.dyndns.org:55555/graphql?query=query{login(User_Name:"' + username + '",Password:"' + password + '"){Token}}')</span>
+<span class="cstat-no" title="statement not covered" >    return this.http.get&lt;any&gt;(ROOT_QUERY_STRING + '?query=query{wdbLogin(eMail:"' + username + '",password:"' + password + '"){token, firstName, lastName}}')</span>
       .pipe(map(<span class="fstat-no" title="function not covered" >user </span>=&gt; {
-<span class="cstat-no" title="statement not covered" >        if (null === user.data.login) {</span>
+<span class="cstat-no" title="statement not covered" >        if (null === user.data.wdbLogin) {</span>
+<span class="cstat-no" title="statement not covered" >          this.isAuthorized = false;</span>
 <span class="cstat-no" title="statement not covered" >          return null;</span>
         }
 &nbsp;
         const now = <span class="cstat-no" title="statement not covered" >new Date();</span>
+&nbsp;
         const tkn = <span class="cstat-no" title="statement not covered" >{</span>
-          value: user.data.login.Token,
-          expiry: now.getTime() + 3600000
-        }
+          value: user.data.wdbLogin.token,
+          expiry: now.getTime() + 7200000,
+          fullName: user.data.wdbLogin.firstName + ' ' + user.data.wdbLogin.lastName
+        };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        localStorage.setItem('currentToken', JSON.stringify(tkn));</span>
 <span class="cstat-no" title="statement not covered" >        this.currentUserSubject.next(user);</span>
 <span class="cstat-no" title="statement not covered" >        this.isAuthorized = true;</span>
+&nbsp;
+        //Save last name to use for Profile name
+<span class="cstat-no" title="statement not covered" >        localStorage.setItem('userLastName', user.data.wdbLogin.lastName);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        return user;</span>
       }));
@@ -259,7 +280,7 @@ export class AuthService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Jul 22 2020 12:14:41 GMT+0200 (South Africa Standard Time)
+                at Fri Aug 21 2020 11:49:43 GMT+0200 (South Africa Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>
