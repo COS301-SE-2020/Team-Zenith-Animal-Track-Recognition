@@ -6,32 +6,32 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-animals-toolbar',
-  templateUrl: './animals-toolbar.component.html',
-  styleUrls: ['./animals-toolbar.component.css']
+	selector: 'app-animals-toolbar',
+	templateUrl: './animals-toolbar.component.html',
+	styleUrls: ['./animals-toolbar.component.css']
 })
 export class AnimalsToolbarComponent implements OnInit {
 
+	test: boolean = false;
+	@Input() animals;
+	@Input() searchText: string;
+	@Input() sortByCommonName: boolean;
+	@Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
+	@Output() sBSOnChange: EventEmitter<string> = new EventEmitter();
 
-  @Input() animals;
-  @Input() searchText: string;
-  @Input() sortByCommonName: boolean;
-  @Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
-  @Output() sBSOnChange: EventEmitter<string> = new EventEmitter();
-	
-  constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { }
+	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { }
 
-  ngOnInit(): void {}
+	ngOnInit(): void { }
 
-  openAddAnimalDialog() {
+	openAddAnimalDialog() {
 		const dialogConfig = new MatDialogConfig();
 
-		const addDialogRef = this.dialog.open(AddAnimalComponent, { 
-			height: '70%', 
-			width: '45%', 
+		const addDialogRef = this.dialog.open(AddAnimalComponent, {
+			height: '70%',
+			width: '45%',
 			id: 'add-animal-dialog',
-			autoFocus: true, 
-			disableClose: true 
+			autoFocus: true,
+			disableClose: true
 		});
 		addDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
@@ -43,8 +43,8 @@ export class AnimalsToolbarComponent implements OnInit {
 				this.snackBar.open('An error occured when adding the new animal. Please try again.', "Dismiss", { duration: 5000, });
 			}
 		});
-  }
- 	//Loader
+	}
+	//Loader
 	startLoader() {
 		document.getElementById('loader-container').style.visibility = 'visible';
 	}
