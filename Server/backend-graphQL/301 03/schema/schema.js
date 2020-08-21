@@ -1784,7 +1784,7 @@ const Mutation = new GraphQLObjectType({
                 longitude: {
                     type: GraphQLFloat
                 },
-                SpoorIdentificationID: {
+                spoorIdentificationID: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 ranger: {
@@ -1798,21 +1798,26 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
+                
                 let a = _.find(usersData, {
                     token: args.token
                 })
+                
                 if (a == undefined) {
                     return null
                 }
-                if (a.accessLevel <= 1) {
+                
+                if (a.accessLevel.toNumber >= 1) {
                     return null
                 }
+                
                 let newSpoorIdentification = _.find(spoorIdentificationData, {
-                    SpoorIdentificationID: args.SpoorIdentificationID
+                    spoorIdentificationID: args.spoorIdentificationID
                 })
+                
                 if (newSpoorIdentification == null)
                     return null;
-
+                
                 if (args.latitude != undefined) {
                     newSpoorIdentification.location.latitude = args.latitude
                 }
@@ -1823,9 +1828,11 @@ const Mutation = new GraphQLObjectType({
                     newSpoorIdentification.ranger = args.ranger
                 }
                 if (args.animal != undefined) {
+                    
                     let animalToupdate=_.find(animalData,{
-                        addAnimal:args.animal
+                        animalID:args.animal
                     })
+                    
                     animalToupdate.pictures=animalToupdate.pictures.filter(item => item != newSpoorIdentification.picture)
                     addImgIDToAnimal(args.animal,newSpoorIdentification.picture)
                     newSpoorIdentification.animal = args.animal
@@ -1834,12 +1841,12 @@ const Mutation = new GraphQLObjectType({
                 if (args.tags != undefined) {
                     newSpoorIdentification.tags = args.tags
                 }
+console.log("animalToupdate")
 
-
-                spoorIdentifications.doc(SpoorIdentificationID).set(newSpoorIdentification).then(function (docRef) {
+                spoorIdentifications.doc(newSpoorIdentification.spoorIdentificationID).set(newSpoorIdentification).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
-                newSpoorIdentification.SpoorIdentificationID = SpoorIdentificationID
+                // newSpoorIdentification.spoorIdentificationID = spoorIdentificationID
                 spoorIdentificationData.push(newSpoorIdentification)
                 return newSpoorIdentification;
             }
