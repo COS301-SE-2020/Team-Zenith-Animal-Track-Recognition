@@ -930,6 +930,7 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
+                console.log("addUser",args)
                 let a = _.find(usersData, {
                     token: args.token
                 })
@@ -999,6 +1000,7 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
+                console.log("updateLevel",args)
                 let a = _.find(usersData, {
                     token: args.tokenSend
                 })
@@ -1049,6 +1051,7 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
+                
                 let a = _.find(usersData, {
                     token: args.tokenSend
                 })
