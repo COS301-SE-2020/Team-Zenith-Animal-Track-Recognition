@@ -182,7 +182,9 @@
 <a name='L123'></a><a href='#L123'>123</a>
 <a name='L124'></a><a href='#L124'>124</a>
 <a name='L125'></a><a href='#L125'>125</a>
-<a name='L126'></a><a href='#L126'>126</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -227,35 +229,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -265,6 +255,19 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -273,6 +276,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -317,9 +321,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 &nbsp;
 &nbsp;
 @Component({
-	selector: 'app-animal-info-card',
-	templateUrl: './animal-info-card.component.html',
-	styleUrls: ['./animal-info-card.component.css']
+  selector: 'app-animal-info-card',
+  templateUrl: './animal-info-card.component.html',
+  styleUrls: ['./animal-info-card.component.css']
 })
 export class AnimalInfoCardComponent implements OnInit {
 &nbsp;
@@ -329,10 +333,10 @@ export class AnimalInfoCardComponent implements OnInit {
 	@Output() <span class="cstat-no" title="statement not covered" >animalsOnChange: EventEmitter&lt;Object&gt; = new EventEmitter();</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >	constructor(</span>
-		private <span class="cstat-no" title="statement not covered" >http: HttpClient,</span>
-		private <span class="cstat-no" title="statement not covered" >router: Router,</span>
-		public <span class="cstat-no" title="statement not covered" >dialog: MatDialog,</span>
-		private <span class="cstat-no" title="statement not covered" >changeDetection: ChangeDetectorRef,</span>
+		private <span class="cstat-no" title="statement not covered" >http: HttpClient, </span>
+		private <span class="cstat-no" title="statement not covered" >router: Router, </span>
+		public <span class="cstat-no" title="statement not covered" >dialog: MatDialog, </span>
+		private <span class="cstat-no" title="statement not covered" >changeDetection: ChangeDetectorRef, </span>
 		private <span class="cstat-no" title="statement not covered" >snackBar: MatSnackBar)</span> { }
 &nbsp;
 <span class="fstat-no" title="function not covered" >	ngOnInit(</span>): void {
@@ -342,8 +346,8 @@ export class AnimalInfoCardComponent implements OnInit {
 	public <span class="fstat-no" title="function not covered" >ngOnChanges(</span>changes: SimpleChanges) {
 <span class="cstat-no" title="statement not covered" >		this.startLoader();</span>
 <span class="cstat-no" title="statement not covered" >		if (changes.animals) {</span>
-			//If animals has updated
-<span class="cstat-no" title="statement not covered" >			this.changeDetection.detectChanges();</span>
+		//If animals has updated
+<span class="cstat-no" title="statement not covered" >		this.changeDetection.detectChanges();</span>
 		}
 <span class="cstat-no" title="statement not covered" >		this.stopLoader();</span>
 	}
@@ -352,36 +356,37 @@ export class AnimalInfoCardComponent implements OnInit {
 &nbsp;
 	//EDIT 
 <span class="fstat-no" title="function not covered" >	openEditAnimalDialog(</span>animalID) {
+&nbsp;
 		const dialogConfig = <span class="cstat-no" title="statement not covered" >new MatDialogConfig();</span>
 &nbsp;
 		//Get animal information for chosen card
 		var chosenAnimal;
-<span class="cstat-no" title="statement not covered" >		for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; this.animalsList.length; i++) {</span>
-<span class="cstat-no" title="statement not covered" >			if (animalID == this.animalsList[i].animalID) {</span>
-<span class="cstat-no" title="statement not covered" >				chosenAnimal = this.animalsList[i];</span>
-<span class="cstat-no" title="statement not covered" >				i = this.animalsList[i].length;</span>
-			}
+<span class="cstat-no" title="statement not covered" >    for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; this.animalsList.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >      if (animalID == this.animalsList[i].animalID) {</span>
+<span class="cstat-no" title="statement not covered" >        chosenAnimal = this.animalsList[i];</span>
+<span class="cstat-no" title="statement not covered" >        i = this.animalsList[i].length;</span>
+      }
+    }
+    const editDialogRef = <span class="cstat-no" title="statement not covered" >this.dialog.open(EditAnimalInfoComponent, {</span>
+      height: '80%',
+      width: '55%',
+      autoFocus: true,
+      disableClose: true,
+      id: 'edit-animal-dialog',
+      data: {
+        animal: chosenAnimal
+      },
+    });
+	
+<span class="cstat-no" title="statement not covered" >    editDialogRef.afterClosed().subscribe(<span class="fstat-no" title="function not covered" >result </span>=&gt; {</span>
+<span class="cstat-no" title="statement not covered" >		this.stopLoader();</span>
+<span class="cstat-no" title="statement not covered" >		if (result == "success") {</span>
+			//If animal was successfully edited refresh component and notify parent
+<span class="cstat-no" title="statement not covered" >			this.animalsOnChange.emit('update');</span>
 		}
-		const editDialogRef = <span class="cstat-no" title="statement not covered" >this.dialog.open(EditAnimalInfoComponent, {</span>
-			height: '80%',
-			width: '55%',
-			autoFocus: true,
-			disableClose: true,
-			id: 'edit-animal-dialog',
-			data: {
-				animal: chosenAnimal
-			},
-		});
-&nbsp;
-<span class="cstat-no" title="statement not covered" >		editDialogRef.afterClosed().subscribe(<span class="fstat-no" title="function not covered" >result </span>=&gt; {</span>
-<span class="cstat-no" title="statement not covered" >			this.stopLoader();</span>
-<span class="cstat-no" title="statement not covered" >			if (result == "success") {</span>
-				//If animal was successfully edited refresh component and notify parent
-<span class="cstat-no" title="statement not covered" >				this.animalsOnChange.emit('update');</span>
-			}
-			else <span class="cstat-no" title="statement not covered" >if (result == 'error') {</span>
-<span class="cstat-no" title="statement not covered" >				this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });</span>
-			}
+		else <span class="cstat-no" title="statement not covered" >if (result == 'error') {</span>
+<span class="cstat-no" title="statement not covered" >			this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });</span>
+		}
 		});
 	}
 &nbsp;
@@ -400,30 +405,31 @@ export class AnimalInfoCardComponent implements OnInit {
 <span class="cstat-no" title="statement not covered" >		this.router.navigate([temp]);</span>
 	}
 &nbsp;
+&nbsp;
 <span class="fstat-no" title="function not covered" >	sort(</span>bool: boolean) {
 <span class="cstat-no" title="statement not covered" >		if (bool) {</span>
-<span class="cstat-no" title="statement not covered" >			for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; this.animalsList.length - 1; i++) {</span>
-<span class="cstat-no" title="statement not covered" >				for (let j = <span class="cstat-no" title="statement not covered" >i + 1;</span> j &lt; this.animalsList.length; j++) {</span>
-<span class="cstat-no" title="statement not covered" >					if (this.animalsList[i].commonName.toUpperCase() &gt; this.animalsList[j].commonName.toUpperCase()) {</span>
-						let temp = <span class="cstat-no" title="statement not covered" >this.animalsList[i];</span>
-<span class="cstat-no" title="statement not covered" >						this.animalsList[i] = this.animalsList[j];</span>
-<span class="cstat-no" title="statement not covered" >						this.animalsList[j] = temp;</span>
-					}
-				}
+<span class="cstat-no" title="statement not covered" >		  for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; this.animalsList.length - 1; i++) {</span>
+<span class="cstat-no" title="statement not covered" >			for (let j = <span class="cstat-no" title="statement not covered" >i + 1;</span> j &lt; this.animalsList.length; j++) {</span>
+<span class="cstat-no" title="statement not covered" >			  if (this.animalsList[i].commonName.toUpperCase() &gt; this.animalsList[j].commonName.toUpperCase()) {</span>
+				let temp = <span class="cstat-no" title="statement not covered" >this.animalsList[i];</span>
+<span class="cstat-no" title="statement not covered" >				this.animalsList[i] = this.animalsList[j];</span>
+<span class="cstat-no" title="statement not covered" >				this.animalsList[j] = temp;</span>
+			  }
 			}
+		  }
 		} else {
-<span class="cstat-no" title="statement not covered" >			for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; this.animalsList.length - 1; i++) {</span>
-<span class="cstat-no" title="statement not covered" >				for (let j = <span class="cstat-no" title="statement not covered" >i + 1;</span> j &lt; this.animalsList.length; j++) {</span>
-<span class="cstat-no" title="statement not covered" >					if (this.animalsList[i].accessLevel &gt; this.animalsList[j].accessLevel) {</span>
-						let temp = <span class="cstat-no" title="statement not covered" >this.animalsList[i];</span>
-<span class="cstat-no" title="statement not covered" >						this.animalsList[i] = this.animalsList[j];</span>
-<span class="cstat-no" title="statement not covered" >						this.animalsList[j] = temp;</span>
-					}
-				}
+<span class="cstat-no" title="statement not covered" >		  for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; this.animalsList.length - 1; i++) {</span>
+<span class="cstat-no" title="statement not covered" >			for (let j = <span class="cstat-no" title="statement not covered" >i + 1;</span> j &lt; this.animalsList.length; j++) {</span>
+<span class="cstat-no" title="statement not covered" >			  if (this.animalsList[i].accessLevel &gt; this.animalsList[j].accessLevel) {</span>
+				let temp = <span class="cstat-no" title="statement not covered" >this.animalsList[i];</span>
+<span class="cstat-no" title="statement not covered" >				this.animalsList[i] = this.animalsList[j];</span>
+<span class="cstat-no" title="statement not covered" >				this.animalsList[j] = temp;</span>
+			  }
 			}
+		  }
 		}
 	}
-&nbsp;
+  
 	//Loader
 <span class="fstat-no" title="function not covered" >	startLoader(</span>) {
 <span class="cstat-no" title="statement not covered" >		document.getElementById("loader-container").style.visibility = "visible";</span>
@@ -439,7 +445,7 @@ export class AnimalInfoCardComponent implements OnInit {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Aug 21 2020 08:09:09 GMT+0200 (South Africa Standard Time)
+                at Fri Aug 21 2020 10:39:34 GMT+0200 (South Africa Standard Time)
             </div>
         </div>
         <script src="../../../../../prettify.js"></script>
