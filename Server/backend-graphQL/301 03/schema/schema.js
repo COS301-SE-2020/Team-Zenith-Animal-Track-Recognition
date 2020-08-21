@@ -19,7 +19,9 @@ const {
 //google db
 const ADMIN = require('firebase-admin');
 let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
-const { start } = require('repl');
+const {
+    start
+} = require('repl');
 ADMIN.initializeApp({
     credential: ADMIN.credential.cert(serviceAccount),
     storageBucket: "gs://erpzat.appspot.com"
@@ -1768,7 +1770,7 @@ const Mutation = new GraphQLObjectType({
                 })
 
                 spoorIdentificationData.push(newSpoorIdentification)
-                addImgIDToAnimal(newSpoorIdentification.animal,newSpoorIdentification.picture)
+                addImgIDToAnimal(newSpoorIdentification.animal, newSpoorIdentification.picture)
                 return newSpoorIdentification;
             }
         },
@@ -1798,26 +1800,26 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                
+
                 let a = _.find(usersData, {
                     token: args.token
                 })
-                
+
                 if (a == undefined) {
                     return null
                 }
-                
+
                 if (a.accessLevel.toNumber >= 1) {
                     return null
                 }
-                
+
                 let newSpoorIdentification = _.find(spoorIdentificationData, {
                     spoorIdentificationID: args.spoorIdentificationID
                 })
-                
+
                 if (newSpoorIdentification == null)
                     return null;
-                
+
                 if (args.latitude != undefined) {
                     newSpoorIdentification.location.latitude = args.latitude
                 }
@@ -1828,20 +1830,20 @@ const Mutation = new GraphQLObjectType({
                     newSpoorIdentification.ranger = args.ranger
                 }
                 if (args.animal != undefined) {
-                    
-                    let animalToupdate=_.find(animalData,{
-                        animalID:args.animal
+
+                    let animalToupdate = _.find(animalData, {
+                        animalID: args.animal
                     })
-                    
-                    animalToupdate.pictures=animalToupdate.pictures.filter(item => item != newSpoorIdentification.picture)
-                    addImgIDToAnimal(args.animal,newSpoorIdentification.picture)
+
+                    animalToupdate.pictures = animalToupdate.pictures.filter(item => item != newSpoorIdentification.picture)
+                    addImgIDToAnimal(args.animal, newSpoorIdentification.picture)
                     newSpoorIdentification.animal = args.animal
-                    
+
                 }
                 if (args.tags != undefined) {
                     newSpoorIdentification.tags = args.tags
                 }
-console.log("animalToupdate")
+                console.log("animalToupdate")
 
                 spoorIdentifications.doc(newSpoorIdentification.spoorIdentificationID).set(newSpoorIdentification).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
@@ -2065,7 +2067,7 @@ if (CACHE) {
                 newSpoorID.location.latitude = newLocation.latitude
                 newSpoorID.location.longitude = newLocation.longitude
             }
-            
+
             // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
             spoorIdentificationData.push(newSpoorID)
         });
@@ -2482,7 +2484,7 @@ function revres() {
 // revres()
 
 function addImgIDToAnimal(animalID, imgID) {
-    
+
     animals.where("animalID", "==", animalID.toString()).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
             // console.log("start "+animalID+ " "+imgID)
@@ -2491,8 +2493,7 @@ function addImgIDToAnimal(animalID, imgID) {
             animals.doc(doc.id).set(e)
             // console.log("run "+animalID+ " "+imgID)
         });
-    }).catch((err)=>{
+    }).catch((err) => {
         console.error(err)
     })
 }
-
