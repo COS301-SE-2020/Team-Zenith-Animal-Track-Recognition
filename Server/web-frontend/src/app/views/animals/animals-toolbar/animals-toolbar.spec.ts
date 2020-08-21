@@ -1,23 +1,25 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder } from '@angular/forms';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditAnimalInfoComponent } from './edit-animal-info.component';
+import { AnimalsToolbarComponent } from './animals-toolbar.component';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 
-describe('EditAnimalInfoComponent', () => {
-  let component: EditAnimalInfoComponent;
-  let fixture: ComponentFixture<EditAnimalInfoComponent>;
+describe('AnimalsToolbarComponent', () => {
+  let component: AnimalsToolbarComponent;
+  let fixture: ComponentFixture<AnimalsToolbarComponent>;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        EditAnimalInfoComponent,
+        AnimalsToolbarComponent,
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} },
         { provide: FormBuilder, useValue: {} },
+        { provide: MatSnackBar, useValue: {} },
         { provide: MatDialog, useValue: {} }
       ],
       imports: [
@@ -27,7 +29,7 @@ describe('EditAnimalInfoComponent', () => {
     });
 
     httpTestingController = TestBed.get(HttpTestingController);
-    component = TestBed.get(EditAnimalInfoComponent);
+    component = TestBed.get(AnimalsToolbarComponent);
   });
 
   afterEach(() => {
@@ -40,38 +42,6 @@ describe('EditAnimalInfoComponent', () => {
     expect(component.test).toBeTruthy();
   });
 
-  it('fillDietTypes should run without errors', () => {
-    component.test = true;
-    component.fillDietTypes();
-    expect(component.test).toBeTrue();
-  });
-
-  it('Form controls should load without errors', () => {
-    component.test = true;
-    expect(component.f).toBeDefined();
-  });
-
-  it('onSubmit should load without errors', () => {
-    component.test = true;
-    expect(component.onSubmit(true)).toBeTrue();
-  });
-
-  it('remQuotes should correctly remove quotation marks from a string', () => {
-    expect(component.remQuotes('This is an "eggcellent" test')).toEqual("This is an 'eggcellent' test");
-  });
-
-  it('attachProgressbar should load without errors', () => {
-    component.test = true; 
-    component.attachProgressbar();
-    expect(component.test).toBeTrue();
-  });
-
-  it('closeDialog should load without errors', () => {
-    component.test = true; 
-    component.closeDialog();
-    expect(component.test).toBeTrue();
-  });
-
   it('stopLoader should load without errors', () => {
     component.test = true; 
     component.stopLoader();
@@ -81,6 +51,12 @@ describe('EditAnimalInfoComponent', () => {
   it('startLoader should load without errors', () => {
     component.test = true; 
     component.startLoader();
+    expect(component.test).toBeTrue();
+  });
+
+  it('route should load without errors', () => {
+    component.test = true; 
+    component.route('test');
     expect(component.test).toBeTrue();
   });
 

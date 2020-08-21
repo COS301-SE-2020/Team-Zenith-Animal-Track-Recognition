@@ -24,6 +24,10 @@ export class AnimalsToolbarComponent implements OnInit {
 	ngOnInit(): void { }
 
 	openAddAnimalDialog() {
+		if (this.test == true) {
+			return;
+		}
+
 		const dialogConfig = new MatDialogConfig();
 
 		const addDialogRef = this.dialog.open(AddAnimalComponent, {
@@ -46,13 +50,22 @@ export class AnimalsToolbarComponent implements OnInit {
 	}
 	//Loader
 	startLoader() {
+		if (this.test == true) {
+			return;
+		}
 		document.getElementById('loader-container').style.visibility = 'visible';
 	}
 	stopLoader() {
+		if (this.test == true) {
+			return;
+		}
 		document.getElementById('loader-container').style.visibility = 'hidden';
 	}
 
 	route(location: string) {
+		if (this.test == true) {
+			return;
+		}
 		document.getElementById("animals-route-link").classList.remove("activeRoute");
 		document.getElementById("animals-gallery-route").classList.remove("activeRoute");
 		document.getElementById("overview-route").classList.remove("activeRoute");
