@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { google } from "google-maps";
 @Component({
   selector: 'app-track-identifications-map',
   templateUrl: './track-identifications-map.component.html',

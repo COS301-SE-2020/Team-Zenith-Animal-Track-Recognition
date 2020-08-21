@@ -75,7 +75,12 @@ export class RangerProfileComponent implements OnInit {
 
 
 	/*Place holder values*/
-	constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, public dialog: MatDialog, private snackBar: MatSnackBar, ) { }
+	constructor(
+		private http: HttpClient, 
+		private router: Router, 
+		private activatedRoute: ActivatedRoute, 
+		public dialog: MatDialog, 
+		private snackBar: MatSnackBar, ) { }
 
 	ngOnInit(): void {
 		this.startLoader();

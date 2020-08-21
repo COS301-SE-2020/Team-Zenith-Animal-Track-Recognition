@@ -9,8 +9,10 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
   styleUrls: ['./track-identifications.component.css']
 })
 
+//Nah wait, let me see th error first. Camn you show me it
+
 export class TrackIdentificationsComponent implements OnInit {
-	
+	//One sec
 	@ViewChild('sidenav') sidenav;
 	trackIdentifications: any;
 	tracksRetrieved = false;
@@ -24,7 +26,6 @@ export class TrackIdentificationsComponent implements OnInit {
 
 	ngOnInit(): void {
 		document.getElementById("geotags-route").classList.add("activeRoute");
-		/*this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){spoorIdentificationID,animal{classification,animalID,commonName,heightM,heightF,weightM,weightF,dietType,lifeSpan,Offspring,gestationPeriod,animalOverview,animalDescription,animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName,pictureURL},potentialMatches{confidence},picture{picturesID,URL,kindOfPicture}}}')
 			.subscribe((data: any[]) => {
@@ -55,17 +56,18 @@ export class TrackIdentificationsComponent implements OnInit {
 		this.searchText = event;
 	}
 
+	updateTrackList(updatedList: string) {
+		this.refresh(updatedList);
+	}
+
 	refresh(updateOp: string) {
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){rangerID,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
-				this.rangers = temp[0];
-				this.sort(this.sortBySurname);
-			});*/
+			});
 	}
-	
 	showOpenBtn() {
 		//Show Open Button
 		document.getElementById('sidenav-open-btn-container').style.visibility = 'visible';

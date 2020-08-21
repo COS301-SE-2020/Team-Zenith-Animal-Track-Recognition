@@ -4,7 +4,7 @@
 <h1 mat-dialog-title>Edit Animal Information - {{data.animal.classification | titlecase}} ({{data.animal.commonName}})</h1>
 <mat-dialog-content>
     <form [formGroup]="editAnimalForm" id="edit-animal-form">
-		<mat-tab-group mat-align-tabs="start">
+		<mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedIndex" >
 			<mat-tab label="Description">
 				<div class="edit-animal-form-content">
 					<mat-form-field class="add-animal-form-input" appearance="outline">
@@ -207,6 +207,8 @@
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
+	<button mat-button id="left-btn" class="fontSB" (click)="previousTab()"><mat-icon>arrow_back_ios</mat-icon></button>
     <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>
-    <button type="submit" mat-button (click)="onSubmit(false)" id="add-ranger-btn" class="fontSB">SAVE CHANGES</button>
+	<button type="submit" mat-button (click)="onSubmit(false)" id="add-ranger-btn" class="fontSB">SAVE CHANGES</button>
+	<button mat-button id="right-btn" class="fontSB" (click)="nextTab()"><mat-icon>arrow_forward_ios</mat-icon></button>
 </mat-dialog-actions>

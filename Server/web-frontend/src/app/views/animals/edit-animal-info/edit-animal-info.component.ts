@@ -13,6 +13,7 @@ export class EditAnimalInfoComponent implements OnInit {
 
 	editAnimalForm: FormGroup;
 	diet: string;
+	selectedIndex: number = 0;
 	//DUMMY DATA
 	dietTypeList = [
 		{
@@ -59,6 +60,20 @@ export class EditAnimalInfoComponent implements OnInit {
 	}
 
 	get f() { return this.editAnimalForm.controls; }
+
+	nextTab() {
+		if (this.selectedIndex != 6) {
+		  this.selectedIndex = this.selectedIndex + 1;
+		}
+		console.log(this.selectedIndex);
+	  }
+	
+	  previousTab() {
+		if (this.selectedIndex != 0) {
+		  this.selectedIndex = this.selectedIndex - 1;
+		}
+		console.log(this.selectedIndex);
+	  }
 
 	onSubmit(test: boolean) {
 
