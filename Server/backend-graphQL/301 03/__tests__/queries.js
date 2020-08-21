@@ -27,18 +27,54 @@ const {
 const request = supertest(app);
 
 
+
 /////////test tests
-test("A sample test", () => {
+test("A sample test it chek if testing is runing", () => {
   expect(2).toBe(2);
 });
 
-
-
-test("login test", async (done) => {
+test("negatif test now query", async (done) => {
   request
     .post("/graphql")
     .send({
-      query: "query{login(e_mail:\"zachary.christophers@gmail.com\",Password:\"zenith!@#$5\"){Token}}",
+      query: ""
+    })
+    .set("Accept", "application/json")
+    .expect("Content-Type", /json/)
+    .expect(200)
+    .end(function (err, res) {
+      console.log(err, res)
+      if (err) return done(err);
+      
+      done();
+    });
+});
+
+test("login with invalid info", async (done) => {
+  request
+    .post("/graphql")
+    .send({
+      query: "query{login(eMail:\"\",password:\"\"){token}}",
+    })
+    .set("Accept", "application/json")
+    .expect("Content-Type", /json/)
+    .expect(200)
+    .end(function (err, res) {
+      if (err) return done(err);
+      expect(res.body).toBeInstanceOf(Object);
+      expect(res.body.data).toBeInstanceOf(Object);
+      // expect(res.body.data.Token).toBeInstanceOf(Object);
+      // expect(res.body.data.Token).toEqual("qwerty");
+      done();
+    });
+});
+
+
+test("login with valid info", async (done) => {
+  request
+    .post("/graphql")
+    .send({
+      query: "query%7Blogin(eMail%3A\"zachary.christophers%40gmail.com\"%2Cpassword%3A\"zenith!%40%23%245\")%7Btoken%7D%7D",
     })
     .set("Accept", "application/json")
     .expect("Content-Type", /json/)
