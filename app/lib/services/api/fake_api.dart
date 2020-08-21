@@ -1,7 +1,7 @@
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:ERP_RANGER/ui/views/identification/identification_view.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'api.dart';
 
 @lazySingleton
@@ -10,178 +10,155 @@ class FakeApi implements Api {
   Future<List<AnimalModel>> getAnimalModel(String category) async {
     List<AnimalModel> animalList = new List();
 
-    if (category == "BIG CATS") {
+    if(category == "Big Cats"){
       print("pppppp");
       AnimalModel lion = AnimalModel(
         animalName: "Katanga Lion",
         diet: "Carnivore",
         gestation: "4 Months",
-        sizeM: "3.1",
-        sizeF: "2.5",
-        weightF: "181",
-        weightM: "258",
+        sizeM: 3.1,
+        sizeF: 2.5,
+        weightF: 181,
+        weightM: 258,
         image: "assets/images/animal/Big_Cats/lion/a1.jpeg",
-        description:
-            "The lion is known as the ‘king of the jungle’ and is one of the five big cats of the genus Panthera. They are the only cats that live in groups, called ‘prides’, which are made up of family units. Male lions have manes (fringes of long hair that encircle their heads) and they defend the pride’s territory. Female lions are the pride’s primary hunters and often work together. Young lions do not help to hunt until they are about one year old.",
-        behaviour:
-            "Lions are highly territorial and occupy the same area for generations. Females actively defend their territories against other females, while resident males protect prides from rival coalitions. Territory size depends on prey abundance, as well as access to water and denning sites.",
-        habitats:
-            "They are found in southwestern Africa in Angola, Namibia, western Zimbabwe and Zambia, Zaire, and northern Botswana. They are one of the largest lions of all the lion species.",
+        description: "The lion is known as the ‘king of the jungle’ and is one of the five big cats of the genus Panthera. They are the only cats that live in groups, called ‘prides’, which are made up of family units. Male lions have manes (fringes of long hair that encircle their heads) and they defend the pride’s territory. Female lions are the pride’s primary hunters and often work together. Young lions do not help to hunt until they are about one year old.",
+        behaviour: "Lions are highly territorial and occupy the same area for generations. Females actively defend their territories against other females, while resident males protect prides from rival coalitions. Territory size depends on prey abundance, as well as access to water and denning sites.",
+        habitats: "They are found in southwestern Africa in Angola, Namibia, western Zimbabwe and Zambia, Zaire, and northern Botswana. They are one of the largest lions of all the lion species.",
       );
-
+      
       AnimalModel leopard = AnimalModel(
         animalName: "African Leopard",
         diet: "Herbivore",
         gestation: "24 Months",
-        sizeM: "0.7",
-        sizeF: "0.64",
-        weightF: "27",
-        weightM: "31",
+        sizeM: 0.7,
+        sizeF: 0.64,
+        weightF: 27,
+        weightM: 31,
         image: "assets/images/animal/Big_Cats/leopard/a1.jpg",
-        description:
-            "Leopards are large cats, with light-colored fur, and black spots and rosettes across their entire body. The rosettes look somewhat like hollowed-out spots, and are smaller than those of the jaguar. Males of the species are larger than the females, and can stand up to 28 in. tall at the shoulder",
-        behaviour:
-            "Search Results Featured snippet from the web Leopards are solitary creatures that only spend time with others when they are mating or raising young. They are also nocturnal and spend their nights hunting instead of sleeping. Leopards spend a lot of their time in trees. Their spotted coat camouflages them, making them blend in with the leaves of the tree.",
-        habitats:
-            "These large cats can live in almost any type of habitat, including rainforests, deserts, woodlands, grassland savannas, forests, mountain habitats, coastal scrubs, shrub lands and swampy areas. In fact, leopards live in more places than any other large",
+        description: "Leopards are large cats, with light-colored fur, and black spots and rosettes across their entire body. The rosettes look somewhat like hollowed-out spots, and are smaller than those of the jaguar. Males of the species are larger than the females, and can stand up to 28 in. tall at the shoulder",
+        behaviour: "Search Results Featured snippet from the web Leopards are solitary creatures that only spend time with others when they are mating or raising young. They are also nocturnal and spend their nights hunting instead of sleeping. Leopards spend a lot of their time in trees. Their spotted coat camouflages them, making them blend in with the leaves of the tree.",
+        habitats: "These large cats can live in almost any type of habitat, including rainforests, deserts, woodlands, grassland savannas, forests, mountain habitats, coastal scrubs, shrub lands and swampy areas. In fact, leopards live in more places than any other large",
       );
-
+      
       AnimalModel cheetah = AnimalModel(
         animalName: "South African Cheetah",
         diet: "Carnivore",
         gestation: "3 months",
-        sizeM: "0.9",
-        sizeF: "0.9",
-        weightF: "45",
-        weightM: "63",
+        sizeM: 0.9,
+        sizeF: 0.9,
+        weightF: 45,
+        weightM: 63,
         image: "assets/images/animal/Big_Cats/cheetah/a1.jpg",
-        description:
-            "They are mainly found in savannah grassland, open flat areas and sometimes in wooded areas. The Cheetah is the fastest of all mammals and can run at a speed of more than 100 km/h when charging over a short distance. They are mainly solitary hunters, although sometimes they hunt in small groups.",
-        behaviour:
-            "Although more sociable than Leopards, adult Cheetahs are solitary animals. They are the fastest quadrupeds, reaching speeds of more than 100 kilometers per hour, in short bursts. ... At a kill Cheetahs tend to eat as quick as they can, always on the alert for other carnivores, to whom they very often loose their prey",
-        habitats:
-            "Search Results Featured snippet from the web Image result for south african cheetah habitat The Southern African cheetah lives mainly in the lowland areas and deserts of the Kalahari, the savannahs of Okavango Delta, and the grasslands of the Transvaal region in South Africa. In Namibia, cheetahs are mostly found in farmlands.",
+        description: "They are mainly found in savannah grassland, open flat areas and sometimes in wooded areas. The Cheetah is the fastest of all mammals and can run at a speed of more than 100 km/h when charging over a short distance. They are mainly solitary hunters, although sometimes they hunt in small groups.",
+        behaviour: "Although more sociable than Leopards, adult Cheetahs are solitary animals. They are the fastest quadrupeds, reaching speeds of more than 100 kilometers per hour, in short bursts. ... At a kill Cheetahs tend to eat as quick as they can, always on the alert for other carnivores, to whom they very often loose their prey",
+        habitats: "Search Results Featured snippet from the web Image result for south african cheetah habitat The Southern African cheetah lives mainly in the lowland areas and deserts of the Kalahari, the savannahs of Okavango Delta, and the grasslands of the Transvaal region in South Africa. In Namibia, cheetahs are mostly found in farmlands.",
       );
-
+      
       animalList.add(lion);
       animalList.add(leopard);
       animalList.add(cheetah);
       return animalList;
-    } else if (category == "BIG FIVE") {
+    }
+    else if(category == "Big Five"){
       print("oooooo");
       AnimalModel lion = AnimalModel(
         animalName: "Katanga Lion",
         diet: "Carnivore",
         gestation: "4 Months",
-        sizeM: "3.1",
-        sizeF: "2.5",
-        weightF: "181",
-        weightM: "258",
+        sizeM: 3.1,
+        sizeF: 2.5,
+        weightF: 181,
+        weightM: 258,
         image: "assets/images/animal/Big_Cats/lion/a1.jpeg",
-        description:
-            "The lion is known as the ‘king of the jungle’ and is one of the five big cats of the genus Panthera. They are the only cats that live in groups, called ‘prides’, which are made up of family units. Male lions have manes (fringes of long hair that encircle their heads) and they defend the pride’s territory. Female lions are the pride’s primary hunters and often work together. Young lions do not help to hunt until they are about one year old.",
-        behaviour:
-            "Lions are highly territorial and occupy the same area for generations. Females actively defend their territories against other females, while resident males protect prides from rival coalitions. Territory size depends on prey abundance, as well as access to water and denning sites.",
-        habitats:
-            "They are found in southwestern Africa in Angola, Namibia, western Zimbabwe and Zambia, Zaire, and northern Botswana. They are one of the largest lions of all the lion species.",
+        description: "The lion is known as the ‘king of the jungle’ and is one of the five big cats of the genus Panthera. They are the only cats that live in groups, called ‘prides’, which are made up of family units. Male lions have manes (fringes of long hair that encircle their heads) and they defend the pride’s territory. Female lions are the pride’s primary hunters and often work together. Young lions do not help to hunt until they are about one year old.",
+        behaviour: "Lions are highly territorial and occupy the same area for generations. Females actively defend their territories against other females, while resident males protect prides from rival coalitions. Territory size depends on prey abundance, as well as access to water and denning sites.",
+        habitats: "They are found in southwestern Africa in Angola, Namibia, western Zimbabwe and Zambia, Zaire, and northern Botswana. They are one of the largest lions of all the lion species.",
       );
 
       AnimalModel elephant = AnimalModel(
         animalName: "AFRICAN BUSH ELEPHANT",
         diet: "Herbivore",
         gestation: "24 Months",
-        sizeM: "3.2",
-        sizeF: "2.6",
-        weightF: "3000",
-        weightM: "5800",
+        sizeM: 3.2,
+        sizeF: 2.6,
+        weightF: 3000,
+        weightM: 5800,
         image: "assets/images/appearance/elephant/p1.jpg",
-        description:
-            "The African bush elephant is the largest land mammal in the world and the largest of the three elephant species. ",
-        behaviour:
-            "African Bush Elephants are nomadic animals meaning that they are constantly on the move in search of food, so moving within these family herds allows them to have greater protection both from predators and from the elements.",
-        habitats:
-            "African elephants live in sub-Saharan Africa, the rain forests of Central and West Africa and the Sahel desert in Mali.",
+        description: "The African bush elephant is the largest land mammal in the world and the largest of the three elephant species. ",
+        behaviour: "African Bush Elephants are nomadic animals meaning that they are constantly on the move in search of food, so moving within these family herds allows them to have greater protection both from predators and from the elements.",
+        habitats: "African elephants live in sub-Saharan Africa, the rain forests of Central and West Africa and the Sahel desert in Mali.",
       );
 
       AnimalModel buffalo = AnimalModel(
         animalName: "Cape Buffalo",
         diet: "Herbivore",
         gestation: "13 Months",
-        sizeM: "1.7",
-        sizeF: "1.0",
-        weightF: "300",
-        weightM: "900",
+        sizeM: 1.7,
+        sizeF: 1.0,
+        weightF: 300,
+        weightM: 900,
         image: "assets/images/appearance/buffalo/p1.jpg",
-        description:
-            "Depending on the subspecies, African buffalo range in color from dark brown or black (in savannah-living races) to bright red (forest buffalo). ",
-        behaviour:
-            "African buffalo may be active throughout the day and night; on average, 18 hours per day are spent foraging and moving.",
-        habitats:
-            "One of the most successful of Africa's wild ruminants, the Cape buffalo thrives in virtually all types of grassland habitat in sub-Saharan Africa, from dry savanna to swamp and from lowland floodplains to montane mixed forest and glades, as long as it is within commuting distance of water (up to 20 km [12 miles]).",
+        description: "Depending on the subspecies, African buffalo range in color from dark brown or black (in savannah-living races) to bright red (forest buffalo). ",
+        behaviour: "African buffalo may be active throughout the day and night; on average, 18 hours per day are spent foraging and moving.",
+        habitats: "One of the most successful of Africa's wild ruminants, the Cape buffalo thrives in virtually all types of grassland habitat in sub-Saharan Africa, from dry savanna to swamp and from lowland floodplains to montane mixed forest and glades, as long as it is within commuting distance of water (up to 20 km [12 miles]).",
       );
-
+      
       animalList.add(lion);
       animalList.add(buffalo);
       animalList.add(elephant);
       return animalList;
-    } else if (category == "LARGE ANTELOPE") {
+    }
+    else if(category == "Large Antelopes"){
       print("ppppppkkkkkkkkkkkkk");
       AnimalModel eland = AnimalModel(
         animalName: "Common Eland",
         diet: "Herbivore",
         gestation: "9 Months",
-        sizeM: "1.6",
-        sizeF: "1.5",
-        weightF: "600",
-        weightM: "940",
+        sizeM: 1.6,
+        sizeF: 1.5,
+        weightF: 600,
+        weightM: 940,
         image: "assets/images/animal/Antelopes/eland/a1.jpg",
-        description:
-            "The dominant male can mate with more than one female. Females have a gestation period of 9 months, and give birth to only one calf each time. Males, females and juveniles each form separate social groups. The male groups are the smallest; the members stay together and search for food or water sources.",
-        behaviour:
-            "The dominant male can mate with more than one female. Females have a gestation period of 9 months, and give birth to only one calf each time. Males, females and juveniles each form separate social groups. The male groups are the smallest; the members stay together and search for food or water sources.",
-        habitats:
-            "Common elands live on the open plains of southern Africa and along the foothills of the great southern African plateau. The species extends north into Ethiopia and most arid zones of South Sudan, west into eastern Angola and Namibia, and south to South Africa.",
+        description: "The dominant male can mate with more than one female. Females have a gestation period of 9 months, and give birth to only one calf each time. Males, females and juveniles each form separate social groups. The male groups are the smallest; the members stay together and search for food or water sources.",
+        behaviour: "The dominant male can mate with more than one female. Females have a gestation period of 9 months, and give birth to only one calf each time. Males, females and juveniles each form separate social groups. The male groups are the smallest; the members stay together and search for food or water sources.",
+        habitats: "Common elands live on the open plains of southern Africa and along the foothills of the great southern African plateau. The species extends north into Ethiopia and most arid zones of South Sudan, west into eastern Angola and Namibia, and south to South Africa.",
       );
 
       AnimalModel kudu = AnimalModel(
         animalName: "Greater Kudu",
         diet: "Herbivore",
         gestation: "8 Months",
-        sizeM: "1.6",
-        sizeF: "1.5",
-        weightF: "190",
-        weightM: "270",
+        sizeM: 1.6,
+        sizeF: 1.5,
+        weightF: 190,
+        weightM: 270,
         image: "assets/images/animal/Antelopes/kudu/a1.jpg",
-        description:
-            "The Great kudu is a large antelope with tawny coloring and thin, white, sparse vertical stripes. Greater kudu may be distinguished from a similar species, the lesser kudu (Tragelaphus imberbis), by the presence of a throat mane. Approximately 1.2 to 1.5 m (4 to 5 ft.) Male: 225 to 357.7 kg (495 to 787 lbs.)",
-        behaviour:
-            "They may be active throughout the 24-hour day. Herds disperse during the rainy season when food is plentiful. During the dry season, there are only a few concentrated areas of food so the herds will congregate. Greater kudu are not territorial; they have home areas instead.",
-        habitats:
-            "Their habitat includes mixed scrub woodlands (the greater kudu is one of the few largest mammals that prefer living in settled areas – in scrub woodland and bush on abandoned fields and degraded pastures, mopane bush and acacia in lowlands, hills and mountains.",
+        description: "The Great kudu is a large antelope with tawny coloring and thin, white, sparse vertical stripes. Greater kudu may be distinguished from a similar species, the lesser kudu (Tragelaphus imberbis), by the presence of a throat mane. Approximately 1.2 to 1.5 m (4 to 5 ft.) Male: 225 to 357.7 kg (495 to 787 lbs.)",
+        behaviour: "They may be active throughout the 24-hour day. Herds disperse during the rainy season when food is plentiful. During the dry season, there are only a few concentrated areas of food so the herds will congregate. Greater kudu are not territorial; they have home areas instead.",
+        habitats: "Their habitat includes mixed scrub woodlands (the greater kudu is one of the few largest mammals that prefer living in settled areas – in scrub woodland and bush on abandoned fields and degraded pastures, mopane bush and acacia in lowlands, hills and mountains.",
       );
 
       AnimalModel hartebeest = AnimalModel(
         animalName: "Red Hartebeest",
         diet: "Herbivore",
         gestation: "24 Months",
-        sizeM: "1.3",
-        sizeF: "1.2",
-        weightF: "120",
-        weightM: "150",
+        sizeM: 1.3,
+        sizeF: 1.2,
+        weightF: 120,
+        weightM: 150,
         image: "assets/images/animal/Antelopes/hartebeest/a1.jpg",
-        description:
-            "The Red Hartebeest is a large, reddish-fawn antelope with sloping back and long narrow face. Both sexes have heavily ringed horns. Of the 12 subspecies described in Africa, the Red Hartebeest is the only one which occurs in South Africa. Due to its re-introduction onto game farms and nature reserves, it has a wider distribution today. Adult bulls weigh 150 kg and measure 1.3 m at the shoulders, while cows only weigh 120 kg.",
-        behaviour:
-            "Territorial bulls often present themselves on prominent mounds and mark their territories with dung piles. The Red Hartebeest is swift on foot and gregarious, occurring in herds of up to 30. To see an unusual encounter of a Red Hartebeest with a cyclist.",
-        habitats:
-            "Preferred habitat is the dry, arid regions of Namibia, the Kalahari, southern Botswana, and north-western South Africa.",
+        description: "The Red Hartebeest is a large, reddish-fawn antelope with sloping back and long narrow face. Both sexes have heavily ringed horns. Of the 12 subspecies described in Africa, the Red Hartebeest is the only one which occurs in South Africa. Due to its re-introduction onto game farms and nature reserves, it has a wider distribution today. Adult bulls weigh 150 kg and measure 1.3 m at the shoulders, while cows only weigh 120 kg.",
+        behaviour: "Territorial bulls often present themselves on prominent mounds and mark their territories with dung piles. The Red Hartebeest is swift on foot and gregarious, occurring in herds of up to 30. To see an unusual encounter of a Red Hartebeest with a cyclist.",
+        habitats: "Preferred habitat is the dry, arid regions of Namibia, the Kalahari, southern Botswana, and north-western South Africa.",
       );
-
+     
       animalList.add(eland);
       animalList.add(kudu);
       animalList.add(hartebeest);
       return animalList;
     }
+   
+
   }
 
   @override
@@ -247,7 +224,7 @@ class FakeApi implements Api {
     List<List<String>> gallery = new List();
     String name;
 
-    if (i == "elephant") {
+    if(i == "elephant"){
       appearance.add("assets/images/appearance/elephant/p1.jpg");
       appearance.add("assets/images/appearance/elephant/p2.jpg");
       appearance.add("assets/images/appearance/elephant/p3.jpg");
@@ -264,7 +241,7 @@ class FakeApi implements Api {
       droppings.add("assets/images/droppings/elephant/drop4.jpg");
 
       name = "African Bush Elephant";
-    } else if (i == "buffalo") {
+    }else if(i == "buffalo"){
       appearance.add("assets/images/appearance/buffalo/p1.jpg");
       appearance.add("assets/images/appearance/buffalo/p2.jpg");
       appearance.add("assets/images/appearance/buffalo/p3.jpg");
@@ -281,7 +258,7 @@ class FakeApi implements Api {
       droppings.add("assets/images/droppings/buffalo/drop4.jpg");
 
       name = "Cape Buffalo";
-    } else if (i == "rhino") {
+    }else if(i == "rhino"){
       appearance.add("assets/images/appearance/rhino/p1.jpg");
       appearance.add("assets/images/appearance/rhino/p2.jpg");
       appearance.add("assets/images/appearance/rhino/p3.jpg");
@@ -296,7 +273,7 @@ class FakeApi implements Api {
       droppings.add("assets/images/droppings/rhino/drop2.jpg");
       droppings.add("assets/images/droppings/rhino/drop3.jpg");
       name = "Black Rhinoceroses";
-    } else if (i == "lion") {
+    }else if(i == "lion"){
       appearance.add("assets/images/animal/Big_Cats/lion/a1.jpeg");
       appearance.add("assets/images/animal/Big_Cats/lion/a2.jpg");
       appearance.add("assets/images/animal/Big_Cats/lion/a3.jpg");
@@ -311,7 +288,7 @@ class FakeApi implements Api {
       droppings.add("assets/images/droppings/lion/drop2.jpg");
       droppings.add("assets/images/droppings/lion/drop3.jpg");
       name = "Katanga Lion";
-    } else if (i == "leopard") {
+    }else if(i == "leopard"){
       appearance.add("assets/images/appearance/leopard/p1.jpg");
       appearance.add("assets/images/appearance/leopard/p2.jpg");
       appearance.add("assets/images/appearance/leopard/p3.jpg");
@@ -325,7 +302,7 @@ class FakeApi implements Api {
       droppings.add("assets/images/droppings/leopard/drop2.jpg");
       droppings.add("assets/images/droppings/leopard/drop3.jpg");
       name = "African Leopard";
-    } else if (i == "cheetah") {
+    }else if(i == "cheetah"){
       appearance.add("assets/images/appearance/cheetah/p1.jpg");
       appearance.add("assets/images/appearance/cheetah/p2.jpg");
       appearance.add("assets/images/appearance/cheetah/p3.jpg");
@@ -338,7 +315,7 @@ class FakeApi implements Api {
       droppings.add("assets/images/droppings/cheetah/drop1.jpg");
 
       name = "South African Cheetah";
-    } else if (i == "blesbok") {
+    }else if(i == "blesbok"){
       appearance.add("assets/images/appearance/blesbok/p1.jpg");
       appearance.add("assets/images/appearance/blesbok/p2.jpg");
       appearance.add("assets/images/appearance/blesbok/p3.jpg");
@@ -349,7 +326,7 @@ class FakeApi implements Api {
       droppings.add("assets/images/droppings/blesbok/drop1.jpg");
 
       name = "Blesbok";
-    } else if (i == "springbok") {
+    }else if(i == "springbok"){
       appearance.add("assets/images/appearance/springbok/p1.jpg");
       appearance.add("assets/images/appearance/springbok/p2.jpg");
       appearance.add("assets/images/appearance/springbok/p3.jpg");
@@ -360,7 +337,7 @@ class FakeApi implements Api {
       droppings.add("assets/images/droppings/springbok/drop1.jpg");
 
       name = "Springbok";
-    } else if (i == "hartebeest") {
+    }else if(i == "hartebeest"){
       appearance.add("assets/images/appearance/hartebeest/p1.jpg");
       appearance.add("assets/images/appearance/hartebeest/p2.jpg");
       appearance.add("assets/images/appearance/hartebeest/p3.jpg");
@@ -371,7 +348,7 @@ class FakeApi implements Api {
       droppings.add("assets/images/droppings/blesbok/drop1.jpg");
 
       name = "Red Hartebeest";
-    } else {
+    }else{
       appearance.add("assets/images/appearance/blesbok/p1.jpg");
       appearance.add("assets/images/appearance/blesbok/p2.jpg");
       appearance.add("assets/images/appearance/blesbok/p3.jpg");
@@ -379,7 +356,7 @@ class FakeApi implements Api {
 
       tracks.add("assets/images/print/blesbok/print1.jpg");
 
-      droppings.add("assets/images/droppings/blesbok/drop1.jpg");
+      droppings.add("assets/images/droppings/blesbok/drop1.jpg");     
     }
 
     gallery.add(appearance);
@@ -456,31 +433,31 @@ class FakeApi implements Api {
         'assets/images/Red_Hartebeest.jpg');
 
     List<SpoorModel> _cards = new List();
-    if (name == "elephant") {
+    if(name == "elephant"){
       _cards.add(card1);
       _cards.add(card2);
       _cards.add(card3);
       _cards.add(card4);
       _cards.add(card5);
       _cards.add(card6);
-    } else if (name == "rhino") {
+    }else if(name == "rhino"){
       _cards.add(card2);
       _cards.add(card1);
       _cards.add(card3);
       _cards.add(card4);
       _cards.add(card5);
       _cards.add(card6);
-    } else if (name == "buffalo") {
+    }else if(name == "buffalo"){
       _cards.add(card3);
       _cards.add(card1);
       _cards.add(card2);
       _cards.add(card4);
       _cards.add(card5);
       _cards.add(card6);
-    } else {
+    }else{
       _cards.add(card4);
       _cards.add(card5);
-      _cards.add(card6);
+      _cards.add(card6);  
       _cards.add(card3);
       _cards.add(card1);
       _cards.add(card2);
@@ -490,24 +467,24 @@ class FakeApi implements Api {
   }
 
   @override
-  Future<SimilarSpoorModel> getSpoorSimilarModel(String animal) async {
+  Future<SimilarSpoorModel> getSpoorSimilarModel(String animal) async{
     List<String> similarSpoor = new List();
-    if (animal == "elephant") {
+    if(animal == "elephant"){
       similarSpoor.add('assets/images/print/elephant/print1.jpg');
       similarSpoor.add('assets/images/print/elephant/print2.jpg');
       similarSpoor.add('assets/images/print/elephant/print3.jpg');
       similarSpoor.add('assets/images/print/elephant/print4.jpg');
-    } else if (animal == "buffalo") {
+    }else if(animal == "buffalo"){
       similarSpoor.add('assets/images/print/buffalo/print1.jpg');
       similarSpoor.add('assets/images/print/buffalo/print2.jpg');
       similarSpoor.add('assets/images/print/buffalo/print3.jpg');
       similarSpoor.add('assets/images/print/buffalo/print4.jpg');
-    } else if (animal == "rhino") {
+    }else if(animal == "rhino"){
       similarSpoor.add('assets/images/print/rhino/print1.jpg');
       similarSpoor.add('assets/images/print/rhino/print2.jpg');
       similarSpoor.add('assets/images/print/rhino/print3.jpg');
       similarSpoor.add('assets/images/print/rhino/print4.jpg');
-    } else {
+    }else{
       similarSpoor.add('assets/images/print/rhino/print1.jpg');
       similarSpoor.add('assets/images/print/rhino/print2.jpg');
       similarSpoor.add('assets/images/print/rhino/print3.jpg');
@@ -520,6 +497,7 @@ class FakeApi implements Api {
 
   @override
   Future<List<HomeModel>> getHomeModel() async {
+  
     HomeModel card1 = new HomeModel(
         'Elephant',
         'African Bush',
@@ -605,11 +583,15 @@ class FakeApi implements Api {
     String behaviour;
     String habitat;
     String threat;
-    String heightF;
-    String heightM;
-    String weightF;
-    String weightM;
-    if (name == "elephant") {
+    double heightF1;
+    double heightF2;
+    double heightM1;
+    double heightM2;
+    double weightF1;
+    double weightF2;
+    double weightM1;
+    double weightM2;
+    if(name =="elephant"){
       appearance.add("assets/images/appearance/elephant/p1.jpg");
       appearance.add("assets/images/appearance/elephant/p2.jpg");
       appearance.add("assets/images/appearance/elephant/p3.jpg");
@@ -619,168 +601,120 @@ class FakeApi implements Api {
       commonName = "Elephant";
       gestation = "22 months";
       diet = "Herbivore";
-      overview =
-          "The African bush elephant is the largest land mammal in the world and the largest of the three elephant species.";
-      description =
-          "The African bush elephant is the largest land mammal in the world and the largest of the three elephant species. Adults reach up to 24 feet in length and 13 feet in height and weigh up to 11 tons. As herbivores, they spend much of their days foraging and eating grass, leaves, bark, fruit, and a variety of foliage. They need to eat about 350 pounds of vegetation every day. African bush elephants are also known as African savanna elephants. Their range spans a variety of habitats, from the open savanna to the desert, and can be found in most African countries. African elephants live up to 70 years—longer than any other mammal except humans. Elephant herds are matriarchal, consisting of related females and their young and are led by the eldest female, called the matriarch. Adult male elephants rarely join a herd and often lead a solitary life, only approaching herds for mating. Females give birth to a single calf after a 22 month gestation, the longest gestation period among mammals.";
-      behaviour =
-          "African Bush Elephants are nomadic animals meaning that they are constantly on the move in search of food, so moving within these family herds allows them to have greater protection both from predators and from the elements.";
-      habitat =
-          "African elephants live in sub-Saharan Africa, the rain forests of Central and West Africa and the Sahel desert in Mali. Their Asian contemporaries can be found in Nepal, India and Southeast Asia in scrub forests and rain forests.";
-      threat =
-          "Escalating poaching, or illegal killing, for the commercial trade in ivory and meat. Growing demands of exploding human populations and poverty. Increasing loss and fragmentation of natural habitats and lack of land-use planning.";
-      heightF = "2.4";
-      heightM = "3.1";
-      weightF = "2.8";
-      weightM = "5.8";
+      overview = "The African bush elephant is the largest land mammal in the world and the largest of the three elephant species.";
+      description = "The African bush elephant is the largest land mammal in the world and the largest of the three elephant species. Adults reach up to 24 feet in length and 13 feet in height and weigh up to 11 tons. As herbivores, they spend much of their days foraging and eating grass, leaves, bark, fruit, and a variety of foliage. They need to eat about 350 pounds of vegetation every day. African bush elephants are also known as African savanna elephants. Their range spans a variety of habitats, from the open savanna to the desert, and can be found in most African countries. African elephants live up to 70 years—longer than any other mammal except humans. Elephant herds are matriarchal, consisting of related females and their young and are led by the eldest female, called the matriarch. Adult male elephants rarely join a herd and often lead a solitary life, only approaching herds for mating. Females give birth to a single calf after a 22 month gestation, the longest gestation period among mammals.";
+      behaviour = "African Bush Elephants are nomadic animals meaning that they are constantly on the move in search of food, so moving within these family herds allows them to have greater protection both from predators and from the elements.";
+      habitat = "African elephants live in sub-Saharan Africa, the rain forests of Central and West Africa and the Sahel desert in Mali. Their Asian contemporaries can be found in Nepal, India and Southeast Asia in scrub forests and rain forests.";
+      threat = "Escalating poaching, or illegal killing, for the commercial trade in ivory and meat. Growing demands of exploding human populations and poverty. Increasing loss and fragmentation of natural habitats and lack of land-use planning.";
+      heightF1 = 2.4;
+      heightF2 = 2.6;
+      heightM1 = 3.1;
+      heightM2 = 3.2;
+      weightF1 = 2.8;
+      weightF2 = 3.0;
+      weightM1 = 5.8;
+      weightM2 = 6.0;
 
       infoModel = new InfoModel(
-          species: species,
-          commonName: commonName,
-          gestation: gestation,
-          diet: diet,
-          overview: overview,
-          description: description,
-          behaviour: behaviour,
-          habitat: habitat,
-          threat: threat,
-          heightF: heightF,
-          heightM: heightM,
-          weightF: weightF,
-          weightM: weightM,
-          carouselImages: appearance);
+        species:species,commonName:commonName,gestation:gestation,diet:diet,overview:overview,description:description,behaviour:behaviour,habitat:habitat,threat:threat,
+        heightF1:heightF1,heightF2:heightF2,heightM1:heightM1,heightM2:heightM2,weightF1:weightF1,weightF2:weightF2,weightM1:weightM1, weightM2:weightM2, carouselImages:appearance
+      );
       return infoModel;
-    } else if (name == "buffalo") {
+    }else if(name == "buffalo"){
       appearance.add("assets/images/appearance/buffalo/p1.jpg");
       appearance.add("assets/images/appearance/buffalo/p2.jpg");
       appearance.add("assets/images/appearance/buffalo/p3.jpg");
       appearance.add("assets/images/appearance/buffalo/p4.jpg");
 
-      overview =
-          "Cape buffalo, (Syncerus caffer caffer), also called African buffalo, the largest and most formidable of Africa's wild bovids (family Bovidae) and a familiar sight to visitors of African parks and reserves. The Cape buffalo is the only member of the buffalo and cattle tribe (Bovini) that occurs naturally in Africa.";
-      description =
-          "Depending on the subspecies, African buffalo range in color from dark brown or black (in savannah-living races) to bright red (forest buffalo). The body is heavy-set, with stocky legs, a large head, and short neck. There are no distinct markings on the body, although forest buffalo tend to darken with age and may thus have dark patches mingled with the red base color. The ears are large and tend to droop; they are edged by a long fringe of hairs, including two white tufts in forest buffalo. Both male and female African buffalo have horns; in savannah buffalo, these are hook-shaped, curving first downwards and then hooking up and inwards, and growing up to 160 cm long. The horns of males are larger than females, and in males the bases of the horns expand into a known as a 'boss'. Forest buffalo have much shorter horns (no more than 40 cm long) which are relatively straight and which sweep backwards in line with the forehead.";
-      behaviour =
-          "African buffalo may be active throughout the day and night; on average, 18 hours per day are spent foraging and moving. Herds usually occupy a stable home range; in savannah buffalo, these areas may be 126 to 1,075 square kilometers in size.";
-      habitat =
-          "One of the most successful of Africa's wild ruminants, the Cape buffalo thrives in virtually all types of grassland habitat in sub-Saharan Africa, from dry savanna to swamp and from lowland floodplains to montane mixed forest and glades, as long as it is within commuting distance of water (up to 20 km [12 miles]).";
-      threat =
-          "THREATS: Cape Buffalo are very large animals and apart from big predators, they are not really threatened by other animal species. It usually takes an entire lion pride to catch and kill an adult Cape Buffalo.";
+      overview = "Cape buffalo, (Syncerus caffer caffer), also called African buffalo, the largest and most formidable of Africa's wild bovids (family Bovidae) and a familiar sight to visitors of African parks and reserves. The Cape buffalo is the only member of the buffalo and cattle tribe (Bovini) that occurs naturally in Africa.";
+      description = "Depending on the subspecies, African buffalo range in color from dark brown or black (in savannah-living races) to bright red (forest buffalo). The body is heavy-set, with stocky legs, a large head, and short neck. There are no distinct markings on the body, although forest buffalo tend to darken with age and may thus have dark patches mingled with the red base color. The ears are large and tend to droop; they are edged by a long fringe of hairs, including two white tufts in forest buffalo. Both male and female African buffalo have horns; in savannah buffalo, these are hook-shaped, curving first downwards and then hooking up and inwards, and growing up to 160 cm long. The horns of males are larger than females, and in males the bases of the horns expand into a known as a 'boss'. Forest buffalo have much shorter horns (no more than 40 cm long) which are relatively straight and which sweep backwards in line with the forehead.";
+      behaviour = "African buffalo may be active throughout the day and night; on average, 18 hours per day are spent foraging and moving. Herds usually occupy a stable home range; in savannah buffalo, these areas may be 126 to 1,075 square kilometers in size.";
+      habitat = "One of the most successful of Africa's wild ruminants, the Cape buffalo thrives in virtually all types of grassland habitat in sub-Saharan Africa, from dry savanna to swamp and from lowland floodplains to montane mixed forest and glades, as long as it is within commuting distance of water (up to 20 km [12 miles]).";
+      threat = "THREATS: Cape Buffalo are very large animals and apart from big predators, they are not really threatened by other animal species. It usually takes an entire lion pride to catch and kill an adult Cape Buffalo.";
 
       species = "Cape Buffalo";
       commonName = "Buffalo";
       gestation = "12 months";
       diet = "Herbivore";
 
-      heightF = "2.4";
-      heightM = "3.1";
-      weightF = "2.8";
-      weightM = "5.8";
+      heightF1 = 1.0;
+      heightF2 = 1.7;
+      heightM1 = 1.0;
+      heightM2 = 1.7;
+      weightF1 = 0.3;
+      weightF2 = 0.9;
+      weightM1 = 0.3;
+      weightM2 = 0.9;
       infoModel = new InfoModel(
-          species: species,
-          commonName: commonName,
-          gestation: gestation,
-          diet: diet,
-          overview: overview,
-          description: description,
-          behaviour: behaviour,
-          habitat: habitat,
-          threat: threat,
-          heightF: heightF,
-          heightM: heightM,
-          weightF: weightF,
-          weightM: weightM,
-          carouselImages: appearance);
+        species:species,commonName:commonName,gestation:gestation,diet:diet,overview:overview,description:description,behaviour:behaviour,habitat:habitat,threat:threat,
+        heightF1:heightF1,heightF2:heightF2,heightM1:heightM1,heightM2:heightM2,weightF1:weightF1,weightF2:weightF2,weightM1:weightM1, weightM2:weightM2, carouselImages:appearance
+      );
       return infoModel;
-    } else if (name == "rhino") {
+    }else if(name == "rhino"){
       appearance.add("assets/images/appearance/rhino/p1.jpg");
       appearance.add("assets/images/appearance/rhino/p2.jpg");
       appearance.add("assets/images/appearance/rhino/p3.jpg");
       appearance.add("assets/images/appearance/rhino/p4.jpg");
-
+      
       species = "Black Rhinoceroses ";
       commonName = "Rhino";
       gestation = "16 months";
       diet = "Herbivore";
 
-      overview =
-          "Rhinoceroses are large, herbivorous mammals identified by their characteristic horned snouts. The word 'rhinoceros' comes from the Greek 'rhino' (nose) and 'ceros' (horn). There are five species and 11 subspecies of rhino; some have two horns, while others have one.";
-      description =
-          "Rhinoceroses are large, herbivorous mammals identified by their characteristic horned snouts. The word 'rhinoceros' comes from the Greek 'rhino' (nose) and 'ceros' (horn). There are five species and 11 subspecies of rhino; some have two horns, while others have one.Because the animals' horns are used in folk medicine for their supposed healing properties, rhinos have been hunted nearly to extinction. Their horns are sometimes sold as trophies or decorations, but more often they are ground up and used in traditional Chinese medicine. The powder is often added to food or brewed in a tea in the belief that the horns are a powerful aphrodisiac, a hangover cure and treatment for fever, rheumatism, gout and other disorders, according to the International Rhino Foundation.";
-      behaviour =
-          "Except for females and their offspring, black rhinos are solitary. Females reproduce only every two and a half to five years. Their single calf does not live on its own until it is about three years old. Black rhinos feed at night and during the gloaming hours of dawn and dusk.";
-      habitat =
-          "White rhinos and black rhinos live in the grasslands and floodplains of eastern and southern Africa. Greater one-horned rhinos can be found in the swamps and rain forests of northern India and southern Nepal. Sumatran and Javan rhinos are found only in small areas of Malaysian and Indonesian swamps and rain forests.Rhinos spend their days and nights grazing and only sleep during the hottest parts of the day. During the rare times when they aren't eating, they can be found enjoying a cooling mud soak. These soaks also help to protect the animals from bugs, and the mud is a natural sunblock";
-      threat =
-          "Of all the threats facing black rhinos, poaching is the deadliest. Black rhinos have two horns which make them lucrative targets for the illegal trade in rhino horn A wave of poaching for rhino horn rippled through Kenya and Tanzania, continued south through Zambia's Luangwa Valley as far as the Zambezi River, and spread into Zimbabwe. Political instability and wars have greatly hampered rhino conservation work in Africa, notably in Angola, Rwanda, Somalia, and Sudan. This situation has exacerbated threats such as trade in rhino horn and increased poaching due to poverty.";
+      overview = "Rhinoceroses are large, herbivorous mammals identified by their characteristic horned snouts. The word 'rhinoceros' comes from the Greek 'rhino' (nose) and 'ceros' (horn). There are five species and 11 subspecies of rhino; some have two horns, while others have one.";
+      description = "Rhinoceroses are large, herbivorous mammals identified by their characteristic horned snouts. The word 'rhinoceros' comes from the Greek 'rhino' (nose) and 'ceros' (horn). There are five species and 11 subspecies of rhino; some have two horns, while others have one.Because the animals' horns are used in folk medicine for their supposed healing properties, rhinos have been hunted nearly to extinction. Their horns are sometimes sold as trophies or decorations, but more often they are ground up and used in traditional Chinese medicine. The powder is often added to food or brewed in a tea in the belief that the horns are a powerful aphrodisiac, a hangover cure and treatment for fever, rheumatism, gout and other disorders, according to the International Rhino Foundation.";
+      behaviour = "Except for females and their offspring, black rhinos are solitary. Females reproduce only every two and a half to five years. Their single calf does not live on its own until it is about three years old. Black rhinos feed at night and during the gloaming hours of dawn and dusk.";
+      habitat = "White rhinos and black rhinos live in the grasslands and floodplains of eastern and southern Africa. Greater one-horned rhinos can be found in the swamps and rain forests of northern India and southern Nepal. Sumatran and Javan rhinos are found only in small areas of Malaysian and Indonesian swamps and rain forests.Rhinos spend their days and nights grazing and only sleep during the hottest parts of the day. During the rare times when they aren't eating, they can be found enjoying a cooling mud soak. These soaks also help to protect the animals from bugs, and the mud is a natural sunblock";
+      threat = "Of all the threats facing black rhinos, poaching is the deadliest. Black rhinos have two horns which make them lucrative targets for the illegal trade in rhino horn A wave of poaching for rhino horn rippled through Kenya and Tanzania, continued south through Zambia's Luangwa Valley as far as the Zambezi River, and spread into Zimbabwe. Political instability and wars have greatly hampered rhino conservation work in Africa, notably in Angola, Rwanda, Somalia, and Sudan. This situation has exacerbated threats such as trade in rhino horn and increased poaching due to poverty.";
 
-      heightF = "2.4";
-      heightM = "3.1";
-      weightF = "2.8";
-      weightM = "5.8";
+      heightF1 = 1.8;
+      heightF2 = 2.0;
+      heightM1 = 1.8;
+      heightM2 = 2.0;
+      weightF1 = 1.5;
+      weightF2 = 1.6;
+      weightM1 = 2.0;
+      weightM2 = 2.4;
       infoModel = new InfoModel(
-          species: species,
-          commonName: commonName,
-          gestation: gestation,
-          diet: diet,
-          overview: overview,
-          description: description,
-          behaviour: behaviour,
-          habitat: habitat,
-          threat: threat,
-          heightF: heightF,
-          heightM: heightM,
-          weightF: weightF,
-          weightM: weightM,
-          carouselImages: appearance);
+        species:species,commonName:commonName,gestation:gestation,diet:diet,overview:overview,description:description,behaviour:behaviour,habitat:habitat,threat:threat,
+        heightF1:heightF1,heightF2:heightF2,heightM1:heightM1,heightM2:heightM2,weightF1:weightF1,weightF2:weightF2,weightM1:weightM1, weightM2:weightM2, carouselImages:appearance
+      );
       return infoModel;
-    } else {
+    }else{
       appearance.add("assets/images/animal/Big_Cats/lion/a1.jpeg");
       appearance.add("assets/images/animal/Big_Cats/lion/a2.jpg");
       appearance.add("assets/images/animal/Big_Cats/lion/a3.jpg");
       appearance.add("assets/images/animal/Big_Cats/lion/a4.jpg");
-
+      
       species = "Katanga Lion ";
       commonName = "Lion";
       diet = "Carnivore";
       gestation = "4 Months";
 
-      overview =
-          "Katanga Lion (Southwest Africa Lion) The lion is known as the 'king of the jungle' and is one of the five big cats of the genus Panthera. ... The Katanga lions are found in Namibia, Zaire, Angola, Botswana and Zambia. Their prey mostly include zebras, warthogs, wildebeests and antelopes.";
-      description =
-          "Panthera leo melanochaita is a lion subspecies in Southern and East Africa. In this part of Africa, lion populations are regionally extinct in Lesotho, Djibouti and Eritrea, and threatened by loss of habitat and prey base, killing by local people in retaliation for loss of livestock, and in several countries also by trophy hunting. Since the turn of the 21st century, lion populations in intensively managed protected areas in Botswana, Namibia, South Africa and Zimbabwe have increased, but declined in East African range countries.In 2005, a Lion Conservation Strategy was developed for East and Southern Africa.";
-      behaviour =
-          "Lions are highly territorial and occupy the same area for generations. Females actively defend their territories against other females, while resident males protect prides from rival coalitions. Territory size depends on prey abundance, as well as access to water and denning sites.";
-      habitat =
-          "They are found in southwestern Africa in Angola, Namibia, western Zimbabwe and Zambia, Zaire, and northern Botswana. They are one of the largest lions of all the lion species.";
-      threat =
-          "Unfortunately, all threats to lions are human based with the top four being habitat loss, trophy hunting, poaching and human-lion conflict. There are currently more lions in captivity than there are in the wild. Unless urgent action is taken, one day there may be none left.";
+      overview = "Katanga Lion (Southwest Africa Lion) The lion is known as the 'king of the jungle' and is one of the five big cats of the genus Panthera. ... The Katanga lions are found in Namibia, Zaire, Angola, Botswana and Zambia. Their prey mostly include zebras, warthogs, wildebeests and antelopes.";
+      description = "Panthera leo melanochaita is a lion subspecies in Southern and East Africa. In this part of Africa, lion populations are regionally extinct in Lesotho, Djibouti and Eritrea, and threatened by loss of habitat and prey base, killing by local people in retaliation for loss of livestock, and in several countries also by trophy hunting. Since the turn of the 21st century, lion populations in intensively managed protected areas in Botswana, Namibia, South Africa and Zimbabwe have increased, but declined in East African range countries.In 2005, a Lion Conservation Strategy was developed for East and Southern Africa.";
+      behaviour = "Lions are highly territorial and occupy the same area for generations. Females actively defend their territories against other females, while resident males protect prides from rival coalitions. Territory size depends on prey abundance, as well as access to water and denning sites.";
+      habitat ="They are found in southwestern Africa in Angola, Namibia, western Zimbabwe and Zambia, Zaire, and northern Botswana. They are one of the largest lions of all the lion species.";
+      threat = "Unfortunately, all threats to lions are human based with the top four being habitat loss, trophy hunting, poaching and human-lion conflict. There are currently more lions in captivity than there are in the wild. Unless urgent action is taken, one day there may be none left.";
 
-      heightF = "2.4";
-      heightM = "3.1";
-      weightF = "2.8";
-      weightM = "5.8";
+      heightF1 = 1.1;
+      heightF2 = 1.2;
+      heightM1 = 1.1;
+      heightM2 = 1.2;
+      weightF1 = 0.142;
+      weightF2 = 0.181;
+      weightM1 = .230;
+      weightM2 = 0.258;
       infoModel = new InfoModel(
-          species: species,
-          commonName: commonName,
-          gestation: gestation,
-          diet: diet,
-          overview: overview,
-          description: description,
-          behaviour: behaviour,
-          habitat: habitat,
-          threat: threat,
-          heightF: heightF,
-          heightM: heightM,
-          weightF: weightF,
-          weightM: weightM,
-          carouselImages: appearance);
+        species:species,commonName:commonName,gestation:gestation,diet:diet,overview:overview,description:description,behaviour:behaviour,habitat:habitat,threat:threat,
+        heightF1:heightF1,heightF2:heightF2,heightM1:heightM1,heightM2:heightM2,weightF1:weightF1,weightF2:weightF2,weightM1:weightM1, weightM2:weightM2, carouselImages:appearance
+      );
       return infoModel;
     }
   }
 
   @override
-  Future<LoginResponse> getLoginModel(String email, String password) async {
+  Future<LoginResponse> getLoginModel() async {
     // TODO: implement getLoginModel
     throw UnimplementedError();
   }
@@ -860,8 +794,7 @@ class FakeApi implements Api {
   }
 
   @override
-  Future<List<ConfirmModel>> getConfirmModel(
-      String pic, String lat, String long) async {
+  Future<List<ConfirmModel>> getConfirmModel() async {
     List<ConfirmModel> identifiedList = new List();
     ConfirmModel identifiedAnimal = ConfirmModel(
         accuracyScore: 82,
@@ -903,11 +836,11 @@ class FakeApi implements Api {
   }
 
   @override
-  Future<TabModel> getTabModel() async {
+  Future<TabModel> getTabModel(String tab, String tab2, String tab3) async {
     List<String> categories = new List();
-    categories.add("Appearance");
-    categories.add("Tracks");
-    categories.add("Droppings");
+    categories.add(tab);
+    categories.add(tab2);
+    categories.add(tab3);
 
     return TabModel(categories: categories, length: categories.length);
   }
@@ -924,8 +857,8 @@ class FakeApi implements Api {
 
   @override
   Future<int> getUserLevel() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt("accessLevel");
+    int userlevel = 2;
+    return userlevel;
   }
 
   @override
@@ -936,23 +869,18 @@ class FakeApi implements Api {
   @override
   Future<ProfileInfoModel> getProfileInfoData() async {
     ProfileInfoModel profileInfo = new ProfileInfoModel(
-        name: "",
-        number: "",
-        email: "",
-        picture: "",
-        animalsTracked: "17",
-        spoorIdentified: "150",
-        speciesTracked: "38");
+        animalsTracked: 17, spoorIdentified: 150, speciesTracked: 38);
     return profileInfo;
   }
 
   @override
-  Future<List<ConfirmModel>> identifyImage(
-      String pic, String lat, String long) {
+  Future<List<ConfirmModel>> identifyImage(String url) {
     if (true) {
-      return getConfirmModel("", "", "");
+      return getConfirmModel();
     } else {
       return null;
     }
   }
+
+
 }

@@ -1,13 +1,10 @@
 # This is a generated file; do not edit or check into version control.
-camera=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\camera-0.5.8+5\\
 connectivity=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\connectivity-0.4.9\\
 connectivity_for_web=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\connectivity_for_web-0.3.1\\
 connectivity_macos=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\connectivity_macos-0.1.0+3\\
 flutter_plugin_android_lifecycle=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\flutter_plugin_android_lifecycle-1.0.8\\
 google_maps_flutter=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\google_maps_flutter-0.5.28+1\\
-image_downloader=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\image_downloader-0.20.0\\
 image_picker=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\image_picker-0.6.7+4\\
-maps_launcher=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\maps_launcher-1.2.2+1\\
 path_provider=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider-1.6.11\\
 path_provider_linux=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_linux-0.0.1+2\\
 path_provider_macos=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_macos-0.0.4+3\\
@@ -15,8 +12,3 @@ shared_preferences=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\share
 shared_preferences_linux=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_linux-0.0.2+1\\
 shared_preferences_macos=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_macos-0.0.1+10\\
 shared_preferences_web=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_web-0.1.2+7\\
-social_share=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\social_share-2.0.5\\
-url_launcher=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\url_launcher-5.5.0\\
-url_launcher_linux=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\url_launcher_linux-0.0.1+1\\
-url_launcher_macos=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\url_launcher_macos-0.0.1+7\\
-url_launcher_web=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\url_launcher_web-0.1.2+1\\

@@ -10,10 +10,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./track-identifications-toolbar.component.css']
 })
 export class TrackIdentificationsToolbarComponent implements OnInit {
-
-	@Input() searchText: string;
-	@Input() trackIds;
-	@Output() tracksOnChange: EventEmitter<Object> = new EventEmitter();
 	
 	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { }
 

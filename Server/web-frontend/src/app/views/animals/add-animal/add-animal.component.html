@@ -1,11 +1,8 @@
-<div id="dialog-progressbar-container">
-    <mat-progress-bar mode="indeterminate" id="dialog-progressbar"></mat-progress-bar>
-</div>
 <h1 mat-dialog-title>Add New Animal</h1>
 <mat-dialog-content>
     <form [formGroup]="addAnimalForm" id="add-animal-form">
-        <div id="add-animal-form-content">
-            <mat-form-field class="add-animal-form-input" appearance="outline">
+		<div id="add-animal-form-content">
+			<mat-form-field class="add-animal-form-input" appearance="outline">
                 <mat-label>Common Name</mat-label>
                 <input matInput formControlName="commonName" placeholder="i.e Elephant">
                 <mat-hint>Required</mat-hint>
@@ -20,7 +17,7 @@
                 <textarea rows="4" matInput #charTa formControlName="animalDescription"></textarea>
                 <mat-hint align="start">{{charTa.value?.length || 0}}/1500 (Required)</mat-hint>
             </mat-form-field>
-        </div>
+		</div>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="center">

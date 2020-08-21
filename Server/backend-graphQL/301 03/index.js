@@ -36,41 +36,6 @@ app.get('/', (req, res) => {
 
 })
 
-
-
-
-app.get('/pullMasterWindows', (req, res) => {
-    const { exec } = require("child_process");
-
-    exec("start cmd.exe /q /c pullMaster.bat", (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
-    });
-    res.send("termanil opened")
-})
-app.get('/pullMasterLinux', (req, res) => {
-    const { exec } = require("child_process");
-
-    exec("start cmd.exe /q /c pullMaster.bat", (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
-    });
-    res.send("termanil opened")
-})
 app.listen(port, () => {
     console.log('now listening for requests on port ' + port);
     console.log(`Example app listening at http://localhost:${port}`);

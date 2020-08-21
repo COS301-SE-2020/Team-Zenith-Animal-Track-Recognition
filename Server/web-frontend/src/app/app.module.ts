@@ -69,8 +69,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { GoogleMapsModule } from '@angular/google-maps';
-import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
 
 @NgModule({
   declarations: [
@@ -105,10 +103,8 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     AddAnimalComponent,
     RangerProfileComponent,
   	AnimalProfileComponent,
-    PersonalRangerPermissionComponentComponent,
-    AnimalProfileComponent,
-    RelativeTimeMPipe
-	],
+    PersonalRangerPermissionComponentComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -143,9 +139,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     MatProgressBarModule,
     MatDividerModule,
   	MatGridListModule,
-    NgbModule,
-    MatGridListModule,
-    GoogleMapsModule
+    NgbModule
   ],
   providers: [AuthGuardService],
   entryComponents: [

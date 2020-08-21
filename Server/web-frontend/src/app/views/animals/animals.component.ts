@@ -31,16 +31,9 @@ export class AnimalsComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.animals = temp[0];
-				this.animals.forEach(animal => {
-					const cont: boolean = ('' + animal.animalDescription).includes('.');
-					if (cont) {
-						animal.animalOverview = ('' + animal.animalDescription).substring(0, ('' + animal.animalDescription).indexOf(' ', ('' + animal.animalDescription).length < 120 ? 0 : 120) + 1);
-					} else {
-						animal.animalOverview = "No description provided. Please update this animal in the edit animal screen.";
-					}
-				});
+				console.log(this.animals[0]['typicalBehaviourM']);
 				this.sort(true);
-			});
+		});
 
 	}
 
@@ -67,15 +60,15 @@ export class AnimalsComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				var newAnimalList = temp[0];
-				this.animals = newAnimalList;
-				/*switch (updateOp) {
+				switch (updateOp) {
 					case "update":
 						this.animals = null;
+						this.animals = newAnimalList;
 						break;
 					case "add":
 						newAnimalList.forEach(x => this.addIfNewAnimal(x));
 						break;
-				}*/
+				}
 				this.sort(true);
 			});
 	}
