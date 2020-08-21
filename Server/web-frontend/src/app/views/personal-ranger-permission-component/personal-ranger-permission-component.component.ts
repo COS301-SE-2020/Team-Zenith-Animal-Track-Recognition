@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild , Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export interface Permissions {
 	permission: string;
@@ -21,23 +20,23 @@ const PERMISSIONS: Permissions[] = [
 	{ permission: "Edit Animal Information", level1: "0", level2: "0", level3: "1" },
 ];
 @Component({
-  selector: 'app-personal-ranger-permission-component',
-  templateUrl: './personal-ranger-permission-component.component.html',
-  styleUrls: ['./personal-ranger-permission-component.component.css']
+	selector: 'app-personal-ranger-permission-component',
+	templateUrl: './personal-ranger-permission-component.component.html',
+	styleUrls: ['./personal-ranger-permission-component.component.css']
 })
 
 export class PersonalRangerPermissionComponentComponent implements OnInit {
 
 	@ViewChild(MatAccordion) accordion: MatAccordion;
-  @Input() name;
+	@Input() name;
 
-  permissionsColumns: string[] = ['Permissions', 'Level 1 Rangers', 'Level 2 Rangers', 'Level 3 Rangers'];
+	permissionsColumns: string[] = ['Permissions', 'Level 1 Rangers', 'Level 2 Rangers', 'Level 3 Rangers'];
 	permissionsDataSource = PERMISSIONS;
-  
-	constructor(public activeModal: NgbActiveModal) {}
+
+	constructor() { }
 
 
-  ngOnInit(): void {
+	ngOnInit(): void {
 
 		PERMISSIONS.forEach(function (perm) {
 			if (perm.level1 == "1")
@@ -56,9 +55,9 @@ export class PersonalRangerPermissionComponentComponent implements OnInit {
 				perm.level3 = "<span class='material-icons notAllowed'>cancel</span>";
 		});
 
-  }
+	}
 
-  onSubmit(test: boolean){
+	onSubmit(test: boolean) {
 
-  }
+	}
 }

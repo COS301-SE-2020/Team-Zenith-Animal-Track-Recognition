@@ -60,13 +60,11 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -130,14 +128,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatRadioModule,
     MatTabsModule,
     MatProgressSpinnerModule,
-    MatAutocompleteModule,
     MatSnackBarModule,
     MatStepperModule,
     MatChipsModule,
     MatProgressBarModule,
     MatDividerModule,
-  	MatGridListModule,
-    NgbModule
+  	MatGridListModule
   ],
   providers: [AuthGuardService],
   entryComponents: [
