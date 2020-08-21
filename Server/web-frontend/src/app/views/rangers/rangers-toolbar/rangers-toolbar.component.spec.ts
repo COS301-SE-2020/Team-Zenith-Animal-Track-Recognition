@@ -49,8 +49,4 @@ describe('RangersToolbarComponent', () => {
     expect(true).toBeTruthy();
   });
 
-  it('Rangers should equal "Current Zenith" when printOut is called', () => {
-    component.printOut("Current Zenith");
-    expect(component.rangers).toBe("Current Zenith");
-  });
 });
