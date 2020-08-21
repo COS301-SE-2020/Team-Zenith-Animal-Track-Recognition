@@ -2495,3 +2495,4 @@ function addImgIDToAnimal(animalID, imgID) {
         console.error(err)
     })
 }
+
