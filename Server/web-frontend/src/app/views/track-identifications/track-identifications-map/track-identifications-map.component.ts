@@ -11,17 +11,60 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
   templateUrl: './track-identifications-map.component.html',
   styleUrls: ['./track-identifications-map.component.css']
 })
+
 export class TrackIdentificationsMapComponent implements OnInit {
 	
 	@Input() searchText: string;
-	@Input() trackIds;
+	@Input() tracksList;
+	@Input() tracksExist: boolean;
 	@Output() tracksOnChange: EventEmitter<Object> = new EventEmitter();
 	numRangers: any;
 	sorted: string;
-	map: google.maps.Map;
+	map: google.maps.Map = null; 
+	
 	
 	//PLACEHOLDER VALUES
-	coordinates = [
+	coordIndex = 0;
+
+	constructor(private http: HttpClient, private changeDetection: ChangeDetectorRef) { }
+
+	ngOnInit(): void {
+				//console.log("Track Map: " + this.tracksList);
+
+		//setTimeout(this.placeMarkers, 5000);
+		this.initMap();
+	}
+
+	initMap() {
+				console.log("Map init");
+		if (this.map == null)
+		{
+			this.map = new google.maps.Map(document.getElementById("identifications-google-map-container") as HTMLElement, {
+				center: { lat: -23.988, lng: 31.554 },
+				mapTypeId: 'roadmap',
+				maxZoom: 15,
+				minZoom: 7,
+				zoom: 9
+			});
+			if (this.map)
+			{
+				console.log("setting timeout");
+				//setTimeout(this.placeMarkers, 3000);
+				this.placeMarkers();
+			}
+		}	
+	}
+	
+	check(exist: any)
+	{
+		if (exist == true)
+			return true;
+	}
+
+	placeMarkers()
+	{
+		console.log("PLACING MARK");
+		var	coordinates = [
 		{
 			position: {
 				lat: -25.389,
@@ -118,57 +161,32 @@ export class TrackIdentificationsMapComponent implements OnInit {
 			}
 		}
 	];
-
-	constructor(private http: HttpClient, private router: Router, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
-
-	ngOnInit(): void {
-		this.initMap();
-		console.log("trackIds: " + this.trackIds);
-	}
-	
-	public ngOnChanges(changes: SimpleChanges) {
-		this.startLoader();
-		if (changes.rangers) {
-			//If rangers has updated
-			this.changeDetection.detectChanges();
-		}
-		this.stopLoader();
-	}
-//-23.988506, 31.554748
-
-	initMap() {
-		this.map = new google.maps.Map(document.getElementById("identifications-google-map-container") as HTMLElement, {
-			center: { lat: -23.988, lng: 31.554 },
-			mapTypeId: 'roadmap',
-			maxZoom: 15,
-			minZoom: 7,
-			zoom: 9
-		});
-		//Add markers
-		for (let i = 0; i < this.coordinates.length; i++)
-		{
-			//console.log("color: " +  this.tracksList[i].animal.animalMarkerColor);
+		for (let i = 0; i < coordinates.length; i++) {
+			var track = this.tracksList[i];
 			var markerIcon = {
 				path: "M172.3,501.7C27,291,0,269.4,0,192C0,86,86,0,192,0s192,86,192,192c0,77.4-27,99-172.3,309.7 C202.2,515.4,181.8,515.4,172.3,501.7L172.3,501.7z M192,272c44.2,0,80-35.8,80-80s-35.8-80-80-80s-80,35.8-80,80S147.8,272,192,272",
-				fillColor: '#06BAFB',
+				//fillColor: '#06BAFB',
+				fillColor: track.animal.animalMarkerColor,
 				fillOpacity: 1,
 				strokeWeight: 0,
-				scale: 0.1
+				scale: 0.07
 			}
+					console.log("Placing marker for " + track.animal.commonName);
+
 			//markerIcon.fillColor = 	this.tracksList[i].animal.animalMarkerColor;
 			let trackLocation = new google.maps.Marker({
 				map: this.map,
-				position: new google.maps.LatLng(this.coordinates[i].position.lat, this.coordinates[i].position.lng),
+				position: new google.maps.LatLng(coordinates[i].position.lat, coordinates[i].position.lng),
 				animation: google.maps.Animation.DROP,
 				icon: markerIcon,
 			});
-
 		}
 	}
-
-	//Ranger CRUD Quick-Actions
-	route(temp: string) {
-		this.router.navigate([temp]);
+	
+	getAnimalMarkerColor(index: number)
+	{
+		console.log("Sending Marker color");
+		return this.tracksList[index].animal.animalMarkerColor;
 	}
 
 	//Loader

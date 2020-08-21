@@ -12,7 +12,7 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 	
 	//https://codersloth.com/blogs/a-simple-time-ago-pipe-to-display-relative-time-in-angular/  <--- Time-ago Pipe
  	@Input() searchText: string;
-	@Input() trackIds;
+	@Input() trackIds: any;
 	@Input() trackDateTimes: string;
 	@Output() tracksOnChange: EventEmitter<Object> = new EventEmitter();
 	
@@ -20,7 +20,9 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 
 	ngOnInit(): void {
 		//this.startLoader();
+				console.log("Track Sidenav: " + this.trackIds);
 	}
+	
 	//Loader
 	startLoader() {
 		document.getElementById('loader-container').style.visibility = 'visible';
@@ -30,5 +32,3 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 	}
 
 }
-
-//Freezing a bit, give it time!
