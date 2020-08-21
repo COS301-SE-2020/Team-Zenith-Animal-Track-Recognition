@@ -127,11 +127,11 @@ const SPOOR_IDENTIFICATION_TYPE = new GraphQLObjectType({
                     animalID: parent.animal.toString()
                 })
 
-                if (parent.spoorIdentificationID == "103") {
-                    console.log(parent)
-                    console.log(animalData)
-                    console.log(temp)
-                }
+                // if (parent.spoorIdentificationID == "103") {
+                //     console.log(parent)
+                //     console.log(animalData)
+                //     console.log(temp)
+                // }
 
                 return temp;
             }
@@ -1145,7 +1145,7 @@ const Mutation = new GraphQLObjectType({
                     console.log("Document successfully deleted!");
                 })
 
-                console.log(usersData);
+                // console.log(usersData);
                 return mesData[0];
             }
 
@@ -1186,7 +1186,7 @@ const Mutation = new GraphQLObjectType({
                     groupName: args.groupName,
                     groupID: GID.toString()
                 }
-                console.log(GID.toString())
+                // console.log(GID.toString())
                 groups.doc(GID.toString()).set(newGroup)
 
                 groupData.push(newGroup)
@@ -1250,7 +1250,7 @@ const Mutation = new GraphQLObjectType({
                     console.log("deleted aberted 2");
                     return null
                 }
-                console.log("hello")
+                // console.log("hello")
                 let b = _.findIndex(groupData, {
                     token: args.groupID
                 })
@@ -1261,7 +1261,7 @@ const Mutation = new GraphQLObjectType({
                     console.log("Document successfully deleted!");
                 })
 
-                console.log(usersData);
+                // console.log(usersData);
                 return MesData[0];
             }
 
@@ -1823,7 +1823,13 @@ const Mutation = new GraphQLObjectType({
                     newSpoorIdentification.ranger = args.ranger
                 }
                 if (args.animal != undefined) {
+                    let animalToupdate=_.find(animalData,{
+                        addAnimal:args.animal
+                    })
+                    animalToupdate.pictures=animalToupdate.pictures.filter(item => item != newSpoorIdentification.picture)
+                    addImgIDToAnimal(args.animal,newSpoorIdentification.picture)
                     newSpoorIdentification.animal = args.animal
+                    
                 }
                 if (args.tags != undefined) {
                     newSpoorIdentification.tags = args.tags
@@ -2248,7 +2254,7 @@ function AIIterface(Img) {
 function uplodeBase64(Img) {
     newImgID = imgID()
     saveBase64File(Img, newImgID + ".jpeg")
-    console.log("reder")
+    // console.log("reder")
 
 
     async function uploadFile() {
@@ -2472,11 +2478,11 @@ function addImgIDToAnimal(animalID, imgID) {
     
     animals.where("animalID", "==", animalID.toString()).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-            console.log("start "+animalID+ " "+imgID)
+            // console.log("start "+animalID+ " "+imgID)
             let e = doc.data()
             e.pictures.push(imgID)
             animals.doc(doc.id).set(e)
-            console.log("run "+animalID+ " "+imgID)
+            // console.log("run "+animalID+ " "+imgID)
         });
     }).catch((err)=>{
         console.error(err)
