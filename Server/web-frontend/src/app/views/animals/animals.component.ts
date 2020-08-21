@@ -17,7 +17,7 @@ export class AnimalsComponent implements OnInit {
 	currentAlphabet: any;
 	surnames: boolean = true;
 	levels: boolean = false;
-	test: boolean;
+	test: boolean =  false;
 
 	constructor(private http: HttpClient) { }
 
