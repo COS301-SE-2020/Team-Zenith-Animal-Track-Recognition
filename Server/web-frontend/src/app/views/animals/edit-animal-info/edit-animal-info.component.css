@@ -235,13 +235,6 @@ textarea.mat-input-element
 {
 	width: 25%;
 }
-#left-btn
-{
-	width: 5px;
-	padding: 0px;
-	align-items: center;
-	border: 2px solid #CCCCCC;
-}
 #cancel-btn
 {
 	border: 2px solid #CCCCCC;
@@ -250,11 +243,4 @@ textarea.mat-input-element
 {
 	background-color: #686E79;
 	color: white;
-}
-#right-btn
-{
-	width: 5px;
-	padding: 0px;
-	align-items: center;
-	border: 2px solid #CCCCCC;
 }
