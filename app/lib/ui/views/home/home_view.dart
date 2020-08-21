@@ -44,7 +44,6 @@ class HomeView extends StatelessWidget {
                       bottomNavigationBar: BottomNavigation(),
                       floatingActionButton: FloatingActionButton(
                         onPressed: () {
-                          //captureImage();
                           showOptions(context);
                         },
                         child: Icon(

@@ -48,7 +48,6 @@ class GraphQL implements Api {
 
     for (int i = 0; i < categories.length; i++) {
       if (category == categories[i]) {
-        i++;
         final http.Response res = await http.get("$domain" +
             "graphql?query=query{animals(token:\"$token\", group:\"$i\" ){pictures{URL},classification, commonName , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
 
@@ -90,16 +89,11 @@ class GraphQL implements Api {
       body: json.encode({'query': query}),
     );
 
-    print("Response from ID: " + response.statusCode.toString());
-
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
 
       var list =
           body['data']['identificationBase64']['potentialMatches'] as List;
-
-      print("Response size: " + list.length.toString());
-      print(body);
 
       String score;
       String type = "Track";
@@ -109,8 +103,6 @@ class GraphQL implements Api {
 
       double count;
       int temp = list.length - 1;
-
-      print("Number of responses: " + list.length.toString());
 
       score = body['data']['identificationBase64']['potentialMatches'][temp]
               ['confidence']
@@ -256,10 +248,10 @@ class GraphQL implements Api {
         Duration difference = now.difference(track);
         date = (difference.inDays / 365).floor().toString() + " days ago";
 
-        location = "Lat: " +
-            body['data']['spoorIdentification'][i]['location']['latitude']
+        location = body['data']['spoorIdentification'][i]['location']
+                    ['latitude']
                 .toString() +
-            " Long: " +
+            " , " +
             body['data']['spoorIdentification'][i]['location']['longitude']
                 .toString();
         ranger = body['data']['spoorIdentification'][i]['ranger']['firstName']
@@ -443,10 +435,10 @@ class GraphQL implements Api {
         Duration difference = now.difference(track);
         date = (difference.inDays / 365).floor().toString() + " days ago";
 
-        location = "Lat: " +
-            body['data']['spoorIdentification'][i]['location']['latitude']
+        location = body['data']['spoorIdentification'][i]['location']
+                    ['latitude']
                 .toString() +
-            " Long: " +
+            " , " +
             body['data']['spoorIdentification'][i]['location']['longitude']
                 .toString();
         ranger = body['data']['spoorIdentification'][i]['ranger']['firstName']
@@ -507,7 +499,7 @@ class GraphQL implements Api {
 
       String temp;
       int count;
-      for (int i = 0; i < list.length; i++) {
+      for (int i = 1; i < list.length; i++) {
         count = list[i].toString().length;
         temp = list[i].toString().substring(12, count - 1);
 
@@ -644,10 +636,9 @@ class GraphQL implements Api {
               ['year']
           .toString());
 
-      location = "Lat: " +
-          body['data']['spoorIdentification'][0]['location']['latitude']
+      location = body['data']['spoorIdentification'][0]['location']['latitude']
               .toString() +
-          " Long: " +
+          " , " +
           body['data']['spoorIdentification'][0]['location']['longitude']
               .toString();
       ranger = body['data']['spoorIdentification'][0]['ranger']['firstName']
