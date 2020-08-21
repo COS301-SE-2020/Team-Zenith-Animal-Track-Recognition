@@ -154,7 +154,7 @@ Widget getWidget(var animalTabList) {
       itemBuilder: (BuildContext context, int index) {
         return Container(
           alignment: Alignment.centerLeft,
-          margin: new EdgeInsets.all(15),
+          margin: new EdgeInsets.all(10),
           padding: new EdgeInsets.all(0),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -184,16 +184,6 @@ Widget getWidget(var animalTabList) {
                               animalTabList[index].gestation,
                               context)),
                     ])),
-                // ListTileTheme(
-                //     dense: true,
-                //     child:
-                //         description(animalTabList[index].description, context)),
-                // ListTileTheme(
-                //     dense: true,
-                //     child: behaviour(animalTabList[index].behaviour, context)),
-                // ListTileTheme(
-                //     dense: true,
-                //     child: habitats(animalTabList[index].habitats, context)),
                 ListTileTheme(
                     dense: true,
                     child:
@@ -239,8 +229,8 @@ Widget imageBlock(String imageLink) {
       color: Colors.grey,
       borderRadius: BorderRadius.circular(15),
     ),
-    height: 75,
-    width: 75,
+    height: 90,
+    width: 80,
   );
 }
 //=============================IMAGE BLOCK======================
@@ -251,7 +241,7 @@ Widget cardText(String name, String sizeM, String sizeF, String weightM,
   return Container(
       margin: EdgeInsets.all(0),
       alignment: Alignment.center,
-      height: 75,
+      height: 105,
       width: 75,
       child: Column(children: <Widget>[
         Expanded(
@@ -262,7 +252,7 @@ Widget cardText(String name, String sizeM, String sizeF, String weightM,
                 padding: EdgeInsets.all(0),
                 child: text14RightBoldGrey(name))),
         Expanded(
-            flex: 2,
+            flex: 1,
             child: Container(
                 margin: EdgeInsets.all(0),
                 padding: EdgeInsets.all(0),
@@ -278,7 +268,7 @@ Widget cardText(String name, String sizeM, String sizeF, String weightM,
 
 Widget middleRow(
     String sizeM, String sizeF, String weightM, String weightF, var context) {
-  return Row(
+  return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
@@ -309,7 +299,7 @@ Widget middleRow(
           child: Row(
             children: <Widget>[
               Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Container(
                     child: text12LeftNormGrey("Weight:"),
                   )),
@@ -327,17 +317,15 @@ Widget middleRow(
 }
 
 Widget column(String metricF, String metricM, var context) {
-  return Column(
+  return Row(
     children: <Widget>[
       Expanded(
-        flex: 1,
+        // flex: 1,
         child: Row(
           children: <Widget>[
-            Expanded(
-                flex: 2,
-                child: Container(
-                  child: text12RighttNormGrey('$metricF kg'),
-                )),
+            Container(
+              child: text12RighttNormGrey('$metricF kg'),
+            ),
             Expanded(
                 flex: 1,
                 child: Container(
@@ -351,14 +339,12 @@ Widget column(String metricF, String metricM, var context) {
         ),
       ),
       Expanded(
-        flex: 1,
+        //flex: 1,
         child: Row(
           children: <Widget>[
-            Expanded(
-                flex: 2,
-                child: Container(
-                  child: text12RighttNormGrey('$metricM kg'),
-                )),
+            Container(
+              child: text12RighttNormGrey('$metricM kg'),
+            ),
             Expanded(
                 flex: 1,
                 child: Container(
@@ -376,17 +362,15 @@ Widget column(String metricF, String metricM, var context) {
 }
 
 Widget column2(String metricF, String metricM, var context) {
-  return Column(
+  return Row(
     children: <Widget>[
       Expanded(
-        flex: 1,
+        //flex: 1,
         child: Row(
           children: <Widget>[
-            Expanded(
-                flex: 2,
-                child: Container(
-                  child: text12RighttNormGrey('$metricF m'),
-                )),
+            Container(
+              child: text12RighttNormGrey('$metricF m'),
+            ),
             Expanded(
                 flex: 1,
                 child: Container(
@@ -400,14 +384,12 @@ Widget column2(String metricF, String metricM, var context) {
         ),
       ),
       Expanded(
-        flex: 1,
+        //flex: 1,
         child: Row(
           children: <Widget>[
-            Expanded(
-                flex: 2,
-                child: Container(
-                  child: text12RighttNormGrey('$metricM m'),
-                )),
+            Container(
+              child: text12RighttNormGrey('$metricM m'),
+            ),
             Expanded(
                 flex: 1,
                 child: Container(
@@ -425,7 +407,7 @@ Widget column2(String metricF, String metricM, var context) {
 }
 
 Widget bottomRow(String diet, String gestation, var context) {
-  return Row(
+  return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[

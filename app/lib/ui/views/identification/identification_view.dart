@@ -548,7 +548,7 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
                         ? TextInputField(
                             indexIdentifier: 0,
                           )
-                        : text16LeftNormBlack("Kruger National Park"))
+                        : text16LeftNormBlack(model.location))
               ],
             ),
           ),
@@ -866,7 +866,7 @@ Widget swapImageBlock(String link, int index, IdentificationViewModel model) {
         color: Colors.grey,
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
-          image: AssetImage(link),
+          image: NetworkImage(link),
           fit: BoxFit.fill,
         ),
       ),
@@ -887,7 +887,7 @@ Widget innerImageBlock(String link) {
         color: Colors.grey,
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
-          image: AssetImage(link),
+          image: NetworkImage(link),
           fit: BoxFit.fill,
         ),
       ),
@@ -994,7 +994,7 @@ Widget confidentImageBlock(String image) {
     //padding: new EdgeInsets.all(5),
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: AssetImage(image),
+        image: NetworkImage(image),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,

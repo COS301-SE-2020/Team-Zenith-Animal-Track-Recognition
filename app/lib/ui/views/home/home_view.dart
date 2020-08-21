@@ -44,7 +44,6 @@ class HomeView extends StatelessWidget {
                       bottomNavigationBar: BottomNavigation(),
                       floatingActionButton: FloatingActionButton(
                         onPressed: () {
-                          //captureImage();
                           showOptions(context);
                         },
                         child: Icon(
@@ -97,7 +96,7 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              navigateToIdentification(animalList[index].name.toLowerCase());
+              navigateToIdentification(animalList[index].id);
             },
             child: Card(
               shape: RoundedRectangleBorder(

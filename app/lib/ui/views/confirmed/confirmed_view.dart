@@ -425,6 +425,7 @@ Widget confidentImageBlock(String image) {
       borderRadius: BorderRadius.circular(15),
     ),
     height: 130,
+    width: 130,
   );
 }
 

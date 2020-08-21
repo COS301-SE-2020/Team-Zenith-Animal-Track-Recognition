@@ -395,6 +395,7 @@ class FakeApi implements Api {
   @override
   Future<List<SpoorModel>> getSpoorModel(String name) async {
     SpoorModel card1 = new SpoorModel(
+        '',
         'Elephant',
         'African Bush',
         'Kruger park',
@@ -405,6 +406,7 @@ class FakeApi implements Api {
         'assets/images/Elephant.jpeg');
 
     SpoorModel card2 = new SpoorModel(
+      '',
       'Rhino',
       'White',
       'Kruger park',
@@ -416,6 +418,7 @@ class FakeApi implements Api {
     );
 
     SpoorModel card3 = new SpoorModel(
+        '',
         'Buffalo',
         'Cape Buffalo',
         'Kruger park',
@@ -426,6 +429,7 @@ class FakeApi implements Api {
         'assets/images/buffalo.jpeg');
 
     SpoorModel card4 = new SpoorModel(
+        '',
         'Springbok',
         'Antelope',
         'Kruger park',
@@ -436,6 +440,7 @@ class FakeApi implements Api {
         'assets/images/springbok.jpg');
 
     SpoorModel card5 = new SpoorModel(
+        '',
         'Blesbok',
         'Antelope',
         'Kruger park',
@@ -446,6 +451,7 @@ class FakeApi implements Api {
         'assets/images/Blesbok.jpg');
 
     SpoorModel card6 = new SpoorModel(
+        '',
         'Red hartebeest',
         'A. buselaphus',
         'Kruger park',
@@ -521,6 +527,7 @@ class FakeApi implements Api {
   @override
   Future<List<HomeModel>> getHomeModel() async {
     HomeModel card1 = new HomeModel(
+        '',
         'Elephant',
         'African Bush',
         'Kruger park',
@@ -531,6 +538,7 @@ class FakeApi implements Api {
         'assets/images/Elephant.jpeg');
 
     HomeModel card2 = new HomeModel(
+      '',
       'Rhino',
       'White',
       'Kruger park',
@@ -542,6 +550,7 @@ class FakeApi implements Api {
     );
 
     HomeModel card3 = new HomeModel(
+        '',
         'Buffalo',
         'Cape Buffalo',
         'Kruger park',
@@ -552,6 +561,7 @@ class FakeApi implements Api {
         'assets/images/buffalo.jpeg');
 
     HomeModel card4 = new HomeModel(
+        '',
         'Springbok',
         'Antelope',
         'Kruger park',
@@ -562,6 +572,7 @@ class FakeApi implements Api {
         'assets/images/springbok.jpg');
 
     HomeModel card5 = new HomeModel(
+        '',
         'Blesbok',
         'Antelope',
         'Kruger park',
@@ -572,6 +583,7 @@ class FakeApi implements Api {
         'assets/images/Blesbok.jpg');
 
     HomeModel card6 = new HomeModel(
+        '',
         'Hartebeest',
         'A. buselaphus',
         'Kruger park',
