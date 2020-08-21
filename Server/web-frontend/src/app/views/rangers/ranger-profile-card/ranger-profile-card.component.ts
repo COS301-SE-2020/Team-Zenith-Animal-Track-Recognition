@@ -5,7 +5,6 @@ import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { EditRangerInfoComponent } from './../edit-ranger-info/edit-ranger-info.component';
 import { DeleteRangerComponent } from './../delete-ranger/delete-ranger.component';
-import { PersonalRangerPermissionComponentComponent } from './../../personal-ranger-permission-component/personal-ranger-permission-component.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 

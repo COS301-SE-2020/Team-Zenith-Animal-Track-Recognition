@@ -34,7 +34,6 @@ import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-pe
 import { TrackIdentificationsComponent } from './views/track-identifications/track-identifications.component';
 import { TrackIdentificationsToolbarComponent } from './views/track-identifications/track-identifications-toolbar/track-identifications-toolbar.component';
 import { TrackIdentificationsSidenavComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-sidenav.component';
-import { PersonalRangerPermissionComponentComponent } from './views/personal-ranger-permission-component/personal-ranger-permission-component.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 import { UtilityNavigationComponent } from './components/utility-navigation/utility-navigation.component';
@@ -98,8 +97,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     EditAnimalInfoComponent,
     AddAnimalComponent,
     RangerProfileComponent,
-  	AnimalProfileComponent,
-    PersonalRangerPermissionComponentComponent
+  	AnimalProfileComponent
   ],
   imports: [
     BrowserModule,
