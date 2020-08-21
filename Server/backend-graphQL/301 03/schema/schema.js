@@ -19,6 +19,7 @@ const {
 //google db
 const ADMIN = require('firebase-admin');
 let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
+const { start } = require('repl');
 ADMIN.initializeApp({
     credential: ADMIN.credential.cert(serviceAccount),
     storageBucket: "gs://erpzat.appspot.com"
@@ -42,7 +43,8 @@ let storage = ADMIN.storage().bucket()
 //google storage
 
 let mesData = [{
-    msg: "deleted"
+    msg: "deleted",
+    msg: "classification updated"
 }]
 let habitatData = []
 let usersData = []
@@ -1766,6 +1768,7 @@ const Mutation = new GraphQLObjectType({
                 })
 
                 spoorIdentificationData.push(newSpoorIdentification)
+                addImgIDToAnimal(newSpoorIdentification.animal,newSpoorIdentification.picture)
                 return newSpoorIdentification;
             }
         },
@@ -1908,6 +1911,46 @@ const Mutation = new GraphQLObjectType({
             }
 
         },
+        updateAnimalClassification: {
+            type: MES_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                classification: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                animalID: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.accessLevel <= 2) {
+                    return null
+                }
+                let temp = _.find(animalData, {
+                    animalID: args.animalID
+                })
+                if (temp == null || temp.classification == args.classification)
+                    return null
+
+                animals.doc(temp.classification).delete()
+                    .then(() => {
+                        temp.classification = args.classification
+                        animals.doc(temp.classification).set(temp)
+                    })
+
+
+                return mesData[1];
+            }
+        }
     }
 });
 
@@ -1970,10 +2013,7 @@ if (CACHE) {
     groups.onSnapshot(function (querySnapshot) {
         groupData = [];
         querySnapshot.forEach(function (doc) {
-            let newGoupe = {
-                groupID: doc.data().groupID,
-                groupName: doc.data().groupName
-            }
+            let newGoupe = doc.data()
             groupData.push(newGoupe)
         });
     });
@@ -1981,10 +2021,7 @@ if (CACHE) {
     habitats.onSnapshot(function (querySnapshot) {
         habitatData = []
         querySnapshot.forEach(function (doc) {
-            let newHabitat = {
-                habitatID: doc.data().habitatID,
-                habitatName: doc.data().habitatName
-            }
+            let newHabitat = doc.data()
             habitatData.push(newHabitat)
         });
     });
@@ -2015,7 +2052,8 @@ if (CACHE) {
                 newSpoorID.location.latitude = newLocation.latitude
                 newSpoorID.location.longitude = newLocation.longitude
             }
-
+            
+            // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
             spoorIdentificationData.push(newSpoorID)
         });
     });
@@ -2394,4 +2432,53 @@ function getRandomLocation() {
 
     var randomItem = myArray[Math.floor(Math.random() * myArray.length)];
     return randomItem
+}
+
+function selectRandomRanger() {
+    var myArray = [
+        "4TgRQVbO36v7ILv0vCnb",
+        "diw3QCFXFLm8h7uOWF54",
+        "PfPF3c4kjcsefABkEbw4",
+        "QZWe6r25cDcjsukzefSd",
+        "SzTqDwQGrA9k7yJQKtM3",
+    ];
+
+    var randomItem = myArray[Math.floor(Math.random() * myArray.length)];
+    return randomItem
+}
+
+function revres() {
+    spoorIdentifications.get()
+        .then(
+            function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+
+                    let e = doc.data()
+                    e.ranger = selectRandomRanger()
+                    spoorIdentifications.doc(doc.id).set(e)
+                });
+            }
+        )
+
+    // .forEach((e)=>{
+
+    //     e.ranger=selectRandomRanger()
+    //     spoorIdentifications.doc(e.spoorIdentificationID).update(e)
+
+}
+// revres()
+
+function addImgIDToAnimal(animalID, imgID) {
+    
+    animals.where("animalID", "==", animalID.toString()).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+            console.log("start "+animalID+ " "+imgID)
+            let e = doc.data()
+            e.pictures.push(imgID)
+            animals.doc(doc.id).set(e)
+            console.log("run "+animalID+ " "+imgID)
+        });
+    }).catch((err)=>{
+        console.error(err)
+    })
 }
