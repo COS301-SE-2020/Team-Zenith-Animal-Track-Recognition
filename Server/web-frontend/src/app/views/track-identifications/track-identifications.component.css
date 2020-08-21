@@ -86,3 +86,29 @@
 	width: 25px;
 	border: 1px solid #CCCCCC;
 }
+
+
+#identifications-map-container
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: space-around;
+	overflow: auto;
+}
+#identifications-google-map-container
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;	
+}
+map-marker
+{
+	border: 2px solid yellow;
+}
