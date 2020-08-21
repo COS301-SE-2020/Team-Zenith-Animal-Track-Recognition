@@ -1,5 +1,5 @@
-import { Router } from '@angular/router';
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FnParam } from '@angular/compiler/src/output/output_ast';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
@@ -16,13 +16,15 @@ export class RangerProfileCardComponent implements OnInit {
 
 	@Input() searchText: string;
 	@Input() rangersList;
-	numRangers: any;
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
+	numRangers: any;
 	sorted: string;
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
 
-	ngOnInit(): void { this.startLoader(); }
+	ngOnInit(): void { 
+		this.startLoader(); 
+	}
 
 
 	public ngOnChanges(changes: SimpleChanges) {
@@ -54,7 +56,7 @@ export class RangerProfileCardComponent implements OnInit {
 			disableClose: true,
 			id: 'edit-ranger-dialog',
 			data: {
-				token: rangerID,
+				rangerID: rangerID,
 				firstName: rangerName[0],
 				lastName: rangerName[1],
 				phoneNumber: rangerPhone.replace("call", ""),
@@ -107,8 +109,8 @@ export class RangerProfileCardComponent implements OnInit {
 		}
 	}
 
-	viewRangerProfile(token: string) {
-		this.router.navigate(['rangers/profiles'], { queryParams: { ranger: token } });
+	viewRangerProfile(rangerID: string) {
+		this.router.navigate(['rangers/profiles'], { queryParams: { ranger: rangerID } });
 	}
 
 	route(temp: string) {

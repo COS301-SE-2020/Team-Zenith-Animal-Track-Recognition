@@ -50,7 +50,7 @@ export class AuthService {
 
         const tkn = {
           value: user.data.wdbLogin.token,
-          expiry: now.getTime() + 3600000,
+          expiry: now.getTime() + 7200000,
           fullName: user.data.wdbLogin.firstName + ' ' + user.data.wdbLogin.lastName
         };
 

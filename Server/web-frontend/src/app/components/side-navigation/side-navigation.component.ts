@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -9,19 +9,28 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class SideNavigationComponent implements OnInit {
   test: boolean = false;
 
-  constructor(private router: Router) { }
+	@ViewChild('animalsPanel') animalsPanel: any;
 
-  ngOnInit(): void {
-    this.test = true;
-  }
+	constructor(private router: Router) { }
 
-  route(location: string) {
-    document.getElementById("animals-route").classList.remove("activeRoute");
-    document.getElementById("overview-route").classList.remove("activeRoute");
-    document.getElementById("rangers-route").classList.remove("activeRoute");
-    document.getElementById("geotags-route").classList.remove("activeRoute");
-    document.getElementById("settings-route").classList.remove("activeRoute");
+	ngOnInit(): void {
+		this.test = true;
+	}
 
-    this.router.navigate([location]);
-  }
+	route(location: string) {
+		document.getElementById("animals-route-link").classList.remove("activeRoute");
+		document.getElementById("animals-gallery-route").classList.remove("activeRoute");
+		document.getElementById("overview-route").classList.remove("activeRoute");
+		document.getElementById("rangers-route").classList.remove("activeRoute");
+		document.getElementById("geotags-route").classList.remove("activeRoute");
+		document.getElementById("settings-route").classList.remove("activeRoute");
+
+		this.router.navigate([location]);
+	}
+	
+	toggleAnimalsPanel()
+	{
+		this.animalsPanel.toggle();
+		document.getElementById("animals-expand-btn-icon").classList.toggle("rotateIcon");
+	}
 }

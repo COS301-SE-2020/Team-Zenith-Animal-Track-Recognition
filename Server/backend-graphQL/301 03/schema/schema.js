@@ -19,6 +19,7 @@ const {
 //google db
 const ADMIN = require('firebase-admin');
 let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
+const { start } = require('repl');
 ADMIN.initializeApp({
     credential: ADMIN.credential.cert(serviceAccount),
     storageBucket: "gs://erpzat.appspot.com"
@@ -42,7 +43,8 @@ let storage = ADMIN.storage().bucket()
 //google storage
 
 let mesData = [{
-    msg: "deleted"
+    msg: "deleted",
+    msg: "classification updated"
 }]
 let habitatData = []
 let usersData = []
@@ -124,6 +126,13 @@ const SPOOR_IDENTIFICATION_TYPE = new GraphQLObjectType({
                 let temp = _.find(animalData, {
                     animalID: parent.animal.toString()
                 })
+
+                // if (parent.spoorIdentificationID == "103") {
+                //     console.log(parent)
+                //     console.log(animalData)
+                //     console.log(temp)
+                // }
+
                 return temp;
             }
         },
@@ -1136,7 +1145,7 @@ const Mutation = new GraphQLObjectType({
                     console.log("Document successfully deleted!");
                 })
 
-                console.log(usersData);
+                // console.log(usersData);
                 return mesData[0];
             }
 
@@ -1177,7 +1186,7 @@ const Mutation = new GraphQLObjectType({
                     groupName: args.groupName,
                     groupID: GID.toString()
                 }
-                console.log(GID.toString())
+                // console.log(GID.toString())
                 groups.doc(GID.toString()).set(newGroup)
 
                 groupData.push(newGroup)
@@ -1241,7 +1250,7 @@ const Mutation = new GraphQLObjectType({
                     console.log("deleted aberted 2");
                     return null
                 }
-                console.log("hello")
+                // console.log("hello")
                 let b = _.findIndex(groupData, {
                     token: args.groupID
                 })
@@ -1252,7 +1261,7 @@ const Mutation = new GraphQLObjectType({
                     console.log("Document successfully deleted!");
                 })
 
-                console.log(usersData);
+                // console.log(usersData);
                 return MesData[0];
             }
 
@@ -1483,7 +1492,7 @@ const Mutation = new GraphQLObjectType({
                 }
 
                 let newAnimal = {
-                    animalID: HID,
+                    animalID: HID.toString(),
                     commonName: args.commonName,
                     groupID: args.groupID,
                     heightM: args.heightM,
@@ -1759,6 +1768,7 @@ const Mutation = new GraphQLObjectType({
                 })
 
                 spoorIdentificationData.push(newSpoorIdentification)
+                addImgIDToAnimal(newSpoorIdentification.animal,newSpoorIdentification.picture)
                 return newSpoorIdentification;
             }
         },
@@ -1774,7 +1784,7 @@ const Mutation = new GraphQLObjectType({
                 longitude: {
                     type: GraphQLFloat
                 },
-                SpoorIdentificationID: {
+                spoorIdentificationID: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 ranger: {
@@ -1788,21 +1798,26 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
+                
                 let a = _.find(usersData, {
                     token: args.token
                 })
+                
                 if (a == undefined) {
                     return null
                 }
-                if (a.accessLevel <= 1) {
+                
+                if (a.accessLevel.toNumber >= 1) {
                     return null
                 }
+                
                 let newSpoorIdentification = _.find(spoorIdentificationData, {
-                    SpoorIdentificationID: args.SpoorIdentificationID
+                    spoorIdentificationID: args.spoorIdentificationID
                 })
+                
                 if (newSpoorIdentification == null)
                     return null;
-
+                
                 if (args.latitude != undefined) {
                     newSpoorIdentification.location.latitude = args.latitude
                 }
@@ -1813,17 +1828,25 @@ const Mutation = new GraphQLObjectType({
                     newSpoorIdentification.ranger = args.ranger
                 }
                 if (args.animal != undefined) {
+                    
+                    let animalToupdate=_.find(animalData,{
+                        animalID:args.animal
+                    })
+                    
+                    animalToupdate.pictures=animalToupdate.pictures.filter(item => item != newSpoorIdentification.picture)
+                    addImgIDToAnimal(args.animal,newSpoorIdentification.picture)
                     newSpoorIdentification.animal = args.animal
+                    
                 }
                 if (args.tags != undefined) {
                     newSpoorIdentification.tags = args.tags
                 }
+console.log("animalToupdate")
 
-
-                spoorIdentifications.doc(SpoorIdentificationID).set(newSpoorIdentification).then(function (docRef) {
+                spoorIdentifications.doc(newSpoorIdentification.spoorIdentificationID).set(newSpoorIdentification).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
-                newSpoorIdentification.SpoorIdentificationID = SpoorIdentificationID
+                // newSpoorIdentification.spoorIdentificationID = spoorIdentificationID
                 spoorIdentificationData.push(newSpoorIdentification)
                 return newSpoorIdentification;
             }
@@ -1901,6 +1924,46 @@ const Mutation = new GraphQLObjectType({
             }
 
         },
+        updateAnimalClassification: {
+            type: MES_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                classification: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                animalID: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.accessLevel <= 2) {
+                    return null
+                }
+                let temp = _.find(animalData, {
+                    animalID: args.animalID
+                })
+                if (temp == null || temp.classification == args.classification)
+                    return null
+
+                animals.doc(temp.classification).delete()
+                    .then(() => {
+                        temp.classification = args.classification
+                        animals.doc(temp.classification).set(temp)
+                    })
+
+
+                return mesData[1];
+            }
+        }
     }
 });
 
@@ -1963,10 +2026,7 @@ if (CACHE) {
     groups.onSnapshot(function (querySnapshot) {
         groupData = [];
         querySnapshot.forEach(function (doc) {
-            let newGoupe = {
-                groupID: doc.data().groupID,
-                groupName: doc.data().groupName
-            }
+            let newGoupe = doc.data()
             groupData.push(newGoupe)
         });
     });
@@ -1974,10 +2034,7 @@ if (CACHE) {
     habitats.onSnapshot(function (querySnapshot) {
         habitatData = []
         querySnapshot.forEach(function (doc) {
-            let newHabitat = {
-                habitatID: doc.data().habitatID,
-                habitatName: doc.data().habitatName
-            }
+            let newHabitat = doc.data()
             habitatData.push(newHabitat)
         });
     });
@@ -2003,6 +2060,13 @@ if (CACHE) {
             let newSpoorID = doc.data()
             if (doc.data().picture == undefined)
                 newSpoorID.picture = selerRandomImg()
+            if (newSpoorID.location.latitude == 0.0 && newSpoorID.location.longitude == 0.0) {
+                newLocation = getRandomLocation()
+                newSpoorID.location.latitude = newLocation.latitude
+                newSpoorID.location.longitude = newLocation.longitude
+            }
+            
+            // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
             spoorIdentificationData.push(newSpoorID)
         });
     });
@@ -2197,7 +2261,7 @@ function AIIterface(Img) {
 function uplodeBase64(Img) {
     newImgID = imgID()
     saveBase64File(Img, newImgID + ".jpeg")
-    console.log("reder")
+    // console.log("reder")
 
 
     async function uploadFile() {
@@ -2320,3 +2384,115 @@ function selerRandomImg() {
     var randomItem = myArray[Math.floor(Math.random() * myArray.length)];
     return randomItem
 }
+
+function getRandomLocation() {
+    var myArray = [{
+            latitude: -25.389,
+            longitude: 31.974
+        },
+        {
+            latitude: -24.994727,
+            longitude: 31.596844
+        },
+        {
+            latitude: -22.440,
+            longitude: 31.083
+        },
+        {
+            latitude: -25.389095,
+            longitude: 31.974704
+        },
+        {
+            latitude: -24.600824,
+            longitude: 31.629764
+        },
+        {
+            latitude: -25.389095,
+            longitude: 31.974704
+        }, {
+            latitude: -24.923853,
+            longitude: 31.659375
+        }, {
+            latitude: 25.364658,
+            longitude: 31.683832
+        }, {
+            latitude: -24.992296,
+            longitude: 31.598448
+        }, {
+            latitude: -24.992296,
+            longitude: 31.598448
+        }, {
+            latitude: -24.45083,
+            longitude: 31.9775
+        }, {
+            latitude: -24.450961,
+            longitude: 31.977753
+        }, {
+            latitude: -25.353957,
+            longitude: 31.990556
+        }, {
+            latitude: -25.307752,
+            longitude: 31.971838
+        }, {
+            latitude: -24.873248,
+            longitude: 31.656253
+        }, {
+            latitude: 25.13490,
+            longitude: 31.34007
+        }
+
+    ];
+
+    var randomItem = myArray[Math.floor(Math.random() * myArray.length)];
+    return randomItem
+}
+
+function selectRandomRanger() {
+    var myArray = [
+        "4TgRQVbO36v7ILv0vCnb",
+        "diw3QCFXFLm8h7uOWF54",
+        "PfPF3c4kjcsefABkEbw4",
+        "QZWe6r25cDcjsukzefSd",
+        "SzTqDwQGrA9k7yJQKtM3",
+    ];
+
+    var randomItem = myArray[Math.floor(Math.random() * myArray.length)];
+    return randomItem
+}
+
+function revres() {
+    spoorIdentifications.get()
+        .then(
+            function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+
+                    let e = doc.data()
+                    e.ranger = selectRandomRanger()
+                    spoorIdentifications.doc(doc.id).set(e)
+                });
+            }
+        )
+
+    // .forEach((e)=>{
+
+    //     e.ranger=selectRandomRanger()
+    //     spoorIdentifications.doc(e.spoorIdentificationID).update(e)
+
+}
+// revres()
+
+function addImgIDToAnimal(animalID, imgID) {
+    
+    animals.where("animalID", "==", animalID.toString()).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+            // console.log("start "+animalID+ " "+imgID)
+            let e = doc.data()
+            e.pictures.push(imgID)
+            animals.doc(doc.id).set(e)
+            // console.log("run "+animalID+ " "+imgID)
+        });
+    }).catch((err)=>{
+        console.error(err)
+    })
+}
+

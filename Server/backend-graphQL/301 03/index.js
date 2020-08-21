@@ -6,7 +6,21 @@ const fs = require('fs');
 const app = express();
 const port = 55555;
 let status = "idle"
+var datetime = new Date();
 
+
+var util = require('util');
+var logFile = fs.createWriteStream('log.txt', { flags: 'a' });
+  // Or 'w' to truncate the file every time the process starts.
+var logStdout = process.stdout;
+
+console.log = function () {
+  logFile.write(util.format.apply(null, arguments) + '\n');
+  logStdout.write(util.format.apply(null, arguments) + '\n');
+}
+console.error = console.log;
+console.log("\n\n\n******logStatOf ")
+console.log(datetime);
 
 const schema = require('./schema/schema');
 // bind express with graphql

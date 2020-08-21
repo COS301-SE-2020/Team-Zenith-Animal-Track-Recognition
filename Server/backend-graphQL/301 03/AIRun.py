@@ -27,3 +27,4 @@ input_arr = np.array([input_arr])  # Convert single image to a batch.
 predictions = probability_model(input_arr)
 # score = tf.nn.softmax(predictions)
 print(predictions)
+g
