@@ -11,13 +11,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	styleUrls: ['./animals-toolbar.component.css']
 })
 export class AnimalsToolbarComponent implements OnInit {
+	@Input() animals: any;
+	@Input() searchText: string;
+	@Input() sortBy: boolean;
+
+	@Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
+	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
+	@Output() sBSOnChange: EventEmitter<string> = new EventEmitter();
 
 	test: boolean = false;
-	@Input() animals;
-	@Input() searchText: string;
-	@Input() sortByCommonName: boolean;
-	@Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
-	@Output() sBSOnChange: EventEmitter<string> = new EventEmitter();
 
 	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { }
 
@@ -75,4 +77,18 @@ export class AnimalsToolbarComponent implements OnInit {
 
 		this.router.navigate([location]);
 	}
+
+	updateSearchText(event) {
+		this.searchTextOnChange.emit(event);
+	}
+
+	/*toggle(bool: boolean) {
+		this.sortByCommonName = bool;
+		this.sort(bool);
+	}*/
+
+	sort(selection: number) {
+		this.router.navigate(['animals'], { queryParams: { sort: selection } });
+	}
+
 }

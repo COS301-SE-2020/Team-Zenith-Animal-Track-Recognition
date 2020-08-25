@@ -1,21 +1,26 @@
 <div id="animals-toolbar-container">
-	<div id="animals-toolbar-navigationtree-container">
-		<div id="animals-toolbar-navigation">
-			<a href="javascript:void(0)" class="fontM activeView">Animals</a>
-		</div>
-	</div>
-	<div id="animals-toolbar">
+    <div id="animals-toolbar-navigationtree-container">
+        <div id="animals-toolbar-navigation">
+            <a href="javascript:void(0)" class="fontM activeView">Animals</a>
+        </div>
+    </div>
+    <div id="animals-toolbar">
+        <mat-form-field id="animals-toolbar-search-bar" appearance="outline">
+            <input id="search-sidenav-input" matInput placeholder="Search Animals" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" (ngModelChange)="updateSearchText($event)">
+            <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
         <mat-select id="animals-toolbar-sortby-btn" class="fontR" placeholder="Sort By" disableOptionCentering>
-			<mat-option value="recentEdits">Recently Edited</mat-option>
-			<mat-option value="abc">Alphabetical</mat-option>
-			<mat-option value="height">Height</mat-option>
-			<mat-option value="weight">Weight</mat-option>
-			<mat-option value="status">Vulnerability Status</mat-option>
-		</mat-select>
+            <mat-option value="abc" (click)="sort(1)">Alphabetical</mat-option>
+            <mat-option value="groups" (click)="sort(2)">Groups</mat-option>
+            <mat-option value="height" (click)="sort(3)">Height</mat-option>
+            <mat-option value="weight" (click)="sort(4)">Weight</mat-option>
+            <!--mat-option value="recentEdits">Recently Edited</mat-option-->
+            <!--mat-option value="status">Vulnerability Status</mat-option-->
+        </mat-select>
         <mat-select id="animals-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
-			<mat-option (click)="openAddAnimalDialog()">Add New Animal</mat-option>
-			<mat-option>Add New Image</mat-option>
-			<mat-option>Group Management</mat-option>
-		</mat-select>
-	</div>
+            <mat-option (click)="openAddAnimalDialog()">Add New Animal</mat-option>
+            <mat-option>Add New Image</mat-option>
+            <mat-option>Group Management</mat-option>
+        </mat-select>
+    </div>
 </div>

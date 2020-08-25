@@ -1,5 +1,5 @@
 <div id="animals-view-workspace-container">
-    <app-animals-toolbar></app-animals-toolbar>
+    <app-animals-toolbar [animals]="animals" (animalsOnChange)="updateAnimalList($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"></app-animals-toolbar>
     <div id="animals-view-workspace">
         <mat-drawer-container id="animal-search-sidenav-container">
             <mat-drawer id="animal-search-sidenav" #sidenav mode="side">

@@ -39,7 +39,7 @@ export class AuthService {
   }
 
   login(username, password) {
-    return this.http.get<any>(ROOT_QUERY_STRING + '?query=query{wdbLogin(eMail:"' + username + '",password:"' + password + '"){token, firstName, lastName}}')
+    return this.http.get<any>(ROOT_QUERY_STRING + '?query=query{wdbLogin(eMail:"' + username + '",password:"' + password + '"){token, firstName, lastName, rangerID}}')
       .pipe(map(user => {
         if (null === user.data.wdbLogin) {
           this.isAuthorized = false;
@@ -51,15 +51,13 @@ export class AuthService {
         const tkn = {
           value: user.data.wdbLogin.token,
           expiry: now.getTime() + 7200000,
-          fullName: user.data.wdbLogin.firstName + ' ' + user.data.wdbLogin.lastName
+          firstName: user.data.wdbLogin.firstName,
+          currentID: user.data.wdbLogin.rangerID
         };
 
         localStorage.setItem('currentToken', JSON.stringify(tkn));
         this.currentUserSubject.next(user);
         this.isAuthorized = true;
-
-        //Save last name to use for Profile name
-        localStorage.setItem('userLastName', user.data.wdbLogin.lastName);
 
         return user;
       }));
