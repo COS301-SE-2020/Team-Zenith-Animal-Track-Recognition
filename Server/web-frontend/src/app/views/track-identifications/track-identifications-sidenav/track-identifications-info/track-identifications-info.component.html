@@ -1,0 +1,211 @@
+  <div id="animal-photos-track-info-container">
+                <div id="animal-photos-track-info-title">
+                    <button mat-icon-button aria-label="Close Track Info Button" (click)="backToTrackList()">
+						<mat-icon>arrow_back</mat-icon>
+					</button>
+                    <div>
+                        <p id="animal-photos-track-title-animal" class="fontSB" *ngIf="activeTrack">{{activeTrack.animal.commonName}} Track Identified</p>
+                        <p id="animal-photos-track-title-capturedby" class="fontM" *ngIf="activeTrack">Captured by {{activeTrack.ranger.firstName}} {{activeTrack.ranger.lastName}}</p>
+                    </div>
+					<button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
+						<mat-icon>more_vert</mat-icon>
+					</button>
+					<mat-menu #menu="matMenu" xPosition="before">
+						<button *ngIf="activeTrack" (click)="viewAnimalProfile(activeTrack.animal.classification)" mat-menu-item>
+							<span>View Animal Info</span>
+						</button>
+						<button *ngIf="activeTrack" (click)="viewAnimalPhotos(activeTrack.animal.classification)" mat-menu-item>
+							<span>View Animal Photos</span>
+						</button>
+					</mat-menu>
+                </div>
+				<div id="animal-photos-track-info-content">
+					<div id="animal-photos-track-image-container">
+					    <img  *ngIf="activeTrack" src="{{activeTrack.picture.URL}}" alt="Track image">
+					</div>
+					<div id="animal-photos-track-id-results">
+						<div id="animal-photos-track-id-title">
+							<p class="fontSB">Track Identification Results</p>
+						</div>
+						<div id="animal-photos-track-id-result">
+							<div id="animal-photos-track-id-image">
+								<img id="animal-photo-detail-current-image" *ngIf="activeTrack" src="{{activeTrack.animal.pictures[0].URL}}">
+							</div>
+							<div id="animal-photos-track-id-score">
+								<p id="animal-photos-track-title-commonname" class="fontM" *ngIf="activeTrack">{{activeTrack.animal.commonName}}</p>
+								<p id="animal-photos-track-title-classification" class="fontM" *ngIf="activeTrack">{{activeTrack.animal.classification}}</p>
+								<p id="animal-photos-track-accuracyscore-title" class="fontSB">Accuracy Score</p>
+								<p id="animal-photos-track-accuracy-score" class="fontB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 1].confidence | percent}}</p>
+							</div>
+						</div>
+					</div>
+					<div id="animal-photos-track-geotag-container">
+						<div class="animal-photos-container-title">
+							<p class="fontSB">Track Geotag Information</p>
+						</div>
+						<div id="animal-photos-track-geotag-info">
+							<div id="animal-photos-geotag-location-info">
+								<div class="animal-photos-geotag-entry-container">
+									<div class="animal-photos-geotag-icon-container">
+										<mat-icon>room</mat-icon>
+									</div>
+									<div class="animal-photos-geotag-text-container">
+										<p class="fontM" *ngIf="activeTrack">Kruger National Park</p>
+										<p class="fontM" *ngIf="activeTrack">{{activeTrack.location.latitude}},{{activeTrack.location.longitude}}</p>
+									</div>
+								</div>
+							</div>
+							<div id="animal-photos-geotag-date-info">
+								<div class="animal-photos-geotag-entry-container">
+									<div class="animal-photos-geotag-icon-container">
+										<mat-icon>event</mat-icon>
+									</div>
+									<div class="animal-photos-geotag-text-container">
+										<p class="fontM" *ngIf="activeTrack">{{activeTrack.dateObj | date:'EEE'}}, {{activeTrack.dateObj | date:'h:mm a'}}</p>
+										<p class="fontM" *ngIf="activeTrack">{{activeTrack.dateObj | date:'dd MMMM yyyy'}}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="animal-photos-other-matches-container">
+						<div class="animal-photos-container-title">
+							<p class="fontSB">Other Possible Matches</p>
+							<div class="other-potential-matches-nav">
+								<button mat-icon-button (click)="prevPotentialMatch()">
+									<mat-icon>chevron_left</mat-icon>
+								</button>
+								<button mat-icon-button (click)="nextPotentialMatch()">
+									<mat-icon>chevron_right</mat-icon>
+								</button>
+							</div>
+						</div>
+						<div id="animal-photos-other-matches-tab">
+						    <mat-tab-group mat-align-tabs="center" #otherMatchesMatTab>
+								<mat-tab>
+									<div class="other-potential-matches-container">
+										<div class="other-potential-matches-animal">
+											<div class="other-potential-matches-image-container">
+												<div class="other-potential-matches-image">
+													<img *ngIf="activeTrack" src="{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 2].animal.pictures[0].URL}}">
+												</div>
+											</div>
+											<div class="other-potential-matches-animal-info">
+												<p class="other-potential-match-commonname fontSB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 2].animal.commonName}}</p>
+												<p class="other-potential-match-classification fontM" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 2].animal.classification | titlecase}}</p>
+												<p class="other-potential-match-accuracy-score fontB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 2].confidence | percent}}</p>
+											</div>
+										</div>
+										<div class="other-potential-matches-animal">
+											<div class="other-potential-matches-image-container">
+												<div class="other-potential-matches-image">
+													<img *ngIf="activeTrack" src="{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 3].animal.pictures[0].URL}}">
+												</div>
+											</div>
+											<div class="other-potential-matches-animal-info">
+												<p class="other-potential-match-commonname fontSB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 3].animal.commonName}}</p>
+												<p class="other-potential-match-classification fontM" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 3].animal.classification | titlecase}}</p>
+												<p class="other-potential-match-accuracy-score fontB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 3].confidence | percent}}</p>
+											</div>
+										</div>
+									</div>
+								</mat-tab>
+								<mat-tab>
+									<div class="other-potential-matches-container">
+										<div class="other-potential-matches-animal">
+											<div class="other-potential-matches-image-container">
+												<div class="other-potential-matches-image">
+													<img *ngIf="activeTrack" src="{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 4].animal.pictures[0].URL}}">
+												</div>
+											</div>
+											<div class="other-potential-matches-animal-info">
+												<p class="other-potential-match-commonname fontSB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 4].animal.commonName}}</p>
+												<p class="other-potential-match-classification fontM" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 4].animal.classification | titlecase}}</p>
+												<p class="other-potential-match-accuracy-score fontB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 4].confidence | percent}}</p>
+											</div>
+										</div>
+										<div class="other-potential-matches-animal">
+											<div class="other-potential-matches-image-container">
+												<div class="other-potential-matches-image">
+													<img *ngIf="activeTrack" src="{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 5].animal.pictures[0].URL}}">
+												</div>
+											</div>
+											<div class="other-potential-matches-animal-info">
+												<p class="other-potential-match-commonname fontSB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 5].animal.commonName}}</p>
+												<p class="other-potential-match-classification fontM" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 5].animal.classification | titlecase}}</p>
+												<p class="other-potential-match-accuracy-score fontB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 5].confidence | percent}}</p>
+											</div>
+										</div>
+									</div>
+								</mat-tab>
+								<mat-tab>
+									<div class="other-potential-matches-container">
+										<div class="other-potential-matches-animal">
+											<div class="other-potential-matches-image-container">
+												<div class="other-potential-matches-image">
+													<img *ngIf="activeTrack" src="{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 6].animal.pictures[0].URL}}">
+												</div>
+											</div>
+											<div class="other-potential-matches-animal-info">
+												<p class="other-potential-match-commonname fontSB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 6].animal.commonName}}</p>
+												<p class="other-potential-match-classification fontM" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 6].animal.classification | titlecase}}</p>
+												<p class="other-potential-match-accuracy-score fontB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 6].confidence | percent}}</p>
+											</div>
+										</div>
+										<div class="other-potential-matches-animal">
+											<div class="other-potential-matches-image-container">
+												<div class="other-potential-matches-image">
+													<img *ngIf="activeTrack" src="{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 7].animal.pictures[0].URL}}">
+												</div>
+											</div>
+											<div class="other-potential-matches-animal-info">
+												<p class="other-potential-match-commonname fontSB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 7].animal.commonName}}</p>
+												<p class="other-potential-match-classification fontM" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 7].animal.classification | titlecase}}</p>
+												<p class="other-potential-match-accuracy-score fontB" *ngIf="activeTrack">{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 7].confidence | percent}}</p>
+											</div>
+										</div>
+									</div>
+								</mat-tab>
+							</mat-tab-group>
+						</div>
+					</div>
+					<div id="animal-photos-similar-tracks-container">
+						<div class="animal-photos-container-title">
+							<p class="fontSB">Similar Tracks</p>
+							<div class="other-potential-matches-nav">
+								<button mat-icon-button (click)="prevSimilarTrack()">
+									<mat-icon>chevron_left</mat-icon>
+								</button>
+								<button mat-icon-button (click)="nextSimilarTrack()">
+									<mat-icon>chevron_right</mat-icon>
+								</button>
+							</div>
+						</div>
+						<div id="animal-photos-similar-tracks-tab">
+						    <mat-tab-group *ngIf="activeTrack" mat-align-tabs="center" #simTracksMatTab>
+								<mat-tab *ngFor="let similarTrackBatch of activeTrack.similarTracks">
+									<div class="other-potential-matches-container">
+										<div class="other-potential-matches-image-container"  *ngFor="let similarTrackImg of similarTrackBatch">
+											<div class="other-potential-matches-image">
+												<img src="{{similarTrackImg}}">
+											</div>
+										</div>
+									</div>
+								</mat-tab>
+							</mat-tab-group>
+						</div>
+					</div>
+					<div id="animal-photos-track-tags-container">
+						<div id="animal-photos-tags-container-title">
+							<p class="fontSB">Tag Information</p>
+						</div>
+						<div id="animal-photos-track-tag-list">
+							<mat-chip-list>
+								<mat-chip selected>Found near riverbed</mat-chip>
+								<mat-chip color="warn" selected>Possible injury</mat-chip>
+								<mat-chip>Infant</mat-chip>
+							</mat-chip-list>
+						</div>
+					</div>
+				</div>
+            </div>

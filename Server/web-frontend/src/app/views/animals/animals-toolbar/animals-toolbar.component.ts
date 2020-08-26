@@ -11,12 +11,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	styleUrls: ['./animals-toolbar.component.css']
 })
 export class AnimalsToolbarComponent implements OnInit {
+	
 	@Input() animals: any;
 	@Input() searchText: string;
 	@Input() sortBy: boolean;
 
 	@Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
+	@Output() sortOptionOnChange: EventEmitter<string> = new EventEmitter();
 	@Output() sBSOnChange: EventEmitter<string> = new EventEmitter();
 
 	test: boolean = false;
@@ -42,7 +44,7 @@ export class AnimalsToolbarComponent implements OnInit {
 		addDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
 			if (result == 'success') {
-				//If ranger was successfully added, refresh component and notify parent
+				//If animal was successfully added, refresh component and notify parent
 				this.animalsOnChange.emit('add');
 			}
 			else if (result == 'error') {
@@ -87,8 +89,8 @@ export class AnimalsToolbarComponent implements OnInit {
 		this.sort(bool);
 	}*/
 
-	sort(selection: number) {
-		this.router.navigate(['animals'], { queryParams: { sort: selection } });
+	sort(selection: string) {
+		this.sortOptionOnChange.emit(selection);
 	}
 
 }

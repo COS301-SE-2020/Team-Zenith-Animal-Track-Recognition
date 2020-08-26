@@ -3,7 +3,7 @@
     <div id="identifications-view-workspace">
         <mat-drawer-container id="identifications-search-sidenav-container">
             <mat-drawer id="identifications-search-sidenav" #sidenav mode="side" opened="true" (opened)="showCloseBtn()" (closed)="showOpenBtn()">
-                <app-track-identifications-sidenav [trackDateTimes]="timeAsString" [trackIds]="trackIdentifications" (tracksOnChange)="updateTrackList($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"></app-track-identifications-sidenav>
+                <app-track-identifications-sidenav [fullTrackList]="trackIdentifications" [displayedTracks]="displayedTracks" (focusOnTrackChange)="zoomOnTrack($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"  (trackPageOnChange)="iterateDisplayedTracks($event)"></app-track-identifications-sidenav>
             </mat-drawer>
             <mat-drawer-content id="identifications-search-sidenav-content">
                 <div id="sidenav-close-btn-container" (click)="closeSidenav()">

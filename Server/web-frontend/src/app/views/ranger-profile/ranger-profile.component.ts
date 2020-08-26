@@ -80,7 +80,7 @@ export class RangerProfileComponent implements OnInit {
 		private router: Router, 
 		private activatedRoute: ActivatedRoute, 
 		public dialog: MatDialog, 
-		private snackBar: MatSnackBar, ) { }
+		private snackBar: MatSnackBar ) { }
 
 	ngOnInit(): void {
 		this.startLoader();

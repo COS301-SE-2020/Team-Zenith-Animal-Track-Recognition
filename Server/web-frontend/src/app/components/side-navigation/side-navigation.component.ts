@@ -18,13 +18,6 @@ export class SideNavigationComponent implements OnInit {
 	}
 
 	route(location: string) {
-		document.getElementById("animals-route-link").classList.remove("activeRoute");
-		document.getElementById("animals-gallery-route").classList.remove("activeRoute");
-		document.getElementById("overview-route").classList.remove("activeRoute");
-		document.getElementById("rangers-route").classList.remove("activeRoute");
-		document.getElementById("geotags-route").classList.remove("activeRoute");
-		document.getElementById("settings-route").classList.remove("activeRoute");
-
 		this.router.navigate([location]);
 	}
 	

@@ -1,0 +1,516 @@
+
+
+
+.mat-tab-group {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+}
+
+:host ::ng-deep .mat-tab-header {
+    display: none;
+}
+:host ::ng-deep .mat-tab-body-wrapper
+{
+	height: 100%;
+}
+
+
+
+/* Track */
+
+#animal-search-sidenav-container {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+}
+
+#animal-search-sidenav {
+    height: 100%;
+    width: 300px;
+    border-right: 2px solid #CCCCCC;
+    box-shadow: 1px 0px 5px #DDDDDD;
+}
+
+#animal-photos-track-info-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+	justify-content: flex-start;
+}
+
+#animal-photos-track-info-title {
+    height: 10%;
+    width: 100%;
+    box-shadow: 0px 1px 5px #EEE;
+	flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+	margin: 1% 0;
+}
+
+#animal-photos-track-info-title > div {
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+}
+.animal-profile-card-contextMenu
+{
+	margin-left: auto;
+}
+#animal-photos-track-info-content
+{
+	height: 90%;
+	width: 100%;
+    border-top: 1px solid #CCC;
+    display: flex;
+    flex-direction: column;
+	justify-content: flex-start;
+	overflow-y: auto;
+}
+#animal-photos-track-image-container
+{
+	height: auto;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
+	overflow: hidden;
+}
+#animal-photos-track-image-container > img
+{
+	height: auto;
+	width: 100%;
+}
+#animal-photos-track-id-results {
+    height: 45%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+	flex-shrink: 0;
+	margin: 5% 0;
+    padding: 0% 5%;
+}
+
+#animal-photos-track-id-result {
+    height: 70%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+	padding-top: 2%;
+}
+
+#animal-photos-track-id-image {
+    height: 135px;
+    width: 135px;
+    border-radius: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+	overflow: hidden;
+}
+
+#animal-photos-track-id-image > img {
+    height: 100%;
+    width: auto;
+}
+
+#animal-photos-track-id-score {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+	align-items: flex-start;
+}
+
+#animal-photos-track-title-commonname
+{
+    color: rgba(0,0,0,.85);
+	font-size: 115%;
+	padding: 1% 0;
+	margin-bottom: 0;
+}
+
+#animal-photos-track-title-classification {
+    color: rgba(0,0,0,.60);
+}
+
+#animal-photos-track-title-classification,
+#animal-photos-track-accuracyscore-title {
+    font-size: 100%;
+}
+#animal-photos-track-accuracyscore-title {
+	margin-top: auto;
+	font-size: 100%;
+}
+#animal-photos-track-accuracy-score {
+    font-size: 350%;
+	margin-top: auto;
+}
+
+
+/*Track Geotag Information*/
+
+#animal-photos-track-geotag-container {
+    height: 45%;
+    width: 100%;
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 5% 5%;
+}
+
+.animal-photos-container-title {
+    padding: 5% 0;
+}
+
+#animal-photos-track-geotag-info {
+    height: 85%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#animal-photos-geotag-location-info,
+#animal-photos-geotag-date-info {
+    height: 40%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+	padding: 3% 0;
+}
+
+.animal-photos-geotag-entry-container {
+    height: 80%;
+    width: 85%;
+    display: flex;
+    flex-direction: row;
+	justify-content: space-between;
+    align-items: center;
+}
+
+.animal-photos-geotag-icon-container {
+    height: 100%;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.animal-photos-geotag-text-container {
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.animal-photos-geotag-text-container>p {
+    padding: 0;
+    margin: 0;
+}
+
+/* Other Possible Matches */
+#animal-photos-other-matches-container {
+	height: 65%;
+    width: 100%;
+    border-bottom: 1px solid #CCC;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+	flex-shrink: 0;
+    padding: 0 5%;
+}
+#animal-photos-other-matches-container > .animal-photos-container-title {
+	height: 10%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding-top: 10%;
+}
+#animal-photos-other-matches-container > .animal-photos-container-title > p {
+	padding: 0;
+	margin: 0;
+}
+.other-potential-matches-nav {
+	height: 100%;
+	width: 30%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+#animal-photos-other-matches-tab {
+	height: 90%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+	padding: 3% 0;
+}
+.other-potential-matches-container
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+.other-potential-matches-animal {
+	height: 100%;
+	width: 48%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+}
+.other-potential-matches-animal:hover {
+	cursor: pointer;
+	transform: translateY(-5%);
+}
+.other-potential-matches-image-container {
+	height: 75%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+.other-potential-matches-image {
+	height: 115px;
+	width: 115px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10%;
+	overflow: hidden;
+}
+.other-potential-matches-image > img {
+	height: 100%;
+	width: auto;
+}
+.other-potential-matches-animal-info {
+	height: auto;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.other-potential-match-commonname, .other-potential-match-classification, .cther-potential-match-accuracy-score {
+	padding: 0;
+	margin: 0;
+}
+.other-potential-match-commonname {
+    color: rgba(0,0,0,.85);
+}
+.other-potential-match-classification {
+    color: rgba(0,0,0,.65);
+	font-size: 90%;
+}
+.cther-potential-match-accuracy-score {
+	font-size: 120%;
+}
+
+/* Similar Tracks */
+#animal-photos-similar-tracks-container {
+	height: 40%;
+    width: 100%;
+    border-bottom: 1px solid #CCC;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+	flex-shrink: 0;
+    padding: 0 5%;
+}
+#animal-photos-similar-tracks-container  > .animal-photos-container-title {
+	height: 10%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding-top: 10%;
+}
+#animal-photos-similar-tracks-container  > .animal-photos-container-title > p {
+	padding: 0;
+	margin: 0;
+}
+#animal-photos-similar-tracks-tab {
+	height: 65%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+	padding: 3% 0;
+}
+#animal-photos-similar-tracks-tab .other-potential-matches-container
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+#animal-photos-similar-tracks-tab .other-potential-matches-image-container {
+	height: 75px;
+	width: 75px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin-right: 8%;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+}
+#animal-photos-similar-tracks-tab .other-potential-matches-image-container:hover {
+	cursor: pointer;
+	transform: translateY(-5%);
+}
+#animal-photos-similar-tracks-tab .other-potential-matches-image {
+	height: 100%;
+	width: auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10%;
+	overflow: hidden;
+}
+#animal-photos-similar-tracks-tab .other-potential-matches-image > img {
+	height: 100%;
+	width: auto;
+}
+
+
+/*Tags Information*/
+#animal-photos-track-tags-container {
+    height: 35%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 5% 5%;
+}
+
+#animal-photos-tags-container-title {
+    padding: 5% 0;
+}
+
+#animal-photos-track-tag-list {
+    height: 85%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.mat-standard-chip {
+    padding: 2px 10px;
+    height: 75%;
+    min-height: 75%;
+}
+
+#animal-photo-details-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#animal-photos-track-title-animal,
+#animal-photos-track-title-capturedby,
+#animal-photos-track-id-title>p,
+#animal-photos-geotag-container-title>p {
+    padding: 0;
+    margin: 0;
+}
+#animal-photos-track-title-capturedby {
+    color: #BBB;
+    font-size: 90%;
+}
+
+#animal-photo-details-toolbar {
+    height: 10%;
+    width: 100%;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.animal-photo-navigation-btn {
+    color: white;
+    background-color: #AAA;
+    position: absolute;
+    top: 50%;
+}
+
+#animal-photo-navigation-btn-left {
+    left: 2%;
+}
+
+#animal-photo-navigation-btn-right {
+    right: 2%;
+}
+
+#animal-photo-image-container {
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#animal-photo-detail-current-image {
+    height: 100%;
+    width: auto;
+    transition: all 0.2s ease-out;
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    -ms-transition: all 0.2s ease-out;
+    -o-transition: all 0.2s ease-out;
+}
