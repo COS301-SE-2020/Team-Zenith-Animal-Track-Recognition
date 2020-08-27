@@ -38,6 +38,7 @@ export class AddAnimalComponent implements OnInit {
 					next: data => this.dialogRef.close("success"), 
 					error: error => this.dialogRef.close("error") 
 				});
+				window.location.reload();
 		}
 		else {
 			return true;
