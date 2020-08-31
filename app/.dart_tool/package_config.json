@@ -218,6 +218,12 @@
       "languageVersion": "2.7"
     },
     {
+      "name": "flutter_keyboard_visibility",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_keyboard_visibility-3.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "flutter_launcher_icons",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_launcher_icons-0.7.5",
       "packageUri": "lib/",
@@ -240,6 +246,12 @@
       "rootUri": "file:///C:/src/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "2.2"
+    },
+    {
+      "name": "flutter_typeahead",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_typeahead-1.8.8",
+      "packageUri": "lib/",
+      "languageVersion": "1.19"
     },
     {
       "name": "flutter_web_plugins",
@@ -776,7 +788,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-08-17T19:52:19.967639Z",
+  "generated": "2020-08-25T14:33:37.639674Z",
   "generator": "pub",
   "generatorVersion": "2.8.4"
 }

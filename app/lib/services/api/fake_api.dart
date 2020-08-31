@@ -967,4 +967,10 @@ class FakeApi implements Api {
       return null;
     }
   }
+
+  @override
+  Future<List<String>> getAnimalTags() {
+    // TODO: implement getAnimalTags
+    throw UnimplementedError();
+  }
 }

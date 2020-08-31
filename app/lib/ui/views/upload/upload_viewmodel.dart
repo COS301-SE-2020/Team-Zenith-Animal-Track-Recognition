@@ -4,6 +4,7 @@ import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/fake_api.dart';
+import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +12,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class UploadViewModel extends BaseViewModel{
+class UploadViewModel extends BaseViewModel {
   String tag;
   int _tagIndex;
+
+  List<String> _animals;
+  List<String> get animals => _animals;
+
   int get tagIndex => _tagIndex;
- 
+
   File _image;
   File get image => _image;
 
@@ -35,32 +40,44 @@ class UploadViewModel extends BaseViewModel{
   String get latitude => _latitude;
 
   List<String> _tags = new List<String>();
-  List<String>  get tags => _tags;
-  
+  List<String> get tags => _tags;
 
   final NavigationService _navigationService = locator<NavigationService>();
   final Api _api = locator<FakeApi>();
+  final Api api = locator<GraphQL>();
 
-  void setTags(){
+  void setTags() {
     _tags.clear();
     _tags.add("Dangerous");
     _tags.add("Endangered");
     _tags.add("Harmless");
   }
 
-  void setTag(String  tag){
+  List<String> getSuggestions(String query) {
+    List<String> matches = List();
+    matches.addAll(_animals);
+
+    matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    return matches;
+  }
+
+  Future<void> setAnimals() async {
+    _animals = await api.getAnimalTags();
+  }
+
+  void setTag(String tag) {
     this.tag = tag;
   }
 
-  void setTagIndex(int index){
+  void setTagIndex(int index) {
     _tagIndex = index;
   }
 
-  void uploadFromCamera()async{
+  void uploadFromCamera() async {
     File image;
-    final picker = ImagePicker(); 
+    final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.camera);
-    if(pickedFile != null){
+    if (pickedFile != null) {
       image = File(pickedFile.path);
       _image = image;
       String url = base64Encode(image.readAsBytesSync());
@@ -73,12 +90,12 @@ class UploadViewModel extends BaseViewModel{
     notifyListeners();
     return null;
   }
- 
-  void uploadFromGallery()async{
+
+  void uploadFromGallery() async {
     File image;
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    if(pickedFile != null){
+    if (pickedFile != null) {
       image = File(pickedFile.path);
       _image = image;
       String url = base64Encode(image.readAsBytesSync());

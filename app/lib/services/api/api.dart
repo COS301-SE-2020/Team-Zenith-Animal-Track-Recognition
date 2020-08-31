@@ -28,6 +28,8 @@ abstract class Api {
 
   Future<List<String>> getTags();
 
+  Future<List<String>> getAnimalTags();
+
   Future<ProfileInfoModel> getProfileInfoData();
 
   void sendConfirmationSpoor(List<ConfirmModel> list, String tag);

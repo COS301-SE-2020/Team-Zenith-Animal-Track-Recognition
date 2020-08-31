@@ -3,6 +3,7 @@ import 'package:ERP_RANGER/ui/views/upload/upload_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +32,7 @@ class UploadView extends StatelessWidget {
               IconBuilder(icon: Icons.more_vert, type: "vert")
             ],
             title: text18LeftBoldWhite(
-              "Upload Spoor Geotag",
+              "Upload Track Identification",
             ),
           ),
           body: Container(
@@ -68,6 +69,7 @@ class SliverBody extends ViewModelWidget<UploadViewModel> {
           delegate: SliverChildListDelegate([
             header,
             spoorImageBlock,
+            attachAnimal,
             SpoorLocationInput(),
             attachATag,
             UploadButton()
@@ -278,6 +280,65 @@ class TagBox extends HookViewModelWidget<UploadViewModel> {
   }
 }
 
+class AnimalBox extends HookViewModelWidget<UploadViewModel> {
+  AnimalBox({
+    Key key,
+  }) : super(reactive: true);
+
+  @override
+  Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final TextEditingController _typeAheadController = TextEditingController();
+    String _selectedText;
+
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: TypeAheadFormField(
+            textFieldConfiguration: TextFieldConfiguration(
+                controller: _typeAheadController,
+                decoration: InputDecoration(
+                    hintText: 'Animal Name',
+                    hintStyle: TextStyle(
+                        fontFamily: 'MavenPro',
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey),
+                    isDense: true,
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    filled: true,
+                    fillColor: Colors.grey[100])),
+            suggestionsCallback: (pattern) {
+              return viewModel.getSuggestions(pattern);
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(suggestion),
+              );
+            },
+            transitionBuilder: (context, suggestionsBox, controller) {
+              return suggestionsBox;
+            },
+            onSuggestionSelected: (suggestion) {
+              _typeAheadController.text = suggestion;
+            },
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please select an animal';
+              }
+            },
+            onSaved: (value) => _selectedText = value,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class Latitude extends HookViewModelWidget<UploadViewModel> {
   Latitude({
     Key key,
@@ -354,7 +415,7 @@ class SpoorLocationInput extends ViewModelWidget<UploadViewModel> {
         children: <Widget>[
           Container(
               margin: EdgeInsets.only(top: 13, bottom: 10),
-              child: containerTitle("Spoor Location")),
+              child: containerTitle("Track Location")),
           SpoorLocation(),
         ],
       ),
@@ -410,7 +471,7 @@ class UploadButton extends ViewModelWidget<UploadViewModel> {
       ),
       width: 80,
       child: RaisedButton(
-          child: text16CenterBoldWhite("UPLOAD GEOTAG"),
+          child: text16CenterBoldWhite("UPLOAD TRACK"),
           color: Colors.grey,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -427,7 +488,7 @@ Widget header = new Container(
   alignment: Alignment.center,
   padding: EdgeInsets.all(5),
   margin: EdgeInsets.all(15),
-  child: text18CenterBoldGrey("Please enter in Spoor Information below"),
+  child: text18CenterBoldGrey("Please enter in Track Information below"),
 );
 
 Widget containerTitle(String title) {
@@ -436,6 +497,39 @@ Widget containerTitle(String title) {
       alignment: Alignment.centerLeft,
       child: text12LeftBoldGrey(title));
 }
+
+Widget attachAnimal = new Container(
+  height: 115,
+  width: 100,
+  padding: EdgeInsets.all(5),
+  margin: EdgeInsets.all(15),
+  decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(color: Colors.white)),
+  child: Column(
+    children: <Widget>[
+      Expanded(flex: 1, child: attachAnimalButton),
+      Expanded(flex: 1, child: AnimalBox()),
+    ],
+  ),
+);
+
+Widget attachAnimalButton = new Container(
+  child: Row(
+    children: <Widget>[
+      Expanded(flex: 1, child: containerTitle("Enter Name of animal")),
+    ],
+  ),
+);
+
+Widget attachATagButton = new Container(
+  child: Row(
+    children: <Widget>[
+      Expanded(flex: 1, child: containerTitle("Insert tag")),
+    ],
+  ),
+);
 
 Widget attachATag = new Container(
   height: 115,
@@ -454,14 +548,6 @@ Widget attachATag = new Container(
   ),
 );
 
-Widget attachATagButton = new Container(
-  child: Row(
-    children: <Widget>[
-      Expanded(flex: 1, child: containerTitle("Attach A Tag")),
-    ],
-  ),
-);
-
 Widget spoorImageBlock = new Container(
   height: 150,
   width: 100,
@@ -473,7 +559,7 @@ Widget spoorImageBlock = new Container(
       border: Border.all(color: Colors.white)),
   child: Column(
     children: <Widget>[
-      Expanded(flex: 1, child: containerTitle("Spoor Image")),
+      Expanded(flex: 1, child: containerTitle("Track Image")),
       Expanded(flex: 1, child: CameraButton()),
       Expanded(flex: 1, child: GalleryButton()),
     ],

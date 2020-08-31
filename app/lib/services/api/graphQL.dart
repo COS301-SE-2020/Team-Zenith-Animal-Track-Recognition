@@ -10,7 +10,8 @@ import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:injectable/injectable.dart';
 import 'api.dart';
 
-final String domain = "http://putch.dyndns.org:55555/";
+//final String domain = "http://putch.dyndns.org:55555/";
+final String domain = "http://localhost:55555/";
 
 @lazySingleton
 class GraphQL implements Api {
@@ -731,5 +732,31 @@ class GraphQL implements Api {
 
     SimilarSpoorModel similarSpoorModel = new SimilarSpoorModel(similarSpoor);
     return similarSpoorModel;
+  }
+
+  @override
+  Future<List<String>> getAnimalTags() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> _cards = new List();
+
+    String token = prefs.getString("token");
+    token = Uri.encodeFull(token);
+    String id = prefs.getString("rangerID");
+    id = Uri.encodeFull(id);
+
+    final http.Response response = await http.get("$domain" +
+        "graphql?query=query{animals(token: \"$token\"){animalID, commonName}}");
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      var list = body['data']['animals'] as List;
+
+      for (int i = 0; i < list.length; i++) {
+        _cards.add(body['data']['animals'][i]['commonName'].toString());
+      }
+    }
+
+    return _cards;
   }
 }
