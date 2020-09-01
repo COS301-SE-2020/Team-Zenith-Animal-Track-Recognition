@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 export class AnimalSearchSidenavComponent implements OnInit {
 	@Input() animals: any;
 	@Input() searchText: string;
-	@Input() sortByCommonName: boolean;
+	@Input() sortBy: any = [];
 
 	@Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
@@ -20,9 +20,8 @@ export class AnimalSearchSidenavComponent implements OnInit {
 	constructor(private http: HttpClient, private router: Router) { }
 
 	ngOnInit(): void {
-		this.sortByCommonName = true;
 	}
-	
+
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}
@@ -46,34 +45,4 @@ export class AnimalSearchSidenavComponent implements OnInit {
 		if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")
 			this.currentAlphabet = null;
 	}
-
-	toggle(bool: boolean) {
-		this.sortByCommonName = bool;
-		this.sort(bool);
-	}
-
-	sort(bool: boolean) {
-		if (bool) {
-			for (let i = 0; i < this.animals.length - 1; i++) {
-				for (let j = i + 1; j < this.animals.length; j++) {
-					if (this.animals[i].commonName.toUpperCase() > this.animals[j].commonName.toUpperCase()) {
-						let temp = this.animals[i];
-						this.animals[i] = this.animals[j];
-						this.animals[j] = temp;
-					}
-				}
-			}
-		} else {
-			for (let i = 0; i < this.animals.length - 1; i++) {
-				for (let j = i + 1; j < this.animals.length; j++) {
-					if (this.animals[i].groupID[0].groupName > this.animals[j].groupID[0].groupName) {
-						let temp = this.animals[i];
-						this.animals[i] = this.animals[j];
-						this.animals[j] = temp;
-					}
-				}
-			}
-		}
-	}
-
 }

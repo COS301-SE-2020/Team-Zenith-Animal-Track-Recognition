@@ -42,7 +42,7 @@ export class AnimalsComponent implements OnInit {
 						animal.animalOverview = "No description provided. Please update this animal in the edit animal screen.";
 					}
 				});
-				this.sort(true);
+				this.sort('byAbc');
 			});
 
 	}
@@ -95,7 +95,7 @@ export class AnimalsComponent implements OnInit {
 						newAnimalList.forEach(x => this.addIfNewAnimal(x));
 						break;
 				}*/
-				this.sort(true);
+				this.sort('byAbc');
 			});
 	}
 
@@ -104,15 +104,16 @@ export class AnimalsComponent implements OnInit {
 		this.refresh(updatedList);
 	}
 
-	// addIfNewAnimal(x: any) {
-	// 	let isNotNew = false;
-	// 	for (let i = 0; i < this.animals.length; i++)
-	// 		if (x.token == this.animals[i].token)
-	// 			isNotNew = true;
+	/*
+	addIfNewAnimal(x: any) {
+	 	let isNotNew = false;
+		for (let i = 0; i < this.animals.length; i++)
+	 		if (x.token == this.animals[i].token)
+	 			isNotNew = true;
 
-	// 	if (!isNotNew)
-	// 		this.animals.push(x);
-	// }
+	 	if (!isNotNew)
+			this.animals.push(x);
+	}*/
 
 	//Sorting and Filtering
 	checkIfNew(title: string, pos: number) {
@@ -123,38 +124,53 @@ export class AnimalsComponent implements OnInit {
 			return true;
 		}
 	}
-
-	toggle(bool: boolean) {
-		this.surnames = bool;
-		this.levels = !bool;
-		this.sort(bool);
+	
+	
+	//Sort functions
+	sort(selection: string) {
+		switch (selection) {
+			case "byAbc":
+				this.sortAlphabetical();
+				break;
+			case "byGroup":
+				this.sortGroups();
+				break;
+			case "byHeight":
+				this.sortHeight();
+				break;
+			case "byWeight":
+				this.sortWeight();
+				break;
+		}
 	}
 
-	sort(bool: boolean) {
-		let temp: string;
-		if (bool) {
-			for (let i = 0; i < this.animals.length - 1; i++) {
-				for (let j = i + 1; j < this.animals.length; j++) {
-					if (this.animals[i].commonName.toUpperCase() > this.animals[j].commonName.toUpperCase()) {
-						let temp = this.animals[i];
-						this.animals[i] = this.animals[j];
-						this.animals[j] = temp;
-					}
+	private sortAlphabetical() {
+		for (let i = 0; i < this.animals.length - 1; i++) {
+			for (let j = i + 1; j < this.animals.length; j++) {
+				if (this.animals[i].commonName.toUpperCase() > this.animals[j].commonName.toUpperCase()) {
+					let temp = this.animals[i];
+					this.animals[i] = this.animals[j];
+					this.animals[j] = temp;
 				}
 			}
-			temp = "Sorted common name";
-		} else {
-			for (let i = 0; i < this.animals.length - 1; i++) {
-				for (let j = i + 1; j < this.animals.length; j++) {
-					if (this.animals[i].groupID[0].groupName > this.animals[j].groupID[0].groupName) {
-						let temp = this.animals[i];
-						this.animals[i] = this.animals[j];
-						this.animals[j] = temp;
-					}
-				}
-			}
-			temp = "Sorted group name";
 		}
-		return temp;
+	}
+	private sortGroups() {
+		for (let i = 0; i < this.animals.length - 1; i++) {
+			for (let j = i + 1; j < this.animals.length; j++) {
+				if (this.animals[i].groupID[0].groupName > this.animals[j].groupID[0].groupName) {
+					let temp = this.animals[i];
+					this.animals[i] = this.animals[j];
+					this.animals[j] = temp;
+				}
+			}
+		}
+	}
+
+	sortHeight() {
+		throw new Error("Method not implemented.");
+	}
+	sortWeight() {
+		throw new Error("Method not implemented.");
 	}
 }

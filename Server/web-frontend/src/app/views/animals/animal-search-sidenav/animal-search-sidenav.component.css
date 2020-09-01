@@ -1,98 +1,97 @@
-#animal-search-sidenav
-{
-	height: 90%;
-	width: 100%;
+#animal-search-sidenav {
+    height: 90%;
+    width: 100%;
 }
-#animal-search-controls-container
-{
-	height: 30%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	align-items: center;
-	border-bottom: 2px solid #CCCCCC;
-	overflow: hidden;
+
+#animal-search-controls-container {
+    height: 30%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 2px solid #CCCCCC;
+    overflow: hidden;
 }
-.mat-form-field
-{
-	width: 90%;  
-	font-size: 105%;
+
+.mat-form-field {
+    width: 90%;
+    font-size: 105%;
 }
-:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
-{
-	padding: 0.2em 0 0.5em 0;
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.2em 0 0.5em 0;
 }
-:host ::ng-deep .mat-form-field-wrapper 
-{
+
+:host ::ng-deep .mat-form-field-wrapper {
     padding-bottom: 0;
 }
-#animal-search-controls
-{
-	height: 25%;
-	width: 90%;
-	border: 2px solid #A8ACB2;
+
+#animal-search-controls {
+    height: 25%;
+    width: 90%;
+    border: 2px solid #A8ACB2;
 }
-#animal-search-controls > .mat-button-toggle
-{
-	width: 50%;
+
+#animal-search-controls>.mat-button-toggle {
+    width: 50%;
 }
-:host ::ng-deep .mat-button-toggle-label-content 
-{
-	font-weight: 600;
+
+:host ::ng-deep .mat-button-toggle-label-content {
+    font-weight: 600;
     line-height: 32px;
 }
-:host ::ng-deep .mat-button-toggle-checked
-{
-	color: white;
-	background-color: #A8ACB2;
+
+:host ::ng-deep .mat-button-toggle-checked {
+    color: white;
+    background-color: #A8ACB2;
 }
-#animal-search-results-container
-{
-	height: 70%;
-	width: 100%;
-	border-bottom: 2px solid #CCCCCC;
-	overflow: auto;
-	display: flex;
-	flex-direction: column;
-	padding: 5% 0;
+
+#animal-search-results-container {
+    height: 100%;
+    width: 100%;
+    border-bottom: 2px solid #CCCCCC;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 5% 0;
 }
-.animal-search-results-entries
-{
-	height: auto;
-	width: 100%;
+
+.animal-search-results-entries {
+    height: auto;
+    width: 100%;
 }
-.ranger-search-result-entry
-{
-	height: auto;
-	width: 100%;
+
+.ranger-search-result-entry {
+    height: auto;
+    width: 100%;
 }
-:host ::ng-deep .mat-list-base .mat-subheader:first-child
-{
-	margin: 0;
+
+:host ::ng-deep .mat-list-base .mat-subheader:first-child {
+    margin: 0;
 }
-.mat-list-base .mat-subheader
-{
-	height: 20%;
-	margin-top: 5%;
+
+.mat-list-base .mat-subheader {
+    height: 20%;
+    margin-top: 5%;
 }
-.animal-search-resultgroup-subheader
-{
-	font-size: 100%;
-	height: 10%;
-	width: 100%;
-	padding: 0.2em 1em;
+
+.animal-search-resultgroup-subheader {
+    font-size: 100%;
+    height: 10%;
+    width: 100%;
+    padding: 0.2em 1em;
 }
-.mat-list-option
-{
-	font-size: 100%;
+
+.mat-list-option {
+    font-size: 100%;
 }
-:host ::ng-deep .mat-list-text
-{
-	padding-left: 10% !important;
-	padding-right: 0 !important;
+
+:host ::ng-deep .mat-list-text {
+    padding-left: 10% !important;
+    padding-right: 0 !important;
 }
-.animal-search-resultgroup-subentry
-{
-	color: #AAAAAA;
+
+.animal-search-resultgroup-subentry {
+    color: #AAAAAA;
 }

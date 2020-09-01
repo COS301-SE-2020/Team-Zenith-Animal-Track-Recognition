@@ -34,6 +34,7 @@ import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-pe
 import { TrackIdentificationsComponent } from './views/track-identifications/track-identifications.component';
 import { TrackIdentificationsToolbarComponent } from './views/track-identifications/track-identifications-toolbar/track-identifications-toolbar.component';
 import { TrackIdentificationsSidenavComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-sidenav.component';
+import { TrackIdentificationsInfoComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-info/track-identifications-info.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { AddImageComponent } from './views/animals/add-image/add-image.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
@@ -66,6 +67,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
 
@@ -88,6 +90,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     TrackIdentificationsComponent,
     TrackIdentificationsToolbarComponent,
     TrackIdentificationsSidenavComponent,
+    TrackIdentificationsInfoComponent,
     SettingsComponent,
     SideNavigationComponent,
     UtilityNavigationComponent,
@@ -104,7 +107,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     RelativeTimeMPipe,
     AddImageComponent,
     DragDropDirective
-  ],
+	],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -139,6 +142,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     MatProgressBarModule,
     MatDividerModule,
     MatGridListModule,
+	MatPaginatorModule,
     GoogleMapsModule
   ],
   providers: [AuthGuardService],

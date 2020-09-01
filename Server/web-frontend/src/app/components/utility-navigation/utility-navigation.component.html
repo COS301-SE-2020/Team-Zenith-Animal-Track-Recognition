@@ -1,25 +1,25 @@
 <div id="utility-navigation-container">
-	<div id="utility-navigation-searchbar-container">
-		<div id="utility-navigation-searchbar">
-			<mat-form-field appearance="outline">
-				<input matInput placeholder="Search...">
-				<mat-icon matPrefix>search</mat-icon>
-			</mat-form-field>
-		</div>
-	</div>
-	<div id="utility-navigation-utilities-container">
-		<mat-icon matBadge="4" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
-		<div id="user-profile-container">
-			<div id="user-profile-dropdown">
-				<div id="user-profile-pic">
-					<mat-icon>account_circle</mat-icon>
-				</div>
-				<mat-select id="user-profile-dropdown-icon" class="fontSB" placeholder="My Account" disableOptionCentering>
-					<mat-option (click)="viewRangerProfile()">View Profile</mat-option>
-					<mat-option>Settings</mat-option>
-					<mat-option (click)="logout()">Logout</mat-option>
-				</mat-select>
-			</div>
-		</div>
-	</div>
+    <div id="utility-navigation-searchbar-container">
+        <!--<div id="utility-navigation-searchbar">
+            <mat-form-field appearance="outline">
+                <input matInput placeholder="Search...">
+                <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+        </div>-->
+    </div>
+    <div id="utility-navigation-utilities-container">
+        <mat-icon matBadge="4" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
+        <div id="user-profile-container">
+            <div id="user-profile-dropdown">
+                <div id="user-profile-pic">
+                    <mat-icon>account_circle</mat-icon>
+                </div>
+                <mat-select id="user-profile-dropdown-icon" class="fontSB" placeholder="{{rangerName}}" disableOptionCentering>
+                    <mat-option (click)="viewRangerProfile()">View Profile</mat-option>
+                    <mat-option>Settings</mat-option>
+                    <mat-option (click)="logout()">Logout</mat-option>
+                </mat-select>
+            </div>
+        </div>
+    </div>
 </div>
