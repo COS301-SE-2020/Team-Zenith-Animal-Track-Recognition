@@ -12,7 +12,7 @@
         </div>
         <div id="animals-toolbar">
             <mat-select id="animals-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
-                <mat-option>Add New Image</mat-option>
+                <mat-option (click)="openAddNewImageDialog()">Add New Image</mat-option>
                 <mat-option (click)="openEditAnimalDialog()">Edit Information</mat-option>
                 <mat-option (click)="viewAnimalPhotos(animal.classification)">View Photos</mat-option>
                 <mat-option>Upload Identification</mat-option>
@@ -97,10 +97,6 @@
                 <div id="animal-profile-statistics-title" class="animal-profile-title-container">
                     <div>
                         <h1 class="fontSB">Statistics</h1>
-                    </div>
-                    <div id="animal-profile-statistics-toggle">
-                        <p class="fontM activeStat">Ranger Statistics</p>
-                        <p class="fontM">Animal Statistics</p>
                     </div>
                 </div>
                 <div id="animal-profile-statistics">

@@ -7,6 +7,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { EditAnimalInfoComponent } from './../animals/edit-animal-info/edit-animal-info.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import { AddImageComponent } from '../animals/add-image/add-image.component';
 
 @Component({
 	selector: 'app-animal-profile',
@@ -195,6 +196,28 @@ export class AnimalProfileComponent implements OnInit {
 			}
 		});
 	}
+
+	openAddNewImageDialog() {
+		const editDialogRef = this.dialog.open(AddImageComponent, {
+			height: '60%',
+			width: '45%',
+			autoFocus: true,
+			disableClose: true,
+			id: 'add-new-image-dialog',
+			data: {
+				animal: this.animal
+			},
+		});
+		editDialogRef.afterClosed().subscribe(result => {
+			this.stopLoader();
+			if (result == "success") {
+			}
+			else if (result == 'error') {
+				this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });
+			}
+		});
+	}
+
 	navigateToSection(elementId: string): void {
 		const elmnt = document.getElementById(elementId);
 		elmnt.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });

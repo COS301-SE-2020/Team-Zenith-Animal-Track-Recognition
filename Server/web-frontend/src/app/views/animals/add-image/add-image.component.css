@@ -1,0 +1,140 @@
+.mat-dialog-title
+{
+	font-size: 120%;
+}
+.mat-dialog-content
+{
+	height: 80%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+
+.uploadfilecontainer {
+	height: 200px;
+	width: 80%;
+	margin: 20px auto;
+	border: 2px dashed #1C8ADB;
+	border-radius: 10px;
+	align-content: center;
+  }
+  
+  #animal-image-description{
+	height: auto;
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	padding: 0px;
+  }
+  :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix{
+	padding: 0;
+	border: none;
+  }
+
+  .mat-form-field{
+	width: 100%;
+	padding: 0px;
+  }
+
+  #text-area-block{
+	  width: 100%;
+	  margin: 0;
+	  padding: 0;
+	  border: 1px solid red;
+	  resize: none;
+  }
+
+  #img-div{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 5px;
+		padding: 2px;
+	}
+	
+	#img-div > img{
+		width: 75px;
+		height: 75px;
+	}
+
+	#drop-text-div{
+		font-size: large;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+		padding: 0;
+		padding-top: 3px;
+	}
+
+ 	 #browse-btn-div{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0;
+	}
+
+	#browse-btn-div > button{
+		margin-top: 7px;
+		padding: 0.35em;
+		font-size: large;
+		background-color: #686E79;
+		color: white;
+	}
+
+  .files-list {
+	display: flex;
+	justify-content: space-between;
+	width: 80%;
+	margin: 10px auto;
+	background: #ffffff;
+	border: 1px dashed;
+	border-radius: 12px;
+	padding: 5px;
+	color: #1c8adb;
+  }
+  
+  .files-list .delete-file {
+	background: transparent;
+	border: none;
+	cursor: pointer;
+  }
+  .files-list .delete-file img{
+	width:30px;
+  }
+
+
+
+
+.mat-dialog-actions
+{
+	border-top: 1px solid #CCCCCC;
+	height: 15%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.mat-dialog-actions > .mat-button
+{
+	width: 25%;
+}
+
+:host ::ng-deep .mat-button{ 
+	padding-top: 0.65em;
+	padding-bottom: 0.65em;
+	font-size: large;
+}
+
+#cancel-btn
+{
+	border: 2px solid #CCCCCC;
+}
+#add-animal-btn
+{
+	background-color: #686E79;
+	color: white;
+}

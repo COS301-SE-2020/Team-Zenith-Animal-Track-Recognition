@@ -55,6 +55,13 @@ textarea.mat-input-element
 {
 	width: 25%;
 }
+
+:host ::ng-deep .mat-button{ 
+	padding-top: 0.65em;
+	padding-bottom: 0.65em;
+	font-size: large;
+}
+
 #cancel-btn
 {
 	border: 2px solid #CCCCCC;

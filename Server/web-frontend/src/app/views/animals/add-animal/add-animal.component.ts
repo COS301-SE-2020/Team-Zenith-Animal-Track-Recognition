@@ -13,7 +13,8 @@ export class AddAnimalComponent implements OnInit {
 
 	addAnimalForm: FormGroup;
 
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddAnimalComponent>) { }
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddAnimalComponent>) { 
+	}
 
 	ngOnInit(): void {
 		this.addAnimalForm = this.formBuilder.group({
