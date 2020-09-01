@@ -65,14 +65,14 @@ export class RangersComponent implements OnInit {
 	addIfNewRanger(x: any) {
 		let isNotNew = false;
 		for (let i = 0; i < this.rangers.length; i++)
-			if (x.token == this.rangers[i].token)
+			if (x.rangerID == this.rangers[i].rangerID)
 				isNotNew = true;
 
 		if (!isNotNew)
 			this.rangers.push(x);
 	}
 	removeRanger(t: string) {
-		this.rangers.splice(this.rangers.findIndex(x => x.token == t), 1);
+		this.rangers.splice(this.rangers.findIndex(x => x.rangerID == t), 1);
 	}
 	
 	//Ranger Search sidenav
