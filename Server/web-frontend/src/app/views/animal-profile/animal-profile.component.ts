@@ -21,101 +21,6 @@ export class AnimalProfileComponent implements OnInit {
 	femaleBehaviour: string;
 	maleBehaviour: string;
 
-	/*Place holder values*/
-	spoorIdentifications = [
-		{
-			commonName: 'Elephant',
-			classification: 'Loxodonta Africanus',
-			dateTime: '09:13, 12th Dec 2020',
-			coordinates: '-24.019097, 31.559270',
-			accuracyScore: '67%'
-		},
-		{
-			commonName: 'Black Rhinoceros',
-			classification: 'Diceros Bicornis',
-			dateTime: '09:13, 12th Dec 2020',
-			coordinates: '-24.019097, 31.559270',
-			accuracyScore: '97%'
-		},
-		{
-			commonName: 'Cape Buffalo',
-			classification: 'Syncerus Caffer',
-			dateTime: '09:13, 12th Dec 2020',
-			coordinates: '-24.019097, 31.559270',
-			accuracyScore: '73%'
-		},
-		{
-			commonName: 'Cheetah',
-			classification: 'Acinonyx Jubatus',
-			dateTime: '09:13, 12th Dec 2020',
-			coordinates: '-24.019097, 31.559270',
-			accuracyScore: '67%'
-		},
-		{
-			commonName: 'Lion',
-			classification: 'Panthera Leo',
-			dateTime: '09:13, 12th Dec 2020',
-			coordinates: '-24.019097, 31.559270',
-			accuracyScore: '67%'
-		},
-		{
-			commonName: 'Impala',
-			classification: 'Aepyceros Melampus',
-			dateTime: '09:13, 12th Dec 2020',
-			coordinates: '-24.019097, 31.559270',
-			accuracyScore: '59%'
-		}
-	];
-	activities = [
-		{
-			type: 'Reclassified Spoor',
-			dateTime: '09:13, 12th Dec 2020',
-			summary: {
-				info1: 'Diceros Bicornis',
-				info2: 'Syncerus Caffer'
-			}
-		},
-		{
-			type: 'Captured Spoor',
-			dateTime: '09:13, 12th Dec 2020',
-			summary: {
-				info1: 'Diceros Bicornis',
-				info2: '67% Accuracy'
-			}
-		},
-		{
-			type: 'Uploaded Spoor Image',
-			dateTime: '09:13, 12th Dec 2020',
-			summary: {
-				info1: 'Spoor Image',
-				info2: 'Syncerus Caffer'
-			}
-		},
-		{
-			type: 'Uploaded Animal Image',
-			dateTime: '09:13, 12th Dec 2020',
-			summary: {
-				info1: 'Animal Photo',
-				info2: 'Syncerus Caffer'
-			}
-		},
-		{
-			type: 'Edited Animal Info',
-			dateTime: '09:13, 12th Dec 2020',
-			summary: {
-				info1: 'Edit Information',
-				info2: 'Syncerus Caffer'
-			}
-		},
-		{
-			type: 'Added New Animal',
-			dateTime: '09:13, 12th Dec 2020',
-			summary: {
-				info1: 'Add Animal',
-				info2: 'Syncerus Caffer'
-			}
-		},
-	];
 
 	constructor(
 		private http: HttpClient,
@@ -136,7 +41,7 @@ export class AnimalProfileComponent implements OnInit {
 		this.animalClassi = animal[0] + " " + animal[1];
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsByClassification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'", classification:"' + this.animalClassi + '"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
-			'lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{URL}}}')
+			'lifeSpan,gestationPeriod,Offspring,typicalBehaviourM{behaviour,threatLevel},typicalBehaviourF{behaviour,threatLevel},animalOverview,animalDescription,pictures{URL}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -146,18 +51,6 @@ export class AnimalProfileComponent implements OnInit {
 				const desc = ("" + this.animal.animalDescription);
 
 				this.animal.animalOverview = desc.substring(0, desc.indexOf('.') + 1);
-
-				this.femaleBehaviour = "The adult male elephant rarely joins a herd and leads a solitary life, only approaching herds during mating season. "
-					+ "In some cases adult bulls will join a small bachelor group of male elephants. Young bulls gradually separate from the "
-					+ "family unit when they are between 10 and 19 years old.\n\n"
-					+ "During musth manifestation periods, which may last from a few days to months, males show more aggression as a "
-					+ "result of increased testosterone. Bulls begin to experience musth by the age of 24 years.";
-
-				this.maleBehaviour = "The adult male elephant rarely joins a herd and leads a solitary life, only approaching herds during mating season. "
-					+ "In some cases adult bulls will join a small bachelor group of male elephants. Young bulls gradually separate from the "
-					+ "family unit when they are between 10 and 19 years old.\n\n"
-					+ "During musth manifestation periods, which may last from a few days to months, males show more aggression as a"
-					+ "result of increased testosterone. Bulls begin to experience musth by the age of 24 years.";
 
 				this.stopLoader();
 			});
@@ -174,7 +67,7 @@ export class AnimalProfileComponent implements OnInit {
 
 	//Ranger CRUD Quick-Actions
 	//EDIT Ranger
-	openEditAnimalDialog() {
+	openEditAnimalDialog(t: number) {
 		const editDialogRef = this.dialog.open(EditAnimalInfoComponent, {
 			height: '90%',
 			width: '55%',
@@ -182,7 +75,8 @@ export class AnimalProfileComponent implements OnInit {
 			disableClose: true,
 			id: 'edit-animal-dialog',
 			data: {
-				animal: this.animal
+				animal: this.animal,
+				tab: t
 			},
 		});
 		editDialogRef.afterClosed().subscribe(result => {
