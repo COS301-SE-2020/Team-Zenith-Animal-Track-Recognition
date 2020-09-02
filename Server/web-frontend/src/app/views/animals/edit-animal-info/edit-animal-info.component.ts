@@ -31,6 +31,7 @@ export class EditAnimalInfoComponent implements OnInit {
 		}
 
 		this.fillDietTypes();
+		console.log(this.data.animal);
 
 		const fheight: string = this.data.animal.heightF;
 		if (fheight.indexOf('-') > 0) {
