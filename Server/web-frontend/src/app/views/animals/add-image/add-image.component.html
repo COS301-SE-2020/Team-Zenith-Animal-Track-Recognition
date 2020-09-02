@@ -3,25 +3,28 @@
 </div>
 <h1 mat-dialog-title>Add New Image</h1>
 <mat-dialog-content id="upload-animal-container">
-    <div class="uploadfilecontainer"  appDragDrop (onFileDropped)="uploadFile($event)">
-        <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
-        <div id="img-div"><img src="../../../../assets/cloud.png" alt="cloud image"></div>
-        <div id="drop-text-div"><p id="drop-text"> Drop files to upload or click</p></div>
-        <div id="browse-btn-div"> 
-          <button type="submit" mat-button (click)="fileInput.click()" id="browse-btn" class="fontSB">Upload Image</button>
-        </div>
-    </div>
-    <div id="animal-image-description"> 
+  <form id="add-animal-image-form">
+    <div id="add-animal-image-container">
+      <div class="uploadfilecontainer"  appDragDrop (onFileDropped)="uploadFile($event)">
+          <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+          <div id="img-div"><img src="../../../../assets/cloud.png" alt="cloud image"></div>
+          <div id="drop-text-div"><p id="drop-text"> Drop files to upload or click</p></div>
+          <div id="browse-btn-div"> 
+            <button type="submit" mat-button (click)="fileInput.click()" id="browse-btn" class="fontSB">Upload Image</button>
+          </div>
+      </div>
       <mat-form-field align="center" appearance="outline" >
-        <textarea matInput id="text-area-block" rows="6" placeholder="Image Description" [(ngModel)]="textAreaInput" ></textarea>
+        <mat-label>Image Description</mat-label>
+        <textarea matInput id="text-area-block" rows="6" ></textarea>
       </mat-form-field>
-    </div>
-    <div  class="files-list" *ngFor="let file of files;let i=index">
-      <p>{{ file }}</p>
-      <button class="delete-file" (click)="deleteAttachment(i)">
+      <div  class="files-list" *ngFor="let file of files;let i=index">
+        <p>{{ file }}</p>
+        <button class="delete-file" (click)="deleteAttachment(i)">
         <img src="../../assets/Recycle_Bin_Full.png">
-      </button>
+        </button>
+      </div>
     </div>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
     <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>

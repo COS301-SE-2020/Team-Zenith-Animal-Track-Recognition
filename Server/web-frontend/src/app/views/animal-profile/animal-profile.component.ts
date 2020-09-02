@@ -176,7 +176,7 @@ export class AnimalProfileComponent implements OnInit {
 	//EDIT Ranger
 	openEditAnimalDialog() {
 		const editDialogRef = this.dialog.open(EditAnimalInfoComponent, {
-			height: '85%',
+			height: '90%',
 			width: '55%',
 			autoFocus: true,
 			disableClose: true,
@@ -199,8 +199,8 @@ export class AnimalProfileComponent implements OnInit {
 
 	openAddNewImageDialog() {
 		const editDialogRef = this.dialog.open(AddImageComponent, {
-			height: '60%',
-			width: '45%',
+			height: '75%',
+			width: '60%',
 			autoFocus: true,
 			disableClose: true,
 			id: 'add-new-image-dialog',

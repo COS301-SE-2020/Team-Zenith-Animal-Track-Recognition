@@ -5,13 +5,25 @@
 .mat-dialog-content
 {
 	height: 80%;
+}
+
+#add-animal-image-form
+{
+	height: 100%;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	justify-content: flex-start;
 }
 
+#add-animal-image-container
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
 
 .uploadfilecontainer {
 	height: 200px;
@@ -22,29 +34,26 @@
 	align-content: center;
   }
   
-  #animal-image-description{
-	height: auto;
-	width: 80%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	padding: 0px;
+  :host ::ng-deep .mat-form-field-wrapper{
+	margin-bottom: 0 !important;
   }
-  :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix{
-	padding: 0;
-	border: none;
+
+  :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
+  {
+	  padding: 0.2em 0 0.8em 0;
   }
 
   .mat-form-field{
-	width: 100%;
-	padding: 0px;
+	width: 80%;
+	margin: 0;
+	padding: 0;
   }
 
   #text-area-block{
 	  width: 100%;
+	  height: 100%;
 	  margin: 0;
 	  padding: 0;
-	  border: 1px solid red;
 	  resize: none;
   }
 
