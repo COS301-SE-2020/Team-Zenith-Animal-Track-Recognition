@@ -15,6 +15,7 @@ import 'package:stacked_services/stacked_services.dart';
 class UploadViewModel extends BaseViewModel {
   String tag;
   int _tagIndex;
+  String chosenAnimal;
 
   List<String> _animals;
   List<String> get animals => _animals;
@@ -55,6 +56,7 @@ class UploadViewModel extends BaseViewModel {
 
   List<String> getSuggestions(String query) {
     List<String> matches = List();
+    this.setAnimals();
     matches.addAll(_animals);
 
     matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
@@ -71,6 +73,10 @@ class UploadViewModel extends BaseViewModel {
 
   void setTagIndex(int index) {
     _tagIndex = index;
+  }
+
+  void setChosenAnimal(String animal) {
+    chosenAnimal = animal;
   }
 
   void uploadFromCamera() async {

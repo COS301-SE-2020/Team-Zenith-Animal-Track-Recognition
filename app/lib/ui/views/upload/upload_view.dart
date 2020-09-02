@@ -331,7 +331,7 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
                 return 'Please select an animal';
               }
             },
-            onSaved: (value) => _selectedText = value,
+            onSaved: (value) => viewModel.setChosenAnimal(value),
           ),
         ),
       ],

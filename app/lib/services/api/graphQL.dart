@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:geolocator/geolocator.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:ERP_RANGER/services/api/api.dart';
@@ -10,8 +11,7 @@ import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:injectable/injectable.dart';
 import 'api.dart';
 
-//final String domain = "http://putch.dyndns.org:55555/";
-final String domain = "http://localhost:55555/";
+final String domain = "http://putch.dyndns.org:55555/";
 
 @lazySingleton
 class GraphQL implements Api {
@@ -21,14 +21,9 @@ class GraphQL implements Api {
     List<String> categories = new List();
     List<AnimalModel> animalList = new List();
 
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // String token = prefs.getString("Token");
-    // token = Uri.encodeFull(token);
-
-    // print("Here is the token: " + token);
-
-    String token = "h10hYNuJeTbmWH1ZSi5R";
+    String token = prefs.getString("token");
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get(
@@ -72,13 +67,21 @@ class GraphQL implements Api {
       String pic, String lat, String long) async {
     List<ConfirmModel> identifiedList = new List();
 
-    String token = "h10hYNuJeTbmWH1ZSi5R";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token");
     token = Uri.encodeFull(token);
 
     Map<String, String> headers = {"Content-type": "application/json"};
 
     String link = "$domain" + "graphql?";
     List<String> tag;
+
+    Position position =
+        await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+    lat = position.latitude.toString();
+    long = position.longitude.toString();
 
     String query =
         'mutation{identificationBase64(token: "$token" ,base64imge: "$pic", latitude: $lat, longitude: $long, tgas: $tag){spoorIdentificationID, potentialMatches{animal{commonName, classification, pictures{URL}}confidence}}}';
@@ -193,7 +196,9 @@ class GraphQL implements Api {
   Future<List<HomeModel>> getHomeModel() async {
     List<HomeModel> _cards = new List();
 
-    String token = "h10hYNuJeTbmWH1ZSi5R";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token");
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get("$domain" +
@@ -285,7 +290,9 @@ class GraphQL implements Api {
     InfoModel infoModel;
     List<String> appearance = new List();
 
-    String token = "h10hYNuJeTbmWH1ZSi5R";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token");
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get("$domain" +
@@ -470,7 +477,9 @@ class GraphQL implements Api {
   Future<List<SearchModel>> getSearchModel() async {
     List<SearchModel> searchList = new List();
 
-    String token = "h10hYNuJeTbmWH1ZSi5R";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token");
     token = Uri.encodeFull(token);
 
     final http.Response response = await http.get("$domain" +
@@ -522,10 +531,7 @@ class GraphQL implements Api {
     tags.add("Endagered");
     tags.add("Dangerous");
     tags.add("Infant");
-    // for (int i = 0; i < 5; i++) {
-    //   int j = i + 1;
-    //   tags.add("Tag $j");
-    // }
+
     return tags;
   }
 
@@ -699,8 +705,7 @@ class GraphQL implements Api {
         _cards
             .add(new SpoorModel(cName, sName, "", "", "", score, "", pic, ""));
       }
-
-      print("List length at end: " + _cards.length.toString());
+      ;
       return _cards;
     }
   }

@@ -22,6 +22,12 @@
 @import flutter_keyboard_visibility;
 #endif
 
+#if __has_include(<geolocator/GeolocatorPlugin.h>)
+#import <geolocator/GeolocatorPlugin.h>
+#else
+@import geolocator;
+#endif
+
 #if __has_include(<google_maps_flutter/FLTGoogleMapsPlugin.h>)
 #import <google_maps_flutter/FLTGoogleMapsPlugin.h>
 #else
@@ -76,6 +82,7 @@
   [CameraPlugin registerWithRegistrar:[registry registrarForPlugin:@"CameraPlugin"]];
   [FLTConnectivityPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTConnectivityPlugin"]];
   [FlutterKeyboardVisibilityPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterKeyboardVisibilityPlugin"]];
+  [GeolocatorPlugin registerWithRegistrar:[registry registrarForPlugin:@"GeolocatorPlugin"]];
   [FLTGoogleMapsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleMapsPlugin"]];
   [ImageDownloaderPlugin registerWithRegistrar:[registry registrarForPlugin:@"ImageDownloaderPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];

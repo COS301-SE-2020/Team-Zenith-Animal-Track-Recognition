@@ -16,6 +16,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:ERP_RANGER/assets/my_custom_icons.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'api/graphQL.dart';
 
@@ -139,10 +140,6 @@ void showCamera(BuildContext context) async {
 
   final result = await Navigator.push(context,
       MaterialPageRoute(builder: (context) => TakePicturePage(camera: camera)));
-
-  // setState(() {
-  //   _path = result;
-  // });
 
   File image = File(result);
   String url = base64Encode(image.readAsBytesSync());
