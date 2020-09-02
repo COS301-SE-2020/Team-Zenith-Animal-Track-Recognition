@@ -234,9 +234,6 @@ export class TrackIdentificationsComponent implements OnInit {
 				}
 			});
 		}
-		else {
-			document.removeEventListener('keydown')
-		}
 	}
 
 	openSidenav() {
