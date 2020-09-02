@@ -14,6 +14,9 @@
 						<button *ngIf="activeTrack" (click)="viewAnimalProfile(activeTrack.animal.classification)" mat-menu-item>
 							<span>View Animal Info</span>
 						</button>
+						<button *ngIf="activeTrack" (click)="openTrackPhoto(true, activeTrack)" mat-menu-item>
+							<span>View Track Photo</span>
+						</button>
 						<button *ngIf="activeTrack" (click)="viewAnimalPhotos(activeTrack.animal.classification)" mat-menu-item>
 							<span>View Animal Photos</span>
 						</button>
@@ -50,8 +53,11 @@
 										<mat-icon>room</mat-icon>
 									</div>
 									<div class="animal-photos-geotag-text-container">
-										<p class="fontM" *ngIf="activeTrack">Kruger National Park</p>
-										<p class="fontM" *ngIf="activeTrack">{{activeTrack.location.latitude}},{{activeTrack.location.longitude}}</p>
+										<p class="fontM" *ngIf="activeTrack.location.addresses; else defaultAddress">{{activeTrack.location.addresses[0].formatted_address}}</p>
+										<ng-template #defaultAddress>
+											<p class="fontM">Physical Address not found.</p>
+										</ng-template>
+										<p class="fontM" *ngIf="activeTrack">{{activeTrack.location.latitude}}, {{activeTrack.location.longitude}}</p>
 									</div>
 								</div>
 							</div>

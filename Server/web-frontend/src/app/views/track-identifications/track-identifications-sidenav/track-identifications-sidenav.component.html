@@ -27,14 +27,12 @@
 					</div>
                 </mat-selection-list>
 				<div id="track-identification-container-pagination-controls">
-					<mat-paginator (page)="onPageChange($event)" *ngIf="fullTrackList" [length]="fullTrackList.length" [pageSize]="displayedTracks.length" [hidePageSize]="true"></mat-paginator>
+					<mat-paginator #trackPaginator (page)="onPageChange($event)" *ngIf="fullTrackList" [length]="fullTrackList.length" [pageSize]="25" [hidePageSize]="true"></mat-paginator>
 				</div>
             </div>
         </mat-tab>
         <mat-tab label="Track">
-            <!--<ng-template matTabContent> -->
 			<app-track-identifications-info *ngIf="activeTrack" [activeTrack]="activeTrack" (viewingTrackOnChange)="backToTrackList($event)"></app-track-identifications-info>
-            <!-- </ng-template> -->
         </mat-tab>
     </mat-tab-group>
 </div>

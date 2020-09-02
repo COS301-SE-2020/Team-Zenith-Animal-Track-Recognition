@@ -3,12 +3,29 @@
 }
 
 #identifications-view-workspace-container {
-    height: 88vh;
-    width: 85vw;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+	background-color: white;
+}
+
+.normalView {
+    height: 88vh;
+    width: 85vw;
+}
+.fullScreen {
+    height: 100vh;
+    width: 100vw;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 100;
 }
 
 #identifications-view-workspace {
@@ -28,7 +45,6 @@
     height: 100%;
     width: 350px;
     border-right: 2px solid #CCCCCC;
-    box-shadow: 1px 0px 5px #DDDDDD;
 }
 
 
@@ -42,7 +58,21 @@
 	justify-content: flex-end;
 	align-items: center;
 }*/
-
+#fullscreen-btn-container
+{
+	height: 35px;
+	width: 35px;
+	background-color: white;
+	box-shadow: 0px 0px 5px #BBBBBB;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+    position: absolute;
+    top: 3%;
+    right: 2%;
+	z-index: 5;
+}
 #sidenav-open-btn-container,
 #sidenav-close-btn-container {
     position: absolute;
@@ -68,7 +98,7 @@
 }
 
 #sidenav-open-btn-container:hover,
-#sidenav-close-btn-container:hover {
+#sidenav-close-btn-container:hover, #fullscreen-btn-container:hover {
     cursor: pointer;
 }
 
@@ -90,7 +120,10 @@
     width: 25px;
     border: 1px solid #CCCCCC;
 }
-
+#identifications-map-container img
+{
+    max-width : none;
+}
 #identifications-map-container {
     height: 100%;
     width: 100%;
@@ -110,7 +143,29 @@
     justify-content: center;
     align-items: center;
 }
+#track-info-window
+{
+	height: 50px;
+	width: 50px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	border: 2px solid red;
+}
+.track-info-image-container {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
 
-map-marker {
-    border: 2px solid yellow;
+.track-info-image-container > img {
+	height: 25px;
+	width: 25px;
+	max-width: none;
 }
