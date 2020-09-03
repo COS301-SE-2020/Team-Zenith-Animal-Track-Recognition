@@ -26,7 +26,7 @@
 }
 
 .uploadfilecontainer {
-	height: 200px;
+	height: 250px;
 	width: 80%;
 	margin: 20px auto;
 	border: 2px dashed #1C8ADB;
@@ -47,6 +47,12 @@
 	width: 80%;
 	margin: 0;
 	padding: 0;
+  }
+
+  .add-animal-image-form-input
+  {
+	  width: 40%;
+	  margin: 20px 83px;
   }
 
   #text-area-block{
@@ -87,10 +93,11 @@
 		padding: 0;
 	}
 
-	#browse-btn-div > button{
+	#browse-btn{
 		margin-top: 7px;
+		margin-bottom: 10px;
 		padding: 0.35em;
-		font-size: large;
+		border: none;
 		background-color: #686E79;
 		color: white;
 	}

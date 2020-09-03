@@ -6,6 +6,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimalPhotoDetailsComponent } from './animal-photo-details/animal-photo-details.component'; 
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import { AddImageComponent } from '../../add-image/add-image.component';
 
 @Component({
   selector: 'app-animal-photos',
@@ -156,6 +157,28 @@ export class AnimalPhotosComponent implements OnInit {
 			}
 		});
 	}
+
+	openAddNewImageDialog() {
+		const editDialogRef = this.dialog.open(AddImageComponent, {
+			height: '75%',
+			width: '60%',
+			autoFocus: true,
+			disableClose: true,
+			id: 'add-new-image-dialog',
+			data: {
+				animal: this.animal
+			},
+		});
+		editDialogRef.afterClosed().subscribe(result => {
+			this.stopLoader();
+			if (result == "success") {
+			}
+			else if (result == 'error') {
+				this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });
+			}
+		});
+	}
+
 	route(temp: string) {
 		document.getElementById("animals-route-link").classList.remove("activeRoute");
 		document.getElementById("animals-gallery-route").classList.remove("activeRoute");

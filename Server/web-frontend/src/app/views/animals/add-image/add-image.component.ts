@@ -12,7 +12,8 @@ export class AddImageComponent implements OnInit {
 
   files: any = [];
   textAreaInput: string;
-  constructor(private http: HttpClient,public dialogRef: MatDialogRef<AddImageComponent>) { }
+  disabled: true;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private http: HttpClient,public dialogRef: MatDialogRef<AddImageComponent>) { }
 
   ngOnInit(): void {
   }

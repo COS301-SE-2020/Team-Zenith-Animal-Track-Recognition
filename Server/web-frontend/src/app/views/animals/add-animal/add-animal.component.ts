@@ -12,7 +12,6 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 export class AddAnimalComponent implements OnInit {
 
 	addAnimalForm: FormGroup;
-
 	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddAnimalComponent>) { 
 	}
 

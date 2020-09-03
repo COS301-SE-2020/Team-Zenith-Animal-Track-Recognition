@@ -13,7 +13,7 @@
         <div id="animals-toolbar">
             <mat-select id="animals-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
                 <mat-option (click)="openAddNewImageDialog()">Add New Image</mat-option>
-                <mat-option (click)="openEditAnimalDialog()">Edit Information</mat-option>
+                <mat-option (click)="openEditAnimalDialog(0)">Edit Information</mat-option>
                 <mat-option (click)="viewAnimalPhotos(animal.classification)">View Photos</mat-option>
                 <mat-option>Upload Identification</mat-option>
             </mat-select>

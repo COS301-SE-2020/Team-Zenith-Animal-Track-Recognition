@@ -13,6 +13,11 @@
             <button type="submit" mat-button (click)="fileInput.click()" id="browse-btn" class="fontSB">Upload Image</button>
           </div>
       </div>
+      <mat-form-field  class="add-animal-image-form-input" appearance="outline" style="float: left; align-self: start;">
+        <mat-label>Common Name</mat-label>
+        <input matInput formControlName="commonName" value="{{data.animal.commonName}}">
+        <mat-hint>Required</mat-hint>
+      </mat-form-field>
       <mat-form-field align="center" appearance="outline" >
         <mat-label>Image Description</mat-label>
         <textarea matInput id="text-area-block" rows="6" ></textarea>
