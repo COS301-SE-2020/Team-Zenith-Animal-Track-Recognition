@@ -1777,7 +1777,7 @@ const Mutation = new GraphQLObjectType({
                 return newSpoorIdentification;
             }
         },
-        UplodeBase64: {
+        UplodeBase64Identification: {
             type: SPOOR_IDENTIFICATION_TYPE,
             args: {
                 token: {
@@ -2080,6 +2080,7 @@ const Mutation = new GraphQLObjectType({
                 return newID;
             }
         }
+
         
     }
 });
@@ -2403,7 +2404,7 @@ function uplodeBase64(Img,folder="trak") {
         return filename
     }
 
-    uploadFile.then((filename) => {
+    uploadFile().then((filename) => {
         const fs = require('fs')
 
         const path = './' + filename
