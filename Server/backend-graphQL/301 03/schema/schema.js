@@ -1688,7 +1688,7 @@ const Mutation = new GraphQLObjectType({
                     updatedAnimal.animalMarkerColor = args.animalMarkerColor
                 }
                 updatedAnimal.classification = args.classification
-                animalData.push(updatedAnimal)
+                // animalData.push(updatedAnimal)
                 animals.doc(args.classification).set(updatedAnimal)
 
 
@@ -1761,6 +1761,91 @@ const Mutation = new GraphQLObjectType({
                     ranger: rangera.rangerID,
                     potentialMatches: potentialMatchesarry,
                     animal: _.last(potentialMatchesarry).animal,
+                    track: newingID,
+                    similar: getSimilarimg(newingID),
+                    tags: tag,
+                    picturesID: newingID,
+                }
+                let tempID = IDID.toString()
+
+                spoorIdentifications.doc(tempID).set(newSpoorIdentification).then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+
+                spoorIdentificationData.push(newSpoorIdentification)
+                addImgIDToAnimal(newSpoorIdentification.animal, newSpoorIdentification.picture)
+                return newSpoorIdentification;
+            }
+        },
+        UplodeBase64: {
+            type: SPOOR_IDENTIFICATION_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                base64imge: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                latitude: {
+                    type: new GraphQLNonNull(GraphQLFloat)
+                },
+                longitude: {
+                    type: new GraphQLNonNull(GraphQLFloat)
+                },
+                animalID: {
+                    type: new GraphQLNonNull(GraphQLFloat)
+                },
+                tgas: {
+                    type: new GraphQLList(new GraphQLNonNull(GraphQLString))
+                }
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                let IDID = ((spoorIdentificationData.length + 1))
+                let b = _.find(spoorIdentificationData, {
+                    spoorIdentificationID: IDID.toString()
+                })
+                while (b != null) {
+                    IDID++
+                    b = _.find(spoorIdentificationData, {
+                        spoorIdentificationID: IDID.toString()
+                    })
+                }
+                let tag = "0"
+                if (args.tags != undefined)
+                    tag = args.tags;
+
+
+
+                let rangera = _.find(usersData, {
+                    token: args.token
+                })
+
+                let potentialMatchesarry = _.sortBy(AIIterface(args.base64imge), ["confidence"])
+                let newingID = uplodeBase64(args.base64imge)
+
+                let newSpoorIdentification = {
+                    spoorIdentificationID: IDID.toString(),
+                    dateAndTime: {
+                        year: dateOBJ.getFullYear() + 0,
+                        month: dateOBJ.getMonth() + 1,
+                        day: dateOBJ.getDate() + 0,
+                        hour: dateOBJ.getHours() + 0,
+                        min: dateOBJ.getMinutes() + 0,
+                        second: dateOBJ.getSeconds() + 0
+                    },
+                    location: {
+                        latitude: args.latitude,
+                        longitude: args.longitude
+                    },
+                    ranger: rangera.rangerID,
+                    potentialMatches: potentialMatchesarry,
+                    animal: args.animalID,
                     track: newingID,
                     similar: getSimilarimg(newingID),
                     tags: tag,
