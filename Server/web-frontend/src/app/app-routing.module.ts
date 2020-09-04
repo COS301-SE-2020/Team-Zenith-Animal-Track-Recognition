@@ -1,3 +1,4 @@
+import { AnimalGroupsComponent } from './views/animals/animals-groups/animal-groups.component';
 import { AuthGuardService as AuthGuard } from './services/auth-guard.service';
 import { SettingsComponent } from './views/settings/settings.component';
 import { RangersComponent } from './views/rangers/rangers.component';
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'animals', component: AnimalsComponent, canActivate: [AuthGuard] },
   { path: 'animals/information', component: AnimalProfileComponent, canActivate: [AuthGuard] },
   { path: 'animals/gallery', component: AnimalsGalleryComponent, canActivate: [AuthGuard] },
+  { path: 'animals/groups', component: AnimalGroupsComponent, canActivate: [AuthGuard] },
   { path: 'animals/gallery/photos', component: AnimalPhotosComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'rangers', component: RangersComponent, canActivate: [AuthGuard] },  

@@ -1,40 +1,44 @@
 <div id="side-navigation-container">
-	<div id="side-navigation-logo-container">
-		<div (click)='route("overview")' class="fontB">LOGO</div>
-	</div>
-	<div id="side-navigation-routes-container">
-		<div (click)='route("overview")' id="overview-route" class="side-navigation-route-container">
-			<div class="side-navigation-wireframeIcon"></div>
-			<p class="fontM">Overview</p>
-		</div>
-		<mat-expansion-panel #animalsPanel id="animals-route-container" disabled hideToggle>
-			<mat-expansion-panel-header>
-				<div id="animals-route-link">
-					<div id="animals-route" (click)='route("animals")'>
-						<div class="side-navigation-wireframeIcon"></div>
-						<p class="fontM">Animals</p>
-					</div>
-					<div id="side-navigation-expansion-btn"  (click)='toggleAnimalsPanel()'>
-						<mat-icon id="animals-expand-btn-icon">expand_more</mat-icon>
-					</div>
-				</div>
-			</mat-expansion-panel-header>
-			<div (click)='route("animals/gallery")' id="animals-gallery-route" class="animals-route-links">
-				<div class="side-navigation-wireframeIcon"></div>
-				<p class="fontM">Animals Gallery</p>
-			</div>
-		</mat-expansion-panel>
-		<div (click)='route("identifications")' id="geotags-route" class="side-navigation-route-container">
-			<div class="side-navigation-wireframeIcon"></div>
-			<p class="fontM">Identifications</p>
-		</div>
-		<div (click)='route("rangers")' id="rangers-route" class="side-navigation-route-container">
-			<div class="side-navigation-wireframeIcon"></div>
-			<p class="fontM">Rangers</p>
-		</div>
-		<div (click)='route("settings")' id="settings-route" class="side-navigation-route-container">
-			<div class="side-navigation-wireframeIcon"></div>
-			<p class="fontM">Settings</p>
-		</div>
-	</div>
+    <div id="side-navigation-logo-container">
+        <div (click)='route("overview")' class="fontB">LOGO</div>
+    </div>
+    <div id="side-navigation-routes-container">
+        <div (click)='route("overview")' id="overview-route" class="side-navigation-route-container">
+            <div class="side-navigation-wireframeIcon"></div>
+            <p class="fontM">Overview</p>
+        </div>
+        <mat-expansion-panel #animalsPanel id="animals-route-container" disabled hideToggle>
+            <mat-expansion-panel-header>
+                <div id="animals-route-link">
+                    <div id="animals-route" (click)='route("animals")'>
+                        <div class="side-navigation-wireframeIcon"></div>
+                        <p class="fontM">Animals</p>
+                    </div>
+                    <div id="side-navigation-expansion-btn" (click)='toggleAnimalsPanel()'>
+                        <mat-icon id="animals-expand-btn-icon">expand_more</mat-icon>
+                    </div>
+                </div>
+            </mat-expansion-panel-header>
+            <div (click)='route("animals/gallery")' id="animals-gallery-route" class="animals-route-links">
+                <div class="side-navigation-wireframeIcon"></div>
+                <p class="fontM">Animals Gallery</p>
+            </div>
+            <div (click)='route("animals/groups")' id="animals-groups-route" class="animals-route-links">
+                <div class="side-navigation-wireframeIcon"></div>
+                <p class="fontM">Animals Groups</p>
+            </div>
+        </mat-expansion-panel>
+        <div (click)='route("identifications")' id="geotags-route" class="side-navigation-route-container">
+            <div class="side-navigation-wireframeIcon"></div>
+            <p class="fontM">Identifications</p>
+        </div>
+        <div (click)='route("rangers")' id="rangers-route" class="side-navigation-route-container">
+            <div class="side-navigation-wireframeIcon"></div>
+            <p class="fontM">Rangers</p>
+        </div>
+        <div (click)='route("settings")' id="settings-route" class="side-navigation-route-container">
+            <div class="side-navigation-wireframeIcon"></div>
+            <p class="fontM">Settings</p>
+        </div>
+    </div>
 </div>

@@ -1,0 +1,246 @@
+.mat-dialog-title
+{
+	font-size: 120%;
+}
+.mat-dialog-content
+{
+	height: 80%;
+}
+#edit-animal-form
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+.mat-tab-group
+{
+	height: 100%;
+	width: 100%;
+}
+:host ::ng-deep .mat-tab-body-wrapper
+{
+	height: 100%;
+	width: 100%;
+}
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
+{
+	padding: 0.2em 0 0.8em 0;
+}
+.edit-animal-form-content
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: flex-start;
+	padding: 2%;
+}
+.add-animal-form-input
+{
+	width: 40%;
+}
+.edit-animal-form-texarea
+{
+	width: 100%;
+}
+textarea.mat-input-element
+{
+	resize: none;
+}
+.edit-animal-form-gender-container
+{
+	height: 50%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+.edit-animal-form-gender-title 
+{
+	height: 1.5em;
+	width: 100%;
+	color: rgba(0,0,0,.65);
+	font-size: 100%;
+	padding: 0;
+	margin: 0;
+}
+.edit-animal-form-gender-content
+{
+	width: 100%;
+	display: flex;
+	flex-direction: row;	
+	padding: 2%;
+}
+.edit-animal-range-container
+{
+	width: 50%;
+	display: flex;
+	flex-direction: column;
+}
+.edit-animal-range-title
+{
+	height: 1.5em;
+	width: 100%;
+	color: rgba(0,0,0,.65);
+	font-size: 90%;
+}
+.edit-animal-ranges
+{
+	width: 80%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+.edit-animal-ranges > .mat-form-field
+{
+	width: 40%;
+}
+#edit-animal-diet-select
+{
+	width: 35%;
+	border: 1px solid #CCCCCC;
+	padding: 0.5em 0.5em;
+	border-radius: 5px;
+}
+:host ::ng-deep #edit-animal-diet-select .mat-select-value-text, :host ::ng-deep #edit-animal-diet-select .mat-select-placeholder {
+  color: #1C1C1C !important;
+}
+.edit-animal-form-textarea-container
+{
+	height: 50%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+.edit-animal-form-textarea-content
+{
+	width: 100%;
+	display: flex;
+	flex-direction: row;	
+}
+/*
+#add-new-ranger-form
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	background-color: #CCCCCC;
+}
+#edit-animal-form-overview, #edit-animal-form-descr, #edit-animal-form-behaviour, #edit-animal-form-habitat, #edit-animal-form-threat
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: flex-start;
+}
+#overview-classification-group, #overview-physical-char-group, #overview-other-group
+{
+	height: 25%;
+	width: 90%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+#overview-classification-group > .mat-form-field
+{
+	width: 30%;
+}
+:host ::ng-deep .mat-form-field-wrapper
+{
+	margin-bottom: 0 !important;
+}
+#overview-physical-char-group
+{
+}
+.edit-animal-input-container
+{
+	width: 40%;
+	height: 90%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+.edit-animal-inputbtn-container
+{
+	align-items: flex-start;
+	width: 120%;
+}
+.edit-animal-inputbtn-container > .mat-button-toggle-group
+{
+	width: 100%;
+	height: 65%;
+	font-size: 90%;
+	padding: 0 5px;
+}
+.edit-animal-inputbtn-container > .mat-button-toggle-group > .mat-button-toggle
+{
+	width: 25%;
+	height: 100%;
+}
+:host ::ng-deep .mat-button-toggle-label-content 
+{
+	font-weight: 600;
+    line-height: 32px;
+}
+:host ::ng-deep .mat-button-toggle-checked
+{
+	color: white;
+	background-color: #A8ACB2;
+}
+#edit-animal-form-behaviour > .mat-form-field, #edit-animal-form-habitat > .mat-form-field,
+#edit-animal-form-threat > .mat-form-field
+{
+	width: 80%;
+	font-size: 110%;
+}
+#edit-animal-form-descr > .mat-form-field
+{
+	width: 15%;
+	font-size: 110%;
+}
+#edit-animal-form-habitat > .mat-form-field
+{
+	width: 25%;
+	font-size: 110%;
+}
+#edit-animal-form-descr > #edit-animal-form-descr-textarea , #edit-animal-form-habitat > #edit-animal-form-habitat-textarea 
+{
+	width: 80%;
+}
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
+{
+	padding: 0.2em 0 0.8em 0;
+}*/
+.mat-dialog-actions
+{
+	border-top: 1px solid #CCCCCC;
+	height: 15%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.mat-dialog-actions > .mat-button
+{
+	width: 25%;
+}
+#cancel-btn
+{
+	border: 2px solid #CCCCCC;
+}
+#add-ranger-btn
+{
+	background-color: #686E79;
+	color: white;
+}

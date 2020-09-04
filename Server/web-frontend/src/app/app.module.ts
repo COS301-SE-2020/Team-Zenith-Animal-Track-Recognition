@@ -1,3 +1,4 @@
+import { AnimalGroupsComponent } from './views/animals/animals-groups/animal-groups.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -58,6 +59,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -67,7 +69,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
 
@@ -81,6 +83,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     AnimalsGalleryComponent,
     AnimalsGalleryToolbarComponent,
     AnimalsGalleryCardComponent,
+    AnimalGroupsComponent,
     AnimalPhotosComponent,
     AnimalPhotoDetailsComponent,
     RangersComponent,
@@ -126,6 +129,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     MatListModule,
     MatCardModule,
     MatMenuModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -142,7 +146,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     MatProgressBarModule,
     MatDividerModule,
     MatGridListModule,
-	MatPaginatorModule,
+    MatPaginatorModule,
     GoogleMapsModule
   ],
   providers: [AuthGuardService],
