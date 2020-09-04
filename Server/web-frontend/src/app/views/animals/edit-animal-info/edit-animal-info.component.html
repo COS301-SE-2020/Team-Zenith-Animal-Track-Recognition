@@ -4,7 +4,7 @@
 <h1 mat-dialog-title>Edit Animal Information - {{data.animal.classification | titlecase}} ({{data.animal.commonName}})</h1>
 <mat-dialog-content>
     <form [formGroup]="editAnimalForm" id="edit-animal-form">
-        <mat-tab-group mat-align-tabs="start">
+        <mat-tab-group mat-align-tabs="start" [(selectedIndex)]="data.tab">
             <mat-tab label="Description">
                 <div class="edit-animal-form-content">
                     <mat-form-field class="add-animal-form-input" appearance="outline">

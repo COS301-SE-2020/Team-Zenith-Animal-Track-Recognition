@@ -48,8 +48,7 @@
 	align-items: center;
 	border-top: 1px solid #CCC;
 }
-.mat-paginator
-{
+.mat-paginator {
 	height: 100%;
 	width: 100%;
 }	

@@ -14,8 +14,8 @@
         </div>
         <div id="animals-toolbar">
             <mat-select id="animals-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
-                <mat-option>Add New Image</mat-option>
-                <mat-option>Edit Information</mat-option>
+                <mat-option (click)="openAddNewImageDialog()">Add New Image</mat-option>
+                <mat-option >Edit Information</mat-option>
                 <mat-option (click)="viewAnimalProfile(animal.classification)">View Information</mat-option>
                 <mat-option>Upload Identification</mat-option>
             </mat-select>

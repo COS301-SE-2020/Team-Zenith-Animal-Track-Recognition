@@ -52,6 +52,7 @@ export class AnimalsToolbarComponent implements OnInit {
 			}
 		});
 	}
+
 	//Loader
 	startLoader() {
 		if (this.test == true) {
