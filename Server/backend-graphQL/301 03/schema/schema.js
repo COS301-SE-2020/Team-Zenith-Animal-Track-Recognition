@@ -1625,6 +1625,7 @@ const Mutation = new GraphQLObjectType({
                 let updatedAnimal = _.find(animalData, {
                     classification: args.classification
                 })
+        
                 //delete updatedAnimal.classification
                 if (args.commonName != undefined) {
                     updatedAnimal.commonName = args.commonName
@@ -1687,8 +1688,8 @@ const Mutation = new GraphQLObjectType({
                 if (args.animalMarkerColor != undefined) {
                     updatedAnimal.animalMarkerColor = args.animalMarkerColor
                 }
+                
                 updatedAnimal.classification = args.classification
-                animalData.push(updatedAnimal)
                 animals.doc(args.classification).set(updatedAnimal)
 
 
