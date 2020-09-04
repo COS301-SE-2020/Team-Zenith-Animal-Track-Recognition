@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, IterableDiffers } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import { runInNewContext } from 'vm';
 
 @Component({
 	selector: 'app-animals',
@@ -81,20 +82,19 @@ export class AnimalsComponent implements OnInit {
 		}
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
-			'lifeSpan,gestationPeriod,animalOverview,typicalBehaviourM{behaviour,threatLevel},typicalBehaviourF{behaviour,threatLevel},animalDescription,pictures{URL}}}')
+			'lifeSpan,gestationPeriod,Offspring,typicalBehaviourM{behaviour,threatLevel},typicalBehaviourF{behaviour,threatLevel},animalOverview,animalDescription,pictures{URL}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
-				var newAnimalList = temp[0];
-				this.animals = newAnimalList;
-				/*switch (updateOp) {
-					case "update":
-						this.animals = null;
-						break;
-					case "add":
-						newAnimalList.forEach(x => this.addIfNewAnimal(x));
-						break;
-				}*/
+				this.animals = temp[0];
+				this.animals.forEach(animal => {
+					const cont: boolean = ('' + animal.animalDescription).includes('.');
+					if (cont) {
+						animal.animalOverview = ('' + animal.animalDescription).substring(0, ('' + animal.animalDescription).indexOf(' ', ('' + animal.animalDescription).length < 110 ? 0 : 110) + 1) + ' ...';
+					} else {
+						animal.animalOverview = "No description provided. Please update this animal in the edit animal screen.";
+					}
+				});
 				this.sort('byAbc');
 			});
 	}
@@ -155,6 +155,7 @@ export class AnimalsComponent implements OnInit {
 			}
 		}
 	}
+	
 	private sortGroups() {
 		for (let i = 0; i < this.animals.length - 1; i++) {
 			for (let j = i + 1; j < this.animals.length; j++) {
@@ -167,10 +168,57 @@ export class AnimalsComponent implements OnInit {
 		}
 	}
 
-	sortHeight() {
-		throw new Error("Method not implemented.");
+	private sortHeight() {
+		for (let i = 0; i < this.animals.length - 1; i++) {
+
+
+			for (let j = i + 1; j < this.animals.length; j++) {
+				
+				var heightForI = this.animals[i].heightM.indexOf('-');
+				var upperBoundHeightValue = this.animals[i].heightM.substring(heightForI+1);
+				var upperBoundAsANumber = Number(upperBoundHeightValue);
+	
+				var heightForJ = this.animals[j].heightM.indexOf('-');
+				var upperBoundHeightValue2 = this.animals[j].heightM.substring(heightForJ+1);
+				var valueAsANumber = Number(upperBoundHeightValue2);
+
+				if (upperBoundAsANumber < valueAsANumber) {
+					let temp = this.animals[i];
+					this.animals[i] = this.animals[j];
+					this.animals[j] = temp;
+
+				}
+
+			}
+		}
 	}
-	sortWeight() {
-		throw new Error("Method not implemented.");
+	private sortWeight() {
+		for (let i = 0; i < this.animals.length - 1; i++) {
+
+
+			for (let j = i + 1; j < this.animals.length; j++) {
+				
+				var weightForI = this.animals[i].weightM.indexOf('-');
+				var upperBoundWeightValue = this.animals[i].weightM.substring(weightForI+1);
+				var upperBoundAsANumber = Number(upperBoundWeightValue);
+	
+				var weightForJ = this.animals[j].weightM.indexOf('-');
+				var upperBoundWeightValue2 = this.animals[j].weightM.substring(weightForJ+1);
+				var valueAsANumber = Number(upperBoundWeightValue2);
+
+				if (upperBoundAsANumber < valueAsANumber) {
+					let temp = this.animals[i];
+					this.animals[i] = this.animals[j];
+					this.animals[j] = temp;
+				}
+
+			}
+		}
+		for(let i = 0; i < this.animals.length ; i++){
+			var weightForI = this.animals[i].weightM.indexOf('-');
+			var upperBoundWeightValue = this.animals[i].weightM.substring(weightForI+1);
+			var upperBoundAsANumber = Number(upperBoundWeightValue);
+			console.log(upperBoundAsANumber+" "+this.animals[i].commonName)
+		}
 	}
 }
