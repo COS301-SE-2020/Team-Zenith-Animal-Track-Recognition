@@ -160,7 +160,7 @@ class LeftImage extends ViewModelWidget<UploadViewModel> {
         color: Colors.grey,
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
-          image: MemoryImage(model.image.readAsBytesSync()),
+          image: FileImage(model.image),
           fit: BoxFit.fill,
         ),
       ),
@@ -284,21 +284,19 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
   AnimalBox({
     Key key,
   }) : super(reactive: true);
-
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    final TextEditingController _typeAheadController = TextEditingController();
-    String _selectedText;
-
+    final TextEditingController _typeAheadController = TextEditingController()
+      ..text = " ";
     return Column(
+      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Expanded(
           child: TypeAheadFormField(
             textFieldConfiguration: TextFieldConfiguration(
                 controller: _typeAheadController,
                 decoration: InputDecoration(
-                    hintText: 'Animal Name',
                     hintStyle: TextStyle(
                         fontFamily: 'MavenPro',
                         fontWeight: FontWeight.normal,
@@ -334,6 +332,19 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
             onSaved: (value) => viewModel.setChosenAnimal(value),
           ),
         ),
+        SizedBox(
+          height: 10.0,
+        ),
+        Expanded(
+          child: RaisedButton(
+            child: Text("Selected"),
+            onPressed: () {
+              if (this._formKey.currentState.validate()) {
+                this._formKey.currentState.save();
+              }
+            },
+          ),
+        )
       ],
     );
   }
@@ -499,7 +510,7 @@ Widget containerTitle(String title) {
 }
 
 Widget attachAnimal = new Container(
-  height: 115,
+  height: 200,
   width: 100,
   padding: EdgeInsets.all(5),
   margin: EdgeInsets.all(15),
@@ -508,6 +519,7 @@ Widget attachAnimal = new Container(
       borderRadius: BorderRadius.circular(10),
       border: Border.all(color: Colors.white)),
   child: Column(
+    mainAxisSize: MainAxisSize.max,
     children: <Widget>[
       Expanded(flex: 1, child: attachAnimalButton),
       Expanded(flex: 1, child: AnimalBox()),

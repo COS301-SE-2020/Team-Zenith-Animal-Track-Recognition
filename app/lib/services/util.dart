@@ -216,7 +216,6 @@ void recapture(var context) async {
       _navigationService.navigateTo(Routes.confirmlViewRoute,
           arguments:
               ConfirmedViewArguments(image: image, confirmedAnimals: animals));
-      //Navigator.of(context).popAndPushNamed("/confirmed-view",arguments:image);
     } else {
       _navigationService.navigateTo(Routes.notConfirmedViewRoute,
           arguments: NotConfirmedViewArguments(image: image));

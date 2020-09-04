@@ -21,6 +21,7 @@ import 'package:ERP_RANGER/ui/views/upload/upload_view.dart';
 import 'package:ERP_RANGER/ui/views/information/information_view.dart';
 import 'package:ERP_RANGER/ui/views/login/login_view.dart';
 import 'package:ERP_RANGER/ui/views/search/search_view.dart';
+import 'package:ERP_RANGER/ui/views/userconfirmed/user_confirmed_view.dart';
 
 class Routes {
   static const String homeViewRoute = '/';
@@ -35,6 +36,7 @@ class Routes {
   static const String informationViewRoute = '/information-view';
   static const String loginViewRoute = '/login-view';
   static const String searchViewRoute = '/search-view';
+  static const String userConfirmedViewRoute = '/user-confirmed-view';
   static const all = <String>{
     homeViewRoute,
     animalViewRoute,
@@ -48,6 +50,7 @@ class Routes {
     informationViewRoute,
     loginViewRoute,
     searchViewRoute,
+    userConfirmedViewRoute,
   };
 }
 
@@ -67,6 +70,7 @@ class Router extends RouterBase {
     RouteDef(Routes.informationViewRoute, page: InformationView),
     RouteDef(Routes.loginViewRoute, page: LoginView),
     RouteDef(Routes.searchViewRoute, page: SearchView),
+    RouteDef(Routes.userConfirmedViewRoute, page: UserConfirmedView),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -167,6 +171,15 @@ class Router extends RouterBase {
         settings: data,
       );
     },
+    UserConfirmedView: (RouteData data) {
+      var args = data.getArgs<UserConfirmedViewArguments>(
+          orElse: () => UserConfirmedViewArguments());
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => UserConfirmedView(
+            confirmedAnimal: args.confirmedAnimal, image: args.image),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -246,4 +259,11 @@ class LoginViewArguments {
 class SearchViewArguments {
   final Key key;
   SearchViewArguments({this.key});
+}
+
+//UserConfirmedView arguments holder class
+class UserConfirmedViewArguments {
+  final ConfirmModel confirmedAnimal;
+  final File image;
+  UserConfirmedViewArguments({this.confirmedAnimal, this.image});
 }

@@ -36,5 +36,8 @@ abstract class Api {
 
   Future<List<ConfirmModel>> identifyImage(String pic, String lat, String long);
 
+  Future<ConfirmModel> manualClassification(
+      String pic, double lat, double long, double animalID, List<String> tags);
+
   Future<int> getUserLevel();
 }

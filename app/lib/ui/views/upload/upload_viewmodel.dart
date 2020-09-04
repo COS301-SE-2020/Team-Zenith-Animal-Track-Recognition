@@ -6,11 +6,10 @@ import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/fake_api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:geolocator/geolocator.dart';
 
 class UploadViewModel extends BaseViewModel {
   String tag;
@@ -65,6 +64,7 @@ class UploadViewModel extends BaseViewModel {
 
   Future<void> setAnimals() async {
     _animals = await api.getAnimalTags();
+    _animals.add(" ");
   }
 
   void setTag(String tag) {
@@ -76,6 +76,7 @@ class UploadViewModel extends BaseViewModel {
   }
 
   void setChosenAnimal(String animal) {
+    print("Value activated: " + animal);
     chosenAnimal = animal;
   }
 
@@ -127,12 +128,30 @@ class UploadViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void upload() {
-    _image = null;
-    _latitude = "";
-    _longitude = "";
-    _valueGallery = false;
-    _valueCamera = false;
-    _tagIndex = null;
+  Future<void> upload() async {
+    // _image = null;
+    // _latitude = "";
+    // _longitude = "";
+    // _valueGallery = false;
+    // _valueCamera = false;
+    // _tagIndex = null;
+
+// Position position = await getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
+
+//     ConfirmModel animal =
+//         await _api.manualClassification(_imageLink, position.latitude, position.longitude, );
+
+    //print("Chosen Animal: " + chosenAnimal);
+
+    ConfirmModel identifiedAnimal = ConfirmModel(
+        accuracyScore: 0,
+        type: "Track",
+        animalName: "Elephant",
+        species: "African Bush",
+        image: _imageLink);
+
+    _navigationService.navigateTo(Routes.userConfirmedViewRoute,
+        arguments: UserConfirmedViewArguments(
+            image: _image, confirmedAnimal: identifiedAnimal));
   }
 }

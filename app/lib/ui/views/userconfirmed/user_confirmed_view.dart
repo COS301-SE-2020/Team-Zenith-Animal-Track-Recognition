@@ -1,17 +1,15 @@
 import 'package:ERP_RANGER/services/util.dart';
-import 'package:ERP_RANGER/services/util.dart';
-import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
-import 'package:ERP_RANGER/ui/views/userconfirm/user_confirmed_viewmodel.dart';
+import 'package:ERP_RANGER/ui/views/userconfirmed/user_confirmed_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'dart:io';
 
 // ignore: must_be_immutable
 class UserConfirmedView extends StatelessWidget {
-  List<ConfirmModel> confirmedAnimals;
+  ConfirmModel confirmedAnimal;
   File image;
-  UserConfirmedView({this.confirmedAnimals, this.image});
+  UserConfirmedView({this.confirmedAnimal, this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +22,7 @@ class UserConfirmedView extends StatelessWidget {
           }
           if (snapshot.hasData) {
             if (model.loaded == false) {
-              model.setConfirmedList(confirmedAnimals);
-              model.setConfidentAnimal(confirmedAnimals[0]);
-              //confirmedAnimals.removeAt(0);
+              model.setConfidentAnimal(confirmedAnimal);
               model.setLoaded(true);
             }
             return WillPopScope(
@@ -47,7 +43,6 @@ class UserConfirmedView extends StatelessWidget {
               ),
             );
           } else {
-            print(confirmedAnimals.length.toString());
             return progressIndicator();
           }
         },
@@ -150,20 +145,20 @@ class Scroll extends ViewModelWidget<UserConfirmedViewModel> {
                   ],
                 ),
                 Divider(),
-                Column(
-                  children: <Widget>[
-                    otherMatches(context),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: SimilarSpoor(),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-                Divider(),
+                // Column(
+                //   children: <Widget>[
+                //     otherMatches(context),
+                //     Row(
+                //       children: <Widget>[
+                //         Expanded(
+                //           flex: 1,
+                //           child: SimilarSpoor(),
+                //         )
+                //       ],
+                //     )
+                //   ],
+                // ),
+                // Divider(),
                 Column(
                   children: <Widget>[
                     tagText(context),
@@ -301,115 +296,115 @@ class LeadingIcon extends ViewModelWidget<UserConfirmedViewModel> {
 }
 
 // ignore: must_be_immutable
-class PossibleTags extends ViewModelWidget<UserConfirmedViewModel> {
-  String image;
-  String name;
-  String species;
-  double score;
-  int index;
-  PossibleTags(
-      {Key key, this.image, this.name, this.score, this.species, this.index})
-      : super(key: key, reactive: true);
+// class PossibleTags extends ViewModelWidget<UserConfirmedViewModel> {
+//   String image;
+//   String name;
+//   String species;
+//   double score;
+//   int index;
+//   PossibleTags(
+//       {Key key, this.image, this.name, this.score, this.species, this.index})
+//       : super(key: key, reactive: true);
 
-  @override
-  Widget build(BuildContext context, UserConfirmedViewModel model) {
-    return PopupMenuButton<int>(
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          value: 1,
-          child: text14LeftNormBlack('Reclassify'),
-        ),
-        PopupMenuItem(
-          value: 2,
-          child: text14LeftNormBlack('View Info'),
-        ),
-        PopupMenuItem(
-          value: 3,
-          child: text14LeftNormBlack('View Photos'),
-        ),
-      ],
-      child: Container(
-        alignment: Alignment.centerLeft,
-        margin: new EdgeInsets.only(
-          left: 8,
-          bottom: 5,
-          top: 5,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        height: 200,
-        width: 110,
-        child: Column(
-          children: <Widget>[
-            Expanded(
-                child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: innerImageBlock(image)),
-                flex: 4),
-            Expanded(
-                child: Container(
-                    alignment: Alignment.centerLeft,
-                    margin: new EdgeInsets.only(left: 8),
-                    child: text12LeftNormBlack(name)),
-                flex: 1),
-            Expanded(
-                child: Container(
-                    alignment: Alignment.centerLeft,
-                    margin: new EdgeInsets.only(left: 8),
-                    child: text12LeftNormGrey(species)),
-                flex: 1),
-            Expanded(
-                child: Container(
-                    alignment: Alignment.centerLeft,
-                    margin: new EdgeInsets.only(left: 8),
-                    child: text12LeftNormGrey("$score%")),
-                flex: 1),
-          ],
-        ),
-      ),
-      onSelected: (value) {
-        if (value == 1) {
-          model.reclassify(index);
-        } else if (value == 2) {
-          navigateToInfo(name.toLowerCase());
-        } else {
-          navigateToGallery(name.toLowerCase());
-        }
-        //different fuctionality insert here
-      },
-      offset: Offset(120, 40),
-      color: Colors.white,
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context, UserConfirmedViewModel model) {
+//     return PopupMenuButton<int>(
+//       itemBuilder: (context) => [
+//         PopupMenuItem(
+//           value: 1,
+//           child: text14LeftNormBlack('Reclassify'),
+//         ),
+//         PopupMenuItem(
+//           value: 2,
+//           child: text14LeftNormBlack('View Info'),
+//         ),
+//         PopupMenuItem(
+//           value: 3,
+//           child: text14LeftNormBlack('View Photos'),
+//         ),
+//       ],
+//       child: Container(
+//         alignment: Alignment.centerLeft,
+//         margin: new EdgeInsets.only(
+//           left: 8,
+//           bottom: 5,
+//           top: 5,
+//         ),
+//         decoration: BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.circular(10),
+//         ),
+//         height: 200,
+//         width: 110,
+//         child: Column(
+//           children: <Widget>[
+//             Expanded(
+//                 child: Container(
+//                     alignment: Alignment.centerLeft,
+//                     child: innerImageBlock(image)),
+//                 flex: 4),
+//             Expanded(
+//                 child: Container(
+//                     alignment: Alignment.centerLeft,
+//                     margin: new EdgeInsets.only(left: 8),
+//                     child: text12LeftNormBlack(name)),
+//                 flex: 1),
+//             Expanded(
+//                 child: Container(
+//                     alignment: Alignment.centerLeft,
+//                     margin: new EdgeInsets.only(left: 8),
+//                     child: text12LeftNormGrey(species)),
+//                 flex: 1),
+//             Expanded(
+//                 child: Container(
+//                     alignment: Alignment.centerLeft,
+//                     margin: new EdgeInsets.only(left: 8),
+//                     child: text12LeftNormGrey("$score%")),
+//                 flex: 1),
+//           ],
+//         ),
+//       ),
+//       onSelected: (value) {
+//         if (value == 1) {
+//           model.reclassify(index);
+//         } else if (value == 2) {
+//           navigateToInfo(name.toLowerCase());
+//         } else {
+//           navigateToGallery(name.toLowerCase());
+//         }
+//         //different fuctionality insert here
+//       },
+//       offset: Offset(120, 40),
+//       color: Colors.white,
+//     );
+//   }
+// }
 
-class SimilarSpoor extends ViewModelWidget<UserConfirmedViewModel> {
-  SimilarSpoor({
-    Key key,
-  }) : super(key: key, reactive: true);
+// class SimilarSpoor extends ViewModelWidget<UserConfirmedViewModel> {
+//   SimilarSpoor({
+//     Key key,
+//   }) : super(key: key, reactive: true);
 
-  @override
-  Widget build(BuildContext context, UserConfirmedViewModel model) {
-    return Container(
-      height: 200,
-      color: Colors.white,
-      child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: model.confirmedList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return PossibleTags(
-                image: model.confirmedList[index].image,
-                name: model.confirmedList[index].animalName,
-                species: model.confirmedList[index].species,
-                score: model.confirmedList[index].accuracyScore,
-                index: index);
-          }),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context, UserConfirmedViewModel model) {
+//     return Container(
+//       height: 200,
+//       color: Colors.white,
+//       child: ListView.builder(
+//           shrinkWrap: true,
+//           scrollDirection: Axis.horizontal,
+//           itemCount: model.confirmedList.length,
+//           itemBuilder: (BuildContext context, int index) {
+//             return PossibleTags(
+//                 image: model.confirmedList[index].image,
+//                 name: model.confirmedList[index].animalName,
+//                 species: model.confirmedList[index].species,
+//                 score: model.confirmedList[index].accuracyScore,
+//                 index: index);
+//           }),
+//     );
+//   }
+// }
 
 Widget confidentImageBlock(String image) {
   return Container(

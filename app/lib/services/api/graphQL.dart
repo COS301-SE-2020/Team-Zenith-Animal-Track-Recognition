@@ -11,7 +11,9 @@ import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:injectable/injectable.dart';
 import 'api.dart';
 
-final String domain = "http://putch.dyndns.org:55555/";
+//final String domain = "http://putch.dyndns.org:55555/";
+final String domain =
+    "http://ec2-13-244-137-176.af-south-1.compute.amazonaws.com:55555/";
 
 @lazySingleton
 class GraphQL implements Api {
@@ -763,5 +765,12 @@ class GraphQL implements Api {
     }
 
     return _cards;
+  }
+
+  @override
+  Future<ConfirmModel> manualClassification(
+      String pic, double lat, double long, double animalID, List<String> tags) {
+    // TODO: implement manualClassification
+    throw UnimplementedError();
   }
 }

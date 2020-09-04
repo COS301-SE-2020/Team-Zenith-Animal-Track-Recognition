@@ -973,4 +973,11 @@ class FakeApi implements Api {
     // TODO: implement getAnimalTags
     throw UnimplementedError();
   }
+
+  @override
+  Future<ConfirmModel> manualClassification(
+      String pic, double lat, double long, double animalID, List<String> tags) {
+    // TODO: implement manualClassification
+    throw UnimplementedError();
+  }
 }

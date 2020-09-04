@@ -38,7 +38,7 @@ class UserConfirmedViewModel extends BaseViewModel {
   }
 
   void setConfidentAnimal(ConfirmModel _confidentAnimal) {
-    this._confidentAnimal = this._confirmedList[0];
+    this._confidentAnimal = _confidentAnimal;
   }
 
   void confirm(var context) {
@@ -57,16 +57,14 @@ class UserConfirmedViewModel extends BaseViewModel {
 
   Future<FinalObject> getConfirm() async {
     List<String> tags = await _api.getTags();
+    List<String> categories = new List();
+    categories.add("Appearance");
+    categories.add("Tracks");
+    categories.add("Droppings");
+    tags = categories;
+
     FinalObject finalObject = new FinalObject(tags: tags);
     return finalObject;
-  }
-
-  void reclassify(int index) {
-    print(index);
-    _confirmedList.add(_confidentAnimal);
-    _confidentAnimal = _confirmedList[index];
-    _confirmedList.removeAt(index);
-    notifyListeners();
   }
 }
 
