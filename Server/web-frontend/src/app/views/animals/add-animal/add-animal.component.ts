@@ -3,6 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import { doesNotReject } from 'assert';
 
 @Component({
 	selector: 'app-add-animal',
@@ -30,14 +31,22 @@ export class AddAnimalComponent implements OnInit {
 		if (false === test) {
 			this.startLoader();
 			//@Zach Please change the query string. 
+
+			const cont: boolean = (this.f.animalDescription.value).includes('.');
+			let animalDescription = this.f.animalDescription.value;
+
+			if(!cont){
+				let fullstop = ".";
+				animalDescription=animalDescription.concat(fullstop);
+			}
 			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{wdbAddAnimal(token:"' +
 				JSON.parse(localStorage.getItem('currentToken'))['value'] + '",classification:"' + encodeURIComponent(this.f.classification.value) +
 				'",commonName:"' + encodeURIComponent(this.f.commonName.value) + '",animalDescription:"' +
-				encodeURIComponent(this.f.animalDescription.value) + '"){animalID}}', '')
+				encodeURIComponent(animalDescription) + '"){animalID}}', '')
 				.subscribe({ 
 					next: data => this.dialogRef.close("success"), 
 					error: error => this.dialogRef.close("error") 
-				});
+				}); 
 				window.location.reload();
 		}
 		else {
