@@ -2079,6 +2079,43 @@ const Mutation = new GraphQLObjectType({
                 addImgIDToAnimal(args.animalID,newID)
                 return newID;
             }
+        },
+        addAnimalGroup:{
+            type:ANIMAL_TYPE,
+            
+            args:{
+                token:{
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                animalID:{
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                groupID:{
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args){
+                console.log(args)
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.accessLevel <= 2) {
+                    return null
+                }
+                let animal = _.find(animalData,{
+                    animalID:toNumber(args.animalID)
+                })
+                if (animal==undefined){
+                    return null
+                }
+                _.pull(animal.groupID,5)
+                animal.groupID.push(args.groupID);
+                animals.doc(animal.classification).set(animal)
+                return animal
+            }
         }
 
         
