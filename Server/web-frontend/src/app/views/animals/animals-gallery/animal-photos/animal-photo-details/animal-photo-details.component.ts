@@ -10,21 +10,7 @@ import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angu
 export class AnimalPhotoDetailsComponent implements OnInit {
 	
 	@ViewChild('sidenav') sidenav: any;
-	currentImageIndex: number;
-
-	/*Place holder values*/
-	trackInfoPlaceholder = [
-		{
-			commonName: 'Elephant',
-			classification: 'Loxodonta Africanus',
-			trackLocation: 'Kruger National Park',
-			coordinates: '-24.019097, 31.559270',
-			accuracyScore: '67%',
-			capturedBy: 'Kagiso Ndlovu',
-			date: '09/09/2020',
-			dayTime: 'Fri, 09:17'
-		}
-	];
+	currentPhotoIndex: number;
 	
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any, 
@@ -42,25 +28,60 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 		document.getElementById("animal-photo-details-dialog").style.position = "absolute";
 		
 		//Determine index of currently viewed image
-		this.currentImageIndex = this.data.currentIndex;
+		this.currentPhotoIndex = this.data.initialIndex;
 	}
-	
+
+	//Open/close sidenav
 	toggleSidenav() {
 		this.sidenav.toggle();
 	}
+	
+	//If the photo is of an animal, adapt height to respond to toggling the sidenav
 	fillHeight()
 	{
-		if (!this.data.isTrack)
+		if (this.data.photoType == 'Animal')
 			document.getElementById("animal-photo-detail-current-image").style.height = '100%';
 	}
 	fillWidth()
 	{
-		if (!this.data.isTrack)
+		if (this.data.photoType == 'Animal')
 			document.getElementById("animal-photo-detail-current-image").style.height = '80%';
 	}
-	isTrack()
+	
+	
+	//Photo navigation functions
+	nextPhoto()
 	{
-		return this.data.isTrack;
+		//Temporary photo navigation solution until API updates 
+		if (this.data.photoType != 'Single Track')
+		{
+			//Navigate to next photo. If last photo, navigate to first
+			if (this.currentPhotoIndex >= (this.data.imageList.length - 1))
+				this.currentPhotoIndex = 0;
+			else if (this.currentPhotoIndex < (this.data.imageList.length - 1))
+				this.currentPhotoIndex += 1;			
+		}
+	}
+	prevPhoto()
+	{
+		//Temporary photo navigation solution until API updates 
+		if (this.data.photoType != 'Single Track')
+		{
+			//Navigate to prev photo. If first photo, navigate to last
+			if (this.currentPhotoIndex >= 1)
+				this.currentPhotoIndex -= 1;
+			else if (this.currentPhotoIndex < 1)
+				this.currentPhotoIndex = (this.data.imageList.length - 1);
+		}
+	}
+	
+	//Miscellaneous Functions
+	closeDialog()
+	{
+		this.dialogRef.close("cancel");	
+	}
+	route(temp: string) {
+		this.router.navigate([temp]);
 	}
 	viewAnimalProfile(animalClassi: string) {
 		this.dialogRef.close("cancel");	
@@ -68,45 +89,4 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 		let classificationQuery = classification[0] + "_" + classification[1];
 		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
 	}
-	route(temp: string) {
-		this.router.navigate([temp]);
-	}
-	
-	prevImage()
-	{
-		if (this.data.isTrack)
-		{
-		}
-		else 
-		{
-			if (this.currentImageIndex >= 1)
-				this.currentImageIndex -= 1;
-			else if (this.currentImageIndex < 1)
-				this.currentImageIndex = this.data.imageList.length - 1;
-
-			this.data.currentImage = this.data.imageList[this.currentImageIndex].URL;
-		}
-	}
-	
-	nextImage()
-	{
-		if (this.data.isTrack)
-		{
-		}
-		else 
-		{
-			if (this.currentImageIndex >= (this.data.imageList.length - 1))
-				this.currentImageIndex = 0;
-			else if (this.currentImageIndex < (this.data.imageList.length - 1))
-				this.currentImageIndex += 1;
-
-			this.data.currentImage = this.data.imageList[this.currentImageIndex].URL;
-		}
-	}
-	
-	closeDialog()
-	{
-		this.dialogRef.close("cancel");	
-	}
-
 }

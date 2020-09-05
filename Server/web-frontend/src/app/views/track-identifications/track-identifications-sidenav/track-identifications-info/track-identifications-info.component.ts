@@ -45,7 +45,9 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 		let classificationQuery = classification[0] + "_" + classification[1];
 		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
 	}
-	openTrackPhoto(isTrack: boolean, animal: any) {
+	viewTrackPhotoDetails() {
+		//Open AnimalPhotoDetailsComponent and display the selected photo 
+		let mediaList = [this.activeTrack.picture];
 		const animalPhotoDetailsDialogRef = this.dialog.open(AnimalPhotoDetailsComponent, {
 			height: '100%',
 			width: '100%',
@@ -53,20 +55,10 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 			disableClose: true,
 			id: 'animal-photo-details-dialog',
 			data: {
-				isTrack: isTrack,
-				currentImage: animal.picture.URL,
-				currentIndex: 0,
-				imageList: animal.pictures,
-				animal: animal
-			},
-		});
-		animalPhotoDetailsDialogRef.afterClosed().subscribe(result => {
-			if (result == "success") {
-				//If animal was successfully edited refresh component and notify parent
-				//this.animalsOnChange.emit('update');
-			}
-			else if (result == 'error') {
-				//this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });
+				initialIndex: 0,
+				entity: this.activeTrack,
+				imageList: mediaList,
+				photoType: "Single Track"
 			}
 		});
 	}

@@ -14,7 +14,7 @@
 						<button *ngIf="activeTrack" (click)="viewAnimalProfile(activeTrack.animal.classification)" mat-menu-item>
 							<span>View Animal Info</span>
 						</button>
-						<button *ngIf="activeTrack" (click)="openTrackPhoto(true, activeTrack)" mat-menu-item>
+						<button *ngIf="activeTrack" (click)="viewTrackPhotoDetails()" mat-menu-item>
 							<span>View Track Photo</span>
 						</button>
 						<button *ngIf="activeTrack" (click)="viewAnimalPhotos(activeTrack.animal.classification)" mat-menu-item>

@@ -29,19 +29,27 @@
 			<mat-tab-group mat-align-tabs="center" dynamicHeight> 
 				<mat-tab label="Photos">
 					<ng-template matTabContent>
-						<mat-grid-list cols="3" rowHeight="1:1" gutterSize="10px">
-						  <mat-grid-tile *ngFor="let animalPhoto of animal.pictures;let photoIndex=index;" (click)="openPhotoDetails(false, animalPhoto.URL, photoIndex)">
-								<img class="animal-photo" src="{{animalPhoto.URL}}" alt="Picture of {{animal.commonName}} - {{animal.classification}}">
-						  </mat-grid-tile>
+						<mat-grid-list cols="3" rowHeight="1:1" gutterSize="10px" *ngIf="animal">
+							<ng-container *ngFor="let animalPhoto of animal.pictures;let photoIndex=index;">
+								<ng-container [ngSwitch]="animalPhoto.kindOfPicture">
+									<mat-grid-tile *ngSwitchCase='"Animal"' (click)="viewAnimalPhotoDetails(animalPhoto.URL)">
+										<img class="animal-photo" src="{{animalPhoto.URL}}" alt="Photo of {{animal.commonName}}">
+									</mat-grid-tile>
+								</ng-container>
+							</ng-container>
 						</mat-grid-list>
 					</ng-template>
 				</mat-tab>
 				<mat-tab label="Tracks">
 					<ng-template matTabContent>
-						<mat-grid-list class="animal-track-photo" cols="3" rowHeight="1:1" gutterSize="10px">
-						  <mat-grid-tile *ngFor="let trackImage of trackImages;let trackIndex=index;" (click)="openPhotoDetails(true, defaultImage, trackIndex)">
-						  	<!-- Img of Track	<img class="animal-photo" src="{{animalPhoto.URL}}" alt="Picture of {{animal.commonName}} - {{animal.classification}}"> -->
-						  </mat-grid-tile>
+						<mat-grid-list class="animal-track-photo" cols="3" rowHeight="1:1" gutterSize="10px" *ngIf="animal">
+							<ng-container *ngFor="let trackImage of animal.pictures;let trackIndex=index;">
+								<ng-container [ngSwitch]="trackImage.kindOfPicture">
+									<mat-grid-tile *ngSwitchCase='"trak"' (click)="viewTrackPhotoDetails(trackImage.URL)">
+										<img class="animal-photo" src="{{trackImage.URL}}" alt="Photo of {{animal.commonName}} Track">
+									</mat-grid-tile>
+								</ng-container>
+							</ng-container>
 						</mat-grid-list>
 					</ng-template>
 				</mat-tab>

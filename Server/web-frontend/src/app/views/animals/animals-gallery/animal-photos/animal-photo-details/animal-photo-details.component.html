@@ -1,5 +1,6 @@
 <mat-drawer-container id="animal-search-sidenav-container">
     <mat-drawer id="animal-search-sidenav" #sidenav mode="side" position="end" (openedStart)="fillWidth()" (closedStart)="fillHeight()">
+	<!--
 		<div id="animal-photos-track-info-container" *ngFor="let trackInfo of trackInfoPlaceholder">
 			<div id="animal-photos-track-info-title">
 				<button mat-icon-button aria-label="Close Track Info Button" (click)="toggleSidenav()">
@@ -23,7 +24,7 @@
 					</div>
 					<div id="animal-photos-track-id-result">
 						<div id="animal-photos-track-id-image">
-							<!-- Place Image of Track here <img id="animal-photo-detail-current-image" src="{{data.currentImage}}">-->
+							<img id="animal-photo-detail-current-image" src="{{data.currentImage}}">
 							<div></div>
 						</div>
 						<div id="animal-photos-track-id-score">
@@ -83,44 +84,55 @@
 					</div>
 				</div>
 			</ng-container>
-		</div>
+		</div> -->
     </mat-drawer>
     <mat-drawer-content id="animal-search-sidenav-content">
 		<div id="animal-photo-details-container">
 			<div id="animal-photo-details-toolbar">
 				<button mat-icon-button aria-label="Back Button" (click)="closeDialog()">
-					<mat-icon>arrow_back</mat-icon>
+					<mat-icon>close</mat-icon>
 				</button>
 				<div>
-					<button mat-icon-button aria-label="Track Info Button" (click)="toggleSidenav()">
-						<mat-icon>info</mat-icon>
-					</button>
+					<ng-container *ngIf="data.photoType != 'Single Track'" >
+						<button mat-icon-button aria-label="Track Info Button" (click)="toggleSidenav()">
+							<mat-icon>info</mat-icon>
+						</button>
+					</ng-container>
 					<button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
 						<mat-icon>more_vert</mat-icon>
 					</button>
 					<mat-menu #menu="matMenu" xPosition="before">
-						<button mat-menu-item (click)="viewAnimalProfile(data.animal.classification)">
-							<span>Set As Main Image</span>
-						</button>
-						<button mat-menu-item (click)="viewAnimalProfile(data.animal.classification)">
-							<span>View Animal Information</span>
-						</button>
-						<ng-container *ngIf="isTrack();" >
+						<ng-container *ngIf="data.photoType == 'Animal'" >
+							<button mat-menu-item (click)="viewAnimalProfile(data.animal.classification)">
+								<span>Set As Main Image</span>
+							</button>
+						</ng-container>
+						<ng-container *ngIf="data.photoType == 'Single Track';else viewAnimalInfoAlt">
+							<button mat-menu-item (click)="viewAnimalProfile(data.entity.animal.classification)">
+								<span>View Animal Information</span>
+							</button>
+						</ng-container>
+						<ng-template #viewAnimalInfoAlt>
+							<button mat-menu-item (click)="viewAnimalProfile(data.entity.classification)">
+								<span>View Animal Information</span>
+							</button>
+						</ng-template>
+						<ng-container *ngIf="data.photoType == 'Track'" >
 							<button mat-menu-item>
-								<span>View Track Information</span>
+								<span>View On Track Map</span>
 							</button>
 						</ng-container>
 					</mat-menu>
 				</div>
 			</div>
-			<button id="animal-photo-navigation-btn-left" class="animal-photo-navigation-btn" (click)="prevImage()" mat-icon-button aria-label="Previous Image Button">
+			<button id="animal-photo-navigation-btn-left" class="animal-photo-navigation-btn" *ngIf="data.photoType != 'Single Track'" (click)="prevPhoto()" mat-icon-button aria-label="Previous Image Button">
 				<mat-icon>chevron_left</mat-icon>
 			</button>	
-			<button id="animal-photo-navigation-btn-right" class="animal-photo-navigation-btn" (click)="nextImage()" mat-icon-button aria-label="Previous Image Button">
+			<button id="animal-photo-navigation-btn-right" class="animal-photo-navigation-btn" *ngIf="data.photoType != 'Single Track'" (click)="nextPhoto()" mat-icon-button aria-label="Previous Image Button">
 				<mat-icon>chevron_right</mat-icon>
 			</button>	
 			<div id="animal-photo-image-container">
-				<img id="animal-photo-detail-current-image" src="{{data.currentImage}}">
+				<img id="animal-photo-detail-current-image" src="{{data.imageList[currentPhotoIndex].URL}}">
 			</div>
 		</div>
 	</mat-drawer-content>
