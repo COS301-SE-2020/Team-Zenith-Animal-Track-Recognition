@@ -55,14 +55,7 @@ class UserConfirmedViewModel extends BaseViewModel {
     _tagIndex = index;
   }
 
-  Future<FinalObject> getConfirm() async {
-    List<String> tags = await _api.getTags();
-    List<String> categories = new List();
-    categories.add("Appearance");
-    categories.add("Tracks");
-    categories.add("Droppings");
-    tags = categories;
-
+  Future<FinalObject> getConfirm(List<String> tags) async {
     FinalObject finalObject = new FinalObject(tags: tags);
     return finalObject;
   }

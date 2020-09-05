@@ -80,7 +80,7 @@ class GraphQL implements Api {
     List<String> tag;
 
     Position position =
-        await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        await getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
 
     lat = position.latitude.toString();
     long = position.longitude.toString();
@@ -88,7 +88,6 @@ class GraphQL implements Api {
     String query =
         'mutation{identificationBase64(token: "$token" ,base64imge: "$pic", latitude: $lat, longitude: $long, tgas: $tag){spoorIdentificationID, potentialMatches{animal{commonName, classification, pictures{URL}}confidence}}}';
 
-    print(query);
     final http.Response response = await http.post(
       link,
       headers: {"Content-Type": "application/json"},
@@ -768,9 +767,76 @@ class GraphQL implements Api {
   }
 
   @override
-  Future<ConfirmModel> manualClassification(
-      String pic, double lat, double long, double animalID, List<String> tags) {
-    // TODO: implement manualClassification
-    throw UnimplementedError();
+  Future<ConfirmModel> manualClassification(String pic, double lat, double long,
+      double animalID, List<String> tags) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("token");
+    token = Uri.encodeFull(token);
+
+    String link = "$domain" + "graphql?";
+    ConfirmModel animal;
+
+    String query =
+        'mutation{UplodeBase64Identification(token: "$token",animalID: $animalID , latitude: $lat, longitude: $long, tgas: "$tags" ,base64imge: "$pic"){spoorIdentificationID, animal{commonName, classification, pictures{URL}}}}';
+
+    print(query);
+    final http.Response response = await http.post(
+      link,
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({'query': query}),
+    );
+
+    print("Response: " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      String animalName = body['data']['UplodeBase64Identification']['animal']
+              ['commonName']
+          .toString();
+      String species = body['data']['UplodeBase64Identification']['animal']
+              ['classification']
+          .toString();
+      String image = body['data']['UplodeBase64Identification']['animal']
+              ['pictures'][0]['URL']
+          .toString();
+
+      animal = new ConfirmModel(
+          accuracyScore: 0,
+          animalName: animalName,
+          image: image,
+          species: species,
+          type: "Track");
+    }
+
+    return animal;
+  }
+
+  @override
+  Future<double> getAnimalID(String animalName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    double animalID;
+
+    String token = prefs.getString("token");
+    token = Uri.encodeFull(token);
+    String id = prefs.getString("rangerID");
+    id = Uri.encodeFull(id);
+
+    final http.Response response = await http.get("$domain" +
+        "graphql?query=query{animals(token: \"$token\"){animalID, commonName}}");
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      var list = body['data']['animals'] as List;
+
+      for (int i = 0; i < list.length; i++) {
+        if (body['data']['animals'][i]['commonName'].toString() == animalName) {
+          animalID =
+              double.parse(body['data']['animals'][i]['animalID'].toString());
+        }
+      }
+    }
+
+    return animalID;
   }
 }

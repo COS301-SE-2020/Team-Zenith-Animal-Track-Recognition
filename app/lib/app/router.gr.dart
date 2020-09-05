@@ -176,7 +176,10 @@ class Router extends RouterBase {
           orElse: () => UserConfirmedViewArguments());
       return MaterialPageRoute<dynamic>(
         builder: (context) => UserConfirmedView(
-            confirmedAnimal: args.confirmedAnimal, image: args.image),
+          confirmedAnimal: args.confirmedAnimal,
+          image: args.image,
+          tags: args.tags,
+        ),
         settings: data,
       );
     },
@@ -265,5 +268,6 @@ class SearchViewArguments {
 class UserConfirmedViewArguments {
   final ConfirmModel confirmedAnimal;
   final File image;
-  UserConfirmedViewArguments({this.confirmedAnimal, this.image});
+  final List<String> tags;
+  UserConfirmedViewArguments({this.confirmedAnimal, this.image, this.tags});
 }

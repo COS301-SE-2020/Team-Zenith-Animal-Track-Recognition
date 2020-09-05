@@ -43,15 +43,7 @@ class UploadViewModel extends BaseViewModel {
   List<String> get tags => _tags;
 
   final NavigationService _navigationService = locator<NavigationService>();
-  final Api _api = locator<FakeApi>();
   final Api api = locator<GraphQL>();
-
-  void setTags() {
-    _tags.clear();
-    _tags.add("Dangerous");
-    _tags.add("Endangered");
-    _tags.add("Harmless");
-  }
 
   List<String> getSuggestions(String query) {
     List<String> matches = List();
@@ -76,7 +68,6 @@ class UploadViewModel extends BaseViewModel {
   }
 
   void setChosenAnimal(String animal) {
-    print("Value activated: " + animal);
     chosenAnimal = animal;
   }
 
@@ -116,42 +107,32 @@ class UploadViewModel extends BaseViewModel {
     return null;
   }
 
+  void addTag(String value) {
+    _tags.add(value);
+    notifyListeners();
+  }
+
   void updateLong(String value) {
     _longitude = value;
-    print(_longitude);
     notifyListeners();
   }
 
   void updateLat(String value) {
     _latitude = value;
-    print(_latitude);
     notifyListeners();
   }
 
   Future<void> upload() async {
-    // _image = null;
-    // _latitude = "";
-    // _longitude = "";
-    // _valueGallery = false;
-    // _valueCamera = false;
-    // _tagIndex = null;
+    double id = await api.getAnimalID(chosenAnimal);
 
-// Position position = await getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
+    Position position =
+        await getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
 
-//     ConfirmModel animal =
-//         await _api.manualClassification(_imageLink, position.latitude, position.longitude, );
-
-    //print("Chosen Animal: " + chosenAnimal);
-
-    ConfirmModel identifiedAnimal = ConfirmModel(
-        accuracyScore: 0,
-        type: "Track",
-        animalName: "Elephant",
-        species: "African Bush",
-        image: _imageLink);
+    ConfirmModel animal = await api.manualClassification(
+        _imageLink, position.latitude, position.longitude, id, _tags);
 
     _navigationService.navigateTo(Routes.userConfirmedViewRoute,
         arguments: UserConfirmedViewArguments(
-            image: _image, confirmedAnimal: identifiedAnimal));
+            image: _image, confirmedAnimal: animal, tags: _tags));
   }
 }

@@ -980,4 +980,10 @@ class FakeApi implements Api {
     // TODO: implement manualClassification
     throw UnimplementedError();
   }
+
+  @override
+  Future<double> getAnimalID(String animalName) {
+    // TODO: implement getAnimalID
+    throw UnimplementedError();
+  }
 }

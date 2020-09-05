@@ -260,7 +260,7 @@ class TagBox extends HookViewModelWidget<UploadViewModel> {
     var text = useTextEditingController();
     return TextField(
       controller: text,
-      onChanged: viewModel.updateLong,
+      onChanged: viewModel.addTag,
       decoration: InputDecoration(
           hintText: "Insert tag",
           isDense: true,
@@ -287,8 +287,7 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
-    final TextEditingController _typeAheadController = TextEditingController()
-      ..text = " ";
+    final TextEditingController _typeAheadController = TextEditingController();
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
@@ -323,6 +322,7 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
             },
             onSuggestionSelected: (suggestion) {
               _typeAheadController.text = suggestion;
+              viewModel.setChosenAnimal(suggestion);
             },
             validator: (value) {
               if (value.isEmpty) {
@@ -332,19 +332,6 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
             onSaved: (value) => viewModel.setChosenAnimal(value),
           ),
         ),
-        SizedBox(
-          height: 10.0,
-        ),
-        Expanded(
-          child: RaisedButton(
-            child: Text("Selected"),
-            onPressed: () {
-              if (this._formKey.currentState.validate()) {
-                this._formKey.currentState.save();
-              }
-            },
-          ),
-        )
       ],
     );
   }
@@ -510,7 +497,7 @@ Widget containerTitle(String title) {
 }
 
 Widget attachAnimal = new Container(
-  height: 200,
+  height: 115,
   width: 100,
   padding: EdgeInsets.all(5),
   margin: EdgeInsets.all(15),

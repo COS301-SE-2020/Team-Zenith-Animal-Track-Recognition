@@ -39,5 +39,7 @@ abstract class Api {
   Future<ConfirmModel> manualClassification(
       String pic, double lat, double long, double animalID, List<String> tags);
 
+  Future<double> getAnimalID(String animalName);
+
   Future<int> getUserLevel();
 }

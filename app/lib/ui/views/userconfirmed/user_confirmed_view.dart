@@ -9,13 +9,14 @@ import 'dart:io';
 class UserConfirmedView extends StatelessWidget {
   ConfirmModel confirmedAnimal;
   File image;
-  UserConfirmedView({this.confirmedAnimal, this.image});
+  List<String> tags;
+  UserConfirmedView({this.confirmedAnimal, this.image, this.tags});
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<UserConfirmedViewModel>.reactive(
       builder: (context, model, child) => FutureBuilder(
-        future: model.getConfirm(),
+        future: model.getConfirm(this.tags),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             return progressIndicator();
@@ -125,10 +126,7 @@ class Scroll extends ViewModelWidget<UserConfirmedViewModel> {
                     Expanded(
                         flex: 4,
                         child: textDisplay(
-                            model.confidentAnimal.species +
-                                " " +
-                                model.confidentAnimal.animalName,
-                            context)),
+                            model.confidentAnimal.animalName, context)),
                     SizedBox(
                       height: 1.0,
                     ),
@@ -145,20 +143,6 @@ class Scroll extends ViewModelWidget<UserConfirmedViewModel> {
                   ],
                 ),
                 Divider(),
-                // Column(
-                //   children: <Widget>[
-                //     otherMatches(context),
-                //     Row(
-                //       children: <Widget>[
-                //         Expanded(
-                //           flex: 1,
-                //           child: SimilarSpoor(),
-                //         )
-                //       ],
-                //     )
-                //   ],
-                // ),
-                // Divider(),
                 Column(
                   children: <Widget>[
                     tagText(context),
@@ -295,122 +279,10 @@ class LeadingIcon extends ViewModelWidget<UserConfirmedViewModel> {
   }
 }
 
-// ignore: must_be_immutable
-// class PossibleTags extends ViewModelWidget<UserConfirmedViewModel> {
-//   String image;
-//   String name;
-//   String species;
-//   double score;
-//   int index;
-//   PossibleTags(
-//       {Key key, this.image, this.name, this.score, this.species, this.index})
-//       : super(key: key, reactive: true);
-
-//   @override
-//   Widget build(BuildContext context, UserConfirmedViewModel model) {
-//     return PopupMenuButton<int>(
-//       itemBuilder: (context) => [
-//         PopupMenuItem(
-//           value: 1,
-//           child: text14LeftNormBlack('Reclassify'),
-//         ),
-//         PopupMenuItem(
-//           value: 2,
-//           child: text14LeftNormBlack('View Info'),
-//         ),
-//         PopupMenuItem(
-//           value: 3,
-//           child: text14LeftNormBlack('View Photos'),
-//         ),
-//       ],
-//       child: Container(
-//         alignment: Alignment.centerLeft,
-//         margin: new EdgeInsets.only(
-//           left: 8,
-//           bottom: 5,
-//           top: 5,
-//         ),
-//         decoration: BoxDecoration(
-//           color: Colors.white,
-//           borderRadius: BorderRadius.circular(10),
-//         ),
-//         height: 200,
-//         width: 110,
-//         child: Column(
-//           children: <Widget>[
-//             Expanded(
-//                 child: Container(
-//                     alignment: Alignment.centerLeft,
-//                     child: innerImageBlock(image)),
-//                 flex: 4),
-//             Expanded(
-//                 child: Container(
-//                     alignment: Alignment.centerLeft,
-//                     margin: new EdgeInsets.only(left: 8),
-//                     child: text12LeftNormBlack(name)),
-//                 flex: 1),
-//             Expanded(
-//                 child: Container(
-//                     alignment: Alignment.centerLeft,
-//                     margin: new EdgeInsets.only(left: 8),
-//                     child: text12LeftNormGrey(species)),
-//                 flex: 1),
-//             Expanded(
-//                 child: Container(
-//                     alignment: Alignment.centerLeft,
-//                     margin: new EdgeInsets.only(left: 8),
-//                     child: text12LeftNormGrey("$score%")),
-//                 flex: 1),
-//           ],
-//         ),
-//       ),
-//       onSelected: (value) {
-//         if (value == 1) {
-//           model.reclassify(index);
-//         } else if (value == 2) {
-//           navigateToInfo(name.toLowerCase());
-//         } else {
-//           navigateToGallery(name.toLowerCase());
-//         }
-//         //different fuctionality insert here
-//       },
-//       offset: Offset(120, 40),
-//       color: Colors.white,
-//     );
-//   }
-// }
-
-// class SimilarSpoor extends ViewModelWidget<UserConfirmedViewModel> {
-//   SimilarSpoor({
-//     Key key,
-//   }) : super(key: key, reactive: true);
-
-//   @override
-//   Widget build(BuildContext context, UserConfirmedViewModel model) {
-//     return Container(
-//       height: 200,
-//       color: Colors.white,
-//       child: ListView.builder(
-//           shrinkWrap: true,
-//           scrollDirection: Axis.horizontal,
-//           itemCount: model.confirmedList.length,
-//           itemBuilder: (BuildContext context, int index) {
-//             return PossibleTags(
-//                 image: model.confirmedList[index].image,
-//                 name: model.confirmedList[index].animalName,
-//                 species: model.confirmedList[index].species,
-//                 score: model.confirmedList[index].accuracyScore,
-//                 index: index);
-//           }),
-//     );
-//   }
-// }
-
 Widget confidentImageBlock(String image) {
   return Container(
     alignment: Alignment.center,
     margin: new EdgeInsets.only(bottom: 10, left: 15, right: 10, top: 10),
-    //padding: new EdgeInsets.all(5),
     decoration: BoxDecoration(
       image: DecorationImage(
         image: NetworkImage(image),
@@ -462,12 +334,7 @@ Widget confidentImageDetails(
           flex: 1,
           child: Container(
               alignment: Alignment.centerLeft,
-              child: text12LeftNormBlack("Accuracy Score:"))),
-      Expanded(
-          flex: 2,
-          child: Container(
-              alignment: Alignment.centerLeft,
-              child: percentageText("$score%", 47))),
+              child: text12LeftNormBlack("Ranger Identified Track"))),
     ]),
   );
 }
@@ -496,7 +363,7 @@ Widget tagText(var context) {
       borderRadius: BorderRadius.circular(10),
     ),
     //height: 0,
-    child: text18LeftBoldBlack("Attach A Tag"),
+    child: text18LeftBoldBlack("Tags"),
   );
 }
 
@@ -531,8 +398,8 @@ Widget blocks(double percentage) {
       height: 50,
       child: Column(
         children: <Widget>[
-          Expanded(flex: 2, child: percentageText("$percentage%", 30)),
-          Expanded(flex: 1, child: percentageText("MATCH", 15)),
+          Expanded(flex: 2, child: percentageText("UD", 30)),
+          Expanded(flex: 1, child: percentageText("TRACK", 15)),
         ],
       ));
 }
@@ -600,7 +467,6 @@ class Tags extends ViewModelWidget<UserConfirmedViewModel> {
           selected: defualtChoiceIndex == index,
           selectedColor: Colors.grey.shade600,
           onSelected: (bool selected) {
-            print(index);
             defualtChoiceIndex = selected ? index : null;
             if (defualtChoiceIndex == null) {
               model.setTag(null);
