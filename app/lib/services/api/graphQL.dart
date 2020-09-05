@@ -253,7 +253,7 @@ class GraphQL implements Api {
 
         track = new DateTime(year, mon, day);
         Duration difference = now.difference(track);
-        date = (difference.inDays / 365).floor().toString() + " days ago";
+        date = (difference.inHours / 24).floor().toString() + " days ago";
 
         location = body['data']['spoorIdentification'][i]['location']
                     ['latitude']
@@ -612,7 +612,6 @@ class GraphQL implements Api {
     final http.Response response = await http.get("$domain" +
         "graphql?query=query{spoorIdentification(token: \"$token\",spoorIdentificationID: \"$animal\" ){spoorIdentificationID,picture{URL},location{latitude, longitude}, dateAndTime{year, day, month}, ranger{firstName, lastName},potentialMatches{animal{commonName, classification, pictures{URL}},confidence} }}");
 
-    print("Response: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
 
@@ -659,7 +658,7 @@ class GraphQL implements Api {
 
       track = new DateTime(year, mon, day);
       Duration difference = now.difference(track);
-      date = (difference.inDays / 365).floor().toString() + " days ago";
+      date = (difference.inHours / 24).floor().toString() + " days ago";
 
       cName = body['data']['spoorIdentification'][0]['potentialMatches'][temp]
               ['animal']['commonName']
@@ -674,14 +673,10 @@ class GraphQL implements Api {
       count = double.parse(score) * 100;
       score = count.toString().substring(0, score.length - 1) + "%";
 
-      print("Score: " + score);
-
       pic = body['data']['spoorIdentification'][0]['picture']['URL'].toString();
 
       _cards.add(new SpoorModel(
           cName, sName, location, ranger, date, score, tag, pic, ""));
-
-      print("List length: " + temp.toString());
 
       for (int i = 0; i < list.length; i++) {
         cName = body['data']['spoorIdentification'][0]['potentialMatches'][i]
@@ -700,8 +695,6 @@ class GraphQL implements Api {
         pic = body['data']['spoorIdentification'][0]['potentialMatches'][i]
                 ['animal']['pictures'][0]['URL']
             .toString();
-
-        print(i);
 
         _cards
             .add(new SpoorModel(cName, sName, "", "", "", score, "", pic, ""));

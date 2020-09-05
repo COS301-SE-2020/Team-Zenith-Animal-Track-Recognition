@@ -1,17 +1,10 @@
 import 'package:ERP_RANGER/app/locator.dart';
-import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
-import 'package:ERP_RANGER/services/api/fake_api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:social_share/social_share.dart';
 import 'package:stacked/stacked.dart';
-import 'dart:convert';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'package:stacked_services/stacked_services.dart';
 
 class UserConfirmedViewModel extends BaseViewModel {

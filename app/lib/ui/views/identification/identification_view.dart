@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:ERP_RANGER/services/util.dart';
-import 'package:ERP_RANGER/ui/views/animals/animal_view.dart';
 import 'package:ERP_RANGER/ui/views/identification/identification_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -44,7 +42,12 @@ class IdentificationView extends StatelessWidget {
                           children: <Widget>[
                             Container(
                               child: GoogleMap(
-                                initialCameraPosition: _myLocation,
+                                initialCameraPosition: _myLocation =
+                                    CameraPosition(
+                                  target: LatLng(model.coordinatesLat,
+                                      model.coordinatesLong),
+                                  zoom: 15,
+                                ),
                                 mapType: MapType.normal,
                                 onMapCreated: (GoogleMapController controller) {
                                   _controller.complete(controller);
@@ -676,7 +679,7 @@ class TextInputField extends HookViewModelWidget<IdentificationViewModel> {
                   fontFamily: 'MavenPro',
                   fontWeight: FontWeight.normal,
                   color: Colors.red),
-              hintText: model.getCoordLat,
+              hintText: model.getCoordLat.toString(),
               filled: true,
               fillColor: Colors.grey[50]),
           onSubmitted: (value) => {model.setLat(value)},
@@ -701,7 +704,7 @@ class TextInputField extends HookViewModelWidget<IdentificationViewModel> {
                   fontFamily: 'MavenPro',
                   fontWeight: FontWeight.normal,
                   color: Colors.red),
-              hintText: model.getCoordLong,
+              hintText: model.getCoordLong.toString(),
               filled: true,
               fillColor: Colors.grey[50]),
           onSubmitted: (value) => {model.setLong(value)},
