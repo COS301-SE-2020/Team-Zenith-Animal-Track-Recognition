@@ -836,6 +836,9 @@ const RootQuery = new GraphQLObjectType({
                 spoorIdentificationID: {
                     type: GraphQLString
                 },
+                classification: {
+                    type: GraphQLString
+                },
                 negat: {
                     type: GraphQLString
                 },
@@ -867,6 +870,21 @@ const RootQuery = new GraphQLObjectType({
                     } else {
                         temp = _.reject(temp, {
                             spoorIdentificationID: args.spoorIdentificationID
+                        })
+                    }
+                } else if (args.classification != undefined) {
+                    console.log(temp)
+                    let anamilToVind =_.find(animalData,{
+                        classification:args.classification
+                    })
+                    console.log(anamilToVind.animalID)
+                    if (args.negat == undefined) {
+                        temp = _.filter(temp, {
+                            animal: toNumber(anamilToVind.animalID)
+                        })
+                    } else {
+                        temp = _.reject(temp, {
+                            animal: toNumber(anamilToVind.animalID)
                         })
                     }
                 } else {
@@ -1793,7 +1811,7 @@ const Mutation = new GraphQLObjectType({
                     type: new GraphQLNonNull(GraphQLFloat)
                 },
                 animalID: {
-                    type: new GraphQLNonNull(GraphQLFloat)
+                    type: new GraphQLNonNull(GraphQLInt)
                 },
                 tgas: {
                     type: new GraphQLList(new GraphQLNonNull(GraphQLString))
@@ -2256,6 +2274,7 @@ if (CACHE) {
                 newSpoorID.location.latitude = newLocation.latitude
                 newSpoorID.location.longitude = newLocation.longitude
             }
+            newSpoorID.animal=toNumber(newSpoorID.animal)
 
             // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
             spoorIdentificationData.push(newSpoorID)
