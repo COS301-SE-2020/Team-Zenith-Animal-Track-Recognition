@@ -4,18 +4,23 @@ import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/fake_api.dart';
+import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:geolocator/geolocator.dart';
 
-class UploadViewModel extends BaseViewModel{
+class UploadViewModel extends BaseViewModel {
   String tag;
   int _tagIndex;
+  String chosenAnimal;
+
+  List<String> _animals;
+  List<String> get animals => _animals;
+
   int get tagIndex => _tagIndex;
- 
+
   File _image;
   File get image => _image;
 
@@ -35,66 +40,42 @@ class UploadViewModel extends BaseViewModel{
   String get latitude => _latitude;
 
   List<String> _tags = new List<String>();
-  List<String>  get tags => _tags;
-  
+  List<String> get tags => _tags;
 
   final NavigationService _navigationService = locator<NavigationService>();
-  final Api _api = locator<FakeApi>();
+  final Api api = locator<GraphQL>();
 
-  void navigate(context) {
-     Navigator.popUntil(context, ModalRoute.withName('/'));
+  List<String> getSuggestions(String query) {
+    List<String> matches = List();
+    this.setAnimals();
+    matches.addAll(_animals);
+
+    matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    return matches;
   }
 
-  void setTags(){
-    _tags.clear();
-    _tags.add("Dangerous");
-    _tags.add("Endangered");
-    _tags.add("Harmless");
+  Future<void> setAnimals() async {
+    _animals = await api.getAnimalTags();
+    _animals.add(" ");
   }
 
-  void setTag(String  tag){
+  void setTag(String tag) {
     this.tag = tag;
   }
 
-  void setTagIndex(int index){
+  void setTagIndex(int index) {
     _tagIndex = index;
   }
 
-  void navigateToConfirmView(){
-    _navigationService.navigateTo(Routes.confirmlViewRoute);
-  }
- 
-  void navigateToNotConfirmView(){
-    _navigationService.navigateTo(Routes.notConfirmedViewRoute);
+  void setChosenAnimal(String animal) {
+    chosenAnimal = animal;
   }
 
-  void captureImage() async
-  {
+  void uploadFromCamera() async {
     File image;
     final picker = ImagePicker();
-    
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    if(pickedFile != null){
-      image = File(pickedFile.path);
-      String url = base64Encode(image.readAsBytesSync());
-      List<ConfirmModel> animals = await _api.identifyImage(url);
-      if(animals != null){
-        _navigationService.navigateTo(Routes.confirmlViewRoute,
-          arguments: ConfirmedViewArguments(image: image, confirmedAnimals:animals )
-        );
-      }else{
-        navigateToNotConfirmView();
-      }
-    }
-
-    return null;
-  }
-
-  void uploadFromCamera()async{
-    File image;
-    final picker = ImagePicker(); 
     final pickedFile = await picker.getImage(source: ImageSource.camera);
-    if(pickedFile != null){
+    if (pickedFile != null) {
       image = File(pickedFile.path);
       _image = image;
       String url = base64Encode(image.readAsBytesSync());
@@ -107,12 +88,12 @@ class UploadViewModel extends BaseViewModel{
     notifyListeners();
     return null;
   }
- 
-  void uploadFromGallery()async{
+
+  void uploadFromGallery() async {
     File image;
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    if(pickedFile != null){
+    if (pickedFile != null) {
       image = File(pickedFile.path);
       _image = image;
       String url = base64Encode(image.readAsBytesSync());
@@ -126,24 +107,32 @@ class UploadViewModel extends BaseViewModel{
     return null;
   }
 
+  void addTag(String value) {
+    _tags.add(value);
+    notifyListeners();
+  }
+
   void updateLong(String value) {
     _longitude = value;
-    print(_longitude);
     notifyListeners();
   }
 
   void updateLat(String value) {
     _latitude = value;
-    print(_latitude);
     notifyListeners();
   }
 
-  void upload() {
-    _image = null;
-    _latitude = "";
-    _longitude = "";
-    _valueGallery = false;
-    _valueCamera = false;
-    _tagIndex = null;
+  Future<void> upload() async {
+    double id = await api.getAnimalID(chosenAnimal);
+
+    Position position =
+        await getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
+
+    ConfirmModel animal = await api.manualClassification(
+        _imageLink, position.latitude, position.longitude, id, _tags);
+
+    _navigationService.navigateTo(Routes.userConfirmedViewRoute,
+        arguments: UserConfirmedViewArguments(
+            image: _image, confirmedAnimal: animal, tags: _tags));
   }
 }

@@ -26,11 +26,18 @@ abstract class Api {
 
   Future<List<String>> getTags();
 
+  Future<List<String>> getAnimalTags();
+
   Future<ProfileInfoModel> getProfileInfoData();
 
   void sendConfirmationSpoor(List<ConfirmModel> list, String tag);
 
   Future<List<ConfirmModel>> identifyImage(String url);
+
+  Future<ConfirmModel> manualClassification(
+      String pic, double lat, double long, double animalID, List<String> tags);
+
+  Future<double> getAnimalID(String animalName);
 
   Future<int> getUserLevel();
 }

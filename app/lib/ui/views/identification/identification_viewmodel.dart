@@ -1,21 +1,12 @@
-import 'dart:ui';
-
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
-import 'package:ERP_RANGER/services/api/fake_api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:social_share/social_share.dart';
-import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:image_downloader/image_downloader.dart';
-
-import '../../../main.dart';
 
 class IdentificationViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
@@ -100,8 +91,8 @@ class IdentificationViewModel extends BaseViewModel {
 
 //=======================Lat================================
 
-  String coordinatesLat = '-240.19097';
-  String get getCoordLat => coordinatesLat;
+  double coordinatesLat = -240.19097;
+  double get getCoordLat => coordinatesLat;
 
   bool editSpoorCoordLat = false;
   bool get editSpoorCoordLatBool => editSpoorCoordLat;
@@ -123,7 +114,7 @@ class IdentificationViewModel extends BaseViewModel {
     } else if (value != "" || value != null) {
       latValid = RegExp(r"^(-?\d+(\.\d+)?)").hasMatch(value);
       if (latValid == true) {
-        coordinatesLat = value;
+        coordinatesLat = double.parse(value);
         setEditSpoorCoordLat();
       } else {
         _userLatErrorString = "Invalid input";
@@ -136,8 +127,8 @@ class IdentificationViewModel extends BaseViewModel {
 
 //=======================Long================================
 
-  String coordinatesLong = '31.559270';
-  String get getCoordLong => coordinatesLong;
+  double coordinatesLong = 31.559270;
+  double get getCoordLong => coordinatesLong;
 
   bool editSpoorCoordLong = false;
   bool get editSpoorCoordLongBool => editSpoorCoordLong;
@@ -159,7 +150,7 @@ class IdentificationViewModel extends BaseViewModel {
     } else if (value != "" || value != null) {
       longValid = RegExp(r"(-?\d+(\.\d+)?)$").hasMatch(value);
       if (longValid == true) {
-        coordinatesLong = value;
+        coordinatesLong = double.parse(value);
         setEditSpoorCoordLong();
       } else {
         _userLongErrorString = "Invalid input";
@@ -232,6 +223,9 @@ class IdentificationViewModel extends BaseViewModel {
       _recentIdentifications = await _api.getSpoorModel(animal);
       _confident = recentIdentifications[0];
       _location = _confident.location;
+      var arr = _location.split(',');
+      coordinatesLat = double.parse(arr[0].trim());
+      coordinatesLong = double.parse(arr[1].trim());
       _date = _confident.time;
       pic = _confident.pic;
       recentIdentifications.removeAt(0);
@@ -242,7 +236,6 @@ class IdentificationViewModel extends BaseViewModel {
   }
 
   void reclassify(int index) {
-    print(index);
     _recentIdentifications.add(_confident);
     _confident = _recentIdentifications[index];
     _recentIdentifications.removeAt(index);
