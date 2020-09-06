@@ -444,7 +444,7 @@ class GraphQL implements Api {
 
         track = new DateTime(year, mon, day);
         Duration difference = now.difference(track);
-        date = (difference.inDays / 365).floor().toString() + " days ago";
+        date = (difference.inHours / 24).floor().toString() + " days ago";
 
         location = body['data']['spoorIdentification'][i]['location']
                     ['latitude']
@@ -772,14 +772,12 @@ class GraphQL implements Api {
     String query =
         'mutation{UplodeBase64Identification(token: "$token",animalID: $animalID , latitude: $lat, longitude: $long, tgas: "$tags" ,base64imge: "$pic"){spoorIdentificationID, animal{commonName, classification, pictures{URL}}}}';
 
-    print(query);
     final http.Response response = await http.post(
       link,
       headers: {"Content-Type": "application/json"},
       body: json.encode({'query': query}),
     );
 
-    print("Response: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
 

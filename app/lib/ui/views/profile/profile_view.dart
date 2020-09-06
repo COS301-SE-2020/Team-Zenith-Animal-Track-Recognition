@@ -418,7 +418,7 @@ Widget summary(ProfileInfoModel profileInfo) {
                           flex: 1,
                           child: Container(
                               alignment: Alignment.bottomLeft,
-                              child: text12LeftBoldGrey("Spoors"))),
+                              child: text12LeftBoldGrey("Tracks"))),
                       Expanded(
                           flex: 1,
                           child: Container(

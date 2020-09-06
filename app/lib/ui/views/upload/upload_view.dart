@@ -262,7 +262,7 @@ class TagBox extends HookViewModelWidget<UploadViewModel> {
       controller: text,
       onChanged: viewModel.addTag,
       decoration: InputDecoration(
-          hintText: "Insert tag",
+          hintText: "Enter tag",
           isDense: true,
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
@@ -296,6 +296,7 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
             textFieldConfiguration: TextFieldConfiguration(
                 controller: _typeAheadController,
                 decoration: InputDecoration(
+                    hintText: "Enter animal name",
                     hintStyle: TextStyle(
                         fontFamily: 'MavenPro',
                         fontWeight: FontWeight.normal,
@@ -349,7 +350,7 @@ class Latitude extends HookViewModelWidget<UploadViewModel> {
       controller: text,
       onChanged: viewModel.updateLat,
       decoration: InputDecoration(
-          hintText: "26.1345",
+          hintText: "Enter latitude",
           isDense: true,
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
@@ -379,7 +380,7 @@ class Longitude extends HookViewModelWidget<UploadViewModel> {
       controller: text,
       onChanged: viewModel.updateLong,
       decoration: InputDecoration(
-          hintText: "-24.1245",
+          hintText: "Enter longitude",
           isDense: true,
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
@@ -517,7 +518,7 @@ Widget attachAnimal = new Container(
 Widget attachAnimalButton = new Container(
   child: Row(
     children: <Widget>[
-      Expanded(flex: 1, child: containerTitle("Enter Name of animal")),
+      Expanded(flex: 1, child: containerTitle("Animal Name")),
     ],
   ),
 );
@@ -525,7 +526,7 @@ Widget attachAnimalButton = new Container(
 Widget attachATagButton = new Container(
   child: Row(
     children: <Widget>[
-      Expanded(flex: 1, child: containerTitle("Insert tag")),
+      Expanded(flex: 1, child: containerTitle("Tag")),
     ],
   ),
 );
