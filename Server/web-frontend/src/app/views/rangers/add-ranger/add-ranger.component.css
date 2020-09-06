@@ -54,10 +54,12 @@
 }
 #cancel-btn
 {
-	border: 2px solid #CCCCCC;
+	/* width: 20%; */
+	border: 1px solid #CCCCCC;
 }
 #add-ranger-btn
 {
+	/* width: 20%; */
 	background-color: #686E79;
 	color: white;
 }

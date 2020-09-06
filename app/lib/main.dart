@@ -1,64 +1,57 @@
-import 'dart:io';
-
 import 'package:ERP_RANGER/app/locator.dart';
-import 'package:ERP_RANGER/services/theme.dart';
-import 'package:ERP_RANGER/services/util.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/api/graphQLConf.dart';
-import 'package:path/path.dart' as p;
 import 'package:stacked_services/stacked_services.dart';
 import 'app/locator.dart';
 import 'app/router.gr.dart';
 
 GraphQLConfiguration graphQLConfiguration = GraphQLConfiguration();
-Directory _appDocsDir;
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  _appDocsDir = await getApplicationDocumentsDirectory();
   setupLocator();
-  runApp(MyApp());
+  runApp(GraphQLProvider(
+      client: graphQLConfiguration.client,
+      child: CacheProvider(child: MyApp())));
 }
 
-File fileFromDocsDir(String filename) {
-  String pathName = p.join(_appDocsDir.path, filename);
-  return File(pathName);
-}
-
-class MyApp extends StatefulWidget {
-  MyApp({Key key}) : super(key: key);
-
-  @override
-  _MyApp createState() => _MyApp();
-}
-
-class _MyApp extends State<MyApp> {
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
       future: getLoggedIn(),
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
-          return progressIndicator();
+          return Center(
+              child: CircularProgressIndicator(
+            value: 5,
+            backgroundColor: Colors.blue,
+          ));
         }
         if (snapshot.hasData) {
-          return snapshot.hasData == true
-              ? MaterialApp(
-                  theme: basicTheme(),
-                  initialRoute: snapshot.data
-                      ? Routes.loginViewRoute
-                      : Routes.homeViewRoute,
-                  onGenerateRoute: Router().onGenerateRoute,
-                  navigatorKey: locator<NavigationService>().navigatorKey,
-                )
-              : progressIndicator();
+          return MaterialApp(
+            initialRoute:
+                snapshot.data ? Routes.homeViewRoute : Routes.loginViewRoute,
+            onGenerateRoute: Router().onGenerateRoute,
+            navigatorKey: locator<NavigationService>().navigatorKey,
+          );
         } else {
-          return progressIndicator();
+          return Center(
+              child: CircularProgressIndicator(
+            value: 5,
+            backgroundColor: Colors.blue,
+          ));
         }
       },
     );
   }
+}
+
+Future<bool> getLoggedIn() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool loggedIn = prefs.getBool('loggedIn') ?? false;
+  return false;
 }

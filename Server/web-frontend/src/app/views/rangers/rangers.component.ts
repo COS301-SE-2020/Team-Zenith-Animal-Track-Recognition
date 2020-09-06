@@ -62,7 +62,6 @@ export class RangersComponent implements OnInit {
 	updateRangerList(updatedList: string) {
 		this.refresh(updatedList);
 	}
-	
 	addIfNewRanger(x: any) {
 		let isNotNew = false;
 		for (let i = 0; i < this.rangers.length; i++)

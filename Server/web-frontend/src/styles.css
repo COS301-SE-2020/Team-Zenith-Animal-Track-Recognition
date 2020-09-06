@@ -64,7 +64,7 @@ body
     overflow: hidden;
 }
 
-#loader-container
+#loader-container, .loader-container
 {
 	position: absolute;
 	top: 0%;

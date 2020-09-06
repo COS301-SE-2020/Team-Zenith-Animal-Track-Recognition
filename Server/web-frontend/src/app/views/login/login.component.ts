@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
+  welcome: string = "Hello";
 
   hide = true;
   constructor(
