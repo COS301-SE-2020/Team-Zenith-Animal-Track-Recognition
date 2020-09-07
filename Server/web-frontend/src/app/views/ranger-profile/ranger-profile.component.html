@@ -111,28 +111,26 @@
                                     <div class="ranger-profile-spoor-container" *ngFor="let spoorId of spoorIdentifications">
                                         <div class="ranger-profile-spoor-info-container">
                                             <div class="ranger-profile-spoor-image-container">
-                                                <div class="ranger-profile-spoor-image">
-                                                    <img src="{{spoorId.picture.URL}}" alt="">
-                                                </div>
+                                                <div class="ranger-profile-spoor-image"></div>
                                             </div>
                                             <div class="ranger-profile-spoor-info">
                                                 <div class="ranger-profile-spoor-animal-name">
-                                                    <p class="fontSB">{{spoorId.animal.commonName}}</p>
-                                                    <p class="fontM">{{spoorId.animal.classification}}</p>
+                                                    <p class="fontSB">{{spoorId.commonName}}</p>
+                                                    <p class="fontM">{{spoorId.classification}}</p>
                                                 </div>
                                                 <div class="ranger-profile-spoor-date">
                                                     <mat-icon>event</mat-icon>
-                                                    <p class="fontM">20/03/2020</p>
+                                                    <p class="fontM">{{spoorId.dateAndTime}}</p>
                                                 </div>
                                                 <div class="ranger-profile-spoor-location">
                                                     <mat-icon>room</mat-icon>
-                                                    <p class="fontM">Kruger National Park</p>
+                                                    <p class="fontM">{{spoorId.location}}</p>
                                                 </div>
                                             </div>
                                             <div class="ranger-profile-spoor-accuracy-container">
                                                 <div class="ranger-profile-spoor-accuracy">
                                                     <div class="ranger-profile-spoor-accuracyscore">
-                                                        <p class="fontB">{{spoorId.potentialMatches[0].confidence|percent}}</p>
+                                                        <p class="fontB">{{spoorId.accuracyScore}}</p>
                                                     </div>
                                                     <div class="ranger-profile-spoor-accuracy-title">
                                                         <p class="fontSB">ACCURACY<br/>SCORE</p>
@@ -230,9 +228,10 @@
                 <mat-tab label="Identified Spoors">
                 </mat-tab>
                 <mat-tab label="Permissions">
-                    <ng-template matTabContent > 
-                        
-                    </ng-template> 
+                    <ng-template matTabContent>
+                        <div id="ranger-profile-permissions-container">
+                        </div>
+                    </ng-template>
                 </mat-tab>
             </mat-tab-group>
         </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
@@ -8,15 +8,11 @@ import { DeleteRangerComponent } from './../rangers/delete-ranger/delete-ranger.
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
-
-
 @Component({
 	selector: 'app-ranger-profile',
 	templateUrl: './ranger-profile.component.html',
 	styleUrls: ['./ranger-profile.component.css']
 })
-
-
 export class RangerProfileComponent implements OnInit {
 
 	user: any;
@@ -71,16 +67,13 @@ export class RangerProfileComponent implements OnInit {
 				info2: 'Syncerus Caffer'
 			}
 		},
-	];  
+	];
+
 
 
 	/*Place holder values*/
-	constructor(
-		private http: HttpClient, 
-		private router: Router, 
-		private activatedRoute: ActivatedRoute, 
-		public dialog: MatDialog, 
-		private snackBar: MatSnackBar, ) { }
+
+	constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, public dialog: MatDialog, private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
 		this.startLoader();
@@ -98,15 +91,20 @@ export class RangerProfileComponent implements OnInit {
 				this.user = temp[0][0];
 				this.stopLoader();
 			});
-
-			this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'"){spoorIdentificationID,animal{classification,animalID,commonName,heightM,heightF,weightM,weightF,dietType,lifeSpan,Offspring,gestationPeriod,animalOverview,animalDescription,animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName,pictureURL},potentialMatches{confidence},picture{picturesID,URL,kindOfPicture}}}')
+/*
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'",ranger:"' + this.userToken + '"){spoorIdentificationID,animal{commonName,classification},dateAndTime{year,month,day,hour,min,second},' +
+			'location{latitude,longitude},potentialMatches{animals{classification},Confidence}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
-				this.spoorIdentifications = temp[0];
-				// this.timeToString();
-			});
+				if (temp[0] != null) {
+					this.spoorIdentifications = temp[0][0];
+				} else {
+					this.spoorIdentifications = [];
+				}
+				this.stopLoader();
+			});*/
 	}
 
 	route(temp: string) {

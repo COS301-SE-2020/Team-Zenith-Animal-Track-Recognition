@@ -11,8 +11,6 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 })
 export class EditAnimalInfoComponent implements OnInit {
 
-	test: boolean = false;
-	testString: string;
 	editAnimalForm: FormGroup;
 	diet: string;
 	//DUMMY DATA
@@ -25,10 +23,6 @@ export class EditAnimalInfoComponent implements OnInit {
 		public dialogRef: MatDialogRef<EditAnimalInfoComponent>) { }
 
 	ngOnInit(): void {
-
-		if (this.test == true) {
-			return;
-		}
 
 		this.fillDietTypes();
 
@@ -60,7 +54,7 @@ export class EditAnimalInfoComponent implements OnInit {
 		} else {
 			this.data.animal.weightMLB = this.data.animal.weightMUB = Number.parseFloat(mweight);
 		}
-
+		
 		setTimeout(() => {
 			if (this.dietTypeList.includes(this.data.animal.dietType) == false) {
 				this.data.animal.dietType = "Not Specified";
@@ -95,33 +89,25 @@ export class EditAnimalInfoComponent implements OnInit {
 	}
 
 	fillDietTypes() {
-		if (this.test == true) {
-			return;
-		} else {
-			this.http.get<any>(ROOT_QUERY_STRING + '?query=query{dietType(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '")}')
-				.subscribe((data: any[]) => {
-					let temp = [];
-					temp = Object.values(data)[0]['dietType'];
-					this.dietTypeList = temp;
-				});
-		}
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{dietType(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '")}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(data)[0]['dietType'];
+				this.dietTypeList = temp;
+			});
 	}
 
-	get f() {
-		if (this.test == true) {
-			return {};
-		}
-		return this.editAnimalForm.controls;
-	}
+	get f() { return this.editAnimalForm.controls; }
 
 	onSubmit(test: boolean) {
-		if (false === test) {
-			let heightF, heightM, weightF, weightM;
-			heightF = this.f.heightFLB.value + "-" + this.f.heightFUB.value;
-			heightM = this.f.heightMLB.value + "-" + this.f.heightMUB.value;
-			weightF = this.f.weightFLB.value + "-" + this.f.weightFUB.value;
-			weightM = this.f.weightMLB.value + "-" + this.f.weightMUB.value;
 
+		let heightF, heightM, weightF, weightM;
+		heightF = this.f.heightFLB.value + "-" + this.f.heightFUB.value;
+		heightM = this.f.heightMLB.value + "-" + this.f.heightMUB.value;
+		weightF = this.f.weightFLB.value + "-" + this.f.weightFUB.value;
+		weightM = this.f.weightMLB.value + "-" + this.f.weightMUB.value;
+
+		if (false === test) {
 			this.startLoader();
 
 			const desc: string = this.remQuotes(('' + this.f.animalDescription.value));
@@ -165,17 +151,23 @@ export class EditAnimalInfoComponent implements OnInit {
 		return word;
 	}
 
-	closeDialog() {
-		if(this.test == true){
-			return;
+	sort(): void {
+		for (let i = 0; i < this.dietTypeList.length - 1; i++) {
+			for (let j = i; j < this.dietTypeList.length; j++) {
+				if (('' + this.dietTypeList[i]) > ('' + this.dietTypeList[j])) {
+					let temp = this.dietTypeList[i];
+					this.dietTypeList[i] = this.dietTypeList[j];
+					this.dietTypeList[j] = temp;
+				}
+			}
 		}
+	}
+
+	closeDialog() {
 		this.dialogRef.close("cancel");
 	}
 
 	attachProgressbar() {
-		if(this.test == true){
-			return;
-		}
 		//Append progress bar to dialog
 		let matDialog = document.getElementById('edit-animal-dialog');
 		let progressBar = document.getElementById("dialog-progressbar-container");
@@ -184,16 +176,10 @@ export class EditAnimalInfoComponent implements OnInit {
 
 	//Loader - Progress bar
 	startLoader() {
-		if(this.test == true){
-			return;
-		}
 		this.attachProgressbar();
 		document.getElementById("dialog-progressbar-container").style.visibility = "visible";
 	}
 	stopLoader() {
-		if(this.test == true){
-			return;
-		}
 		document.getElementById("dialog-progressbar-container").style.visibility = "hidden";
 	}
 }

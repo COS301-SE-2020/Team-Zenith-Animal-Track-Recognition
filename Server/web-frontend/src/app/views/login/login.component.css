@@ -166,34 +166,3 @@ a:hover
 	color: white;
 	font-size: 120%;
 }
-
-#create-account{
-	margin: 2px;
-	padding-bottom: 7px;
-	height: 25px;
-	align-items: center;
-	align-content: center;
-	align-self: center;
-}
-
-#not-registered-text{
-	margin: 5px;
-	display: inline-block;
-	float: left;
-	align-content: center;
-	align-self: center;
-}
-
-#create-account-text{
-	align-content: center;
-	align-self: center;
-	display: inline-block;
-	float: right;
-}
-#create-account-link{
-	margin: 5px;
-	display: inline-block;
-	align-items: center;
-	align-content: center;
-	align-self: center;
-}

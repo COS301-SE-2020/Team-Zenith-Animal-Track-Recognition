@@ -27,39 +27,18 @@ const {
 const request = supertest(app);
 
 
-
 /////////test tests
-test("A sample test it chek if testing is runing", () => {
+test("A sample test", () => {
   expect(2).toBe(2);
 });
 
 
 
-test("login with invalid info", async (done) => {
+test("login test", async (done) => {
   request
     .post("/graphql")
     .send({
-      query: "query{login(eMail:\"\",password:\"\"){token}}",
-    })
-    .set("Accept", "application/json")
-    .expect("Content-Type", /json/)
-    .expect(200)
-    .end(function (err, res) {
-      if (err) return done(err);
-      expect(res.body).toBeInstanceOf(Object);
-      expect(res.body.data).toBeInstanceOf(Object);
-      expect(res.body.data.login).toBeNull();
-      // expect(res.body.data.Token).toEqual("qwerty");
-      done();
-    });
-});
-
-
-test("login with valid info", async (done) => {
-  request
-    .post("/graphql")
-    .send({
-      query: "query{login(eMail:\"teamzenith@gmail.com\",password:\"12345\"){token}}",
+      query: "query{login(e_mail:\"zachary.christophers@gmail.com\",Password:\"zenith!@#$5\"){Token}}",
     })
     .set("Accept", "application/json")
     .expect("Content-Type", /json/)
@@ -73,11 +52,12 @@ test("login with valid info", async (done) => {
       done();
     });
 });
-test("login test exsanded", async (done) => {
+test("login test fail", async (done) => {
   request
     .post("/graphql")
     .send({
-      query: "query{login(eMail: \"zachary.christophers@gmail.com\", password: \"zenith!@#$5\") {token,password,rangerID,accessLevel,eMail,firstName,lastName,phoneNumber,pictureURL,activity{spoorIdentificationID,dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID},potentialMatches{confidence,animal{animalID}}}}}",    })
+      query: "query{login(e_mail:\"zachary.christophers@gmail.com\",Password:\"zenith\"){Token}}",
+    })
     .set("Accept", "application/json")
     .expect("Content-Type", /json/)
     .expect(200)
@@ -96,7 +76,7 @@ test("fetch users", async (done) => {
   request
     .post("/graphql")
     .send({
-      query: "query{users(tokenIn:\"GfinJYhXw8v2oTO0xcfx\"){firstName,lastName,accessLevel,eMail,password,phoneNumber}}",
+      query: "query{Users(TokenIn:\"4mKb71GQNpPJH1mgmaoh\"){Token,firstName,lastName,Access_Level,e_mail,Password,phoneNumber}}",
     })
     .set("Accept", "application/json")
     .expect("Content-Type", /json/)
@@ -112,7 +92,7 @@ test("fetch animals", async (done) => {
   request
     .post("/graphql")
     .send({
-      query: "query{animals(token:\"4mKb71GQNpPJH1mgmaoh\"){classification,commonName,groupID{groupID,groupName},heightM,heightF,weightM,weightF,habitats,{habitatID,habitatName,description,distinguishingFeatures}dietType,lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{picturesID,URL,kindOfPicture}}}"
+      query: "query{animals(Token:\"4mKb71GQNpPJH1mgmaoh\"){Classification,Common_Name,Group_ID{Group_ID,Group_Name},HeightM,HeightF,WeightM,WeightF,Habitats,{ID,Habitat_Name,Broad_Description,Distinguishing_Features,Photo_Link}Diet_Type,Life_Span,Gestation_Period,Typical_Behaviour,Overview_of_the_animal,Description_of_animal,Pictures{ID,URL,GeotagID{ID,Reporting_User_Name{firstName},Classification{Common_Name},Geotag{lat,long}timestamp{timestamp}},Kind_Of_Picture}}}"
     })
     .set("Accept", "application/json")
     .expect("Content-Type", /json/)
@@ -131,7 +111,7 @@ test("fetch Groups", async (done) => {
   request
     .post("/graphql")
     .send({
-      query: "query{groups(token:\"4mKb71GQNpPJH1mgmaoh\"){groupName}}",
+      query: "query{Groups(Token:\"4mKb71GQNpPJH1mgmaoh\"){Group_Name}}",
     })
     .set("Accept", "application/json")
     .expect("Content-Type", /json/)
@@ -148,7 +128,7 @@ test("fetch Habitats", async (done) => {
   request
     .post("/graphql")
     .send({
-      query: "query{habitats(token:\"4mKb71GQNpPJH1mgmaoh\"){habitatName,habitatID,description,distinguishingFeatures}}",
+      query: "query{Habitats(Token:\"4mKb71GQNpPJH1mgmaoh\"){Habitat_Name}}",
     })
     .set("Accept", "application/json")
     .expect("Content-Type", /json/)

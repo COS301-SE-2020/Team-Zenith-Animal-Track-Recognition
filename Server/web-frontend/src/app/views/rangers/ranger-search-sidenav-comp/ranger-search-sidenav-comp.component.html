@@ -1,4 +1,14 @@
 <div id="ranger-search-sidenav">
+    <div id="ranger-search-controls-container">
+        <mat-button-toggle-group id="ranger-search-controls" #group="matButtonToggleGroup" name="sortResultsBy">
+            <mat-button-toggle id="surnameToggle" value="surname" checked (click)="toggle(true)">Surname</mat-button-toggle>
+            <mat-button-toggle id="levelToggle" value="level" (click)="toggle(false)">Level</mat-button-toggle>
+        </mat-button-toggle-group>
+        <mat-form-field appearance="outline">
+            <input id="search-sidenav-input" matInput placeholder="Search Rangers..." type="text" name="search" [(ngModel)]="searchText" autocomplete="off" (ngModelChange)="updateSearchText($event)">
+            <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+    </div>
     <div id="ranger-search-results-container">
         <mat-selection-list id="rangers-by-surnames" [multiple]="false" class="ranger-search-results-entries">
             <div class="ranger-search-result-entry" *ngFor="let ranger of rangers | filter:searchText">

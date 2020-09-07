@@ -21,7 +21,7 @@ import { AnimalsGalleryComponent } from './views/animals/animals-gallery/animals
 import { AnimalsGalleryToolbarComponent } from './views/animals/animals-gallery/animals-gallery-toolbar/animals-gallery-toolbar.component';
 import { AnimalsGalleryCardComponent } from './views/animals/animals-gallery/animals-gallery-card/animals-gallery-card.component';
 import { AnimalPhotosComponent } from './views/animals/animals-gallery/animal-photos/animal-photos.component';
-import { AnimalPhotoDetailsComponent } from './views/animals/animals-gallery/animal-photos/animal-photo-details/animal-photo-details.component';
+import { AnimalPhotoDetailsComponent } from './views/animals/animals-gallery/animal-photos/animal-photo-details/animal-photo-details.component'; 
 import { RangersComponent } from './views/rangers/rangers.component';
 import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
 import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
@@ -33,6 +33,7 @@ import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.co
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
 import { TrackIdentificationsComponent } from './views/track-identifications/track-identifications.component';
 import { TrackIdentificationsToolbarComponent } from './views/track-identifications/track-identifications-toolbar/track-identifications-toolbar.component';
+import { TrackIdentificationsMapComponent } from './views/track-identifications/track-identifications-map/track-identifications-map.component';
 import { TrackIdentificationsSidenavComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-sidenav.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
@@ -74,7 +75,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     LoginComponent,
     OverviewComponent,
     AnimalsComponent,
-    AnimalsGalleryComponent,
+	AnimalsGalleryComponent,
     AnimalsGalleryToolbarComponent,
     AnimalsGalleryCardComponent,
     AnimalPhotosComponent,
@@ -85,6 +86,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     RangerProfileCardComponent,
     TrackIdentificationsComponent,
     TrackIdentificationsToolbarComponent,
+    TrackIdentificationsMapComponent,
     TrackIdentificationsSidenavComponent,
     SettingsComponent,
     SideNavigationComponent,
@@ -100,7 +102,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     RangerProfileComponent,
     AnimalProfileComponent,
     RelativeTimeMPipe
-  ],
+	],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -134,8 +136,8 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     MatChipsModule,
     MatProgressBarModule,
     MatDividerModule,
-    MatGridListModule,
-    GoogleMapsModule
+	MatGridListModule,
+	GoogleMapsModule
   ],
   providers: [AuthGuardService],
   entryComponents: [
@@ -144,7 +146,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     DeleteRangerComponent,
     EditAnimalInfoComponent,
     AddAnimalComponent,
-    AnimalPhotoDetailsComponent
+	AnimalPhotoDetailsComponent
   ],
   bootstrap: [AppComponent]
 })

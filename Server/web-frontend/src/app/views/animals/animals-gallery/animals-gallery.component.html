@@ -3,7 +3,7 @@
     <div id="animals-gallery-view-workspace">
         <mat-drawer-container id="animals-gallery-search-sidenav-container">
             <mat-drawer id="animals-gallery-search-sidenav" #sidenav mode="side">
-                <app-animal-search-sidenav [animals]="animals" (animalsOnChange)="updateAnimalList($event)" (searchTextOnChange)="updateSearchText($event)"></app-animal-search-sidenav>
+                <app-animal-search-sidenav [animals]="animals" (animalsOnChange)="updateAnimalList($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"></app-animal-search-sidenav>
                 <div id="sidenav-close-btn-container" (click)="closeSidenav()">
                     <button id="side-nav-close-btn" mat-icon-button><mat-icon>chevron_left</mat-icon></button>
                 </div>
@@ -12,7 +12,7 @@
                 <div id="sidenav-open-btn-container" (click)="openSidenav()">
                     <button id="side-nav-open-btn" mat-icon-button><mat-icon>chevron_right</mat-icon></button>
                 </div>
-                <app-animals-gallery-card [animalsList]="animals" (animalsOnChange)="updateAnimalList($event)"></app-animals-gallery-card>
+                <app-animals-gallery-card [animalsList]="animals" (animalsOnChange)="updateAnimalList($event)" [searchText]="searchText"></app-animals-gallery-card>
             </mat-drawer-content>
         </mat-drawer-container>
     </div>

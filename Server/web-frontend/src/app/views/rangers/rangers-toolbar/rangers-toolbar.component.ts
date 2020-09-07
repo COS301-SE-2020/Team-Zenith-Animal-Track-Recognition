@@ -12,14 +12,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class RangersToolbarComponent implements OnInit {
 	@Input() rangers;
-	@Input() searchText: string;
 	@Input() sortBySurname: boolean;
-	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
-	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
-
+	@Output() rangersOnChange: EventEmitter<string> = new EventEmitter();
+	@Output() sBSOnChange: EventEmitter<string> = new EventEmitter();
 	currentAlphabet: any;
+	sortByLevel: boolean = false;
 	sorted: string;
-	display: boolean = true;
+	display: boolean = false;
 	
 	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { }
 	
@@ -51,55 +50,40 @@ export class RangersToolbarComponent implements OnInit {
 		this.router.navigate([location]);
 	}
 	
-	checkIfNew(title: string, pos: number) {
-		if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {
-		  return false;
-		} else {
-		  this.currentAlphabet = ('' + title).charAt(pos).toLowerCase();
-		  return true;
-		}
-	  }
-	
-		updateSearchText(event) {
-			this.searchTextOnChange.emit(event);
-			if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")
-				this.currentAlphabet = null;
-		}
-	
-		toggle(bool: boolean) {
-			this.sortBySurname = bool;
-			this.sort(bool);
-		}
-	
-		sort(bool: boolean) {
-			let temp: string;
-			if (bool) {
-				for (let i = 0; i < this.rangers.length - 1; i++) {
-					for (let j = i + 1; j < this.rangers.length; j++) {
-						if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-							let temp = this.rangers[i];
-							this.rangers[i] = this.rangers[j];
-							this.rangers[j] = temp;
-						}
+	toggle(bool: boolean) {
+		this.sortBySurname = bool;
+		this.sort(bool);
+		this.sBSOnChange.emit('' + bool);
+	}
+
+	sort(bool: boolean) {
+		let temp: string;
+		if (bool) {
+			for (let i = 0; i < this.rangers.length - 1; i++) {
+				for (let j = i + 1; j < this.rangers.length; j++) {
+					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
+						let temp = this.rangers[i];
+						this.rangers[i] = this.rangers[j];
+						this.rangers[j] = temp;
 					}
 				}
-				temp = "Sorted alphabetically";
-			} 
-			else {
-				for (let i = 0; i < this.rangers.length - 1; i++) {
-					for (let j = i + 1; j < this.rangers.length; j++) {
-						if (this.rangers[i].accessLevel > this.rangers[j].accessLevel) {
-							let temp = this.rangers[i];
-							this.rangers[i] = this.rangers[j];
-							this.rangers[j] = temp;
-						}
-					}
-				}
-				temp = "Sorted by ranger level";
 			}
-			this.sorted = temp;
-			return temp;
+			temp = "Sorted alphabetically";
+		} else {
+			for (let i = 0; i < this.rangers.length - 1; i++) {
+				for (let j = i + 1; j < this.rangers.length; j++) {
+					if (this.rangers[i].Access_Level > this.rangers[j].Access_Level) {
+						let temp = this.rangers[i];
+						this.rangers[i] = this.rangers[j];
+						this.rangers[j] = temp;
+					}
+				}
+			}
+			temp = "Sorted by ranger level";
 		}
+		this.sorted = temp;
+		return temp;
+	}
 	
 	//Loader
 	startLoader() {

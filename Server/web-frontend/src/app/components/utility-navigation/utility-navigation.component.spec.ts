@@ -27,4 +27,18 @@ describe('UtilityNavigationComponent', () => {
     httpTestingController.verify();
   });
 
+  it('Username should be undefined', () => {
+    expect(component.username).toBeUndefined();
+  });
+
+  it('Username should be null oninit', () => {
+    component.ngOnInit();
+    expect(component.username).toBeNull();
+  });
+
+  it('Username should be undefined', () => {
+    component.logout();
+    expect(component.username).toBeUndefined();
+  });
+
 });

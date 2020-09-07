@@ -2,9 +2,8 @@ import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/fake_api.dart';
-import 'package:stacked/stacked.dart';
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class BottomNavigation extends StatefulWidget{
@@ -76,31 +75,31 @@ class BottomNavigationState extends State<BottomNavigation> {
         future: _api.getUserLevel(),
         builder: (context, snapshot){
           if(snapshot.hasError){
-             return Center(child: text("Error", 20));
+             return progressIndicator();
           }    
           if(snapshot.hasData){
-            return snapshot.data == 1 
-            ? Container(
+            if (snapshot.data == 1) {
+              return Container(
                 child: BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,
-                  items: const <BottomNavigationBarItem>[
+                  items:  <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
                       icon: Icon(Icons.home, color: Colors.grey),
-                      title: Text('Home', style: TextStyle(color: Colors.grey)),
+                      title: bottomNavigationText('Home',context),
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.pets, color: Colors.grey),
-                      title: Text('Animals', style: TextStyle(color: Colors.grey)),
+                      title: bottomNavigationText('Animals',context),
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.account_circle, color: Colors.grey),
-                      title: Text('Profile', style: TextStyle(color: Colors.grey)),
+                      title: bottomNavigationText('Profile',context),
                     )
                   ],
-                  selectedItemColor: Color(0xFFF2929C),
+                  selectedItemColor: Colors.black,
                   unselectedLabelStyle: TextStyle(
-                    fontSize: 15,
-                    fontFamily: 'Helvetica',
+                    fontSize: 14,
+                    fontFamily: 'MavenPro',
                     color: Colors.grey
                   ),
                   showUnselectedLabels: true,
@@ -108,31 +107,32 @@ class BottomNavigationState extends State<BottomNavigation> {
                   onTap: _onTap,
                   currentIndex: _currentTabIndex,
                 ),        
-            )
-          : Container(
+            );
+            } else {
+              return Container(
               child: BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,
                   items: <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
                       icon: Icon(Icons.home, color: Colors.grey),
-                      title: Text('Home', style: TextStyle(color: Colors.grey)),
+                      title: bottomNavigationText('Home',context),
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.pets, color: Colors.grey),
-                      title: Text('Animals', style: TextStyle(color: Colors.grey)),
+                      title: bottomNavigationText('Animals',context),
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.file_upload, color: Colors.grey),
-                      title: Text('Upload', style: TextStyle(color: Colors.grey)),
+                      title: bottomNavigationText('Upload',context),
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.account_circle, color: Colors.grey),
-                      title: Text('Profile', style: TextStyle(color: Colors.grey)),
+                      title: bottomNavigationText('Profile',context),
                     )
                   ],
                 selectedItemColor: Colors.black,
                 unselectedLabelStyle: TextStyle(
-                  fontSize: 15,
+                  fontSize: 14,
                   fontFamily: 'Helvetica',
                   color: Colors.grey
                 ),
@@ -142,27 +142,16 @@ class BottomNavigationState extends State<BottomNavigation> {
                 currentIndex: _currentTabIndex,
               ),        
             );
+            }
           }
           else{
-            return Center(child: text("Null no Data", 20));
+            return progressIndicator();
           }
         }
       );
     }
 }
 
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.white
-    ),
-  );
-}
 
 
 

@@ -5,13 +5,10 @@
         </div>
     </div>
     <div id="rangers-toolbar">
-        <mat-form-field id="rangers-toolbar-search-bar" appearance="outline">
-            <input id="search-sidenav-input" matInput placeholder="Search Rangers" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" (ngModelChange)="updateSearchText($event)" >
-            <mat-icon matPrefix>search</mat-icon>
-        </mat-form-field>
         <mat-select id="rangers-toolbar-sortby-btn" class="fontR" placeholder="Sort By" disableOptionCentering>
-            <mat-option value="surname" (click)="toggle(true)">Surname</mat-option>
-            <mat-option value="level" (click)="toggle(false)">Level</mat-option>
+            <mat-option value="abc" (click)="toggle(true)" *ngIf="display">Alphabetical</mat-option>
+            <mat-option value="rangerLevel" (click)="toggle(false)" *ngIf="display">Ranger Level</mat-option>
+            <mat-option value="activity" *ngIf="display">Recent Activity</mat-option>
         </mat-select>
         <mat-select id="rangers-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
             <mat-option (click)="openAddRangerDialog()">Add New Ranger</mat-option>

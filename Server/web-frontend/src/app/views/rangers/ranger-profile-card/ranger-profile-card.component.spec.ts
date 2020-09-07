@@ -33,7 +33,7 @@ describe('RangerProfileCardComponent', () => {
   });
 
   it('Rangers should contain data', () => {
-    component.rangersList = [
+    component.rangers = [
       { lastName: "Bob" },
       { lastName: "Frank" },
       { lastName: "Joel" },
@@ -41,11 +41,11 @@ describe('RangerProfileCardComponent', () => {
       { lastName: "Kiss" },
       { lastName: "Storm" }
     ];
-    expect(component.rangersList).toBeDefined();
+    expect(component.rangers).toBeDefined();
   });
 
   it('Should return sorted alphabetically when sort sent true', () => {
-    component.rangersList = [
+    component.rangers = [
       { lastName: "Bob" },
       { lastName: "Frank" },
       { lastName: "Joel" },
@@ -57,12 +57,12 @@ describe('RangerProfileCardComponent', () => {
   });
 
   it('Should return sorted by ranger level when sort sent false', () => {
-    component.rangersList = [
-      { accessLevel: 2 },
-      { accessLevel: 4 },
-      { accessLevel: 1 },
-      { accessLevel: 2 },
-      { accessLevel: 3 },
+    component.rangers = [
+      { rangerLevel: 2 },
+      { rangerLevel: 4 },
+      { rangerLevel: 1 },
+      { rangerLevel: 2 },
+      { rangerLevel: 3 },
     ];
     expect(component.sort(false)).toEqual("Sorted by ranger level");
   });
@@ -81,5 +81,10 @@ describe('RangerProfileCardComponent', () => {
 
   it('Should return false when openDeleteRangerDialog is sent token te57ca53t0t3s7a11ex7r3me71e5', () => {
     expect(component.openDeleteRangerDialog("te57ca53t0t3s7a11ex7r3me71e5")).toBeFalsy();
+  });
+
+  it('Rangers should equal "Current Zenith" when printOut is called', () => {
+    component.printOut("Current Zenith");
+    expect(component.rangers).toBe("C");
   });
 });
