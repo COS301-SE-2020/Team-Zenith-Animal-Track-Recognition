@@ -5,15 +5,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
 @Component({
-	selector: 'app-edit-animal-info',
-	templateUrl: './edit-animal-info.component.html',
-	styleUrls: ['./edit-animal-info.component.css']
+	selector: 'app-add-groups',
+	templateUrl: './add-groups.component.html',
+	styleUrls: ['./add-groups.component.css']
 })
-export class EditAnimalInfoComponent implements OnInit {
+export class AddGroupsComponent implements OnInit {
 
 	test: boolean = false;
 	testString: string;
-	editAnimalForm: FormGroup;
+	addGroupsForm: FormGroup;
 	diet: string;
 	//DUMMY DATA
 	dietTypeList: string[];
@@ -22,7 +22,7 @@ export class EditAnimalInfoComponent implements OnInit {
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private http: HttpClient,
 		private formBuilder: FormBuilder,
-		public dialogRef: MatDialogRef<EditAnimalInfoComponent>) { }
+		public dialogRef: MatDialogRef<AddGroupsComponent>) { }
 
 	ngOnInit(): void {
 
@@ -69,7 +69,7 @@ export class EditAnimalInfoComponent implements OnInit {
 		}, 1000);
 
 
-		this.editAnimalForm = this.formBuilder.group({
+		this.addGroupsForm = this.formBuilder.group({
 			commonName: [this.data.animal.commonName],
 			classification: [this.data.animal.classification],
 			animalDescription: [this.data.animal.animalDescription],
@@ -92,7 +92,7 @@ export class EditAnimalInfoComponent implements OnInit {
 			femaleThreat: [this.data.animal.typicalBehaviourF['threatLevel']],
 			maleThreat: [this.data.animal.typicalBehaviourF['threatLevel']]
 		});
-		document.getElementById('edit-animal-dialog').style.overflow = "hidden";
+		document.getElementById('add-groups-dialog').style.overflow = "hidden";
 	}
 
 	fillDietTypes() {
@@ -112,7 +112,7 @@ export class EditAnimalInfoComponent implements OnInit {
 		if (this.test == true) {
 			return {};
 		}
-		return this.editAnimalForm.controls;
+		return this.addGroupsForm.controls;
 	}
 
 	onSubmit(test: boolean) {
@@ -178,7 +178,7 @@ export class EditAnimalInfoComponent implements OnInit {
 			return;
 		}
 		//Append progress bar to dialog
-		let matDialog = document.getElementById('edit-animal-dialog');
+		let matDialog = document.getElementById('add-groups-dialog');
 		let progressBar = document.getElementById("dialog-progressbar-container");
 		matDialog.insertBefore(progressBar, matDialog.firstChild);
 	}
