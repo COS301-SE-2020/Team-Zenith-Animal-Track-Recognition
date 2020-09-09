@@ -159,9 +159,12 @@ const SPOOR_IDENTIFICATION_TYPE = new GraphQLObjectType({
             type: PICTURES_TYPE,
             resolve(parent, args) {
                 return _.find(pictureData, {
-                    pictureID: parent.picture
+                    picturesID: parent.picture
                 })
             }
+        },
+        tags:{
+            type: new GraphQLList(GraphQLString)
         }
     })
 });
@@ -2260,17 +2263,16 @@ if (CACHE) {
         redeyNeedConterUP();
         pictureData = []
         querySnapshot.forEach(function (doc) {
-            let newPicture = {
-                pictureID: doc.data().pictureID,
-                URL: doc.data().URL,
-                kindOfPicture: doc.data().kindOfPicture
-            }
+            let newPicture = doc.data()
             if (newPicture.pictureID == undefined)
                 newPicture.pictureID = doc.id
+            if (newPicture.picturesID == undefined)
+                newPicture.picturesID = doc.id
             // console.log(newPicture)
             pictureData.push(newPicture)
         });
         redeyNeedConterDown();
+        console.log(pictureData)
     });
 
     spoorIdentifications.onSnapshot(function (querySnapshot) {
