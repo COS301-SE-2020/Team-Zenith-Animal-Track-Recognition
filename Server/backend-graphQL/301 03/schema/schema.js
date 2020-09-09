@@ -2272,7 +2272,6 @@ if (CACHE) {
             pictureData.push(newPicture)
         });
         redeyNeedConterDown();
-        console.log(pictureData)
     });
 
     spoorIdentifications.onSnapshot(function (querySnapshot) {
