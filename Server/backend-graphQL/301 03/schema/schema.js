@@ -15,7 +15,7 @@ const _ = require('lodash')
 const {
     toNumber
 } = require('lodash');
-
+let redeyNeedConter =0;
 //google db
 const ADMIN = require('firebase-admin');
 let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
@@ -852,6 +852,8 @@ const RootQuery = new GraphQLObjectType({
                     return null;
                 }
                 let temp = spoorIdentificationData
+                _.orderBy(temp,['dateAndTime.year','dateAndTime.month','dateAndTime.day','dateAndTime.hour','dateAndTime.min','dateAndTime.second'],['desc','desc','desc','desc','desc','desc'])
+                temp.reverse()
                 if (args.ranger != undefined) {
                     if (args.negat == undefined) {
                         temp = _.filter(temp, {
@@ -2186,6 +2188,7 @@ if (CACHE) {
 
 
     users.onSnapshot(function (querySnapshot) {
+        redeyNeedConterUP();
         usersData = [];
         querySnapshot.forEach(function (doc) {
             let UID = ""
@@ -2229,26 +2232,32 @@ if (CACHE) {
                 users.doc(doc.id).set(newuser)
             }
         });
+        redeyNeedConterDown();
     });
 
 
     groups.onSnapshot(function (querySnapshot) {
+        redeyNeedConterUP();
         groupData = [];
         querySnapshot.forEach(function (doc) {
             let newGoupe = doc.data()
             groupData.push(newGoupe)
         });
+        redeyNeedConterDown();
     });
 
     habitats.onSnapshot(function (querySnapshot) {
+        redeyNeedConterUP();
         habitatData = []
         querySnapshot.forEach(function (doc) {
             let newHabitat = doc.data()
             habitatData.push(newHabitat)
         });
+        redeyNeedConterDown();
     });
 
     pictures.onSnapshot(function (querySnapshot) {
+        redeyNeedConterUP();
         pictureData = []
         querySnapshot.forEach(function (doc) {
             let newPicture = {
@@ -2261,9 +2270,11 @@ if (CACHE) {
             // console.log(newPicture)
             pictureData.push(newPicture)
         });
+        redeyNeedConterDown();
     });
 
     spoorIdentifications.onSnapshot(function (querySnapshot) {
+        redeyNeedConterUP();
         spoorIdentificationData = []
         querySnapshot.forEach(function (doc) {
             let newSpoorID = doc.data()
@@ -2279,10 +2290,11 @@ if (CACHE) {
             // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
             spoorIdentificationData.push(newSpoorID)
         });
+        redeyNeedConterDown();
     });
 
     dietTypes.onSnapshot(function (querySnapshot) {
-        dietTypeData = []
+        redeyNeedConterUP();
         querySnapshot.forEach(function (doc) {
             let diet = doc.data().diet
 
@@ -2292,10 +2304,11 @@ if (CACHE) {
                 dietTypes.doc(doc.id).delete();
             }
         });
+        redeyNeedConterDown();
     })
 
     animals.onSnapshot(function (querySnapshot) {
-        animalData = [];
+        redeyNeedConterUP();
         querySnapshot.forEach(function (doc) {
             let temp = {
                 classification: doc.id,
@@ -2452,6 +2465,7 @@ if (CACHE) {
 
             animalData.push(temp);
         });
+        redeyNeedConterDown();
     });
 
 }
@@ -2706,4 +2720,19 @@ function addImgIDToAnimal(animalID, imgID) {
 
 function addLog(){
 
+}
+
+function redeyNeedConterDown(){
+    redeyNeedConter--;
+    if (redeyNeedConter==0)
+    {
+        console.log("server redy DB are done loding")
+    }
+}
+function redeyNeedConterUP(){
+    if (redeyNeedConter==0)
+    {
+        console.log("server not redy atleest 1 DB is loding")
+    }
+    redeyNeedConter++
 }
