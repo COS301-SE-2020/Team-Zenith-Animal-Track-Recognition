@@ -52,27 +52,39 @@ app.get('/', (req, res) => {
 
 })
 
+app.get('/logs', (req, res) => {
 
+    
 
+        var file = fs.readFileSync( 'log.txt', 'binary');
+        res.setHeader('Content-Length', file.length);
+        res.write(file, 'binary');
+        res.end();
+    
 
-app.get('/pullMasterWindows', (req, res) => {
-    const {
-        exec
-    } = require("child_process");
-
-    exec("start cmd.exe /q /c pullMaster.bat", (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
-    });
-    res.send("termanil opened")
 })
+
+
+
+
+// app.get('/pullMasterWindows', (req, res) => {
+//     const {
+//         exec
+//     } = require("child_process");
+
+//     exec("start cmd.exe /q /c pullMaster.bat", (error, stdout, stderr) => {
+//         if (error) {
+//             console.log(`error: ${error.message}`);
+//             return;
+//         }
+//         if (stderr) {
+//             console.log(`stderr: ${stderr}`);
+//             return;
+//         }
+//         console.log(`stdout: ${stdout}`);
+//     });
+//     res.send("termanil opened")
+// })
 app.get('/pullMasterLinux', (req, res) => {
     const {
         exec
