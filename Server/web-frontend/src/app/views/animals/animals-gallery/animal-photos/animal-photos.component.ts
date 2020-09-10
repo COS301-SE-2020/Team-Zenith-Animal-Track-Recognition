@@ -16,6 +16,7 @@ import { AddImageComponent } from '../../add-image/add-image.component';
 export class AnimalPhotosComponent implements OnInit {
 
 	animal: any;
+	tracksList: any;
 	animalClassi: string;
 	femaleBehaviour: string;
 	maleBehaviour: string;
@@ -25,11 +26,12 @@ export class AnimalPhotosComponent implements OnInit {
 		private router: Router,
 		private activatedRoute: ActivatedRoute,
 		public dialog: MatDialog,
-		private snackBar: MatSnackBar,
+		private snackBar: MatSnackBar
 	) { }
 
 	ngOnInit(): void {
-		this.startLoader();
+		this.startPhotoGalleryLoader();
+		this.startTrackGalleryLoader();
 		//Highlight current view in side navigation
 		document.getElementById('animals-route-link').classList.add('activeRoute');
 		document.getElementById("animals-gallery-route").classList.add("activeRoute");
@@ -37,33 +39,30 @@ export class AnimalPhotosComponent implements OnInit {
 		//Determine which animal was navigated to and fetch their information
 		const classificationQuery = new URLSearchParams(window.location.search);
 		const animal = classificationQuery.get("classification").split("_");
-
 		this.animalClassi = animal[0] + " " + animal[1];
+		
+		//Fetch animal from db
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsByClassification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'", classification:"' + this.animalClassi + '"){classification,animalID,commonName,pictures{URL, kindOfPicture}}}')
+			'", classification:"' + this.animalClassi + '"){classification,animalID,commonName,pictures{picturesID, URL, kindOfPicture}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.animal = temp[0];
-				this.stopLoader();
-			});
+				this.stopPhotoGalleryLoader();
+		});
+		//Fetch all track identifications for a the animal current being viewed
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'", classification:"' +  this.animalClassi + '"){spoorIdentificationID,animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}}dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.tracksList = temp[0];
+				this.stopTrackGalleryLoader();
+		});	
 	}
 	
 	//Functions for animal photo viewing and adding
-	viewAnimalPhotoDetails(photoUrl: string) {
-		//Create fill media array with animal photos
-		let index = 0;
-		let photoIndex;
-		let mediaList = [];
-		for (let i = 0; i < this.animal.pictures.length; i++) {
-			if (this.animal.pictures[i].kindOfPicture === 'Animal') {
-				mediaList.push(this.animal.pictures[i]);
-				if (this.animal.pictures[i].URL === photoUrl)
-					photoIndex = index;
-				index++;
-			}
-		}
-		
+	viewAnimalPhotoDetails(photoIndex: number) {
 		//Open AnimalPhotoDetailsComponent and display the selected photo 
 		const animalPhotoDetailsDialogRef = this.dialog.open(AnimalPhotoDetailsComponent, {
 			height: '100%',
@@ -74,25 +73,19 @@ export class AnimalPhotosComponent implements OnInit {
 			data: {
 				initialIndex: photoIndex,
 				entity: this.animal,
-				imageList: mediaList,
 				photoType: "Animal"
 			}
 		});
-	}
-	viewTrackPhotoDetails(photoUrl: string) {
-		//Create fill media array with animal photos
-		let index = 0;
-		let photoIndex;
-		let mediaList = [];
-		for (let i = 0; i < this.animal.pictures.length; i++) {
-			if (this.animal.pictures[i].kindOfPicture === 'trak') {
-				mediaList.push(this.animal.pictures[i]);
-				if (this.animal.pictures[i].URL === photoUrl)
-					photoIndex = index;
-				index++;
+		animalPhotoDetailsDialogRef.afterClosed().subscribe(result => {
+			if (result == "success") {
+				this.snackBar.open('Photo successfully set as main.', "Dismiss", { duration: 3000, });
 			}
-		}
-		
+			else if (result == 'error') {
+				this.snackBar.open('An error occured when updating the animal. Please try again.', "Dismiss", { duration: 5000, });
+			}
+		});
+	}
+	viewTrackPhotoDetails(photoIndex: number) {
 		//Open AnimalPhotoDetailsComponent and display the selected photo 
 		const animalPhotoDetailsDialogRef = this.dialog.open(AnimalPhotoDetailsComponent, {
 			height: '100%',
@@ -102,13 +95,12 @@ export class AnimalPhotosComponent implements OnInit {
 			id: 'animal-photo-details-dialog',
 			data: {
 				initialIndex: photoIndex,
-				entity: this.animal,
-				imageList: mediaList,
+				entity: this.tracksList,
 				photoType: "Track"
 			}
 		});
 	}
-	openAddNewImageDialog() {
+	openAddNewPhotoDialog() {
 		const editDialogRef = this.dialog.open(AddImageComponent, {
 			height: '75%',
 			width: '60%',
@@ -120,7 +112,6 @@ export class AnimalPhotosComponent implements OnInit {
 			},
 		});
 		editDialogRef.afterClosed().subscribe(result => {
-			this.stopLoader();
 			if (result == "success") {
 			}
 			else if (result == 'error') {
@@ -139,11 +130,21 @@ export class AnimalPhotosComponent implements OnInit {
 		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
 	}
 	
-	//Loader
-	startLoader() {
-		document.getElementById('loader-container').style.visibility = 'visible';
+	//Loaders
+	startPhotoGalleryLoader() {
+		if (document.getElementById('animal-photo-gallery-loader') != null)
+			document.getElementById('animal-photo-gallery-loader').style.visibility = 'visible';
 	}
-	stopLoader() {
-		document.getElementById('loader-container').style.visibility = 'hidden';
+	stopPhotoGalleryLoader() {
+		if (document.getElementById('animal-photo-gallery-loader') != null)
+			document.getElementById('animal-photo-gallery-loader').style.visibility = 'hidden';
+	}	
+	startTrackGalleryLoader() {
+		if (document.getElementById('animal-track-gallery-loader') != null)
+			document.getElementById('animal-track-gallery-loader').style.visibility = 'visible';
+	}
+	stopTrackGalleryLoader() {
+		if (document.getElementById('animal-track-gallery-loader') != null)
+			document.getElementById('animal-track-gallery-loader').style.visibility = 'hidden';
 	}
 }

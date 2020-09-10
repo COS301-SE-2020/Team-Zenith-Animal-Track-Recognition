@@ -32,7 +32,7 @@
             </div>
         </mat-tab>
         <mat-tab label="Track">
-			<app-track-identifications-info *ngIf="activeTrack" [activeTrack]="activeTrack" (viewingTrackOnChange)="backToTrackList($event)"></app-track-identifications-info>
+			<app-track-identifications-info *ngIf="activeTrack" [activeTrack]="activeTrack" [originType]="originType" (viewingTrackOnChange)="backToTrackList($event)"></app-track-identifications-info>
         </mat-tab>
     </mat-tab-group>
 </div>

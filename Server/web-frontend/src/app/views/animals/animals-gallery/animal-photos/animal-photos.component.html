@@ -14,10 +14,8 @@
         </div>
         <div id="animals-toolbar">
             <mat-select id="animals-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
-                <mat-option (click)="openAddNewImageDialog()">Add New Image</mat-option>
-                <mat-option >Edit Information</mat-option>
-                <mat-option (click)="viewAnimalProfile(animal.classification)">View Information</mat-option>
-                <mat-option>Upload Identification</mat-option>
+                <mat-option (click)="openAddNewPhotoDialog()">Add New Photo</mat-option>
+                <mat-option (click)="viewAnimalProfile(animal.classification)">View Animal Info</mat-option>
             </mat-select>
         </div>
     </div>
@@ -29,10 +27,13 @@
 			<mat-tab-group mat-align-tabs="center" dynamicHeight> 
 				<mat-tab label="Photos">
 					<ng-template matTabContent>
+						<div id="animal-photo-gallery-loader" class="loader-container">
+							<mat-spinner class="loader"></mat-spinner>
+						</div>
 						<mat-grid-list cols="3" rowHeight="1:1" gutterSize="10px" *ngIf="animal">
 							<ng-container *ngFor="let animalPhoto of animal.pictures;let photoIndex=index;">
-								<ng-container [ngSwitch]="animalPhoto.kindOfPicture">
-									<mat-grid-tile *ngSwitchCase='"Animal"' (click)="viewAnimalPhotoDetails(animalPhoto.URL)">
+								<ng-container>
+									<mat-grid-tile (click)="viewAnimalPhotoDetails(photoIndex)">
 										<img class="animal-photo" src="{{animalPhoto.URL}}" alt="Photo of {{animal.commonName}}">
 									</mat-grid-tile>
 								</ng-container>
@@ -42,11 +43,14 @@
 				</mat-tab>
 				<mat-tab label="Tracks">
 					<ng-template matTabContent>
+						<div id="animal-track-gallery-loader" class="loader-container">
+							<mat-spinner class="loader"></mat-spinner>
+						</div>
 						<mat-grid-list class="animal-track-photo" cols="3" rowHeight="1:1" gutterSize="10px" *ngIf="animal">
-							<ng-container *ngFor="let trackImage of animal.pictures;let trackIndex=index;">
-								<ng-container [ngSwitch]="trackImage.kindOfPicture">
-									<mat-grid-tile *ngSwitchCase='"trak"' (click)="viewTrackPhotoDetails(trackImage.URL)">
-										<img class="animal-photo" src="{{trackImage.URL}}" alt="Photo of {{animal.commonName}} Track">
+							<ng-container *ngFor="let trackImage of tracksList;let trackIndex=index;">
+								<ng-container>
+									<mat-grid-tile (click)="viewTrackPhotoDetails(trackIndex)">
+										<img class="animal-photo" src="{{trackImage.picture.URL}}" alt="Photo of {{animal.commonName}} Track">
 									</mat-grid-tile>
 								</ng-container>
 							</ng-container>

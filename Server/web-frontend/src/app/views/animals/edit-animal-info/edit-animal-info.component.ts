@@ -15,7 +15,6 @@ export class EditAnimalInfoComponent implements OnInit {
 	testString: string;
 	editAnimalForm: FormGroup;
 	diet: string;
-	//DUMMY DATA
 	dietTypeList: string[];
 
 	constructor(

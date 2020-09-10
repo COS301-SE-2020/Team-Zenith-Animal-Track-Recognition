@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angu
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TrackIdentificationsSidenavComponent } from './track-identifications-sidenav/track-identifications-sidenav.component';
 import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,24 +15,26 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 export class TrackIdentificationsComponent implements OnInit {
 
+	@ViewChild('trackIdentificationsSidenav') trackSidenav: TrackIdentificationsSidenavComponent;
 	@ViewChild('sidenav') sidenav;
-	trackIdentifications: any;
+	activeTrack: any = null;
+	currentAlphabet;
 	displayedTracks: any;
 	defaultLocation: string = 'Address not found';
+	geoCoder: google.maps.Geocoder;
+	initWithOpenTrack: boolean = false;
+	initWithOpenTrackId: any; 
+	infoWindow: google.maps.InfoWindow;
+	map: google.maps.Map;
+	mapMarkers: any = [];
+	pageSize: number = 25;
 	searchText: string;
 	sortBySurname: boolean = true;
-	currentAlphabet;
 	sorted: string;
-	pageSize: number = 25;
-	map: google.maps.Map;
-	geoCoder: google.maps.Geocoder;
-	infoWindow: google.maps.InfoWindow;
 	trackHltCircle: any;
-	mapMarkers: any = [];
-	activeTrack: any = null;
-	@ViewChild('trackIdentificationsSidenav') trackSidenav: TrackIdentificationsSidenavComponent;
+	trackIdentifications: any;
 	
-	constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
+	constructor(private activatedRoute: ActivatedRoute, private http: HttpClient, private router: Router, private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
 		this.startLoader();
@@ -48,6 +51,15 @@ export class TrackIdentificationsComponent implements OnInit {
 				//Add 'time ago' field to each track
 				this.timeToString();
 				
+				//Check if a track was selected from the query parameters
+				const spoorIdQuery = new URLSearchParams(window.location.search);
+				const requestedSpoorId = spoorIdQuery.get("openTrackId");
+				if (requestedSpoorId != null) {
+					this.initWithOpenTrack = true;
+					this.initWithOpenTrackId = requestedSpoorId;
+					this.snackBar.open('Displaying track on the map...');
+				}
+				
 				this.initMap();
 			});
 	}
@@ -62,9 +74,20 @@ export class TrackIdentificationsComponent implements OnInit {
 			streetViewControl: false,
 			zoom: 7
 		});
-		//Place track markers
+		
+		//Place track markers on map
+		
+		if (this.initWithOpenTrack) {
+			//If query param exists, open track that corresponds to that id first
+			let trackMarker = this.trackIdentifications.filter(x => x.spoorIdentificationID == this.initWithOpenTrackId);
+			this.addTrackMarker(trackMarker[0]);
+			let requestedTrack = this.getTrack(this.initWithOpenTrackId);
+			google.maps.event.trigger(requestedTrack.marker, 'click');	
+			this.snackBar.open('Track displayed!', "Dismiss", { duration: 3000, });
+		}
 		for (let i = 0; i < this.trackIdentifications.length; i++) {
-			setTimeout(() => this.addTrackMarker(this.trackIdentifications[i]), i * 200);
+			if ((!this.initWithOpenTrack) || (this.initWithOpenTrack && this.trackIdentifications[i].spoorIdentificationID !== this.initWithOpenTrackId))
+				setTimeout(() => this.addTrackMarker(this.trackIdentifications[i]), i * 200);
 		}
 		this.stopLoader();
 	}
@@ -184,7 +207,7 @@ export class TrackIdentificationsComponent implements OnInit {
 				}
 			} 
 			else {
-				console.log('Geocoder failed due to: ' + status);
+				//console.log('Geocoder failed due to: ' + status);
 				track.location.addresses = null;
 			}
 		});

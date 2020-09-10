@@ -7,7 +7,7 @@
 #animal-search-sidenav
 {
 	height: 100%;
-	width: 300px;
+	width: 330px;
 	border-right: 2px solid #CCCCCC;
 	box-shadow: 1px 0px 5px #DDDDDD;
 }
@@ -156,33 +156,26 @@
 	margin: 0;
 }
 /*Tags Information*/
-#animal-photos-track-tags-container
+#animal-photos-description-container
 {
-	height: 30%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-	padding: 5% 5%;
-}
-#animal-photos-tags-container-title
-{
-	padding: 5% 0;
-}
-#animal-photos-track-tag-list
-{
-	height: 85%;
+	height: 40%;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
+	align-items: flex-start;
+	padding: 5% 5%;
 }
-.mat-standard-chip
+#animal-photos-description-container-title
 {
-	padding: 2px 10px;
-	height: 75%;
-	min-height: 75%;
+	padding: 2% 0;
+}
+#animal-photo-descr
+{
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
 }
 
 
@@ -254,4 +247,9 @@
     -moz-transition: all 0.2s ease-out;
     -ms-transition: all 0.2s ease-out; 
     -o-transition: all 0.2s ease-out;
+}
+#animal-track-photo-info-sidenav
+{
+	height: 95%;
+	padding-bottom: 5%;
 }

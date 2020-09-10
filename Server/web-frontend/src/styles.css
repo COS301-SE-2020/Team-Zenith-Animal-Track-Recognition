@@ -80,7 +80,7 @@ body
     -ms-transition: all 0.5s ease-out; 
     -o-transition: all 0.5s ease-out;
 }
-#loader
+#loader, .loader
 {
 	position: absolute;
 	top: 50%;

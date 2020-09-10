@@ -22,6 +22,7 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 	@Output() trackPageOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() focusOnTrackChange: EventEmitter<Object> = new EventEmitter();
 	activeTrack: any = null;
+	originType: string = "track-identifications";
 
 	public ngOnChanges(changes: SimpleChanges) {
 		this.startLoader();
@@ -38,27 +39,6 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 
 	viewTrack(track: any) {
 		this.activeTrack = null;
-		var similarTracksUrls = [];
-		var similarTrackBatch = [];
-		track.animal.pictures.forEach(element => {
-			if (element.kindOfPicture == 'trak')
-			{
-				if (similarTrackBatch.length != 3)
-				{
-					similarTrackBatch.push(element.URL);
-				}
-				else
-				{
-					similarTracksUrls.push(similarTrackBatch);
-					similarTrackBatch = null;
-					similarTrackBatch = [];
-					similarTrackBatch.push(element.URL);
-				}
-			}
-		});
-		if (similarTrackBatch.length > 0)
-			similarTracksUrls.push(similarTrackBatch);
-		track.similarTracks = similarTracksUrls;
 		this.activeTrack = track;
 		this.focusOnTrackChange.emit(track.spoorIdentificationID + ',' + track.location.latitude + ',' + track.location.longitude);
 		this.trackMatTab.selectedIndex = 1;

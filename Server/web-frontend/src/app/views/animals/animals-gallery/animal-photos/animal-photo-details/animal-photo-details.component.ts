@@ -1,6 +1,9 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-animal-photo-details',
@@ -10,12 +13,30 @@ import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angu
 export class AnimalPhotoDetailsComponent implements OnInit {
 	
 	@ViewChild('sidenav') sidenav: any;
+	activeTrack: any = null;
 	currentPhotoIndex: number;
+	trackList: any;
+	originType: string = "photo-details";
+	
+	/*Place holder values*/
+	trackInfoPlaceholder = {
+			commonName: 'Elephant',
+			classification: 'Loxodonta Africanus',
+			trackLocation: 'Kruger National Park',
+			coordinates: '-24.019097, 31.559270',
+			accuracyScore: '67%',
+			capturedBy: 'Kagiso Ndlovu',
+			date: '09/09/2020',
+			dayTime: 'Fri, 09:17',
+			descr: 'Photo of animal grazing by the waterside (top left corner).'
+	};
 	
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any, 
+		public dialogRef: MatDialogRef<AnimalPhotoDetailsComponent>,
+		private http: HttpClient,
 		private router: Router, 
-		public dialogRef: MatDialogRef<AnimalPhotoDetailsComponent>) { }
+		private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
 		//Style the modal/dialog
@@ -29,11 +50,20 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 		
 		//Determine index of currently viewed image
 		this.currentPhotoIndex = this.data.initialIndex;
+		
+		if (this.data.photoType == "Track") {
+			this.startSidenavLoader();
+			this.activeTrack = this.data.entity[this.currentPhotoIndex];
+			this.stopSidenavLoader();
+		}
 	}
 
 	//Open/close sidenav
 	toggleSidenav() {
 		this.sidenav.toggle();
+	}
+	closeSideNav(status: any) {
+		this.sidenav.close();
 	}
 	
 	//If the photo is of an animal, adapt height to respond to toggling the sidenav
@@ -48,31 +78,80 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 			document.getElementById("animal-photo-detail-current-image").style.height = '80%';
 	}
 	
-	
-	//Photo navigation functions
-	nextPhoto()
-	{
-		//Temporary photo navigation solution until API updates 
-		if (this.data.photoType != 'Single Track')
-		{
-			//Navigate to next photo. If last photo, navigate to first
-			if (this.currentPhotoIndex >= (this.data.imageList.length - 1))
+	//Photo navigation & setting functions
+	nextPhoto() {
+		//Navigate to next photo. If last photo, navigate to first
+		if (this.data.photoType == 'Animal') {
+			if (this.currentPhotoIndex >= (this.data.entity.pictures.length - 1))
 				this.currentPhotoIndex = 0;
-			else if (this.currentPhotoIndex < (this.data.imageList.length - 1))
+			else if (this.currentPhotoIndex < (this.data.entity.pictures.length - 1))
 				this.currentPhotoIndex += 1;			
 		}
+		else if (this.data.photoType == 'Track') {
+			if (this.currentPhotoIndex >= (this.data.entity.length - 1)) {
+				this.currentPhotoIndex = 0;
+				this.activeTrack = this.data.entity[this.currentPhotoIndex];
+			}
+			else if (this.currentPhotoIndex < (this.data.entity.length - 1)) {
+				this.currentPhotoIndex += 1;
+				this.activeTrack = this.data.entity[this.currentPhotoIndex];				
+			}
+		}
+
 	}
-	prevPhoto()
-	{
-		//Temporary photo navigation solution until API updates 
-		if (this.data.photoType != 'Single Track')
-		{
-			//Navigate to prev photo. If first photo, navigate to last
+	prevPhoto() {
+		//Navigate to prev photo. If first photo, navigate to last
+		if (this.data.photoType == 'Animal') {
 			if (this.currentPhotoIndex >= 1)
 				this.currentPhotoIndex -= 1;
 			else if (this.currentPhotoIndex < 1)
-				this.currentPhotoIndex = (this.data.imageList.length - 1);
+				this.currentPhotoIndex = (this.data.entity.pictures.length - 1);
 		}
+		else if (this.data.photoType == 'Track') {
+			if (this.currentPhotoIndex >= 1) {
+				this.currentPhotoIndex -= 1;
+				this.activeTrack = this.data.entity[this.currentPhotoIndex];
+			}
+			else if (this.currentPhotoIndex < 1) {
+				this.currentPhotoIndex = (this.data.entity.length - 1);
+				this.activeTrack = this.data.entity[this.currentPhotoIndex];
+			}
+		}
+	}
+	setAsMainPhoto(index: number) {
+		if (index == 0) {
+			this.snackBar.open('The photo you have selected is already the main photo.', "Dismiss", { duration: 5000, });
+			return;
+		}
+		let newEntityImageList = [this.data.imageList[index]];
+		
+		//Remove photo from original list
+		for (let i = 0; i < this.data.entity.pictures.length; i++) {
+			if (this.data.entity.pictures[i].URL != this.data.imageList[index].URL)
+				newEntityImageList.push(this.data.entity.pictures[i]);
+		}
+		
+		//Update entity in database
+		//let temp = JSON.stringify(newEntityImageList).replace('[','');
+		//let picturesParam = this.manualStringify(newEntityImageList);
+		//console.log(picturesParam);
+		
+		//this.startLoader();
+		/*this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{' + 'updateAnimal(token:"' + encodeURIComponent(JSON.parse(localStorage.getItem('currentToken'))['value']) +
+		'",classification:"' + encodeURIComponent(this.data.entity.classification) + '",pictures:' + encodeURIComponent(picturesParam) + '){animalID}}', '')
+			.subscribe({
+				next: data => this.dialogRef.close('success'),
+				error: error => this.dialogRef.close('error')
+		});*/
+	}
+	
+	//Hold
+	manualStringify(photosList: any) {
+		let picturesParamString = "";
+		for (let i = 0; i < photosList.length; i++) {
+			picturesParamString += '{URL:' + '"' + photosList[i].URL + '"' + ',kindOfPicture:' + '"' + photosList[i].kindOfPicture + '"},'; 
+		}
+		return picturesParamString.substring(0, (picturesParamString.length - 1));
 	}
 	
 	//Miscellaneous Functions
@@ -83,10 +162,27 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}
+	//Loader
+	startLoader() {
+		document.getElementById('loader-container').style.visibility = 'visible';
+	}
+	stopLoader() {
+		document.getElementById('loader-container').style.visibility = 'hidden';
+	}
+	//Sidenav Loader
+	startSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'visible';
+	}
+	stopSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
+	}
 	viewAnimalProfile(animalClassi: string) {
-		this.dialogRef.close("cancel");	
 		let classification = animalClassi.split(" ");
 		let classificationQuery = classification[0] + "_" + classification[1];
 		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
+	}
+	viewOnTrackMap(trackId: any) {
+		this.dialogRef.close("cancel");	
+		this.router.navigate(['identifications'], { queryParams: { openTrackId: trackId } });
 	}
 }
