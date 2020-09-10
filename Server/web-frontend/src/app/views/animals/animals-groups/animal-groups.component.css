@@ -8,7 +8,7 @@
     align-items: center;
 }
 
-#animals-toolbar-container {
+#animals-groups-toolbar-container {
     height: 12%;
     width: 100%;
     display: flex;
@@ -17,7 +17,7 @@
     background-color: white;
 }
 
-#animals-toolbar-navigationtree-container {
+#animals-groups-toolbar-navigationtree-container {
     height: 100%;
     width: 60%;
     display: flex;
@@ -27,7 +27,7 @@
     padding-left: 2%;
 }
 
-#animals-toolbar-navigation {
+#animals-groups-toolbar-navigation {
     height: 100%;
     width: auto;
     display: flex;
@@ -36,7 +36,7 @@
     align-items: center;
 }
 
-#animals-toolbar-navigation>a {
+#animals-groups-toolbar-navigation>a {
     color: #AAAAAA;
     font-size: 130%;
     text-decoration: none;
@@ -47,18 +47,18 @@
     -o-transition: all 0.2s ease-in-out;
 }
 
-#animals-toolbar-navigation>a:hover {
+#animals-groups-toolbar-navigation>a:hover {
     color: #1A1A1A;
     cursor: pointer;
 }
 
-#animals-toolbar-navigation>a.activeView {
+#animals-groups-toolbar-navigation>a.activeView {
     color: #1A1A1A;
 }
 
-#animals-toolbar {
+#animals-groups-toolbar {
     height: 100%;
-    width: 40%;
+    width: 20%;
     font-size: 120%;
     display: flex;
     flex-direction: row;

@@ -4,8 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatAccordion } from '@angular/material/expansion';
-import { MatDialogConfig } from '@angular/material/dialog';
-import { EditAnimalInfoComponent } from '../edit-animal-info/edit-animal-info.component';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { AddGroupsComponent } from '../add-groups/add-groups.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-animal-groups',
@@ -19,7 +20,7 @@ export class AnimalGroupsComponent implements OnInit {
 	animalGroups: any[] = [];
 	animalGroupsDataSource: any;
 
-	constructor(private router: Router, private http: HttpClient) { }
+	constructor(private router: Router, private http: HttpClient, public dialog: MatDialog, private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
 		this.startLoader();
@@ -124,31 +125,24 @@ export class AnimalGroupsComponent implements OnInit {
 		return bool;
 	}
 
-	openEditGroupDialog(group: string) {
+	openAddGroupDialog() {
 
 		const dialogConfig = new MatDialogConfig();
 
-		//Get animal information for chosen card
-		const editDialogRef = this.dialog.open(EditGroupsComponent, {
-			height: '80%',
-			width: '55%',
+		const addDialogRef = this.dialog.open(AddGroupsComponent, {
+			height: '70%',
+			width: '45%',
+			id: 'add-groups-dialog',
 			autoFocus: true,
-			disableClose: true,
-			id: 'edit-animal-dialog',
-			data: {
-				animal: chosenAnimal,
-				tab: 0
-			},
+			disableClose: true
 		});
-
-		editDialogRef.afterClosed().subscribe(result => {
+		addDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
-			if (result == "success") {
-				//If animal was successfully edited refresh component and notify parent
-				this.animalsOnChange.emit('update');
+			if (result == 'success') {
+				//If animal was successfully added, refresh component and notify parent
 			}
 			else if (result == 'error') {
-				this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });
+				this.snackBar.open('An error occured when adding the new animal. Please try again.', "Dismiss", { duration: 5000, });
 			}
 		});
 	}
@@ -176,6 +170,26 @@ export class AnimalGroupsComponent implements OnInit {
 
 	isGroup(group: number) {
 		return 1 == group;
+	}
+
+	addGroup(animalID, groupID){
+		let temp = this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{addAnimalGroup('
+			+ 'token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
+			+ 'animalID:"' + animalID + '",'
+			+ 'groupID:"' + groupID + '"){animalID}}', '').subscribe((data: any[]) => {
+				let t = [];
+				t = Object.values(Object.values(data)[0]);
+			});
+	}
+
+	removeGroup(animalID, groupID){
+		let temp = this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{removeAnimalGroup('
+			+ 'token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
+			+ 'animalID:"' + animalID + '",'
+			+ 'groupID:"' + groupID + '"){animalID}}', '').subscribe((data: any[]) => {
+				let t = [];
+				t = Object.values(Object.values(data)[0]);
+			});
 	}
 
 	//Loader
