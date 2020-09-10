@@ -1,5 +1,5 @@
 import { AnimalPhotoDetailsComponent } from './../../../animals/animals-gallery/animal-photos/animal-photo-details/animal-photo-details.component'; 
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { RelativeTimeMPipe } from 'src/app/pipes/relative-time-m.pipe';
@@ -19,11 +19,38 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	@ViewChild('otherMatchesMatTab') otherMatchesMatTab;
 	@ViewChild('simTracksMatTab') simTracksMatTab;
 	similarTrackList: any = null;
-
-
-	constructor(private http: HttpClient, public dialog: MatDialog, private router: Router) { }
+	
+	constructor(private changeDetection: ChangeDetectorRef, private http: HttpClient, public dialog: MatDialog, private router: Router) { }
+	
+	public ngOnChanges(changes: SimpleChanges) {
+		if (changes) {
+			this.changeDetection.detectChanges();
+			this.updateSimilarTracks();
+		}
+	}
 
 	ngOnInit(): void {
+	}
+	
+	backToTrackList() {
+		this.viewingTrackOnChange.emit("back");
+	}
+	nextPotentialMatch() {
+		if (this.otherMatchesMatTab.selectedIndex != 2)
+			this.otherMatchesMatTab.selectedIndex += 1;
+	}
+	prevPotentialMatch() {
+		if (this.otherMatchesMatTab.selectedIndex != 0)
+			this.otherMatchesMatTab.selectedIndex -= 1;
+	}
+	nextSimilarTrack() {
+		this.simTracksMatTab.selectedIndex += 1;
+	}
+	prevSimilarTrack() {
+		this.simTracksMatTab.selectedIndex -= 1;
+	}
+	
+	updateSimilarTracks() {
 		//Load similar tracks for the same animal being viewed
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'", classification:"' +  this.activeTrack.animal.classification + '"){spoorIdentificationID,animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}}dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
@@ -45,25 +72,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 				for (let j = 0; j < maxNumSimilarTracks; j += 3) {
 					this.similarTrackList.push(trackList.slice(j, j+3));
 				}
-			});
-	}
-	
-	backToTrackList() {
-		this.viewingTrackOnChange.emit("back");
-	}
-	nextPotentialMatch() {
-		if (this.otherMatchesMatTab.selectedIndex != 2)
-			this.otherMatchesMatTab.selectedIndex += 1;
-	}
-	prevPotentialMatch() {
-		if (this.otherMatchesMatTab.selectedIndex != 0)
-			this.otherMatchesMatTab.selectedIndex -= 1;
-	}
-	nextSimilarTrack() {
-		this.simTracksMatTab.selectedIndex += 1;
-	}
-	prevSimilarTrack() {
-		this.simTracksMatTab.selectedIndex -= 1;
+			});		
 	}
 	
 	viewAnimalProfile(animalClassi: string) {
