@@ -1,6 +1,7 @@
 import { AnimalPhotoDetailsComponent } from './../../../animals/animals-gallery/animal-photos/animal-photo-details/animal-photo-details.component'; 
 import { Component, OnInit, Input, Output, ViewChild, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { GoogleMap } from '@angular/google-maps';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { RelativeTimeMPipe } from 'src/app/pipes/relative-time-m.pipe';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
@@ -18,6 +19,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	@Output() viewingTrackOnChange: EventEmitter<Object> = new EventEmitter();
 	@ViewChild('otherMatchesMatTab') otherMatchesMatTab;
 	@ViewChild('simTracksMatTab') simTracksMatTab;
+	geoCoder: google.maps.Geocoder;
 	similarTrackList: any = null;
 	
 	constructor(private changeDetection: ChangeDetectorRef, private http: HttpClient, public dialog: MatDialog, private router: Router) { }
@@ -26,6 +28,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 		if (changes) {
 			this.changeDetection.detectChanges();
 			this.updateSimilarTracks();
+			this.setTrackAddress();
 		}
 	}
 
@@ -48,6 +51,35 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	}
 	prevSimilarTrack() {
 		this.simTracksMatTab.selectedIndex -= 1;
+	}
+	
+	//Track Identification manipulation
+	timeToString() {
+		let temp = this.activeTrack.dateAndTime;
+		this.activeTrack.dateObj = new Date(temp.year, temp.month, temp.day, temp.hour, temp.min, temp.second);
+	}
+	setTrackAddress()
+	{
+		//Determine physical location name of each track through Reverse Geocoding
+		this.geoCoder = new google.maps.Geocoder;
+		var latlng = {lat: this.activeTrack.location.latitude, lng: this.activeTrack.location.longitude};
+		var temp = this.activeTrack;
+		this.geoCoder.geocode({'location': latlng}, function(results, status) {
+			if (status === 'OK') {
+				if (results[0]) {
+					temp.location.addresses = results;
+				} 
+				else {
+					//Address could not be obtained
+					temp.location.addresses = null;
+				}
+			} 
+			else {
+				//console.log('Geocoder failed due to: ' + status);
+				temp.location.addresses = null;
+			}
+		});
+		this.timeToString();
 	}
 	
 	updateSimilarTracks() {
