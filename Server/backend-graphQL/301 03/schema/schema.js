@@ -2106,6 +2106,32 @@ const Mutation = new GraphQLObjectType({
                 return newID;
             }
         },
+        addIMG64ToRanger:{
+            type:GraphQLString,
+            args:{
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                IMG64: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                rangerID:
+                {
+                    type:new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args){
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == undefined) {
+                    return null
+                }
+                URLa=uplodeBase64URL(args.IMG64,"ranger")
+                addURLToRanger(args.rangerID,URLa)
+                return newID;
+            }
+        },
         addAnimalGroup:{
             type:ANIMAL_TYPE,
             
@@ -2537,6 +2563,57 @@ function uplodeBase64(Img,folder="trak") {
 
     return newImgID
 }
+function uplodeBase64URL(Img,folder="ranger") {
+    newImgID = imgID()
+    saveBase64File(Img, newImgID + ".jpeg")
+    // console.log("reder")
+
+
+    async function uploadFile(){
+        let filename = newImgID + ".jpeg"
+        let bucketName = "root"
+        // Uploads a local file to the bucket
+        await storage.upload(filename, {
+            // Support for HTTP requests made with `Accept-Encoding: gzip`
+            gzip: false,
+            // By setting the option `destination`, you can change the name of the
+            destination: folder+"/" + filename,
+            // object you are uploading to a bucket.
+            metadata: {
+                // Enable long-lived HTTP caching headers
+                // Use only if the contents of the file will never change
+                // (If the contents will change, use cacheControl: 'no-cache')
+                cacheControl: 'public, max-age=31536000',
+            },
+        });
+
+        console.log(`${filename} uploaded to ${bucketName}.`);
+        return filename
+    }
+
+    uploadFile().then((filename) => {
+        const fs = require('fs')
+
+        const path = './' + filename
+
+        try {
+            fs.unlinkSync(path)
+            //file removed
+        } catch (err) {
+            console.error(err)
+        }
+    }).catch(console.error);
+
+    newPicture = {
+        picturesID: newImgID,
+        kindOfPicture: "trak",
+        URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/ranger%2F" + newImgID + ".jpeg?alt=media"
+    }
+    pictureData.push(newPicture)
+    pictures.doc(newImgID).set(newPicture)
+
+    return newImgID.URL
+}
 
 
 
@@ -2715,6 +2792,20 @@ function addImgIDToAnimal(animalID, imgID) {
             let e = doc.data()
             e.pictures.push(imgID)
             animals.doc(doc.id).set(e)
+            // console.log("run "+animalID+ " "+imgID)
+        });
+    }).catch((err) => {
+        console.error(err)
+    })
+}
+function addURLToRanger(rangerID, URLa) {
+
+    users.where("rangerID", "==", rangerID.toString()).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+            // console.log("start "+animalID+ " "+imgID)
+            let e = doc.data()
+            e.pictureURL=URLa
+            users.doc(doc.id).set(e)
             // console.log("run "+animalID+ " "+imgID)
         });
     }).catch((err) => {
