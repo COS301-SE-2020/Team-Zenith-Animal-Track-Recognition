@@ -1625,7 +1625,7 @@ const Mutation = new GraphQLObjectType({
                     type: GraphQLString
                 },
                 pictures: {
-                    type: new GraphQLList(GraphQLInt)
+                    type: new GraphQLList(GraphQLString)
                 },
                 Offspring: {
                     type: GraphQLString
@@ -1705,6 +1705,9 @@ const Mutation = new GraphQLObjectType({
                 }
                 if (args.Offspring != undefined) {
                     updatedAnimal.Offspring = args.Offspring
+                }
+                if (args.pictures!=undefined){
+                    updatedAnimal.pictures=args.pictures
                 }
 
                 if (args.animalMarkerColor != undefined) {
