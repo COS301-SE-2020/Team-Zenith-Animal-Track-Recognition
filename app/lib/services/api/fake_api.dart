@@ -389,10 +389,6 @@ class FakeApi implements Api {
   }
 
   @override
-  // Future<List<InformationModel>> getInformationModel() async{
-
-  // }
-  @override
   Future<List<SpoorModel>> getSpoorModel(String name) async {
     SpoorModel card1 = new SpoorModel(
         '',
@@ -985,5 +981,55 @@ class FakeApi implements Api {
   Future<double> getAnimalID(String animalName) {
     // TODO: implement getAnimalID
     throw UnimplementedError();
+  }
+
+  @override
+  Future<List<TrophyModel>> getTrophies() async {
+    List<TrophyModel> trophies = new List();
+    List<String> trophyTitled = [
+      'Trophy 1',
+      'Trophy 2',
+      'Trophy 3',
+      'Trophy 4',
+      'Trophy 5',
+      'Trophy 6',
+      'Trophy 7',
+      'Trophy 8',
+      'Trophy 9',
+      'Trophy 10'
+    ];
+
+    List<String> descriptions = [
+      'Trophy 1',
+      'Trophy 2',
+      'Trophy 3',
+      'Trophy 4',
+      'Trophy 5',
+      'Trophy 6',
+      'Trophy 7',
+      'Trophy 8',
+      'Trophy 9',
+      'Trophy 10'
+    ];
+
+    List<String> images = [
+      'assets/images/image.jpg',
+      'assets/images/image.jpg',
+      'assets/images/image.jpg',
+      'assets/images/image.jpg',
+      'assets/images/image.jpg',
+      'assets/images/image.jpg',
+      'assets/images/image.jpg',
+      'assets/images/image.jpg',
+      'assets/images/image.jpg',
+      'assets/images/image.jpg'
+    ];
+    for (int i = 0; i < trophyTitled.length; i++) {
+      trophies.add(new TrophyModel(
+          image: images[i],
+          descrption: descriptions[i],
+          title: trophyTitled[i]));
+    }
+    return trophies;
   }
 }

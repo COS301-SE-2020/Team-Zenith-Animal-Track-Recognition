@@ -42,4 +42,6 @@ abstract class Api {
   Future<double> getAnimalID(String animalName);
 
   Future<int> getUserLevel();
+
+  Future<List<TrophyModel>> getTrophies();
 }

@@ -121,19 +121,23 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
                     image: AssetImage('assets/images/springbok.jpg'))),
           ),
           ListTile(
-              leading: Icon(Icons.verified_user),
+              leading: Icon(Icons.account_circle),
               title: text16LeftBoldGrey("Profile"),
+              dense: true,
               onTap: () => {navigateToProfile()}),
+          ListTile(
+              leading: Icon(Icons.verified_user),
+              title: text16LeftBoldGrey("Achievements"),
+              dense: true,
+              onTap: () => {navigateToAchievements()}),
           ListTile(
               leading: Icon(Icons.settings),
               title: text16LeftBoldGrey("Settings"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.edit),
-              title: text16LeftBoldGrey("Preference"),
+              dense: true,
               onTap: () => {}),
           ListTile(
               leading: Icon(Icons.exit_to_app),
+              dense: true,
               title: text16LeftBoldGrey("Logout"),
               onTap: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();

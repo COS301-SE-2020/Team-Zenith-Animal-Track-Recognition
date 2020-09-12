@@ -2,9 +2,11 @@ import 'dart:async';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/identification/identification_viewmodel.dart';
+import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
@@ -26,7 +28,21 @@ class IdentificationView extends StatelessWidget {
           future: model.getResults(name),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return progressIndicator();
+              return WillPopScope(
+                onWillPop: () async {
+                  if (Navigator.canPop(context)) {
+                    navigateBack(context);
+                  }
+                  return;
+                },
+                child: Scaffold(
+                    body: Stack(
+                  children: [
+                    internetError(snapshot.error.toString()),
+                    backButton(context),
+                  ],
+                )),
+              );
             }
             if (snapshot.hasData) {
               return snapshot.hasData
@@ -66,6 +82,25 @@ class IdentificationView extends StatelessWidget {
             }
           }),
       viewModelBuilder: () => IdentificationViewModel(),
+    );
+  }
+}
+
+class IconBuilder extends ViewModelWidget<IdentificationViewModel> {
+  IconData icon;
+  IconBuilder({Key key, this.icon}) : super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, IdentificationViewModel model) {
+    return Container(
+      margin: EdgeInsets.all(0),
+      padding: EdgeInsets.all(0),
+      child: IconButton(
+          padding: EdgeInsets.all(0),
+          icon: Icon(icon, color: Colors.white),
+          onPressed: () {
+            navigateToSearchView();
+          }),
     );
   }
 }
@@ -132,7 +167,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
               ),
               Divider(thickness: 2),
               Column(children: <Widget>[
-                similarSpoors(context),
+                similarSpoors(),
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -580,51 +615,6 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
               ),
             ),
           ),
-          // Container(
-          //   alignment: Alignment.centerLeft,
-          //   margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-          //   padding: new EdgeInsets.all(5),
-          //   child: Row(
-          //     children: <Widget>[
-          //       Expanded(
-          //         flex: 1,
-          //         child: text12LeftNormGrey('Coordinates: '),
-          //       ),
-          //       Expanded(
-          //           flex: 3,
-          //           child: Row(children: [
-          //             Expanded(
-          //               flex: 1,
-          //               child: GestureDetector(
-          //                 onLongPress: () {
-          //                   model.setEditSpoorCoordLat();
-          //                 },
-          //                 child: Container(
-          //                     margin: new EdgeInsets.only(right: 2),
-          //                     child: model.editSpoorCoordLat
-          //                         ? TextInputField(indexIdentifier: 1)
-          //                         : text12LeftNormBlack(
-          //                             "Latitude: " + model.getCoordLat)),
-          //               ),
-          //             ),
-          //             Expanded(
-          //               flex: 1,
-          //               child: GestureDetector(
-          //                 onLongPress: () {
-          //                   model.setEditSpoorCoordLong();
-          //                 },
-          //                 child: Container(
-          //                     margin: new EdgeInsets.only(left: 2),
-          //                     child: model.editSpoorCoordLong
-          //                         ? TextInputField(indexIdentifier: 2)
-          //                         : text12LeftNormBlack(
-          //                             "Longitude: " + model.getCoordLong)),
-          //               ),
-          //             ),
-          //           ]))
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );
@@ -842,7 +832,7 @@ Widget accuracyScore(String score, var context) {
   );
 }
 
-Widget similarSpoors(var context) {
+Widget similarSpoors() {
   return Container(
     alignment: Alignment.centerLeft,
     margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
@@ -880,24 +870,37 @@ Widget swapImageBlock(String link, int index, IdentificationViewModel model) {
 }
 
 Widget innerImageBlock(String link) {
-  return InkWell(
-    onTap: () => print(""),
-    child: new Container(
-      alignment: Alignment.center,
-      margin: new EdgeInsets.all(5),
-      padding: new EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(10),
-        image: DecorationImage(
-          image: NetworkImage(link),
-          fit: BoxFit.fill,
-        ),
-      ),
-      height: 150,
-      width: 150,
-    ),
-  );
+  return link == "N/A"
+      ? Container(
+          alignment: Alignment.center,
+          margin: new EdgeInsets.all(5),
+          padding: new EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: AssetImage("assets/images/logo.jpeg"),
+              fit: BoxFit.fill,
+            ),
+          ),
+          height: 150,
+          width: 150,
+        )
+      : Container(
+          alignment: Alignment.center,
+          margin: new EdgeInsets.all(5),
+          padding: new EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: NetworkImage(link),
+              fit: BoxFit.fill,
+            ),
+          ),
+          height: 150,
+          width: 150,
+        );
 }
 
 Widget icon = new Container(

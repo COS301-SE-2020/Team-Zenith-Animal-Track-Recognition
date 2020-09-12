@@ -20,7 +20,19 @@ class AnimalView extends StatelessWidget {
           // ignore: missing_return
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return progressIndicator();
+              return Scaffold(
+                drawer: NavDrawer(),
+                appBar: AppBar(
+                  backgroundColor: Colors.black,
+                  title: text18LeftBoldWhite(
+                    "Animal Information",
+                  ),
+                  actions: <Widget>[
+                    IconBuilder(icon: Icons.search, type: "search"),
+                  ],
+                ),
+                body: internetError(snapshot.error.toString()),
+              );
             }
             if (snapshot.hasData) {
               return snapshot.hasData
@@ -40,7 +52,6 @@ class AnimalView extends StatelessWidget {
                             title: text18LeftBoldWhite("Animal Information"),
                             actions: <Widget>[
                               IconBuilder(icon: Icons.search, type: "search"),
-                              IconBuilder(icon: Icons.more_vert, type: "vert")
                             ],
                             bottom: TabBar(
                               isScrollable: true,
@@ -89,19 +100,23 @@ class NavDrawer extends ViewModelWidget<AnimalViewModel> {
                     image: AssetImage('assets/images/springbok.jpg'))),
           ),
           ListTile(
-              leading: Icon(Icons.verified_user),
+              leading: Icon(Icons.account_circle),
               title: text16LeftBoldGrey("Profile"),
+              dense: true,
               onTap: () => {navigateToProfile()}),
+          ListTile(
+              leading: Icon(Icons.verified_user),
+              title: text16LeftBoldGrey("Achievements"),
+              dense: true,
+              onTap: () => {navigateToAchievements()}),
           ListTile(
               leading: Icon(Icons.settings),
               title: text16LeftBoldGrey("Settings"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.edit),
-              title: text16LeftBoldGrey("Preference"),
+              dense: true,
               onTap: () => {}),
           ListTile(
               leading: Icon(Icons.exit_to_app),
+              dense: true,
               title: text16LeftBoldGrey("Logout"),
               onTap: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();

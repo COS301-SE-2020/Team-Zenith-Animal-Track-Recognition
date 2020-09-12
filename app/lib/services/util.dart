@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:progress_indicators/progress_indicators.dart';
-import 'package:ERP_RANGER/assets/my_custom_icons.dart';
+import 'file:///home/phahla/Documents/GitHub/Team-Zenith-Animal-Track-Recognition/app/assets/images/my_custom_icons.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'api/graphQL.dart';
@@ -227,6 +227,10 @@ void navigate(context) {
   Navigator.popUntil(context, ModalRoute.withName('/'));
 }
 
+void navigateToAchievements() {
+  _navigationService.navigateTo(Routes.achievementsViewRoute);
+}
+
 void navigateBack(context) {
   Navigator.of(context).pop();
 }
@@ -240,7 +244,6 @@ void navigateToProfile() {
 }
 
 void navigateToInfo(String name) async {
-  print(name);
   InfoModel infoModel = await _api.getInfoModel(name);
   _navigationService.navigateTo(Routes.informationViewRoute,
       arguments: InformationViewArguments(animalInfo: infoModel));
@@ -281,6 +284,68 @@ Widget logo = new Container(
   width: 130,
 );
 
+Widget internetImage = new Container(
+  alignment: Alignment.center,
+  padding: new EdgeInsets.all(5),
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+    image: DecorationImage(
+      image: AssetImage("assets/images/internet.png"),
+      fit: BoxFit.fill,
+    ),
+  ),
+  height: 250,
+  width: 250,
+);
+
+Widget serverImage = new Container(
+  alignment: Alignment.center,
+  padding: new EdgeInsets.all(5),
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+    image: DecorationImage(
+      image: AssetImage("assets/images/serverError.jpg"),
+      fit: BoxFit.fill,
+    ),
+  ),
+  height: 250,
+  width: 250,
+);
+
+Widget internetError(String errorMessage) {
+  return errorMessage == "No Internet Connection"
+      ? Container(
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                internetImage,
+                Container(
+                    margin: new EdgeInsets.only(
+                        right: 20, left: 20, top: 20, bottom: 100),
+                    child: text22CenterNormBlack(errorMessage)),
+              ],
+            ),
+          ),
+        )
+      : Container(
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                serverImage,
+                Container(
+                    margin: new EdgeInsets.only(
+                        right: 20, left: 20, top: 20, bottom: 100),
+                    child: text22CenterNormBlack(errorMessage)),
+              ],
+            ),
+          ),
+        );
+}
+
 Widget tabBarTitles(String title, var context) {
   return Text(title,
       textAlign: TextAlign.center,
@@ -308,22 +373,39 @@ Widget appBarTitle(String title, var context) {
 }
 
 Widget imageBlock(String imageLink) {
-  return Container(
-    alignment: Alignment.center,
-    margin: new EdgeInsets.only(
-      left: 15,
-      right: 10,
-    ),
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: NetworkImage(imageLink),
-        fit: BoxFit.fill,
-      ),
-      color: Colors.grey,
-      borderRadius: BorderRadius.circular(15),
-    ),
-    height: 75,
-  );
+  return imageLink == "N/A"
+      ? Container(
+          alignment: Alignment.center,
+          margin: new EdgeInsets.only(
+            left: 15,
+            right: 10,
+          ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/logo.jpeg"),
+              fit: BoxFit.fill,
+            ),
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          height: 75,
+        )
+      : Container(
+          alignment: Alignment.center,
+          margin: new EdgeInsets.only(
+            left: 15,
+            right: 10,
+          ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(imageLink),
+              fit: BoxFit.fill,
+            ),
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          height: 75,
+        );
 }
 
 Widget textColumn(String name, String time, String species, String location,
