@@ -190,52 +190,6 @@ class GraphQL implements Api {
   }
 
   @override
-  Future<GalleryModel> getGalleryModel(String i) async {
-    List<String> appearance = new List();
-    List<String> tracks = new List();
-    List<String> droppings = new List();
-    List<List<String>> gallery = new List();
-    String name;
-
-    try {
-      var connectivity = await (Connectivity().checkConnectivity());
-      if (ConnectivityResult.none == connectivity) {
-        throw Exception("");
-      }
-      if (i == "diceros bicornis") {
-        appearance.add("assets/images/appearance/rhino/p1.jpg");
-        appearance.add("assets/images/appearance/rhino/p2.jpg");
-        appearance.add("assets/images/appearance/rhino/p3.jpg");
-        appearance.add("assets/images/appearance/rhino/p4.jpg");
-
-        tracks.add("assets/images/print/rhino/print1.jpg");
-        tracks.add("assets/images/print/rhino/print2.jpg");
-        tracks.add("assets/images/print/rhino/print3.jpg");
-        tracks.add("assets/images/print/rhino/print4.jpg");
-
-        droppings.add("assets/images/droppings/rhino/drop1.jpg");
-        droppings.add("assets/images/droppings/rhino/drop2.jpg");
-        droppings.add("assets/images/droppings/rhino/drop3.jpg");
-        name = "Black Rhinoceroses";
-      } else {
-        throw HttpException('500');
-      }
-
-      gallery.add(appearance);
-      gallery.add(tracks);
-      gallery.add(droppings);
-      return GalleryModel(galleryList: gallery, name: name);
-    } on SocketException {
-      throw VerificationException(
-          'Request Timed Out, Unable to Connect to The Server ');
-    } on HttpException {
-      throw VerificationException("Service is Unavailable");
-    } on Exception {
-      throw VerificationException('No Internet Connection');
-    }
-  }
-
-  @override
   Future<LoginResponse> getLoginModel(String email, String password) async {
     email = Uri.encodeFull(email);
     password = Uri.encodeFull(password);
@@ -612,77 +566,6 @@ class GraphQL implements Api {
       throw VerificationException('No Internet connection');
     } on HttpException {
       throw VerificationException("Service is unavailable");
-    }
-  }
-
-  @override
-  Future<List<TrophyModel>> getTrophies() async {
-    try {
-      var connectivity = await (Connectivity().checkConnectivity());
-      if (ConnectivityResult.none == connectivity) {
-        throw Exception("");
-      }
-      var check = 200;
-      if (check == 200) {
-        List<TrophyModel> trophies = new List();
-        List<String> trophyTitled = [
-          'Trophy 1',
-          'Trophy 2',
-          'Trophy 3',
-          'Trophy 4',
-          'Trophy 5',
-          'Trophy 6',
-          'Trophy 7',
-          'Trophy 8',
-          'Trophy 9',
-          'Trophy 10'
-        ];
-
-        List<String> descriptions = [
-          'Trophy 1',
-          'Trophy 2',
-          'Trophy 3',
-          'Trophy 4',
-          'Trophy 5',
-          'Trophy 6',
-          'Trophy 7',
-          'Trophy 8',
-          'Trophy 9',
-          'Trophy 10'
-        ];
-
-        List<String> images = [
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-        ];
-
-        for (int i = 0; i < trophyTitled.length; i++) {
-          trophies.add(new TrophyModel(
-              image: images[i],
-              descrption: descriptions[i],
-              title: trophyTitled[i]));
-        }
-        return trophies;
-      } else {
-        throw HttpException('500');
-      }
-    } on SocketException {
-      throw VerificationException(
-          'Request Timed Out, Unable to Connect to The Server ');
-    } on HttpException {
-      throw VerificationException("Service is Unavailable");
-    } on TimeoutException {
-      throw VerificationException('Request Timed Out');
-    } on Exception {
-      throw VerificationException('No Internet Connection');
     }
   }
 
@@ -1155,10 +1038,12 @@ class GraphQL implements Api {
     try {
       var connectivity = await (Connectivity().checkConnectivity());
       if (ConnectivityResult.none == connectivity) {
-        throw SocketException("");
+        throw Exception("");
       }
-      final http.Response response = await http.get("$domain" +
-          "graphql?query=query{groups(token:\"$token\"){groupName}}");
+      final http.Response response = await http
+          .get("$domain" +
+              "graphql?query=query{groups(token:\"$token\"){groupName}}")
+          .timeout(const Duration(seconds: 7));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -1170,7 +1055,7 @@ class GraphQL implements Api {
           count = list[i].toString().length;
           temp = list[i].toString().substring(12, count - 1);
 
-          categories.add(temp);
+          categories.add(temp.toUpperCase());
         }
       } else {
         throw HttpException('500');
@@ -1178,9 +1063,14 @@ class GraphQL implements Api {
 
       return TabModel(categories: categories, length: categories.length);
     } on SocketException {
-      throw VerificationException('No Internet connection');
+      throw VerificationException(
+          'Request Timed Out, Unable to Connect to The Server ');
     } on HttpException {
-      throw VerificationException("Service is unavailable");
+      throw VerificationException("Service is Unavailable");
+    } on TimeoutException {
+      throw VerificationException('Request Timed Out');
+    } on Exception {
+      throw VerificationException('No Internet Connection');
     }
   }
 
@@ -1190,8 +1080,19 @@ class GraphQL implements Api {
     List<String> appearance = new List();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     String token = prefs.getString("token");
+    String habitat = "N/A";
+    String threat = "N/A";
+    String commonName;
+    String gestation;
+    String diet;
+    String overview;
+    String description;
+    String behaviour;
+    String heightF;
+    String heightM;
+    String weightF;
+    String weightM;
     token = Uri.encodeFull(token);
 
     try {
@@ -1207,7 +1108,6 @@ class GraphQL implements Api {
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
-        print("$body ++++++++++++++++++++++++++++++++++++++++++++");
         var list = body['data']['animalsByClassification']['pictures'] as List;
 
         String temp;
@@ -1217,36 +1117,113 @@ class GraphQL implements Api {
           temp = list[i].toString().substring(6, count - 1);
           appearance.add(temp);
         }
+        String species;
+        if (body["data"]["animalsByClassification"]["commonName"] != null &&
+            body["data"]["animalsByClassification"]["commonName"] != "") {
+          species =
+              body["data"]["animalsByClassification"]["commonName"].toString();
+        } else {
+          species = "N/A";
+        }
+        if (body["data"]["animalsByClassification"]["classification"] != null &&
+            body["data"]["animalsByClassification"]["classification"] != "") {
+          commonName = body["data"]["animalsByClassification"]["classification"]
+              .toString();
+        } else {
+          commonName = "N/A";
+        }
 
-        String species =
-            body["data"]["animalsByClassification"]["commonName"].toString();
-        String commonName = body["data"]["animalsByClassification"]
-                ["classification"]
-            .toString();
-        String gestation = body["data"]["animalsByClassification"]
-                ["gestationPeriod"]
-            .toString();
-        String diet =
-            body["data"]["animalsByClassification"]["dietType"].toString();
-        String overview = body["data"]["animalsByClassification"]
-                ["animalOverview"]
-            .toString();
-        String description = body["data"]["animalsByClassification"]
-                ["animalDescription"]
-            .toString();
-        String behaviour = body["data"]["animalsByClassification"]
-                ["typicalBehaviourM"]
-            .toString();
-        String habitat = "Habitat";
-        String threat = "INSERT API";
-        String heightF =
-            body["data"]["animalsByClassification"]["heightF"].toString();
-        String heightM =
-            body["data"]["animalsByClassification"]["heightM"].toString();
-        String weightF =
-            body["data"]["animalsByClassification"]["weightF"].toString();
-        String weightM =
-            body["data"]["animalsByClassification"]["weightM"].toString();
+        if (body["data"]["animalsByClassification"]["gestationPeriod"] !=
+                null &&
+            body["data"]["animalsByClassification"]["gestationPeriod"] != "") {
+          gestation = body["data"]["animalsByClassification"]["gestationPeriod"]
+              .toString();
+        } else {
+          gestation = "N/A";
+        }
+
+        if (body["data"]["animalsByClassification"]["dietType"] != null &&
+            body["data"]["animalsByClassification"]["dietType"] != "") {
+          diet = body["data"]["animalsByClassification"]["dietType"].toString();
+        } else {
+          diet = "N/A";
+        }
+
+        if (body["data"]["animalsByClassification"]["animalOverview"] != null &&
+            body["data"]["animalsByClassification"]["animalOverview"] != "") {
+          overview = body["data"]["animalsByClassification"]["animalOverview"]
+              .toString();
+        } else {
+          overview = "N/A";
+        }
+
+        if (body["data"]["animalsByClassification"]["animalDescription"] !=
+                null &&
+            body["data"]["animalsByClassification"]["animalDescription"] !=
+                "") {
+          description = body["data"]["animalsByClassification"]
+                  ["animalDescription"]
+              .toString();
+        } else {
+          description = "N/A";
+        }
+
+        if (body["data"]["animalsByClassification"]["typicalBehaviourM"] !=
+                null &&
+            body["data"]["animalsByClassification"]["typicalBehaviourM"] !=
+                "") {
+          behaviour = body["data"]["animalsByClassification"]
+                  ["typicalBehaviourM"]
+              .toString();
+        } else {
+          behaviour = "N/A";
+        }
+        // if (body["data"]["animalsByClassification"]["habitat"] != null &&
+        //     body["data"]["animalsByClassification"]["habitat"] != "") {
+        //   habitat =
+        //       body["data"]["animalsByClassification"]["habitat"].toString();
+        // } else {
+        //   habitat = "N/A";
+        // }
+        // if (body["data"]["animalsByClassification"]["threat"] != null &&
+        //     body["data"]["animalsByClassification"]["threat"] != "") {
+        //   threat =
+        //       body["data"]["animalsByClassification"]["threat"].toString();
+        // } else {
+        //   threat = "N/A";
+        // }
+        if (body["data"]["animalsByClassification"]["heightF"] != null &&
+            body["data"]["animalsByClassification"]["heightF"] != "") {
+          heightF =
+              body["data"]["animalsByClassification"]["heightF"].toString();
+          heightF = heightF + " m";
+        } else {
+          heightF = "N/A";
+        }
+        if (body["data"]["animalsByClassification"]["heightM"] != null &&
+            body["data"]["animalsByClassification"]["heightM"] != "") {
+          heightM =
+              body["data"]["animalsByClassification"]["heightM"].toString();
+          heightM = heightM + " m";
+        } else {
+          heightM = "N/A";
+        }
+        if (body["data"]["animalsByClassification"]["weightF"] != null &&
+            body["data"]["animalsByClassification"]["weightF"] != "") {
+          weightF =
+              body["data"]["animalsByClassification"]["weightF"].toString();
+          weightF = weightF + " kg";
+        } else {
+          weightF = "N/A";
+        }
+        if (body["data"]["animalsByClassification"]["weightM"] != null &&
+            body["data"]["animalsByClassification"]["weightM"] != "") {
+          weightM =
+              body["data"]["animalsByClassification"]["weightM"].toString();
+          weightM = weightM + " kg";
+        } else {
+          weightM = "N/A";
+        }
 
         infoModel = new InfoModel(
             commonName: commonName,
@@ -1268,6 +1245,123 @@ class GraphQL implements Api {
       }
 
       return infoModel;
+    } on HttpException {
+      throw VerificationException("Service is Unavailable");
+    } on TimeoutException {
+      throw VerificationException('Request Timed Out');
+    } on Exception {
+      throw VerificationException('No Internet Connection');
+    }
+  }
+
+  @override
+  Future<GalleryModel> getGalleryModel(String i) async {
+    List<String> appearance = new List();
+    List<String> tracks = new List();
+    List<String> droppings = new List();
+    List<List<String>> gallery = new List();
+    String name;
+
+    try {
+      var connectivity = await (Connectivity().checkConnectivity());
+      if (ConnectivityResult.none == connectivity) {
+        throw Exception("");
+      }
+      if (i == "diceros bicornis") {
+        appearance.add("assets/images/appearance/rhino/p1.jpg");
+        appearance.add("assets/images/appearance/rhino/p2.jpg");
+        appearance.add("assets/images/appearance/rhino/p3.jpg");
+        appearance.add("assets/images/appearance/rhino/p4.jpg");
+
+        tracks.add("assets/images/print/rhino/print1.jpg");
+        tracks.add("assets/images/print/rhino/print2.jpg");
+        tracks.add("assets/images/print/rhino/print3.jpg");
+        tracks.add("assets/images/print/rhino/print4.jpg");
+
+        droppings.add("assets/images/droppings/rhino/drop1.jpg");
+        droppings.add("assets/images/droppings/rhino/drop2.jpg");
+        droppings.add("assets/images/droppings/rhino/drop3.jpg");
+        name = "Black Rhinoceroses";
+      } else {
+        throw HttpException('500');
+      }
+
+      gallery.add(appearance);
+      gallery.add(tracks);
+      gallery.add(droppings);
+      return GalleryModel(galleryList: gallery, name: name);
+    } on SocketException {
+      throw VerificationException(
+          'Request Timed Out, Unable to Connect to The Server ');
+    } on HttpException {
+      throw VerificationException("Service is Unavailable");
+    } on Exception {
+      throw VerificationException('No Internet Connection');
+    }
+  }
+
+  @override
+  Future<List<TrophyModel>> getTrophies() async {
+    try {
+      var connectivity = await (Connectivity().checkConnectivity());
+      if (ConnectivityResult.none == connectivity) {
+        throw Exception("");
+      }
+      var check = 200;
+      if (check == 200) {
+        List<TrophyModel> trophies = new List();
+        List<String> trophyTitled = [
+          'Trophy 1',
+          'Trophy 2',
+          'Trophy 3',
+          'Trophy 4',
+          'Trophy 5',
+          'Trophy 6',
+          'Trophy 7',
+          'Trophy 8',
+          'Trophy 9',
+          'Trophy 10'
+        ];
+
+        List<String> descriptions = [
+          'Trophy 1',
+          'Trophy 2',
+          'Trophy 3',
+          'Trophy 4',
+          'Trophy 5',
+          'Trophy 6',
+          'Trophy 7',
+          'Trophy 8',
+          'Trophy 9',
+          'Trophy 10'
+        ];
+
+        List<String> images = [
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+        ];
+
+        for (int i = 0; i < trophyTitled.length; i++) {
+          trophies.add(new TrophyModel(
+              image: images[i],
+              descrption: descriptions[i],
+              title: trophyTitled[i]));
+        }
+        return trophies;
+      } else {
+        throw HttpException('500');
+      }
+    } on SocketException {
+      throw VerificationException(
+          'Request Timed Out, Unable to Connect to The Server ');
     } on HttpException {
       throw VerificationException("Service is Unavailable");
     } on TimeoutException {

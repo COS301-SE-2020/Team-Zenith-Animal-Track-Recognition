@@ -3,6 +3,7 @@ import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/gallery/gallery_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class GalleryView extends StatelessWidget {
@@ -19,10 +20,11 @@ class GalleryView extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Scaffold(
+              drawer: NavDrawer(),
               appBar: AppBar(
                 backgroundColor: Colors.black,
                 title: text18LeftBoldWhite(
-                  "Trophy Case",
+                  "ERP RANGER",
                 ),
                 actions: <Widget>[IconBuilder(icon: Icons.search)],
               ),
@@ -34,13 +36,14 @@ class GalleryView extends StatelessWidget {
                 ? WillPopScope(
                     onWillPop: () async {
                       if (Navigator.canPop(context)) {
-                        navigate(context);
+                        navigateBack(context);
                       }
                       return;
                     },
                     child: DefaultTabController(
                       length: snapshot.data.length,
                       child: Scaffold(
+                        drawer: NavDrawer(),
                         appBar: AppBar(
                           leading: null,
                           backgroundColor: Colors.black,
@@ -117,8 +120,57 @@ class IconBuilder extends ViewModelWidget<GalleryViewModel> {
       child: IconButton(
           padding: EdgeInsets.all(0),
           icon: Icon(icon, color: Colors.white),
-          onPressed: () {}),
+          onPressed: () {
+            navigateToSearchView();
+          }),
     );
   }
 }
+
 //========================== APPBAR ICONS =======================
+class NavDrawer extends ViewModelWidget<GalleryViewModel> {
+  //List<HomeModel> animalList;
+  NavDrawer({Key key}) : super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, GalleryViewModel model) {
+    return Container(
+      width: 250,
+      child: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.grey,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/E1.jpg'))),
+              child: null,
+            ),
+            ListTile(
+                leading: Icon(Icons.account_circle),
+                title: text16LeftBoldGrey("Profile"),
+                dense: true,
+                onTap: () => {navigateToProfile()}),
+            ListTile(
+                leading: Icon(Icons.verified_user),
+                title: text16LeftBoldGrey("Achievements"),
+                dense: true,
+                onTap: () => {navigateToAchievements()}),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                dense: true,
+                title: text16LeftBoldGrey("Logout"),
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool("loggedIn", false);
+                  navigateToLogin(context);
+                }),
+          ],
+        ),
+      ),
+    );
+  }
+}

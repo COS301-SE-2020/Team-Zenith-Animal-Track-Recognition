@@ -121,7 +121,6 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
             child: Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
-              elevation: 2,
               margin: new EdgeInsets.all(10),
               child: Container(
                 padding: new EdgeInsets.all(0),
@@ -207,6 +206,7 @@ class NavDrawer extends ViewModelWidget<HomeViewModel> {
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/E1.jpg'))),
+              child: null,
             ),
             ListTile(
                 leading: Icon(Icons.account_circle),

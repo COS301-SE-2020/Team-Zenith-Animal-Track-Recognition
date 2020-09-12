@@ -39,29 +39,37 @@ class ProfileView extends StatelessWidget {
                 bottomNavigation.setIndex(3);
               }
               return snapshot.hasData
-                  ? Scaffold(
-                      drawer: NavDrawer(),
-                      appBar: AppBar(
-                        backgroundColor: Colors.black,
-                        title: text18LeftBoldWhite("Profile"),
-                        actions: <Widget>[
-                          IconBuilder(icon: Icons.search, type: "search"),
-                        ],
-                      ),
-                      body: Container(
-                          color: Colors.grey[300],
-                          child: ProfileViewList(
-                            tempObject: snapshot.data,
-                          )),
-                      bottomNavigationBar: BottomNavigation(),
-                      floatingActionButton: FloatingActionButton(
-                        onPressed: () {
-                          captureImage();
-                        },
-                        child: Icon(
-                          Icons.camera_alt,
+                  ? WillPopScope(
+                      onWillPop: () async {
+                        if (Navigator.canPop(context)) {
+                          navigate(context);
+                        }
+                        return;
+                      },
+                      child: Scaffold(
+                        drawer: NavDrawer(),
+                        appBar: AppBar(
+                          backgroundColor: Colors.black,
+                          title: text18LeftBoldWhite("Profile"),
+                          actions: <Widget>[
+                            IconBuilder(icon: Icons.search, type: "search"),
+                          ],
                         ),
-                        backgroundColor: Colors.black,
+                        body: Container(
+                            color: Colors.grey[300],
+                            child: ProfileViewList(
+                              tempObject: snapshot.data,
+                            )),
+                        bottomNavigationBar: BottomNavigation(),
+                        floatingActionButton: FloatingActionButton(
+                          onPressed: () {
+                            captureImage();
+                          },
+                          child: Icon(
+                            Icons.camera_alt,
+                          ),
+                          backgroundColor: Colors.black,
+                        ),
                       ),
                     )
                   : progressIndicator();
@@ -280,6 +288,7 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/E1.jpg'))),
+              child: null,
             ),
             ListTile(
                 leading: Icon(Icons.account_circle),

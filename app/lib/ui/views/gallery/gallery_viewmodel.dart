@@ -23,7 +23,8 @@ class GalleryViewModel extends BaseViewModel {
     TabModel tabModel = await _api.getTabModel();
     List<Tab> tabs = new List();
     for (int i = 0; i < tabModel.categories.length; i++) {
-      tabs.add(Tab(child: text12CenterBoldWhite(tabModel.categories[i])));
+      tabs.add(Tab(
+          child: text12CenterBoldWhite(tabModel.categories[i].toUpperCase())));
     }
     return TempObject(tabs: tabs, length: tabModel.length);
   }

@@ -24,14 +24,15 @@ class AnimalView extends StatelessWidget {
                 drawer: NavDrawer(),
                 appBar: AppBar(
                   backgroundColor: Colors.black,
-                  title: text18LeftBoldWhite(
-                    "Animal Information",
+                  title: text22LeftBoldWhite(
+                    "ERP RANGER",
                   ),
                   actions: <Widget>[
                     IconBuilder(icon: Icons.search, type: "search"),
                   ],
                 ),
                 body: internetError(snapshot.error.toString()),
+                bottomNavigationBar: BottomNavigation(),
               );
             }
             if (snapshot.hasData) {
@@ -49,7 +50,7 @@ class AnimalView extends StatelessWidget {
                           drawer: NavDrawer(),
                           appBar: AppBar(
                             backgroundColor: Colors.black,
-                            title: text18LeftBoldWhite("Animal Information"),
+                            title: text22LeftBoldWhite("ERP RANGER"),
                             actions: <Widget>[
                               IconBuilder(icon: Icons.search, type: "search"),
                             ],
@@ -172,7 +173,6 @@ Widget getWidget(var animalTabList) {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            // border: Border.all(color: Colors.grey[200] , width: 2,style: BorderStyle.solid)
           ),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,

@@ -29,10 +29,9 @@ class UploadView extends StatelessWidget {
             backgroundColor: Colors.black,
             actions: <Widget>[
               IconBuilder(icon: Icons.search, type: "search"),
-              IconBuilder(icon: Icons.more_vert, type: "vert")
             ],
-            title: text18LeftBoldWhite(
-              "Upload Track Identification",
+            title: text22LeftBoldWhite(
+              "ERP RANGER",
             ),
           ),
           body: Container(
@@ -120,6 +119,7 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/E1.jpg'))),
+              child: null,
             ),
             ListTile(
                 leading: Icon(Icons.account_circle),

@@ -106,6 +106,7 @@ class NavDrawer extends ViewModelWidget<SearchViewModel> {
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/E1.jpg'))),
+              child: null,
             ),
             ListTile(
                 leading: Icon(Icons.account_circle),

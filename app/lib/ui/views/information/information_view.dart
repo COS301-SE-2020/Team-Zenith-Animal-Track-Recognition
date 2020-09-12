@@ -424,8 +424,8 @@ Widget animalDetails(String heightF, String heightM, String weightF,
   return Container(
     child: Row(
       children: <Widget>[
-        height("$heightF m", "$heightM m"),
-        weight("$weightF t", "$weightM t"),
+        height("$heightF", "$heightM"),
+        weight("$weightF", "$weightM"),
         gestation(gestations),
         diet(diets)
       ],

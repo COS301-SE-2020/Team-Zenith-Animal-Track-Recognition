@@ -346,9 +346,7 @@ Widget internetError(String errorMessage) {
 }
 
 Widget tabBarTitles(String title, var context) {
-  return Text(title,
-      textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.headline3);
+  return text12CenterBoldWhite(title);
 }
 
 Widget progressIndicator() {
