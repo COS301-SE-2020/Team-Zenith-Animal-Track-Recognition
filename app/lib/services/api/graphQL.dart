@@ -620,7 +620,7 @@ class GraphQL implements Api {
     try {
       var connectivity = await (Connectivity().checkConnectivity());
       if (ConnectivityResult.none == connectivity) {
-        throw SocketException("");
+        throw Exception("");
       }
       var check = 200;
       if (check == 200) {
@@ -652,16 +652,16 @@ class GraphQL implements Api {
         ];
 
         List<String> images = [
-          'assets/images/image.jpg',
-          'assets/images/image.jpg',
-          'assets/images/image.jpg',
-          'assets/images/image.jpg',
-          'assets/images/image.jpg',
-          'assets/images/image.jpg',
-          'assets/images/image.jpg',
-          'assets/images/image.jpg',
-          'assets/images/image.jpg',
-          'assets/images/image.jpg'
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
+          'assets/images/trophy.png',
         ];
 
         for (int i = 0; i < trophyTitled.length; i++) {
@@ -675,9 +675,14 @@ class GraphQL implements Api {
         throw HttpException('500');
       }
     } on SocketException {
-      throw VerificationException('No Internet connection');
+      throw VerificationException(
+          'Request Timed Out, Unable to Connect to The Server ');
     } on HttpException {
-      throw VerificationException("Service is unavailable");
+      throw VerificationException("Service is Unavailable");
+    } on TimeoutException {
+      throw VerificationException('Request Timed Out');
+    } on Exception {
+      throw VerificationException('No Internet Connection');
     }
   }
 

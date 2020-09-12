@@ -250,7 +250,6 @@ void navigateToInfo(String name) async {
 }
 
 void navigateToGallery(String i) async {
-  print(i);
   GalleryModel galleryModel = await _api.getGalleryModel(i.toLowerCase());
   _navigationService.navigateTo(Routes.gallerylViewRoute,
       arguments: GalleryViewArguments(galleryModel: galleryModel));

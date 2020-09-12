@@ -13,9 +13,6 @@ class AchievementsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BottomNavigation bottomNavigation = BottomNavigation();
-    bottomNavigation.setIndex(1);
-
     return ViewModelBuilder<AchievementsViewModel>.reactive(
       builder: (context, model, child) => FutureBuilder(
           future: model.getModel(),
@@ -25,8 +22,8 @@ class AchievementsView extends StatelessWidget {
                 drawer: NavDrawer(),
                 appBar: AppBar(
                   backgroundColor: Colors.black,
-                  title: text18LeftBoldWhite(
-                    "Trophy Case",
+                  title: text22LeftBoldWhite(
+                    "ERP RANGER",
                   ),
                   actions: <Widget>[
                     IconBuilder(icon: Icons.search, type: "search"),
@@ -48,8 +45,8 @@ class AchievementsView extends StatelessWidget {
                         drawer: NavDrawer(),
                         appBar: AppBar(
                           backgroundColor: Colors.black,
-                          title: text18LeftBoldWhite(
-                            "Trophy Case",
+                          title: text22LeftBoldWhite(
+                            "ERP RANGER",
                           ),
                           actions: [
                             IconBuilder(icon: Icons.search, type: "search")
@@ -63,7 +60,6 @@ class AchievementsView extends StatelessWidget {
                             trophies: snapshot.data,
                           )),
                         ),
-                        bottomNavigationBar: BottomNavigation(),
                       ))
                   : progressIndicator();
             } else {
@@ -103,14 +99,14 @@ Widget trophyBlock(String imageLink) {
   return Container(
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: AssetImage("assets/images/image.jpg"),
+        image: AssetImage(imageLink),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,
-      borderRadius: BorderRadius.circular(7),
+      borderRadius: BorderRadius.circular(11),
     ),
-    height: 45,
-    width: 45,
+    height: 50,
+    width: 50,
   );
 }
 
@@ -125,12 +121,11 @@ class NavDrawer extends ViewModelWidget<AchievementsViewModel> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: text22LeftBoldWhite("Side Menu"),
             decoration: BoxDecoration(
                 color: Colors.grey,
                 image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: AssetImage('assets/images/springbok.jpg'))),
+                    image: AssetImage('assets/images/E1.jpg'))),
           ),
           ListTile(
               leading: Icon(Icons.account_circle),
