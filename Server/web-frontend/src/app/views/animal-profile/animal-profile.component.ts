@@ -59,10 +59,40 @@ export class AnimalProfileComponent implements OnInit {
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}
+
 	viewAnimalPhotos(animalClassi: string) {
 		let classification = animalClassi.split(" ");
 		let classificationQuery = classification[0] + "_" + classification[1];
 		this.router.navigate(['animals/gallery/photos'], { queryParams: { classification: classificationQuery } });
+	}
+
+	getOffspringType(dtn, num) {
+		switch (dtn) {
+			case 'Browser':
+			case 'Grazer':
+				if (num == 1) {
+					return 'Calf';
+				} else {
+					return 'Calves';
+				}
+				break;
+			case 'Carnivore':
+			case 'Insectivore':
+			case 'Scavenger':
+				if (num == 1) {
+					return 'Cub';
+				} else {
+					return 'Cubs';
+				}
+				break;
+			default:
+				if(num == 1){
+					return 'Infant';
+				}else{
+					return 'Infants';
+				}
+				break;
+		}
 	}
 
 	//Ranger CRUD Quick-Actions

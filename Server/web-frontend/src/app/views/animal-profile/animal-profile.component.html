@@ -24,7 +24,7 @@
                 <div id="animal-profile-info-image-container">
                     <div id="animal-profile-info-image">
                         <div id="animal-profile-info-image-wrapper">
-                            <img  *ngIf="animal" src="{{animal.pictures[0].URL}}" alt="Picture of {{animal.commonName}}, {{animal.classification}}">
+                            <img *ngIf="animal" src="{{animal.pictures[0].URL}}" alt="Picture of {{animal.commonName}}, {{animal.classification}}">
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                                 <p class="fontM" *ngIf="animal">{{animal.gestationPeriod}}</p>
                             </div>
                             <div class="animal-biometric-content">
-                                <p class="fontM" *ngIf="animal">{{animal.Offspring}}</p>
+                                <p class="fontM" *ngIf="animal">{{animal.Offspring}} {{getOffspringType(animal.dietType, animal.Offspring)}}</p>
                             </div>
                         </div>
                         <div class="animal-biometrics-container">

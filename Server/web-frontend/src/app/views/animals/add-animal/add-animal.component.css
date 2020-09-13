@@ -57,9 +57,10 @@ textarea.mat-input-element {
 }
 
 :host ::ng-deep .mat-button {
-    padding-top: 0.65em;
-    padding-bottom: 0.65em;
-    font-size: large;
+    /*padding-top: 0.65em;
+    padding-bottom: 0.65em;*/
+    float: inline-start;
+    font-size: medium;
     margin-left: 1em;
     margin-right: 1em;
 }
