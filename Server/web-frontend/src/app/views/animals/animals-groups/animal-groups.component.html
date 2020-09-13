@@ -34,8 +34,8 @@
                                     <span (click)="viewAnimalProfile(element['classification'])">{{element[group]}}</span>
                                 </ng-container>
                                 <ng-container *ngIf="!isAnimal(group)">
-                                    <mat-checkbox style="border-radius: 70% !important;" name="{{element['animalID'] + element[group]}}" [checked]="true" *ngIf="isGroup(element[group])" (change)="removeGroup(element['animalID'], element[group])"></mat-checkbox>
-                                    <mat-checkbox style="border-radius: 70% !important;" name="{{element['animalID'] + element[group]}}" [checked]="false" *ngIf="!isGroup(element[group])" (change)="addGroup(element['animalID'], element[group])"></mat-checkbox>
+                                    <mat-radio-button style="border-radius: 70% !important;" name="{{element['animalID']}}" [checked]="true" *ngIf="isGroup(element[group])"></mat-radio-button>
+                                    <mat-radio-button style="border-radius: 70% !important;" name="{{element['animalID']}}" [checked]="false" *ngIf="!isGroup(element[group])" (change)="log('changed')"></mat-radio-button>
                                 </ng-container>
                             </td>
                         </ng-container>

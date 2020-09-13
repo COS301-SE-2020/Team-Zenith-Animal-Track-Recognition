@@ -43,8 +43,10 @@ export class AnimalGroupsComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(Object.values(data)[0])[0]);
 				temp.forEach(element => {
-					this.animalGroups.push(element);
-					this.animalGroupsColumns.push(element['groupName']);
+					if (element['groupName'] != "BIG FIVE") {
+						this.animalGroups.push(element);
+						this.animalGroupsColumns.push(element['groupName']);
+					}
 				});
 			});
 
@@ -172,7 +174,7 @@ export class AnimalGroupsComponent implements OnInit {
 		return 1 == group;
 	}
 
-	addGroup(animalID, groupID){
+	addGroup(animalID, groupID) {
 		let temp = this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{addAnimalGroup('
 			+ 'token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
 			+ 'animalID:"' + animalID + '",'
@@ -182,7 +184,7 @@ export class AnimalGroupsComponent implements OnInit {
 			});
 	}
 
-	removeGroup(animalID, groupID){
+	removeGroup(animalID, groupID) {
 		let temp = this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{removeAnimalGroup('
 			+ 'token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
 			+ 'animalID:"' + animalID + '",'
