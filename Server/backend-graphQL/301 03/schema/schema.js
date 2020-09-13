@@ -937,7 +937,9 @@ const RootQuery = new GraphQLObjectType({
         ,trophy :{
             type: new GraphQLList(TROPHY_TYPE),
             args:{
-                token: new GraphQLNonNull(GraphQLString)
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
             },
             resolve(parent, args){
                 
