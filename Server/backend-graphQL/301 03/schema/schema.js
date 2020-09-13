@@ -9,7 +9,8 @@ const {
     GraphQLInt,
     GraphQLList,
     GraphQLFloat,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLBoolean
 } = graphql;
 const _ = require('lodash')
 const {
