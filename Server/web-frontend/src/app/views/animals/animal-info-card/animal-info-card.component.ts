@@ -78,6 +78,10 @@ export class AnimalInfoCardComponent implements OnInit {
 		});
 	}
 
+	viewAnimalIdentifications(id: string){
+		this.router.navigate(['identifications']);
+	}
+	
 	viewAnimalProfile(animalClassi: string) {
 		let classification = animalClassi.split(" ");
 		let classificationQuery = classification[0] + "_" + classification[1];

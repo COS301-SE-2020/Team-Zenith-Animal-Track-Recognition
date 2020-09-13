@@ -15,6 +15,7 @@ export class AnimalsComponent implements OnInit {
 	animals: any;
 	sortByCommonName: boolean = true;
 	searchText: string;
+	selection: string;
 	currentAlphabet: any;
 	surnames: boolean = true;
 	levels: boolean = false;
@@ -95,7 +96,7 @@ export class AnimalsComponent implements OnInit {
 						animal.animalOverview = "No description provided. Please update this animal in the edit animal screen.";
 					}
 				});
-				this.sort('byAbc');
+				this.sort('byAbc');				
 			});
 	}
 
@@ -117,6 +118,7 @@ export class AnimalsComponent implements OnInit {
 
 	//Sorting and Filtering
 	checkIfNew(title: string, pos: number) {
+		console.log('checking new');
 		if (this.currentAlphabet === ("" + title).charAt(pos).toLowerCase()) {
 			return false;
 		} else {
@@ -142,6 +144,8 @@ export class AnimalsComponent implements OnInit {
 				this.sortWeight();
 				break;
 		}
+		this.selection = selection;
+		console.log(this.selection);
 	}
 
 	private sortAlphabetical() {

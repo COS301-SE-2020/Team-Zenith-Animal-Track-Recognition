@@ -15,6 +15,7 @@ export class AnimalsToolbarComponent implements OnInit {
 	@Input() animals: any;
 	@Input() searchText: string;
 	@Input() sortBy: boolean;
+	@Input() selection: string;
 
 	@Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
@@ -51,6 +52,10 @@ export class AnimalsToolbarComponent implements OnInit {
 				this.snackBar.open('An error occured when adding the new animal. Please try again.', "Dismiss", { duration: 5000, });
 			}
 		});
+	}
+
+	navGroups(){
+		this.router.navigate(['animals/groups']);
 	}
 
 	//Loader

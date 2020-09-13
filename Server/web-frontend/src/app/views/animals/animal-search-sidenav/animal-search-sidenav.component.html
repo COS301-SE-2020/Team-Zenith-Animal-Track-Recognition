@@ -12,12 +12,12 @@
     <div id="animal-search-results-container">
         <mat-selection-list id="animals-by-surnames" [multiple]="false" class="animal-search-results-entries">
             <div class="animal-search-result-entry" *ngFor="let animal of animals | filter:searchText">
-                <ng-container *ngIf="sortBy[0]">
+                <ng-container *ngIf="checkResult('byAbc')">
                     <div mat-subheader class="animal-search-resultgroup-subheader" *ngIf="checkIfNew(animal.commonName.charAt(0))">{{ animal.commonName.charAt(0).toUpperCase() }}</div>
                 </ng-container>
-                <ng-template *ngIf="sortBy[1]">
+                <ng-container *ngIf="checkResult('byGroup')">
                     <div mat-subheader class="animal-search-resultgroup-subheader" *ngIf='checkIfNew(animal.groupID[0].groupName)'>{{ animal.groupID[0].groupName | titlecase }}</div>
-                </ng-template>
+                </ng-container>
                 <mat-list-option class="fontM" [value]="animal" (click)="viewAnimalProfile(animal.classification)">
                     <p class="animal-search-resultgroup-mainentry">{{animal.commonName}}</p>
                     <p class="animal-search-resultgroup-subentry">{{animal.classification}}</p>

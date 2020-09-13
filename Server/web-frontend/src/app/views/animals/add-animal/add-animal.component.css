@@ -1,73 +1,74 @@
-.mat-dialog-title
-{
-	font-size: 120%;
-}
-.mat-dialog-content
-{
-	height: 80%;
-}
-#add-animal-form
-{
-	height: 100%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-}
-#add-animal-form-content
-{
-	height: 100%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	align-items: flex-start;
-}
-:host ::ng-deep .mat-form-field-wrapper
-{
-	margin-bottom: 0 !important;
-}
-:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
-{
-	padding: 0.2em 0 0.8em 0;
-}
-.add-animal-form-input
-{
-	width: 45%;
-}
-#add-animal-form-descr
-{
-	width: 100%;
-}
-textarea.mat-input-element
-{
-	resize: none;
-}
-.mat-dialog-actions
-{
-	border-top: 1px solid #CCCCCC;
-	height: 15%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-.mat-dialog-actions > .mat-button
-{
-	width: 25%;
+.mat-dialog-title {
+    font-size: 120%;
 }
 
-:host ::ng-deep .mat-button{ 
-	padding-top: 0.65em;
-	padding-bottom: 0.65em;
-	font-size: large;
+.mat-dialog-content {
+    height: 75%;
 }
 
-#cancel-btn
-{
-	border: 2px solid #CCCCCC;
+#add-animal-form {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
-#add-animal-btn
-{
-	background-color: #686E79;
-	color: white;
+
+#add-animal-form-content {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+:host ::ng-deep .mat-form-field-wrapper {
+    margin-bottom: 0 !important;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.2em 0 0.8em 0;
+}
+
+.add-animal-form-input {
+    width: 45%;
+}
+
+#add-animal-form-descr {
+    width: 100%;
+}
+
+textarea.mat-input-element {
+    resize: none;
+}
+
+.mat-dialog-actions {
+    border-top: 1px solid #CCCCCC;
+    height: 5%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mat-dialog-actions>.mat-button {
+    width: 25%;
+    height: 90%;
+}
+
+:host ::ng-deep .mat-button {
+    padding-top: 0.65em;
+    padding-bottom: 0.65em;
+    font-size: large;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#cancel-btn {
+    border: 2px solid #CCCCCC;
+}
+
+#add-animal-btn {
+    background-color: #686E79;
+    color: white;
 }
