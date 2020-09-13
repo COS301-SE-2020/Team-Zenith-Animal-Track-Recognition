@@ -1,4 +1,6 @@
-const CACHE = true;
+const CACHE = true; //inabil if runing in a multiy sever invermint
+const verbose = true;
+const debugLoging =true;
 var dateOBJ = new Date();
 const graphql = require('graphql');
 const {
@@ -2299,7 +2301,7 @@ const Mutation = new GraphQLObjectType({
                 })
                 anamilToVind.groupID=[]
                 anamilToVind.groupID.push(args.groupID)
-                
+
             }
 
         },
@@ -2598,6 +2600,8 @@ if (CACHE) {
         redeyNeedConterDown();
     });
 
+}else{
+    console.log(usersData)
 }
 
 function AIIterface(Img) {
