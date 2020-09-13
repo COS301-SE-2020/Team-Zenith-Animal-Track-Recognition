@@ -447,6 +447,23 @@ const RANGERS_STATS_TYPE = new GraphQLObjectType({
         }
     })
 })
+const TROPHY_TYPE = new GraphQLObjectType({
+    name: "trophy",
+    fields: () => ({
+        name: {
+            type: GraphQLString
+        },
+        text:{
+            type: GraphQLString
+        },
+        hiddin: {
+            type: GraphQLBoolean
+        },
+        unloked: {
+            type: GraphQLBoolean
+        },
+    })
+})
 
 
 // RootQuery name divinf in grahpQL
@@ -914,6 +931,46 @@ const RootQuery = new GraphQLObjectType({
                     return null;
                 }
                 return dietTypeData
+            }
+        }
+        ,trophy :{
+            type: new GraphQLList(TROPHY_TYPE),
+            args:{
+                token: new GraphQLNonNull(GraphQLString)
+            },
+            resolve(parent, args){
+                
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == null) {
+                    return null;
+                }
+                let listOfTrophys=[]
+                let listOfSID=_.filter(spoorIdentificationData,{
+                    ranger:a.rangerID
+                })
+                let trophyA ={
+                    name:"",
+                    text:"",
+                    hiddin:false,
+                    unloked:false
+                }
+                listOfTrophys.push(trophyA)
+
+
+
+                let Make_1st_ID ={
+                    name:"Make 1st ID",
+                    text:"Make 1st ID",
+                    hiddin:false,
+                    unloked:false
+                }
+                if (listOfSID.length)
+
+                listOfTrophys.push(Make_1st_ID)
+
+
             }
         }
 
@@ -2325,6 +2382,7 @@ if (CACHE) {
 
     dietTypes.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
+
         querySnapshot.forEach(function (doc) {
             let diet = doc.data().diet
 
