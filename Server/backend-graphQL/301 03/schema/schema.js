@@ -1512,19 +1512,19 @@ const Mutation = new GraphQLObjectType({
                 habitats: {
                     type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLInt)))
                 },
-                GroupID: {
+                groupID: {
                     type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLInt)))
                 },
-                DietType: {
+                dietType: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                LifeSpan: {
+                lifeSpan: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 gestationPeriod: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                TypicalBehaviourM: {
+                typicalBehaviourM: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 typicalBehaviourF: {
@@ -1602,6 +1602,7 @@ const Mutation = new GraphQLObjectType({
                     animalOverview: args.animalOverview,
                     animalDescription: args.animalDescription
                 }
+                
                 if (args.pictures != undefined) {
                     newAnimal.pictures = args.pictures
                 } else {
@@ -2454,7 +2455,7 @@ if (CACHE) {
                 updated = true
             }
             if (temp.groupID == undefined) {
-                temp.groupID = [0]
+                temp.groupID = [5]
                 updated = true
             }
 
