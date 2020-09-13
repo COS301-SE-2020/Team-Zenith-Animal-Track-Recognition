@@ -2269,7 +2269,40 @@ const Mutation = new GraphQLObjectType({
                 animals.doc(animal.classification).set(animal)
                 return animal
             }
-        }
+        },
+        updateAnimalGroup: {
+            type: ANIMAL_TYPE,
+            args: {
+                token:{
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                animalID:{
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                groupID:{
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                console.log("updateLevel",args)
+                let a = _.find(usersData, {
+                    token: args.tokenSend
+                })
+                if (a == undefined) {
+                    return null
+                }
+                if (a.accessLevel <= 2) {
+                    return null;
+                }
+                anamilToVind=_.find(animalData,{
+                    animalID:args.animalID
+                })
+                anamilToVind.groupID=[]
+                anamilToVind.groupID.push(args.groupID)
+                
+            }
+
+        },
 
         
     }
