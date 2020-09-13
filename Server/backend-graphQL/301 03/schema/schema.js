@@ -2401,6 +2401,7 @@ if (CACHE) {
 
     animals.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
+        animalData=[];
         querySnapshot.forEach(function (doc) {
             let temp = {
                 classification: doc.id,
