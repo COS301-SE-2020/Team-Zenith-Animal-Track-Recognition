@@ -2036,6 +2036,9 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
+
+                console.log(dietTypes)
+                console.log(dietTypeData)
                 let a = _.find(usersData, {
                     token: args.token
                 })
@@ -2053,6 +2056,7 @@ const Mutation = new GraphQLObjectType({
                 }
                 dietTypes.add(newDiet)
                 dietTypeData.push(args.dietName)
+                console.log(dietTypeData)
                 return args.dietName;
 
             }
@@ -2382,7 +2386,7 @@ if (CACHE) {
 
     dietTypes.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
-
+        dietTypeData = []
         querySnapshot.forEach(function (doc) {
             let diet = doc.data().diet
 
