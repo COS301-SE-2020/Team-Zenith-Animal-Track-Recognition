@@ -624,7 +624,7 @@ const RootQuery = new GraphQLObjectType({
                     token: args.token
                 })
                 if (a != null) {
-                    const newLocal = groupData;
+                    let newLocal = groupData;
                     if (args.groupID != undefined) {
                         newLocal = _.filter(newLocal, {
                             groupID: args.groupID
@@ -635,7 +635,7 @@ const RootQuery = new GraphQLObjectType({
                             groupName: args.groupName
                         })
                     }
-                    _.orderBy(newLocal,['priority'])
+                    newLocal =_.orderBy(newLocal,['priority'])
                     return newLocal;
                 }
                 return null;
