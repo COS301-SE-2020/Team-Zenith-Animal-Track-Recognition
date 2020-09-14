@@ -19,7 +19,7 @@ export class AnimalsComponent implements OnInit {
 	currentAlphabet: any;
 	surnames: boolean = true;
 	levels: boolean = false;
-	test: boolean =  false;
+	test: boolean = false;
 
 	constructor(private http: HttpClient) { }
 
@@ -58,6 +58,7 @@ export class AnimalsComponent implements OnInit {
 		document.getElementById("sidenav-open-btn-container").style.transitionDuration = "0.2s";
 		document.getElementById("sidenav-open-btn-container").style.left = "-10%";
 	}
+
 	closeSidenav() {
 		if (document.getElementById("sidenav-open-btn-container") == null) {
 			this.test = true;
@@ -73,12 +74,12 @@ export class AnimalsComponent implements OnInit {
 	}
 
 	refresh(updateOp: string) {
-		if(updateOp == 'te57ca53t0t3s7a11ex7r3me71e5'){
-			this.test = true;			
+		if (updateOp == 'te57ca53t0t3s7a11ex7r3me71e5') {
+			this.test = true;
 			return;
 		}
-		if(updateOp == 'te57ca53t0t3s7a11ex7r3me71e5ft'){
-			this.test = false;			
+		if (updateOp == 'te57ca53t0t3s7a11ex7r3me71e5ft') {
+			this.test = false;
 			return;
 		}
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
@@ -96,7 +97,7 @@ export class AnimalsComponent implements OnInit {
 						animal.animalOverview = "No description provided. Please update this animal in the edit animal screen.";
 					}
 				});
-				this.sort('byAbc');				
+				this.sort('byAbc');
 			});
 	}
 
@@ -107,12 +108,12 @@ export class AnimalsComponent implements OnInit {
 
 	/*
 	addIfNewAnimal(x: any) {
-	 	let isNotNew = false;
+		  let isNotNew = false;
 		for (let i = 0; i < this.animals.length; i++)
-	 		if (x.token == this.animals[i].token)
-	 			isNotNew = true;
+				if (x.token == this.animals[i].token)
+					isNotNew = true;
 
-	 	if (!isNotNew)
+		  if (!isNotNew)
 			this.animals.push(x);
 	}*/
 
@@ -126,8 +127,8 @@ export class AnimalsComponent implements OnInit {
 			return true;
 		}
 	}
-	
-	
+
+
 	//Sort functions
 	sort(selection: string) {
 		switch (selection) {
@@ -159,7 +160,7 @@ export class AnimalsComponent implements OnInit {
 			}
 		}
 	}
-	
+
 	private sortGroups() {
 		for (let i = 0; i < this.animals.length - 1; i++) {
 			for (let j = i + 1; j < this.animals.length; j++) {
@@ -177,13 +178,13 @@ export class AnimalsComponent implements OnInit {
 
 
 			for (let j = i + 1; j < this.animals.length; j++) {
-				
+
 				var heightForI = this.animals[i].heightM.indexOf('-');
-				var upperBoundHeightValue = this.animals[i].heightM.substring(heightForI+1);
+				var upperBoundHeightValue = this.animals[i].heightM.substring(heightForI + 1);
 				var upperBoundAsANumber = Number(upperBoundHeightValue);
-	
+
 				var heightForJ = this.animals[j].heightM.indexOf('-');
-				var upperBoundHeightValue2 = this.animals[j].heightM.substring(heightForJ+1);
+				var upperBoundHeightValue2 = this.animals[j].heightM.substring(heightForJ + 1);
 				var valueAsANumber = Number(upperBoundHeightValue2);
 
 				if (upperBoundAsANumber < valueAsANumber) {
@@ -201,13 +202,13 @@ export class AnimalsComponent implements OnInit {
 
 
 			for (let j = i + 1; j < this.animals.length; j++) {
-				
+
 				var weightForI = this.animals[i].weightM.indexOf('-');
-				var upperBoundWeightValue = this.animals[i].weightM.substring(weightForI+1);
+				var upperBoundWeightValue = this.animals[i].weightM.substring(weightForI + 1);
 				var upperBoundAsANumber = Number(upperBoundWeightValue);
-	
+
 				var weightForJ = this.animals[j].weightM.indexOf('-');
-				var upperBoundWeightValue2 = this.animals[j].weightM.substring(weightForJ+1);
+				var upperBoundWeightValue2 = this.animals[j].weightM.substring(weightForJ + 1);
 				var valueAsANumber = Number(upperBoundWeightValue2);
 
 				if (upperBoundAsANumber < valueAsANumber) {
@@ -218,11 +219,11 @@ export class AnimalsComponent implements OnInit {
 
 			}
 		}
-		for(let i = 0; i < this.animals.length ; i++){
+		for (let i = 0; i < this.animals.length; i++) {
 			var weightForI = this.animals[i].weightM.indexOf('-');
-			var upperBoundWeightValue = this.animals[i].weightM.substring(weightForI+1);
+			var upperBoundWeightValue = this.animals[i].weightM.substring(weightForI + 1);
 			var upperBoundAsANumber = Number(upperBoundWeightValue);
-			console.log(upperBoundAsANumber+" "+this.animals[i].commonName)
+			console.log(upperBoundAsANumber + " " + this.animals[i].commonName)
 		}
 	}
 }

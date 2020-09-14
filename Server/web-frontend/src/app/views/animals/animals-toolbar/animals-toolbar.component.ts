@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	styleUrls: ['./animals-toolbar.component.css']
 })
 export class AnimalsToolbarComponent implements OnInit {
-	
+
 	@Input() animals: any;
 	@Input() searchText: string;
 	@Input() sortBy: boolean;
@@ -54,7 +54,7 @@ export class AnimalsToolbarComponent implements OnInit {
 		});
 	}
 
-	navGroups(){
+	navGroups() {
 		this.router.navigate(['animals/groups']);
 	}
 
@@ -65,6 +65,7 @@ export class AnimalsToolbarComponent implements OnInit {
 		}
 		document.getElementById('loader-container').style.visibility = 'visible';
 	}
+
 	stopLoader() {
 		if (this.test == true) {
 			return;
@@ -81,7 +82,6 @@ export class AnimalsToolbarComponent implements OnInit {
 		document.getElementById("overview-route").classList.remove("activeRoute");
 		document.getElementById("rangers-route").classList.remove("activeRoute");
 		document.getElementById("geotags-route").classList.remove("activeRoute");
-		document.getElementById("settings-route").classList.remove("activeRoute");
 
 		this.router.navigate([location]);
 	}

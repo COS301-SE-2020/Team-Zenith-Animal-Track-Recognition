@@ -6,13 +6,13 @@
     <form id="add-animal-image-form" [formGroup]="addAnimalImage">
         <div id="add-animal-image-container">
             <div class="uploadfilecontainer" appDragDrop (onFileDropped)="uploadFile($event)">
-                <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+                <input hidden type="file" #fileInput (change)="uploadFile($event)">
                 <div id="img-div"><img src="../../../../assets/cloud.png" alt="cloud image"></div>
                 <div id="drop-text-div">
                     <p id="drop-text"> Drop files to upload or click</p>
                 </div>
                 <div id="browse-btn-div">
-                    <button type="submit" mat-button (click)="fileInput.click()" id="browse-btn" class="fontSB">Upload Image</button>
+                    <input type="file" mat-button (change)="uploadFile($event)" id="browse-btn" class="fontSB">
                 </div>
             </div>
             <mat-form-field class="add-animal-image-form-input" appearance="outline" style="float: left; align-self: start;">
