@@ -899,17 +899,17 @@ const RootQuery = new GraphQLObjectType({
                     }
                 } else if (args.classification != undefined) {
                     console.log(temp)
-                    let anamilToVind =_.find(animalData,{
+                    let animalToFind =_.find(animalData,{
                         classification:args.classification
                     })
-                    console.log(anamilToVind.animalID)
+                    console.log(animalToFind.animalID)
                     if (args.negat == undefined) {
                         temp = _.filter(temp, {
-                            animal: toNumber(anamilToVind.animalID)
+                            animal: toNumber(animalToFind.animalID)
                         })
                     } else {
                         temp = _.reject(temp, {
-                            animal: toNumber(anamilToVind.animalID)
+                            animal: toNumber(animalToFind.animalID)
                         })
                     }
                 } else {
@@ -2288,20 +2288,22 @@ const Mutation = new GraphQLObjectType({
             resolve(parent, args) {
                 console.log("updateLevel",args)
                 let a = _.find(usersData, {
-                    token: args.tokenSend
+                    token: args.token
                 })
                 if (a == undefined) {
+                    console.log('updateAnimalGroup undefined')
                     return null
                 }
                 if (a.accessLevel <= 2) {
                     return null;
                 }
-                anamilToVind=_.find(animalData,{
+                animalToFind=_.find(animalData,{
                     animalID:args.animalID
                 })
-                anamilToVind.groupID=[]
-                anamilToVind.groupID.push(args.groupID)
-
+                animalToFind.groupID=[]
+                animalToFind.groupID.push(args.groupID)
+                animals.doc(animalToFind.classification).set(animalToFind)
+                return animalToFind;
             }
 
         },
