@@ -635,6 +635,7 @@ const RootQuery = new GraphQLObjectType({
                             groupName: args.groupName
                         })
                     }
+                    _.orderBy(newLocal,['priority'])
                     return newLocal;
                 }
                 return null;
@@ -2376,6 +2377,11 @@ if (CACHE) {
         querySnapshot.forEach(function (doc) {
             let newGoupe = doc.data()
             groupData.push(newGoupe)
+            if (newGoupe.priority==undefined){
+                newGoupe.priority=9;
+                console.log(newGoupe)
+                groups.doc(newGoupe.groupID).set(newGoupe)
+            }
         });
         redeyNeedConterDown();
     });
