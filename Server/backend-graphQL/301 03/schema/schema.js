@@ -2667,8 +2667,8 @@ function uplodeBase64(Img,folder="trak") {
 
     newPicture = {
         picturesID: newImgID,
-        kindOfPicture: "trak",
-        URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/trak%2F" + newImgID + ".jpeg?alt=media"
+        kindOfPicture: folder,
+        URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/" + folder +"%2F" + newImgID + ".jpeg?alt=media"
     }
     pictureData.push(newPicture)
     pictures.doc(newImgID).set(newPicture)
