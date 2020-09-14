@@ -1,4 +1,3 @@
-
 <div id="animal-groups-workspace-container">
     <div id="loader-container">
         <mat-spinner id="loader"></mat-spinner>
@@ -35,7 +34,7 @@
                                 </ng-container>
                                 <ng-container *ngIf="!isAnimal(group)">
                                     <mat-radio-button style="border-radius: 70% !important;" name="{{element['animalID']}}" [checked]="true" *ngIf="isGroup(element[group])"></mat-radio-button>
-                                    <mat-radio-button style="border-radius: 70% !important;" name="{{element['animalID']}}" [checked]="false" *ngIf="!isGroup(element[group])" (change)="log('changed')"></mat-radio-button>
+                                    <mat-radio-button style="border-radius: 70% !important;" name="{{element['animalID']}}" [checked]="false" *ngIf="!isGroup(element[group])" (change)="updateLevel(element['animalID'],group)"></mat-radio-button>
                                 </ng-container>
                             </td>
                         </ng-container>

@@ -16,24 +16,25 @@ export class RangersToolbarComponent implements OnInit {
 	@Input() sortBySurname: boolean;
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
+	@Output() sortBySurnameOnChange: EventEmitter<string> = new EventEmitter();
 
 	currentAlphabet: any;
 	sorted: string;
 	display: boolean = true;
-	
+
 	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { }
-	
+
 	ngOnInit(): void { }
 
 	openAddRangerDialog() {
 		const dialogConfig = new MatDialogConfig();
 
-		const addDialogRef = this.dialog.open(AddRangerComponent, { 
-			height: '55%', 
-			width: '35%', 
-			id: 'add-ranger-dialog', 
-			autoFocus: true, 
-			disableClose: true 
+		const addDialogRef = this.dialog.open(AddRangerComponent, {
+			height: '55%',
+			width: '35%',
+			id: 'add-ranger-dialog',
+			autoFocus: true,
+			disableClose: true
 		});
 		addDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
@@ -50,57 +51,58 @@ export class RangersToolbarComponent implements OnInit {
 	route(location: string) {
 		this.router.navigate([location]);
 	}
-	
+
 	checkIfNew(title: string, pos: number) {
 		if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {
-		  return false;
+			return false;
 		} else {
-		  this.currentAlphabet = ('' + title).charAt(pos).toLowerCase();
-		  return true;
+			this.currentAlphabet = ('' + title).charAt(pos).toLowerCase();
+			return true;
 		}
-	  }
-	
-		updateSearchText(event) {
-			this.searchTextOnChange.emit(event);
-			if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")
-				this.currentAlphabet = null;
-		}
-	
-		toggle(bool: boolean) {
-			this.sortBySurname = bool;
-			this.sort(bool);
-		}
-	
-		sort(bool: boolean) {
-			let temp: string;
-			if (bool) {
-				for (let i = 0; i < this.rangers.length - 1; i++) {
-					for (let j = i + 1; j < this.rangers.length; j++) {
-						if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-							let temp = this.rangers[i];
-							this.rangers[i] = this.rangers[j];
-							this.rangers[j] = temp;
-						}
+	}
+
+	updateSearchText(event) {
+		this.searchTextOnChange.emit(event);
+		if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")
+			this.currentAlphabet = null;
+	}
+
+	toggle(bool: boolean) {
+		this.sortBySurname = bool;
+		this.sortBySurnameOnChange.emit("" + this.sortBySurname);
+		this.sort(bool);
+	}
+
+	sort(bool: boolean) {
+		let temp: string;
+		if (bool) {
+			for (let i = 0; i < this.rangers.length - 1; i++) {
+				for (let j = i + 1; j < this.rangers.length; j++) {
+					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
+						let temp = this.rangers[i];
+						this.rangers[i] = this.rangers[j];
+						this.rangers[j] = temp;
 					}
 				}
-				temp = "Sorted alphabetically";
-			} 
-			else {
-				for (let i = 0; i < this.rangers.length - 1; i++) {
-					for (let j = i + 1; j < this.rangers.length; j++) {
-						if (this.rangers[i].accessLevel > this.rangers[j].accessLevel) {
-							let temp = this.rangers[i];
-							this.rangers[i] = this.rangers[j];
-							this.rangers[j] = temp;
-						}
-					}
-				}
-				temp = "Sorted by ranger level";
 			}
-			this.sorted = temp;
-			return temp;
+			temp = "Sorted alphabetically";
 		}
-	
+		else {
+			for (let i = 0; i < this.rangers.length - 1; i++) {
+				for (let j = i + 1; j < this.rangers.length; j++) {
+					if (this.rangers[i].accessLevel > this.rangers[j].accessLevel) {
+						let temp = this.rangers[i];
+						this.rangers[i] = this.rangers[j];
+						this.rangers[j] = temp;
+					}
+				}
+			}
+			temp = "Sorted by ranger level";
+		}
+		this.sorted = temp;
+		return temp;
+	}
+
 	//Loader
 	startLoader() {
 		document.getElementById('loader-container').style.visibility = 'visible';
