@@ -111,6 +111,7 @@ class Scroll extends ViewModelWidget<UserConfirmedViewModel> {
     confidentAnimal = model.confidentAnimal;
 
     return DraggableScrollableSheet(
+        key: Key('UserScroll'),
         initialChildSize: 0.12,
         minChildSize: 0.12,
         maxChildSize: 0.99,

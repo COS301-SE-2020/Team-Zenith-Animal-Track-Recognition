@@ -34,7 +34,6 @@ class ConfirmedView extends StatelessWidget {
             if (model.loaded == false) {
               model.setConfirmedList(confirmedAnimals);
               model.setConfidentAnimal(confirmedAnimals[0]);
-              //confirmedAnimals.removeAt(0);
               model.setLoaded(true);
             }
             return WillPopScope(
@@ -55,7 +54,6 @@ class ConfirmedView extends StatelessWidget {
               ),
             );
           } else {
-            print(confirmedAnimals.length.toString());
             return progressIndicator();
           }
         },
@@ -67,6 +65,7 @@ class ConfirmedView extends StatelessWidget {
 
 Widget imageBlock(File imageLink) {
   return Container(
+    key: Key('imageBlock'),
     decoration: BoxDecoration(
       image: DecorationImage(
         image: MemoryImage(imageLink.readAsBytesSync()),
@@ -115,6 +114,7 @@ class Scroll extends ViewModelWidget<ConfirmedViewModel> {
     confidentAnimal = model.confidentAnimal;
 
     return DraggableScrollableSheet(
+        key: Key('Scroll'),
         initialChildSize: 0.12,
         minChildSize: 0.12,
         maxChildSize: 0.99,

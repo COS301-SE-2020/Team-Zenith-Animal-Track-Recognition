@@ -113,6 +113,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
     return DraggableScrollableSheet(
+      key: Key('SpoorListBody'),
       initialChildSize: 0.32,
       minChildSize: 0.10,
       maxChildSize: 0.99,
@@ -359,6 +360,7 @@ class ViewInfoFunctionality extends ViewModelWidget<IdentificationViewModel> {
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
     return Container(
+      key: Key('ViewInfoFunctionality'),
       margin: new EdgeInsets.only(bottom: 0, left: 3, right: 3),
       padding: new EdgeInsets.all(0.0),
       decoration: BoxDecoration(
@@ -488,6 +490,7 @@ class ConfidentAnimalIdentiication
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
     return Container(
+      key: Key('ConfidentAnimalIdentiication'),
       alignment: Alignment.center,
       margin: new EdgeInsets.all(10),
       padding: new EdgeInsets.only(left: 8),
@@ -631,6 +634,7 @@ class TextInputField extends HookViewModelWidget<IdentificationViewModel> {
     var text = useTextEditingController();
     if (indexIdentifier == 0) {
       return Container(
+        key: Key('TextInputField'),
         alignment: Alignment.centerLeft,
         child: TextField(
           controller: text,
@@ -860,6 +864,7 @@ Widget swapImageBlock(String link, int index, IdentificationViewModel model) {
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
           image: NetworkImage(link),
+          //image: AssetImage(link),
           fit: BoxFit.fill,
         ),
       ),
@@ -870,6 +875,7 @@ Widget swapImageBlock(String link, int index, IdentificationViewModel model) {
 }
 
 Widget innerImageBlock(String link) {
+<<<<<<< Updated upstream
   return link == "N/A"
       ? Container(
           alignment: Alignment.center,
@@ -901,6 +907,27 @@ Widget innerImageBlock(String link) {
           height: 150,
           width: 150,
         );
+=======
+  return InkWell(
+    onTap: () => print(""),
+    child: new Container(
+      alignment: Alignment.center,
+      margin: new EdgeInsets.all(5),
+      padding: new EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(
+          image: NetworkImage(link),
+          //image: AssetImage(link),
+          fit: BoxFit.fill,
+        ),
+      ),
+      height: 150,
+      width: 150,
+    ),
+  );
+>>>>>>> Stashed changes
 }
 
 Widget icon = new Container(
@@ -1001,6 +1028,7 @@ Widget confidentImageBlock(String image) {
     decoration: BoxDecoration(
       image: DecorationImage(
         image: NetworkImage(image),
+        //image: AssetImage(image),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,

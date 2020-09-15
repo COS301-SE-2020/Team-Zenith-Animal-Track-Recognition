@@ -18,6 +18,7 @@ class SearchView extends StatelessWidget {
           future: model.getSearchList(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
+<<<<<<< Updated upstream
               return Scaffold(
                 drawer: NavDrawer(),
                 appBar: AppBar(
@@ -34,6 +35,9 @@ class SearchView extends StatelessWidget {
                 ),
                 body: internetError(snapshot.error.toString()),
               );
+=======
+              return progressIndicator();
+>>>>>>> Stashed changes
             }
             if (snapshot.hasData) {
               displayList.clear();
@@ -59,6 +63,10 @@ class SearchView extends StatelessWidget {
                               icon: Icons.search,
                               colors: Colors.grey,
                               index: 0),
+<<<<<<< Updated upstream
+=======
+                          IconBuilder(icon: Icons.more_vert, index: 1)
+>>>>>>> Stashed changes
                         ],
                         bottom: TabBar(tabs: [
                           text14CenterBoldGrey("ANIMAL"),
@@ -94,6 +102,7 @@ class NavDrawer extends ViewModelWidget<SearchViewModel> {
 
   @override
   Widget build(BuildContext context, SearchViewModel model) {
+<<<<<<< Updated upstream
     return Container(
       width: 250,
       child: Drawer(
@@ -130,6 +139,41 @@ class NavDrawer extends ViewModelWidget<SearchViewModel> {
                 }),
           ],
         ),
+=======
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: text22LeftBoldWhite("Side Menu"),
+            decoration: BoxDecoration(
+                color: Colors.grey,
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage('assets/images/springbok.jpg'))),
+          ),
+          ListTile(
+              leading: Icon(Icons.verified_user),
+              title: text16LeftBoldGrey("Profile"),
+              onTap: () => {navigateToProfile()}),
+          ListTile(
+              leading: Icon(Icons.settings),
+              title: text16LeftBoldGrey("Settings"),
+              onTap: () => {}),
+          ListTile(
+              leading: Icon(Icons.edit),
+              title: text16LeftBoldGrey("Preference"),
+              onTap: () => {}),
+          ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: text16LeftBoldGrey("Logout"),
+              onTap: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setBool("loggedIn", false);
+                navigateToLogin(context);
+              }),
+        ],
+>>>>>>> Stashed changes
       ),
     );
   }
@@ -170,6 +214,10 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
   @override
   Widget build(BuildContext context, SearchViewModel model) {
     return ListView.builder(
+<<<<<<< Updated upstream
+=======
+        key: Key('ListAnimals'),
+>>>>>>> Stashed changes
         itemCount: animalList.length,
         itemBuilder: (context, index) {
           return animalList[index].image == ""
@@ -283,6 +331,10 @@ Widget imageBlock(String image) {
     decoration: BoxDecoration(
       image: DecorationImage(
         image: NetworkImage(image),
+<<<<<<< Updated upstream
+=======
+        //image: AssetImage(image),
+>>>>>>> Stashed changes
         fit: BoxFit.fill,
       ),
       color: Colors.grey,

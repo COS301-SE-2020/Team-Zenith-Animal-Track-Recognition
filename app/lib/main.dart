@@ -5,6 +5,12 @@ import 'package:ERP_RANGER/services/theme.dart';
 import 'package:ERP_RANGER/services/util.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+<<<<<<< Updated upstream
+=======
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'services/api/graphQLConf.dart';
+>>>>>>> Stashed changes
 import 'package:path/path.dart' as p;
 import 'package:stacked_services/stacked_services.dart';
 import 'app/locator.dart';
@@ -16,6 +22,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _appDocsDir = await getApplicationDocumentsDirectory();
   setupLocator();
+  Provider.debugCheckInvalidValueType = null;
   runApp(MyApp());
 }
 

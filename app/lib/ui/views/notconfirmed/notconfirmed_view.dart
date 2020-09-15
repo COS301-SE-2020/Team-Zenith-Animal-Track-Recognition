@@ -169,6 +169,7 @@ class Scroll extends ViewModelWidget<NotConfirmedViewModel> {
   @override
   Widget build(BuildContext context, NotConfirmedViewModel model) {
     return DraggableScrollableSheet(
+        key: Key('NotConScroll'),
         initialChildSize: 0.12,
         minChildSize: 0.12,
         maxChildSize: 0.250,

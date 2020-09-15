@@ -1,6 +1,7 @@
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
+import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
@@ -12,6 +13,7 @@ class IdentificationViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final DialogService _dialogService = locator<DialogService>();
   final Api _api = locator<GraphQL>();
+  //final Api _api = locator<MockApi>();
 
   SpoorModel _confident;
   List<SpoorModel> _recentIdentifications;
@@ -83,8 +85,6 @@ class IdentificationViewModel extends BaseViewModel {
         notifyListeners();
       }
     }
-    //date = value;
-    //setEditDate();
   }
 
 //=======================Date================================

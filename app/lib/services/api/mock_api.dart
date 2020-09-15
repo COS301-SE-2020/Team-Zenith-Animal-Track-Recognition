@@ -5,13 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'api.dart';
 
 @lazySingleton
-class FakeApi implements Api {
+class MockApi implements Api {
   @override
   Future<List<AnimalModel>> getAnimalModel(String category) async {
     List<AnimalModel> animalList = new List();
 
+    category = "BIG CATS";
     if (category == "BIG CATS") {
-      print("pppppp");
       AnimalModel lion = AnimalModel(
         animalName: "Katanga Lion",
         diet: "Carnivore",
@@ -391,71 +391,76 @@ class FakeApi implements Api {
   @override
   Future<List<SpoorModel>> getSpoorModel(String name) async {
     SpoorModel card1 = new SpoorModel(
-        '',
-        'Elephant',
-        'African Bush',
-        'Kruger park',
-        'Kagiso Ndlovu',
-        '4m ago',
-        '67%',
-        'Dangerous',
-        'assets/images/Elephant.jpeg');
+      'Elephant',
+      'African Bush',
+      '-25.389 , 31.974',
+      'Kagiso Ndlovu',
+      '4m ago',
+      '67%',
+      'Dangerous',
+      'assets/images/Elephant.jpeg',
+      '',
+    );
 
     SpoorModel card2 = new SpoorModel(
-      '',
-      'Rhino',
-      'White',
+      'Elephant',
+      'African Bush',
       'Kruger park',
-      'Pricille Berlien',
+      'Kagiso Ndlovu',
       '4m ago',
-      '92%',
-      'Endangered',
-      'assets/images/rhino.jpeg',
+      '67%',
+      'Dangerous',
+      'assets/images/Elephant.jpeg',
+      '',
     );
 
     SpoorModel card3 = new SpoorModel(
-        '',
-        'Buffalo',
-        'Cape Buffalo',
-        'Kruger park',
-        'Charles De Clarke',
-        '4m ago',
-        '56%',
-        'tag1',
-        'assets/images/buffalo.jpeg');
+      'Elephant',
+      'African Bush',
+      'Kruger park',
+      'Kagiso Ndlovu',
+      '4m ago',
+      '67%',
+      'Dangerous',
+      'assets/images/Elephant.jpeg',
+      '',
+    );
 
     SpoorModel card4 = new SpoorModel(
-        '',
-        'Springbok',
-        'Antelope',
-        'Kruger park',
-        'Obakeng Seageng',
-        '10m ago',
-        '87%',
-        'Abundant',
-        'assets/images/springbok.jpg');
+      'Elephant',
+      'African Bush',
+      'Kruger park',
+      'Kagiso Ndlovu',
+      '4m ago',
+      '67%',
+      'Dangerous',
+      'assets/images/Elephant.jpeg',
+      '',
+    );
 
     SpoorModel card5 = new SpoorModel(
-        '',
-        'Blesbok',
-        'Antelope',
-        'Kruger park',
-        'Zachary Christophers',
-        '80m ago',
-        '100%',
-        'tag4',
-        'assets/images/Blesbok.jpg');
+      'Elephant',
+      'African Bush',
+      'Kruger park',
+      'Kagiso Ndlovu',
+      '4m ago',
+      '67%',
+      'Dangerous',
+      'assets/images/Elephant.jpeg',
+      '',
+    );
 
     SpoorModel card6 = new SpoorModel(
-        '',
-        'Red hartebeest',
-        'A. buselaphus',
-        'Kruger park',
-        'Kagiso Ndlovu',
-        '1d ago',
-        '23%',
-        'tag4',
-        'assets/images/Red_Hartebeest.jpg');
+      'Elephant',
+      'African Bush',
+      'Kruger park',
+      'Kagiso Ndlovu',
+      '4m ago',
+      '67%',
+      'Dangerous',
+      'assets/images/Elephant.jpeg',
+      '',
+    );
 
     List<SpoorModel> _cards = new List();
     if (name == "elephant") {
@@ -523,18 +528,18 @@ class FakeApi implements Api {
   @override
   Future<List<HomeModel>> getHomeModel() async {
     HomeModel card1 = new HomeModel(
-        '',
-        'Elephant',
-        'African Bush',
-        'Kruger park',
-        'Kagiso Ndlovu',
-        '4m ago',
-        '67%',
-        'Dangerous',
-        'assets/images/Elephant.jpeg');
+      'Elephant',
+      'African Bush',
+      'Kruger park',
+      'Kagiso Ndlovu',
+      '4m ago',
+      '67%',
+      'Dangerous',
+      'assets/images/Elephant.jpeg',
+      '1',
+    );
 
     HomeModel card2 = new HomeModel(
-      '',
       'Rhino',
       'White',
       'Kruger park',
@@ -543,51 +548,56 @@ class FakeApi implements Api {
       '92%',
       'Endangered',
       'assets/images/rhino.jpeg',
+      '1',
     );
 
     HomeModel card3 = new HomeModel(
-        '',
-        'Buffalo',
-        'Cape Buffalo',
-        'Kruger park',
-        'Charles De Clarke',
-        '4m ago',
-        '56%',
-        'Abundant',
-        'assets/images/buffalo.jpeg');
+      'Buffalo',
+      'Cape Buffalo',
+      'Kruger park',
+      'Charles De Clarke',
+      '4m ago',
+      '56%',
+      'Abundant',
+      'assets/images/buffalo.jpeg',
+      '1',
+    );
 
     HomeModel card4 = new HomeModel(
-        '',
-        'Springbok',
-        'Antelope',
-        'Kruger park',
-        'Obakeng Seageng',
-        '10m ago',
-        '87%',
-        'Abundant',
-        'assets/images/springbok.jpg');
+      'Springbok',
+      'Antelope',
+      'Kruger park',
+      'Obakeng Seageng',
+      '10m ago',
+      '87%',
+      'Abundant',
+      'assets/images/springbok.jpg',
+      '1',
+    );
 
     HomeModel card5 = new HomeModel(
-        '',
-        'Blesbok',
-        'Antelope',
-        'Kruger park',
-        'Zachary Christophers',
-        '80m ago',
-        '100%',
-        'Abundant',
-        'assets/images/Blesbok.jpg');
+      'Blesbok',
+      'Antelope',
+      'Kruger park',
+      'Zachary Christophers',
+      '80m ago',
+      '100%',
+      'Abundant',
+      'assets/images/Blesbok.jpg',
+      '1',
+    );
 
     HomeModel card6 = new HomeModel(
-        '',
-        'Hartebeest',
-        'A. buselaphus',
-        'Kruger park',
-        'Kagiso Ndlovu',
-        '1d ago',
-        '23%',
-        'Abundant',
-        'assets/images/Red_Hartebeest.jpg');
+      'Hartebeest',
+      'A. buselaphus',
+      'Kruger park',
+      'Kagiso Ndlovu',
+      '1d ago',
+      '23%',
+      'Abundant',
+      'assets/images/Red_Hartebeest.jpg',
+      '1',
+    );
 
     List<HomeModel> _cards = new List();
     _cards.add(card1);
@@ -617,180 +627,58 @@ class FakeApi implements Api {
     String heightM;
     String weightF;
     String weightM;
-    if (name == "elephant") {
-      appearance.add("assets/images/appearance/elephant/p1.jpg");
-      appearance.add("assets/images/appearance/elephant/p2.jpg");
-      appearance.add("assets/images/appearance/elephant/p3.jpg");
-      appearance.add("assets/images/appearance/elephant/p4.jpg");
 
-      species = "African Bush Elephant";
-      commonName = "Elephant";
-      gestation = "22 months";
-      diet = "Herbivore";
-      overview =
-          "The African bush elephant is the largest land mammal in the world and the largest of the three elephant species.";
-      description =
-          "The African bush elephant is the largest land mammal in the world and the largest of the three elephant species. Adults reach up to 24 feet in length and 13 feet in height and weigh up to 11 tons. As herbivores, they spend much of their days foraging and eating grass, leaves, bark, fruit, and a variety of foliage. They need to eat about 350 pounds of vegetation every day. African bush elephants are also known as African savanna elephants. Their range spans a variety of habitats, from the open savanna to the desert, and can be found in most African countries. African elephants live up to 70 years—longer than any other mammal except humans. Elephant herds are matriarchal, consisting of related females and their young and are led by the eldest female, called the matriarch. Adult male elephants rarely join a herd and often lead a solitary life, only approaching herds for mating. Females give birth to a single calf after a 22 month gestation, the longest gestation period among mammals.";
-      behaviour =
-          "African Bush Elephants are nomadic animals meaning that they are constantly on the move in search of food, so moving within these family herds allows them to have greater protection both from predators and from the elements.";
-      habitat =
-          "African elephants live in sub-Saharan Africa, the rain forests of Central and West Africa and the Sahel desert in Mali. Their Asian contemporaries can be found in Nepal, India and Southeast Asia in scrub forests and rain forests.";
-      threat =
-          "Escalating poaching, or illegal killing, for the commercial trade in ivory and meat. Growing demands of exploding human populations and poverty. Increasing loss and fragmentation of natural habitats and lack of land-use planning.";
-      heightF = "2.4";
-      heightM = "3.1";
-      weightF = "2.8";
-      weightM = "5.8";
+    appearance.add("assets/images/animal/Big_Cats/lion/a1.jpeg");
+    appearance.add("assets/images/animal/Big_Cats/lion/a2.jpg");
+    appearance.add("assets/images/animal/Big_Cats/lion/a3.jpg");
+    appearance.add("assets/images/animal/Big_Cats/lion/a4.jpg");
 
-      infoModel = new InfoModel(
-          species: species,
-          commonName: commonName,
-          gestation: gestation,
-          diet: diet,
-          overview: overview,
-          description: description,
-          behaviour: behaviour,
-          habitat: habitat,
-          threat: threat,
-          heightF: heightF,
-          heightM: heightM,
-          weightF: weightF,
-          weightM: weightM,
-          carouselImages: appearance);
-      return infoModel;
-    } else if (name == "buffalo") {
-      appearance.add("assets/images/appearance/buffalo/p1.jpg");
-      appearance.add("assets/images/appearance/buffalo/p2.jpg");
-      appearance.add("assets/images/appearance/buffalo/p3.jpg");
-      appearance.add("assets/images/appearance/buffalo/p4.jpg");
+    species = "Katanga Lion ";
+    commonName = "Lion";
+    diet = "Carnivore";
+    gestation = "4 Months";
 
-      overview =
-          "Cape buffalo, (Syncerus caffer caffer), also called African buffalo, the largest and most formidable of Africa's wild bovids (family Bovidae) and a familiar sight to visitors of African parks and reserves. The Cape buffalo is the only member of the buffalo and cattle tribe (Bovini) that occurs naturally in Africa.";
-      description =
-          "Depending on the subspecies, African buffalo range in color from dark brown or black (in savannah-living races) to bright red (forest buffalo). The body is heavy-set, with stocky legs, a large head, and short neck. There are no distinct markings on the body, although forest buffalo tend to darken with age and may thus have dark patches mingled with the red base color. The ears are large and tend to droop; they are edged by a long fringe of hairs, including two white tufts in forest buffalo. Both male and female African buffalo have horns; in savannah buffalo, these are hook-shaped, curving first downwards and then hooking up and inwards, and growing up to 160 cm long. The horns of males are larger than females, and in males the bases of the horns expand into a known as a 'boss'. Forest buffalo have much shorter horns (no more than 40 cm long) which are relatively straight and which sweep backwards in line with the forehead.";
-      behaviour =
-          "African buffalo may be active throughout the day and night; on average, 18 hours per day are spent foraging and moving. Herds usually occupy a stable home range; in savannah buffalo, these areas may be 126 to 1,075 square kilometers in size.";
-      habitat =
-          "One of the most successful of Africa's wild ruminants, the Cape buffalo thrives in virtually all types of grassland habitat in sub-Saharan Africa, from dry savanna to swamp and from lowland floodplains to montane mixed forest and glades, as long as it is within commuting distance of water (up to 20 km [12 miles]).";
-      threat =
-          "THREATS: Cape Buffalo are very large animals and apart from big predators, they are not really threatened by other animal species. It usually takes an entire lion pride to catch and kill an adult Cape Buffalo.";
+    overview =
+        "Katanga Lion (Southwest Africa Lion) The lion is known as the 'king of the jungle' and is one of the five big cats of the genus Panthera. ... The Katanga lions are found in Namibia, Zaire, Angola, Botswana and Zambia. Their prey mostly include zebras, warthogs, wildebeests and antelopes.";
+    description =
+        "Panthera leo melanochaita is a lion subspecies in Southern and East Africa. In this part of Africa, lion populations are regionally extinct in Lesotho, Djibouti and Eritrea, and threatened by loss of habitat and prey base, killing by local people in retaliation for loss of livestock, and in several countries also by trophy hunting. Since the turn of the 21st century, lion populations in intensively managed protected areas in Botswana, Namibia, South Africa and Zimbabwe have increased, but declined in East African range countries.In 2005, a Lion Conservation Strategy was developed for East and Southern Africa.";
+    behaviour =
+        "Lions are highly territorial and occupy the same area for generations. Females actively defend their territories against other females, while resident males protect prides from rival coalitions. Territory size depends on prey abundance, as well as access to water and denning sites.";
+    habitat =
+        "They are found in southwestern Africa in Angola, Namibia, western Zimbabwe and Zambia, Zaire, and northern Botswana. They are one of the largest lions of all the lion species.";
+    threat =
+        "Unfortunately, all threats to lions are human based with the top four being habitat loss, trophy hunting, poaching and human-lion conflict. There are currently more lions in captivity than there are in the wild. Unless urgent action is taken, one day there may be none left.";
 
-      species = "Cape Buffalo";
-      commonName = "Buffalo";
-      gestation = "12 months";
-      diet = "Herbivore";
-
-      heightF = "2.4";
-      heightM = "3.1";
-      weightF = "2.8";
-      weightM = "5.8";
-      infoModel = new InfoModel(
-          species: species,
-          commonName: commonName,
-          gestation: gestation,
-          diet: diet,
-          overview: overview,
-          description: description,
-          behaviour: behaviour,
-          habitat: habitat,
-          threat: threat,
-          heightF: heightF,
-          heightM: heightM,
-          weightF: weightF,
-          weightM: weightM,
-          carouselImages: appearance);
-      return infoModel;
-    } else if (name == "rhino") {
-      appearance.add("assets/images/appearance/rhino/p1.jpg");
-      appearance.add("assets/images/appearance/rhino/p2.jpg");
-      appearance.add("assets/images/appearance/rhino/p3.jpg");
-      appearance.add("assets/images/appearance/rhino/p4.jpg");
-
-      species = "Black Rhinoceroses ";
-      commonName = "Rhino";
-      gestation = "16 months";
-      diet = "Herbivore";
-
-      overview =
-          "Rhinoceroses are large, herbivorous mammals identified by their characteristic horned snouts. The word 'rhinoceros' comes from the Greek 'rhino' (nose) and 'ceros' (horn). There are five species and 11 subspecies of rhino; some have two horns, while others have one.";
-      description =
-          "Rhinoceroses are large, herbivorous mammals identified by their characteristic horned snouts. The word 'rhinoceros' comes from the Greek 'rhino' (nose) and 'ceros' (horn). There are five species and 11 subspecies of rhino; some have two horns, while others have one.Because the animals' horns are used in folk medicine for their supposed healing properties, rhinos have been hunted nearly to extinction. Their horns are sometimes sold as trophies or decorations, but more often they are ground up and used in traditional Chinese medicine. The powder is often added to food or brewed in a tea in the belief that the horns are a powerful aphrodisiac, a hangover cure and treatment for fever, rheumatism, gout and other disorders, according to the International Rhino Foundation.";
-      behaviour =
-          "Except for females and their offspring, black rhinos are solitary. Females reproduce only every two and a half to five years. Their single calf does not live on its own until it is about three years old. Black rhinos feed at night and during the gloaming hours of dawn and dusk.";
-      habitat =
-          "White rhinos and black rhinos live in the grasslands and floodplains of eastern and southern Africa. Greater one-horned rhinos can be found in the swamps and rain forests of northern India and southern Nepal. Sumatran and Javan rhinos are found only in small areas of Malaysian and Indonesian swamps and rain forests.Rhinos spend their days and nights grazing and only sleep during the hottest parts of the day. During the rare times when they aren't eating, they can be found enjoying a cooling mud soak. These soaks also help to protect the animals from bugs, and the mud is a natural sunblock";
-      threat =
-          "Of all the threats facing black rhinos, poaching is the deadliest. Black rhinos have two horns which make them lucrative targets for the illegal trade in rhino horn A wave of poaching for rhino horn rippled through Kenya and Tanzania, continued south through Zambia's Luangwa Valley as far as the Zambezi River, and spread into Zimbabwe. Political instability and wars have greatly hampered rhino conservation work in Africa, notably in Angola, Rwanda, Somalia, and Sudan. This situation has exacerbated threats such as trade in rhino horn and increased poaching due to poverty.";
-
-      heightF = "2.4";
-      heightM = "3.1";
-      weightF = "2.8";
-      weightM = "5.8";
-      infoModel = new InfoModel(
-          species: species,
-          commonName: commonName,
-          gestation: gestation,
-          diet: diet,
-          overview: overview,
-          description: description,
-          behaviour: behaviour,
-          habitat: habitat,
-          threat: threat,
-          heightF: heightF,
-          heightM: heightM,
-          weightF: weightF,
-          weightM: weightM,
-          carouselImages: appearance);
-      return infoModel;
-    } else {
-      appearance.add("assets/images/animal/Big_Cats/lion/a1.jpeg");
-      appearance.add("assets/images/animal/Big_Cats/lion/a2.jpg");
-      appearance.add("assets/images/animal/Big_Cats/lion/a3.jpg");
-      appearance.add("assets/images/animal/Big_Cats/lion/a4.jpg");
-
-      species = "Katanga Lion ";
-      commonName = "Lion";
-      diet = "Carnivore";
-      gestation = "4 Months";
-
-      overview =
-          "Katanga Lion (Southwest Africa Lion) The lion is known as the 'king of the jungle' and is one of the five big cats of the genus Panthera. ... The Katanga lions are found in Namibia, Zaire, Angola, Botswana and Zambia. Their prey mostly include zebras, warthogs, wildebeests and antelopes.";
-      description =
-          "Panthera leo melanochaita is a lion subspecies in Southern and East Africa. In this part of Africa, lion populations are regionally extinct in Lesotho, Djibouti and Eritrea, and threatened by loss of habitat and prey base, killing by local people in retaliation for loss of livestock, and in several countries also by trophy hunting. Since the turn of the 21st century, lion populations in intensively managed protected areas in Botswana, Namibia, South Africa and Zimbabwe have increased, but declined in East African range countries.In 2005, a Lion Conservation Strategy was developed for East and Southern Africa.";
-      behaviour =
-          "Lions are highly territorial and occupy the same area for generations. Females actively defend their territories against other females, while resident males protect prides from rival coalitions. Territory size depends on prey abundance, as well as access to water and denning sites.";
-      habitat =
-          "They are found in southwestern Africa in Angola, Namibia, western Zimbabwe and Zambia, Zaire, and northern Botswana. They are one of the largest lions of all the lion species.";
-      threat =
-          "Unfortunately, all threats to lions are human based with the top four being habitat loss, trophy hunting, poaching and human-lion conflict. There are currently more lions in captivity than there are in the wild. Unless urgent action is taken, one day there may be none left.";
-
-      heightF = "2.4";
-      heightM = "3.1";
-      weightF = "2.8";
-      weightM = "5.8";
-      infoModel = new InfoModel(
-          species: species,
-          commonName: commonName,
-          gestation: gestation,
-          diet: diet,
-          overview: overview,
-          description: description,
-          behaviour: behaviour,
-          habitat: habitat,
-          threat: threat,
-          heightF: heightF,
-          heightM: heightM,
-          weightF: weightF,
-          weightM: weightM,
-          carouselImages: appearance);
-      return infoModel;
-    }
+    heightF = "2.4";
+    heightM = "3.1";
+    weightF = "2.8";
+    weightM = "5.8";
+    infoModel = new InfoModel(
+        species: species,
+        commonName: commonName,
+        gestation: gestation,
+        diet: diet,
+        overview: overview,
+        description: description,
+        behaviour: behaviour,
+        habitat: habitat,
+        threat: threat,
+        heightF: heightF,
+        heightM: heightM,
+        weightF: weightF,
+        weightM: weightM,
+        carouselImages: appearance);
+    return infoModel;
   }
 
   @override
   Future<LoginResponse> getLoginModel(String email, String password) async {
-    // TODO: implement getLoginModel
-    throw UnimplementedError();
+    int accessLevel = 3;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt("accessLevel", accessLevel);
+    prefs.setString("token", "h10hYNuJeTbmWH1ZSi5R");
+    prefs.setString("rangerID", "PfPF3c4kjcsefABkEbw4");
+    return new LoginResponse();
   }
 
   @override
@@ -932,8 +820,7 @@ class FakeApi implements Api {
 
   @override
   Future<int> getUserLevel() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt("accessLevel");
+    return 3;
   }
 
   @override
@@ -944,10 +831,10 @@ class FakeApi implements Api {
   @override
   Future<ProfileInfoModel> getProfileInfoData() async {
     ProfileInfoModel profileInfo = new ProfileInfoModel(
-        name: "",
-        number: "",
-        email: "",
-        picture: "",
+        name: "John Clarke",
+        number: "083369597",
+        email: "JohanClarke@gmail.com",
+        picture: "assets/images/Elephant.jpeg",
         animalsTracked: "17",
         spoorIdentified: "150",
         speciesTracked: "38");
@@ -956,12 +843,8 @@ class FakeApi implements Api {
 
   @override
   Future<List<ConfirmModel>> identifyImage(
-      String pic, String lat, String long) {
-    if (true) {
-      return getConfirmModel("", "", "");
-    } else {
-      return null;
-    }
+      String pic, String lat, String long) async {
+    return getConfirmModel(pic, lat, long);
   }
 
   @override

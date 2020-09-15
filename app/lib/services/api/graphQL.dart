@@ -12,8 +12,11 @@ import '../verification_exception.dart';
 import 'api.dart';
 
 final String domain = "http://putch.dyndns.org:55555/";
+<<<<<<< Updated upstream
 // final String domain =
 //     "http://ec2-13-244-137-176.af-south-1.compute.amazonaws.com:55555/";
+=======
+>>>>>>> Stashed changes
 
 @lazySingleton
 class GraphQL implements Api {
@@ -150,12 +153,126 @@ class GraphQL implements Api {
             species: sName,
             type: type));
 
+<<<<<<< Updated upstream
         for (int i = 0; i < list.length; i++) {
           score = body['data']['identificationBase64']['potentialMatches'][i]
                   ['confidence']
               .toString();
           count = double.parse(score) * 100;
           score = count.toString().substring(0, score.length - 1) + "%";
+=======
+  @override
+  Future<GalleryModel> getGalleryModel(String i) async {
+    List<String> appearance = new List();
+    List<String> tracks = new List();
+    List<String> droppings = new List();
+    List<List<String>> gallery = new List();
+    String name;
+
+    if (i == "diceros bicornis") {
+      appearance.add("assets/images/appearance/rhino/p1.jpg");
+      appearance.add("assets/images/appearance/rhino/p2.jpg");
+      appearance.add("assets/images/appearance/rhino/p3.jpg");
+      appearance.add("assets/images/appearance/rhino/p4.jpg");
+
+      tracks.add("assets/images/print/rhino/print1.jpg");
+      tracks.add("assets/images/print/rhino/print2.jpg");
+      tracks.add("assets/images/print/rhino/print3.jpg");
+      tracks.add("assets/images/print/rhino/print4.jpg");
+
+      droppings.add("assets/images/droppings/rhino/drop1.jpg");
+      droppings.add("assets/images/droppings/rhino/drop2.jpg");
+      droppings.add("assets/images/droppings/rhino/drop3.jpg");
+      name = "Black Rhinoceroses";
+    }
+
+    gallery.add(appearance);
+    gallery.add(tracks);
+    gallery.add(droppings);
+    return GalleryModel(galleryList: gallery, name: name);
+  }
+
+  @override
+  Future<List<HomeModel>> getHomeModel() async {
+    List<HomeModel> _cards = new List();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token");
+    token = Uri.encodeFull(token);
+
+    final http.Response response = await http.get("$domain" +
+        "graphql?query=query{spoorIdentification(token: \"$token\"){spoorIdentificationID,location{latitude, longitude}, dateAndTime{year, day, month},picture{URL}, ranger{firstName, lastName}, animal{commonName, classification},potentialMatches{confidence} }}");
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      var list =
+          body['data']['spoorIdentification'][0]['potentialMatches'] as List;
+      int temp = list.length - 1;
+
+      String cName;
+      String sName;
+      String location;
+      String ranger;
+      String date;
+      String tag = "TBD";
+      String pic;
+      String score;
+      double count;
+      DateTime now = DateTime.now();
+      DateTime track;
+      int mon;
+      int year;
+      int day;
+      String id;
+
+      for (int i = 0; i < 15; i++) {
+        cName = body['data']['spoorIdentification'][i]['animal']['commonName']
+            .toString();
+
+        sName = body['data']['spoorIdentification'][i]['animal']
+                ['classification']
+            .toString();
+        date = body['data']['spoorIdentification'][i]['dateAndTime']['day']
+                .toString() +
+            " " +
+            body['data']['spoorIdentification'][i]['dateAndTime']['month']
+                .toString();
+
+        mon = int.parse(body['data']['spoorIdentification'][i]['dateAndTime']
+                ['month']
+            .toString());
+        day = int.parse(body['data']['spoorIdentification'][i]['dateAndTime']
+                ['day']
+            .toString());
+        year = int.parse(body['data']['spoorIdentification'][i]['dateAndTime']
+                ['year']
+            .toString());
+
+        track = new DateTime(year, mon, day);
+        Duration difference = now.difference(track);
+        date = (difference.inHours / 24).floor().toString() + " days ago";
+
+        location = body['data']['spoorIdentification'][i]['location']
+                    ['latitude']
+                .toString() +
+            " , " +
+            body['data']['spoorIdentification'][i]['location']['longitude']
+                .toString();
+        ranger = body['data']['spoorIdentification'][i]['ranger']['firstName']
+                .toString() +
+            " " +
+            body['data']['spoorIdentification'][i]['ranger']['lastName']
+                .toString();
+
+        pic =
+            body['data']['spoorIdentification'][i]['picture']['URL'].toString();
+        score = body['data']['spoorIdentification'][i]['potentialMatches'][temp]
+                ['confidence']
+            .toString();
+        count = double.parse(score) * 100;
+        score = count.toString().substring(0, score.length - 1) + "%";
+>>>>>>> Stashed changes
 
           cName = body['data']['identificationBase64']['potentialMatches'][i]
                   ['animal']['commonName']
@@ -177,6 +294,7 @@ class GraphQL implements Api {
       } else {
         throw HttpException('500');
       }
+<<<<<<< Updated upstream
       print("Animal list size: " + identifiedList.length.toString());
       return identifiedList;
     } on SocketException {
@@ -186,6 +304,9 @@ class GraphQL implements Api {
       throw VerificationException("Service is Unavailable");
     } on Exception {
       throw VerificationException('No Internet Connection');
+=======
+      return _cards;
+>>>>>>> Stashed changes
     }
   }
 
@@ -325,6 +446,7 @@ class GraphQL implements Api {
     String token = prefs.getString("token");
     token = Uri.encodeFull(token);
 
+<<<<<<< Updated upstream
     try {
       var connectivity = await (Connectivity().checkConnectivity());
       if (ConnectivityResult.none == connectivity) {
@@ -342,6 +464,46 @@ class GraphQL implements Api {
             .toList();
       } else {
         throw HttpException('500');
+=======
+    final http.Response response = await http.get("$domain" +
+        "graphql?query=query{animals(token:\"$token\"){commonName, classification, pictures{URL}}}");
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      var list = body["data"]["animals"] as List;
+      print(list);
+      searchList =
+          list.map<SearchModel>((json) => SearchModel.fromJson(json)).toList();
+    }
+    return searchList;
+  }
+
+  @override
+  Future<TabModel> getTabModel() async {
+    List<String> categories = new List();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token");
+    token = Uri.encodeFull(token);
+    String id = prefs.getString("rangerID");
+    id = Uri.encodeFull(id);
+
+    final http.Response response = await http.get(
+        "$domain" + "graphql?query=query{groups(token:\"$token\"){groupName}}");
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      var list = body['data']['groups'] as List;
+
+      String temp;
+      int count;
+      for (int i = 1; i < list.length; i++) {
+        count = list[i].toString().length;
+        temp = list[i].toString().substring(12, count - 1);
+
+        categories.add(temp);
+>>>>>>> Stashed changes
       }
       return searchList;
     } on SocketException {
@@ -363,9 +525,9 @@ class GraphQL implements Api {
   }
 
   @override
-  Future<int> getUserLevel() {
-    // TODO: implement getTags
-    throw UnimplementedError();
+  Future<int> getUserLevel() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt("accessLevel");
   }
 
   @override

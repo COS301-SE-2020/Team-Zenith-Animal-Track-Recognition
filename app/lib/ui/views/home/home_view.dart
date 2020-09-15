@@ -19,6 +19,7 @@ class HomeView extends StatelessWidget {
           future: model.getRecentIdentifications(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
+<<<<<<< Updated upstream
               return Scaffold(
                 drawer: NavDrawer(),
                 appBar: AppBar(
@@ -42,13 +43,16 @@ class HomeView extends StatelessWidget {
                   backgroundColor: Colors.black,
                 ),
               );
+=======
+              print(snapshot.toString());
+              return progressIndicator();
+>>>>>>> Stashed changes
             }
             if (snapshot.hasData) {
               return snapshot.hasData
                   ? Scaffold(
-                      drawer: NavDrawer(),
+                      drawer: HomeNavDrawer(),
                       appBar: AppBar(
-                        //automaticallyImplyLeading: true,
                         backgroundColor: Colors.black,
                         title: text22LeftBoldWhite(
                           "ERP RANGER",
@@ -58,9 +62,10 @@ class HomeView extends StatelessWidget {
                         ],
                       ),
                       body: Container(
+                        key: Key('List'),
                         padding: EdgeInsets.all(10),
                         color: Colors.grey[300],
-                        child: ListBody(animalList: snapshot.data),
+                        child: HomeListBody(animalList: model.animals),
                       ),
                       bottomNavigationBar: BottomNavigation(),
                       floatingActionButton: FloatingActionButton(
@@ -103,12 +108,13 @@ class IconBuilder extends ViewModelWidget<HomeViewModel> {
 }
 //========================== APPBAR ICONS =======================
 
-class ListBody extends ViewModelWidget<HomeViewModel> {
+class HomeListBody extends ViewModelWidget<HomeViewModel> {
   List<HomeModel> animalList;
-  ListBody({Key key, this.animalList}) : super(reactive: true);
+  HomeListBody({Key key, this.animalList}) : super(reactive: true);
 
   @override
   Widget build(BuildContext context, HomeViewModel model) {
+    model.getRecentIdentifications();
     return ListView.builder(
         itemCount: animalList.length,
         scrollDirection: Axis.vertical,
@@ -119,6 +125,7 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
               navigateToIdentification(animalList[index].id);
             },
             child: Card(
+              key: Key('TrackID'),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               margin: new EdgeInsets.all(10),
@@ -188,12 +195,12 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
   }
 }
 
-class NavDrawer extends ViewModelWidget<HomeViewModel> {
-  //List<HomeModel> animalList;
-  NavDrawer({Key key}) : super(reactive: true);
+class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
+  HomeNavDrawer({Key key}) : super(reactive: true);
 
   @override
   Widget build(BuildContext context, HomeViewModel model) {
+<<<<<<< Updated upstream
     return Container(
       width: 250,
       child: Drawer(
@@ -230,6 +237,42 @@ class NavDrawer extends ViewModelWidget<HomeViewModel> {
                 }),
           ],
         ),
+=======
+    return Drawer(
+      key: Key('NavDrawer'),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: text22LeftBoldWhite("Side Menu"),
+            decoration: BoxDecoration(
+                color: Colors.grey,
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage('assets/images/springbok.jpg'))),
+          ),
+          ListTile(
+              leading: Icon(Icons.verified_user),
+              title: text16LeftBoldGrey("Profile"),
+              onTap: () => {navigateToProfile()}),
+          ListTile(
+              leading: Icon(Icons.settings),
+              title: text16LeftBoldGrey("Settings"),
+              onTap: () => {}),
+          ListTile(
+              leading: Icon(Icons.edit),
+              title: text16LeftBoldGrey("Preference"),
+              onTap: () => {}),
+          ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: text16LeftBoldGrey("Logout"),
+              onTap: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setBool("loggedIn", false);
+                navigateToLogin(context);
+              }),
+        ],
+>>>>>>> Stashed changes
       ),
     );
   }

@@ -261,6 +261,7 @@ class TagBox extends HookViewModelWidget<UploadViewModel> {
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
     var text = useTextEditingController();
     return TextField(
+      key: Key('TagBox'),
       controller: text,
       onChanged: viewModel.addTag,
       decoration: InputDecoration(
@@ -405,6 +406,7 @@ class SpoorLocationInput extends ViewModelWidget<UploadViewModel> {
   @override
   Widget build(BuildContext context, UploadViewModel model) {
     return Container(
+      key: Key('SpoorLocationInput'),
       width: 100,
       padding: EdgeInsets.all(5),
       margin: EdgeInsets.all(15),
@@ -500,6 +502,7 @@ Widget containerTitle(String title) {
 }
 
 Widget attachAnimal = new Container(
+  key: Key('attachAnimal'),
   height: 115,
   width: 100,
   padding: EdgeInsets.all(5),
@@ -534,6 +537,7 @@ Widget attachATagButton = new Container(
 );
 
 Widget attachATag = new Container(
+  key: Key('attachATag'),
   height: 115,
   width: 100,
   padding: EdgeInsets.all(5),

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
-import 'package:ERP_RANGER/services/api/fake_api.dart';
+import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,8 @@ import 'package:geolocator/geolocator.dart';
 import 'api/graphQL.dart';
 
 final NavigationService _navigationService = locator<NavigationService>();
-final Api _api = locator<GraphQL>();
+//final Api _api = locator<GraphQL>();
+final Api _api = locator<MockApi>();
 
 //============================ Functionality Section ==================================//
 
@@ -351,6 +352,7 @@ Widget tabBarTitles(String title, var context) {
 
 Widget progressIndicator() {
   return Container(
+      key: Key('progressIndicator'),
       color: Colors.white,
       child: Center(
         child: HeartbeatProgressIndicator(
@@ -370,6 +372,7 @@ Widget appBarTitle(String title, var context) {
 }
 
 Widget imageBlock(String imageLink) {
+<<<<<<< Updated upstream
   return imageLink == "N/A"
       ? Container(
           alignment: Alignment.center,
@@ -403,6 +406,25 @@ Widget imageBlock(String imageLink) {
           ),
           height: 75,
         );
+=======
+  return Container(
+    alignment: Alignment.center,
+    margin: new EdgeInsets.only(
+      left: 15,
+      right: 10,
+    ),
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: NetworkImage(imageLink),
+        //image: AssetImage(imageLink),
+        fit: BoxFit.fill,
+      ),
+      color: Colors.grey,
+      borderRadius: BorderRadius.circular(15),
+    ),
+    height: 75,
+  );
+>>>>>>> Stashed changes
 }
 
 Widget textColumn(String name, String time, String species, String location,
