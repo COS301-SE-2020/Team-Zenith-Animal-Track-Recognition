@@ -352,6 +352,7 @@ class Latitude extends HookViewModelWidget<UploadViewModel> {
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
     var text = useTextEditingController();
     return TextField(
+      key: Key('Latitude'),
       controller: text,
       onChanged: viewModel.updateLat,
       decoration: InputDecoration(
@@ -382,6 +383,7 @@ class Longitude extends HookViewModelWidget<UploadViewModel> {
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
     var text = useTextEditingController();
     return TextField(
+      key: Key('Longitude'),
       controller: text,
       onChanged: viewModel.updateLong,
       decoration: InputDecoration(

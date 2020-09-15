@@ -235,6 +235,10 @@ void navigateBack(context) {
   Navigator.of(context).pop();
 }
 
+void navigateToHomeView() {
+  _navigationService.navigateTo(Routes.homeViewRoute);
+}
+
 void navigateToSearchView() {
   _navigationService.navigateTo(Routes.searchViewRoute);
 }

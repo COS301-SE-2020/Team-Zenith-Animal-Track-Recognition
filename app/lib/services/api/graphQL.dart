@@ -231,7 +231,6 @@ class GraphQL implements Api {
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
         var list = body["data"]["animals"] as List;
-        print(list);
         searchList = list
             .map<SearchModel>((json) => SearchModel.fromJson(json))
             .toList();

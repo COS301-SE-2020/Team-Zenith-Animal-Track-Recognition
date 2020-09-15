@@ -22,7 +22,7 @@ class SearchView extends StatelessWidget {
                 drawer: NavDrawer(),
                 appBar: AppBar(
                   backgroundColor: Colors.black,
-                  title: text18LeftBoldWhite("Search View"),
+                  title: text18LeftBoldWhite("Animal Search"),
                   actions: <Widget>[
                     IconBuilder(
                         icon: Icons.search, colors: Colors.grey, index: 0),
@@ -49,32 +49,36 @@ class SearchView extends StatelessWidget {
                   return;
                 },
                 child: DefaultTabController(
+                    key: Key('DefaultTabController'),
                     length: 2,
                     child: Scaffold(
                       drawer: NavDrawer(),
                       appBar: AppBar(
                         backgroundColor: Colors.black,
-                        title: text18LeftBoldWhite("Search View"),
+                        title: text18LeftBoldWhite("Animal Search"),
                         actions: <Widget>[
                           IconBuilder(
                               icon: Icons.search,
                               colors: Colors.grey,
                               index: 0),
-                          IconBuilder(icon: Icons.more_vert, index: 1)
                         ],
-                        bottom: TabBar(tabs: [
+                        bottom: TabBar(key: Key('SearchTab'), tabs: [
                           text14CenterBoldGrey("ANIMAL"),
                           text14CenterBoldGrey("SPECIES"),
                         ]),
                       ),
                       body: Container(
+                          key: Key('SearchCon'),
                           color: Colors.grey[200],
                           child: TabBarView(
+                            key: Key('SearchTabBar'),
                             children: <Widget>[
                               ListBody(
+                                key: Key('SearchBodyA'),
                                 animalList: snapshot.data.animals,
                               ),
                               ListBody(
+                                key: Key('SearchBodyS'),
                                 animalList: snapshot.data.species,
                               ),
                             ],
@@ -109,17 +113,13 @@ class NavDrawer extends ViewModelWidget<SearchViewModel> {
                     image: AssetImage('assets/images/springbok.jpg'))),
           ),
           ListTile(
+              leading: Icon(Icons.home),
+              title: text16LeftBoldGrey("Home"),
+              onTap: () => {navigateToHomeView()}),
+          ListTile(
               leading: Icon(Icons.verified_user),
               title: text16LeftBoldGrey("Profile"),
               onTap: () => {navigateToProfile()}),
-          ListTile(
-              leading: Icon(Icons.settings),
-              title: text16LeftBoldGrey("Settings"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.edit),
-              title: text16LeftBoldGrey("Preference"),
-              onTap: () => {}),
           ListTile(
               leading: Icon(Icons.exit_to_app),
               title: text16LeftBoldGrey("Logout"),

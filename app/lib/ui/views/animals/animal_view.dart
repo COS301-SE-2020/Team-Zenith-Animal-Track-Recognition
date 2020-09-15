@@ -215,6 +215,7 @@ class ViewButton extends ViewModelWidget<AnimalViewModel> {
   @override
   Widget build(BuildContext context, AnimalViewModel model) {
     return ButtonTheme(
+      key: Key('ViewInfoButton'),
       minWidth: 200,
       child: RaisedButton(
           child: text12CenterBoldWhite("VIEW INFO"),
