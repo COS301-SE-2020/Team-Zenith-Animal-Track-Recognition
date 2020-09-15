@@ -13,8 +13,11 @@ import 'api.dart';
 
 final String domain = "http://putch.dyndns.org:55555/";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 // final String domain =
 //     "http://ec2-13-244-137-176.af-south-1.compute.amazonaws.com:55555/";
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -295,6 +298,7 @@ class GraphQL implements Api {
         throw HttpException('500');
       }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       print("Animal list size: " + identifiedList.length.toString());
       return identifiedList;
     } on SocketException {
@@ -305,6 +309,8 @@ class GraphQL implements Api {
     } on Exception {
       throw VerificationException('No Internet Connection');
 =======
+=======
+>>>>>>> Stashed changes
       return _cards;
 >>>>>>> Stashed changes
     }

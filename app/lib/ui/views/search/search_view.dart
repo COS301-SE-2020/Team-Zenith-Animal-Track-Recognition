@@ -19,6 +19,7 @@ class SearchView extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasError) {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               return Scaffold(
                 drawer: NavDrawer(),
                 appBar: AppBar(
@@ -35,6 +36,9 @@ class SearchView extends StatelessWidget {
                 ),
                 body: internetError(snapshot.error.toString()),
               );
+=======
+              return progressIndicator();
+>>>>>>> Stashed changes
 =======
               return progressIndicator();
 >>>>>>> Stashed changes
@@ -64,6 +68,10 @@ class SearchView extends StatelessWidget {
                               colors: Colors.grey,
                               index: 0),
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+                          IconBuilder(icon: Icons.more_vert, index: 1)
+>>>>>>> Stashed changes
 =======
                           IconBuilder(icon: Icons.more_vert, index: 1)
 >>>>>>> Stashed changes
@@ -215,6 +223,10 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
   Widget build(BuildContext context, SearchViewModel model) {
     return ListView.builder(
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+        key: Key('ListAnimals'),
+>>>>>>> Stashed changes
 =======
         key: Key('ListAnimals'),
 >>>>>>> Stashed changes
@@ -332,6 +344,10 @@ Widget imageBlock(String image) {
       image: DecorationImage(
         image: NetworkImage(image),
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+        //image: AssetImage(image),
+>>>>>>> Stashed changes
 =======
         //image: AssetImage(image),
 >>>>>>> Stashed changes

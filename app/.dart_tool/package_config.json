@@ -182,8 +182,18 @@
       "languageVersion": "1.17"
     },
     {
+      "name": "coverage",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/coverage-0.14.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
       "name": "crypto",
+<<<<<<< Updated upstream
       "rootUri": "file:///home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-2.1.5",
+=======
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-2.1.5",
+>>>>>>> Stashed changes
       "packageUri": "lib/",
       "languageVersion": "2.3"
     },
@@ -236,6 +246,12 @@
       "languageVersion": "2.9"
     },
     {
+      "name": "flutter_driver",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/packages/flutter_driver",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
+    },
+    {
       "name": "flutter_hooks",
       "rootUri": "file:///home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_hooks-0.9.0",
       "packageUri": "lib/",
@@ -282,6 +298,12 @@
       "rootUri": "file:///home/phahla/snap/flutter/common/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "2.0"
+    },
+    {
+      "name": "fuchsia_remote_debug_protocol",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/packages/fuchsia_remote_debug_protocol",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
     },
     {
       "name": "geolocator",
@@ -434,6 +456,12 @@
       "languageVersion": "2.6"
     },
     {
+      "name": "json_rpc_2",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/json_rpc_2-2.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
+    },
+    {
       "name": "logging",
       "rootUri": "file:///home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/logging-0.11.4",
       "packageUri": "lib/",
@@ -486,6 +514,12 @@
       "rootUri": "file:///home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/node_io-1.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.2"
+    },
+    {
+      "name": "node_preamble",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/node_preamble-1.4.12",
+      "packageUri": "lib/",
+      "languageVersion": "1.24"
     },
     {
       "name": "observable_ish",
@@ -644,6 +678,18 @@
       "languageVersion": "2.1"
     },
     {
+      "name": "shelf_packages_handler",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_packages_handler-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "shelf_static",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_static-0.2.8",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "shelf_web_socket",
       "rootUri": "file:///home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_web_socket-0.2.3",
       "packageUri": "lib/",
@@ -666,6 +712,18 @@
       "rootUri": "file:///home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/source_gen-0.9.6",
       "packageUri": "lib/",
       "languageVersion": "2.7"
+    },
+    {
+      "name": "source_map_stack_trace",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/source_map_stack_trace-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
+      "name": "source_maps",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/source_maps-0.10.9",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
     },
     {
       "name": "source_span",
@@ -716,14 +774,32 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "sync_http",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/sync_http-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "term_glyph",
       "rootUri": "file:///home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.1.0",
       "packageUri": "lib/",
       "languageVersion": "1.8"
     },
     {
+      "name": "test",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/test-1.15.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
       "name": "test_api",
       "rootUri": "file:///home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/test_api-0.2.17",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
+      "name": "test_core",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/test_core-0.3.10",
       "packageUri": "lib/",
       "languageVersion": "2.7"
     },
@@ -782,6 +858,18 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "vm_service",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/vm_service-4.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.6"
+    },
+    {
+      "name": "vm_service_client",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/vm_service_client-0.2.6+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "watcher",
       "rootUri": "file:///home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/watcher-0.9.7+15",
       "packageUri": "lib/",
@@ -790,6 +878,18 @@
     {
       "name": "web_socket_channel",
       "rootUri": "file:///home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/web_socket_channel-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "webdriver",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/webdriver-2.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "webkit_inspection_protocol",
+      "rootUri": "file:///C:/Users/user-pc/Documents/flutter_windows_1.20.2-stable/flutter/.pub-cache/hosted/pub.dartlang.org/webkit_inspection_protocol-0.7.3",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -824,7 +924,11 @@
       "languageVersion": "2.7"
     }
   ],
+<<<<<<< Updated upstream
   "generated": "2020-09-12T16:16:59.726660Z",
+=======
+  "generated": "2020-09-14T06:29:57.862995Z",
+>>>>>>> Stashed changes
   "generator": "pub",
   "generatorVersion": "2.9.2"
 }

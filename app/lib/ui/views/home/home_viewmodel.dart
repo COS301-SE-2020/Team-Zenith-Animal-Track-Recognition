@@ -4,8 +4,11 @@ import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import 'package:ERP_RANGER/services/verification_exception.dart';
 import 'package:image_picker/image_picker.dart';
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 import 'package:stacked/stacked.dart';

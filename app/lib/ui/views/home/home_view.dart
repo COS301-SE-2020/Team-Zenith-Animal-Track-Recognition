@@ -20,6 +20,7 @@ class HomeView extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasError) {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               return Scaffold(
                 drawer: NavDrawer(),
                 appBar: AppBar(
@@ -44,6 +45,8 @@ class HomeView extends StatelessWidget {
                 ),
               );
 =======
+=======
+>>>>>>> Stashed changes
               print(snapshot.toString());
               return progressIndicator();
 >>>>>>> Stashed changes
