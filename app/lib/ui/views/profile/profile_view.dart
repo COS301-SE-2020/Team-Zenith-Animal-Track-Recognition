@@ -420,16 +420,6 @@ Widget summary(ProfileInfoModel profileInfo) {
               Expanded(
                   flex: 1,
                   child: Container(
-                    alignment: Alignment.centerRight,
-                    color: Colors.white,
-                    height: 30,
-                    width: 30,
-                    child:
-                        Center(child: text20LeftBoldBlack("$spoorIdentified")),
-                  )),
-              Expanded(
-                  flex: 1,
-                  child: Container(
                     margin: new EdgeInsets.all(0),
                     color: Colors.white,
                     height: 30,
@@ -438,14 +428,24 @@ Widget summary(ProfileInfoModel profileInfo) {
                       Expanded(
                           flex: 1,
                           child: Container(
-                              alignment: Alignment.bottomLeft,
+                              alignment: Alignment.bottomRight,
                               child: text12LeftBoldGrey("Tracks"))),
                       Expanded(
                           flex: 1,
                           child: Container(
-                              alignment: Alignment.topLeft,
+                              alignment: Alignment.topRight,
                               child: text12LeftBoldGrey("Identified")))
                     ]),
+                  )),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    color: Colors.white,
+                    height: 30,
+                    width: 30,
+                    child:
+                        Center(child: text20LeftBoldBlack("$spoorIdentified")),
                   )),
             ],
           ),
@@ -458,15 +458,6 @@ Widget summary(ProfileInfoModel profileInfo) {
               Expanded(
                   flex: 1,
                   child: Container(
-                      alignment: Alignment.centerRight,
-                      color: Colors.white,
-                      height: 30,
-                      width: 30,
-                      child: Center(
-                          child: text20LeftBoldBlack("$animalsTracked")))),
-              Expanded(
-                  flex: 1,
-                  child: Container(
                     margin: new EdgeInsets.all(0),
                     color: Colors.white,
                     height: 30,
@@ -475,15 +466,24 @@ Widget summary(ProfileInfoModel profileInfo) {
                       Expanded(
                           flex: 1,
                           child: Container(
-                              alignment: Alignment.bottomLeft,
+                              alignment: Alignment.bottomRight,
                               child: text12LeftBoldGrey("Animals"))),
                       Expanded(
                           flex: 1,
                           child: Container(
-                              alignment: Alignment.topLeft,
+                              alignment: Alignment.topRight,
                               child: text12LeftBoldGrey("Tracked")))
                     ]),
                   )),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      color: Colors.white,
+                      height: 30,
+                      width: 30,
+                      child: Center(
+                          child: text20LeftBoldBlack("$animalsTracked")))),
             ],
           ),
         ),
@@ -494,15 +494,6 @@ Widget summary(ProfileInfoModel profileInfo) {
               Expanded(
                   flex: 1,
                   child: Container(
-                      alignment: Alignment.centerRight,
-                      color: Colors.white,
-                      height: 30,
-                      width: 30,
-                      child: Center(
-                          child: text20LeftBoldBlack("$speciesTracked")))),
-              Expanded(
-                  flex: 1,
-                  child: Container(
                     margin: new EdgeInsets.all(0),
                     color: Colors.white,
                     height: 30,
@@ -511,15 +502,24 @@ Widget summary(ProfileInfoModel profileInfo) {
                       Expanded(
                           flex: 1,
                           child: Container(
-                              alignment: Alignment.bottomLeft,
-                              child: text12LeftBoldGrey("Species"))),
+                              alignment: Alignment.bottomRight,
+                              child: text12LeftBoldGrey("Access"))),
                       Expanded(
                           flex: 1,
                           child: Container(
-                              alignment: Alignment.topLeft,
-                              child: text12LeftBoldGrey("Tracked")))
+                              alignment: Alignment.topRight,
+                              child: text12LeftBoldGrey("Level")))
                     ]),
                   )),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      color: Colors.white,
+                      height: 30,
+                      width: 30,
+                      child: Center(
+                          child: text20LeftBoldBlack("$speciesTracked")))),
             ],
           ),
         ),

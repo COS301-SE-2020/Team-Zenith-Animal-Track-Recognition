@@ -260,7 +260,6 @@ class GraphQL implements Api {
   @override
   Future<int> getUserLevel() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     return prefs.getInt("accessLevel");
   }
 
@@ -1353,7 +1352,6 @@ class GraphQL implements Api {
               "graphql?query=query{users(tokenIn: \"$token\", rangerID: \"$id\"){firstName, lastName,phoneNumber, eMail, pictureURL}}")
           .timeout(const Duration(seconds: 7));
 
-      print("Info model: " + response.statusCode.toString());
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
 
@@ -1392,14 +1390,36 @@ class GraphQL implements Api {
         throw HttpException('500');
       }
 
+      final http.Response res = await http
+          .get("$domain" +
+              "graphql?query=query{rangersStats(token: \"$token\", rangerID: \"$id\"){spoors, mostTrackedAnimal{commonName}, nuberOfanamils}}")
+          .timeout(const Duration(seconds: 7));
+
+      String mostTracked;
+      String tracks;
+      String noAnimals;
+      if (res.statusCode == 200) {
+        var body = json.decode(res.body);
+
+        mostTracked = body['data']['rangersStats']['mostTrackedAnimal']
+                ['commonName']
+            .toString();
+
+        tracks = body['data']['rangersStats']['spoors'].toString();
+
+        noAnimals = body['data']['rangersStats']['nuberOfanamils'].toString();
+      }
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int alevel = prefs.getInt("accessLevel");
       ProfileInfoModel profileInfo = new ProfileInfoModel(
           name: name,
           number: numb,
           email: mail,
           picture: pic,
-          animalsTracked: "17",
-          spoorIdentified: "150",
-          speciesTracked: "38");
+          animalsTracked: noAnimals,
+          spoorIdentified: tracks,
+          speciesTracked: alevel.toString());
 
       return profileInfo;
     } on SocketException {
