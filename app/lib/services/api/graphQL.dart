@@ -1108,7 +1108,6 @@ class GraphQL implements Api {
   Future<GalleryModel> getGalleryModel(String i) async {
     List<String> appearance = new List();
     List<String> tracks = new List();
-    List<String> droppings = new List();
     List<List<String>> gallery = new List();
     String name;
 
@@ -1117,28 +1116,37 @@ class GraphQL implements Api {
       if (ConnectivityResult.none == connectivity) {
         throw Exception("");
       }
-      if (i == "diceros bicornis") {
-        appearance.add("assets/images/appearance/rhino/p1.jpg");
-        appearance.add("assets/images/appearance/rhino/p2.jpg");
-        appearance.add("assets/images/appearance/rhino/p3.jpg");
-        appearance.add("assets/images/appearance/rhino/p4.jpg");
 
-        tracks.add("assets/images/print/rhino/print1.jpg");
-        tracks.add("assets/images/print/rhino/print2.jpg");
-        tracks.add("assets/images/print/rhino/print3.jpg");
-        tracks.add("assets/images/print/rhino/print4.jpg");
+      final http.Response response = await http.get("$domain" +
+          "graphql?query=query{pictures(classification: \"$i\",kindOfPicture: \"animal\" ){picturesID,URL,kindOfPicture}}");
 
-        droppings.add("assets/images/droppings/rhino/drop1.jpg");
-        droppings.add("assets/images/droppings/rhino/drop2.jpg");
-        droppings.add("assets/images/droppings/rhino/drop3.jpg");
-        name = "Black Rhinoceroses";
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+        var list = body['data']['pictures'] as List;
+
+        for (int i = 0; i < list.length; i++) {
+          appearance.add(body['data']['pictures'][i]['URL'].toString());
+        }
       } else {
         throw HttpException('500');
       }
 
+      final http.Response res = await http.get("$domain" +
+          "graphql?query=query{pictures(classification: \"$i\",kindOfPicture: \"trak\" ){picturesID,URL,kindOfPicture}}");
+
+      if (res.statusCode == 200) {
+        var body = json.decode(res.body);
+        var list = body['data']['pictures'] as List;
+
+        for (int i = 0; i < list.length; i++) {
+          tracks.add(body['data']['pictures'][i]['URL'].toString());
+        }
+      } else {
+        throw HttpException('500');
+      }
+      name = i;
       gallery.add(appearance);
       gallery.add(tracks);
-      gallery.add(droppings);
       return GalleryModel(galleryList: gallery, name: name);
     } on SocketException {
       throw VerificationException(

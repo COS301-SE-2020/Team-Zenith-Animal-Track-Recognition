@@ -88,14 +88,14 @@ List<Widget> getBodyWidgets(int len, var data) {
 
 Widget getWidget(var animalTabList) {
   return GridView.count(
-    crossAxisCount: 3,
+    crossAxisCount: 2,
     children: List.generate(animalTabList.length, (index) {
       return Container(
         alignment: Alignment.center,
         margin: new EdgeInsets.all(5),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(animalTabList[index]),
+            image: NetworkImage(animalTabList[index]),
             fit: BoxFit.fill,
           ),
           color: Colors.grey,

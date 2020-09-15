@@ -14,8 +14,14 @@ class GalleryViewModel extends BaseViewModel {
   final Api _api = locator<MockApi>();
 
   Future<TempObject> getSpoor(var context) async {
-    TabModel tabModel = await _api.getTabModel();
+    List<String> categories = new List();
+    categories.add("Appearance");
+    categories.add("Tracks");
+
+    TabModel tabModel =
+        TabModel(categories: categories, length: categories.length);
     List<Tab> tabs = new List();
+
     for (int i = 0; i < tabModel.categories.length; i++) {
       tabs.add(Tab(
           child: text12CenterBoldWhite(tabModel.categories[i].toUpperCase())));

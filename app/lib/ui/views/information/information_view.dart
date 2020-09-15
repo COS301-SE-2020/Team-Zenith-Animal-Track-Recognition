@@ -245,7 +245,7 @@ class ViewButton extends ViewModelWidget<InformationViewModel> {
           ),
           child: text16CenterBoldWhite('VIEW GALLERY'),
           onPressed: () {
-            navigateToGallery(name.toLowerCase());
+            navigateToGallery(name);
           },
         )
       ],
