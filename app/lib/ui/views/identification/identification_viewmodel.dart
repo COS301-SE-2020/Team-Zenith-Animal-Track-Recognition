@@ -1,17 +1,13 @@
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
-import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 import 'package:social_share/social_share.dart';
 import 'package:image_downloader/image_downloader.dart';
 
 class IdentificationViewModel extends BaseViewModel {
-  final NavigationService _navigationService = locator<NavigationService>();
-  final DialogService _dialogService = locator<DialogService>();
   final Api _api = locator<GraphQL>();
   //final Api _api = locator<MockApi>();
 
@@ -43,10 +39,7 @@ class IdentificationViewModel extends BaseViewModel {
       }
 
       // Below is a method of obtaining saved image information.
-      var fileName = await ImageDownloader.findName(imageId);
       var path = await ImageDownloader.findPath(imageId);
-      var size = await ImageDownloader.findByteSize(imageId);
-      var mimeType = await ImageDownloader.findMimeType(imageId);
       SocialShare.shareOptions("Check out this track", imagePath: path);
     } on PlatformException catch (error) {
       print(error);
@@ -121,7 +114,6 @@ class IdentificationViewModel extends BaseViewModel {
         notifyListeners();
       }
     }
-    ;
   }
 //=======================Lat================================
 
@@ -157,7 +149,6 @@ class IdentificationViewModel extends BaseViewModel {
         notifyListeners();
       }
     }
-    ;
   }
 //=======================Long================================
 
@@ -178,7 +169,6 @@ class IdentificationViewModel extends BaseViewModel {
       _confident.name = value;
       setEditSpoorName();
     }
-    ;
   }
 //=======================Confident Name================================
 
@@ -199,7 +189,6 @@ class IdentificationViewModel extends BaseViewModel {
       _confident.name = value;
       setEditSpoorSpecies();
     }
-    ;
   }
 
 //=======================Confident Species================================

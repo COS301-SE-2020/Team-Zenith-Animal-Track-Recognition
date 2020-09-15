@@ -34,7 +34,6 @@ class SearchView extends StatelessWidget {
                 ),
                 body: internetError(snapshot.error.toString()),
               );
-              return progressIndicator();
             }
             if (snapshot.hasData) {
               displayList.clear();

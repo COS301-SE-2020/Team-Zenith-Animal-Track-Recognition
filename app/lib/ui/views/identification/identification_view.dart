@@ -2,11 +2,9 @@ import 'dart:async';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/identification/identification_viewmodel.dart';
-import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:maps_launcher/maps_launcher.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
@@ -14,10 +12,6 @@ import 'package:stacked_hooks/stacked_hooks.dart';
 class IdentificationView extends StatelessWidget {
   IdentificationView({@required this.name});
   String name;
-  CameraPosition _myLocation = CameraPosition(
-    target: LatLng(-25.882171, 28.264653),
-    zoom: 15,
-  );
 
   Completer<GoogleMapController> _controller = Completer();
 
@@ -58,8 +52,7 @@ class IdentificationView extends StatelessWidget {
                           children: <Widget>[
                             Container(
                               child: GoogleMap(
-                                initialCameraPosition: _myLocation =
-                                    CameraPosition(
+                                initialCameraPosition: CameraPosition(
                                   target: LatLng(model.coordinatesLat,
                                       model.coordinatesLong),
                                   zoom: 15,

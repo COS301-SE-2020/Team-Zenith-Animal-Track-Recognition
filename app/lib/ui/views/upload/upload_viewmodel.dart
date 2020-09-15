@@ -1,15 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:ERP_RANGER/app/locator.dart';
-import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
-import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
-import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
-import 'package:geolocator/geolocator.dart';
 
 class UploadViewModel extends BaseViewModel {
   String tag;
@@ -42,7 +37,6 @@ class UploadViewModel extends BaseViewModel {
   List<String> _tags = new List<String>();
   List<String> get tags => _tags;
 
-  final NavigationService _navigationService = locator<NavigationService>();
   final Api api = locator<GraphQL>();
 
   List<String> getSuggestions(String query) {

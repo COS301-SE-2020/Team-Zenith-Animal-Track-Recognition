@@ -287,7 +287,6 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
   AnimalBox({
     Key key,
   }) : super(reactive: true);
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
     final TextEditingController _typeAheadController = TextEditingController();

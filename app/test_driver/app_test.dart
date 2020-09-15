@@ -1,14 +1,4 @@
-﻿// Imports the Flutter Driver API.
-import 'package:ERP_RANGER/app/locator.dart';
-import 'package:ERP_RANGER/app/router.gr.dart';
-import 'package:ERP_RANGER/services/api/api.dart';
-import 'package:ERP_RANGER/services/api/mock_api.dart';
-import 'package:ERP_RANGER/services/datamodels/api_models.dart';
-import 'package:ERP_RANGER/services/util.dart';
-import 'package:ERP_RANGER/ui/views/animals/animal_view.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_driver/flutter_driver.dart';
-import 'package:stacked_services/stacked_services.dart';
+﻿import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {

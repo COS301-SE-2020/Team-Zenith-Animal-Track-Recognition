@@ -1,6 +1,4 @@
 import 'package:ERP_RANGER/services/util.dart';
-import 'package:ERP_RANGER/ui/views/identification/identification_view.dart';
-import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

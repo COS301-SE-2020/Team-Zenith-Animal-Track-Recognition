@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
-import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +11,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:progress_indicators/progress_indicators.dart';
-import 'package:geolocator/geolocator.dart';
 
 import 'api/graphQL.dart';
 
@@ -407,23 +403,6 @@ Widget imageBlock(String imageLink) {
           ),
           height: 75,
         );
-  return Container(
-    alignment: Alignment.center,
-    margin: new EdgeInsets.only(
-      left: 15,
-      right: 10,
-    ),
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: NetworkImage(imageLink),
-        //image: AssetImage(imageLink),
-        fit: BoxFit.fill,
-      ),
-      color: Colors.grey,
-      borderRadius: BorderRadius.circular(15),
-    ),
-    height: 75,
-  );
 }
 
 Widget textColumn(String name, String time, String species, String location,

@@ -6,13 +6,9 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
-
 import 'package:ERP_RANGER/app/locator.dart';
-import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
-import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:ERP_RANGER/ui/views/animals/animal_view.dart';
@@ -32,10 +28,6 @@ import 'package:ERP_RANGER/ui/views/upload/upload_view.dart';
 import 'package:ERP_RANGER/ui/views/userconfirmed/user_confirmed_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:ERP_RANGER/main.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -238,7 +230,6 @@ void main() {
     testWidgets('Test presence of dynamic tab content',
         (WidgetTester tester) async {
       final Api _api = locator<MockApi>();
-      final Api api = locator<GraphQL>();
       GalleryModel galleryModel = await _api.getGalleryModel('lion');
       await tester.pumpWidget(MaterialApp(
         home: GalleryView(galleryModel),
@@ -359,11 +350,8 @@ void main() {
   group('NotConfirmedView Tests', () {
     testWidgets('Test presence of not identified data',
         (WidgetTester tester) async {
-      final Api _api = locator<MockApi>();
       File image = File(
           'C:/Users/user-pc/Documents/GitHub/Team-Zenith-Animal-Track-Recognition/app/assets/images/ANV1.jpeg');
-      String url = base64Encode(image.readAsBytesSync());
-      List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
 
       await tester.pumpWidget(MaterialApp(
         home: NotConfirmedView(
