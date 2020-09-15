@@ -168,6 +168,17 @@ const SPOOR_IDENTIFICATION_TYPE = new GraphQLObjectType({
         },
         tags:{
             type: new GraphQLList(GraphQLString)
+        },
+        similar:{
+            type:new GraphQLList(PICTURES_TYPE) ,
+            resolve(parent, args) {
+                let temp=[]
+                parent.similar.forEach(element => {
+                    let vind=_.find(pictureData,{ picturesID:element.toString()})
+                    temp.push(vind)
+                });
+                return temp
+            }
         }
     })
 });
@@ -899,14 +910,14 @@ const RootQuery = new GraphQLObjectType({
                         })
                     }
                 } else if (args.classification != undefined) {
-                    console.log(temp)
+                    
                     let animalToFind =_.find(animalData,{
                         classification:args.classification
                     })
-                    console.log(animalToFind.animalID)
+                    
                     if (args.negat == undefined) {
                         temp = _.filter(temp, {
-                            animal: toNumber(animalToFind.animalID)
+                            animal: animalToFind.animalID.toString()
                         })
                     } else {
                         temp = _.reject(temp, {
@@ -2043,9 +2054,6 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
-
-                console.log(dietTypes)
-                console.log(dietTypeData)
                 let a = _.find(usersData, {
                     token: args.token
                 })
@@ -2063,7 +2071,6 @@ const Mutation = new GraphQLObjectType({
                 }
                 dietTypes.add(newDiet)
                 dietTypeData.push(args.dietName)
-                console.log(dietTypeData)
                 return args.dietName;
 
             }
@@ -2379,7 +2386,6 @@ if (CACHE) {
             groupData.push(newGoupe)
             if (newGoupe.priority==undefined){
                 newGoupe.priority=9;
-                console.log(newGoupe)
                 groups.doc(newGoupe.groupID).set(newGoupe)
             }
         });
@@ -2401,10 +2407,8 @@ if (CACHE) {
         pictureData = []
         querySnapshot.forEach(function (doc) {
             let newPicture = doc.data()
-            if (newPicture.pictureID == undefined)
-                newPicture.pictureID = doc.id
-            if (newPicture.picturesID == undefined)
-                newPicture.picturesID = doc.id
+            newPicture.pictureID = doc.id.toString()
+            newPicture.picturesID = doc.id.toString()
             // console.log(newPicture)
             pictureData.push(newPicture)
         });
@@ -2415,6 +2419,8 @@ if (CACHE) {
         redeyNeedConterUP();
         spoorIdentificationData = []
         querySnapshot.forEach(function (doc) {
+            
+
             let newSpoorID = doc.data()
             if (doc.data().picture == undefined)
                 newSpoorID.picture = selerRandomImg()
@@ -2423,10 +2429,11 @@ if (CACHE) {
                 newSpoorID.location.latitude = newLocation.latitude
                 newSpoorID.location.longitude = newLocation.longitude
             }
-            newSpoorID.animal=toNumber(newSpoorID.animal)
-
+            newSpoorID.animal=newSpoorID.animal.toString()
+            newSpoorID.similar=getSimilarimgTrak(newSpoorID.animal.toString())
             // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
             spoorIdentificationData.push(newSpoorID)
+
         });
         redeyNeedConterDown();
     });
@@ -2616,9 +2623,10 @@ if (CACHE) {
         });
         redeyNeedConterDown();
     });
+    
+    
 
 }else{
-    console.log(usersData)
 }
 
 function AIIterface(Img) {
@@ -2636,7 +2644,6 @@ function AIIterface(Img) {
 function uplodeBase64(Img,folder="trak") {
     newImgID = imgID()
     saveBase64File(Img, newImgID + ".jpeg")
-    // console.log("reder")
 
 
     async function uploadFile(){
@@ -2739,13 +2746,19 @@ function uplodeBase64URL(Img,folder="ranger") {
 
 
 function getSimilarimgTrak(animalID) {
-    
-    let temp =_.find(animalData,{
+    let obj=[]
+    let data =_.find(animalData,{
         animalID:animalID
     })
-    let obj=_.filter(animalData.pictures,{
-        kindOfPicture:"trak"
-    })
+    data.pictures.forEach(element => {
+        temp=_.find(pictureData,{
+            pictureID:element
+        })
+        if (temp.kindOfPicture=="trak")
+        obj.push(element)
+    });
+    if (obj.length==0)
+    obj=["19"]
     return obj
 }
 
