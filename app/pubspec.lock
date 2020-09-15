@@ -774,10 +774,7 @@ packages:
       name: shelf
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< Updated upstream
     version: "0.7.9"
-=======
-    version: "0.7.7"
   shelf_packages_handler:
     dependency: transitive
     description:
@@ -792,10 +789,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.8"
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   shelf_web_socket:
     dependency: transitive
     description:

@@ -875,7 +875,6 @@ Widget swapImageBlock(String link, int index, IdentificationViewModel model) {
 }
 
 Widget innerImageBlock(String link) {
-<<<<<<< Updated upstream
   return link == "N/A"
       ? Container(
           alignment: Alignment.center,
@@ -907,27 +906,6 @@ Widget innerImageBlock(String link) {
           height: 150,
           width: 150,
         );
-=======
-  return InkWell(
-    onTap: () => print(""),
-    child: new Container(
-      alignment: Alignment.center,
-      margin: new EdgeInsets.all(5),
-      padding: new EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(10),
-        image: DecorationImage(
-          image: NetworkImage(link),
-          //image: AssetImage(link),
-          fit: BoxFit.fill,
-        ),
-      ),
-      height: 150,
-      width: 150,
-    ),
-  );
->>>>>>> Stashed changes
 }
 
 Widget icon = new Container(

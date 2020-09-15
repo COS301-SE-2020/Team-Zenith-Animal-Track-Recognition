@@ -15,14 +15,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:progress_indicators/progress_indicators.dart';
-import 'file:///home/phahla/Documents/GitHub/Team-Zenith-Animal-Track-Recognition/app/assets/images/my_custom_icons.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'api/graphQL.dart';
 
 final NavigationService _navigationService = locator<NavigationService>();
-//final Api _api = locator<GraphQL>();
-final Api _api = locator<MockApi>();
+final Api _api = locator<GraphQL>();
+//final Api _api = locator<MockApi>();
 
 //============================ Functionality Section ==================================//
 
@@ -357,8 +356,7 @@ Widget progressIndicator() {
       child: Center(
         child: HeartbeatProgressIndicator(
           child: new Directionality(
-              textDirection: TextDirection.rtl,
-              child: Icon(MyCustomIcons.logo)),
+              textDirection: TextDirection.rtl, child: Icon(Icons.timeline)),
         ),
       ));
 }
@@ -372,7 +370,6 @@ Widget appBarTitle(String title, var context) {
 }
 
 Widget imageBlock(String imageLink) {
-<<<<<<< Updated upstream
   return imageLink == "N/A"
       ? Container(
           alignment: Alignment.center,
@@ -406,7 +403,6 @@ Widget imageBlock(String imageLink) {
           ),
           height: 75,
         );
-=======
   return Container(
     alignment: Alignment.center,
     margin: new EdgeInsets.only(
@@ -424,7 +420,6 @@ Widget imageBlock(String imageLink) {
     ),
     height: 75,
   );
->>>>>>> Stashed changes
 }
 
 Widget textColumn(String name, String time, String species, String location,

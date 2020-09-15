@@ -18,39 +18,6 @@ class HomeView extends StatelessWidget {
       builder: (context, model, child) => FutureBuilder(
           future: model.getRecentIdentifications(),
           builder: (context, snapshot) {
-            if (snapshot.hasError) {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-              return Scaffold(
-                drawer: NavDrawer(),
-                appBar: AppBar(
-                  backgroundColor: Colors.black,
-                  title: text22LeftBoldWhite(
-                    "ERP RANGER",
-                  ),
-                  actions: <Widget>[
-                    IconBuilder(icon: Icons.search),
-                  ],
-                ),
-                body: internetError(snapshot.error.toString()),
-                bottomNavigationBar: BottomNavigation(),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () {
-                    showOptions(context);
-                  },
-                  child: Icon(
-                    Icons.camera_alt,
-                  ),
-                  backgroundColor: Colors.black,
-                ),
-              );
-=======
-=======
->>>>>>> Stashed changes
-              print(snapshot.toString());
-              return progressIndicator();
->>>>>>> Stashed changes
-            }
             if (snapshot.hasData) {
               return snapshot.hasData
                   ? Scaffold(
@@ -203,11 +170,10 @@ class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
 
   @override
   Widget build(BuildContext context, HomeViewModel model) {
-<<<<<<< Updated upstream
     return Container(
-      width: 250,
-      child: Drawer(
-        child: ListView(
+        width: 250,
+        child: Drawer(
+            child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
@@ -239,44 +205,6 @@ class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
                   navigateToLogin(context);
                 }),
           ],
-        ),
-=======
-    return Drawer(
-      key: Key('NavDrawer'),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: text22LeftBoldWhite("Side Menu"),
-            decoration: BoxDecoration(
-                color: Colors.grey,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/springbok.jpg'))),
-          ),
-          ListTile(
-              leading: Icon(Icons.verified_user),
-              title: text16LeftBoldGrey("Profile"),
-              onTap: () => {navigateToProfile()}),
-          ListTile(
-              leading: Icon(Icons.settings),
-              title: text16LeftBoldGrey("Settings"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.edit),
-              title: text16LeftBoldGrey("Preference"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: text16LeftBoldGrey("Logout"),
-              onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setBool("loggedIn", false);
-                navigateToLogin(context);
-              }),
-        ],
->>>>>>> Stashed changes
-      ),
-    );
+        )));
   }
 }
