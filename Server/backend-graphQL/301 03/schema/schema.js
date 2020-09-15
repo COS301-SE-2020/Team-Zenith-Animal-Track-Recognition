@@ -1821,7 +1821,7 @@ const Mutation = new GraphQLObjectType({
                         spoorIdentificationID: IDID.toString()
                     })
                 }
-                let tag = "0"
+                let tag = ["0"]
                 if (args.tags != undefined)
                     tag = args.tags;
 
@@ -1906,7 +1906,7 @@ const Mutation = new GraphQLObjectType({
                         spoorIdentificationID: IDID.toString()
                     })
                 }
-                let tag = "0"
+                let tag = ["0"]
                 if (args.tags != undefined)
                     tag = args.tags;
 
