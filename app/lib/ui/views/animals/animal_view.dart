@@ -17,7 +17,6 @@ class AnimalView extends StatelessWidget {
     return ViewModelBuilder<AnimalViewModel>.reactive(
       builder: (context, model, child) => FutureBuilder(
           future: model.getCategories(context),
-          // ignore: missing_return
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Scaffold(
@@ -45,6 +44,7 @@ class AnimalView extends StatelessWidget {
                         return;
                       },
                       child: DefaultTabController(
+                        key: Key('DynamicTab'),
                         length: snapshot.data.length,
                         child: Scaffold(
                           drawer: NavDrawer(),
@@ -238,6 +238,7 @@ Widget imageBlock(String imageLink) {
     decoration: BoxDecoration(
       image: DecorationImage(
         image: NetworkImage(imageLink),
+        //image: AssetImage(imageLink),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,

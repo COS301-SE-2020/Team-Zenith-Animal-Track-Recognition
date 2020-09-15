@@ -1,0 +1,1 @@
+[{"type":"MockApi","typeImpl":"MockApi","isAsync":false,"preResolve":false,"injectableType":2,"imports":["package:ERP_RANGER/services/api/mock_api.dart"],"dependsOn":[],"dependencies":[],"constructorName":"","isAbstract":false}]

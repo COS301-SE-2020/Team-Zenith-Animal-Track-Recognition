@@ -149,6 +149,7 @@ class ProfileViewList extends ViewModelWidget<ProfileViewModel> {
   Widget build(BuildContext context, ProfileViewModel viewModel) {
     animalList = tempObject.animalList;
     return CustomScrollView(
+      key: Key('ProfileList'),
       slivers: <Widget>[
         SliverPersistentHeader(
           pinned: true,
@@ -320,6 +321,7 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
 Widget profileinfo(ProfileInfoModel profileInfo) {
   String pic = profileInfo.picture;
   return Container(
+    key: Key('profileinfo'),
     color: Colors.white,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,

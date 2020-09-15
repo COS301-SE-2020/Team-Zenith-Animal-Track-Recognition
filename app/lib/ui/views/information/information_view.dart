@@ -28,7 +28,6 @@ class InformationView extends StatelessWidget {
             return progressIndicator();
           }
           if (snapshot.hasData) {
-            // imageSliders.clear();
             imgList.clear();
             imgList.addAll(animalInfo.carouselImages);
             return snapshot.hasData
@@ -49,7 +48,6 @@ class InformationView extends StatelessWidget {
                           backButton(context),
                         ],
                       ),
-                      //bottomNavigationBar: BottomNavigation(),
                     ),
                   )
                 : progressIndicator();
@@ -69,6 +67,7 @@ class InfoListBody extends ViewModelWidget<InformationViewModel> {
   @override
   Widget build(BuildContext context, InformationViewModel viewModel) {
     return CustomScrollView(
+      key: Key('Carousel'),
       slivers: <Widget>[
         SliverToBoxAdapter(
           child: SizedBox(height: 500, child: CarouselWithIndicator()),
@@ -96,17 +95,19 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
           color: Colors.white,
         ),
         child: Column(children: [
-          CarouselSlider(
-            items: getCarousel(),
-            options: CarouselOptions(
-                autoPlay: true,
-                enlargeCenterPage: true,
-                aspectRatio: 16 / 12,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _current = index;
-                  });
-                }),
+          Expanded(
+            child: CarouselSlider(
+              items: getCarousel(),
+              options: CarouselOptions(
+                  autoPlay: true,
+                  enlargeCenterPage: true,
+                  aspectRatio: 16 / 12,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _current = index;
+                    });
+                  }),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -138,6 +139,7 @@ class Scroll extends ViewModelWidget<InformationViewModel> {
   @override
   Widget build(BuildContext context, InformationViewModel model) {
     return DraggableScrollableSheet(
+        key: Key('InfoScroll'),
         initialChildSize: 0.59,
         minChildSize: 0.59,
         maxChildSize: 0.99,
@@ -492,6 +494,12 @@ List<Widget> getCarousel() {
                         width: 1000.0,
                         height: 500,
                       ),
+                      // Image.asset(
+                      //   item,
+                      //   fit: BoxFit.cover,
+                      //   width: 1000.0,
+                      //   height: 500,
+                      // ),
                       Positioned(
                         bottom: 0.0,
                         left: 0.0,

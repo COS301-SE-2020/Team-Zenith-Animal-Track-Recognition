@@ -18,37 +18,11 @@ class HomeView extends StatelessWidget {
       builder: (context, model, child) => FutureBuilder(
           future: model.getRecentIdentifications(),
           builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Scaffold(
-                drawer: NavDrawer(),
-                appBar: AppBar(
-                  backgroundColor: Colors.black,
-                  title: text22LeftBoldWhite(
-                    "ERP RANGER",
-                  ),
-                  actions: <Widget>[
-                    IconBuilder(icon: Icons.search),
-                  ],
-                ),
-                body: internetError(snapshot.error.toString()),
-                bottomNavigationBar: BottomNavigation(),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () {
-                    showOptions(context);
-                  },
-                  child: Icon(
-                    Icons.camera_alt,
-                  ),
-                  backgroundColor: Colors.black,
-                ),
-              );
-            }
             if (snapshot.hasData) {
               return snapshot.hasData
                   ? Scaffold(
-                      drawer: NavDrawer(),
+                      drawer: HomeNavDrawer(),
                       appBar: AppBar(
-                        //automaticallyImplyLeading: true,
                         backgroundColor: Colors.black,
                         title: text22LeftBoldWhite(
                           "ERP RANGER",
@@ -58,9 +32,10 @@ class HomeView extends StatelessWidget {
                         ],
                       ),
                       body: Container(
+                        key: Key('List'),
                         padding: EdgeInsets.all(10),
                         color: Colors.grey[300],
-                        child: ListBody(animalList: snapshot.data),
+                        child: HomeListBody(animalList: model.animals),
                       ),
                       bottomNavigationBar: BottomNavigation(),
                       floatingActionButton: FloatingActionButton(
@@ -103,12 +78,13 @@ class IconBuilder extends ViewModelWidget<HomeViewModel> {
 }
 //========================== APPBAR ICONS =======================
 
-class ListBody extends ViewModelWidget<HomeViewModel> {
+class HomeListBody extends ViewModelWidget<HomeViewModel> {
   List<HomeModel> animalList;
-  ListBody({Key key, this.animalList}) : super(reactive: true);
+  HomeListBody({Key key, this.animalList}) : super(reactive: true);
 
   @override
   Widget build(BuildContext context, HomeViewModel model) {
+    model.getRecentIdentifications();
     return ListView.builder(
         itemCount: animalList.length,
         scrollDirection: Axis.vertical,
@@ -119,6 +95,7 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
               navigateToIdentification(animalList[index].id);
             },
             child: Card(
+              key: Key('TrackID'),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               margin: new EdgeInsets.all(10),
@@ -188,16 +165,15 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
   }
 }
 
-class NavDrawer extends ViewModelWidget<HomeViewModel> {
-  //List<HomeModel> animalList;
-  NavDrawer({Key key}) : super(reactive: true);
+class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
+  HomeNavDrawer({Key key}) : super(reactive: true);
 
   @override
   Widget build(BuildContext context, HomeViewModel model) {
     return Container(
-      width: 250,
-      child: Drawer(
-        child: ListView(
+        width: 250,
+        child: Drawer(
+            child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
@@ -229,8 +205,6 @@ class NavDrawer extends ViewModelWidget<HomeViewModel> {
                   navigateToLogin(context);
                 }),
           ],
-        ),
-      ),
-    );
+        )));
   }
 }

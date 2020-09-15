@@ -20,10 +20,12 @@ class LoginView extends StatelessWidget {
             children: <Widget>[
               logo,
               Container(
+                  key: Key('UserName'),
                   margin: new EdgeInsets.only(
                       right: 20, left: 20, top: 20, bottom: 10),
                   child: UserName()),
               Container(
+                  key: Key('Password'),
                   margin: new EdgeInsets.only(
                       right: 20, left: 20, top: 10, bottom: 10),
                   child: Password()),
@@ -52,6 +54,7 @@ class UploadButton extends ViewModelWidget<LoginViewModel> {
       ),
       width: 200,
       child: RaisedButton(
+          key: Key('LoginButton'),
           child: text20CenterBoldWhite("LOGIN"),
           color: Colors.grey[300],
           shape:
@@ -73,6 +76,7 @@ class UserName extends HookViewModelWidget<LoginViewModel> {
   Widget buildViewModelWidget(BuildContext context, LoginViewModel model) {
     var text = useTextEditingController();
     return TextField(
+      key: Key('InputUser'),
       controller: text,
       onChanged: model.userName,
       textAlign: TextAlign.left,
@@ -119,6 +123,7 @@ class Password extends HookViewModelWidget<LoginViewModel> {
   Widget buildViewModelWidget(BuildContext context, LoginViewModel model) {
     var text = useTextEditingController();
     return TextField(
+      key: Key('InputPassword'),
       controller: text,
       onChanged: model.password,
       textAlign: TextAlign.left,

@@ -34,6 +34,7 @@ class SearchView extends StatelessWidget {
                 ),
                 body: internetError(snapshot.error.toString()),
               );
+              return progressIndicator();
             }
             if (snapshot.hasData) {
               displayList.clear();
@@ -59,6 +60,7 @@ class SearchView extends StatelessWidget {
                               icon: Icons.search,
                               colors: Colors.grey,
                               index: 0),
+                          IconBuilder(icon: Icons.more_vert, index: 1)
                         ],
                         bottom: TabBar(tabs: [
                           text14CenterBoldGrey("ANIMAL"),
@@ -94,42 +96,39 @@ class NavDrawer extends ViewModelWidget<SearchViewModel> {
 
   @override
   Widget build(BuildContext context, SearchViewModel model) {
-    return Container(
-      width: 250,
-      child: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                  color: Colors.grey,
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage('assets/images/E1.jpg'))),
-              child: null,
-            ),
-            ListTile(
-                leading: Icon(Icons.account_circle),
-                title: text16LeftBoldGrey("Profile"),
-                dense: true,
-                onTap: () => {navigateToProfile()}),
-            ListTile(
-                leading: Icon(Icons.verified_user),
-                title: text16LeftBoldGrey("Achievements"),
-                dense: true,
-                onTap: () => {navigateToAchievements()}),
-            ListTile(
-                leading: Icon(Icons.exit_to_app),
-                dense: true,
-                title: text16LeftBoldGrey("Logout"),
-                onTap: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.setBool("loggedIn", false);
-                  navigateToLogin(context);
-                }),
-          ],
-        ),
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: text22LeftBoldWhite("Side Menu"),
+            decoration: BoxDecoration(
+                color: Colors.grey,
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage('assets/images/springbok.jpg'))),
+          ),
+          ListTile(
+              leading: Icon(Icons.verified_user),
+              title: text16LeftBoldGrey("Profile"),
+              onTap: () => {navigateToProfile()}),
+          ListTile(
+              leading: Icon(Icons.settings),
+              title: text16LeftBoldGrey("Settings"),
+              onTap: () => {}),
+          ListTile(
+              leading: Icon(Icons.edit),
+              title: text16LeftBoldGrey("Preference"),
+              onTap: () => {}),
+          ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: text16LeftBoldGrey("Logout"),
+              onTap: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setBool("loggedIn", false);
+                navigateToLogin(context);
+              }),
+        ],
       ),
     );
   }
@@ -170,6 +169,7 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
   @override
   Widget build(BuildContext context, SearchViewModel model) {
     return ListView.builder(
+        key: Key('ListAnimals'),
         itemCount: animalList.length,
         itemBuilder: (context, index) {
           return animalList[index].image == ""
@@ -283,6 +283,7 @@ Widget imageBlock(String image) {
     decoration: BoxDecoration(
       image: DecorationImage(
         image: NetworkImage(image),
+        //image: AssetImage(image),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,
