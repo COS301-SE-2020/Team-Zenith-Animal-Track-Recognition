@@ -1852,7 +1852,7 @@ const Mutation = new GraphQLObjectType({
                     potentialMatches: potentialMatchesarry,
                     animal: _.last(potentialMatchesarry).animal,
                     track: newingID,
-                    similar: getSimilarimg(newingID),
+                    similar: getSimilarimgTrak( _.last(potentialMatchesarry).animal),
                     tags: tag,
                     picturesID: newingID,
                 }
@@ -1937,7 +1937,7 @@ const Mutation = new GraphQLObjectType({
                     potentialMatches: potentialMatchesarry,
                     animal: args.animalID,
                     track: newingID,
-                    similar: getSimilarimg(newingID),
+                    similar: getSimilarimgTrak(args.animalID),
                     tags: tag,
                     picturesID: newingID,
                 }
@@ -2591,13 +2591,22 @@ if (CACHE) {
                 temp.animalDescription = ""
                 updated = true
             }
-            if (temp.pictures == undefined) {
-                temp.pictures = [19]
+            if (temp.pictures == undefined||temp.pictures == []) {
+                temp.pictures = ["19"]
                 updated = true
             }
             if (temp.animalMarkerColor == undefined) {
                 temp.animalMarkerColor = getRandomColor()
                 updated = true
+            }
+            if (temp.pictures.includes("19")||(temp.pictures.includes(19)))
+            {
+                if (temp.pictures.length>=2)
+                {
+                    temp.pictures=_.difference(temp.pictures,[19,"19"])
+                    updated = true
+                }
+                
             }
 
             if (updated)
@@ -2729,11 +2738,14 @@ function uplodeBase64URL(Img,folder="ranger") {
 
 
 
-function getSimilarimg(ImgID) {
-    obj = []
-    obj.push(1)
-    obj.push(2)
-    obj.push(3)
+function getSimilarimgTrak(animalID) {
+    
+    let temp =_.find(animalData,{
+        animalID:animalID
+    })
+    let obj=_.filter(animalData.pictures,{
+        kindOfPicture:"trak"
+    })
     return obj
 }
 
@@ -2902,6 +2914,7 @@ function addImgIDToAnimal(animalID, imgID) {
         querySnapshot.forEach(function (doc) {
             // console.log("start "+animalID+ " "+imgID)
             let e = doc.data()
+            
             e.pictures.push(imgID)
             animals.doc(doc.id).set(e)
             // console.log("run "+animalID+ " "+imgID)
