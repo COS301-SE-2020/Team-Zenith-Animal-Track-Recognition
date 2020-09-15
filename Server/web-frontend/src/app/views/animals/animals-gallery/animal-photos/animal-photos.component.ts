@@ -77,11 +77,13 @@ export class AnimalPhotosComponent implements OnInit {
 			}
 		});
 		animalPhotoDetailsDialogRef.afterClosed().subscribe(result => {
+			this.stopPhotoGalleryLoader()
 			if (result == "success") {
 				this.snackBar.open('Photo successfully set as main.', "Dismiss", { duration: 3000, });
+				this.ngOnInit();
 			}
 			else if (result == 'error') {
-				this.snackBar.open('An error occured when updating the animal. Please try again.', "Dismiss", { duration: 5000, });
+				this.snackBar.open('An error occured when updating the main photo. Please try again.', "Dismiss", { duration: 5000, });
 			}
 		});
 	}

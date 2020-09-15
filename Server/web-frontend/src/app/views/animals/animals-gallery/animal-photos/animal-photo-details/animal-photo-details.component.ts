@@ -119,39 +119,26 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 		}
 	}
 	setAsMainPhoto(index: number) {
+		//this.startLoader();
 		if (index == 0) {
 			this.snackBar.open('The photo you have selected is already the main photo.', "Dismiss", { duration: 5000, });
 			return;
 		}
-		let newEntityImageList = [this.data.imageList[index]];
+		let newEntityImageList = [this.data.entity.pictures[index].picturesID];
 		
 		//Remove photo from original list
 		for (let i = 0; i < this.data.entity.pictures.length; i++) {
-			if (this.data.entity.pictures[i].URL != this.data.imageList[index].URL)
-				newEntityImageList.push(this.data.entity.pictures[i]);
+			if (this.data.entity.pictures[i].picturesID !== newEntityImageList[0])
+				newEntityImageList.push(this.data.entity.pictures[i].picturesID);
 		}
-		
+				
 		//Update entity in database
-		//let temp = JSON.stringify(newEntityImageList).replace('[','');
-		//let picturesParam = this.manualStringify(newEntityImageList);
-		//console.log(picturesParam);
-		
-		//this.startLoader();
-		/*this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{' + 'updateAnimal(token:"' + encodeURIComponent(JSON.parse(localStorage.getItem('currentToken'))['value']) +
-		'",classification:"' + encodeURIComponent(this.data.entity.classification) + '",pictures:' + encodeURIComponent(picturesParam) + '){animalID}}', '')
+		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{' + 'updateAnimal(token:"' + encodeURIComponent(JSON.parse(localStorage.getItem('currentToken'))['value']) +
+		'",classification:"' + encodeURIComponent(this.data.entity.classification) + '",pictures:' + encodeURIComponent(JSON.stringify(newEntityImageList)) + '){animalID}}', '')
 			.subscribe({
 				next: data => this.dialogRef.close('success'),
 				error: error => this.dialogRef.close('error')
-		});*/
-	}
-	
-	//Hold
-	manualStringify(photosList: any) {
-		let picturesParamString = "";
-		for (let i = 0; i < photosList.length; i++) {
-			picturesParamString += '{URL:' + '"' + photosList[i].URL + '"' + ',kindOfPicture:' + '"' + photosList[i].kindOfPicture + '"},'; 
-		}
-		return picturesParamString.substring(0, (picturesParamString.length - 1));
+		});
 	}
 	
 	//Miscellaneous Functions
