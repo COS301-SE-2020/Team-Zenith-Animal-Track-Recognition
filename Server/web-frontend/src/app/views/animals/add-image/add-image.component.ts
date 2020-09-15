@@ -46,7 +46,7 @@ export class AddImageComponent implements OnInit {
 
       this.http.post<any>(ROOT_QUERY_STRING + '?', {
         query:'mutation{addIMG64ToAnilmil(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-          '",IMG64:"' + this.cardImageBase64 + '",animalID:"' + this.data.animal.animalID + '")}"',variables:{}
+          '",IMG64:"' + this.cardImageBase64 + '",animalID:"' + this.data.animal.animalID + '")}',variables:{}
       }).subscribe({
         next: data => this.dialogRef.close("success"),
         error: error => this.dialogRef.close("error")
@@ -103,7 +103,7 @@ export class AddImageComponent implements OnInit {
             return false;
           } else {
             const imgBase64Path = e.target.result;
-            this.cardImageBase64 = ('' + imgBase64Path).replace('data:image/jpeg;base64,', '');
+            this.cardImageBase64 = ('' + imgBase64Path).replace('data:image/jpeg;base64,', '').replace('data:image/png;base64,','');
             this.isImageSaved = true;
             // this.previewImagePath = imgBase64Path;
           }
