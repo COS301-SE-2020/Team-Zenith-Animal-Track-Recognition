@@ -20,6 +20,7 @@ class GraphQL implements Api {
   @override
   Future<List<AnimalModel>> getAnimalModel(String category) async {
     List<String> categories = new List();
+    List<String> groupNames = new List();
     List<AnimalModel> animalList = new List();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -34,33 +35,32 @@ class GraphQL implements Api {
       }
 
       final http.Response response = await http.get("$domain" +
-          "graphql?query=query{groups(token:\"$token\"){groupName}}");
+          "graphql?query=query{groups(token:\"$token\"){groupName,groupID}}");
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
         var list = body['data']['groups'] as List;
 
         String temp;
-        int count;
         for (int i = 0; i < list.length; i++) {
-          count = list[i].toString().length;
-          temp = list[i].toString().substring(12, count - 1);
+          temp = body['data']['groups'][i]['groupID'].toString();
           categories.add(temp);
+          groupNames.add(body['data']['groups'][i]['groupName'].toString());
         }
       } else {
         throw HttpException('500');
       }
-
+      String groupId;
       for (int i = 0; i < categories.length; i++) {
-        if (category == categories[i]) {
+        if (category == groupNames[i]) {
+          groupId = categories[i];
           final http.Response res = await http.get("$domain" +
-              "graphql?query=query{animals(token:\"$token\", group:\"$i\" ){pictures{URL},classification, commonName , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
+              "graphql?query=query{animals(token:\"$token\", group:\"$groupId\" ){pictures{URL},classification, commonName , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}");
 
           for (int j = 0; j < categories.length; j++) {
             if (res.statusCode == 200) {
               var body = json.decode(res.body);
               var list = body["data"]["animals"] as List;
-              //print(list);
               animalList = list
                   .map<AnimalModel>((json) => AnimalModel.fromJson(json))
                   .toList();
@@ -603,7 +603,7 @@ class GraphQL implements Api {
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
 
-        if (body['data']['spoorIdentification'] == []) {
+        if (body['data']['spoorIdentification'].toString() == "[]") {
           throw VerificationException("Animal Data Not Found");
         }
         print("=======================================");
@@ -878,8 +878,12 @@ class GraphQL implements Api {
   Future<TabModel> getTabModel() async {
     List<String> categories = new List();
 
-    String token = "h10hYNuJeTbmWH1ZSi5R";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token");
     token = Uri.encodeFull(token);
+    String id = prefs.getString("rangerID");
+    id = Uri.encodeFull(id);
 
     try {
       var connectivity = await (Connectivity().checkConnectivity());
@@ -897,7 +901,7 @@ class GraphQL implements Api {
 
         String temp;
         int count;
-        for (int i = 1; i < list.length; i++) {
+        for (int i = 0; i < list.length; i++) {
           count = list[i].toString().length;
           temp = list[i].toString().substring(12, count - 1);
 
@@ -1168,6 +1172,8 @@ class GraphQL implements Api {
               "graphql?query=query{spoorIdentification(token: \"$token\", ranger: \"$id\"){spoorIdentificationID,location{latitude, longitude}, dateAndTime{year, day, month},picture{URL}, ranger{firstName, lastName}, animal{commonName, classification},potentialMatches{confidence} }}")
           .timeout(const Duration(seconds: 7));
 
+      print("Response: " + response.statusCode.toString());
+
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
 
@@ -1337,6 +1343,8 @@ class GraphQL implements Api {
           .get("$domain" +
               "graphql?query=query{users(tokenIn: \"$token\", rangerID: \"$id\"){firstName, lastName,phoneNumber, eMail, pictureURL}}")
           .timeout(const Duration(seconds: 7));
+
+      print("Info model: " + response.statusCode.toString());
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
 
