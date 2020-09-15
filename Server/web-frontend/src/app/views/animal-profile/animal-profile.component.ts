@@ -112,8 +112,9 @@ export class AnimalProfileComponent implements OnInit {
 		editDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
 			if (result == "success") {
-				//If animal was successfully edited refresh component and notify parent
-				//this.animalsOnChange.emit('update');
+				//If animal was successfully edited refresh component 
+				this.ngOnInit();
+				this.snackBar.open('Animal information successfully edited.', 'Dismiss', { duration: 3000, });
 			}
 			else if (result == 'error') {
 				this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });

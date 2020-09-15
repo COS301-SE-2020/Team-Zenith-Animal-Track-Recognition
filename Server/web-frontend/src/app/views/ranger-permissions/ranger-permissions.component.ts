@@ -40,7 +40,8 @@ export class RangerPermissionsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.startLoader();
-		document.getElementById("rangers-route").classList.add("activeRoute");
+		document.getElementById("rangers-route-link").classList.add("activeRoute");
+		document.getElementById("rangers-perm-route").classList.add("activeRoute");
 
 		//Replace Permissions with appropiate icon
 		PERMISSIONS.forEach(function (perm) {

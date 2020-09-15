@@ -66,20 +66,27 @@
 
 .side-navigation-route-container:hover,
 #animals-route-link:hover,
-.animals-route-links:hover {
+.animals-route-links:hover,
+#rangers-route-link:hover,
+.rangers-route-links:hover {
     background-color: #F3F3F5;
     cursor: pointer;
 }
 
 .side-navigation-route-container:hover .side-navigation-wireframeIcon,
-#animals-route-link:hover>#animals-route .side-navigation-wireframeIcon,
+#animals-route-link:hover > #animals-route .side-navigation-wireframeIcon,
+#rangers-route-link:hover > #rangers-route .side-navigation-wireframeIcon,
 .animals-route-links:hover .side-navigation-wireframeIcon,
+.rangers-route-links:hover .side-navigation-wireframeIcon,
 .activeRoute .side-navigation-wireframeIcon {
     background-color: #686E79;
 }
 
-.side-navigation-route-container:hover>p,
-#animals-route-link:hover>#animals-route p {
+.side-navigation-route-container:hover > p,
+#animals-route-link:hover > #animals-route p,
+#rangers-route-link:hover > #rangers-route p,
+.animals-route-links:hover > p,
+.rangers-route-links:hover > p {
     color: #686E79;
     font-weight: 600;
 }
@@ -145,7 +152,7 @@
     font-size: 110%;
 }
 
-#side-navigation-expansion-btn {
+.side-navigation-expansion-btn {
     height: 100%;
     width: 15%;
     display: flex;

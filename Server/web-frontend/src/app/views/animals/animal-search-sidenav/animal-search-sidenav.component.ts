@@ -45,10 +45,6 @@ export class AnimalSearchSidenavComponent implements OnInit {
 		return str == this.selection;
 	}
 
-	log(str: any){
-		console.log(str);
-	}
-
 	updateSearchText(event) {
 		this.searchTextOnChange.emit(event);
 		if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")

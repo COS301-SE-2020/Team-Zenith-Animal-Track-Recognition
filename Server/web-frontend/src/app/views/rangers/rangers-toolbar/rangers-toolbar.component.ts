@@ -13,10 +13,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class RangersToolbarComponent implements OnInit {
 	@Input() rangers;
 	@Input() searchText: string;
-	@Input() sortBySurname: boolean;
+	@Input() selection: string;
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
-	@Output() sortBySurnameOnChange: EventEmitter<string> = new EventEmitter();
+	@Output() sortOptionOnChange: EventEmitter<string> = new EventEmitter();
 
 	currentAlphabet: any;
 	sorted: string;
@@ -67,40 +67,8 @@ export class RangersToolbarComponent implements OnInit {
 			this.currentAlphabet = null;
 	}
 
-	toggle(bool: boolean) {
-		this.sortBySurname = bool;
-		this.sortBySurnameOnChange.emit("" + this.sortBySurname);
-		this.sort(bool);
-	}
-
-	sort(bool: boolean) {
-		let temp: string;
-		if (bool) {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
-					}
-				}
-			}
-			temp = "Sorted alphabetically";
-		}
-		else {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].accessLevel > this.rangers[j].accessLevel) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
-					}
-				}
-			}
-			temp = "Sorted by ranger level";
-		}
-		this.sorted = temp;
-		return temp;
+	sort(selection: string) {
+		this.sortOptionOnChange.emit(selection);
 	}
 
 	//Loader

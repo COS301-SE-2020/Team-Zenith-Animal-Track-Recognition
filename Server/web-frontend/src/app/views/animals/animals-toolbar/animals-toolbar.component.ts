@@ -16,7 +16,6 @@ export class AnimalsToolbarComponent implements OnInit {
 	@Input() searchText: string;
 	@Input() sortBy: boolean;
 	@Input() selection: string;
-
 	@Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
 	@Output() sortOptionOnChange: EventEmitter<string> = new EventEmitter();
@@ -77,26 +76,12 @@ export class AnimalsToolbarComponent implements OnInit {
 		if (this.test == true) {
 			return;
 		}
-		document.getElementById("animals-route-link").classList.remove("activeRoute");
-		document.getElementById("animals-gallery-route").classList.remove("activeRoute");
-		document.getElementById("overview-route").classList.remove("activeRoute");
-		document.getElementById("rangers-route").classList.remove("activeRoute");
-		document.getElementById("geotags-route").classList.remove("activeRoute");
-
 		this.router.navigate([location]);
 	}
-
 	updateSearchText(event) {
 		this.searchTextOnChange.emit(event);
 	}
-
-	/*toggle(bool: boolean) {
-		this.sortByCommonName = bool;
-		this.sort(bool);
-	}*/
-
 	sort(selection: string) {
 		this.sortOptionOnChange.emit(selection);
 	}
-
 }

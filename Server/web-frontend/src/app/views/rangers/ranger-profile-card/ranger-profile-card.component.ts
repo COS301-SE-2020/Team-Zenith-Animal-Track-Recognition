@@ -40,7 +40,7 @@ export class RangerProfileCardComponent implements OnInit {
 	//Ranger CRUD Quick-Actions
 
 	//EDIT Ranger
-	openEditRangerDialog(rangerID) {
+	openEditRangerDialog(rangerID: any) {
 		const dialogConfig = new MatDialogConfig();
 
 		//Get ranger information for chosen card
@@ -76,7 +76,7 @@ export class RangerProfileCardComponent implements OnInit {
 		});
 	}
 	//DELETE Ranger
-	openDeleteRangerDialog(rangerID) {
+	openDeleteRangerDialog(rangerID: any) {
 		try {
 			const dialogConfig = new MatDialogConfig();
 
@@ -90,7 +90,7 @@ export class RangerProfileCardComponent implements OnInit {
 				id: 'delete-ranger-dialog',
 				data: {
 					name: rangerFullName,
-					token: rangerID
+					rangerID: rangerID
 				},
 			});
 			deleteDialogRef.afterClosed().subscribe(result => {

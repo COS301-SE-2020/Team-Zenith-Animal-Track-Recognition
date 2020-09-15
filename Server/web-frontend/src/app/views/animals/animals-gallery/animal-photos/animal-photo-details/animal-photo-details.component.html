@@ -10,36 +10,7 @@
 				</button>
 				<div>
 					<p id="animal-photos-track-title-animal" class="fontSB">Photo of {{data.entity.commonName}}</p>
-					<p id="animal-photos-track-title-capturedby" class="fontM">Uploaded by Patricia Berlein</p>
-				</div>
-			</div>
-			<div id="animal-photos-track-geotag-container">
-				<div id="animal-photos-geotag-container-title">
-					<p class="fontSB">Photo Metadata</p>
-				</div>
-				<div id="animal-photos-track-geotag-info">
-					<div id="animal-photos-geotag-location-info">
-						<div class="animal-photos-geotag-entry-container">
-							<div class="animal-photos-geotag-icon-container">
-								<mat-icon>room</mat-icon>
-							</div>
-							<div class="animal-photos-geotag-text-container">
-								<p class="fontM">{{trackInfoPlaceholder.trackLocation}}</p>
-								<p class="fontM">{{trackInfoPlaceholder.coordinates}}</p>
-							</div>
-						</div>
-					</div>
-					<div id="animal-photos-geotag-date-info">
-						<div class="animal-photos-geotag-entry-container">
-							<div class="animal-photos-geotag-icon-container">
-								<mat-icon>event</mat-icon>
-							</div>
-							<div class="animal-photos-geotag-text-container">
-								<p class="fontM">{{trackInfoPlaceholder.date}}</p>
-								<p class="fontM">{{trackInfoPlaceholder.dayTime}}</p>
-							</div>
-						</div>
-					</div>
+					<!--<p id="animal-photos-track-title-capturedby" class="fontM">Uploaded by Patricia Berlein</p>-->
 				</div>
 			</div>
 			<div id="animal-photos-description-container">
@@ -47,7 +18,12 @@
 					<p class="fontSB">Photo Description</p>
 				</div>
 				<div id="animal-photo-descr">
-					<p class="fontM">{{trackInfoPlaceholder.descr}}</p>
+					<ng-container *ngIf="data.entity.pictures[currentPhotoIndex].description; else defaultDescription">
+						<p class="fontM">{{data.entity.pictures[currentPhotoIndex].description}}</p>
+					</ng-container>
+					<ng-template #defaultDescription>
+						<p class="fontM">No description has been provided for this photo.</p>
+					</ng-template>
 				</div>
 			</div>
 		</div>

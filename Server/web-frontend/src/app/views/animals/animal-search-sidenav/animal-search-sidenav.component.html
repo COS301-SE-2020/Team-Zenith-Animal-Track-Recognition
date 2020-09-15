@@ -1,14 +1,4 @@
 <div id="animal-search-sidenav">
-    <!--div id="animal-search-controls-container">
-        <mat-button-toggle-group id="animal-search-controls" #group="matButtonToggleGroup" name="sortResultsBy">
-            <mat-button-toggle value="surname" checked (click)="toggle(true)">Animal</mat-button-toggle>
-            <mat-button-toggle value="level" (click)="toggle(false)">Groups</mat-button-toggle>
-        </mat-button-toggle-group>
-        <mat-form-field appearance="outline">
-            <input matInput id="search-sidenav-input" placeholder="Search animals..." type="text" name="search" [(ngModel)]="searchText" autocomplete="off" (ngModelChange)="updateSearchText($event)">
-            <mat-icon matPrefix>search</mat-icon>
-        </mat-form-field>
-    </div-->
     <div id="animal-search-results-container">
         <mat-selection-list id="animals-by-surnames" [multiple]="false" class="animal-search-results-entries">
             <div class="animal-search-result-entry" *ngFor="let animal of animals | filter:searchText">
@@ -16,7 +6,7 @@
                     <div mat-subheader class="animal-search-resultgroup-subheader" *ngIf="checkIfNew(animal.commonName.charAt(0))">{{ animal.commonName.charAt(0).toUpperCase() }}</div>
                 </ng-container>
                 <ng-container *ngIf="checkResult('byGroup')">
-                    <div mat-subheader class="animal-search-resultgroup-subheader" *ngIf='checkIfNew(animal.groupID[0].groupName)'>{{ animal.groupID[0].groupName | titlecase }}</div>
+                    <div mat-subheader class="animal-search-resultgroup-subheader" *ngIf="checkIfNew(animal.groupID[0].groupName)">{{ animal.groupID[0].groupName | titlecase }}</div>
                 </ng-container>
                 <mat-list-option class="fontM" [value]="animal" (click)="viewAnimalProfile(animal.classification)">
                     <p class="animal-search-resultgroup-mainentry">{{animal.commonName}}</p>

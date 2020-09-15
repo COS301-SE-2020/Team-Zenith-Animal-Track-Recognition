@@ -2,12 +2,12 @@
     <div id="ranger-search-results-container">
         <mat-selection-list id="rangers-by-surnames" [multiple]="false" class="ranger-search-results-entries">
             <div class="ranger-search-result-entry" *ngFor="let ranger of rangers | filter:searchText">
-                <ng-container *ngIf="sortBySurname; else sortedByLevels">
-                    <div mat-subheader class="ranger-search-resultgroup-subheader" *ngIf="checkIfNew(ranger.lastName, 0)">{{ ranger.lastName.charAt(0).toUpperCase() }}</div>
+                <ng-container *ngIf="checkResult('bySurname')">
+                    <div mat-subheader class="ranger-search-resultgroup-subheader" *ngIf="checkIfNew(ranger.lastName)">{{ ranger.lastName.charAt(0).toUpperCase() }}</div>
                 </ng-container>
-                <ng-template #sortedByLevels>
-                    <div mat-subheader class="ranger-search-resultgroup-subheader" *ngIf='checkIfNew("Level " + ranger.accessLevel + " Ranger", 6)'>Level {{ ranger.accessLevel }} Ranger</div>
-                </ng-template>
+                <ng-container *ngIf="checkResult('byLevel')">
+                    <div mat-subheader class="ranger-search-resultgroup-subheader" *ngIf="checkIfNew(ranger.accessLevel)">Level {{ ranger.accessLevel }} Ranger</div>
+                </ng-container>
                 <mat-list-option class="fontM" [value]="ranger" (click)="viewRangerProfile(ranger.rangerID)">
                     <p class="ranger-search-resultgroup-mainentry">{{ranger.firstName}}&nbsp;{{ranger.lastName}}</p>
                     <p class="ranger-search-resultgroup-subentry">Level {{ranger.accessLevel}} Ranger</p>

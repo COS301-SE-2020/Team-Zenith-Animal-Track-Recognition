@@ -24,8 +24,8 @@ export class AnimalGroupsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.startLoader();
-		document.getElementById("animals-route").classList.add("activeRoute");
-
+		document.getElementById("animals-route-link").classList.add("activeRoute");
+		document.getElementById("animals-groups-route").classList.add("activeRoute");
 		var count = 1;
 		//Replace Groups with appropiate radio button
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +

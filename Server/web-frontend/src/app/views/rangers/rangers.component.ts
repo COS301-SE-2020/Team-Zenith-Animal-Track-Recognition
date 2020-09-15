@@ -13,21 +13,21 @@ export class RangersComponent implements OnInit {
 	@ViewChild('sidenav') sidenav;
 	rangers: any;
 	searchText: string;
-	sortBySurname: boolean = true;
+	selection: string;
 	currentAlphabet;
 	sorted: string;
 
 	constructor(private http: HttpClient) { }
 
 	ngOnInit(): void {
-		document.getElementById('rangers-route').classList.add('activeRoute');
+		document.getElementById('rangers-route-link').classList.add('activeRoute');
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){rangerID,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.rangers = temp[0];
-				this.sort(this.sortBySurname);
+				this.sort('bySurname');
 			});
 	}
 
@@ -55,9 +55,10 @@ export class RangersComponent implements OnInit {
 						this.removeRanger(removedRanger[0].rangerID);
 						break;
 				}
-				this.sort(this.sortBySurname);
+				this.sort('bySurname');
 			});
 	}
+	
 	//Ranger CRUD Operations
 	updateRangerList(updatedList: string) {
 		this.refresh(updatedList);
@@ -88,37 +89,38 @@ export class RangersComponent implements OnInit {
 	}
 
 	//Sorting and Filtering
-	toggle(bool: boolean) {
-		this.sortBySurname = bool;
-		this.sort(bool);
-	}
-
-	sort(bool: boolean) {
-		let temp: string;
-		if (bool) {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
-					}
-				}
-			}
-			temp = "Sorted alphabetically";
-		} else {
-			for (let i = 0; i < this.rangers.length - 1; i++) {
-				for (let j = i + 1; j < this.rangers.length; j++) {
-					if (this.rangers[i].accessLevel > this.rangers[j].accessLevel2) {
-						let temp = this.rangers[i];
-						this.rangers[i] = this.rangers[j];
-						this.rangers[j] = temp;
-					}
-				}
-			}
-			temp = "Sorted by ranger level";
+	//Sort functions
+	sort(selection: string) {
+		switch (selection) {
+			case "byLevel":
+				this.sortLevel();
+				break;
+			case "bySurname":
+				this.sortSurname();
+				break;
 		}
-		this.sorted = temp;
-		return temp;
+		this.selection = selection;
+	}
+	sortLevel() {
+		for (let i = 0; i < this.rangers.length - 1; i++) {
+			for (let j = i + 1; j < this.rangers.length; j++) {
+				if (this.rangers[i].accessLevel > this.rangers[j].accessLevel) {
+					let temp = this.rangers[i];
+					this.rangers[i] = this.rangers[j];
+					this.rangers[j] = temp;
+				}
+			}
+		}		
+	}
+	sortSurname() {
+		for (let i = 0; i < this.rangers.length - 1; i++) {
+			for (let j = i + 1; j < this.rangers.length; j++) {
+				if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
+					let temp = this.rangers[i];
+					this.rangers[i] = this.rangers[j];
+					this.rangers[j] = temp;
+				}
+			}
+		}
 	}
 }

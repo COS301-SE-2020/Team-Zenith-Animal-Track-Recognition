@@ -119,7 +119,6 @@ export class AnimalsComponent implements OnInit {
 
 	//Sorting and Filtering
 	checkIfNew(title: string, pos: number) {
-		console.log('checking new');
 		if (this.currentAlphabet === ("" + title).charAt(pos).toLowerCase()) {
 			return false;
 		} else {
@@ -146,7 +145,6 @@ export class AnimalsComponent implements OnInit {
 				break;
 		}
 		this.selection = selection;
-		console.log(this.selection);
 	}
 
 	private sortAlphabetical() {
@@ -175,8 +173,6 @@ export class AnimalsComponent implements OnInit {
 
 	private sortHeight() {
 		for (let i = 0; i < this.animals.length - 1; i++) {
-
-
 			for (let j = i + 1; j < this.animals.length; j++) {
 
 				var heightForI = this.animals[i].heightM.indexOf('-');
@@ -199,10 +195,7 @@ export class AnimalsComponent implements OnInit {
 	}
 	private sortWeight() {
 		for (let i = 0; i < this.animals.length - 1; i++) {
-
-
 			for (let j = i + 1; j < this.animals.length; j++) {
-
 				var weightForI = this.animals[i].weightM.indexOf('-');
 				var upperBoundWeightValue = this.animals[i].weightM.substring(weightForI + 1);
 				var upperBoundAsANumber = Number(upperBoundWeightValue);
@@ -223,7 +216,6 @@ export class AnimalsComponent implements OnInit {
 			var weightForI = this.animals[i].weightM.indexOf('-');
 			var upperBoundWeightValue = this.animals[i].weightM.substring(weightForI + 1);
 			var upperBoundAsANumber = Number(upperBoundWeightValue);
-			console.log(upperBoundAsANumber + " " + this.animals[i].commonName)
 		}
 	}
 }

@@ -14,7 +14,7 @@
                         <div class="side-navigation-wireframeIcon"></div>
                         <p class="fontM">Animals</p>
                     </div>
-                    <div id="side-navigation-expansion-btn" (click)='toggleAnimalsPanel()'>
+                    <div class="side-navigation-expansion-btn" (click)='toggleAnimalsPanel()'>
                         <mat-icon id="animals-expand-btn-icon">expand_more</mat-icon>
                     </div>
                 </div>
@@ -39,14 +39,14 @@
                         <div class="side-navigation-wireframeIcon"></div>
                         <p class="fontM">Rangers</p>
                     </div>
-                    <div id="side-navigation-expansion-btn" (click)='toggleRangersPanel()'>
+                    <div class="side-navigation-expansion-btn" (click)='toggleRangersPanel()'>
                         <mat-icon id="rangers-expand-btn-icon">expand_more</mat-icon>
                     </div>
                 </div>
             </mat-expansion-panel-header>
-            <div (click)='route("rangers/permissions")' id="rangers-gallery-route" class="rangers-route-links">
+            <div (click)='route("rangers/permissions")' id="rangers-perm-route" class="rangers-route-links">
                 <div class="side-navigation-wireframeIcon"></div>
-                <p class="fontM">Rangers Permissions</p>
+                <p class="fontM">Permissions</p>
             </div>
         </mat-expansion-panel>
     </div>
