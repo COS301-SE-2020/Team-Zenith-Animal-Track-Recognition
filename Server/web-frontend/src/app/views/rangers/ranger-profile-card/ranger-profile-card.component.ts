@@ -18,8 +18,8 @@ export class RangerProfileCardComponent implements OnInit {
 	@Input() searchText: string;
 	@Input() rangersList;
 	numRangers: any;
-	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	sorted: string;
+	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
 

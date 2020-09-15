@@ -1,176 +1,192 @@
-.animal-profile-cards-container
-{
-	height: 100%;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	align-items: space-around;
-	overflow: auto;
+.animal-profile-cards-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: space-around;
+    overflow: auto;
 }
+
+
 /*
 .animal-profile-cards-container::after 
 {
 	content: "";
 	flex: auto;
 }*/
-.animal-profile-card-container
-{
-	height: 430px;
-	width: 250px;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	margin: 1% 0;
+
+.animal-profile-card-container {
+    height: 430px;
+    width: 250px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 1% 0;
 }
-@keyframes fadePop
-{
-  from {opacity: 0.1; transform: translateY(10%);}
-  to {opacity: 1.0; transform: translateY(0%);}
+
+@keyframes fadePop {
+    from {
+        opacity: 0.1;
+        transform: translateY(10%);
+    }
+    to {
+        opacity: 1.0;
+        transform: translateY(0%);
+    }
 }
-.animal-profile-card
-{
-	height: 90%;
-	width: 100%;
-	box-shadow: 0px 2px 5px #AAAAAA;
-	border-radius: 10px;
+
+.animal-profile-card {
+    height: 90%;
+    width: 100%;
+    box-shadow: 0px 2px 5px #AAAAAA;
+    border-radius: 10px;
     transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out; 
+    -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
-	animation: fadePop 0.7s ease-out 0s 1 normal none;
+    animation: fadePop 0.7s ease-out 0s 1 normal none;
 }
-.animal-profile-card:hover
-{
-	transform: translateY(-3%);
-	box-shadow: 0px 2px 7px #898989;
+
+.animal-profile-card:hover {
+    transform: translateY(-3%);
+    box-shadow: 0px 2px 7px #898989;
 }
-.mat-card-image
-{
-	margin-bottom: 0;
-	background-color: #CCCCCC;
-	height: 60%;
-	border: none;
+
+.mat-card-image {
+    margin-bottom: 0;
+    background-color: #CCCCCC;
+    height: 60%;
+    border: none;
 }
-.animal-profile-card-header
-{
-	height: 12%;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
+
+.animal-profile-card-header {
+    height: 12%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: left;
 }
-.mat-card-header
-{
-	width: 90%;
-	height: 100%;
+
+.mat-card-header {
+    width: 90%;
+    height: 100%;
 }
-.mat-card-title
-{
-	font-size: 100%;
-	margin-bottom: 0;
+
+.mat-card-title {
+    font-size: 100%;
+    margin-bottom: 0;
+    text-align: left;
 }
-.mat-card-header .mat-card-title
-{
-	margin-bottom: 5%;
+
+.mat-card-header .mat-card-title {
+    margin-top: 2.5%;
+    margin-bottom: 5%;
+    margin-left: 0;
 }
-.mat-card-subtitle
-{
-	font-size: 95%;
-	color: #AAAAAA;
-	margin-bottom: 0;
+
+.mat-card-subtitle {
+    font-size: 95%;
+    color: #AAAAAA;
+    margin-bottom: 0;
 }
-.animal-profile-card-contextMenu
-{
-	margin-left: auto;
-	width: 10%;
-	height: 70%;
-	align-self: flex-start;
+
+.animal-profile-card-contextMenu {
+    margin-left: auto;
+    width: 10%;
+    height: 70%;
+    align-self: flex-start;
 }
-.mat-card-content
-{
-	width: 100%;
-	height: 20%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	margin-bottom: 3%;
+
+.mat-card-content {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 3%;
 }
-.animal-profile-card-contact-container
-{
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: flex-start;
+
+.animal-profile-card-contact-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
-.animal-profile-card-contact-container > p
-{
-	font-size: 85%;
-	color: #3D3D3D;
-	margin: 0;
+
+.animal-profile-card-contact-container>p {
+    font-size: 85%;
+    color: #3D3D3D;
+    margin: 0;
 }
-.animal-profile-card-contact-info
-{
-	height: auto;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	font-size: 80%;
+
+.animal-profile-card-contact-info {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 80%;
 }
-.animal-profile-card-phone, .animal-profile-card-email
-{
-	margin: 0;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
+
+.animal-profile-card-phone,
+.animal-profile-card-email {
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
-.animal-profile-card-phone > .mat-icon, .animal-profile-card-email > .mat-icon
-{
-	font-size: 160%;
-	line-height: 1.5;
+
+.animal-profile-card-phone>.mat-icon,
+.animal-profile-card-email>.mat-icon {
+    font-size: 160%;
+    line-height: 1.5;
 }
-.animal-profile-card-activity-container
-{
-	width: 100%;
-	display: flex;
-	flex-direction: column;
+
+.animal-profile-card-activity-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
-.animal-profile-card-activity-container > p
-{
-	font-size: 85%;
-	color: #3D3D3D;
-	margin: 0;
+
+.animal-profile-card-activity-container>p {
+    font-size: 85%;
+    color: #3D3D3D;
+    margin: 0;
 }
-.animal-profile-card-activity
-{
-	display: flex;
-	flex-direction: row;
-	align-items: flex-end;
+
+.animal-profile-card-activity {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
 }
-.animal-profile-card-activity > pre
-{
-	margin: 0;
-	font-size: 80%;
+
+.animal-profile-card-activity>pre {
+    margin: 0;
+    font-size: 80%;
 }
-.mat-card-actions
-{
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: flex-start;
-	padding-top: 0;
+
+.mat-card-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 0;
 }
-.mat-card-actions > .mat-button
-{
-	background-color: #686E79;
-	color: white;
-	width: 95%;
-	font-weight: 600;
+
+.mat-card-actions>.mat-button {
+    background-color: #686E79;
+    color: white;
+    width: 95%;
+    font-weight: 600;
+}
+
+:host /deep/ .mat-card-header-text {
+    margin-left: 0px;
 }

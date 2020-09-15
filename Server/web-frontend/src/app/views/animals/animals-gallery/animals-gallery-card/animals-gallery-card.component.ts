@@ -15,6 +15,7 @@ export class AnimalsGalleryCardComponent implements OnInit {
 	@Input() animalsList: any;
 	@Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
 	test: boolean = false;
+	@Input() selection: string;
 
 	constructor(
 		private http: HttpClient, 

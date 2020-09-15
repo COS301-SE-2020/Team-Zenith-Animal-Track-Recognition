@@ -32,13 +32,22 @@
             <div class="side-navigation-wireframeIcon"></div>
             <p class="fontM">Identifications</p>
         </div>
-        <div (click)='route("rangers")' id="rangers-route" class="side-navigation-route-container">
-            <div class="side-navigation-wireframeIcon"></div>
-            <p class="fontM">Rangers</p>
-        </div>
-        <div (click)='route("settings")' id="settings-route" class="side-navigation-route-container">
-            <div class="side-navigation-wireframeIcon"></div>
-            <p class="fontM">Settings</p>
-        </div>
+        <mat-expansion-panel #rangersPanel id="rangers-route-container" disabled hideToggle>
+            <mat-expansion-panel-header>
+                <div id="rangers-route-link">
+                    <div id="rangers-route" (click)='route("rangers")'>
+                        <div class="side-navigation-wireframeIcon"></div>
+                        <p class="fontM">Rangers</p>
+                    </div>
+                    <div id="side-navigation-expansion-btn" (click)='toggleRangersPanel()'>
+                        <mat-icon id="rangers-expand-btn-icon">expand_more</mat-icon>
+                    </div>
+                </div>
+            </mat-expansion-panel-header>
+            <div (click)='route("rangers/permissions")' id="rangers-gallery-route" class="rangers-route-links">
+                <div class="side-navigation-wireframeIcon"></div>
+                <p class="fontM">Rangers Permissions</p>
+            </div>
+        </mat-expansion-panel>
     </div>
 </div>

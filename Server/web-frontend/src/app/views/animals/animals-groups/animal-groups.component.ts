@@ -43,8 +43,10 @@ export class AnimalGroupsComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(Object.values(data)[0])[0]);
 				temp.forEach(element => {
-					this.animalGroups.push(element);
-					this.animalGroupsColumns.push(element['groupName']);
+					if (element['groupName'] != "BIG FIVE") {
+						this.animalGroups.push(element);
+						this.animalGroupsColumns.push(element['groupName']);
+					}
 				});
 			});
 
@@ -78,7 +80,7 @@ export class AnimalGroupsComponent implements OnInit {
 			console.log(this.animalGroups);
 			this.log(this.animalGroupsColumns);
 			this.stopLoader();
-		}, 500);
+		}, 1000);
 
 	}
 
@@ -91,7 +93,6 @@ export class AnimalGroupsComponent implements OnInit {
 		document.getElementById("overview-route").classList.remove("activeRoute");
 		document.getElementById("animals-route").classList.remove("activeRoute");
 		document.getElementById("geotags-route").classList.remove("activeRoute");
-		document.getElementById("settings-route").classList.remove("activeRoute");
 
 		this.router.navigate([location]);
 	}
@@ -148,15 +149,21 @@ export class AnimalGroupsComponent implements OnInit {
 	}
 
 	updateLevel(tkn: string, lvl: string) {
-		let temp = this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateUser('
-			+ 'tokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
+		this.animalGroups.forEach(element => {
+			if(lvl == element['groupName']){
+				lvl = element['groupID'];
+			}
+		});
+		
+		let temp = this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateAnimalGroup('
+			+ 'token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
 			+ 'animalID:"' + tkn + '",'
-			+ 'accessLevel:"' + lvl + '"){lastName,animalID}}', '').subscribe((data: any[]) => {
+			+ 'groupID:"' + lvl + '"){animalID}}', '').subscribe((data: any[]) => {
 				let t = [];
 				t = Object.values(Object.values(data)[0]);
 			});
 
-		this.router.navigate(["/geotags"], { queryParams: { reloadPerms: "true" } });
+		console.log('success');
 	}
 
 	viewAnimalProfile(token: string) {
@@ -170,26 +177,6 @@ export class AnimalGroupsComponent implements OnInit {
 
 	isGroup(group: number) {
 		return 1 == group;
-	}
-
-	addGroup(animalID, groupID){
-		let temp = this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{addAnimalGroup('
-			+ 'token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
-			+ 'animalID:"' + animalID + '",'
-			+ 'groupID:"' + groupID + '"){animalID}}', '').subscribe((data: any[]) => {
-				let t = [];
-				t = Object.values(Object.values(data)[0]);
-			});
-	}
-
-	removeGroup(animalID, groupID){
-		let temp = this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{removeAnimalGroup('
-			+ 'token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
-			+ 'animalID:"' + animalID + '",'
-			+ 'groupID:"' + groupID + '"){animalID}}', '').subscribe((data: any[]) => {
-				let t = [];
-				t = Object.values(Object.values(data)[0]);
-			});
 	}
 
 	//Loader

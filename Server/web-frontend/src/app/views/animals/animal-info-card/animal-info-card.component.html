@@ -6,7 +6,7 @@
         <mat-card class="animal-profile-card" id="animalID-{{animal.animalID}}">
             <img mat-card-image id="animal-info-card-picture" src="{{animal.pictures[0].URL}}">
             <div class="animal-profile-card-header">
-                <mat-card-header>
+                <mat-card-header style="margin-left: 0px;">
                     <mat-card-title class="fontSB" id="{{animal.classification}}Name">{{animal.commonName}}</mat-card-title>
                     <mat-card-subtitle class="fontM" id="{{animal.classification}}Classification">{{animal.classification}}</mat-card-subtitle>
                 </mat-card-header>
@@ -20,8 +20,8 @@
                     <button mat-menu-item (click)="viewAnimalPhotos(animal.classification)">
 						<span>View Photos</span>
 					</button>
-                    <button mat-menu-item>
-						<span>View Geotags</span>
+                    <button mat-menu-item (click)="viewAnimalIdentifications(animal.animalID)">
+						<span>View Identifications</span>
 					</button>
                 </mat-menu>
             </div>

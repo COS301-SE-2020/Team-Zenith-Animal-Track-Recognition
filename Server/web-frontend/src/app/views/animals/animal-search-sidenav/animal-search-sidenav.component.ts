@@ -11,6 +11,7 @@ export class AnimalSearchSidenavComponent implements OnInit {
 	@Input() animals: any;
 	@Input() searchText: string;
 	@Input() sortBy: any = [];
+	@Input() selection: string;
 
 	@Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
@@ -38,6 +39,14 @@ export class AnimalSearchSidenavComponent implements OnInit {
 			this.currentAlphabet = ("" + title).toLowerCase();
 			return true;
 		}
+	}
+
+	checkResult(str: string) {
+		return str == this.selection;
+	}
+
+	log(str: any){
+		console.log(str);
 	}
 
 	updateSearchText(event) {

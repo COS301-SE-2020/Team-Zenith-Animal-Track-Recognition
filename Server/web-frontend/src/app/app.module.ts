@@ -36,7 +36,6 @@ import { TrackIdentificationsComponent } from './views/track-identifications/tra
 import { TrackIdentificationsToolbarComponent } from './views/track-identifications/track-identifications-toolbar/track-identifications-toolbar.component';
 import { TrackIdentificationsSidenavComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-sidenav.component';
 import { TrackIdentificationsInfoComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-info/track-identifications-info.component';
-import { SettingsComponent } from './views/settings/settings.component';
 import { AddImageComponent } from './views/animals/add-image/add-image.component';
 import { AddGroupsComponent } from './views/animals/add-groups/add-groups.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
@@ -96,7 +95,6 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     TrackIdentificationsToolbarComponent,
     TrackIdentificationsSidenavComponent,
     TrackIdentificationsInfoComponent,
-    SettingsComponent,
     SideNavigationComponent,
     UtilityNavigationComponent,
     RangerPermissionsComponent,

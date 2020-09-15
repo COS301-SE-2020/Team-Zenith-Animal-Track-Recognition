@@ -18,7 +18,7 @@
 						<span>Edit Information</span>
 					</button>
                     <button mat-menu-item>
-						<span>View Geotags</span>
+						<span>View Identifications</span>
 					</button>
                     <button mat-menu-item (click)="open()">
 						<span>Change Level</span>
@@ -35,12 +35,6 @@
                         <mat-icon>call</mat-icon>{{ranger.phoneNumber}}</p>
                     <p class="ranger-profile-card-email" id="ranger{{ranger.rangerID}}Email">
                         <mat-icon>mail</mat-icon>{{ranger.eMail}}</p>
-                </div>
-                <div class="ranger-profile-card-activity-container">
-                    <p class="fontSB">Recent Activity</p>
-                    <div class="ranger-profile-card-activity">
-                        <pre>{{ranger.activity}}</pre>
-                    </div>
                 </div>
             </mat-card-content>
             <mat-card-actions>
