@@ -803,18 +803,19 @@ class FakeApi implements Api {
         '4m ago',
         '67%',
         'Dangerous',
-        'assets/images/Elephant.jpeg');
+        'assets/images/Elephant.jpeg',
+        '1');
 
     ProfileModel card2 = new ProfileModel(
-      'Rhino',
-      'White',
-      'Kruger park',
-      'Pricille Berlien',
-      '4m ago',
-      '92%',
-      'Endangered',
-      'assets/images/rhino.jpeg',
-    );
+        'Rhino',
+        'White',
+        'Kruger park',
+        'Pricille Berlien',
+        '4m ago',
+        '92%',
+        'Endangered',
+        'assets/images/rhino.jpeg',
+        '1');
 
     ProfileModel card3 = new ProfileModel(
         'Buffalo',
@@ -824,7 +825,8 @@ class FakeApi implements Api {
         '4m ago',
         '56%',
         'tag1',
-        'assets/images/buffalo.jpeg');
+        'assets/images/buffalo.jpeg',
+        '1');
 
     ProfileModel card4 = new ProfileModel(
         'Springbok',
@@ -834,7 +836,8 @@ class FakeApi implements Api {
         '10m ago',
         '87%',
         'Abundant',
-        'assets/images/springbok.jpg');
+        'assets/images/springbok.jpg',
+        '1');
 
     ProfileModel card5 = new ProfileModel(
         'Blesbok',
@@ -844,7 +847,8 @@ class FakeApi implements Api {
         '80m ago',
         '100%',
         'tag4',
-        'assets/images/Blesbok.jpg');
+        'assets/images/Blesbok.jpg',
+        '1');
 
     ProfileModel card6 = new ProfileModel(
         'Red hartebeest',
@@ -854,7 +858,8 @@ class FakeApi implements Api {
         '1d ago',
         '23%',
         'tag4',
-        'assets/images/Red_Hartebeest.jpg');
+        'assets/images/Red_Hartebeest.jpg',
+        '1');
 
     List<ProfileModel> _cards = new List();
     _cards.add(card1);

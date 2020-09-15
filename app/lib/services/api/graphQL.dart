@@ -212,111 +212,6 @@ class GraphQL implements Api {
   }
 
   @override
-  Future<List<ProfileModel>> getProfileModel() async {
-    List<ProfileModel> _cards = new List();
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    String token = prefs.getString("token");
-    token = Uri.encodeFull(token);
-    String id = prefs.getString("rangerID");
-    id = Uri.encodeFull(id);
-
-    try {
-      var connectivity = await (Connectivity().checkConnectivity());
-      if (ConnectivityResult.none == connectivity) {
-        throw SocketException("");
-      }
-
-      final http.Response response = await http.get("$domain" +
-          "graphql?query=query{spoorIdentification(token: \"$token\", ranger: \"$id\"){spoorIdentificationID,location{latitude, longitude}, dateAndTime{year, day, month},picture{URL}, ranger{firstName, lastName}, animal{commonName, classification},potentialMatches{confidence} }}");
-
-      print("Response: " + response.statusCode.toString());
-      if (response.statusCode == 200) {
-        var body = json.decode(response.body);
-
-        print(body['data']['spoorIdentification'][0]['potentialMatches'][0]
-                ['confidence']
-            .toString());
-
-        String cName;
-        String sName;
-        String location;
-        String ranger;
-        String date;
-        String tag = "TBD";
-        String pic;
-        String score;
-        double count;
-        DateTime now = DateTime.now();
-        DateTime track;
-        int mon;
-        int year;
-        int day;
-
-        for (int i = 0; i < 15; i++) {
-          cName = body['data']['spoorIdentification'][i]['animal']['commonName']
-              .toString();
-
-          sName = body['data']['spoorIdentification'][i]['animal']
-                  ['classification']
-              .toString();
-          date = body['data']['spoorIdentification'][i]['dateAndTime']['day']
-                  .toString() +
-              " " +
-              body['data']['spoorIdentification'][i]['dateAndTime']['month']
-                  .toString();
-
-          mon = int.parse(body['data']['spoorIdentification'][i]['dateAndTime']
-                  ['month']
-              .toString());
-          day = int.parse(body['data']['spoorIdentification'][i]['dateAndTime']
-                  ['day']
-              .toString());
-          year = int.parse(body['data']['spoorIdentification'][i]['dateAndTime']
-                  ['year']
-              .toString());
-
-          track = new DateTime(year, mon, day);
-          Duration difference = now.difference(track);
-          date = (difference.inHours / 24).floor().toString() + " days ago";
-
-          location = body['data']['spoorIdentification'][i]['location']
-                      ['latitude']
-                  .toString() +
-              " , " +
-              body['data']['spoorIdentification'][i]['location']['longitude']
-                  .toString();
-          ranger = body['data']['spoorIdentification'][i]['ranger']['firstName']
-                  .toString() +
-              " " +
-              body['data']['spoorIdentification'][i]['ranger']['lastName']
-                  .toString();
-
-          pic = body['data']['spoorIdentification'][i]['picture']['URL']
-              .toString();
-          score = body['data']['spoorIdentification'][i]['potentialMatches'][0]
-                  ['confidence']
-              .toString();
-          count = double.parse(score) * 100;
-          score = count.toString().substring(0, score.length - 1) + "%";
-          _cards.add(new ProfileModel(
-              cName, sName, location, ranger, date, score, tag, pic));
-        }
-
-        print("List length: " + _cards.length.toString());
-        return _cards;
-      } else {
-        throw HttpException('500');
-      }
-    } on SocketException {
-      throw VerificationException('No Internet connection');
-    } on HttpException {
-      throw VerificationException("Service is unavailable");
-    }
-  }
-
-  @override
   Future<List<SearchModel>> getSearchModel() async {
     List<SearchModel> searchList = new List();
 
@@ -371,61 +266,6 @@ class GraphQL implements Api {
   @override
   void sendConfirmationSpoor(List<ConfirmModel> list, String tag) {
     // TODO: implement sendConfirmationSpoor
-  }
-
-  @override
-  Future<ProfileInfoModel> getProfileInfoData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    String token = prefs.getString("token");
-    token = Uri.encodeFull(token);
-    String id = prefs.getString("rangerID");
-    id = Uri.encodeFull(id);
-
-    String name;
-    String numb;
-    String mail;
-    String pic;
-    String aTrack;
-    String sId;
-    String sTrack;
-
-    try {
-      var connectivity = await (Connectivity().checkConnectivity());
-      if (ConnectivityResult.none == connectivity) {
-        throw SocketException("");
-      }
-      final http.Response response = await http.get("$domain" +
-          "graphql?query=query{users(tokenIn: \"$token\", rangerID: \"$id\"){firstName, lastName,phoneNumber, eMail, pictureURL}}");
-
-      if (response.statusCode == 200) {
-        var body = json.decode(response.body);
-
-        name = body['data']['users'][0]['firstName'].toString() +
-            " " +
-            body['data']['users'][0]['lastName'].toString();
-        numb = body['data']['users'][0]['phoneNumber'].toString();
-        mail = body['data']['users'][0]['eMail'].toString();
-        pic = body['data']['users'][0]['pictureURL'].toString();
-      } else {
-        throw HttpException('500');
-      }
-
-      ProfileInfoModel profileInfo = new ProfileInfoModel(
-          name: name,
-          number: numb,
-          email: mail,
-          picture: pic,
-          animalsTracked: "17",
-          spoorIdentified: "150",
-          speciesTracked: "38");
-
-      return profileInfo;
-    } on SocketException {
-      throw VerificationException('No Internet connection');
-    } on HttpException {
-      throw VerificationException("Service is unavailable");
-    }
   }
 
   @override
@@ -763,6 +603,12 @@ class GraphQL implements Api {
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
 
+        if (body['data']['spoorIdentification'] == []) {
+          throw VerificationException("Animal Data Not Found");
+        }
+        print("=======================================");
+        print(body);
+        print("=======================================");
         var list =
             body['data']['spoorIdentification'][0]['potentialMatches'] as List;
 
@@ -782,7 +628,7 @@ class GraphQL implements Api {
         int day;
 
         int temp = (list.length - 1);
-
+        print(animal);
         if (body['data']['spoorIdentification'][0]['location']['latitude'] !=
                 null &&
             body['data']['spoorIdentification'][0]['location']['latitude'] !=
@@ -1290,6 +1136,255 @@ class GraphQL implements Api {
       gallery.add(tracks);
       gallery.add(droppings);
       return GalleryModel(galleryList: gallery, name: name);
+    } on SocketException {
+      throw VerificationException(
+          'Request Timed Out, Unable to Connect to The Server ');
+    } on HttpException {
+      throw VerificationException("Service is Unavailable");
+    } on Exception {
+      throw VerificationException('No Internet Connection');
+    }
+  }
+
+  @override
+  Future<List<ProfileModel>> getProfileModel() async {
+    List<ProfileModel> _cards = new List();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token");
+    token = Uri.encodeFull(token);
+    String id = prefs.getString("rangerID");
+    id = Uri.encodeFull(id);
+
+    try {
+      var connectivity = await (Connectivity().checkConnectivity());
+      if (ConnectivityResult.none == connectivity) {
+        throw SocketException("");
+      }
+
+      final http.Response response = await http
+          .get("$domain" +
+              "graphql?query=query{spoorIdentification(token: \"$token\", ranger: \"$id\"){spoorIdentificationID,location{latitude, longitude}, dateAndTime{year, day, month},picture{URL}, ranger{firstName, lastName}, animal{commonName, classification},potentialMatches{confidence} }}")
+          .timeout(const Duration(seconds: 7));
+
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+
+        String cName;
+        String sName;
+        String location;
+        String ranger;
+        String date;
+        String tag = "TBD";
+        String pic;
+        String score;
+        String id;
+        double count;
+        DateTime now = DateTime.now();
+        DateTime track;
+        int mon;
+        int year;
+        int day;
+
+        for (int i = 0; i < 15; i++) {
+          if (body['data']['spoorIdentification'][i]['animal']['commonName'] !=
+              null) {
+            cName = body['data']['spoorIdentification'][i]['animal']
+                    ['commonName']
+                .toString();
+          } else {
+            cName = 'N/A';
+          }
+
+          if (body['data']['spoorIdentification'][i]['animal']
+                  ['classification'] !=
+              null) {
+            sName = body['data']['spoorIdentification'][i]['animal']
+                    ['classification']
+                .toString();
+          } else {
+            sName = 'N/A';
+          }
+
+          if (body['data']['spoorIdentification'][i]['dateAndTime']['month'] !=
+                  null &&
+              body['data']['spoorIdentification'][i]['dateAndTime']['day'] !=
+                  null &&
+              body['data']['spoorIdentification'][i]['dateAndTime']['year'] !=
+                  null) {
+            mon = int.parse(body['data']['spoorIdentification'][i]
+                    ['dateAndTime']['month']
+                .toString());
+            day = int.parse(body['data']['spoorIdentification'][i]
+                    ['dateAndTime']['day']
+                .toString());
+            year = int.parse(body['data']['spoorIdentification'][i]
+                    ['dateAndTime']['year']
+                .toString());
+
+            track = new DateTime(year, mon, day);
+            Duration difference = now.difference(track);
+            date = (difference.inHours / 24).floor().toString() + " days ago";
+          } else {
+            date = "N/A";
+          }
+
+          if (body['data']['spoorIdentification'][i]['location']['latitude'] !=
+                  null &&
+              body['data']['spoorIdentification'][i]['location']['longitude'] !=
+                  null) {
+            location = body['data']['spoorIdentification'][i]['location']
+                        ['latitude']
+                    .toString() +
+                " , " +
+                body['data']['spoorIdentification'][i]['location']['longitude']
+                    .toString();
+          } else {
+            location = 'N/A';
+          }
+
+          if (body['data']['spoorIdentification'][i]['ranger']['firstName'] !=
+                  null &&
+              body['data']['spoorIdentification'][i]['ranger']['lastName'] !=
+                  null) {
+            ranger = body['data']['spoorIdentification'][i]['ranger']
+                        ['firstName']
+                    .toString() +
+                " " +
+                body['data']['spoorIdentification'][i]['ranger']['lastName']
+                    .toString();
+          } else {
+            ranger = 'N/A';
+          }
+
+          if (body['data']['spoorIdentification'][i]['picture']['URL'] !=
+              null) {
+            pic = body['data']['spoorIdentification'][i]['picture']['URL']
+                .toString();
+          } else {
+            pic = "N/A";
+          }
+
+          var list = body['data']['spoorIdentification'][i]['potentialMatches']
+              as List;
+
+          if (list.length != 0) {
+            if (body['data']['spoorIdentification'][i]['potentialMatches'][0]
+                    ['confidence'] !=
+                null) {
+              score = body['data']['spoorIdentification'][i]['potentialMatches']
+                      [0]['confidence']
+                  .toString();
+              count = double.parse(score) * 100;
+              score = count.toString().substring(0, score.length - 1) + "%";
+              int index = score.indexOf('.');
+              if (index == (score.indexOf("%") - 1)) {
+                score = score.replaceAll('.', "");
+              }
+            } else {
+              score = 'N/A';
+            }
+          } else {
+            score = 'N/A';
+          }
+
+          if (body['data']['spoorIdentification'][i]['spoorIdentificationID'] !=
+              null) {
+            id = body['data']['spoorIdentification'][i]['spoorIdentificationID']
+                .toString();
+          } else {
+            id = 'N/A';
+          }
+          _cards.add(new ProfileModel(
+              cName, sName, location, ranger, date, score, tag, pic, id));
+        }
+
+        return _cards;
+      } else {
+        throw HttpException('500');
+      }
+    } on SocketException {
+      throw VerificationException(
+          'Request Timed Out, Unable to Connect to The Server ');
+    } on HttpException {
+      throw VerificationException("Service is Unavailable");
+    } on Exception {
+      throw VerificationException('No Internet Connection');
+    }
+  }
+
+  @override
+  Future<ProfileInfoModel> getProfileInfoData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token");
+    token = Uri.encodeFull(token);
+    String id = prefs.getString("rangerID");
+    id = Uri.encodeFull(id);
+
+    String name;
+    String numb;
+    String mail;
+    String pic;
+
+    try {
+      var connectivity = await (Connectivity().checkConnectivity());
+      if (ConnectivityResult.none == connectivity) {
+        throw SocketException("");
+      }
+      final http.Response response = await http
+          .get("$domain" +
+              "graphql?query=query{users(tokenIn: \"$token\", rangerID: \"$id\"){firstName, lastName,phoneNumber, eMail, pictureURL}}")
+          .timeout(const Duration(seconds: 7));
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+
+        if (body['data']['users'][0]['firstName'] != null &&
+            body['data']['users'][0]['firstName'] != "" &&
+            body['data']['users'][0]['lastName'] != null &&
+            body['data']['users'][0]['lastName'] != "") {
+          name = body['data']['users'][0]['firstName'].toString() +
+              " " +
+              body['data']['users'][0]['lastName'].toString();
+        } else {
+          name = "N/A";
+        }
+
+        if (body['data']['users'][0]['phoneNumber'] != null &&
+            body['data']['users'][0]['phoneNumber'] != "") {
+          numb = body['data']['users'][0]['phoneNumber'].toString();
+        } else {
+          numb = "N/A";
+        }
+
+        if (body['data']['users'][0]['eMail'] != null &&
+            body['data']['users'][0]['eMail'] != "") {
+          mail = body['data']['users'][0]['eMail'].toString();
+        } else {
+          mail = "N/A";
+        }
+
+        if (body['data']['users'][0]['pictureURL'] != null &&
+            body['data']['users'][0]['pictureURL'] != "") {
+          pic = body['data']['users'][0]['pictureURL'].toString();
+        } else {
+          pic = "N/A";
+        }
+      } else {
+        throw HttpException('500');
+      }
+
+      ProfileInfoModel profileInfo = new ProfileInfoModel(
+          name: name,
+          number: numb,
+          email: mail,
+          picture: pic,
+          animalsTracked: "17",
+          spoorIdentified: "150",
+          speciesTracked: "38");
+
+      return profileInfo;
     } on SocketException {
       throw VerificationException(
           'Request Timed Out, Unable to Connect to The Server ');

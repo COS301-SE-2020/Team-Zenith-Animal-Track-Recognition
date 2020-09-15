@@ -84,8 +84,6 @@ class UploadViewModel extends BaseViewModel {
       _valueGallery = false;
       notifyListeners();
     }
-    _valueCamera = true;
-    notifyListeners();
     return null;
   }
 
@@ -102,8 +100,7 @@ class UploadViewModel extends BaseViewModel {
       _valueGallery = true;
       notifyListeners();
     }
-    _valueGallery = false;
-    notifyListeners();
+
     return null;
   }
 
@@ -123,16 +120,16 @@ class UploadViewModel extends BaseViewModel {
   }
 
   Future<void> upload() async {
-    double id = await api.getAnimalID(chosenAnimal);
+    // double id = await api.getAnimalID(chosenAnimal);
 
-    Position position =
-        await getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
+    // Position position =
+    //     await getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
 
-    ConfirmModel animal = await api.manualClassification(
-        _imageLink, position.latitude, position.longitude, id, _tags);
+    // ConfirmModel animal = await api.manualClassification(
+    //     _imageLink, position.latitude, position.longitude, id, _tags);
 
-    _navigationService.navigateTo(Routes.userConfirmedViewRoute,
-        arguments: UserConfirmedViewArguments(
-            image: _image, confirmedAnimal: animal, tags: _tags));
+    // _navigationService.navigateTo(Routes.userConfirmedViewRoute,
+    //     arguments: UserConfirmedViewArguments(
+    //         image: _image, confirmedAnimal: animal, tags: _tags));
   }
 }

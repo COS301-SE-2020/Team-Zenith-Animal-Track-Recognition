@@ -162,7 +162,7 @@ class LeftImage extends ViewModelWidget<UploadViewModel> {
         color: Colors.grey,
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
-          image: FileImage(model.image),
+          image: MemoryImage(model.image.readAsBytesSync()),
           fit: BoxFit.fill,
         ),
       ),
@@ -330,6 +330,8 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
             validator: (value) {
               if (value.isEmpty) {
                 return 'Please select an animal';
+              } else {
+                return value;
               }
             },
             onSaved: (value) => viewModel.setChosenAnimal(value),

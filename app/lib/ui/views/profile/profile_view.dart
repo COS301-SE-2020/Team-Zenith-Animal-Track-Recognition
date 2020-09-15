@@ -22,7 +22,7 @@ class ProfileView extends StatelessWidget {
                 drawer: NavDrawer(),
                 appBar: AppBar(
                   backgroundColor: Colors.black,
-                  title: text18LeftBoldWhite("Profile"),
+                  title: text22LeftBoldWhite("ERP RANGER"),
                   actions: <Widget>[
                     IconBuilder(icon: Icons.search, type: "search"),
                   ],
@@ -50,7 +50,7 @@ class ProfileView extends StatelessWidget {
                         drawer: NavDrawer(),
                         appBar: AppBar(
                           backgroundColor: Colors.black,
-                          title: text18LeftBoldWhite("Profile"),
+                          title: text22LeftBoldWhite("ERP RANGER"),
                           actions: <Widget>[
                             IconBuilder(icon: Icons.search, type: "search"),
                           ],
@@ -160,7 +160,7 @@ class ProfileViewList extends ViewModelWidget<ProfileViewModel> {
             delegate: SliverChildBuilderDelegate((context, index) {
           return GestureDetector(
             onTap: () {
-              navigateToIdentification(animalList[index].name.toLowerCase());
+              navigateToIdentification(animalList[index].id);
             },
             child: Card(
               shape: RoundedRectangleBorder(
@@ -527,18 +527,33 @@ Widget summary(ProfileInfoModel profileInfo) {
 }
 
 Widget profilepic(String profilePicture) {
-  return Container(
-    alignment: Alignment.center,
-    margin: new EdgeInsets.only(bottom: 5, right: 10, top: 5, left: 5),
-    padding: new EdgeInsets.all(5),
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: NetworkImage(profilePicture),
-        fit: BoxFit.fill,
-      ),
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(100),
-    ),
-    height: 70,
-  );
+  return profilePicture == "N/A"
+      ? Container(
+          alignment: Alignment.center,
+          margin: new EdgeInsets.only(bottom: 5, right: 10, top: 5, left: 5),
+          padding: new EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/circle.png"),
+              fit: BoxFit.fill,
+            ),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(100),
+          ),
+          height: 70,
+        )
+      : Container(
+          alignment: Alignment.center,
+          margin: new EdgeInsets.only(bottom: 5, right: 10, top: 5, left: 5),
+          padding: new EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(profilePicture),
+              fit: BoxFit.fill,
+            ),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(100),
+          ),
+          height: 70,
+        );
 }

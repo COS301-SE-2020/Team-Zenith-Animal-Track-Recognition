@@ -96,9 +96,10 @@ class ProfileModel {
   String score;
   String tag;
   String pic;
+  String id;
 
   ProfileModel(this.name, this.species, this.location, this.captured, this.time,
-      this.score, this.tag, this.pic);
+      this.score, this.tag, this.pic, this.id);
 }
 
 class ProfileInfoModel {
