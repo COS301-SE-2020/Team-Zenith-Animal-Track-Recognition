@@ -1,4 +1,6 @@
 const express = require('express');
+var cors = require('cors')
+
 const graphqlHTTP = require('express-graphql');
 const expressPlayground = require("graphql-playground-middleware-express")
 const fs = require('fs');
@@ -9,11 +11,17 @@ const port = 55555;
 let status = "idle"
 var datetime = new Date();
 
+var corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(cors(corsOptions))
 
 var util = require('util');
 var logFile = fs.createWriteStream('log.txt', {
     flags: 'a'
 });
+
 // Or 'w' to truncate the file every time the process starts.
 var logStdout = process.stdout;
 
@@ -30,12 +38,12 @@ const schema = require('./schema/schema');
 
 app.use(express.json({ limit: '50mb' }));
 
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS");
-    next();
-});
+// app.use(function (req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS");
+//     next();
+// });
 
 app.use('/graphql', graphqlHTTP({
 
