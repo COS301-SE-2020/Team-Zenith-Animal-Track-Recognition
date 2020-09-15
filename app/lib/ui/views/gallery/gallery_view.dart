@@ -129,7 +129,6 @@ class IconBuilder extends ViewModelWidget<GalleryViewModel> {
 
 //========================== APPBAR ICONS =======================
 class NavDrawer extends ViewModelWidget<GalleryViewModel> {
-  //List<HomeModel> animalList;
   NavDrawer({Key key}) : super(reactive: true);
 
   @override

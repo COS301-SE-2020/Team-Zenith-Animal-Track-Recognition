@@ -258,9 +258,10 @@ class GraphQL implements Api {
   }
 
   @override
-  Future<int> getUserLevel() {
-    // TODO: implement getTags
-    throw UnimplementedError();
+  Future<int> getUserLevel() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getInt("accessLevel");
   }
 
   @override
