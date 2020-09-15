@@ -1,1 +1,0 @@
-[{"type":"GraphQL","typeImpl":"GraphQL","isAsync":false,"preResolve":false,"injectableType":2,"imports":["package:ERP_RANGER/services/api/graphQL.dart"],"dependsOn":[],"dependencies":[],"constructorName":"","isAbstract":false}]

@@ -18,7 +18,17 @@ class ProfileView extends StatelessWidget {
           future: model.getRecentIdentifications(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return progressIndicator();
+              return Scaffold(
+                drawer: NavDrawer(),
+                appBar: AppBar(
+                  backgroundColor: Colors.black,
+                  title: text18LeftBoldWhite("Profile"),
+                  actions: <Widget>[
+                    IconBuilder(icon: Icons.search, type: "search"),
+                  ],
+                ),
+                body: internetError(snapshot.error.toString()),
+              );
             }
             if (snapshot.hasData) {
               int userLevel = snapshot.data.userLevel;
@@ -29,31 +39,37 @@ class ProfileView extends StatelessWidget {
                 bottomNavigation.setIndex(3);
               }
               return snapshot.hasData
-                  ? Scaffold(
-                      drawer: NavDrawer(),
-                      appBar: AppBar(
-                        backgroundColor: Colors.black,
-                        leading: IconBuilder(icon: Icons.menu, type: "search"),
-                        title: text18LeftBoldWhite("Profile"),
-                        actions: <Widget>[
-                          IconBuilder(icon: Icons.search, type: "search"),
-                          IconBuilder(icon: Icons.more_vert, type: "vert")
-                        ],
-                      ),
-                      body: Container(
-                          color: Colors.grey[300],
-                          child: ProfileViewList(
-                            tempObject: snapshot.data,
-                          )),
-                      bottomNavigationBar: BottomNavigation(),
-                      floatingActionButton: FloatingActionButton(
-                        onPressed: () {
-                          captureImage();
-                        },
-                        child: Icon(
-                          Icons.camera_alt,
+                  ? WillPopScope(
+                      onWillPop: () async {
+                        if (Navigator.canPop(context)) {
+                          navigate(context);
+                        }
+                        return;
+                      },
+                      child: Scaffold(
+                        drawer: NavDrawer(),
+                        appBar: AppBar(
+                          backgroundColor: Colors.black,
+                          title: text18LeftBoldWhite("Profile"),
+                          actions: <Widget>[
+                            IconBuilder(icon: Icons.search, type: "search"),
+                          ],
                         ),
-                        backgroundColor: Colors.black,
+                        body: Container(
+                            color: Colors.grey[300],
+                            child: ProfileViewList(
+                              tempObject: snapshot.data,
+                            )),
+                        bottomNavigationBar: BottomNavigation(),
+                        floatingActionButton: FloatingActionButton(
+                          onPressed: () {
+                            captureImage();
+                          },
+                          child: Icon(
+                            Icons.camera_alt,
+                          ),
+                          backgroundColor: Colors.black,
+                        ),
                       ),
                     )
                   : progressIndicator();
@@ -260,39 +276,42 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
 
   @override
   Widget build(BuildContext context, ProfileViewModel model) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: text22LeftBoldWhite("Side Menu"),
-            decoration: BoxDecoration(
-                color: Colors.grey,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/springbok.jpg'))),
-          ),
-          ListTile(
-              leading: Icon(Icons.verified_user),
-              title: text16LeftBoldGrey("Profile"),
-              onTap: () => {navigateToProfile()}),
-          ListTile(
-              leading: Icon(Icons.settings),
-              title: text16LeftBoldGrey("Settings"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.edit),
-              title: text16LeftBoldGrey("Preference"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: text16LeftBoldGrey("Logout"),
-              onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setBool("loggedIn", false);
-                navigateToLogin(context);
-              }),
-        ],
+    return Container(
+      width: 250,
+      child: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.grey,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/E1.jpg'))),
+              child: null,
+            ),
+            ListTile(
+                leading: Icon(Icons.account_circle),
+                title: text16LeftBoldGrey("Profile"),
+                dense: true,
+                onTap: () => {navigateToProfile()}),
+            ListTile(
+                leading: Icon(Icons.verified_user),
+                title: text16LeftBoldGrey("Achievements"),
+                dense: true,
+                onTap: () => {navigateToAchievements()}),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                dense: true,
+                title: text16LeftBoldGrey("Logout"),
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool("loggedIn", false);
+                  navigateToLogin(context);
+                }),
+          ],
+        ),
       ),
     );
   }
@@ -523,12 +542,3 @@ Widget profilepic(String profilePicture) {
     height: 70,
   );
 }
-
-// Container(
-//   child: Row(children: <Widget>[
-//     Expanded(flex:1,child: IconButtons(iconData:Icons.edit,subTitle:"EDIT PROFILE",index:0)),
-//     Expanded(flex:1,child: IconButtons(iconData:Icons.lock,subTitle:"CHANGE PASSWORD",index:1)),
-//     Expanded(flex:1,child: IconButtons(iconData:Icons.settings,subTitle:"PREFERENCE",index:2)),
-//     Expanded(flex:1,child: IconButtons(iconData:Icons.power_settings_new,subTitle:"LOGOUT",index:3)),
-//   ],),
-// )

@@ -4,16 +4,12 @@ import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/services/theme.dart';
 import 'package:ERP_RANGER/services/util.dart';
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'services/api/graphQLConf.dart';
 import 'package:path/path.dart' as p;
 import 'package:stacked_services/stacked_services.dart';
 import 'app/locator.dart';
 import 'app/router.gr.dart';
 
-GraphQLConfiguration graphQLConfiguration = GraphQLConfiguration();
 Directory _appDocsDir;
 
 void main() async {
@@ -49,7 +45,7 @@ class _MyApp extends State<MyApp> {
               ? MaterialApp(
                   theme: basicTheme(),
                   initialRoute: snapshot.data
-                      ? Routes.loginViewRoute
+                      ? Routes.homeViewRoute
                       : Routes.homeViewRoute,
                   onGenerateRoute: Router().onGenerateRoute,
                   navigatorKey: locator<NavigationService>().navigatorKey,

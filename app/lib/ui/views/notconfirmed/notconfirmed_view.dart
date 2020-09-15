@@ -16,7 +16,15 @@ class NotConfirmedView extends StatelessWidget {
         future: model.imagePicker(image),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
-            return progressIndicator();
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.black,
+                title: text18LeftBoldWhite(
+                  "Image Confirmation",
+                ),
+              ),
+              body: internetError(snapshot.error.toString()),
+            );
           }
           if (snapshot.hasData) {
             return snapshot.hasData

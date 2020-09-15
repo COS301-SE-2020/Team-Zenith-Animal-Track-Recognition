@@ -19,7 +19,29 @@ class HomeView extends StatelessWidget {
           future: model.getRecentIdentifications(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return progressIndicator();
+              return Scaffold(
+                drawer: NavDrawer(),
+                appBar: AppBar(
+                  backgroundColor: Colors.black,
+                  title: text22LeftBoldWhite(
+                    "ERP RANGER",
+                  ),
+                  actions: <Widget>[
+                    IconBuilder(icon: Icons.search),
+                  ],
+                ),
+                body: internetError(snapshot.error.toString()),
+                bottomNavigationBar: BottomNavigation(),
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    showOptions(context);
+                  },
+                  child: Icon(
+                    Icons.camera_alt,
+                  ),
+                  backgroundColor: Colors.black,
+                ),
+              );
             }
             if (snapshot.hasData) {
               return snapshot.hasData
@@ -28,12 +50,11 @@ class HomeView extends StatelessWidget {
                       appBar: AppBar(
                         //automaticallyImplyLeading: true,
                         backgroundColor: Colors.black,
-                        title: text18LeftBoldWhite(
-                          "Recent Indentifications",
+                        title: text22LeftBoldWhite(
+                          "ERP RANGER",
                         ),
                         actions: <Widget>[
-                          IconBuilder(icon: Icons.search, type: "search"),
-                          IconBuilder(icon: Icons.more_vert, type: "vert")
+                          IconBuilder(icon: Icons.search),
                         ],
                       ),
                       body: Container(
@@ -63,9 +84,8 @@ class HomeView extends StatelessWidget {
 }
 
 class IconBuilder extends ViewModelWidget<HomeViewModel> {
-  String type;
   IconData icon;
-  IconBuilder({Key key, this.icon, this.type}) : super(reactive: true);
+  IconBuilder({Key key, this.icon}) : super(reactive: true);
 
   @override
   Widget build(BuildContext context, HomeViewModel model) {
@@ -76,9 +96,7 @@ class IconBuilder extends ViewModelWidget<HomeViewModel> {
           padding: EdgeInsets.all(0),
           icon: Icon(icon, color: Colors.white),
           onPressed: () {
-            if (type == "search") {
-              navigateToSearchView();
-            } else {}
+            navigateToSearchView();
           }),
     );
   }
@@ -93,6 +111,8 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
   Widget build(BuildContext context, HomeViewModel model) {
     return ListView.builder(
         itemCount: animalList.length,
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
@@ -101,7 +121,6 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
             child: Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
-              elevation: 0,
               margin: new EdgeInsets.all(10),
               child: Container(
                 padding: new EdgeInsets.all(0),
@@ -155,7 +174,6 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
                                 alignment: Alignment.center,
                                 margin:
                                     new EdgeInsets.only(right: 10, bottom: 6),
-                                //decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(10)),
                                 child: textRow(animalList[index].score),
                               ),
                             ),
@@ -176,39 +194,42 @@ class NavDrawer extends ViewModelWidget<HomeViewModel> {
 
   @override
   Widget build(BuildContext context, HomeViewModel model) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: text22LeftBoldWhite("Side Menu"),
-            decoration: BoxDecoration(
-                color: Colors.grey,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/springbok.jpg'))),
-          ),
-          ListTile(
-              leading: Icon(Icons.verified_user),
-              title: text16LeftBoldGrey("Profile"),
-              onTap: () => {navigateToProfile()}),
-          ListTile(
-              leading: Icon(Icons.settings),
-              title: text16LeftBoldGrey("Settings"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.edit),
-              title: text16LeftBoldGrey("Preference"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: text16LeftBoldGrey("Logout"),
-              onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setBool("loggedIn", false);
-                navigateToLogin(context);
-              }),
-        ],
+    return Container(
+      width: 250,
+      child: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.grey,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/E1.jpg'))),
+              child: null,
+            ),
+            ListTile(
+                leading: Icon(Icons.account_circle),
+                title: text16LeftBoldGrey("Profile"),
+                dense: true,
+                onTap: () => {navigateToProfile()}),
+            ListTile(
+                leading: Icon(Icons.verified_user),
+                title: text16LeftBoldGrey("Achievements"),
+                dense: true,
+                onTap: () => {navigateToAchievements()}),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                dense: true,
+                title: text16LeftBoldGrey("Logout"),
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool("loggedIn", false);
+                  navigateToLogin(context);
+                }),
+          ],
+        ),
       ),
     );
   }

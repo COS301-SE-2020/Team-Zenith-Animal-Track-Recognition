@@ -20,7 +20,15 @@ class ConfirmedView extends StatelessWidget {
         future: model.getConfirm(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
-            return progressIndicator();
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.black,
+                title: text18LeftBoldWhite(
+                  "Image Confirmation",
+                ),
+              ),
+              body: internetError(snapshot.error.toString()),
+            );
           }
           if (snapshot.hasData) {
             if (model.loaded == false) {

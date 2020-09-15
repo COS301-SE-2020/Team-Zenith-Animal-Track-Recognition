@@ -77,11 +77,9 @@ class LoginViewModel extends BaseViewModel {
 
   void userNameErrorChecker() {
     if (_username == "" || _username == null) {
-      print("$_username=============");
       valid = false;
       _userNameErrorString = "Username Field Cannot Be left Empty";
     } else if (_username != "") {
-      print("$_username=============");
       valid = RegExp(
               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
           .hasMatch(_username);
@@ -91,18 +89,16 @@ class LoginViewModel extends BaseViewModel {
     }
   }
 
+// NB come and fiz logic right here
   void login() async {
     userNameErrorChecker();
     passEmptyChecker();
 
     if (_isPassEmpty != true && isUserNameEmpty == false && valid == true) {
       print("success");
-      // _username = "";
-      // _password = "";
       valid = true;
       _isPassEmpty = true;
       _isUserNameEmpty = true;
-      _api.getLoginModel(_username, _password);
       _navigationService.navigateTo(Routes.homeViewRoute);
       notifyListeners();
     } else {

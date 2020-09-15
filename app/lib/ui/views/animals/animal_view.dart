@@ -20,7 +20,20 @@ class AnimalView extends StatelessWidget {
           // ignore: missing_return
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return progressIndicator();
+              return Scaffold(
+                drawer: NavDrawer(),
+                appBar: AppBar(
+                  backgroundColor: Colors.black,
+                  title: text22LeftBoldWhite(
+                    "ERP RANGER",
+                  ),
+                  actions: <Widget>[
+                    IconBuilder(icon: Icons.search, type: "search"),
+                  ],
+                ),
+                body: internetError(snapshot.error.toString()),
+                bottomNavigationBar: BottomNavigation(),
+              );
             }
             if (snapshot.hasData) {
               return snapshot.hasData
@@ -37,10 +50,9 @@ class AnimalView extends StatelessWidget {
                           drawer: NavDrawer(),
                           appBar: AppBar(
                             backgroundColor: Colors.black,
-                            title: text18LeftBoldWhite("Animal Information"),
+                            title: text22LeftBoldWhite("ERP RANGER"),
                             actions: <Widget>[
                               IconBuilder(icon: Icons.search, type: "search"),
-                              IconBuilder(icon: Icons.more_vert, type: "vert")
                             ],
                             bottom: TabBar(
                               isScrollable: true,
@@ -76,39 +88,41 @@ class NavDrawer extends ViewModelWidget<AnimalViewModel> {
 
   @override
   Widget build(BuildContext context, AnimalViewModel model) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: text22LeftBoldWhite("Side Menu"),
-            decoration: BoxDecoration(
-                color: Colors.grey,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/springbok.jpg'))),
-          ),
-          ListTile(
-              leading: Icon(Icons.verified_user),
-              title: text16LeftBoldGrey("Profile"),
-              onTap: () => {navigateToProfile()}),
-          ListTile(
-              leading: Icon(Icons.settings),
-              title: text16LeftBoldGrey("Settings"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.edit),
-              title: text16LeftBoldGrey("Preference"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: text16LeftBoldGrey("Logout"),
-              onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setBool("loggedIn", false);
-                navigateToLogin(context);
-              }),
-        ],
+    return Container(
+      width: 250,
+      child: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.grey,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/E1.jpg'))),
+            ),
+            ListTile(
+                leading: Icon(Icons.account_circle),
+                title: text16LeftBoldGrey("Profile"),
+                dense: true,
+                onTap: () => {navigateToProfile()}),
+            ListTile(
+                leading: Icon(Icons.verified_user),
+                title: text16LeftBoldGrey("Achievements"),
+                dense: true,
+                onTap: () => {navigateToAchievements()}),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                dense: true,
+                title: text16LeftBoldGrey("Logout"),
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool("loggedIn", false);
+                  navigateToLogin(context);
+                }),
+          ],
+        ),
       ),
     );
   }
@@ -159,7 +173,6 @@ Widget getWidget(var animalTabList) {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            // border: Border.all(color: Colors.grey[200] , width: 2,style: BorderStyle.solid)
           ),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,

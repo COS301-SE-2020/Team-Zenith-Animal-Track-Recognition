@@ -152,7 +152,6 @@ class SearchModel {
 }
 
 class GalleryModel {
-  // int numCategories;
   List<List<String>> galleryList;
   String name;
   GalleryModel({this.galleryList, this.name});
@@ -210,3 +209,11 @@ class InfoModel {
 }
 
 class LoginResponse {}
+
+class TrophyModel {
+  String title;
+  String descrption;
+  String image;
+
+  TrophyModel({this.descrption, this.image, this.title});
+}
