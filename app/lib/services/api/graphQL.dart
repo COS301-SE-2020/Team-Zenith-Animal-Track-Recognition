@@ -561,7 +561,6 @@ class GraphQL implements Api {
           _cards.add(new HomeModel(
               cName, sName, location, ranger, date, score, tag, pic, id));
         }
-
         return _cards;
       } else {
         throw HttpException('500');

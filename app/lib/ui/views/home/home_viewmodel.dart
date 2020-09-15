@@ -11,7 +11,8 @@ class HomeViewModel extends BaseViewModel {
   List<HomeModel> animals;
 
   Future<List<HomeModel>> getRecentIdentifications() async {
-    List<HomeModel> animals = await api.getHomeModel();
-    return animals;
+    List<HomeModel> recentIdentifications = await api.getHomeModel();
+    animals = recentIdentifications;
+    return recentIdentifications;
   }
 }
