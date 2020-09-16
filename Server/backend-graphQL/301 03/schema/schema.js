@@ -980,20 +980,38 @@ const RootQuery = new GraphQLObjectType({
                     unloked:false
                 }
                 listOfTrophys.push(trophyA)
-
-
-
+                
                 let Make_1st_ID ={
                     name:"Make 1st ID",
                     text:"Make 1st ID",
                     hiddin:false,
                     unloked:false
                 }
-                if (listOfSID.length)
-
+                if (listOfSID.length>0)
+                Make_1st_ID.unloked=true
                 listOfTrophys.push(Make_1st_ID)
 
+                let Make_5_ID ={
+                    name:"Make 5 ID",
+                    text:"Make 5 ID",
+                    hiddin:false,
+                    unloked:false
+                }
+                if (listOfSID.length>=50)
+                Make_5_ID.unloked=true
+                listOfTrophys.push(Make_5_ID)
 
+                let Make_50_ID ={
+                    name:"Make 50 ID",
+                    text:"Make 50 ID",
+                    hiddin:false,
+                    unloked:false
+                }
+                if (listOfSID.length>=50)
+                Make_50_ID.unloked=true
+                listOfTrophys.push(Make_50_ID)
+
+                return listOfTrophys    
             }
         }
 
@@ -2418,6 +2436,7 @@ if (CACHE) {
             let newPicture = doc.data()
             newPicture.pictureID = doc.id.toString()
             newPicture.picturesID = doc.id.toString()
+            newPicture.kindOfPicture=newPicture.kindOfPicture.toLowerCase()
             // console.log(newPicture)
             pictureData.push(newPicture)
         });
