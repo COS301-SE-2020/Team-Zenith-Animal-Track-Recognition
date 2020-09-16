@@ -643,7 +643,7 @@ class UploadButton extends ViewModelWidget<UploadViewModel> {
       width: 80,
       child: RaisedButton(
           child: text16CenterBoldWhite("UPLOAD TRACK"),
-          color: Colors.grey,
+          color: Color.fromRGBO(80, 132, 211, 1),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.all(10),

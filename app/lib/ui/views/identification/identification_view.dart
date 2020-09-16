@@ -912,15 +912,9 @@ Widget icon = new Container(
   alignment: Alignment(0, 0),
   margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
   decoration: BoxDecoration(
-      gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: <Color>[
-            Color.fromRGBO(80, 132, 211, 1),
-            Color.fromRGBO(49, 93, 191, 1)
-          ]),
+      color: Color.fromRGBO(80, 132, 211, 1),
       borderRadius: BorderRadius.circular(10),
-      border: Border.all()),
+      border: Border.all(color: Color.fromRGBO(80, 132, 211, 1))),
   child: Center(
     child: IconButton(
       alignment: Alignment(0, 0),

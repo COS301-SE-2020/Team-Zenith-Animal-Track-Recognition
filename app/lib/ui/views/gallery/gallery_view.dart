@@ -27,6 +27,16 @@ class GalleryView extends StatelessWidget {
                   "ERP RANGER",
                 ),
                 actions: <Widget>[IconBuilder(icon: Icons.search)],
+                flexibleSpace: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: <Color>[
+                        Color.fromRGBO(80, 132, 211, 1),
+                        Color.fromRGBO(49, 93, 191, 1)
+                      ])),
+                ),
               ),
               body: internetError(snapshot.error.toString()),
             );
@@ -49,6 +59,16 @@ class GalleryView extends StatelessWidget {
                           backgroundColor: Colors.black,
                           title: appBarTitle(galleryModel.name, context),
                           actions: <Widget>[IconBuilder(icon: Icons.search)],
+                          flexibleSpace: Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: <Color>[
+                                  Color.fromRGBO(80, 132, 211, 1),
+                                  Color.fromRGBO(49, 93, 191, 1)
+                                ])),
+                          ),
                           bottom: TabBar(
                             tabs: snapshot.data.tabs,
                             indicatorWeight: 3,

@@ -196,8 +196,8 @@ class Tabz extends ViewModelWidget<InformationViewModel> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           TabBar(
-            indicatorColor: Colors.grey,
-            labelColor: Colors.grey,
+            indicatorColor: Color.fromRGBO(80, 132, 211, 1),
+            labelColor: Color.fromRGBO(80, 132, 211, 1),
             unselectedLabelColor: Colors.black,
             isScrollable: true,
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -238,7 +238,7 @@ class ViewButton extends ViewModelWidget<InformationViewModel> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          color: Colors.grey,
+          color: Color.fromRGBO(80, 132, 211, 1),
           padding: EdgeInsets.symmetric(
             vertical: 16,
             horizontal: MediaQuery.of(context).size.width / 4,

@@ -236,7 +236,7 @@ class ViewButton extends ViewModelWidget<AnimalViewModel> {
       minWidth: 200,
       child: RaisedButton(
           child: text12CenterBoldWhite("VIEW INFO"),
-          color: Colors.grey,
+          color: Color.fromRGBO(80, 132, 211, 1),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.all(10),
