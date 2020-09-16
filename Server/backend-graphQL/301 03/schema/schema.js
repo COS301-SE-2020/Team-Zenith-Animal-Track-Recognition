@@ -84,7 +84,7 @@ const LOCATION_TYPE = new GraphQLObjectType({
         }
     })
 });
-const RECENT_LOGIN_TYPE =new GraphQLObjectType({
+const RECENT_LOGIN_TYPE = new GraphQLObjectType({
     name: "recentLogins",
     fields: () => ({
         rangerID: {
@@ -525,16 +525,15 @@ const RootQuery = new GraphQLObjectType({
                 })
                 if (a === undefined)
                     return null
-                else if (a.password == args.password){
-                    let LI={
-                        rangerID:a.rangerID,
-                        time:Date.now().toString(),
-                        platform:"app"
+                else if (a.password == args.password) {
+                    let LI = {
+                        rangerID: a.rangerID,
+                        time: Date.now().toString(),
+                        platform: "app"
                     }
                     RecentLogins.push(LI)
                     return a
-                }
-                else return null
+                } else return null
             }
         },
         wdbLogin: {
@@ -553,17 +552,15 @@ const RootQuery = new GraphQLObjectType({
                 })
                 if (a === undefined)
                     return null
-                else if (a.password == args.password && a.accessLevel > 2)
-                {
-                    let LI={
-                        rangerID:a.rangerID,
-                        time:Date.now().toString(),
-                        platform:"wdb"
+                else if (a.password == args.password && a.accessLevel > 2) {
+                    let LI = {
+                        rangerID: a.rangerID,
+                        time: Date.now().toString(),
+                        platform: "wdb"
                     }
                     RecentLogins.push(LI)
                     return a
-                }
-                else return null
+                } else return null
             }
 
         },
@@ -1056,9 +1053,9 @@ const RootQuery = new GraphQLObjectType({
                 return listOfTrophys
             }
         },
-        recentLogins:{
-            type:new GraphQLList(RECENT_LOGIN_TYPE),
-            
+        recentLogins: {
+            type: new GraphQLList(RECENT_LOGIN_TYPE),
+
             resolve(parent, args) {
 
                 let a = _.find(usersData, {
@@ -1069,7 +1066,8 @@ const RootQuery = new GraphQLObjectType({
                 }
                 return recentLogins
             }
-        }
+        },
+
 
     }
 })
