@@ -32,8 +32,8 @@ class AchievementsView extends StatelessWidget {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: <Color>[
-                          Color.fromRGBO(80, 132, 211, 1),
-                          Color.fromRGBO(49, 93, 191, 1)
+                          Color.fromRGBO(33, 78, 125, 1),
+                          Color.fromRGBO(80, 156, 208, 1)
                         ])),
                   ),
                 ),
@@ -65,8 +65,8 @@ class AchievementsView extends StatelessWidget {
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                     colors: <Color>[
-                                  Color.fromRGBO(80, 132, 211, 1),
-                                  Color.fromRGBO(49, 93, 191, 1)
+                                  Color.fromRGBO(33, 78, 125, 1),
+                                  Color.fromRGBO(80, 156, 208, 1)
                                 ])),
                           ),
                         ),

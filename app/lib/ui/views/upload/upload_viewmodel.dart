@@ -305,17 +305,17 @@ class UploadViewModel extends BaseViewModel {
       _tagErrorString = null;
 
       notifyListeners();
-      // double id = await api.getAnimalID(chosenAnimal);
+      double id = await api.getAnimalID(chosenAnimal);
 
-      // Position position =
-      //     await getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
+      Position position =
+          await getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
 
-      // ConfirmModel animal = await api.manualClassification(
-      //     _imageLink, position.latitude, position.longitude, id, _tags);
+      ConfirmModel animal = await api.manualClassification(
+          _imageLink, position.latitude, position.longitude, id, _tags);
 
-      // _navigationService.navigateTo(Routes.userConfirmedViewRoute,
-      //     arguments: UserConfirmedViewArguments(
-      //         image: _image, confirmedAnimal: animal, tags: _tags));
+      _navigationService.navigateTo(Routes.userConfirmedViewRoute,
+          arguments: UserConfirmedViewArguments(
+              image: _image, confirmedAnimal: animal, tags: _tags));
     }
   }
 }

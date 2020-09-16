@@ -105,7 +105,8 @@ class GraphQL implements Api {
       long = position.longitude.toString();
 
       String query =
-          'mutation{identificationBase64(token: "$token" ,base64imge: "$pic", latitude: $lat, longitude: $long, tgas: $tag){spoorIdentificationID, potentialMatches{animal{commonName, classification, pictures{URL}}confidence}}}';
+          'mutation{identificationBase64(token: "$token" ,latitude: $lat, longitude: $long, tgas: $tag ,base64imge: "$pic" ){spoorIdentificationID, potentialMatches{animal{commonName, classification, pictures{URL}}confidence}}}';
+      print(query);
 
       final http.Response response = await http.post(
         link,
@@ -113,6 +114,7 @@ class GraphQL implements Api {
         body: json.encode({'query': query}),
       );
 
+      print(response.body);
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
 
@@ -318,9 +320,13 @@ class GraphQL implements Api {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
     token = Uri.encodeFull(token);
+    int temp = animalID.toInt();
+    String finalTemp = temp.toString();
 
     String link = "$domain" + "graphql?";
     ConfirmModel animal;
+
+    print('Arrived here');
 
     try {
       var connectivity = await (Connectivity().checkConnectivity());
@@ -329,13 +335,17 @@ class GraphQL implements Api {
       }
 
       String query =
-          'mutation{UplodeBase64Identification(token: "$token",animalID: $animalID , latitude: $lat, longitude: $long, tgas: "$tags" ,base64imge: "$pic"){spoorIdentificationID, animal{commonName, classification, pictures{URL}}}}';
+          'mutation{UplodeBase64Identification(token: "$token",animalID: "$finalTemp" , latitude: $lat, longitude: $long, tgas: "$tags" ,base64imge: "$pic"){spoorIdentificationID, animal{commonName, classification, pictures{URL}}}}';
+
+      print(query.toString());
 
       final http.Response response = await http.post(
         link,
         headers: {"Content-Type": "application/json"},
         body: json.encode({'query': query}),
       );
+
+      print(response.body.toString());
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -356,6 +366,7 @@ class GraphQL implements Api {
             image: image,
             species: species,
             type: "Track");
+        print('Sucesss');
         return animal;
       } else {
         throw HttpException('500');
@@ -952,7 +963,7 @@ class GraphQL implements Api {
 
       final http.Response response = await http
           .get("$domain" +
-              "graphql?query=query{animalsByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}}}")
+              "graphql?query=query{animalsByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}, habitats{description}}}")
           .timeout(const Duration(seconds: 7));
 
       if (response.statusCode == 200) {
@@ -1027,20 +1038,30 @@ class GraphQL implements Api {
         } else {
           behaviour = "N/A";
         }
-        // if (body["data"]["animalsByClassification"]["habitat"] != null &&
-        //     body["data"]["animalsByClassification"]["habitat"] != "") {
-        //   habitat =
-        //       body["data"]["animalsByClassification"]["habitat"].toString();
-        // } else {
-        //   habitat = "N/A";
-        // }
-        // if (body["data"]["animalsByClassification"]["threat"] != null &&
-        //     body["data"]["animalsByClassification"]["threat"] != "") {
-        //   threat =
-        //       body["data"]["animalsByClassification"]["threat"].toString();
-        // } else {
-        //   threat = "N/A";
-        // }
+        if (body["data"]["animalsByClassification"]["habitats"][0]
+                    ["description"] !=
+                null &&
+            body["data"]["animalsByClassification"]["habitats"][0]
+                    ["description"] !=
+                "") {
+          habitat = body["data"]["animalsByClassification"]["habitats"][0]
+                  ["description"]
+              .toString();
+        } else {
+          habitat = "N/A";
+        }
+        if (body["data"]["animalsByClassification"]["typicalBehaviourM"]
+                    ["threatLevel"] !=
+                null &&
+            body["data"]["animalsByClassification"]["typicalBehaviourM"]
+                    ["threatLevel"] !=
+                "") {
+          threat = body["data"]["animalsByClassification"]["typicalBehaviourM"]
+                  ["threatLevel"]
+              .toString();
+        } else {
+          threat = "N/A";
+        }
         if (body["data"]["animalsByClassification"]["heightF"] != null &&
             body["data"]["animalsByClassification"]["heightF"] != "") {
           heightF =

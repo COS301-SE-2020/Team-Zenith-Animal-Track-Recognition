@@ -36,8 +36,8 @@ class UploadView extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: <Color>[
-                    Color.fromRGBO(80, 132, 211, 1),
-                    Color.fromRGBO(49, 93, 191, 1)
+                    Color.fromRGBO(33, 78, 125, 1),
+                    Color.fromRGBO(80, 156, 208, 1)
                   ])),
             ),
             title: text22LeftBoldWhite(
@@ -79,7 +79,6 @@ class SliverBody extends ViewModelWidget<UploadViewModel> {
             header,
             spoorImageBlock,
             attachAnimal,
-            SpoorLocationInput(),
             attachATag,
             UploadButton()
           ]),
@@ -643,7 +642,7 @@ class UploadButton extends ViewModelWidget<UploadViewModel> {
       width: 80,
       child: RaisedButton(
           child: text16CenterBoldWhite("UPLOAD TRACK"),
-          color: Color.fromRGBO(80, 132, 211, 1),
+          color: Color.fromRGBO(33, 78, 125, 1),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.all(10),
@@ -758,8 +757,8 @@ Widget leftBlock = new Container(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         colors: <Color>[
-          Color.fromRGBO(80, 132, 211, 1),
-          Color.fromRGBO(49, 93, 191, 1)
+          Color.fromRGBO(33, 78, 125, 1),
+          Color.fromRGBO(80, 156, 208, 1)
         ]),
     borderRadius: BorderRadius.circular(10),
   ),

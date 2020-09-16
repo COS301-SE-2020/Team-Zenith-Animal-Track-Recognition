@@ -33,8 +33,8 @@ class AnimalView extends StatelessWidget {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: <Color>[
-                          Color.fromRGBO(80, 132, 211, 1),
-                          Color.fromRGBO(49, 93, 191, 1)
+                          Color.fromRGBO(33, 78, 125, 1),
+                          Color.fromRGBO(80, 156, 208, 1)
                         ])),
                   ),
                 ),
@@ -67,8 +67,8 @@ class AnimalView extends StatelessWidget {
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
                                       colors: <Color>[
-                                    Color.fromRGBO(80, 132, 211, 1),
-                                    Color.fromRGBO(49, 93, 191, 1)
+                                    Color.fromRGBO(33, 78, 125, 1),
+                                    Color.fromRGBO(80, 156, 208, 1)
                                   ])),
                             ),
                             bottom: TabBar(
@@ -236,7 +236,7 @@ class ViewButton extends ViewModelWidget<AnimalViewModel> {
       minWidth: 200,
       child: RaisedButton(
           child: text12CenterBoldWhite("VIEW INFO"),
-          color: Color.fromRGBO(80, 132, 211, 1),
+          color: Color.fromRGBO(33, 78, 125, 1),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.all(10),

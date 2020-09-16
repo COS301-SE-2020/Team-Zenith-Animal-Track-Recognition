@@ -24,7 +24,7 @@ class HomeView extends StatelessWidget {
                   ? Scaffold(
                       drawer: HomeNavDrawer(),
                       appBar: AppBar(
-                        //backgroundColor: Color.fromRGBO(49, 93, 191, 1),
+                        //backgroundColor: Color.fromRGBO(80,156,208, 1),
                         title: text22LeftBoldWhite(
                           "ERP RANGER",
                         ),
@@ -37,8 +37,8 @@ class HomeView extends StatelessWidget {
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                   colors: <Color>[
-                                Color.fromRGBO(80, 132, 211, 1),
-                                Color.fromRGBO(49, 93, 191, 1)
+                                Color.fromRGBO(33, 78, 125, 1),
+                                Color.fromRGBO(80, 156, 208, 1)
                               ])),
                         ),
                       ),
@@ -155,8 +155,8 @@ class HomeListBody extends ViewModelWidget<HomeViewModel> {
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                         colors: <Color>[
-                                          Color.fromRGBO(80, 132, 211, 1),
-                                          Color.fromRGBO(49, 93, 191, 1)
+                                          Color.fromRGBO(33, 78, 125, 1),
+                                          Color.fromRGBO(80, 156, 208, 1)
                                         ]),
                                     borderRadius: BorderRadius.circular(10)),
                                 child: text12LeftBoldWhite(
@@ -190,6 +190,7 @@ class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
   @override
   Widget build(BuildContext context, HomeViewModel model) {
     return Container(
+        color: Colors.white,
         width: 225,
         child: Drawer(
             child: ListView(

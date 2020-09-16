@@ -125,8 +125,8 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: <Color>[
-                        Color.fromRGBO(80, 132, 211, 1),
-                        Color.fromRGBO(49, 93, 191, 1)
+                        Color.fromRGBO(33, 78, 125, 1),
+                        Color.fromRGBO(80, 156, 208, 1)
                       ])),
                   child: Row(
                     children: <Widget>[
@@ -912,9 +912,9 @@ Widget icon = new Container(
   alignment: Alignment(0, 0),
   margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
   decoration: BoxDecoration(
-      color: Color.fromRGBO(80, 132, 211, 1),
+      color: Color.fromRGBO(33, 78, 125, 1),
       borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: Color.fromRGBO(80, 132, 211, 1))),
+      border: Border.all(color: Color.fromRGBO(33, 78, 125, 1))),
   child: Center(
     child: IconButton(
       alignment: Alignment(0, 0),
@@ -936,8 +936,8 @@ Widget text(String name, var context) {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: <Color>[
-            Color.fromRGBO(80, 132, 211, 1),
-            Color.fromRGBO(49, 93, 191, 1)
+            Color.fromRGBO(33, 78, 125, 1),
+            Color.fromRGBO(80, 156, 208, 1)
           ]),
       borderRadius: BorderRadius.circular(10),
     ),
