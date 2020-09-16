@@ -531,7 +531,7 @@ const RootQuery = new GraphQLObjectType({
                         time: Date.now().toString(),
                         platform: "app"
                     }
-                    RecentLogins.push(LI)
+                    recentLogins.push(LI)
                     return a
                 } else return null
             }
@@ -558,7 +558,7 @@ const RootQuery = new GraphQLObjectType({
                         time: Date.now().toString(),
                         platform: "wdb"
                     }
-                    RecentLogins.push(LI)
+                    recentLogins.push(LI)
                     return a
                 } else return null
             }
