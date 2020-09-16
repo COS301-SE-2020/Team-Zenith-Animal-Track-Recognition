@@ -1,6 +1,6 @@
 const CACHE = true; //inabil if runing in a multiy sever invermint
 const verbose = true;
-const debugLoging =true;
+const debugLoging = true;
 var dateOBJ = new Date();
 const graphql = require('graphql');
 
@@ -20,9 +20,10 @@ const {
 } = graphql;
 const _ = require('lodash')
 const {
-    toNumber, isNumber
+    toNumber,
+    isNumber
 } = require('lodash');
-let redeyNeedConter =0;
+let redeyNeedConter = 0;
 //google db
 const ADMIN = require('firebase-admin');
 let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
@@ -136,12 +137,6 @@ const SPOOR_IDENTIFICATION_TYPE = new GraphQLObjectType({
                     animalID: parent.animal.toString()
                 })
 
-                // if (parent.spoorIdentificationID == "103") {
-                //     console.log(parent)
-                //     console.log(animalData)
-                //     console.log(temp)
-                // }
-
                 return temp;
             }
         },
@@ -170,15 +165,17 @@ const SPOOR_IDENTIFICATION_TYPE = new GraphQLObjectType({
                 })
             }
         },
-        tags:{
+        tags: {
             type: new GraphQLList(GraphQLString)
         },
-        similar:{
-            type:new GraphQLList(PICTURES_TYPE) ,
+        similar: {
+            type: new GraphQLList(PICTURES_TYPE),
             resolve(parent, args) {
-                let temp=[]
+                let temp = []
                 parent.similar.forEach(element => {
-                    let vind=_.find(pictureData,{ picturesID:element.toString()})
+                    let vind = _.find(pictureData, {
+                        picturesID: element.toString()
+                    })
                     temp.push(vind)
                 });
                 return temp
@@ -276,7 +273,7 @@ const PICTURES_TYPE = new GraphQLObjectType({
         kindOfPicture: {
             type: GraphQLString
         },
-        text:{
+        text: {
             type: GraphQLString
         }
 
@@ -474,7 +471,7 @@ const TROPHY_TYPE = new GraphQLObjectType({
         name: {
             type: GraphQLString
         },
-        text:{
+        text: {
             type: GraphQLString
         },
         hiddin: {
@@ -653,7 +650,7 @@ const RootQuery = new GraphQLObjectType({
                             groupName: args.groupName
                         })
                     }
-                    newLocal =_.orderBy(newLocal,['priority'])
+                    newLocal = _.orderBy(newLocal, ['priority'])
                     return newLocal;
                 }
                 return null;
@@ -894,7 +891,7 @@ const RootQuery = new GraphQLObjectType({
                     return null;
                 }
                 let temp = spoorIdentificationData
-                _.orderBy(temp,['dateAndTime.year','dateAndTime.month','dateAndTime.day','dateAndTime.hour','dateAndTime.min','dateAndTime.second'],['desc','desc','desc','desc','desc','desc'])
+                _.orderBy(temp, ['dateAndTime.year', 'dateAndTime.month', 'dateAndTime.day', 'dateAndTime.hour', 'dateAndTime.min', 'dateAndTime.second'], ['desc', 'desc', 'desc', 'desc', 'desc', 'desc'])
                 temp.reverse()
                 if (args.ranger != undefined) {
                     if (args.negat == undefined) {
@@ -917,11 +914,11 @@ const RootQuery = new GraphQLObjectType({
                         })
                     }
                 } else if (args.classification != undefined) {
-                    
-                    let animalToFind =_.find(animalData,{
-                        classification:args.classification
+
+                    let animalToFind = _.find(animalData, {
+                        classification: args.classification
                     })
-                    
+
                     if (args.negat == undefined) {
                         temp = _.filter(temp, {
                             animal: animalToFind.animalID.toString()
@@ -954,75 +951,75 @@ const RootQuery = new GraphQLObjectType({
                 }
                 return dietTypeData
             }
-        }
-        ,trophy :{
+        },
+        trophy: {
             type: new GraphQLList(TROPHY_TYPE),
-            args:{
+            args: {
                 token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
             },
-            resolve(parent, args){
-                
+            resolve(parent, args) {
+
                 let a = _.find(usersData, {
                     token: args.token
                 })
                 if (a == null) {
                     return null;
                 }
-                let listOfTrophys=[]
-                let listOfSID=_.filter(spoorIdentificationData,{
-                    ranger:a.rangerID
+                let listOfTrophys = []
+                let listOfSID = _.filter(spoorIdentificationData, {
+                    ranger: a.rangerID
                 })
-                let trophyA ={
-                    name:"",
-                    text:"",
-                    hiddin:false,
-                    unloked:false
+                let trophyA = {
+                    name: "",
+                    text: "",
+                    hiddin: false,
+                    unloked: false
                 }
                 listOfTrophys.push(trophyA)
 
-                let Make_1st_ID ={
-                    name:"Make 1st ID",
-                    text:"Make 1st ID",
-                    hiddin:false,
-                    unloked:false
+                let Make_1st_ID = {
+                    name: "Make 1st ID",
+                    text: "Make 1st ID",
+                    hiddin: false,
+                    unloked: false
                 }
-                if (listOfSID.length>0)
-                Make_1st_ID.unloked=true
+                if (listOfSID.length > 0)
+                    Make_1st_ID.unloked = true
                 listOfTrophys.push(Make_1st_ID)
 
-                let Make_5_ID ={
-                    name:"Make 5 ID",
-                    text:"Make 5 ID",
-                    hiddin:false,
-                    unloked:false
+                let Make_5_ID = {
+                    name: "Make 5 ID",
+                    text: "Make 5 ID",
+                    hiddin: false,
+                    unloked: false
                 }
-                if (listOfSID.length>=50)
-                Make_5_ID.unloked=true
+                if (listOfSID.length >= 50)
+                    Make_5_ID.unloked = true
                 listOfTrophys.push(Make_5_ID)
 
-                let Make_50_ID ={
-                    name:"Make 50 ID",
-                    text:"Make 50 ID",
-                    hiddin:false,
-                    unloked:false
+                let Make_50_ID = {
+                    name: "Make 50 ID",
+                    text: "Make 50 ID",
+                    hiddin: false,
+                    unloked: false
                 }
-                if (listOfSID.length>=50)
-                Make_50_ID.unloked=true
+                if (listOfSID.length >= 50)
+                    Make_50_ID.unloked = true
                 listOfTrophys.push(Make_50_ID)
 
-                let Make_200_ID ={
-                    name:"Make 200 ID",
-                    text:"Make 200 ID",
-                    hiddin:false,
-                    unloked:false
+                let Make_200_ID = {
+                    name: "Make 200 ID",
+                    text: "Make 200 ID",
+                    hiddin: false,
+                    unloked: false
                 }
-                if (listOfSID.length>=200)
-                Make_50_ID.unloked=true
+                if (listOfSID.length >= 200)
+                    Make_50_ID.unloked = true
                 listOfTrophys.push(Make_200_ID)
 
-                return listOfTrophys    
+                return listOfTrophys
             }
         }
 
@@ -1062,7 +1059,7 @@ const Mutation = new GraphQLObjectType({
 
             },
             resolve(parent, args) {
-                console.log("addUser",args)
+                console.log("addUser", args)
                 let a = _.find(usersData, {
                     token: args.token
                 })
@@ -1132,7 +1129,7 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                console.log("updateLevel",args)
+                console.log("updateLevel", args)
                 let a = _.find(usersData, {
                     token: args.tokenSend
                 })
@@ -1183,7 +1180,7 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                
+
                 let a = _.find(usersData, {
                     token: args.tokenSend
                 })
@@ -1263,15 +1260,12 @@ const Mutation = new GraphQLObjectType({
                     token: args.tokenIn
                 })
                 if (a == undefined || a == null) {
-                    console.log("deleted aberted 1");
                     return null
                 }
                 if (a.accessLevel <= 2) {
-                    console.log("deleted aberted 2");
                     return null
                 }
                 if (args.rangerID == args.tokenIn) {
-                    console.log("deleted aberted 3");
                     return null
                 }
                 let b = _.findIndex(usersData, {
@@ -1281,8 +1275,6 @@ const Mutation = new GraphQLObjectType({
                 users.doc(args.rangerID).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
-
-                // console.log(usersData);
                 return mesData[0];
             }
 
@@ -1323,7 +1315,6 @@ const Mutation = new GraphQLObjectType({
                     groupName: args.groupName,
                     groupID: GID.toString()
                 }
-                // console.log(GID.toString())
                 groups.doc(GID.toString()).set(newGroup)
 
                 groupData.push(newGroup)
@@ -1380,14 +1371,11 @@ const Mutation = new GraphQLObjectType({
                     token: args.tokenIn
                 })
                 if (a == undefined) {
-                    console.log("deleted aberted 1");
                     return null
                 }
                 if (a.accessLevel <= 2) {
-                    console.log("deleted aberted 2");
                     return null
                 }
-                // console.log("hello")
                 let b = _.findIndex(groupData, {
                     token: args.groupID
                 })
@@ -1397,8 +1385,6 @@ const Mutation = new GraphQLObjectType({
                 users.doc(args.groupID).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
-
-                // console.log(usersData);
                 return MesData[0];
             }
 
@@ -1651,7 +1637,7 @@ const Mutation = new GraphQLObjectType({
                     animalOverview: args.animalOverview,
                     animalDescription: args.animalDescription
                 }
-                
+
                 if (args.pictures != undefined) {
                     newAnimal.pictures = args.pictures
                 } else {
@@ -1816,8 +1802,8 @@ const Mutation = new GraphQLObjectType({
                 if (args.Offspring != undefined) {
                     updatedAnimal.Offspring = args.Offspring
                 }
-                if (args.pictures!=undefined){
-                    updatedAnimal.pictures=args.pictures
+                if (args.pictures != undefined) {
+                    updatedAnimal.pictures = args.pictures
                 }
 
                 if (args.animalMarkerColor != undefined) {
@@ -1849,8 +1835,8 @@ const Mutation = new GraphQLObjectType({
                 tgas: {
                     type: new GraphQLList(new GraphQLNonNull(GraphQLString))
                 },
-                imageText:{
-                    type:GraphQLString
+                imageText: {
+                    type: GraphQLString
                 }
             },
             resolve(parent, args) {
@@ -1873,18 +1859,16 @@ const Mutation = new GraphQLObjectType({
                 let tag = ["0"]
                 if (args.tgas != undefined)
                     tag = args.tgas;
-
-
+                let newingID = uplodeBase64(args.base64imge)
 
                 let rangera = _.find(usersData, {
                     token: args.token
                 })
 
-                let potentialMatchesarry = AIIterface(args.base64imge)
-                potentialMatchesarry =_.sortBy(potentialMatchesarry, ["confidence"])
-                console.log(potentialMatchesarry)
+                let potentialMatchesarry = AIIterface(newingID, args.base64imge)
+                potentialMatchesarry = _.sortBy(potentialMatchesarry, ["confidence"])
 
-                let newingID = uplodeBase64(args.base64imge)
+
 
                 let newSpoorIdentification = {
                     spoorIdentificationID: IDID.toString(),
@@ -1904,7 +1888,7 @@ const Mutation = new GraphQLObjectType({
                     potentialMatches: potentialMatchesarry,
                     animal: _.last(potentialMatchesarry).animal,
                     track: newingID,
-                    similar: getSimilarimgTrak( _.last(potentialMatchesarry).animal),
+                    similar: getSimilarimgTrak(_.last(potentialMatchesarry).animal),
                     tags: tag,
                     picturesID: newingID,
                 }
@@ -1916,7 +1900,6 @@ const Mutation = new GraphQLObjectType({
 
                 spoorIdentificationData.push(newSpoorIdentification)
                 addImgIDToAnimal(newSpoorIdentification.animal, newSpoorIdentification.picture)
-                console.log("fail")
                 return newSpoorIdentification;
             }
         },
@@ -1965,9 +1948,8 @@ const Mutation = new GraphQLObjectType({
                 let rangera = _.find(usersData, {
                     token: args.token
                 })
-
-                let potentialMatchesarry = _.sortBy(AIIterface(args.base64imge), ["confidence"])
                 let newingID = uplodeBase64(args.base64imge)
+                let potentialMatchesarry = _.sortBy(AIIterface(newingID), ["confidence"])
 
                 let newSpoorIdentification = {
                     spoorIdentificationID: IDID.toString(),
@@ -2071,7 +2053,6 @@ const Mutation = new GraphQLObjectType({
                 if (args.tags != undefined) {
                     newSpoorIdentification.tags = args.tags
                 }
-                console.log("animalToupdate")
 
                 spoorIdentifications.doc(newSpoorIdentification.spoorIdentificationID).set(newSpoorIdentification).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
@@ -2130,11 +2111,9 @@ const Mutation = new GraphQLObjectType({
                     token: args.token
                 })
                 if (a == undefined) {
-                    console.log("deleted aberted 1");
                     return null
                 }
                 if (a.accessLevel <= 2) {
-                    console.log("deleted aberted 2");
                     return null
                 }
                 let b = _.findIndex(dietTypeData, args.dietName)
@@ -2194,73 +2173,71 @@ const Mutation = new GraphQLObjectType({
                 return mesData[1];
             }
         },
-        addIMG64ToAnilmil:{
-            type:GraphQLString,
-            args:{
+        addIMG64ToAnilmil: {
+            type: GraphQLString,
+            args: {
                 token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 IMG64: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                animalID:
-                {
-                    type:new GraphQLNonNull(GraphQLString)
+                animalID: {
+                    type: new GraphQLNonNull(GraphQLString)
                 }
             },
-            resolve(parent, args){
+            resolve(parent, args) {
                 let a = _.find(usersData, {
                     token: args.token
                 })
                 if (a == undefined) {
                     return null
                 }
-                let newID=uplodeBase64(args.IMG64,"animal")
-                addImgIDToAnimal(args.animalID,newID)
+                let newID = uplodeBase64(args.IMG64, "animal")
+                addImgIDToAnimal(args.animalID, newID)
                 return newID;
             }
         },
-        addIMG64ToRanger:{
-            type:GraphQLString,
-            args:{
+        addIMG64ToRanger: {
+            type: GraphQLString,
+            args: {
                 token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 IMG64: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                rangerID:
-                {
-                    type:new GraphQLNonNull(GraphQLString)
+                rangerID: {
+                    type: new GraphQLNonNull(GraphQLString)
                 }
             },
-            resolve(parent, args){
+            resolve(parent, args) {
                 let a = _.find(usersData, {
                     token: args.token
                 })
                 if (a == undefined) {
                     return null
                 }
-                URLa=uplodeBase64URL(args.IMG64,"ranger")
-                addURLToRanger(args.rangerID,URLa)
+                URLa = uplodeBase64URL(args.IMG64, "ranger")
+                addURLToRanger(args.rangerID, URLa)
                 return URLa;
             }
         },
-        addAnimalGroup:{
-            type:ANIMAL_TYPE,
-            
-            args:{
-                token:{
+        addAnimalGroup: {
+            type: ANIMAL_TYPE,
+
+            args: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                animalID:{
+                animalID: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                groupID:{
+                groupID: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
-            resolve(parent, args){
+            resolve(parent, args) {
                 let a = _.find(usersData, {
                     token: args.token
                 })
@@ -2270,33 +2247,33 @@ const Mutation = new GraphQLObjectType({
                 if (a.accessLevel <= 2) {
                     return null
                 }
-                let animal = _.find(animalData,{
-                    animalID:toNumber(args.animalID)
+                let animal = _.find(animalData, {
+                    animalID: toNumber(args.animalID)
                 })
-                if (animal==undefined){
+                if (animal == undefined) {
                     return null
                 }
-                _.pull(animal.groupID,5)
+                _.pull(animal.groupID, 5)
                 animal.groupID.push(args.groupID);
                 animals.doc(animal.classification).set(animal)
                 return animal
             }
         },
-        removeAnimalGroup:{
-            type:ANIMAL_TYPE,
-            
-            args:{
-                token:{
+        removeAnimalGroup: {
+            type: ANIMAL_TYPE,
+
+            args: {
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                animalID:{
+                animalID: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                groupID:{
+                groupID: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
-            resolve(parent, args){
+            resolve(parent, args) {
                 let a = _.find(usersData, {
                     token: args.token
                 })
@@ -2306,14 +2283,14 @@ const Mutation = new GraphQLObjectType({
                 if (a.accessLevel <= 2) {
                     return null
                 }
-                let animal = _.find(animalData,{
-                    animalID:toNumber(args.animalID)
+                let animal = _.find(animalData, {
+                    animalID: toNumber(args.animalID)
                 })
-                if (animal==undefined){
+                if (animal == undefined) {
                     return null
                 }
-                _.pull(animal.groupID,args.groupID)
-                if (animal.groupID.length<=0)
+                _.pull(animal.groupID, args.groupID)
+                if (animal.groupID.length <= 0)
                     animal.groupID.push(5);
                 animals.doc(animal.classification).set(animal)
                 return animal
@@ -2322,32 +2299,31 @@ const Mutation = new GraphQLObjectType({
         updateAnimalGroup: {
             type: ANIMAL_TYPE,
             args: {
-                token:{
+                token: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                animalID:{
+                animalID: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
-                groupID:{
+                groupID: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
             resolve(parent, args) {
-                console.log("updateLevel",args)
+                console.log("updateLevel", args)
                 let a = _.find(usersData, {
                     token: args.token
                 })
                 if (a == undefined) {
-                    console.log('updateAnimalGroup undefined')
                     return null
                 }
                 if (a.accessLevel <= 2) {
                     return null;
                 }
-                animalToFind=_.find(animalData,{
-                    animalID:args.animalID.toString()
+                animalToFind = _.find(animalData, {
+                    animalID: args.animalID.toString()
                 })
-                animalToFind.groupID=[]
+                animalToFind.groupID = []
                 animalToFind.groupID.push(args.groupID)
                 animals.doc(animalToFind.classification).set(animalToFind)
                 return animalToFind;
@@ -2355,7 +2331,7 @@ const Mutation = new GraphQLObjectType({
 
         },
 
-        
+
     }
 });
 
@@ -2423,8 +2399,8 @@ if (CACHE) {
         querySnapshot.forEach(function (doc) {
             let newGoupe = doc.data()
             groupData.push(newGoupe)
-            if (newGoupe.priority==undefined){
-                newGoupe.priority=9;
+            if (newGoupe.priority == undefined) {
+                newGoupe.priority = 9;
                 groups.doc(newGoupe.groupID).set(newGoupe)
             }
         });
@@ -2448,8 +2424,7 @@ if (CACHE) {
             let newPicture = doc.data()
             newPicture.pictureID = doc.id.toString()
             newPicture.picturesID = doc.id.toString()
-            newPicture.kindOfPicture=newPicture.kindOfPicture.toLowerCase()
-            // console.log(newPicture)
+            newPicture.kindOfPicture = newPicture.kindOfPicture.toLowerCase()
             pictureData.push(newPicture)
         });
         redeyNeedConterDown();
@@ -2459,7 +2434,7 @@ if (CACHE) {
         redeyNeedConterUP();
         spoorIdentificationData = []
         querySnapshot.forEach(function (doc) {
-            
+
 
             let newSpoorID = doc.data()
             if (doc.data().picture == undefined)
@@ -2469,12 +2444,11 @@ if (CACHE) {
                 newSpoorID.location.latitude = newLocation.latitude
                 newSpoorID.location.longitude = newLocation.longitude
             }
-            newSpoorID.animal=newSpoorID.animal.toString()
-            newSpoorID.similar=getSimilarimgTrak(newSpoorID.animal.toString())
+            newSpoorID.animal = newSpoorID.animal.toString()
+            newSpoorID.similar = getSimilarimgTrak(newSpoorID.animal.toString())
             // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
             spoorIdentificationData.push(newSpoorID)
-            if (newSpoorID.month==8||newSpoorID.month=="08"||newSpoorID.month=="8")
-            {
+            if (newSpoorID.month == 8 || newSpoorID.month == "08" || newSpoorID.month == "8") {
                 // spoorIdentifications.doc(doc.id).delete();
             }
         });
@@ -2498,7 +2472,7 @@ if (CACHE) {
 
     animals.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
-        animalData=[];
+        animalData = [];
         querySnapshot.forEach(function (doc) {
             let temp = {
                 classification: doc.id,
@@ -2641,7 +2615,7 @@ if (CACHE) {
                 temp.animalDescription = ""
                 updated = true
             }
-            if (temp.pictures == undefined||temp.pictures == []) {
+            if (temp.pictures == undefined || temp.pictures == []) {
                 temp.pictures = ["19"]
                 updated = true
             }
@@ -2649,81 +2623,112 @@ if (CACHE) {
                 temp.animalMarkerColor = getRandomColor()
                 updated = true
             }
-            if (temp.pictures.includes("19")||(temp.pictures.includes(19)))
-            {
-                if (temp.pictures.length>=2)
-                {
-                    temp.pictures=_.difference(temp.pictures,[19,"19"])
+            if (temp.pictures.includes("19") || (temp.pictures.includes(19))) {
+                if (temp.pictures.length >= 2) {
+                    temp.pictures = _.difference(temp.pictures, [19, "19"])
                     updated = true
                 }
-                
+
             }
 
-            for (let i=0;i<temp.groupID.length;i++)
-            {
-                if (isNumber( temp.groupID[i])){
-                    temp.groupID[i]=temp.groupID[i].toString()
-                    updated=true;
+            for (let i = 0; i < temp.groupID.length; i++) {
+                if (isNumber(temp.groupID[i])) {
+                    temp.groupID[i] = temp.groupID[i].toString()
+                    updated = true;
                 }
             }
             // big 5 gruep asinmint
-            if (temp.animalID=="3"||temp.animalID=="4"||temp.animalID=="5"||temp.animalID=="6"||temp.animalID=="10")
-            {
-                if (!temp.groupID.includes("1"))
-                {
-                let a =temp.groupID
-                a.unshift("1")
-                temp.groupID=a
-                updated=true;
+            if (temp.animalID == "3" || temp.animalID == "4" || temp.animalID == "5" || temp.animalID == "6" || temp.animalID == "10") {
+                if (!temp.groupID.includes("1")) {
+                    let a = temp.groupID
+                    a.unshift("1")
+                    temp.groupID = a
+                    updated = true;
                 }
             }
-            let befor=temp.groupID.length
-            temp.groupID=removeDuplicates(temp.groupID)
-            if (befor!=temp.groupID.length)
-            updated=true
-            
+            let befor = temp.groupID.length
+            temp.groupID = removeDuplicates(temp.groupID)
+            if (befor != temp.groupID.length)
+                updated = true
+
             if (updated)
                 animals.doc(doc.id).set(temp)
-            temp.animalID=temp.animalID.toString()
+            temp.animalID = temp.animalID.toString()
             animalData.push(temp);
-            
-            
+
+
         });
         redeyNeedConterDown();
     });
-    
-    
+
+
     redeyNeedConterDown();
-}else{
-}
+} else {}
 
-function AIIterface(Img) {
+function AIIterface(ImgID, base64imge) {
     potentialMatches = []
-    
-    const pythonProcess = spawnSync('python',["AIRun.py", "Za1gQIG1wJ89OaqIoyf4.jpeg"]);
-    
-        console.log(pythonProcess.output.toString)
-        for (let i = 0; i < animalData.length; i++) {
-            let newPM = {
-                animal: i,
-                confidence: parseFloat(0.0)
-            }
-            potentialMatches.push(newPM)
-        }
-        
-        return potentialMatches
-    ;
-    
+    let filename = ImgID + ".jpg"
+    saveBase64FileSy(base64imge, filename)
+    const pythonProcess = spawnSync('python', ["AIRun.py", filename]);
+    let temp = pythonProcess.output.toString()
 
-    
+    var strPos = temp.indexOf("tf.Tensor(");
+    var endpos = temp.indexOf("dtype=string)");
+    temp = temp.substring(strPos + 13, endpos - 15)
+    arrs = temp.split(' ')
+    arri = []
+
+
+    for (let i = 0; i < arrs.length; i++) {
+        arrs[i] = arrs[i].trim()
+        arri.push(parseFloat(arrs[i].substring(2, arrs[i].length - 1)))
+    }
+
+    for (let i = 0; i < animalData.length; i++) {
+        let newPM = {
+            animal: i,
+            confidence: parseFloat(0.0)
+        }
+        if (i == 11) {
+            newPM.confidence = arri[0]
+        }
+        if (i == 10) {
+            newPM.confidence = arri[3]
+        }
+        if (i == 7) {
+            newPM.confidence = arri[5]
+        }
+        if (i == 12) {
+            newPM.confidence = arri[6]
+        }
+        if (i == 9) {
+            newPM.confidence = arri[8]
+        }
+        potentialMatches.push(newPM)
+    } {
+        const fs = require('fs')
+
+        const path = './' + filename
+
+        try {
+            fs.unlinkSync(path)
+            //file removed
+        } catch (err) {
+            console.error(err)
+        }
+    }
+    return potentialMatches;
+
+
+
 }
 
-function uplodeBase64(Img,folder="trak") {
+function uplodeBase64(Img, folder = "trak") {
     newImgID = imgID()
     saveBase64File(Img, newImgID + ".jpeg")
 
 
-    async function uploadFile(){
+    async function uploadFile() {
         let filename = newImgID + ".jpeg"
         let bucketName = "root"
         // Uploads a local file to the bucket
@@ -2731,7 +2736,7 @@ function uplodeBase64(Img,folder="trak") {
             // Support for HTTP requests made with `Accept-Encoding: gzip`
             gzip: false,
             // By setting the option `destination`, you can change the name of the
-            destination: folder+"/" + filename,
+            destination: folder + "/" + filename,
             // object you are uploading to a bucket.
             metadata: {
                 // Enable long-lived HTTP caching headers
@@ -2761,20 +2766,21 @@ function uplodeBase64(Img,folder="trak") {
     newPicture = {
         picturesID: newImgID,
         kindOfPicture: folder,
-        URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/" + folder +"%2F" + newImgID + ".jpeg?alt=media"
+        URL: "https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/" + folder + "%2F" + newImgID + ".jpeg?alt=media"
     }
     pictureData.push(newPicture)
     pictures.doc(newImgID).set(newPicture)
 
     return newImgID
 }
-function uplodeBase64URL(Img,folder="ranger") {
+
+
+function uplodeBase64URL(Img, folder = "ranger") {
     newImgID = imgID()
     saveBase64File(Img, newImgID + ".jpeg")
-    // console.log("reder")
 
 
-    async function uploadFile(){
+    async function uploadFile() {
         let filename = newImgID + ".jpeg"
         let bucketName = "root"
         // Uploads a local file to the bucket
@@ -2782,7 +2788,7 @@ function uplodeBase64URL(Img,folder="ranger") {
             // Support for HTTP requests made with `Accept-Encoding: gzip`
             gzip: false,
             // By setting the option `destination`, you can change the name of the
-            destination: folder+"/" + filename,
+            destination: folder + "/" + filename,
             // object you are uploading to a bucket.
             metadata: {
                 // Enable long-lived HTTP caching headers
@@ -2823,20 +2829,20 @@ function uplodeBase64URL(Img,folder="ranger") {
 
 
 function getSimilarimgTrak(animalID) {
-    let obj=[]
-    let data =_.find(animalData,{
-        animalID:animalID
+    let obj = []
+    let data = _.find(animalData, {
+        animalID: animalID
     })
-    if (!data==undefined)
-    data.pictures.forEach(element => {
-        temp=_.find(pictureData,{
-            pictureID:element
-        })
-        if (temp.kindOfPicture=="trak")
-        obj.push(element)
-    });
-    if (obj.length==0)
-    obj=["19"]
+    if (!data == undefined)
+        data.pictures.forEach(element => {
+            temp = _.find(pictureData, {
+                pictureID: element
+            })
+            if (temp.kindOfPicture == "trak")
+                obj.push(element)
+        });
+    if (obj.length == 0)
+        obj = ["19"]
     return obj
 }
 
@@ -2889,6 +2895,12 @@ function saveBase64File(contentBase64, fileName) {
         if (err) return console.error(err)
         console.log('file saved to ', fileName)
     })
+}
+
+function saveBase64FileSy(contentBase64, fileName) {
+    let fs = require('fs')
+    const fileContents = new Buffer(contentBase64, 'base64')
+    fs.writeFileSync(fileName, fileContents)
 }
 
 function selerRandomImg() {
@@ -3003,58 +3015,53 @@ function addImgIDToAnimal(animalID, imgID) {
 
     animals.where("animalID", "==", animalID.toString()).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-            // console.log("start "+animalID+ " "+imgID)
             let e = doc.data()
-            
+
             e.pictures.push(imgID)
             animals.doc(doc.id).set(e)
-            // console.log("run "+animalID+ " "+imgID)
         });
     }).catch((err) => {
         console.error(err)
     })
 }
+
 function addURLToRanger(rangerID, URLa) {
 
     users.where("rangerID", "==", rangerID.toString()).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-            // console.log("start "+animalID+ " "+imgID)
             let e = doc.data()
-            e.pictureURL=URLa
+            e.pictureURL = URLa
             users.doc(doc.id).set(e)
-            // console.log("run "+animalID+ " "+imgID)
         });
     }).catch((err) => {
         console.error(err)
     })
 }
 
-function addLog(){
+function addLog() {
 
 }
 
-function redeyNeedConterDown(){
+function redeyNeedConterDown() {
     redeyNeedConter--;
-    if (redeyNeedConter==0)
-    {
+    if (redeyNeedConter == 0) {
         console.log("server redy DB are done loding")
     }
 }
-function redeyNeedConterUP(){
-    if (redeyNeedConter==0)
-    {
+
+function redeyNeedConterUP() {
+    if (redeyNeedConter == 0) {
         console.log("server not redy atleest 1 DB is loding")
     }
     redeyNeedConter++
-} 
+}
 
 function removeDuplicates(array) {
     let x = {};
-    array.forEach(function(i) {
-      if(!x[i]) {
-        x[i] = true
-      }
+    array.forEach(function (i) {
+        if (!x[i]) {
+            x[i] = true
+        }
     })
     return Object.keys(x)
-  };
-
+};
