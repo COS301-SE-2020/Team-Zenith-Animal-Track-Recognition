@@ -26,10 +26,6 @@ class IdentificationViewModel extends BaseViewModel {
   List<SpoorModel> get recentIdentifications => _recentIdentifications;
   SimilarSpoorModel get similarSpoorModel => _similarSpoorModel;
 
-  String url =
-      "https://images.unsplash.com/photo-1596467328033-1122519a3b16?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2134&q=80";
-  String get getUrl => url;
-
   Future<void> shareImage() async {
     try {
       // Saved with this method.

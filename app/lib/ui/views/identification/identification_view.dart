@@ -120,14 +120,8 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
             controller: myscrollController,
             children: <Widget>[
               Container(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: <Color>[
-                        Color.fromRGBO(33, 78, 125, 1),
-                        Color.fromRGBO(80, 156, 208, 1)
-                      ])),
+                  decoration:
+                      BoxDecoration(color: Color.fromRGBO(33, 78, 125, 1)),
                   child: Row(
                     children: <Widget>[
                       Expanded(flex: 1, child: icon),
@@ -932,13 +926,7 @@ Widget text(String name, var context) {
     alignment: Alignment(0, 0),
     margin: new EdgeInsets.only(bottom: 3, left: 10, right: 3),
     decoration: BoxDecoration(
-      gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: <Color>[
-            Color.fromRGBO(33, 78, 125, 1),
-            Color.fromRGBO(80, 156, 208, 1)
-          ]),
+      color: Color.fromRGBO(33, 78, 125, 1),
       borderRadius: BorderRadius.circular(10),
     ),
     height: 50,

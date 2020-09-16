@@ -355,10 +355,7 @@ Widget progressIndicator() {
       key: Key('progressIndicator'),
       color: Colors.white,
       child: Center(
-        child: HeartbeatProgressIndicator(
-          child: new Directionality(
-              textDirection: TextDirection.rtl, child: Icon(Icons.timeline)),
-        ),
+        child: Image.asset('assets/images/loading.gif'),
       ));
 }
 
