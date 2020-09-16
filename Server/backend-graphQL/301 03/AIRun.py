@@ -16,7 +16,7 @@ IMG_HEIGHT = 350
 IMG_WIDTH = 350
 
 
-probability_model= tf.saved_model.load('saved_model/mane/20200916,055946')
+probability_model= tf.saved_model.load('saved_model/mane/20200917,011408')
 
 
 
