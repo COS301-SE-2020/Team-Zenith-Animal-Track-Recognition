@@ -69,16 +69,6 @@ void main() {
       await driver.waitFor(find.text('Lion'));
       print('Animal Name entered!');
 
-      await driver.tap(find.byValueKey('Longitude'));
-      await driver.enterText('27.6786844');
-      await driver.waitFor(find.text('27.6786844'));
-      print('Longitude entered!');
-
-      await driver.tap(find.byValueKey('Latitude'));
-      await driver.enterText('-26.1557168');
-      await driver.waitFor(find.text('-26.1557168'));
-      print('Latitude entered!');
-
       await driver.tap(find.text('Profile'));
       await driver.scroll(
           find.byValueKey('ProfileList'), 0, -400, Duration(milliseconds: 500));

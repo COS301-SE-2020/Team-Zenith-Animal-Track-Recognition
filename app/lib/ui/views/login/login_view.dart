@@ -53,6 +53,7 @@ class UploadButton extends ViewModelWidget<LoginViewModel> {
       ),
       width: 200,
       child: RaisedButton(
+        key: Key('LoginButton'),
         onPressed: () {
           model.login();
         },
