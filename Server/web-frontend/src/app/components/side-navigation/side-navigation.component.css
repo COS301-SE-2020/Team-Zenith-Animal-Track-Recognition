@@ -25,29 +25,17 @@
 #side-navigation-logo-container>div:hover {
     cursor: pointer;
 }
-
-#side-navigation-logo-container>div {
-    color: white;
-    text-align: center;
-    height: 85%;
-    width: 85%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    font-size: 130%;
-    border-radius: 10px;
-}
-
 #home-page-icon {
-    height: 100%;
+    height: 80%;
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
-
+#home-page-icon:hover {
+	cursor: pointer;
+}
 #home-page-icon>img {
     height: 100%;
     width: auto;
@@ -93,7 +81,7 @@
 .animals-route-links:hover .side-navigation-wireframeIcon,
 .rangers-route-links:hover .side-navigation-wireframeIcon,
 .activeRoute .side-navigation-wireframeIcon {
-    background-color: #686E79;
+    color: #509CD0;
 }
 
 .side-navigation-route-container:hover>p,
@@ -101,12 +89,12 @@
 #rangers-route-link:hover>#rangers-route p,
 .animals-route-links:hover>p,
 .rangers-route-links:hover>p {
-    color: #686E79;
+    color: #509CD0;
     font-weight: 600;
 }
 
-.side-navigation-route-container>p {
-    color: #AAAAAA;
+.side-navigation-route-container >p {
+    color: #CCC;
     margin: 0;
     font-size: 115%;
 }
@@ -200,7 +188,7 @@
 
 .animals-route-links>p,
 .rangers-route-links>p {
-    color: #AAA;
+    color: #CCC;
     margin: 0;
     padding: 0;
 }
@@ -211,7 +199,6 @@
     align-items: center;
     height: 100%;
     width: 10px;
-    border: 1px solid blue;
 }
 
 #animals-route>p,
@@ -229,9 +216,12 @@
 }
 
 .side-navigation-wireframeIcon {
-    background-color: #BBBBBB;
-    height: 20px;
-    width: 20px;
+    color: #CCC;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+    font-size: 150%;
     margin-right: 10%;
     margin-left: 10%;
     transition: all 0.2s ease-in-out;
@@ -246,16 +236,10 @@
 }
 
 .activeRoute p {
-    color: #686E79;
+    color: #509CD0;
     font-weight: 600;
-}
-
-:host ::ng-deep .material-icons {
-    margin: 5px;
-    color: #315dbf;
 }
 
 :host ::ng-deep .dropdown {
     margin: 5px;
-    color: #D53D68;
 }

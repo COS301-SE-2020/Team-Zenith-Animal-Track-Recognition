@@ -9,16 +9,25 @@
                 <mat-label>Common Name</mat-label>
                 <input matInput formControlName="commonName" placeholder="i.e Elephant">
                 <mat-hint>Required</mat-hint>
+				<mat-error *ngIf="addAnimal.commonName.invalid && (addAnimal.commonName.dirty || addAnimal.commonName.touched)" class="alert">
+					{{validationMsg(addAnimal.commonName, 'commonName')}}
+				</mat-error>
             </mat-form-field>
             <mat-form-field class="add-animal-form-input" appearance="outline">
                 <mat-label>Classification</mat-label>
                 <input matInput formControlName="classification" placeholder="i.e Loxodonta Africanus">
                 <mat-hint>Required</mat-hint>
+				<mat-error *ngIf="addAnimal.classification.invalid && (addAnimal.classification.dirty || addAnimal.classification.touched)" class="alert">
+					{{validationMsg(addAnimal.classification, 'classification')}}
+				</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" id="add-animal-form-descr">
                 <mat-label>Animal Description</mat-label>
                 <textarea rows="4" matInput #charTa formControlName="animalDescription"></textarea>
                 <mat-hint align="start">{{charTa.value?.length || 0}}/1500 (Required)</mat-hint>
+				<mat-error *ngIf="addAnimal.animalDescription.invalid && (addAnimal.animalDescription.dirty || addAnimal.animalDescription.touched)" class="alert">
+					{{validationMsg(addAnimal.animalDescription, 'animalDescription')}}
+				</mat-error>
             </mat-form-field>
         </div>
     </form>

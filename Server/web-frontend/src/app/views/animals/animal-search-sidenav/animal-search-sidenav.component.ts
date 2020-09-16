@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
@@ -18,9 +18,16 @@ export class AnimalSearchSidenavComponent implements OnInit {
 
 	currentAlphabet: any;
 
-	constructor(private http: HttpClient, private router: Router) { }
-
+	constructor(private changeDetection: ChangeDetectorRef, private http: HttpClient, private router: Router) { }
+	
+	public ngOnChanges(changes: SimpleChanges) {
+		if (changes.animals) {
+			this.stopSidenavLoader();
+		}
+	}
+	
 	ngOnInit(): void {
+		this.stopSidenavLoader();
 	}
 
 	route(temp: string) {
@@ -49,5 +56,12 @@ export class AnimalSearchSidenavComponent implements OnInit {
 		this.searchTextOnChange.emit(event);
 		if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")
 			this.currentAlphabet = null;
+	}
+	//Loader
+	startSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'visible';
+	}
+	stopSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
 	}
 }

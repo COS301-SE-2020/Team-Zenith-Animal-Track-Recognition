@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewChild, IterableDiffers } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { EMPTY} from 'rxjs';
+import { catchError, map, retry } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { runInNewContext } from 'vm';
 
@@ -21,17 +24,28 @@ export class AnimalsComponent implements OnInit {
 	levels: boolean = false;
 	test: boolean = false;
 
-	constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
 		if (document.getElementById("animals-route-link") == null) {
 			this.test = true;
 			return;
 		}
+		this.startLoader();
+		this.startSidenavLoader();
 		document.getElementById("animals-route-link").classList.add("activeRoute");
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
 			'lifeSpan,gestationPeriod,Offspring,typicalBehaviourM{behaviour,threatLevel},typicalBehaviourF{behaviour,threatLevel},animalOverview,animalDescription,pictures{URL}}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					this.stopSidenavLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -82,6 +96,8 @@ export class AnimalsComponent implements OnInit {
 			this.test = false;
 			return;
 		}
+		this.startLoader();
+		this.startSidenavLoader();
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
 			'lifeSpan,gestationPeriod,Offspring,typicalBehaviourM{behaviour,threatLevel},typicalBehaviourF{behaviour,threatLevel},animalOverview,animalDescription,pictures{URL}}}')
@@ -217,5 +233,19 @@ export class AnimalsComponent implements OnInit {
 			var upperBoundWeightValue = this.animals[i].weightM.substring(weightForI + 1);
 			var upperBoundAsANumber = Number(upperBoundWeightValue);
 		}
+	}
+	
+	//Loader
+	startLoader() {
+		document.getElementById("loader-container").style.visibility = "visible";
+	}
+	stopLoader() {
+		document.getElementById("loader-container").style.visibility = "hidden";
+	}
+	startSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'visible';
+	}
+	stopSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
 	}
 }

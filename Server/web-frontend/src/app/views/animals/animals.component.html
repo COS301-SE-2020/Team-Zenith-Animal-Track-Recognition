@@ -5,17 +5,45 @@
     <div id="animals-view-workspace">
         <mat-drawer-container id="animal-search-sidenav-container">
             <mat-drawer id="animal-search-sidenav" #sidenav mode="side">
-                <app-animal-search-sidenav [animals]="animals" (animalsOnChange)="updateAnimalList($event)" 
-					[searchText]="searchText" (searchTextOnChange)="updateSearchText($event)" [selection]="selection"></app-animal-search-sidenav>
+				<div id="search-nav-loader-container" class="loader-container">
+					<mat-spinner id="loader"></mat-spinner>
+				</div>
+				<ng-container *ngIf="animals; else emptyAnimalSidenavDisplay">
+					<ng-container *ngIf="animals.length != 0; else emptyAnimalSidenavDisplay">
+						<app-animal-search-sidenav [animals]="animals" (animalsOnChange)="updateAnimalList($event)" 
+							[searchText]="searchText" (searchTextOnChange)="updateSearchText($event)" [selection]="selection"></app-animal-search-sidenav>
+					</ng-container>
+				</ng-container>
+				<ng-template #emptyAnimalSidenavDisplay>
+					<div id="empty-sidenav-display-message-container" class="empty-display-message-container">
+						<div id="empty-sidenav-display-message" class="empty-display-message">
+							<p class="fontM">There is no data to display.</p>
+						</div>
+					</div>
+				</ng-template>
                 <div id="sidenav-close-btn-container" (click)="closeSidenav()">
                     <button id="side-nav-close-btn" mat-icon-button><mat-icon>chevron_left</mat-icon></button>
                 </div>
             </mat-drawer>
             <mat-drawer-content id="animal-search-sidenav-content">
+				<div id="loader-container" >
+					<mat-spinner id="loader"></mat-spinner>
+				</div>
                 <div id="sidenav-open-btn-container" (click)="openSidenav()">
                     <button id="side-nav-open-btn" mat-icon-button><mat-icon>chevron_right</mat-icon></button>
                 </div>
-                <app-animal-info-card [animalsList]="animals" (animalsOnChange)="updateAnimalList($event)" [searchText]="searchText"></app-animal-info-card>
+				<ng-container *ngIf="animals; else emptyAnimalCardsDisplay">
+					<ng-container *ngIf="animals.length != 0; else emptyAnimalCardsDisplay">
+						<app-animal-info-card [animalsList]="animals" (animalsOnChange)="updateAnimalList($event)" [searchText]="searchText"></app-animal-info-card>
+					</ng-container>
+				</ng-container>
+				<ng-template #emptyAnimalCardsDisplay>
+					<div class="empty-display-message-container">
+						<div class="empty-display-message">
+							<p class="fontM">There is no data to display.</p>
+						</div>
+					</div>
+				</ng-template>
             </mat-drawer-content>
         </mat-drawer-container>
     </div>

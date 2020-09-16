@@ -27,16 +27,13 @@ export class AnimalInfoCardComponent implements OnInit {
 		private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
-		this.startLoader();
+		this.stopLoader();
 	}
 
 	public ngOnChanges(changes: SimpleChanges) {
-		this.startLoader();
-		if (changes.animals) {
-			//If animals has updated
-			this.changeDetection.detectChanges();
+		if (changes.animalsList) {
+			this.stopLoader();
 		}
-		this.stopLoader();
 	}
 
 	//Animal CRUD Quick-Actions
@@ -83,9 +80,7 @@ export class AnimalInfoCardComponent implements OnInit {
 	}
 	
 	viewAnimalProfile(animalClassi: string) {
-		let classification = animalClassi.split(" ");
-		let classificationQuery = classification[0] + "_" + classification[1];
-		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
+		this.router.navigate(['animals/information'], { queryParams: { classification: animalClassi.replace(" ", "_") } });
 	}
 	viewAnimalPhotos(animalClassi: string) {
 		let classification = animalClassi.split(" ");

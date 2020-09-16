@@ -164,6 +164,7 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
 	}
 	viewAnimalProfile(animalClassi: string) {
+		this.dialogRef.close("cancel");	
 		let classification = animalClassi.split(" ");
 		let classificationQuery = classification[0] + "_" + classification[1];
 		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });

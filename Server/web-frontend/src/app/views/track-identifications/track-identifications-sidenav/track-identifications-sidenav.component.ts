@@ -30,8 +30,10 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 
 	public ngOnChanges(changes: SimpleChanges) {
 		if (changes.filteredListArray && changes.filteredListArray.currentValue) {
-			this.trackPaginator.length = this.filteredListArray.length;
-			this.trackPaginator.firstPage();
+			if (this.trackPaginator) {
+				this.trackPaginator.length = this.filteredListArray.length;
+				this.trackPaginator.firstPage();
+			}
 		}
 		if (changes.displayedTracks && changes.displayedTracks.currentValue) {
 			this.stopLoader();

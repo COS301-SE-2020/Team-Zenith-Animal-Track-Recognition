@@ -18,36 +18,52 @@ export class AddAnimalComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.addAnimalForm = this.formBuilder.group({
-			commonName: ['', Validators.required],
-			classification: ['', Validators.required],
+			commonName: ['', [Validators.required, Validators.pattern(/^[a-z ,.'-]+$/i)]],
+			classification: ['', [Validators.required, Validators.pattern(/^[a-z ,.'-]+$/i)]],
 			animalDescription: ['', Validators.required]
 		});
 		document.getElementById('add-animal-dialog').style.overflow = "hidden";
 	}
 
-	get f() { return this.addAnimalForm.controls; }
+	get addAnimal() { return this.addAnimalForm.controls; }
+	validationMsg(formCtrl: any, formCtrlName: string) {
+		if (formCtrl.hasError('required')) {
+			return 'Please enter a value';
+		}
+		switch (formCtrlName) {
+			case "commonName":
+				return this.addAnimal.commonName.hasError('pattern') ? 'Please only enter letters' : '';
+			break;
+			case "classification":
+				return this.addAnimal.classification.hasError('pattern') ? 'Please only enter letters' : '';
+			break;
+		}
+	}
+
 
 	onSubmit(test: boolean) {
 		if (false === test) {
+			
+		if (this.addAnimalForm.invalid) {
+			return;
+		}
 			this.startLoader();
-			//@Zach Please change the query string. 
 
-			const cont: boolean = (this.f.animalDescription.value).includes('.');
-			let animalDescription = this.f.animalDescription.value;
+			const cont: boolean = (this.addAnimal.animalDescription.value).includes('.');
+			let animalDescription = this.addAnimal.animalDescription.value;
 
 			if(!cont){
 				let fullstop = ".";
 				animalDescription=animalDescription.concat(fullstop);
 			}
 			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{wdbAddAnimal(token:"' +
-				JSON.parse(localStorage.getItem('currentToken'))['value'] + '",classification:"' + encodeURIComponent(this.f.classification.value) +
-				'",commonName:"' + encodeURIComponent(this.f.commonName.value) + '",animalDescription:"' +
+				JSON.parse(localStorage.getItem('currentToken'))['value'] + '",classification:"' + encodeURIComponent(this.addAnimal.classification.value) +
+				'",commonName:"' + encodeURIComponent(this.addAnimal.commonName.value) + '",animalDescription:"' +
 				encodeURIComponent(animalDescription) + '"){animalID}}', '')
 				.subscribe({ 
 					next: data => this.dialogRef.close("success"), 
 					error: error => this.dialogRef.close("error") 
 				}); 
-				window.location.reload();
 		}
 		else {
 			return true;

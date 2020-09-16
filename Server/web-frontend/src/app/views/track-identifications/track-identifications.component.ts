@@ -42,8 +42,6 @@ export class TrackIdentificationsComponent implements OnInit {
 
 	ngOnInit(): void {
 		const spoorIdQuery = new URLSearchParams(window.location.search);
-
-
 		this.selectedFilter = '';
 		this.filterType = 0;
 		this.startLoader();
@@ -105,7 +103,6 @@ export class TrackIdentificationsComponent implements OnInit {
 			google.maps.event.trigger(requestedTrack.marker, 'click');
 			this.snackBar.open('Track displayed!', "Dismiss", { duration: 3000, });
 		}
-		console.log(this.selectedFilter);
 		this.filteredListArray = [];
 
 		for (let i = 0; i < this.trackIdentifications.length; i++) {
@@ -114,7 +111,7 @@ export class TrackIdentificationsComponent implements OnInit {
 				for (let j = 0; j < (this.trackIdentifications[i]['animal']['groupID']).length; j++) {
 					if (('' + ((this.trackIdentifications[i]['animal']['groupID'])[j])['groupName'] == (this.selectedFilter)) && this.selectedFilter != '') {
 						groupName = true;
-						console.log((this.trackIdentifications[i]['animal']['groupID'])[j]['groupName']);
+						//console.log((this.trackIdentifications[i]['animal']['groupID'])[j]['groupName']);
 					}
 				}
 			}
@@ -175,7 +172,7 @@ export class TrackIdentificationsComponent implements OnInit {
 
 	updateFilter(ev) {
 		this.selectedFilter = ev;
-		console.log(this.selectedFilter);
+		//console.log(this.selectedFilter);
 		this.initMap();
 	}
 
@@ -271,8 +268,7 @@ export class TrackIdentificationsComponent implements OnInit {
 
 	iterateDisplayedTracks($event) {
 		this.displayedTracks = this.filteredListArray.slice($event.event.pageIndex * $event.event.pageSize, $event.event.pageIndex * $event.event.pageSize + $event.event.pageSize);
-	
-		console.log(this.displayedTracks);
+		//console.log(this.displayedTracks);
 	}
 
 	showOpenBtn() {
@@ -331,11 +327,9 @@ export class TrackIdentificationsComponent implements OnInit {
 	}
 	//Loader
 	startSidenavLoader() {
-		console.log("PARENT SIDENAV START LOADER");
 		document.getElementById('search-nav-loader-container').style.visibility = 'visible';
 	}
 	stopSidenavLoader() {
-		console.log("PARENT SIDENAV STOP LOADER");
 		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
 	}
 }

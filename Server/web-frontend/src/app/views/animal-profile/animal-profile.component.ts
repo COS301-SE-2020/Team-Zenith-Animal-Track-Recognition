@@ -37,7 +37,7 @@ export class AnimalProfileComponent implements OnInit {
 		//Determine which user was navigated to and fetch their information
 		const classificationQuery = new URLSearchParams(window.location.search);
 		const animal = classificationQuery.get("classification").split("_");
-
+		
 		this.animalClassi = animal[0] + " " + animal[1];
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsByClassification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'", classification:"' + this.animalClassi + '"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
