@@ -5,6 +5,7 @@ var dateOBJ = new Date();
 const graphql = require('graphql');
 
 const spawn = require("child_process").spawn;
+const spawnSync = require("child_process").spawnSync;
 
 const {
     GraphQLObjectType,
@@ -1870,8 +1871,8 @@ const Mutation = new GraphQLObjectType({
                     })
                 }
                 let tag = ["0"]
-                if (args.tags != undefined)
-                    tag = args.tags;
+                if (args.tgas != undefined)
+                    tag = args.tgas;
 
 
 
@@ -1879,7 +1880,10 @@ const Mutation = new GraphQLObjectType({
                     token: args.token
                 })
 
-                let potentialMatchesarry = _.sortBy(AIIterface(args.base64imge), ["confidence"])
+                let potentialMatchesarry = AIIterface(args.base64imge)
+                potentialMatchesarry =_.sortBy(potentialMatchesarry, ["confidence"])
+                console.log(potentialMatchesarry)
+
                 let newingID = uplodeBase64(args.base64imge)
 
                 let newSpoorIdentification = {
@@ -1912,6 +1916,7 @@ const Mutation = new GraphQLObjectType({
 
                 spoorIdentificationData.push(newSpoorIdentification)
                 addImgIDToAnimal(newSpoorIdentification.animal, newSpoorIdentification.picture)
+                console.log("fail")
                 return newSpoorIdentification;
             }
         },
@@ -1955,8 +1960,8 @@ const Mutation = new GraphQLObjectType({
                     })
                 }
                 let tag = ["0"]
-                if (args.tags != undefined)
-                    tag = args.tags;
+                if (args.tgas != undefined)
+                    tag = args.tgas;
 
 
 
@@ -2364,7 +2369,7 @@ module.exports = new GraphQLSchema({
 });
 
 if (CACHE) {
-
+    redeyNeedConterUP();
 
     users.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
@@ -2471,7 +2476,10 @@ if (CACHE) {
             newSpoorID.similar=getSimilarimgTrak(newSpoorID.animal.toString())
             // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
             spoorIdentificationData.push(newSpoorID)
-
+            if (newSpoorID.month==8||newSpoorID.month=="08"||newSpoorID.month=="8")
+            {
+                // spoorIdentifications.doc(doc.id).delete();
+            }
         });
         redeyNeedConterDown();
     });
@@ -2672,7 +2680,6 @@ if (CACHE) {
                 updated=true;
                 }
             }
-            console.log(temp.groupID)
             let befor=temp.groupID.length
             temp.groupID=removeDuplicates(temp.groupID)
             if (befor!=temp.groupID.length)
@@ -2689,27 +2696,26 @@ if (CACHE) {
     });
     
     
-
+    redeyNeedConterDown();
 }else{
 }
 
 function AIIterface(Img) {
     potentialMatches = []
     
-    const pythonProcess = spawn('python',["AIRun.py", "Za1gQIG1wJ89OaqIoyf4.jpeg"]);
-    return pythonProcess.stdout.on('data', (data) => {
-        console.log(data.toString())
-        console.log('333333333')
+    const pythonProcess = spawnSync('python',["AIRun.py", "Za1gQIG1wJ89OaqIoyf4.jpeg"]);
+    
+        console.log(pythonProcess.output)
         for (let i = 0; i < animalData.length; i++) {
             let newPM = {
                 animal: i,
-                confidence: parseFloat(Math.random().toFixed(2))
+                confidence: parseFloat(0.0)
             }
             potentialMatches.push(newPM)
         }
-        console.log('44444444')
-    return potentialMatches
-    });
+        
+        return potentialMatches
+    ;
     
 
     
@@ -3055,4 +3061,3 @@ function removeDuplicates(array) {
     return Object.keys(x)
   };
 
- AIIterface()
