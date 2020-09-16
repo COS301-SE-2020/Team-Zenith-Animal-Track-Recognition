@@ -2309,7 +2309,7 @@ const Mutation = new GraphQLObjectType({
                     return null;
                 }
                 animalToFind=_.find(animalData,{
-                    animalID:args.animalID
+                    animalID:args.animalID.toString()
                 })
                 animalToFind.groupID=[]
                 animalToFind.groupID.push(args.groupID)
@@ -2624,6 +2624,11 @@ if (CACHE) {
 
 function AIIterface(Img) {
     potentialMatches = []
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python',["AIRun.py", "Za1gQIG1wJ89OaqIoyf4.jpeg"]);
+    pythonProcess.stdout.on('data', (data) => {
+        console.log(data.toString())
+    });
     for (let i = 0; i < animalData.length; i++) {
         let newPM = {
             animal: i,
@@ -2631,6 +2636,7 @@ function AIIterface(Img) {
         }
         potentialMatches.push(newPM)
     }
+
     return potentialMatches
 }
 
@@ -2954,8 +2960,3 @@ function redeyNeedConterUP(){
     redeyNeedConter++
 } 
 
-const spawn = require("child_process").spawn;
-const pythonProcess = spawn('python',["AIRun.py", "Za1gQIG1wJ89OaqIoyf4.jpeg"]);
-pythonProcess.stdout.on('data', (data) => {
-    console.log(data.toString())
-});
