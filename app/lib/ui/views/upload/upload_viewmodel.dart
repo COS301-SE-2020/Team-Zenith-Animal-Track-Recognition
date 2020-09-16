@@ -42,21 +42,69 @@ class UploadViewModel extends BaseViewModel {
   List<String> _tags = new List<String>();
   List<String> get tags => _tags;
 
+  bool _showCameraError = false;
+  bool get showCameraError => _showCameraError;
+
+  bool _showGalleryError = false;
+  bool get showGalleryError => _showGalleryError;
+
+  bool _showAnimalError = false;
+  bool get showAnimalError => _showAnimalError;
+
+  String _animalErrorString;
+  String get animalErrorString => _animalErrorString;
+
   final NavigationService _navigationService = locator<NavigationService>();
   final Api api = locator<GraphQL>();
 
-  List<String> getSuggestions(String query) {
+  Future<List<String>> getSuggestions(String query) async {
     List<String> matches = List();
-    this.setAnimals();
-    matches.addAll(_animals);
+    await this.setAnimals();
 
-    matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    if (query == "") {
+      if (_animals.length > 2) {
+        for (int i = 0; i < 2; i++) {
+          matches.add(_animals[i]);
+        }
+      } else {
+        matches.addAll(_animals);
+      }
+    } else {
+      matches.addAll(_animals);
+      matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    }
+
+    return matches;
+  }
+
+  Future<List<String>> getTagSuggestions(String query) async {
+    List<String> matches = List();
+    await this.addTags();
+
+    if (query == "") {
+      if (_tags.length > 3) {
+        for (int i = 0; i < 3; i++) {
+          matches.add(_tags[i]);
+        }
+      } else {
+        matches.addAll(_tags);
+      }
+    } else {
+      matches.addAll(_tags);
+      matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    }
+
     return matches;
   }
 
   Future<void> setAnimals() async {
     _animals = await api.getAnimalTags();
     _animals.add(" ");
+  }
+
+  Future<void> addTags() async {
+    _tags = await api.getTags();
+    tags.add(" ");
   }
 
   void setTag(String tag) {
@@ -69,6 +117,28 @@ class UploadViewModel extends BaseViewModel {
 
   void setChosenAnimal(String animal) {
     chosenAnimal = animal;
+    // notifyListeners();
+    print(chosenAnimal);
+  }
+
+  void validateAnimalInput(String value) {
+    if (chosenAnimal == null) {
+      _showAnimalError = true;
+      _animalErrorString = "Animal name input cannot be let empty";
+    } else {
+      bool isValid = false;
+      for (int i = 0; i < _animals.length; i++) {
+        if (chosenAnimal == _animals[i]) {
+          _showAnimalError = false;
+          isValid = true;
+        }
+      }
+      if (isValid == false) {
+        _showAnimalError = true;
+        _animalErrorString = "Animal name is not found";
+      }
+    }
+    // notifyListeners();
   }
 
   void uploadFromCamera() async {
@@ -82,6 +152,8 @@ class UploadViewModel extends BaseViewModel {
       _imageLink = url;
       _valueCamera = true;
       _valueGallery = false;
+      _showCameraError = false;
+      _showGalleryError = false;
       notifyListeners();
     }
     return null;
@@ -98,15 +170,12 @@ class UploadViewModel extends BaseViewModel {
       _imageLink = url;
       _valueCamera = false;
       _valueGallery = true;
+      _showCameraError = false;
+      _showGalleryError = false;
       notifyListeners();
     }
 
     return null;
-  }
-
-  void addTag(String value) {
-    _tags.add(value);
-    notifyListeners();
   }
 
   void updateLong(String value) {
@@ -120,6 +189,13 @@ class UploadViewModel extends BaseViewModel {
   }
 
   Future<void> upload() async {
+    if (_valueCamera == false || _valueGallery == false) {
+      _showCameraError = true;
+      _showGalleryError = true;
+      notifyListeners();
+    }
+    print(chosenAnimal);
+
     // double id = await api.getAnimalID(chosenAnimal);
 
     // Position position =

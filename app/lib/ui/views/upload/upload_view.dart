@@ -180,16 +180,49 @@ class GalleryButton extends ViewModelWidget<UploadViewModel> {
   Widget build(BuildContext context, UploadViewModel model) {
     return model.valueGallery == false
         ? GestureDetector(
-            child: Container(
-              margin: new EdgeInsets.only(bottom: 10),
-              child: Row(
-                children: <Widget>[
-                  Expanded(flex: 1, child: leftBlock),
-                  Expanded(flex: 5, child: text14LeftBoldGrey("From Gallery")),
-                  Expanded(flex: 1, child: rightIcon),
-                ],
-              ),
-            ),
+            child: model.showGalleryError == false
+                ? Container(
+                    margin: new EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(flex: 1, child: leftBlock),
+                        Expanded(
+                            flex: 5, child: text14LeftBoldGrey("From Gallery")),
+                        Expanded(flex: 1, child: rightIcon),
+                      ],
+                    ),
+                  )
+                : Container(
+                    margin: new EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(flex: 1, child: leftBlock),
+                        Expanded(
+                            flex: 5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: text14LeftBoldGrey("From Gallery"),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  "Either Gallery or Camera must contain an image",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.red,
+                                    fontFamily: 'MavenPro',
+                                  ),
+                                )),
+                              ],
+                            )),
+                        Expanded(flex: 1, child: rightIcon),
+                      ],
+                    ),
+                  ),
             onTap: () async {
               model.uploadFromGallery();
             },
@@ -220,16 +253,49 @@ class CameraButton extends ViewModelWidget<UploadViewModel> {
   Widget build(BuildContext context, UploadViewModel model) {
     return model.valueCamera == false
         ? GestureDetector(
-            child: Container(
-              margin: new EdgeInsets.only(bottom: 10),
-              child: Row(
-                children: <Widget>[
-                  Expanded(flex: 1, child: leftBlock),
-                  Expanded(flex: 5, child: text14LeftBoldGrey("From Camera")),
-                  Expanded(flex: 1, child: rightIcon),
-                ],
-              ),
-            ),
+            child: model.showCameraError == false
+                ? Container(
+                    margin: new EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(flex: 1, child: leftBlock),
+                        Expanded(
+                            flex: 5, child: text14LeftBoldGrey("From Camera")),
+                        Expanded(flex: 1, child: rightIcon),
+                      ],
+                    ),
+                  )
+                : Container(
+                    margin: new EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(flex: 1, child: leftBlock),
+                        Expanded(
+                            flex: 5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: text14LeftBoldGrey("From Canera"),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  "Either Camera or Gallery must contain an image",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.red,
+                                    fontFamily: 'MavenPro',
+                                  ),
+                                )),
+                              ],
+                            )),
+                        Expanded(flex: 1, child: rightIcon),
+                      ],
+                    ),
+                  ),
             onTap: () async {
               model.uploadFromCamera();
             },
@@ -256,29 +322,59 @@ class TagBox extends HookViewModelWidget<UploadViewModel> {
   TagBox({
     Key key,
   }) : super(reactive: true);
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
-    var text = useTextEditingController();
-    return TextField(
-      key: Key('TagBox'),
-      controller: text,
-      onChanged: viewModel.addTag,
-      decoration: InputDecoration(
-          hintText: "Enter tag",
-          isDense: true,
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          filled: true,
-          fillColor: Colors.grey[100]),
-      style: TextStyle(
-          fontFamily: 'MavenPro',
-          fontWeight: FontWeight.normal,
-          color: Colors.grey),
+    final TextEditingController _typeAheadController = TextEditingController();
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Expanded(
+          child: TypeAheadFormField(
+            textFieldConfiguration: TextFieldConfiguration(
+                controller: _typeAheadController,
+                decoration: InputDecoration(
+                    hintText: "Enter animal tag",
+                    hintStyle: TextStyle(
+                        fontFamily: 'MavenPro',
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey),
+                    isDense: true,
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    filled: true,
+                    fillColor: Colors.grey[100])),
+            suggestionsCallback: (pattern) {
+              return viewModel.getTagSuggestions(pattern);
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(suggestion),
+              );
+            },
+            transitionBuilder: (context, suggestionsBox, controller) {
+              return suggestionsBox;
+            },
+            onSuggestionSelected: (suggestion) {
+              _typeAheadController.text = suggestion;
+              viewModel.setTag(suggestion);
+            },
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter a tag';
+              } else {
+                return value;
+              }
+            },
+            onSaved: (value) => viewModel.setTag(value),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -311,8 +407,25 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.all(Radius.circular(10))),
+                    errorText: viewModel.showAnimalError
+                        ? null
+                        : viewModel.animalErrorString,
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        gapPadding: 0),
+                    errorStyle: TextStyle(
+                        fontFamily: 'MavenPro',
+                        fontWeight: FontWeight.normal,
+                        color: Colors.red),
+                    focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        gapPadding: 0),
                     filled: true,
-                    fillColor: Colors.grey[100])),
+                    fillColor: Colors.grey[100]),
+                // onChanged: viewModel.setChosenAnimal,
+                onSubmitted: (value) => {viewModel.validateAnimalInput(value)}),
             suggestionsCallback: (pattern) {
               return viewModel.getSuggestions(pattern);
             },
@@ -335,7 +448,6 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
                 return value;
               }
             },
-            onSaved: (value) => viewModel.setChosenAnimal(value),
           ),
         ),
       ],
