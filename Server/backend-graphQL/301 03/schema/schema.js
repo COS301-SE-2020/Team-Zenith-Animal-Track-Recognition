@@ -4,6 +4,8 @@ const debugLoging =true;
 var dateOBJ = new Date();
 const graphql = require('graphql');
 
+const spawn = require("child_process").spawn;
+
 const {
     GraphQLObjectType,
     GraphQLString,
@@ -17,7 +19,7 @@ const {
 } = graphql;
 const _ = require('lodash')
 const {
-    toNumber
+    toNumber, isNumber
 } = require('lodash');
 let redeyNeedConter =0;
 //google db
@@ -2623,10 +2625,36 @@ if (CACHE) {
                 
             }
 
+            for (let i=0;i<temp.groupID.length;i++)
+            {
+                if (isNumber( temp.groupID[i])){
+                    temp.groupID[i]=temp.groupID[i].toString()
+                    updated=true;
+                }
+            }
+            // big 5 gruep asinmint
+            if (temp.animalID=="3"||temp.animalID=="4"||temp.animalID=="5"||temp.animalID=="6"||temp.animalID=="10")
+            {
+                if (!temp.groupID.includes("1"))
+                {
+                let a =temp.groupID
+                a.unshift("1")
+                temp.groupID=a
+                updated=true;
+                }
+            }
+            console.log(temp.groupID)
+            let befor=temp.groupID.length
+            temp.groupID=removeDuplicates(temp.groupID)
+            if (befor!=temp.groupID.length)
+            updated=true
+            
             if (updated)
                 animals.doc(doc.id).set(temp)
             temp.animalID=temp.animalID.toString()
             animalData.push(temp);
+            
+            
         });
         redeyNeedConterDown();
     });
@@ -2638,20 +2666,24 @@ if (CACHE) {
 
 function AIIterface(Img) {
     potentialMatches = []
-    const spawn = require("child_process").spawn;
+    
     const pythonProcess = spawn('python',["AIRun.py", "Za1gQIG1wJ89OaqIoyf4.jpeg"]);
-    pythonProcess.stdout.on('data', (data) => {
+    return pythonProcess.stdout.on('data', (data) => {
         console.log(data.toString())
-    });
-    for (let i = 0; i < animalData.length; i++) {
-        let newPM = {
-            animal: i,
-            confidence: parseFloat(Math.random().toFixed(2))
+        console.log('333333333')
+        for (let i = 0; i < animalData.length; i++) {
+            let newPM = {
+                animal: i,
+                confidence: parseFloat(Math.random().toFixed(2))
+            }
+            potentialMatches.push(newPM)
         }
-        potentialMatches.push(newPM)
-    }
+        console.log('44444444')
+return potentialMatches
+    });
+    
 
-    return potentialMatches
+    
 }
 
 function uplodeBase64(Img,folder="trak") {
@@ -2763,6 +2795,7 @@ function getSimilarimgTrak(animalID) {
     let data =_.find(animalData,{
         animalID:animalID
     })
+    if (!data==undefined)
     data.pictures.forEach(element => {
         temp=_.find(pictureData,{
             pictureID:element
@@ -2983,3 +3016,14 @@ function redeyNeedConterUP(){
     redeyNeedConter++
 } 
 
+function removeDuplicates(array) {
+    let x = {};
+    array.forEach(function(i) {
+      if(!x[i]) {
+        x[i] = true
+      }
+    })
+    return Object.keys(x)
+  };
+
+ AIIterface()
