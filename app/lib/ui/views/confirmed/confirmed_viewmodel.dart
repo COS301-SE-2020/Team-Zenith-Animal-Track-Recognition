@@ -1,18 +1,10 @@
 import 'package:ERP_RANGER/app/locator.dart';
-import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
-import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:social_share/social_share.dart';
 import 'package:stacked/stacked.dart';
-import 'dart:convert';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:stacked_services/stacked_services.dart';
 
 class ConfirmedViewModel extends BaseViewModel {
   bool _loaded = false;
@@ -26,7 +18,6 @@ class ConfirmedViewModel extends BaseViewModel {
   ConfirmModel get confidentAnimal => _confidentAnimal;
   List<ConfirmModel> get confirmedList => _confirmedList;
 
-  final NavigationService _navigationService = locator<NavigationService>();
   final Api _api = locator<GraphQL>();
   //final Api _api = locator<MockApi>();
 

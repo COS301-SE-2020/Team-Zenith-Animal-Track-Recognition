@@ -68,6 +68,7 @@ class IconBuilder extends ViewModelWidget<HomeViewModel> {
       margin: EdgeInsets.all(0),
       padding: EdgeInsets.all(0),
       child: IconButton(
+          key: Key('Search'),
           padding: EdgeInsets.all(0),
           icon: Icon(icon, color: Colors.white),
           onPressed: () {
@@ -86,16 +87,17 @@ class HomeListBody extends ViewModelWidget<HomeViewModel> {
   Widget build(BuildContext context, HomeViewModel model) {
     model.getRecentIdentifications();
     return ListView.builder(
+        key: Key('HomeListBody'),
         itemCount: animalList.length,
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return GestureDetector(
+            key: Key('TrackID'),
             onTap: () {
               navigateToIdentification(animalList[index].id);
             },
             child: Card(
-              key: Key('TrackID'),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               margin: new EdgeInsets.all(10),

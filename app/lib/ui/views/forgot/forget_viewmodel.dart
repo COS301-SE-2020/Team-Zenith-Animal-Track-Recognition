@@ -1,22 +1,18 @@
-import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:stacked/stacked.dart';
 import 'package:ERP_RANGER/app/locator.dart';
-import 'package:stacked_services/stacked_services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class ForgetViewModel extends BaseViewModel{
-  final NavigationService _navigationService = locator<NavigationService>();
+class ForgetViewModel extends BaseViewModel {
   final Api _api = locator<GraphQL>();
-  
+
   String _username = "";
   String get username => _username;
 
   String _password = "";
   String get passwords => _password;
 
-  String _confirmPassword = "" ;
+  String _confirmPassword = "";
   String get confirmPasswords => _confirmPassword;
 
   String _userNameErrorString = "";
@@ -27,11 +23,11 @@ class ForgetViewModel extends BaseViewModel{
 
   String _errorString = "";
   String get errorString => _errorString;
-  
-  bool _errorPassStringBool = false ;
+
+  bool _errorPassStringBool = false;
   bool get errorPassStringBool => _errorPassStringBool;
 
-  bool _errorStringBool = false ;
+  bool _errorStringBool = false;
   bool get errorStringBool => _errorStringBool;
 
   bool valid = true;
@@ -57,19 +53,19 @@ class ForgetViewModel extends BaseViewModel{
 
   void userName(String value) {
     _username = value;
-    if(value == ""){
+    if (value == "") {
       _isUserNameEmpty = true;
-    }else{
+    } else {
       _isUserNameEmpty = false;
     }
     notifyListeners();
   }
-  
+
   void password(String value) {
     _password = value;
-    if(value == ""){
+    if (value == "") {
       _isPassEmpty = true;
-    }else{
+    } else {
       _isPassEmpty = false;
     }
     notifyListeners();
@@ -77,9 +73,9 @@ class ForgetViewModel extends BaseViewModel{
 
   void confirmPassword(String value) {
     _confirmPassword = value;
-    if(value == ""){
+    if (value == "") {
       _isPassConfirmEmpty = true;
-    }else{
+    } else {
       _isPassConfirmEmpty = false;
     }
 
@@ -100,7 +96,11 @@ class ForgetViewModel extends BaseViewModel{
     userNameErrorChecker();
     errorChecker();
     passEmptyChecker();
-    if(_isPassConfirmEqual == true && _isPassConfirmEmpty == false && _isPassEmpty != true && isUserNameEmpty == false && valid == true){
+    if (_isPassConfirmEqual == true &&
+        _isPassConfirmEmpty == false &&
+        _isPassEmpty != true &&
+        isUserNameEmpty == false &&
+        valid == true) {
       print("success");
       _username = "";
       _password = "";
@@ -111,45 +111,45 @@ class ForgetViewModel extends BaseViewModel{
       _isPassConfirmEqual = false;
       _isUserNameEmpty = true;
       notifyListeners();
-    }else{
+    } else {
       notifyListeners();
     }
   }
 
-  void userNameErrorChecker(){
-    
-    if(_username == "" || _username == null){
+  void userNameErrorChecker() {
+    if (_username == "" || _username == null) {
       print("$_username=============");
       valid = false;
       _userNameErrorString = "Username Field Cannot Be left Empty";
-    }else if(_username != ""){
+    } else if (_username != "") {
       print("$_username=============");
-      valid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(_username);
-      if(valid == false){
+      valid = RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+          .hasMatch(_username);
+      if (valid == false) {
         _userNameErrorString = "Invalid Email Input";
       }
     }
-    
   }
 
-  void passEmptyChecker(){
-    if(_isPassEmpty){
+  void passEmptyChecker() {
+    if (_isPassEmpty) {
       _passErrorString = "Password Field Cannnot Be Left Empty!";
       _errorPassStringBool = true;
-    }else{
+    } else {
       _errorPassStringBool = false;
     }
   }
 
-  void errorChecker(){
-    if(_isPassConfirmEmpty){
+  void errorChecker() {
+    if (_isPassConfirmEmpty) {
       _errorString = "Password Field Cannnot Be Left Empty!";
       _errorStringBool = true;
-    }else if(_confirmPassword == _password){
+    } else if (_confirmPassword == _password) {
       _isPassConfirmEqual = false;
       _errorString = "Password Fields Must Match Each Other!";
       _errorStringBool = true;
-    }else{
+    } else {
       _errorStringBool = false;
     }
   }

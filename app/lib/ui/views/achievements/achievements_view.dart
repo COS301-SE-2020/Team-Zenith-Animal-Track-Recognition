@@ -1,6 +1,4 @@
 import 'package:ERP_RANGER/services/util.dart';
-import 'package:ERP_RANGER/ui/views/identification/identification_view.dart';
-import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -130,6 +128,11 @@ class NavDrawer extends ViewModelWidget<AchievementsViewModel> {
                       image: AssetImage('assets/images/E1.jpg'))),
               child: null,
             ),
+            ListTile(
+                leading: Icon(Icons.home),
+                title: text16LeftBoldGrey("Home"),
+                dense: true,
+                onTap: () => {navigateToHomeView()}),
             ListTile(
                 leading: Icon(Icons.account_circle),
                 title: text16LeftBoldGrey("Profile"),

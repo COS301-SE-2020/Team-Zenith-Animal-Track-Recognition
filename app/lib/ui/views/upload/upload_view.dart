@@ -383,7 +383,6 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
   AnimalBox({
     Key key,
   }) : super(reactive: true);
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
     final TextEditingController _typeAheadController = TextEditingController();
@@ -464,6 +463,7 @@ class Latitude extends HookViewModelWidget<UploadViewModel> {
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
     var text = useTextEditingController();
     return TextField(
+      key: Key('Latitude'),
       controller: text,
       onChanged: viewModel.updateLat,
       decoration: InputDecoration(
@@ -494,6 +494,7 @@ class Longitude extends HookViewModelWidget<UploadViewModel> {
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
     var text = useTextEditingController();
     return TextField(
+      key: Key('Longitude'),
       controller: text,
       onChanged: viewModel.updateLong,
       decoration: InputDecoration(

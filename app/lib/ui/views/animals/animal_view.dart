@@ -1,7 +1,6 @@
 import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/animals/animal_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
-import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -215,6 +214,7 @@ class ViewButton extends ViewModelWidget<AnimalViewModel> {
   @override
   Widget build(BuildContext context, AnimalViewModel model) {
     return ButtonTheme(
+      key: Key('ViewInfoButton'),
       minWidth: 200,
       child: RaisedButton(
           child: text12CenterBoldWhite("VIEW INFO"),
