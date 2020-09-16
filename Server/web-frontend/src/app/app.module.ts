@@ -124,6 +124,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     MatIconModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatMenuModule,
     MatSelectModule,
     MatSidenavModule,
     MatListModule,

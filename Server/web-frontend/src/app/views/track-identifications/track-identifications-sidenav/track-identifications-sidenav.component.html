@@ -4,35 +4,35 @@
     </div>
     <mat-tab-group mat-align-tabs="center" #trackMatTab>
         <mat-tab label="All tracks">
-            <div id="ranger-search-controls-container">
+            <!--div id="ranger-search-controls-container">
                 <mat-form-field appearance="outline">
                     <input id="search-sidenav-input" matInput placeholder="Search Tracks..." type="text" name="search">
                     <mat-icon matPrefix>search</mat-icon>
                 </mat-form-field>
-            </div>
+            </div-->
             <div id="ranger-search-results-container">
                 <mat-selection-list id="track-identification-search-results" [multiple]="false" class="ranger-search-results-entries">
-					<div class="track-identification-container" (click)="viewTrack(track)" *ngFor="let track of displayedTracks; let trackTimeAgo of trackDateTimes">
-						<div class="track-identification-image-container">
-							<img src="{{track.picture.URL}}" alt="Track image">
-						</div>
-						<div class="track-identification-info-container">
-							<div class="track-identification-animal-name">
-								<span><p class="track-identification-animal-commonName fontSB">{{track.animal.commonName}}</p><p class="track-identification-capture-date fontR">{{trackTimeAgo.timeAsString | relativeTime }}</p></span>
-								<p class="track-identification-animal-classification fontM">{{track.animal.classification | titlecase}}</p>
-							</div>
-							<p class="track-identification-capture-ranger fontM" *ngIf="track.ranger;">Captured by {{track.ranger.firstName}} {{track.ranger.lastName}}</p>
-							<span><p class="fontSB">ACCURACY SCORE:&nbsp;</p><p class="track-identification-accuracy-score fontB">{{track.potentialMatches[track.potentialMatches.length - 1].confidence | percent }}</p></span>
-						</div>
-					</div>
+                    <div class="track-identification-container" (click)="viewTrack(track)" *ngFor="let track of displayedTracks; let trackTimeAgo of trackDateTimes">
+                        <div class="track-identification-image-container">
+                            <img src="{{track.picture.URL}}" alt="Track image">
+                        </div>
+                        <div class="track-identification-info-container">
+                            <div class="track-identification-animal-name">
+                                <span><p class="track-identification-animal-commonName fontSB">{{track.animal.commonName}}</p><p class="track-identification-capture-date fontR">{{trackTimeAgo.timeAsString | relativeTime }}</p></span>
+                                <p class="track-identification-animal-classification fontM">{{track.animal.classification | titlecase}}</p>
+                            </div>
+                            <p class="track-identification-capture-ranger fontM" *ngIf="track.ranger;">Captured by {{track.ranger.firstName}} {{track.ranger.lastName}}</p>
+                            <span><p class="fontSB">ACCURACY SCORE:&nbsp;</p><p class="track-identification-accuracy-score fontB">{{track.potentialMatches[track.potentialMatches.length - 1].confidence | percent }}</p></span>
+                        </div>
+                    </div>
                 </mat-selection-list>
-				<div id="track-identification-container-pagination-controls">
-					<mat-paginator #trackPaginator (page)="onPageChange($event)" *ngIf="fullTrackList" [length]="fullTrackList.length" [pageSize]="25" [hidePageSize]="true"></mat-paginator>
-				</div>
+                <div id="track-identification-container-pagination-controls">
+                    <mat-paginator #trackPaginator (page)="onPageChange($event)" *ngIf="fullTrackList" [length]="fullTrackList.length" [pageSize]="25" [hidePageSize]="true"></mat-paginator>
+                </div>
             </div>
         </mat-tab>
         <mat-tab label="Track">
-			<app-track-identifications-info *ngIf="activeTrack" [activeTrack]="activeTrack" [originType]="originType" (viewingTrackOnChange)="backToTrackList($event)"></app-track-identifications-info>
+            <app-track-identifications-info *ngIf="activeTrack" [activeTrack]="activeTrack" [originType]="originType" (viewingTrackOnChange)="backToTrackList($event)"></app-track-identifications-info>
         </mat-tab>
     </mat-tab-group>
 </div>

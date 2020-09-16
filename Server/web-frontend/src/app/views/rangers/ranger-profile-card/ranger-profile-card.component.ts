@@ -23,8 +23,8 @@ export class RangerProfileCardComponent implements OnInit {
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
 
-	ngOnInit(): void { 
-		this.startLoader(); 
+	ngOnInit(): void {
+		this.startLoader();
 	}
 
 
@@ -75,6 +75,11 @@ export class RangerProfileCardComponent implements OnInit {
 			}
 		});
 	}
+
+	openEditPerms() {
+		this.router.navigate(['rangers/permissions']);
+	}
+
 	//DELETE Ranger
 	openDeleteRangerDialog(rangerID: any) {
 		try {

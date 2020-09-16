@@ -3,7 +3,8 @@
     <div id="identifications-view-workspace">
         <mat-drawer-container id="identifications-search-sidenav-container">
             <mat-drawer id="identifications-search-sidenav" #sidenav mode="side" opened="true" (opened)="showCloseBtn()" (closed)="showOpenBtn()">
-                <app-track-identifications-sidenav #trackIdentificationsSidenav [fullTrackList]="trackIdentifications" [displayedTracks]="displayedTracks" (focusOnTrackChange)="zoomOnTrack($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"  (trackPageOnChange)="iterateDisplayedTracks($event)"></app-track-identifications-sidenav>
+                <app-track-identifications-sidenav #trackIdentificationsSidenav [fullTrackList]="trackIdentifications" [displayedTracks]="displayedTracks" (focusOnTrackChange)="zoomOnTrack($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"
+                    (trackPageOnChange)="iterateDisplayedTracks($event)"></app-track-identifications-sidenav>
             </mat-drawer>
             <mat-drawer-content id="identifications-search-sidenav-content">
                 <div id="sidenav-close-btn-container" (click)="closeSidenav()">
@@ -13,9 +14,9 @@
                     <button id="side-nav-open-btn" mat-icon-button><mat-icon>chevron_right</mat-icon></button>
                 </div>
                 <div id="identifications-map-container">
-					<div id="fullscreen-btn-container" (click)="toggleFullScreen()">
-						<button id="fullscreen-btn" mat-icon-button><mat-icon>fullscreen</mat-icon></button>
-					</div>
+                    <div id="fullscreen-btn-container" (click)="toggleFullScreen()">
+                        <button id="fullscreen-btn" mat-icon-button><mat-icon>fullscreen</mat-icon></button>
+                    </div>
                     <div id="loader-container">
                         <mat-spinner id="loader"></mat-spinner>
                     </div>

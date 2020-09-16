@@ -5,16 +5,6 @@
 <mat-dialog-content id="upload-animal-container">
     <form id="add-animal-image-form" [formGroup]="addAnimalImage">
         <div id="add-animal-image-container">
-            <div class="uploadfilecontainer" appDragDrop (onFileDropped)="uploadFile($event)">
-                <input hidden type="file" #fileInput (change)="uploadFile($event)">
-                <div id="img-div"><img src="../../../../assets/cloud.png" alt="cloud image"></div>
-                <div id="drop-text-div">
-                    <p id="drop-text"> Drop files to upload or click</p>
-                </div>
-                <div id="browse-btn-div">
-                    <input type="file" mat-button (change)="uploadFile($event)" id="browse-btn" class="fontSB">
-                </div>
-            </div>
             <mat-form-field class="add-animal-image-form-input" appearance="outline" style="float: left; align-self: start;">
                 <mat-label>Common Name</mat-label>
                 <input matInput formControlName="commonName" value="{{data.animal.commonName}}">
@@ -24,16 +14,13 @@
                 <mat-label>Image Description</mat-label>
                 <textarea matInput id="text-area-block" rows="6"></textarea>
             </mat-form-field>
-            <div class="files-list" *ngFor="let file of files;let i=index">
-                <p>{{ file }}</p>
-                <button class="delete-file" (click)="deleteAttachment(i)">
-        <img src="../../assets/Recycle_Bin_Full.png">
-        </button>
+            <div id="browse-btn-div">
+                <input type="file" mat-button (change)="uploadFile($event)" id="browse-btn" class="fontSB buttonColour">
             </div>
         </div>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
     <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>
-    <button type="submit" mat-button (click)="onSubmit(false)" id="add-animal-btn" class="fontSB">ADD ANIMAL</button>
+    <button type="submit" mat-button (click)="onSubmit(false)" id="add-animal-btn" class="fontSB buttonColour">ADD ANIMAL</button>
 </mat-dialog-actions>

@@ -9,6 +9,7 @@
     display: flex;
     flex-direction: row;
     border-bottom: 2px solid #CCCCCC;
+    background-image: linear-gradient(135deg, #5084d3, #315dbf);
 }
 
 :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
@@ -23,6 +24,7 @@
 
 #animals-toolbar-search-bar {
     width: 30%;
+    color: black;
     border-radius: 5px;
     align-self: center;
 }
@@ -31,6 +33,7 @@
     height: 100%;
     width: 60%;
     display: flex;
+    color: white !important;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
@@ -39,6 +42,7 @@
 
 #animals-toolbar-navigation {
     height: 100%;
+    color: white !important;
     width: auto;
     display: flex;
     flex-direction: row;
@@ -47,7 +51,7 @@
 }
 
 #animals-toolbar-navigation>a {
-    color: #AAAAAA;
+    color: white;
     font-size: 130%;
     text-decoration: none;
     transition: all 0.2s ease-in-out;
@@ -62,7 +66,7 @@
 }
 
 #animals-toolbar-navigation>a.activeView {
-    color: #1A1A1A;
+    color: white;
 }
 
 #animals-toolbar {
@@ -78,6 +82,7 @@
 #animals-toolbar-sortby-btn {
     width: 25%;
     border: 1px solid #CCCCCC;
+    background-color: white !important;
     padding: 0.5em 0.5em;
     border-radius: 5px;
 }
@@ -86,6 +91,7 @@
     background: rgba(104, 110, 121, 1);
     width: 28%;
     border: 1px solid #CCCCCC;
+    background-color: white !important;
     padding: 0.5em 0.5em;
     border-radius: 5px;
 }
@@ -97,5 +103,11 @@
 
 :host ::ng-deep #animals-toolbar-actions-btn .mat-select-value-text,
  :host ::ng-deep #animals-toolbar-actions-btn .mat-select-placeholder {
-    color: white !important;
+    color: black !important;
+}
+
+:host ::ng-deep .mat-form-field-outline {
+    background-color: #ffffff;
+    border: #5084d3 solid 1px;
+    border-radius: 5px;
 }
