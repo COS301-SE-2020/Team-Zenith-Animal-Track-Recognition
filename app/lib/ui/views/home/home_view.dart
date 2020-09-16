@@ -23,13 +23,23 @@ class HomeView extends StatelessWidget {
                   ? Scaffold(
                       drawer: HomeNavDrawer(),
                       appBar: AppBar(
-                        backgroundColor: Colors.black,
+                        //backgroundColor: Color.fromRGBO(49, 93, 191, 1),
                         title: text22LeftBoldWhite(
                           "ERP RANGER",
                         ),
                         actions: <Widget>[
                           IconBuilder(icon: Icons.search),
                         ],
+                        flexibleSpace: Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: <Color>[
+                                Color.fromRGBO(80, 132, 211, 1),
+                                Color.fromRGBO(49, 93, 191, 1)
+                              ])),
+                        ),
                       ),
                       body: Container(
                         key: Key('List'),
@@ -45,7 +55,7 @@ class HomeView extends StatelessWidget {
                         child: Icon(
                           Icons.camera_alt,
                         ),
-                        backgroundColor: Colors.black,
+                        backgroundColor: Color.fromRGBO(205, 21, 67, 1),
                       ),
                     )
                   : progressIndicator();
@@ -140,7 +150,13 @@ class HomeListBody extends ViewModelWidget<HomeViewModel> {
                                 margin: new EdgeInsets.only(
                                     left: 15, right: 10, bottom: 6),
                                 decoration: BoxDecoration(
-                                    color: Colors.black,
+                                    gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: <Color>[
+                                          Color.fromRGBO(80, 132, 211, 1),
+                                          Color.fromRGBO(49, 93, 191, 1)
+                                        ]),
                                     borderRadius: BorderRadius.circular(10)),
                                 child: text12LeftBoldWhite(
                                   animalList[index].tag,

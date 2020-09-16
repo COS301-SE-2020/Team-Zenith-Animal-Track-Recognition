@@ -30,6 +30,16 @@ class UploadView extends StatelessWidget {
             actions: <Widget>[
               IconBuilder(icon: Icons.search, type: "search"),
             ],
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: <Color>[
+                    Color.fromRGBO(80, 132, 211, 1),
+                    Color.fromRGBO(49, 93, 191, 1)
+                  ])),
+            ),
             title: text22LeftBoldWhite(
               "ERP RANGER",
             ),
@@ -46,7 +56,7 @@ class UploadView extends StatelessWidget {
             child: Icon(
               Icons.camera_alt,
             ),
-            backgroundColor: Colors.black,
+            backgroundColor: Color.fromRGBO(205, 21, 67, 1),
           ),
           bottomNavigationBar: BottomNavigation(),
           backgroundColor: Colors.grey,

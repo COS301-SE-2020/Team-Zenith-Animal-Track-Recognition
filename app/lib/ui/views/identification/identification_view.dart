@@ -120,7 +120,14 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
             controller: myscrollController,
             children: <Widget>[
               Container(
-                  color: Colors.grey[850],
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: <Color>[
+                        Color.fromRGBO(80, 132, 211, 1),
+                        Color.fromRGBO(49, 93, 191, 1)
+                      ])),
                   child: Row(
                     children: <Widget>[
                       Expanded(flex: 1, child: icon),
@@ -905,9 +912,15 @@ Widget icon = new Container(
   alignment: Alignment(0, 0),
   margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
   decoration: BoxDecoration(
-      color: Colors.grey[850],
+      gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: <Color>[
+            Color.fromRGBO(80, 132, 211, 1),
+            Color.fromRGBO(49, 93, 191, 1)
+          ]),
       borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: Colors.grey[850])),
+      border: Border.all()),
   child: Center(
     child: IconButton(
       alignment: Alignment(0, 0),
@@ -925,7 +938,13 @@ Widget text(String name, var context) {
     alignment: Alignment(0, 0),
     margin: new EdgeInsets.only(bottom: 3, left: 10, right: 3),
     decoration: BoxDecoration(
-      color: Colors.grey[850],
+      gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: <Color>[
+            Color.fromRGBO(80, 132, 211, 1),
+            Color.fromRGBO(49, 93, 191, 1)
+          ]),
       borderRadius: BorderRadius.circular(10),
     ),
     height: 50,
@@ -964,15 +983,15 @@ Widget backButton(context) {
         left: 10,
       ),
       decoration: BoxDecoration(
-          color: Colors.grey[850],
+          color: Colors.white,
           borderRadius: BorderRadius.circular(13),
-          border: Border.all(color: Colors.grey[850])),
+          border: Border.all(color: Colors.white)),
       child: GestureDetector(
         onTap: () {
           Navigator.pop(context);
         },
         child: Center(
-          child: Icon(Icons.arrow_back, color: Colors.white),
+          child: Icon(Icons.arrow_back, color: Colors.black),
         ),
       ));
 }

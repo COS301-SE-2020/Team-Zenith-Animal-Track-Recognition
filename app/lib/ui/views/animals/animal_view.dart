@@ -21,13 +21,22 @@ class AnimalView extends StatelessWidget {
               return Scaffold(
                 drawer: NavDrawer(),
                 appBar: AppBar(
-                  backgroundColor: Colors.black,
                   title: text22LeftBoldWhite(
                     "ERP RANGER",
                   ),
                   actions: <Widget>[
                     IconBuilder(icon: Icons.search, type: "search"),
                   ],
+                  flexibleSpace: Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: <Color>[
+                          Color.fromRGBO(80, 132, 211, 1),
+                          Color.fromRGBO(49, 93, 191, 1)
+                        ])),
+                  ),
                 ),
                 body: internetError(snapshot.error.toString()),
                 bottomNavigationBar: BottomNavigation(),
@@ -48,11 +57,20 @@ class AnimalView extends StatelessWidget {
                         child: Scaffold(
                           drawer: NavDrawer(),
                           appBar: AppBar(
-                            backgroundColor: Colors.black,
                             title: text22LeftBoldWhite("ERP RANGER"),
                             actions: <Widget>[
                               IconBuilder(icon: Icons.search, type: "search"),
                             ],
+                            flexibleSpace: Container(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: <Color>[
+                                    Color.fromRGBO(80, 132, 211, 1),
+                                    Color.fromRGBO(49, 93, 191, 1)
+                                  ])),
+                            ),
                             bottom: TabBar(
                               isScrollable: true,
                               tabs: snapshot.data.tabs,

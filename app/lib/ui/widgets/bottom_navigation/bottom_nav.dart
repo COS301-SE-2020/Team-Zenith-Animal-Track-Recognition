@@ -94,7 +94,9 @@ class BottomNavigationState extends State<BottomNavigation> {
                       title: bottomNavigationText('Profile', context),
                     )
                   ],
-                  selectedItemColor: Colors.black,
+                  selectedItemColor: Color.fromRGBO(0, 24, 68, 1),
+                  selectedIconTheme:
+                      IconThemeData(color: Color.fromRGBO(0, 24, 68, 1)),
                   unselectedLabelStyle: TextStyle(
                       fontSize: 14, fontFamily: 'MavenPro', color: Colors.grey),
                   showUnselectedLabels: true,
@@ -125,7 +127,9 @@ class BottomNavigationState extends State<BottomNavigation> {
                       title: bottomNavigationText('Profile', context),
                     )
                   ],
-                  selectedItemColor: Colors.black,
+                  selectedItemColor: Color.fromRGBO(0, 24, 68, 1),
+                  selectedIconTheme:
+                      IconThemeData(color: Color.fromRGBO(0, 24, 68, 1)),
                   unselectedLabelStyle: TextStyle(
                       fontSize: 14,
                       fontFamily: 'Helvetica',
