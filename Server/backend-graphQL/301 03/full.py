@@ -128,7 +128,7 @@ def plotImages(images_arr):
 sample_training_images, _ = next(train_data_gen)
 
 print(sample_training_images[0].shape)
-plotImages(sample_training_images[:5])
+# plotImages(sample_training_images[:5])
 model = Sequential([
     Conv2D(16, 3, padding='same', activation='relu',
            input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),

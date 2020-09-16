@@ -3,6 +3,16 @@ const verbose = true;
 const debugLoging =true;
 var dateOBJ = new Date();
 const graphql = require('graphql');
+const tf = require('@tensorflow/tfjs');
+
+const fs = require('fs')
+
+
+const loadGraphModel = require('@tensorflow/tfjs-converter').loadGraphModel;
+const MODEL_URL = 'models/model.json';
+
+const model = loadGraphModel(MODEL_URL);
+
 const {
     GraphQLObjectType,
     GraphQLString,
@@ -2942,4 +2952,10 @@ function redeyNeedConterUP(){
         console.log("server not redy atleest 1 DB is loding")
     }
     redeyNeedConter++
-}
+} 
+
+const spawn = require("child_process").spawn;
+const pythonProcess = spawn('python',["AIRun.py", "Za1gQIG1wJ89OaqIoyf4.jpeg"]);
+pythonProcess.stdout.on('data', (data) => {
+    console.log(data.toString())
+});
