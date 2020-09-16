@@ -1,85 +1,90 @@
-#utility-navigation-container
-{
-	height: 12vh;
-	width: 85vw;
-	border-bottom: 2px solid #CCCCCC;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
-	align-items: center;
+#utility-navigation-container {
+    height: 12vh;
+    width: 85vw;
+    border-bottom: 2px solid #CCCCCC;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
 }
-:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
-{
-	padding: 0.2em 0 0.5em 0;
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.2em 0 0.5em 0;
 }
+
 :host ::ng-deep .mat-form-field-wrapper {
     padding-bottom: 0;
 }
-.mat-icon
-{
-	font-size: 110%;
+
+.mat-icon {
+    font-size: 110%;
 }
-#utility-navigation-utilities-container
-{
-	height: 100%;
-	width: 20%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
-	align-items: center;
+
+#utility-navigation-utilities-container {
+    height: 100%;
+    width: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
 }
-#utility-navigation-utilities-container > .mat-icon
-{
-	font-size: 230%;
-	margin-bottom: 2%;
-	margin-right: 3%;
+
+#utility-navigation-utilities-container>.mat-icon {
+    font-size: 230%;
+    margin-bottom: 2%;
+    margin-right: 3%;
 }
-#user-profile-container
-{
-	height: 100%;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
+
+#user-profile-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
-#user-profile-dropdown
-{
-	height: 60%;
-	width: 80%;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
+
+#user-profile-dropdown {
+    height: 60%;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
-#user-profile-pic
-{
-	background-color: #AAAAAA;
-	border-radius: 25px;
-	height: 30px;
-	width: 30px;
-	overflow: hidden;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
+
+#user-profile-pic {
+    background-color: #AAAAAA;
+    border-radius: 25px;
+    height: 30px;
+    width: 30px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
-#user-profile-pic > .mat-icon
-{
-	font-size: 280%;
-	color: #E6E6E6;
-	height: 100%;
-	width: 100%;
-	border-radius: 25px;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	overflow: hidden;
+
+#user-profile-pic>.mat-icon {
+    font-size: 280%;
+    color: #E6E6E6;
+    height: 100%;
+    width: 100%;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
-#user-profile-dropdown-icon
-{
-	width: 80%;
-	padding: 0.5em 0.5em;
-	color: #1A1A1A;
+
+#user-profile-dropdown-icon {
+    width: 80%;
+    padding: 0.5em 0.5em;
+    color: #1A1A1A;
+}
+
+:host ::ng-deep .mat-icon {
+    color: #7f93b8 !important;
+    background-color: #40567a !important;
 }

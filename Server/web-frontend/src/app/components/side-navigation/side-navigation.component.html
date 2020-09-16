@@ -1,17 +1,19 @@
 <div id="side-navigation-container">
     <div id="side-navigation-logo-container">
-        <div (click)='route("overview")' class="fontB">LOGO</div>
+        <div (click)='route("overview")' id="home-page-icon" class="fontB">
+            <img src="https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/logo%2FERP%20Airforce%20Tech.png?alt=media&token=7819031f-a1f9-4273-b20d-892b129feed5" alt="ERP Logo" />
+        </div>
     </div>
     <div id="side-navigation-routes-container">
         <div (click)='route("overview")' id="overview-route" class="side-navigation-route-container">
-            <div class="side-navigation-wireframeIcon"></div>
+            <mat-icon>dashboard</mat-icon>
             <p class="fontM">Overview</p>
         </div>
         <mat-expansion-panel #animalsPanel id="animals-route-container" disabled hideToggle>
             <mat-expansion-panel-header>
                 <div id="animals-route-link">
                     <div id="animals-route" (click)='route("animals")'>
-                        <div class="side-navigation-wireframeIcon"></div>
+                        <mat-icon>pets</mat-icon>
                         <p class="fontM">Animals</p>
                     </div>
                     <div class="side-navigation-expansion-btn" (click)='toggleAnimalsPanel()'>
@@ -20,23 +22,23 @@
                 </div>
             </mat-expansion-panel-header>
             <div (click)='route("animals/gallery")' id="animals-gallery-route" class="animals-route-links">
-                <div class="side-navigation-wireframeIcon"></div>
+                <mat-icon class="dropdown">photo</mat-icon>
                 <p class="fontM">Animals Gallery</p>
             </div>
             <div (click)='route("animals/groups")' id="animals-groups-route" class="animals-route-links">
-                <div class="side-navigation-wireframeIcon"></div>
+                <mat-icon class="dropdown">group_work</mat-icon>
                 <p class="fontM">Animals Groups</p>
             </div>
         </mat-expansion-panel>
         <div (click)='route("identifications")' id="geotags-route" class="side-navigation-route-container">
-            <div class="side-navigation-wireframeIcon"></div>
+            <mat-icon>not_listed_location</mat-icon>
             <p class="fontM">Identifications</p>
         </div>
         <mat-expansion-panel #rangersPanel id="rangers-route-container" disabled hideToggle>
             <mat-expansion-panel-header>
                 <div id="rangers-route-link">
                     <div id="rangers-route" (click)='route("rangers")'>
-                        <div class="side-navigation-wireframeIcon"></div>
+                        <mat-icon>supervisor_account</mat-icon>
                         <p class="fontM">Rangers</p>
                     </div>
                     <div class="side-navigation-expansion-btn" (click)='toggleRangersPanel()'>
@@ -45,7 +47,7 @@
                 </div>
             </mat-expansion-panel-header>
             <div (click)='route("rangers/permissions")' id="rangers-perm-route" class="rangers-route-links">
-                <div class="side-navigation-wireframeIcon"></div>
+                <mat-icon class="dropdown">verified_user</mat-icon>
                 <p class="fontM">Permissions</p>
             </div>
         </mat-expansion-panel>

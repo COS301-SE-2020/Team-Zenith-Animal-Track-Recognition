@@ -11,7 +11,7 @@
 #rangers-toolbar-container {
     height: 12%;
     width: 100%;
-    background-image: linear-gradient(135deg, #5084d3, #315dbf);
+    background-image: linear-gradient(-135deg, #509CD0, #214E7D);
     color: white;
     display: flex;
     flex-direction: row;
@@ -210,13 +210,13 @@
 }
 
  :host ::ng-deep .mat-radio-inner-circle {
-    color: #7F93B8;
-    border-color: #7F93B8;
-    background-color: #7F93B8 !important;
+    color: #174076;
+    border-color: #174076;
+    background-color: #174076 !important;
 }
 
  :host ::ng-deep .mat-radio-button.mat-accent.mat-radio-checked,
  :host ::ng-deep .mat-radio-outer-circle {
-    color: #7F93B8 !important;
-    border-color: #7F93B8 !important;
+    color: #4FAEE9 !important;
+    border-color: #4FAEE9 !important;
 }

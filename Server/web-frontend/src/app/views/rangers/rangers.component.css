@@ -16,10 +16,10 @@
     width: 100%;
     background-color: #F5F6FA;
 }
-#ranger-search-sidenav-container
-{
-	height: 100%;
-	width: 100%;
+
+#ranger-search-sidenav-container {
+    height: 100%;
+    width: 100%;
 }
 
 #ranger-search-sidenav-content {}
@@ -30,18 +30,19 @@
     border-right: 2px solid #CCCCCC;
     box-shadow: 1px 0px 5px #DDDDDD;
 }
+
 #ranger-search-sidenav {
-	height: 100%;
-	width: 200px;
-	border-right: 2px solid #CCCCCC;
-	box-shadow: 1px 0px 5px #DDDDDD;
-	overflow-x: hidden;
+    height: 100%;
+    width: 200px;
+    border-right: 2px solid #CCCCCC;
+    box-shadow: 1px 0px 5px #DDDDDD;
+    overflow-x: hidden;
 }
 
 #sidenav-close-btn-container {
     height: 10%;
     width: 100%;
-    background-color: #5084D3;
+    background-image: linear-gradient(-135deg, #509CD0, #214E7D);
     display: flex;
     flex-direction: row;
     justify-content: flex-end;

@@ -130,6 +130,8 @@ export class TrackIdentificationsComponent implements OnInit {
 				}
 			}
 		}
+		this.displayedTracks = [];
+		this.displayedTracks = this.filteredListArray.slice(0, this.filteredListArray.length > 25 ? 25 : this.filteredListArray.length);
 		this.stopLoader();
 	}
 
@@ -269,6 +271,8 @@ export class TrackIdentificationsComponent implements OnInit {
 
 	iterateDisplayedTracks($event) {
 		this.displayedTracks = this.filteredListArray.slice($event.event.pageIndex * $event.event.pageSize, $event.event.pageIndex * $event.event.pageSize + $event.event.pageSize);
+	
+		console.log(this.displayedTracks);
 	}
 
 	showOpenBtn() {

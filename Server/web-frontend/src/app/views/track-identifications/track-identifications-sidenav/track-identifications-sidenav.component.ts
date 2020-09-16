@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, ViewChild, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import {MatPaginatorIntl} from '@angular/material/paginator';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 import { RelativeTimeMPipe } from 'src/app/pipes/relative-time-m.pipe';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -27,10 +27,11 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 
 
 	constructor(private http: HttpClient, private changeDetection: ChangeDetectorRef, private router: Router, private snackBar: MatSnackBar) { }
-	
+
 	public ngOnChanges(changes: SimpleChanges) {
 		if (changes.filteredListArray && changes.filteredListArray.currentValue) {
 			this.trackPaginator.length = this.filteredListArray.length;
+			this.trackPaginator.firstPage();
 		}
 		if (changes.displayedTracks && changes.displayedTracks.currentValue) {
 			this.stopLoader();
@@ -45,19 +46,17 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 		this.focusOnTrackChange.emit(track.spoorIdentificationID + ',' + track.location.latitude + ',' + track.location.longitude);
 		this.trackMatTab.selectedIndex = 1;
 	}
-	
+
 	backToTrackList(status: any) {
 		this.trackMatTab.selectedIndex = 0;
 		this.focusOnTrackChange.emit(this.activeTrack.spoorIdentificationID + ',resetZoom');
 		this.activeTrack = null;
 	}
-	
-	onPageChange($event)
-	{
-		let pageEvent = {'event': $event, 'hasNextPage': this.trackPaginator.hasNextPage()}; 
+
+	onPageChange($event) {
+		let pageEvent = { 'event': $event, 'hasNextPage': this.trackPaginator.hasNextPage() };
 		this.trackPageOnChange.emit(pageEvent);
 	}
-
 
 	//Loader
 	startLoader() {

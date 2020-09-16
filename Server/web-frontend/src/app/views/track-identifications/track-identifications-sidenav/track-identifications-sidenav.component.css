@@ -52,7 +52,7 @@
 .mat-paginator {
     height: 100%;
     width: 100%;
-    background-color: #5084D3;
+    background-image: linear-gradient(-135deg, #509CD0, #214E7D);
     color: white;
 }
 

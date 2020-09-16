@@ -1,199 +1,208 @@
-#loginView-Container
-{
-	position: absolute;
-	top: 0%;
-	left: 0%;
-	height: 100vh;
-	width: 100vw;
-	display: flex;
-	flex-direction: row;
-}
-#loginView-loginForm-Container
-{
-	height: 100%;
-	width: 75%;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	background-color: white;
-}
-#loginView-onboardingMessages-Container
-{
-	background-color: #333333;
-	height: 100%;
-	width: 25%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	align-items: center;
-}
-#loginView-onboardingMessages
-{
-	height: 20%;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: flex-end;
-	
-}
-#loginView-onboardingMessages > h1
-{
-	color: white;
-	width: 100%;
-	font-size: 260%;
-	padding-left: 10%;
-}
-#dashboard-version
-{
-	height: 50%;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
-	align-items: flex-end;
-}
-#dashboard-version > p
-{	
-	color: white;
-	width: 10%;
-	font-size: 110%;
-	padding-right: 2%;
-}
-a
-{
-	font-size: 80%;
-	font-weight: 500;
-	font-style: none;
-	color: #1A1A1A;
-}
-a:hover
-{
-	cursor: pointer;
-	font-style: underline;
-}
-#loginFormComp-loginForm-Container
-{
-	height: 60%;
-	width: 45%;
-	border-radius: 15px;
-}
-#loginFormComp-loginForm-TitleContainer
-{
-	height: 30%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	align-items: center;
-	animation: fadeUp 0.8s ease-out 0s 1 normal forwards;
-	opacity: 0.1;
-	transform: translateY(30%);
-}
-@keyframes fadeUp 
-{
-  from {opacity: 0.1; transform: translateY(30%);}
-  to {opacity: 1.0; transform: translateY(0%);}
-}
-@keyframes fadeIn 
-{
-  from {opacity: 0.1;}
-  to {opacity: 1.0;}
-}
-#loginFormComp-loginForm-TitleContainer > h2
-{
-	color: #1A1A1A;
-	margin: 0;
-}
-.welcomeMessage
-{
-	text-align: center;
-	font-size: 155%;
-	width: 110%;
-}
-#loginFormComp-loginForm-TitleContainer > p
-{
-	margin-top: 1%;
-	font-size: 105%;
-	color: #AAAAAA;
-}
-#loginFormComp-loginForm-FormContainer
-{
-	height: 40%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	align-items: center;
-	font-size: 85%;
-	animation: fadeIn 1.2s ease-out 1s 1 normal forwards;
-	opacity: 0;
-}
-.mat-form-field
-{
-	width: 80%;
-}
-#viewPasswordBtn:hover
-{
-	cursor: pointer;
-}
-#loginFormComp-loginForm-loginOptionsContainer
-{
-	height: 30%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
-	animation: fadeIn 1.2s ease-out 1s 1 normal forwards;
-	opacity: 0;
-}
-#loginFormComp-loginForm-loginOptions
-{
-	height: 40%;
-	width: 80%;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-}
-#loginFormComp-loginForm-loginBtn
-{
-	background-color: #686E79;
-	height: 40%;
-	width: 80%;
-	color: white;
-	font-size: 120%;
+#loginView-Container {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
 }
 
-#create-account{
-	margin: 2px;
-	padding-bottom: 7px;
-	height: 25px;
-	align-items: center;
-	align-content: center;
-	align-self: center;
+#loginView-loginForm-Container {
+    height: 100%;
+    width: 75%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
 }
 
-#not-registered-text{
-	margin: 5px;
-	display: inline-block;
-	float: left;
-	align-content: center;
-	align-self: center;
+#loginView-onboardingMessages-Container {
+    background-image: linear-gradient(-135deg, #509CD0, #214E7D);
+    height: 100%;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
 }
 
-#create-account-text{
-	align-content: center;
-	align-self: center;
-	display: inline-block;
-	float: right;
+#loginView-onboardingMessages {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
 }
-#create-account-link{
-	margin: 5px;
-	display: inline-block;
-	align-items: center;
-	align-content: center;
-	align-self: center;
+
+#loginView-onboardingMessages>h1 {
+    color: white;
+    width: 100%;
+    font-size: 260%;
+    padding-left: 10%;
+}
+
+#dashboard-version {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+#dashboard-version>p {
+    color: white;
+    width: 10%;
+    font-size: 110%;
+    padding-right: 2%;
+}
+
+a {
+    font-size: 80%;
+    font-weight: 500;
+    font-style: none;
+    color: #1A1A1A;
+}
+
+a:hover {
+    cursor: pointer;
+    font-style: underline;
+}
+
+#loginFormComp-loginForm-Container {
+    height: 60%;
+    width: 45%;
+    border-radius: 15px;
+}
+
+#loginFormComp-loginForm-TitleContainer {
+    height: 30%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    animation: fadeUp 0.8s ease-out 0s 1 normal forwards;
+    opacity: 0.1;
+    transform: translateY(30%);
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0.1;
+        transform: translateY(30%);
+    }
+    to {
+        opacity: 1.0;
+        transform: translateY(0%);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0.1;
+    }
+    to {
+        opacity: 1.0;
+    }
+}
+
+#loginFormComp-loginForm-TitleContainer>h2 {
+    color: #1A1A1A;
+    margin: 0;
+}
+
+.welcomeMessage {
+    text-align: center;
+    font-size: 155%;
+    width: 110%;
+}
+
+#loginFormComp-loginForm-TitleContainer>p {
+    margin-top: 1%;
+    font-size: 105%;
+    color: #AAAAAA;
+}
+
+#loginFormComp-loginForm-FormContainer {
+    height: 40%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 85%;
+    animation: fadeIn 1.2s ease-out 1s 1 normal forwards;
+    opacity: 0;
+}
+
+.mat-form-field {
+    width: 80%;
+}
+
+#viewPasswordBtn:hover {
+    cursor: pointer;
+}
+
+#loginFormComp-loginForm-loginOptionsContainer {
+    height: 30%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    animation: fadeIn 1.2s ease-out 1s 1 normal forwards;
+    opacity: 0;
+}
+
+#loginFormComp-loginForm-loginOptions {
+    height: 40%;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#loginFormComp-loginForm-loginBtn {
+    background-image: linear-gradient(-135deg, #509CD0, #214E7D);
+    height: 40%;
+    width: 80%;
+    color: white;
+    font-size: 120%;
+}
+
+#create-account {
+    margin: 2px;
+    padding-bottom: 7px;
+    height: 25px;
+    align-items: center;
+    align-content: center;
+    align-self: center;
+}
+
+#not-registered-text {
+    margin: 5px;
+    display: inline-block;
+    float: left;
+    align-content: center;
+    align-self: center;
+}
+
+#create-account-text {
+    align-content: center;
+    align-self: center;
+    display: inline-block;
+    float: right;
+}
+
+#create-account-link {
+    margin: 5px;
+    display: inline-block;
+    align-items: center;
+    align-content: center;
+    align-self: center;
 }
