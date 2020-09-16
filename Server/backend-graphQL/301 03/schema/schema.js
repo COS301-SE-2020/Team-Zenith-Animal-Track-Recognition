@@ -1962,9 +1962,6 @@ const Mutation = new GraphQLObjectType({
                 let tag = ["0"]
                 if (args.tgas != undefined)
                     tag = args.tgas;
-
-
-
                 let rangera = _.find(usersData, {
                     token: args.token
                 })
@@ -2705,7 +2702,7 @@ function AIIterface(Img) {
     
     const pythonProcess = spawnSync('python',["AIRun.py", "Za1gQIG1wJ89OaqIoyf4.jpeg"]);
     
-        console.log(pythonProcess.output)
+        console.log(pythonProcess.output.toString)
         for (let i = 0; i < animalData.length; i++) {
             let newPM = {
                 animal: i,
