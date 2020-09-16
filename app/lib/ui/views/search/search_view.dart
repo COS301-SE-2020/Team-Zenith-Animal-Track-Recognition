@@ -182,7 +182,7 @@ class IconBuilder extends ViewModelWidget<SearchViewModel> {
             if (index == 0) {
               showSearch(context: context, delegate: DataSearch(model: model));
             } else {
-              navigateToInfo(name.toLowerCase());
+              navigateToInfo(name);
             }
           }),
     );
@@ -218,11 +218,10 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
                     title: text16LeftBoldGrey(animalList[index].species),
                     subtitle: text12LeftBoldGrey(animalList[index].commonName),
                     trailing: IconBuilder(
-                      icon: Icons.remove_red_eye,
-                      colors: Colors.grey,
-                      index: 1,
-                      name: animalList[index].commonName,
-                    ),
+                        icon: Icons.remove_red_eye,
+                        colors: Colors.grey,
+                        index: 1,
+                        name: animalList[index].species),
                   ),
                 );
         });
