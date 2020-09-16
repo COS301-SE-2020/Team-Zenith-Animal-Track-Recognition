@@ -86,9 +86,9 @@ export class AnimalProfileComponent implements OnInit {
 				}
 				break;
 			default:
-				if(num == 1){
+				if (num == 1) {
 					return 'Infant';
-				}else{
+				} else {
 					return 'Infants';
 				}
 				break;
@@ -124,10 +124,10 @@ export class AnimalProfileComponent implements OnInit {
 
 	openAddNewImageDialog() {
 		const editDialogRef = this.dialog.open(AddImageComponent, {
-			height: '75%',
-			width: '60%',
+			height: '70%',
+			width: '50%',
 			autoFocus: true,
-			disableClose: true,
+			disableClose: true,		
 			id: 'add-new-image-dialog',
 			data: {
 				animal: this.animal

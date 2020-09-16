@@ -17,7 +17,7 @@
                     <button mat-menu-item>
 						<span>View Identifications</span>
 					</button>
-                    <button mat-menu-item (click)="open()">
+                    <button mat-menu-item (click)="openEditPerms()">
 						<span>Change Level</span>
 					</button>
                     <button mat-menu-item (click)="openDeleteRangerDialog(ranger.rangerID)">
@@ -35,7 +35,7 @@
                 </div>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-button (click)="viewRangerProfile(ranger.rangerID)">VIEW PROFILE</button>
+                <button mat-button class="buttonColour" (click)="viewRangerProfile(ranger.rangerID)">VIEW PROFILE</button>
             </mat-card-actions>
         </mat-card>
     </div>

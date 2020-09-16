@@ -71,6 +71,11 @@ export class RangerProfileCardComponent implements OnInit {
 			}
 		});
 	}
+
+	openEditPerms() {
+		this.router.navigate(['rangers/permissions']);
+	}
+
 	//DELETE Ranger
 	openDeleteRangerDialog(rangerID: any) {
 		try {

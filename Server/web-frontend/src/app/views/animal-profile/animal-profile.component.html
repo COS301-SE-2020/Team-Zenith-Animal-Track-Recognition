@@ -32,7 +32,7 @@
                     <div id="animal-profile-info-details" class="animal-profile-title-container">
                         <div>
                             <h1 class="fontSB" *ngIf="animal">{{animal.classification | titlecase }}</h1>
-                            <button mat-flat-button (click)="openEditAnimalDialog(1)">Edit</button>
+                            <button mat-flat-button class="buttonColour" (click)="openEditAnimalDialog(1)">Edit</button>
                         </div>
                         <p class="fontM" *ngIf="animal">{{animal.commonName}}</p>
                     </div>
@@ -180,7 +180,7 @@
                                     <div id="animal-profile-information-description" class="animal-profile-information-content">
                                         <div id="animal-profile-information-description-title" class="animal-profile-information-content-title">
                                             <h1 class="fontSB">Animal Description</h1>
-                                            <button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>
+                                            <button mat-flat-button class="buttonColour" (click)="openEditAnimalDialog()">Edit</button>
                                         </div>
                                         <mat-divider></mat-divider>
                                         <div id="animal-profile-information-content">
@@ -199,7 +199,7 @@
                                     <div id="animal-profile-information-behaviour" class="animal-profile-information-content">
                                         <div id="animal-profile-information-behaviour-title" class="animal-profile-information-content-title">
                                             <h1 class="fontSB">Behavioural Information</h1>
-                                            <button mat-flat-button (click)="openEditAnimalDialog(3)">Edit</button>
+                                            <button mat-flat-button class="buttonColour" (click)="openEditAnimalDialog(3)">Edit</button>
                                         </div>
                                         <mat-divider></mat-divider>
                                         <div id="animal-profile-information-content">
@@ -253,7 +253,7 @@
                                     <div id="animal-profile-information-threat" class="animal-profile-information-content">
                                         <div class="animal-profile-information-content-title">
                                             <h1 class="fontSB">Threat Information</h1>
-                                            <button mat-flat-button (click)="openEditAnimalDialog(6)">Edit</button>
+                                            <button mat-flat-button class="buttonColour" (click)="openEditAnimalDialog(6)">Edit</button>
                                         </div>
                                         <mat-divider></mat-divider>
                                         <div id="animal-profile-information-content">
@@ -405,12 +405,6 @@
                     </ng-template>
                 </mat-tab>
                 <mat-tab label="Activity">
-                </mat-tab>
-                <mat-tab label="Group Management">
-                    <ng-template matTabContent>
-                        <div id="animal-profile-groups-container">
-                        </div>
-                    </ng-template>
                 </mat-tab>
             </mat-tab-group>
         </div>

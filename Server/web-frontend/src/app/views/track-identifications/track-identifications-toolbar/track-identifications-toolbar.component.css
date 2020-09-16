@@ -1,83 +1,92 @@
-:host
-{
+:host {
     height: 12%;
     width: 100%;
 }
-#identifications-toolbar-container
-{
-	height: 100%;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	border-bottom: 2px solid #CCCCCC;
+
+#identifications-toolbar-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 2px solid #CCCCCC;
+    color: white;
+    background-image: linear-gradient(135deg, #5084d3, #315dbf);
 }
-#identifications-toolbar-navigationtree-container
-{
-	height: 100%;
-	width: 40%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: center;
-	padding-left: 2%;
+
+#identifications-toolbar-navigationtree-container {
+    height: 100%;
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 2%;
 }
-#identifications-toolbar-navigation
-{
-	height: 100%;
-	width: auto;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: center;
+
+#identifications-toolbar-navigation {
+    height: 100%;
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
 }
-#identifications-toolbar-navigation > a
-{
-	color: #AAAAAA;
-	font-size: 130%;
-	text-decoration: none;
+
+#identifications-toolbar-navigation>a {
+    color: #d8d8d8;
+    font-size: 130%;
+    text-decoration: none;
     transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
-    -ms-transition: all 0.2s ease-in-out; 
+    -ms-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
 }
-#identifications-toolbar-navigation > a:hover
-{
-	color: #1A1A1A;
+
+#identifications-toolbar-navigation>a:hover {
+    color: white;
 }
-#identifications-toolbar-navigation > a.activeView
-{
-	color: #1A1A1A;
+
+#identifications-toolbar-navigation>a.activeView {
+    color: white;
 }
-#identifications-toolbar
-{
-	height: 100%;
-	width: 60%;
-	font-size: 120%;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	align-items: center;
+
+#identifications-toolbar {
+    height: 100%;
+    width: 40%;
+    font-size: 120%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 }
-#identifications-filter-btn, #identifications-sortby-btn
-{
-	width: 25%;
-	border: 1px solid #CCC;
-	padding: 0.5em 0.5em;
-	border-radius: 5px;
+
+#identifications-filter-btn,
+#identifications-sortby-btn {
+    background: rgb(245, 245, 245);
+    width: 30%;
+    border: 1px solid #CCC;
+    padding: 0.5em 0.5em;
+    border-radius: 5px;
 }
-#identifications-toolbar-actions-btn
-{
-	background: rgba(104, 110, 121, 1);
-	width: 25%;
-	border: 1px solid #CCCCCC;
-	padding: 0.5em 0.5em;
-	border-radius: 5px;
+
+#identifications-toolbar-actions-btn {
+    background: rgb(245, 245, 245);
+    width: 25%;
+    border: 1px solid #CCCCCC;
+    padding: 0.5em 0.5em;
+    border-radius: 5px;
 }
-:host ::ng-deep #identifications-filter-btn .mat-select-value-text, :host ::ng-deep #identifications-filter-btn .mat-select-placeholder, :host ::ng-deep #identifications-sortby-btn .mat-select-value-text, :host ::ng-deep #identifications-sortby-btn .mat-select-placeholder 
-{
-  color: #1C1C1C !important;
+
+:host ::ng-deep #identifications-filter-btn .mat-select-value-text,
+ :host ::ng-deep #identifications-filter-btn .mat-select-placeholder,
+ :host ::ng-deep #identifications-sortby-btn .mat-select-value-text,
+ :host ::ng-deep #identifications-sortby-btn .mat-select-placeholder {
+    color: #1C1C1C !important;
 }
-:host ::ng-deep #identifications-toolbar-actions-btn .mat-select-value-text, :host ::ng-deep #identifications-toolbar-actions-btn .mat-select-placeholder {
-  color: white !important;
+
+:host ::ng-deep #identifications-toolbar-actions-btn .mat-select-value-text,
+ :host ::ng-deep #identifications-toolbar-actions-btn .mat-select-placeholder {
+    color: white !important;
 }

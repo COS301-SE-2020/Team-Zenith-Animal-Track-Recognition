@@ -34,7 +34,7 @@ export class DragDropDirective {
     this.opacity = '1'
     let files = evt.dataTransfer.files;
     if (files.length > 0) {
-      this.onFileDropped.emit(files)
+      this.onFileDropped.emit(evt)
     }
   }
 	

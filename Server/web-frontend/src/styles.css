@@ -1,103 +1,146 @@
 /* Application-wide Styles */
+
+
 /*---------------------------------------------------------------------------------------------*/
+
+
 /* Maven Pro Font-face */
+
+
 /*---------------------------------------------------------------------------------------------*/
+
+
 /* Maven Pro Font Classes/Style Linking */
-*
-{
-	font-family: "Maven Pro", sans-serif;
-	font-size: 100%;
-	box-sizing: border-box;
-	-webkit-font-smoothing: antialiased;
+
+* {
+    font-family: "Maven Pro", sans-serif;
+    font-size: 100%;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+.highlight:hover {
+    color: #6693b7;
+}
+
+.buttonColour {
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    background-image: linear-gradient(135deg, #7f93b8, #667ead) !important;
+}
+
+.buttonColour:hover {
+    background-image: linear-gradient(180deg, #40567a, #40567a) !important;
+}
+
+
 /*Maven Pro Regular*/
-.fontR 
-{
-	font-family: "Maven Pro", sans-serif;
-	font-weight: 400;
-	font-style: normal;
+
+.fontR {
+    font-family: "Maven Pro", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
+
+
 /*Maven Pro Medium*/
-.fontM 
-{
-	font-family: "Maven Pro", sans-serif;
-	font-weight: 500;
-	font-style: normal;
+
+.fontM {
+    font-family: "Maven Pro", sans-serif;
+    font-weight: 500;
+    font-style: normal;
 }
+
+
 /*Maven Pro SemiBold*/
-.fontSB 
-{
-	font-family: "Maven Pro", sans-serif;
-	font-weight: 600;
-	font-style: normal;
+
+.fontSB {
+    font-family: "Maven Pro", sans-serif;
+    font-weight: 600;
+    font-style: normal;
 }
+
+
 /*Maven Pro Bold*/
-.fontB
-{
-	font-family: "Maven Pro", sans-serif;
-	font-weight: 700;
-	font-style: normal;
+
+.fontB {
+    font-family: "Maven Pro", sans-serif;
+    font-weight: 700;
+    font-style: normal;
 }
+
+
 /*Maven Pro ExtraBold*/
-.fontEB
-{
-	font-family: "Maven Pro", sans-serif;
-	font-weight: 800;
-	font-style: normal;
+
+.fontEB {
+    font-family: "Maven Pro", sans-serif;
+    font-weight: 800;
+    font-style: normal;
 }
+
+
 /*Maven Pro Black*/
-.fontBlk
-{
-	font-family: "Maven Pro", sans-serif;
-	font-weight: 900;
-	font-style: normal;
+
+.fontBlk {
+    font-family: "Maven Pro", sans-serif;
+    font-weight: 900;
+    font-style: normal;
 }
+
+
 /*---------------------------------------------------------------------------------------------*/
+
+
 /* Page Sizing and Layout */
+
+
 /*---------------------------------------------------------------------------------------------*/
-body
-{
+
+body {
     width: 100%;
     min-height: 100%;
     margin: 0;
     overflow: hidden;
 }
 
-#loader-container, .loader-container
-{
-	position: absolute;
-	top: 0%;
-	left: 0%;
-	height: 100%;
-	width: 100%;
-	visibility: hidden;
-	background: rgba(1.0, 1.0, 1.0, 0.1);
-	z-index: 100;
-	transition: all 0.5s ease-out;
+#loader-container,
+.loader-container {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    visibility: hidden;
+    background: rgba(1.0, 1.0, 1.0, 0.1);
+    z-index: 100;
+    transition: all 0.5s ease-out;
     -webkit-transition: all 0.5s ease-out;
     -moz-transition: all 0.5s ease-out;
-    -ms-transition: all 0.5s ease-out; 
+    -ms-transition: all 0.5s ease-out;
     -o-transition: all 0.5s ease-out;
 }
-#loader, .loader
-{
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	z-index: 101;
+
+#loader,
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 101;
 }
-#dialog-progressbar-container
-{
-	width: 150%;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	top: -24px;
-	left: -24px;
-	visibility: hidden;
+#dialog-progressbar-container {
+    width: 150%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: -24px;
+    left: -24px;
+    visibility: hidden;
 }
 
 /* Empty data messaging */
@@ -134,5 +177,3 @@ body
 
 html, body { height: 100%; }
 body { margin: 0; font-family: "Maven Pro", sans-serif; }
-
-

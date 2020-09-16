@@ -15,7 +15,8 @@
     display: flex;
     flex-direction: row;
     border-bottom: 2px solid #CCCCCC;
-    background-color: white;
+    color: white;
+    background-image: linear-gradient(135deg, #5084d3, #315dbf);
 }
 
 #animals-toolbar-navigationtree-container {
@@ -35,10 +36,11 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    color: white;
 }
 
 #animals-toolbar-navigation>a {
-    color: #AAAAAA;
+    color: #d8d8d8;
     font-size: 130%;
     text-decoration: none;
     transition: all 0.2s ease-in-out;
@@ -49,12 +51,12 @@
 }
 
 #animals-toolbar-navigation>a:hover {
-    color: #1A1A1A;
+    color: white;
     cursor: pointer;
 }
 
 #animals-toolbar-navigation>a.activeView {
-    color: #1A1A1A;
+    color: white;
 }
 
 #animals-toolbar {
@@ -68,7 +70,7 @@
 }
 
 #animals-toolbar-actions-btn {
-    background: rgba(104, 110, 121, 1);
+    background: rgb(245, 245, 245);
     width: 30%;
     border: 1px solid #CCCCCC;
     padding: 0.5em 0.5em;
@@ -83,13 +85,29 @@
 
 :host ::ng-deep #animals-toolbar-actions-btn .mat-select-value-text,
  :host ::ng-deep #animals-toolbar-actions-btn .mat-select-placeholder {
+    color: black !important;
+}
+
+:host ::ng-deep .mat-flat-button {
+    background-color: #7F93B8 !important;
     color: white !important;
+}
+
+:host ::ng-deep .mat-flat-button:hover {
+    background-color: #5084D3 !important;
+    color: white !important;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
 }
 
 #animal-profile-view-workspace {
     height: 88%;
     width: 100%;
     display: flex;
+    background-color: #CED8E6;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
