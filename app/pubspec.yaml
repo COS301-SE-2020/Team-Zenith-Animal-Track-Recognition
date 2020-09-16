@@ -64,6 +64,9 @@ dependencies:
   # image picker
   image_picker: ^0.6.3+4
 
+  # bages 
+  badges: ^1.1.1
+
   # download
   dio: any
   path_provider: any
@@ -303,3 +306,10 @@ flutter:
     - assets/images/animal/Antelopes/kudu/a1.jpg
     - assets/images/animal/Antelopes/kudu/a2.jpg
     - assets/images/animal/Antelopes/kudu/a3.jpg
+
+    - assets/images/trophies/bronze.png
+    - assets/images/trophies/gold.png
+    - assets/images/trophies/hunter.png
+    - assets/images/trophies/military.png
+    - assets/images/trophies/silver.png
+    - assets/images/trophies/track.png

@@ -956,6 +956,7 @@ class GraphQL implements Api {
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
+        print(body['data']);
         var list = body['data']['animalsByClassification']['pictures'] as List;
 
         String temp;
@@ -1441,11 +1442,11 @@ class GraphQL implements Api {
       if (check == 200) {
         List<TrophyModel> trophies = new List();
         List<String> trophyTitled = [
-          'Trophy 1',
-          'Trophy 2',
-          'Trophy 3',
-          'Trophy 4',
-          'Trophy 5',
+          'New Recruit',
+          'First Shot',
+          'AK-47 Automatic',
+          'Sharp Shooter',
+          'Hunter',
           'Trophy 6',
           'Trophy 7',
           'Trophy 8',
@@ -1454,11 +1455,11 @@ class GraphQL implements Api {
         ];
 
         List<String> descriptions = [
-          'Trophy 1',
-          'Trophy 2',
-          'Trophy 3',
-          'Trophy 4',
-          'Trophy 5',
+          'Make First Identification',
+          'Make 50 Identifications',
+          'Make 75 Identifications',
+          'Make 100 Identifications',
+          'Track All Big 5 Animals',
           'Trophy 6',
           'Trophy 7',
           'Trophy 8',
@@ -1467,11 +1468,11 @@ class GraphQL implements Api {
         ];
 
         List<String> images = [
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
+          'assets/images/trophies/military.png',
+          'assets/images/trophies/bronze.png',
+          'assets/images/trophies/silver.png',
+          'assets/images/trophies/gold.png',
+          'assets/images/trophies/hunter.png',
           'assets/images/trophy.png',
           'assets/images/trophy.png',
           'assets/images/trophy.png',

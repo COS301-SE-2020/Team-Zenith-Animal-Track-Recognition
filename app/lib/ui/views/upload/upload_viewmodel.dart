@@ -146,6 +146,7 @@ class UploadViewModel extends BaseViewModel {
 
   bool validateLongInput() {
     if (_longitude == null) {
+      print("000000");
       _showLongError = true;
       _longErrorString = "Longitude input cannot be let empty";
     } else {
@@ -171,7 +172,7 @@ class UploadViewModel extends BaseViewModel {
       bool isValid = false;
       if (RegExp(
               r"^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$")
-          .hasMatch(_longitude)) {
+          .hasMatch(_latitude)) {
         isValid = true;
       }
       if (isValid == false) {
@@ -199,6 +200,7 @@ class UploadViewModel extends BaseViewModel {
         _animalErrorString = "Animal name is not found";
       }
     }
+    print(_showAnimalError);
     return _showAnimalError;
   }
 
@@ -271,7 +273,7 @@ class UploadViewModel extends BaseViewModel {
 
   Future<void> upload() async {
     bool showErrors = false;
-    if (_valueCamera == false || _valueGallery == false) {
+    if (_showCameraError == true || _showGalleryError == true) {
       _showCameraError = true;
       _showGalleryError = true;
       showErrors = true;
@@ -282,11 +284,27 @@ class UploadViewModel extends BaseViewModel {
     validateLatInput();
     if (_showAnimalError ||
         _showTagError ||
-        showLongError ||
-        showLatError ||
+        _showLongError ||
+        _showLatError ||
         showErrors) {
       notifyListeners();
     } else {
+      _longitude = null;
+      _latitude = null;
+      _valueCamera = false;
+      _valueGallery = false;
+      _showCameraError = false;
+      _showGalleryError = false;
+      _showAnimalError = false;
+      _showTagError = false;
+      _showLongError = false;
+      _showLatError = false;
+      _latErrorString = null;
+      _longErrorString = null;
+      _animalErrorString = null;
+      _tagErrorString = null;
+
+      notifyListeners();
       // double id = await api.getAnimalID(chosenAnimal);
 
       // Position position =

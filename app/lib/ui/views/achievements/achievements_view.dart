@@ -120,7 +120,7 @@ Widget trophyBlock(String imageLink) {
         image: AssetImage(imageLink),
         fit: BoxFit.fill,
       ),
-      color: Colors.grey,
+      color: Colors.white,
       borderRadius: BorderRadius.circular(11),
     ),
     height: 50,

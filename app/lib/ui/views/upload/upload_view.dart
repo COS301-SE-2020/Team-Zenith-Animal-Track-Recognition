@@ -607,22 +607,22 @@ class SpoorLocation extends ViewModelWidget<UploadViewModel> {
             margin: new EdgeInsets.only(left: 5),
             padding: new EdgeInsets.all(0),
             alignment: Alignment.centerLeft,
-            child: text14LeftBoldGrey("Longitude: ")),
-        Container(
-            margin: new EdgeInsets.only(left: 0),
-            padding: new EdgeInsets.all(5),
-            alignment: Alignment.centerLeft,
-            child: Longitude()),
-        Container(
-            margin: new EdgeInsets.only(left: 5),
-            padding: new EdgeInsets.all(0),
-            alignment: Alignment.centerLeft,
             child: text14LeftBoldGrey("Latitude: ")),
         Container(
             margin: new EdgeInsets.only(left: 0),
             padding: new EdgeInsets.all(5),
             alignment: Alignment.centerLeft,
             child: Latitude()),
+        Container(
+            margin: new EdgeInsets.only(left: 5),
+            padding: new EdgeInsets.all(0),
+            alignment: Alignment.centerLeft,
+            child: text14LeftBoldGrey("Longitude: ")),
+        Container(
+            margin: new EdgeInsets.only(left: 0),
+            padding: new EdgeInsets.all(5),
+            alignment: Alignment.centerLeft,
+            child: Longitude()),
       ],
     );
   }

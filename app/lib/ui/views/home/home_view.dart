@@ -5,6 +5,7 @@ import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:badges/badges.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key key}) : super(key: key);
@@ -208,7 +209,10 @@ class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
                 dense: true,
                 onTap: () => {navigateToProfile()}),
             ListTile(
-                leading: Icon(Icons.verified_user),
+                leading: Badge(
+                    badgeColor: Colors.red,
+                    badgeContent: Text('3'),
+                    child: Icon(Icons.verified_user)),
                 title: text16LeftBoldGrey("Achievements"),
                 dense: true,
                 onTap: () => {navigateToAchievements()}),

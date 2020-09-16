@@ -21,7 +21,6 @@ class ProfileView extends StatelessWidget {
               return Scaffold(
                 drawer: NavDrawer(),
                 appBar: AppBar(
-                  backgroundColor: Colors.black,
                   title: text22LeftBoldWhite("ERP RANGER"),
                   actions: <Widget>[
                     IconBuilder(icon: Icons.search, type: "search"),

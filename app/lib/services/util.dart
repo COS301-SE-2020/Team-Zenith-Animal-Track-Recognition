@@ -503,8 +503,15 @@ Widget textRow(String accuracy) {
 }
 
 Widget bottomNavigationText(String title, var context) {
-  return Text(title,
-      textAlign: TextAlign.right, style: Theme.of(context).textTheme.subtitle1);
+  return Text(
+    title,
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+      fontFamily: 'MavenPro',
+    ),
+  );
 }
 
 Widget percentageText(String title, double font) {

@@ -22,14 +22,27 @@ class SearchView extends StatelessWidget {
                 drawer: NavDrawer(),
                 appBar: AppBar(
                   backgroundColor: Colors.black,
-                  title: text18LeftBoldWhite("Animal Search"),
+                  title: text22LeftBoldWhite("ERP RANGER"),
                   actions: <Widget>[
                     IconBuilder(
-                        icon: Icons.search, colors: Colors.grey, index: 0),
+                        icon: Icons.search, colors: Colors.white, index: 0),
                   ],
-                  bottom: TabBar(tabs: [
-                    text14CenterBoldGrey("ANIMAL"),
-                    text14CenterBoldGrey("SPECIES"),
+                  flexibleSpace: Container(
+                    padding: EdgeInsets.zero,
+                    margin: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: <Color>[
+                          Color.fromRGBO(80, 132, 211, 1),
+                          Color.fromRGBO(49, 93, 191, 1)
+                        ])),
+                  ),
+                  bottom:
+                      TabBar(key: Key('SearchTab'), indicatorWeight: 3, tabs: [
+                    tabBarTitles("ANIMAL", context),
+                    tabBarTitles("SPECIES", context),
                   ]),
                 ),
                 body: internetError(snapshot.error.toString()),
@@ -54,17 +67,32 @@ class SearchView extends StatelessWidget {
                       drawer: NavDrawer(),
                       appBar: AppBar(
                         backgroundColor: Colors.black,
-                        title: text18LeftBoldWhite("Animal Search"),
+                        title: text22LeftBoldWhite("ERP RANGER"),
                         actions: <Widget>[
                           IconBuilder(
                               icon: Icons.search,
-                              colors: Colors.grey,
+                              colors: Colors.white,
                               index: 0),
                         ],
-                        bottom: TabBar(key: Key('SearchTab'), tabs: [
-                          text14CenterBoldGrey("ANIMAL"),
-                          text14CenterBoldGrey("SPECIES"),
-                        ]),
+                        flexibleSpace: Container(
+                          padding: EdgeInsets.zero,
+                          margin: EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: <Color>[
+                                Color.fromRGBO(80, 132, 211, 1),
+                                Color.fromRGBO(49, 93, 191, 1)
+                              ])),
+                        ),
+                        bottom: TabBar(
+                            key: Key('SearchTab'),
+                            indicatorWeight: 3,
+                            tabs: [
+                              tabBarTitles("ANIMAL", context),
+                              tabBarTitles("SPECIES", context),
+                            ]),
                       ),
                       body: Container(
                           key: Key('SearchCon'),

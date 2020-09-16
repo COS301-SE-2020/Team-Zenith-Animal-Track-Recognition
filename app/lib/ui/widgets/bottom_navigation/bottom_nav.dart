@@ -82,25 +82,28 @@ class BottomNavigationState extends State<BottomNavigation> {
                   type: BottomNavigationBarType.fixed,
                   items: <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.home, color: Colors.grey),
+                      icon: Icon(Icons.home),
                       title: bottomNavigationText('Home', context),
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.pets, color: Colors.grey),
+                      icon: Icon(Icons.pets),
                       title: bottomNavigationText('Animals', context),
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.account_circle, color: Colors.grey),
+                      icon: Icon(Icons.account_circle),
                       title: bottomNavigationText('Profile', context),
                     )
                   ],
-                  selectedItemColor: Color.fromRGBO(0, 24, 68, 1),
-                  selectedIconTheme:
-                      IconThemeData(color: Color.fromRGBO(0, 24, 68, 1)),
+                  selectedItemColor: Colors.blue,
+                  selectedIconTheme: IconThemeData(
+                    color: Colors.blue,
+                  ),
                   unselectedLabelStyle: TextStyle(
-                      fontSize: 14, fontFamily: 'MavenPro', color: Colors.grey),
+                      fontSize: 14,
+                      fontFamily: 'MavenPro',
+                      color: Colors.black),
                   showUnselectedLabels: true,
-                  unselectedItemColor: Colors.grey,
+                  unselectedItemColor: Colors.black,
                   onTap: _onTap,
                   currentIndex: _currentTabIndex,
                 ),
@@ -111,31 +114,32 @@ class BottomNavigationState extends State<BottomNavigation> {
                   type: BottomNavigationBarType.fixed,
                   items: <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.home, color: Colors.grey),
+                      icon: Icon(Icons.home),
                       title: bottomNavigationText('Home', context),
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.pets, color: Colors.grey),
+                      icon: Icon(Icons.pets),
                       title: bottomNavigationText('Animals', context),
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.file_upload, color: Colors.grey),
+                      icon: Icon(Icons.file_upload),
                       title: bottomNavigationText('Upload', context),
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.account_circle, color: Colors.grey),
+                      icon: Icon(Icons.account_circle),
                       title: bottomNavigationText('Profile', context),
                     )
                   ],
-                  selectedItemColor: Color.fromRGBO(0, 24, 68, 1),
-                  selectedIconTheme:
-                      IconThemeData(color: Color.fromRGBO(0, 24, 68, 1)),
+                  selectedItemColor: Colors.blue,
+                  selectedIconTheme: IconThemeData(
+                    color: Colors.blue,
+                  ),
                   unselectedLabelStyle: TextStyle(
                       fontSize: 14,
                       fontFamily: 'Helvetica',
-                      color: Colors.grey),
+                      color: Colors.black),
                   showUnselectedLabels: true,
-                  unselectedItemColor: Colors.grey,
+                  unselectedItemColor: Colors.black,
                   onTap: _onTap2,
                   currentIndex: _currentTabIndex,
                 ),
