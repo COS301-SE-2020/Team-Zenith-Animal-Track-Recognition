@@ -17,6 +17,8 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 	@ViewChild('trackPaginator') trackPaginator;
 	@Input() searchText: string;
 	@Input() fullTrackList: any;
+	@Input() selectedFilter: any;
+	@Input() filteredListArray: any;
 	@Input() displayedTracks: any = null;
 	@Output() trackPageOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() focusOnTrackChange: EventEmitter<Object> = new EventEmitter();
@@ -27,8 +29,8 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 	constructor(private http: HttpClient, private changeDetection: ChangeDetectorRef, private router: Router, private snackBar: MatSnackBar) { }
 	
 	public ngOnChanges(changes: SimpleChanges) {
-		if (changes.fullTrackList && changes.fullTrackList.currentValue) {
-			this.trackPaginator.length = this.fullTrackList.length;
+		if (changes.filteredListArray && changes.filteredListArray.currentValue) {
+			this.trackPaginator.length = this.filteredListArray.length;
 		}
 		if (changes.displayedTracks && changes.displayedTracks.currentValue) {
 			this.stopLoader();

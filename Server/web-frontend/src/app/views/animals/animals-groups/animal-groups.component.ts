@@ -43,7 +43,7 @@ export class AnimalGroupsComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(Object.values(data)[0])[0]);
 				temp.forEach(element => {
-					if (element['groupName'] != "BIG FIVE") {
+					if (element['groupName'] != "Big Five") {
 						this.animalGroups.push(element);
 						this.animalGroupsColumns.push(element['groupName']);
 					}
@@ -150,11 +150,11 @@ export class AnimalGroupsComponent implements OnInit {
 
 	updateLevel(tkn: string, lvl: string) {
 		this.animalGroups.forEach(element => {
-			if(lvl == element['groupName']){
+			if (lvl == element['groupName']) {
 				lvl = element['groupID'];
 			}
 		});
-		
+
 		let temp = this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateAnimalGroup('
 			+ 'token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
 			+ 'animalID:"' + tkn + '",'
