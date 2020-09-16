@@ -1415,15 +1415,10 @@ class GraphQL implements Api {
               "graphql?query=query{rangersStats(token: \"$token\", rangerID: \"$id\"){spoors, mostTrackedAnimal{commonName}, nuberOfanamils}}")
           .timeout(const Duration(seconds: 7));
 
-      String mostTracked;
       String tracks;
       String noAnimals;
       if (res.statusCode == 200) {
         var body = json.decode(res.body);
-
-        mostTracked = body['data']['rangersStats']['mostTrackedAnimal']
-                ['commonName']
-            .toString();
 
         tracks = body['data']['rangersStats']['spoors'].toString();
 

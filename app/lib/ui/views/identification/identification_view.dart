@@ -373,7 +373,7 @@ class ViewInfoFunctionality extends ViewModelWidget<IdentificationViewModel> {
             child: IconButton(
               icon: Icon(Icons.pets),
               onPressed: () {
-                navigateToInfo(model.confident.name.toLowerCase());
+                navigateToInfo(model.confident.species);
               },
             ),
           ),
