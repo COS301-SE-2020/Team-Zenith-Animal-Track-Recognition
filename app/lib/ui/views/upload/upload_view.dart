@@ -347,8 +347,22 @@ class TagBox extends HookViewModelWidget<UploadViewModel> {
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.all(Radius.circular(10))),
+                    errorText: viewModel.showTagError == false
+                        ? null
+                        : viewModel.tagErrorString,
+                    errorStyle: TextStyle(
+                        fontFamily: 'MavenPro',
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.red),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        gapPadding: 0),
                     filled: true,
-                    fillColor: Colors.grey[100])),
+                    fillColor: Colors.grey[100]),
+                onChanged: (value) => viewModel.tag = value,
+                onSubmitted: (value) => null),
             suggestionsCallback: (pattern) {
               return viewModel.getTagSuggestions(pattern);
             },
@@ -406,25 +420,22 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.all(Radius.circular(10))),
-                    errorText: viewModel.showAnimalError
+                    errorText: viewModel.showAnimalError == false
                         ? null
                         : viewModel.animalErrorString,
-                    errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        gapPadding: 0),
                     errorStyle: TextStyle(
                         fontFamily: 'MavenPro',
+                        fontSize: 12,
                         fontWeight: FontWeight.normal,
                         color: Colors.red),
-                    focusedErrorBorder: OutlineInputBorder(
+                    errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         gapPadding: 0),
                     filled: true,
                     fillColor: Colors.grey[100]),
-                // onChanged: viewModel.setChosenAnimal,
-                onSubmitted: (value) => {viewModel.validateAnimalInput(value)}),
+                onChanged: (value) => viewModel.chosenAnimal = value,
+                onSubmitted: (value) => null),
             suggestionsCallback: (pattern) {
               return viewModel.getSuggestions(pattern);
             },
@@ -467,7 +478,11 @@ class Latitude extends HookViewModelWidget<UploadViewModel> {
       controller: text,
       onChanged: viewModel.updateLat,
       decoration: InputDecoration(
-          hintText: "Enter latitude",
+          hintText: "Enter latitude coordintates",
+          hintStyle: TextStyle(
+              fontFamily: 'MavenPro',
+              fontWeight: FontWeight.normal,
+              color: Colors.grey),
           isDense: true,
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
@@ -475,6 +490,17 @@ class Latitude extends HookViewModelWidget<UploadViewModel> {
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.blue),
               borderRadius: BorderRadius.all(Radius.circular(10))),
+          errorText:
+              viewModel.showLatError == false ? null : viewModel.latErrorString,
+          errorStyle: TextStyle(
+              fontFamily: 'MavenPro',
+              fontSize: 12,
+              fontWeight: FontWeight.normal,
+              color: Colors.red),
+          errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              gapPadding: 0),
           filled: true,
           fillColor: Colors.grey[100]),
       style: TextStyle(
@@ -497,8 +523,13 @@ class Longitude extends HookViewModelWidget<UploadViewModel> {
       key: Key('Longitude'),
       controller: text,
       onChanged: viewModel.updateLong,
+      onSubmitted: (value) => null,
       decoration: InputDecoration(
-          hintText: "Enter longitude",
+          hintText: "Enter longitude coordintates",
+          hintStyle: TextStyle(
+              fontFamily: 'MavenPro',
+              fontWeight: FontWeight.normal,
+              color: Colors.grey),
           isDense: true,
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
@@ -506,6 +537,18 @@ class Longitude extends HookViewModelWidget<UploadViewModel> {
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.blue),
               borderRadius: BorderRadius.all(Radius.circular(10))),
+          errorText: viewModel.showLongError == false
+              ? null
+              : viewModel.longErrorString,
+          errorStyle: TextStyle(
+              fontFamily: 'MavenPro',
+              fontSize: 12,
+              fontWeight: FontWeight.normal,
+              color: Colors.red),
+          errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              gapPadding: 0),
           filled: true,
           fillColor: Colors.grey[100]),
       style: TextStyle(

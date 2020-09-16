@@ -46,7 +46,7 @@ class _MyApp extends State<MyApp> {
               ? MaterialApp(
                   theme: basicTheme(),
                   initialRoute: snapshot.data
-                      ? Routes.loginViewRoute
+                      ? Routes.homeViewRoute
                       : Routes.homeViewRoute,
                   onGenerateRoute: Router().onGenerateRoute,
                   navigatorKey: locator<NavigationService>().navigatorKey,
