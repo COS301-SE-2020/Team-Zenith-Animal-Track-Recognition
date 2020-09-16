@@ -45,7 +45,8 @@ class GraphQL implements Api {
         for (int i = 0; i < list.length; i++) {
           temp = body['data']['groups'][i]['groupID'].toString();
           categories.add(temp);
-          groupNames.add(body['data']['groups'][i]['groupName'].toString());
+          groupNames.add(
+              body['data']['groups'][i]['groupName'].toString().toUpperCase());
         }
       } else {
         throw HttpException('500');
@@ -956,7 +957,6 @@ class GraphQL implements Api {
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
-        print(body['data']);
         var list = body['data']['animalsByClassification']['pictures'] as List;
 
         String temp;
