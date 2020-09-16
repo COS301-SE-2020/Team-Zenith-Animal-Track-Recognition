@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:ERP_RANGER/app/locator.dart';
+import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
+import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -49,6 +52,24 @@ class UploadViewModel extends BaseViewModel {
 
   String _animalErrorString;
   String get animalErrorString => _animalErrorString;
+
+  bool _showTagError = false;
+  bool get showTagError => _showTagError;
+
+  String _tagErrorString;
+  String get tagErrorString => _tagErrorString;
+
+  bool _showLongError = false;
+  bool get showLongError => _showLongError;
+
+  String _longErrorString;
+  String get longErrorString => _longErrorString;
+
+  bool _showLatError = false;
+  bool get showLatError => _showLatError;
+
+  String _latErrorString;
+  String get latErrorString => _latErrorString;
 
   final NavigationService _navigationService = locator<NavigationService>();
   final Api api = locator<GraphQL>();
@@ -113,11 +134,55 @@ class UploadViewModel extends BaseViewModel {
 
   void setChosenAnimal(String animal) {
     chosenAnimal = animal;
-    // notifyListeners();
-    print(chosenAnimal);
   }
 
-  void validateAnimalInput(String value) {
+  void setLong(String long) {
+    _longitude = long;
+  }
+
+  void setLat(String lat) {
+    _latitude = lat;
+  }
+
+  bool validateLongInput() {
+    if (_longitude == null) {
+      _showLongError = true;
+      _longErrorString = "Longitude input cannot be let empty";
+    } else {
+      bool isValid = false;
+      if (RegExp(
+              r"^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$")
+          .hasMatch(_longitude)) {
+        isValid = true;
+      }
+      if (isValid == false) {
+        _showAnimalError = true;
+        _longErrorString = "Invalid longitude value";
+      }
+    }
+    return _showAnimalError;
+  }
+
+  bool validateLatInput() {
+    if (_latitude == null) {
+      _showLatError = true;
+      _latErrorString = "Latitude input cannot be let empty";
+    } else {
+      bool isValid = false;
+      if (RegExp(
+              r"^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$")
+          .hasMatch(_longitude)) {
+        isValid = true;
+      }
+      if (isValid == false) {
+        _showLatError = true;
+        _latErrorString = "Invalid Latitude value";
+      }
+    }
+    return _showAnimalError;
+  }
+
+  bool validateAnimalInput() {
     if (chosenAnimal == null) {
       _showAnimalError = true;
       _animalErrorString = "Animal name input cannot be let empty";
@@ -134,7 +199,27 @@ class UploadViewModel extends BaseViewModel {
         _animalErrorString = "Animal name is not found";
       }
     }
-    // notifyListeners();
+    return _showAnimalError;
+  }
+
+  bool validateTagInput() {
+    if (tag == null) {
+      _showTagError = true;
+      _tagErrorString = "Tags field cannot be let empty";
+    } else {
+      bool isValid = false;
+      for (int i = 0; i < tags.length; i++) {
+        if (tag == tags[i]) {
+          _showTagError = false;
+          isValid = true;
+        }
+      }
+      if (isValid == false) {
+        _showTagError = true;
+        _tagErrorString = "Tag not found";
+      }
+    }
+    return _showTagError;
   }
 
   void uploadFromCamera() async {
@@ -185,23 +270,34 @@ class UploadViewModel extends BaseViewModel {
   }
 
   Future<void> upload() async {
+    bool showErrors = false;
     if (_valueCamera == false || _valueGallery == false) {
       _showCameraError = true;
       _showGalleryError = true;
-      notifyListeners();
+      showErrors = true;
     }
-    print(chosenAnimal);
+    validateAnimalInput();
+    validateTagInput();
+    validateLongInput();
+    validateLatInput();
+    if (_showAnimalError ||
+        _showTagError ||
+        showLongError ||
+        showLatError ||
+        showErrors) {
+      notifyListeners();
+    } else {
+      // double id = await api.getAnimalID(chosenAnimal);
 
-    // double id = await api.getAnimalID(chosenAnimal);
+      // Position position =
+      //     await getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
 
-    // Position position =
-    //     await getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
+      // ConfirmModel animal = await api.manualClassification(
+      //     _imageLink, position.latitude, position.longitude, id, _tags);
 
-    // ConfirmModel animal = await api.manualClassification(
-    //     _imageLink, position.latitude, position.longitude, id, _tags);
-
-    // _navigationService.navigateTo(Routes.userConfirmedViewRoute,
-    //     arguments: UserConfirmedViewArguments(
-    //         image: _image, confirmedAnimal: animal, tags: _tags));
+      // _navigationService.navigateTo(Routes.userConfirmedViewRoute,
+      //     arguments: UserConfirmedViewArguments(
+      //         image: _image, confirmedAnimal: animal, tags: _tags));
+    }
   }
 }

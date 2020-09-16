@@ -1,10 +1,13 @@
 import 'package:ERP_RANGER/app/router.gr.dart';
+import 'package:ERP_RANGER/services/api/api.dart';
+import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:stacked/stacked.dart';
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class LoginViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
+  final Api api = locator<GraphQL>();
 
   String _username;
   String get username => _username;
@@ -95,6 +98,7 @@ class LoginViewModel extends BaseViewModel {
       valid = true;
       _isPassEmpty = true;
       _isUserNameEmpty = true;
+      await api.getLoginModel(_username, _password);
       _navigationService.navigateTo(Routes.homeViewRoute);
       notifyListeners();
     } else {
