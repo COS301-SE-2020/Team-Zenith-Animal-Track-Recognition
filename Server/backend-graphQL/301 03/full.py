@@ -83,7 +83,7 @@ print("Total validation images:", total_val)
 
 
 batch_size = 64
-epochs = 1 
+epochs = 10 
 IMG_HEIGHT = 350
 IMG_WIDTH = 350
 
@@ -187,7 +187,9 @@ sentence=sentence.replace("/", "")
 sentence='saved_model/mane/'+sentence+"/"
 sentence=sentence.replace(" ", "")
 sentence=sentence.replace(":", "")
-model.save(sentence) 
+probability_model = tf.keras.Sequential([model, 
+                                         tf.keras.layers.Softmax()])
+probability_model.save(sentence) 
 
 
 
