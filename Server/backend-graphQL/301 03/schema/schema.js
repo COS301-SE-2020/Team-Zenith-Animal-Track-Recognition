@@ -1903,7 +1903,7 @@ const Mutation = new GraphQLObjectType({
                     type: new GraphQLNonNull(GraphQLFloat)
                 },
                 animalID: {
-                    type: new GraphQLNonNull(GraphQLInt)
+                    type: new GraphQLNonNull(GraphQLString)
                 },
                 tgas: {
                     type: new GraphQLList(new GraphQLNonNull(GraphQLString))
@@ -2185,7 +2185,7 @@ const Mutation = new GraphQLObjectType({
                 if (a == undefined) {
                     return null
                 }
-                newID=uplodeBase64(args.IMG64,"animal")
+                let newID=uplodeBase64(args.IMG64,"animal")
                 addImgIDToAnimal(args.animalID,newID)
                 return newID;
             }
@@ -2213,7 +2213,7 @@ const Mutation = new GraphQLObjectType({
                 }
                 URLa=uplodeBase64URL(args.IMG64,"ranger")
                 addURLToRanger(args.rangerID,URLa)
-                return newID;
+                return URLa;
             }
         },
         addAnimalGroup:{
