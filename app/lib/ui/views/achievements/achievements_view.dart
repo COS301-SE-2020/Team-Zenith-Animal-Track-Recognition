@@ -26,6 +26,16 @@ class AchievementsView extends StatelessWidget {
                   actions: <Widget>[
                     IconBuilder(icon: Icons.search, type: "search"),
                   ],
+                  flexibleSpace: Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: <Color>[
+                          Color.fromRGBO(80, 132, 211, 1),
+                          Color.fromRGBO(49, 93, 191, 1)
+                        ])),
+                  ),
                 ),
                 body: internetError(snapshot.error.toString()),
               );
@@ -49,6 +59,16 @@ class AchievementsView extends StatelessWidget {
                           actions: [
                             IconBuilder(icon: Icons.search, type: "search")
                           ],
+                          flexibleSpace: Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: <Color>[
+                                  Color.fromRGBO(80, 132, 211, 1),
+                                  Color.fromRGBO(49, 93, 191, 1)
+                                ])),
+                          ),
                         ),
                         body: Container(
                           padding: EdgeInsets.all(10),
