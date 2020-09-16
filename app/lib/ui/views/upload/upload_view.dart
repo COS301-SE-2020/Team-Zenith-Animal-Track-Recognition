@@ -754,7 +754,13 @@ Widget leftBlock = new Container(
   margin: new EdgeInsets.only(right: 5, left: 5),
   padding: new EdgeInsets.all(5),
   decoration: BoxDecoration(
-    color: Colors.grey,
+    gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: <Color>[
+          Color.fromRGBO(80, 132, 211, 1),
+          Color.fromRGBO(49, 93, 191, 1)
+        ]),
     borderRadius: BorderRadius.circular(10),
   ),
   height: 30,

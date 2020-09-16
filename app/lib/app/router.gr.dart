@@ -14,7 +14,6 @@ import '../services/datamodels/api_models.dart';
 import '../ui/views/achievements/achievements_view.dart';
 import '../ui/views/animals/animal_view.dart';
 import '../ui/views/confirmed/confirmed_view.dart';
-import '../ui/views/forgot/forget_view.dart';
 import '../ui/views/gallery/gallery_view.dart';
 import '../ui/views/home/home_view.dart';
 import '../ui/views/identification/identification_view.dart';
@@ -68,7 +67,6 @@ class Router extends RouterBase {
     RouteDef(Routes.confirmlViewRoute, page: ConfirmedView),
     RouteDef(Routes.gallerylViewRoute, page: GalleryView),
     RouteDef(Routes.identificationViewRoute, page: IdentificationView),
-    RouteDef(Routes.forgetViewRoute, page: ForgetView),
     RouteDef(Routes.notConfirmedViewRoute, page: NotConfirmedView),
     RouteDef(Routes.profileViewRoute, page: ProfileView),
     RouteDef(Routes.uploadViewRoute, page: UploadView),
@@ -119,12 +117,6 @@ class Router extends RouterBase {
       final args = data.getArgs<IdentificationViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
         builder: (context) => IdentificationView(name: args.name),
-        settings: data,
-      );
-    },
-    ForgetView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const ForgetView(),
         settings: data,
       );
     },

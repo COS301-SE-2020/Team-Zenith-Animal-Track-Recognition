@@ -190,17 +190,17 @@ class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
   @override
   Widget build(BuildContext context, HomeViewModel model) {
     return Container(
-        width: 250,
+        width: 225,
         child: Drawer(
             child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: Colors.white,
                   image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: AssetImage('assets/images/E1.jpg'))),
+                      image: AssetImage('assets/images/ERP_Tech.png'))),
               child: null,
             ),
             ListTile(

@@ -29,7 +29,6 @@ class LoginView extends StatelessWidget {
                   margin: new EdgeInsets.only(
                       right: 20, left: 20, top: 10, bottom: 10),
                   child: Password()),
-              ForgotPassword(),
               UploadButton()
             ],
           ),
@@ -54,15 +53,30 @@ class UploadButton extends ViewModelWidget<LoginViewModel> {
       ),
       width: 200,
       child: RaisedButton(
-          key: Key('LoginButton'),
-          child: text20CenterBoldWhite("LOGIN"),
-          color: Colors.grey[300],
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          padding: EdgeInsets.all(10),
-          onPressed: () {
-            model.login();
-          }),
+        onPressed: () {
+          model.login();
+        },
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+        padding: EdgeInsets.all(0.0),
+        child: Ink(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromRGBO(80, 132, 211, 1),
+                  Color.fromRGBO(49, 93, 191, 1)
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+              borderRadius: BorderRadius.circular(30.0)),
+          child: Container(
+            constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50),
+            alignment: Alignment.center,
+            child: text20CenterBoldWhite("LOGIN"),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -168,25 +182,6 @@ class Password extends HookViewModelWidget<LoginViewModel> {
   }
 }
 
-class ForgotPassword extends ViewModelWidget<LoginViewModel> {
-  ForgotPassword({
-    Key key,
-  }) : super(reactive: true);
-
-  @override
-  Widget build(BuildContext context, LoginViewModel viewModel) {
-    return GestureDetector(
-      onTap: () {
-        viewModel.navigateToForget();
-      },
-      child: Container(
-          margin: new EdgeInsets.all(10),
-          alignment: Alignment.center,
-          child: text("Forgot password?", 17)),
-    );
-  }
-}
-
 Widget text(String text, double font) {
   return Text(
     text,
@@ -198,3 +193,32 @@ Widget text(String text, double font) {
         color: Colors.blue[300]),
   );
 }
+
+// Container(
+//   margin: EdgeInsets.only(
+//         right: 15,
+//         left: 15,
+//         top: 5,
+//         bottom: 5,
+//       ),
+//   width: 200,
+//   child: RaisedButton(
+//     onPressed: () {model.login();},
+//     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+//     padding: EdgeInsets.all(0.0),
+//     child: Ink(
+//       decoration: BoxDecoration(
+//           gradient: LinearGradient(colors: [Color(0xff374ABE), Color(0xff64B6FF)],
+//             begin: Alignment.centerLeft,
+//             end: Alignment.centerRight,
+//           ),
+//           borderRadius: BorderRadius.circular(30.0)
+//       ),
+//       child: Container(
+//         constraints: BoxConstraints(maxWidth: 200.0),
+//         alignment: Alignment.center,
+//         child: text20CenterBoldWhite("LOGIN"),
+//       ),
+//     ),
+//   ),
+// ),

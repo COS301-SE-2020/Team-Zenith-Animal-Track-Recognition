@@ -272,15 +272,16 @@ Widget logo = new Container(
   //margin: new EdgeInsets.only(right:5,left:5),
   padding: new EdgeInsets.all(5),
   decoration: BoxDecoration(
-    color: Colors.grey,
+    color: Colors.white,
     borderRadius: BorderRadius.circular(10),
+    border: Border.all(width: 2.0, color: Colors.black),
     image: DecorationImage(
-      image: AssetImage("assets/images/logo.jpeg"),
+      image: AssetImage("assets/images/ERP_Tech.png"),
       fit: BoxFit.fill,
     ),
   ),
-  height: 130,
-  width: 130,
+  height: 150,
+  width: 150,
 );
 
 Widget internetImage = new Container(

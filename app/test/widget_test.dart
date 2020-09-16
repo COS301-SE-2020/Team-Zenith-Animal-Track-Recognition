@@ -13,7 +13,6 @@ import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:ERP_RANGER/ui/views/animals/animal_view.dart';
 import 'package:ERP_RANGER/ui/views/confirmed/confirmed_view.dart';
-import 'package:ERP_RANGER/ui/views/forgot/forget_view.dart';
 import 'package:ERP_RANGER/ui/views/gallery/gallery_view.dart';
 import 'package:ERP_RANGER/ui/views/home/home_view.dart';
 import 'package:ERP_RANGER/ui/views/home/home_viewmodel.dart';
@@ -396,56 +395,6 @@ void main() {
       //await tester.pumpAndSettle();
 
       expect(find.byKey(Key('UserScroll')), findsOneWidget);
-    });
-  });
-
-  group('ForgotCredentials View Tests', () {
-    testWidgets('Test presence of lost credentials form',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: ForgetView(),
-      ));
-
-      await tester.pump(new Duration(seconds: 30));
-      //await tester.pumpAndSettle();
-
-      expect(find.byKey(Key('LostUserName')), findsOneWidget);
-    });
-
-    testWidgets('Test presence of lost credentials form',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: ForgetView(),
-      ));
-
-      await tester.pump(new Duration(seconds: 30));
-      //await tester.pumpAndSettle();
-
-      expect(find.byKey(Key('LostPassword')), findsOneWidget);
-    });
-
-    testWidgets('Test presence of lost password form',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: ForgetView(),
-      ));
-
-      await tester.pump(new Duration(seconds: 30));
-      //await tester.pumpAndSettle();
-
-      expect(find.byKey(Key('LostConfirmPassword')), findsOneWidget);
-    });
-
-    testWidgets('Test presence of lost upload form',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: ForgetView(),
-      ));
-
-      await tester.pump(new Duration(seconds: 30));
-      //await tester.pumpAndSettle();
-
-      expect(find.byKey(Key('LostUploadButton')), findsOneWidget);
     });
   });
 }
