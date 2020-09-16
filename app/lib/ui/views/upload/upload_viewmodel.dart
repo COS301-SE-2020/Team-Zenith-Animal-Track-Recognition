@@ -14,6 +14,7 @@ class UploadViewModel extends BaseViewModel {
   String tag;
   int _tagIndex;
   String chosenAnimal;
+  bool newNotifications = false;
 
   List<String> _animals;
   List<String> get animals => _animals;
@@ -73,6 +74,11 @@ class UploadViewModel extends BaseViewModel {
 
   final NavigationService _navigationService = locator<NavigationService>();
   final Api api = locator<GraphQL>();
+
+  notify() async {
+    newNotifications = await api.getNewTrophyNotification();
+    notifyListeners();
+  }
 
   Future<List<String>> getSuggestions(String query) async {
     List<String> matches = List();

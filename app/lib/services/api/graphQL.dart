@@ -207,6 +207,7 @@ class GraphQL implements Api {
 
       int accessLevel = int.parse(body["data"]["login"]["accessLevel"]);
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool("notification", true);
       prefs.setInt("accessLevel", accessLevel);
       prefs.setString("token", body["data"]["login"]["token"]);
       prefs.setString("rangerID", body["data"]["login"]["rangerID"]);
@@ -1459,13 +1460,27 @@ class GraphQL implements Api {
       if (ConnectivityResult.none == connectivity) {
         throw Exception("");
       }
-      var check = 200;
-      if (check == 200) {
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("token");
+      token = Uri.encodeFull(token);
+
+      final http.Response response = await http
+          .get("$domain" +
+              "graphql?query=query{trophy(token: \"$token\"){name, text ,hiddin , unloked}}")
+          .timeout(const Duration(seconds: 7));
+
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+        prefs.setBool('notifications', false);
+        print(prefs.getBool('notifications'));
+
         List<TrophyModel> trophies = new List();
+
         List<String> trophyTitled = [
           'New Recruit',
           'First Shot',
-          'AK-47 Automatic',
+          'Target Inscope',
           'Sharp Shooter',
           'Hunter',
           'Trophy 6',
@@ -1481,11 +1496,6 @@ class GraphQL implements Api {
           'Make 75 Identifications',
           'Make 100 Identifications',
           'Track All Big 5 Animals',
-          'Trophy 6',
-          'Trophy 7',
-          'Trophy 8',
-          'Trophy 9',
-          'Trophy 10'
         ];
 
         List<String> images = [
@@ -1495,20 +1505,32 @@ class GraphQL implements Api {
           'assets/images/trophies/gold.png',
           'assets/images/trophies/hunter.png',
           'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
-          'assets/images/trophy.png',
         ];
 
-        for (int i = 0; i < trophyTitled.length; i++) {
-          trophies.add(new TrophyModel(
-              image: images[i],
-              descrption: descriptions[i],
-              title: trophyTitled[i]));
+        for (int i = 0; i < body['data']['trophy'].length; i++) {
+          if (body['data']['trophy'][i]['name'] == "" ||
+              body['data']['trophy'][i]['name'] == null) {
+            trophies.add(new TrophyModel(
+                image: images[5],
+                descrption: 'Track All Big 5 Animals',
+                title: 'Elite Hunter'));
+          } else {
+            if (body['data']['trophy'][i]['unloked']) {
+              trophies.add(new TrophyModel(
+                  image: images[i],
+                  descrption: body['data']['trophy'][i]['text'],
+                  title: trophyTitled[i]));
+            } else {
+              trophies.add(new TrophyModel(
+                  image: images[5],
+                  descrption: body['data']['trophy'][i]['text'],
+                  title: trophyTitled[i]));
+            }
+          }
         }
         return trophies;
       } else {
+        print(response.statusCode);
         throw HttpException('500');
       }
     } on SocketException {
@@ -1521,5 +1543,11 @@ class GraphQL implements Api {
     } on Exception {
       throw VerificationException('No Internet Connection');
     }
+  }
+
+  @override
+  Future<bool> getNewTrophyNotification() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('notifications');
   }
 }

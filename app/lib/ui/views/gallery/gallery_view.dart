@@ -22,7 +22,52 @@ class GalleryView extends StatelessWidget {
             return Scaffold(
               drawer: NavDrawer(),
               appBar: AppBar(
-                backgroundColor: Colors.black,
+                leading: Builder(
+                  builder: (BuildContext context) {
+                    return model.newNotifications == false
+                        ? IconButton(
+                            icon: const Icon(Icons.menu),
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            tooltip: MaterialLocalizations.of(context)
+                                .openAppDrawerTooltip,
+                          )
+                        : IconButton(
+                            icon: new Stack(
+                              children: [
+                                new Icon(Icons.menu),
+                                new Positioned(
+                                  right: 0,
+                                  child: new Container(
+                                      padding: EdgeInsets.all(1),
+                                      decoration: new BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      constraints: BoxConstraints(
+                                        minWidth: 12,
+                                        minHeight: 12,
+                                      ),
+                                      child: Container(
+                                        height: 5,
+                                        width: 5,
+                                        decoration: new BoxDecoration(
+                                          color: Colors.red,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      )),
+                                )
+                              ],
+                            ),
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            tooltip: MaterialLocalizations.of(context)
+                                .openAppDrawerTooltip,
+                          );
+                  },
+                ),
                 title: text18LeftBoldWhite(
                   "ERP RANGER",
                 ),
@@ -55,7 +100,53 @@ class GalleryView extends StatelessWidget {
                       child: Scaffold(
                         drawer: NavDrawer(),
                         appBar: AppBar(
-                          leading: null,
+                          leading: Builder(
+                            builder: (BuildContext context) {
+                              return model.newNotifications == false
+                                  ? IconButton(
+                                      icon: const Icon(Icons.menu),
+                                      onPressed: () {
+                                        Scaffold.of(context).openDrawer();
+                                      },
+                                      tooltip: MaterialLocalizations.of(context)
+                                          .openAppDrawerTooltip,
+                                    )
+                                  : IconButton(
+                                      icon: new Stack(
+                                        children: [
+                                          new Icon(Icons.menu),
+                                          new Positioned(
+                                            right: 0,
+                                            child: new Container(
+                                                padding: EdgeInsets.all(1),
+                                                decoration: new BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(6),
+                                                ),
+                                                constraints: BoxConstraints(
+                                                  minWidth: 12,
+                                                  minHeight: 12,
+                                                ),
+                                                child: Container(
+                                                  height: 5,
+                                                  width: 5,
+                                                  decoration: new BoxDecoration(
+                                                    color: Colors.red,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                )),
+                                          )
+                                        ],
+                                      ),
+                                      onPressed: () {
+                                        Scaffold.of(context).openDrawer();
+                                      },
+                                      tooltip: MaterialLocalizations.of(context)
+                                          .openAppDrawerTooltip,
+                                    );
+                            },
+                          ),
                           backgroundColor: Colors.black,
                           title: appBarTitle(galleryModel.name, context),
                           actions: <Widget>[IconBuilder(icon: Icons.search)],
@@ -154,17 +245,18 @@ class NavDrawer extends ViewModelWidget<GalleryViewModel> {
   @override
   Widget build(BuildContext context, GalleryViewModel model) {
     return Container(
-      width: 250,
-      child: Drawer(
-        child: ListView(
+        color: Colors.white,
+        width: 225,
+        child: Drawer(
+            child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: Colors.white,
                   image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: AssetImage('assets/images/E1.jpg'))),
+                      image: AssetImage('assets/images/ERP_Tech.png'))),
               child: null,
             ),
             ListTile(
@@ -173,7 +265,9 @@ class NavDrawer extends ViewModelWidget<GalleryViewModel> {
                 dense: true,
                 onTap: () => {navigateToProfile()}),
             ListTile(
-                leading: Icon(Icons.verified_user),
+                leading: model.newNotifications == false
+                    ? Icon(Icons.verified_user)
+                    : badge,
                 title: text16LeftBoldGrey("Achievements"),
                 dense: true,
                 onTap: () => {navigateToAchievements()}),
@@ -188,8 +282,6 @@ class NavDrawer extends ViewModelWidget<GalleryViewModel> {
                   navigateToLogin(context);
                 }),
           ],
-        ),
-      ),
-    );
+        )));
   }
 }

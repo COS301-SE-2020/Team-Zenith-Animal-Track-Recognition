@@ -21,7 +21,53 @@ class SearchView extends StatelessWidget {
               return Scaffold(
                 drawer: NavDrawer(),
                 appBar: AppBar(
-                  backgroundColor: Colors.black,
+                  leading: Builder(
+                    builder: (BuildContext context) {
+                      return model.newNotifications == false
+                          ? IconButton(
+                              icon: const Icon(Icons.menu),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context)
+                                  .openAppDrawerTooltip,
+                            )
+                          : IconButton(
+                              icon: new Stack(
+                                children: [
+                                  new Icon(Icons.menu),
+                                  new Positioned(
+                                    right: 0,
+                                    child: new Container(
+                                        padding: EdgeInsets.all(1),
+                                        decoration: new BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        constraints: BoxConstraints(
+                                          minWidth: 12,
+                                          minHeight: 12,
+                                        ),
+                                        child: Container(
+                                          height: 5,
+                                          width: 5,
+                                          decoration: new BoxDecoration(
+                                            color: Colors.red,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        )),
+                                  )
+                                ],
+                              ),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context)
+                                  .openAppDrawerTooltip,
+                            );
+                    },
+                  ),
                   title: text22LeftBoldWhite("ERP RANGER"),
                   actions: <Widget>[
                     IconBuilder(
@@ -56,7 +102,7 @@ class SearchView extends StatelessWidget {
               return WillPopScope(
                 onWillPop: () async {
                   if (Navigator.canPop(context)) {
-                    navigateBack(context);
+                    navigate(context);
                   }
                   return;
                 },
@@ -66,7 +112,53 @@ class SearchView extends StatelessWidget {
                     child: Scaffold(
                       drawer: NavDrawer(),
                       appBar: AppBar(
-                        backgroundColor: Colors.black,
+                        leading: Builder(
+                          builder: (BuildContext context) {
+                            return model.newNotifications == false
+                                ? IconButton(
+                                    icon: const Icon(Icons.menu),
+                                    onPressed: () {
+                                      Scaffold.of(context).openDrawer();
+                                    },
+                                    tooltip: MaterialLocalizations.of(context)
+                                        .openAppDrawerTooltip,
+                                  )
+                                : IconButton(
+                                    icon: new Stack(
+                                      children: [
+                                        new Icon(Icons.menu),
+                                        new Positioned(
+                                          right: 0,
+                                          child: new Container(
+                                              padding: EdgeInsets.all(1),
+                                              decoration: new BoxDecoration(
+                                                color: Colors.red,
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              constraints: BoxConstraints(
+                                                minWidth: 12,
+                                                minHeight: 12,
+                                              ),
+                                              child: Container(
+                                                height: 5,
+                                                width: 5,
+                                                decoration: new BoxDecoration(
+                                                  color: Colors.red,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                              )),
+                                        )
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Scaffold.of(context).openDrawer();
+                                    },
+                                    tooltip: MaterialLocalizations.of(context)
+                                        .openAppDrawerTooltip,
+                                  );
+                          },
+                        ),
                         title: text22LeftBoldWhite("ERP RANGER"),
                         actions: <Widget>[
                           IconBuilder(
@@ -127,37 +219,45 @@ class NavDrawer extends ViewModelWidget<SearchViewModel> {
 
   @override
   Widget build(BuildContext context, SearchViewModel model) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: text22LeftBoldWhite("Side Menu"),
-            decoration: BoxDecoration(
-                color: Colors.grey,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/springbok.jpg'))),
-          ),
-          ListTile(
-              leading: Icon(Icons.home),
-              title: text16LeftBoldGrey("Home"),
-              onTap: () => {navigateToHomeView()}),
-          ListTile(
-              leading: Icon(Icons.verified_user),
-              title: text16LeftBoldGrey("Profile"),
-              onTap: () => {navigateToProfile()}),
-          ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: text16LeftBoldGrey("Logout"),
-              onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setBool("loggedIn", false);
-                navigateToLogin(context);
-              }),
-        ],
-      ),
-    );
+    return Container(
+        color: Colors.white,
+        width: 225,
+        child: Drawer(
+            child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/ERP_Tech.png'))),
+              child: null,
+            ),
+            ListTile(
+                leading: Icon(Icons.account_circle),
+                title: text16LeftBoldGrey("Profile"),
+                dense: true,
+                onTap: () => {navigateToProfile()}),
+            ListTile(
+                leading: model.newNotifications == false
+                    ? Icon(Icons.verified_user)
+                    : badge,
+                title: text16LeftBoldGrey("Achievements"),
+                dense: true,
+                onTap: () => {navigateToAchievements()}),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                dense: true,
+                title: text16LeftBoldGrey("Logout"),
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool("loggedIn", false);
+                  navigateToLogin(context);
+                }),
+          ],
+        )));
   }
 }
 

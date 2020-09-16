@@ -1,9 +1,14 @@
+import 'package:ERP_RANGER/app/locator.dart';
+import 'package:ERP_RANGER/services/api/api.dart';
+import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:ERP_RANGER/services/util.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class GalleryViewModel extends BaseViewModel {
+  bool newNotifications = false;
+  final Api api = locator<GraphQL>();
   Future<TempObject> getSpoor(var context) async {
     List<String> categories = new List();
     categories.add("Appearance");
@@ -17,6 +22,7 @@ class GalleryViewModel extends BaseViewModel {
       tabs.add(Tab(
           child: text12CenterBoldWhite(tabModel.categories[i].toUpperCase())));
     }
+    newNotifications = await api.getNewTrophyNotification();
     return TempObject(tabs: tabs, length: tabModel.length);
   }
 }

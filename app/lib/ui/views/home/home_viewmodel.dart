@@ -9,10 +9,12 @@ class HomeViewModel extends BaseViewModel {
   //final Api api = locator<MockApi>();
 
   List<HomeModel> animals;
+  bool newNotifications = false;
 
   Future<List<HomeModel>> getRecentIdentifications() async {
     List<HomeModel> recentIdentifications = await api.getHomeModel();
     animals = recentIdentifications;
+    newNotifications = await api.getNewTrophyNotification();
     return recentIdentifications;
   }
 }

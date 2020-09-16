@@ -7,11 +7,13 @@ import 'package:stacked/stacked.dart';
 class ProfileViewModel extends BaseViewModel {
   //final Api api = locator<MockApi>();
   final Api api = locator<GraphQL>();
+  bool newNotifications = false;
 
   Future<TempObject> getRecentIdentifications() async {
     List<ProfileModel> recentIdentifications = await api.getProfileModel();
     ProfileInfoModel infoModel = await api.getProfileInfoData();
     int userlevel = await api.getUserLevel();
+    newNotifications = await api.getNewTrophyNotification();
     TempObject temp = TempObject(
         animalList: recentIdentifications,
         infoModel: infoModel,

@@ -44,4 +44,6 @@ abstract class Api {
   Future<int> getUserLevel();
 
   Future<List<TrophyModel>> getTrophies();
+
+  Future<bool> getNewTrophyNotification();
 }

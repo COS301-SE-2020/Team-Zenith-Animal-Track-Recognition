@@ -4,6 +4,7 @@ import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:badges/badges.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -345,6 +346,11 @@ Widget internetError(String errorMessage) {
           ),
         );
 }
+
+Widget badge = new Badge(
+    badgeColor: Colors.red,
+    badgeContent: Container(),
+    child: Icon(Icons.verified_user));
 
 Widget tabBarTitles(String title, var context) {
   return text12CenterBoldWhite(title);

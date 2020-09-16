@@ -24,7 +24,53 @@ class HomeView extends StatelessWidget {
                   ? Scaffold(
                       drawer: HomeNavDrawer(),
                       appBar: AppBar(
-                        //backgroundColor: Color.fromRGBO(80,156,208, 1),
+                        leading: Builder(
+                          builder: (BuildContext context) {
+                            return model.newNotifications == false
+                                ? IconButton(
+                                    icon: const Icon(Icons.menu),
+                                    onPressed: () {
+                                      Scaffold.of(context).openDrawer();
+                                    },
+                                    tooltip: MaterialLocalizations.of(context)
+                                        .openAppDrawerTooltip,
+                                  )
+                                : IconButton(
+                                    icon: new Stack(
+                                      children: [
+                                        new Icon(Icons.menu),
+                                        new Positioned(
+                                          right: 0,
+                                          child: new Container(
+                                              padding: EdgeInsets.all(1),
+                                              decoration: new BoxDecoration(
+                                                color: Colors.red,
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              constraints: BoxConstraints(
+                                                minWidth: 12,
+                                                minHeight: 12,
+                                              ),
+                                              child: Container(
+                                                height: 5,
+                                                width: 5,
+                                                decoration: new BoxDecoration(
+                                                  color: Colors.red,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                              )),
+                                        )
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Scaffold.of(context).openDrawer();
+                                    },
+                                    tooltip: MaterialLocalizations.of(context)
+                                        .openAppDrawerTooltip,
+                                  );
+                          },
+                        ),
                         title: text22LeftBoldWhite(
                           "ERP RANGER",
                         ),
@@ -210,10 +256,9 @@ class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
                 dense: true,
                 onTap: () => {navigateToProfile()}),
             ListTile(
-                leading: Badge(
-                    badgeColor: Colors.red,
-                    badgeContent: Text('3'),
-                    child: Icon(Icons.verified_user)),
+                leading: model.newNotifications == false
+                    ? Icon(Icons.verified_user)
+                    : badge,
                 title: text16LeftBoldGrey("Achievements"),
                 dense: true,
                 onTap: () => {navigateToAchievements()}),

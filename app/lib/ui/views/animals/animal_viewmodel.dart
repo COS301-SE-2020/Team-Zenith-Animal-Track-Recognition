@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 class AnimalViewModel extends BaseViewModel {
   //final Api api = locator<MockApi>();
   final Api api = locator<GraphQL>();
+  bool newNotifications = false;
 
   Future<TempObject> getCategories(var context) async {
     TabModel tabModel = await api.getTabModel();
@@ -22,6 +23,7 @@ class AnimalViewModel extends BaseViewModel {
       List<AnimalModel> animals =
           await api.getAnimalModel(tabModel.categories[i]);
       animalList.add(animals);
+      newNotifications = await api.getNewTrophyNotification();
     }
     return TempObject(
         tabs: tabs, length: tabModel.length, animalList: animalList);

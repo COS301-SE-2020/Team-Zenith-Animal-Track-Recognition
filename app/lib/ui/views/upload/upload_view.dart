@@ -15,7 +15,9 @@ class UploadView extends StatelessWidget {
   Widget build(BuildContext context) {
     BottomNavigation bottomNavigation = BottomNavigation();
     bottomNavigation.setIndex(2);
+
     return ViewModelBuilder<UploadViewModel>.reactive(
+      onModelReady: (model) => model.notify(),
       builder: (context, model, child) => WillPopScope(
         onWillPop: () async {
           if (Navigator.canPop(context)) {
@@ -26,7 +28,52 @@ class UploadView extends StatelessWidget {
         child: Scaffold(
           drawer: NavDrawer(),
           appBar: AppBar(
-            backgroundColor: Colors.black,
+            leading: Builder(
+              builder: (BuildContext context) {
+                return model.newNotifications == false
+                    ? IconButton(
+                        icon: const Icon(Icons.menu),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        tooltip: MaterialLocalizations.of(context)
+                            .openAppDrawerTooltip,
+                      )
+                    : IconButton(
+                        icon: new Stack(
+                          children: [
+                            new Icon(Icons.menu),
+                            new Positioned(
+                              right: 0,
+                              child: new Container(
+                                  padding: EdgeInsets.all(1),
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    minWidth: 12,
+                                    minHeight: 12,
+                                  ),
+                                  child: Container(
+                                    height: 5,
+                                    width: 5,
+                                    decoration: new BoxDecoration(
+                                      color: Colors.red,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  )),
+                            )
+                          ],
+                        ),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        tooltip: MaterialLocalizations.of(context)
+                            .openAppDrawerTooltip,
+                      );
+              },
+            ),
             actions: <Widget>[
               IconBuilder(icon: Icons.search, type: "search"),
             ],
@@ -117,17 +164,18 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
   @override
   Widget build(BuildContext context, UploadViewModel model) {
     return Container(
-      width: 250,
-      child: Drawer(
-        child: ListView(
+        color: Colors.white,
+        width: 225,
+        child: Drawer(
+            child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: Colors.white,
                   image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: AssetImage('assets/images/E1.jpg'))),
+                      image: AssetImage('assets/images/ERP_Tech.png'))),
               child: null,
             ),
             ListTile(
@@ -136,7 +184,9 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
                 dense: true,
                 onTap: () => {navigateToProfile()}),
             ListTile(
-                leading: Icon(Icons.verified_user),
+                leading: model.newNotifications == false
+                    ? Icon(Icons.verified_user)
+                    : badge,
                 title: text16LeftBoldGrey("Achievements"),
                 dense: true,
                 onTap: () => {navigateToAchievements()}),
@@ -151,9 +201,7 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
                   navigateToLogin(context);
                 }),
           ],
-        ),
-      ),
-    );
+        )));
   }
 }
 

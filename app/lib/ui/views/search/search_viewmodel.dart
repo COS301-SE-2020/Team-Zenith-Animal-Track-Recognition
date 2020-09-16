@@ -6,6 +6,7 @@ import 'package:stacked/stacked.dart';
 
 class SearchViewModel extends BaseViewModel {
   final Api _api = locator<GraphQL>();
+  bool newNotifications = false;
   //final Api _api = locator<MockApi>();
 
   Future<TempObject> getSearchList() async {
@@ -65,6 +66,7 @@ class SearchViewModel extends BaseViewModel {
     for (int i = 0; i < 4; i++) {
       displayList.add(list[i]);
     }
+    newNotifications = await _api.getNewTrophyNotification();
     TempObject tempObject = new TempObject(
         animals: animals,
         species: speciesList,

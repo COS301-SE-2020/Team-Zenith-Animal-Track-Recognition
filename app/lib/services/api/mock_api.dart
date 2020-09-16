@@ -920,4 +920,10 @@ class MockApi implements Api {
     }
     return trophies;
   }
+
+  @override
+  Future<bool> getNewTrophyNotification() {
+    // TODO: implement getNewTrophyNotification
+    throw UnimplementedError();
+  }
 }
