@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
@@ -20,7 +20,13 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 	currentAlphabet: any;
 	sorted: string;
 
-	constructor(private http: HttpClient, private router: Router) { }
+	constructor(private changeDetection: ChangeDetectorRef, private http: HttpClient, private router: Router) { }
+	
+	public ngOnChanges(changes: SimpleChanges) {
+		if (changes.rangers) {
+			this.stopSidenavLoader();
+		}
+	}
 
 	ngOnInit(): void {
 	}
@@ -50,5 +56,13 @@ export class RangerSearchSidenavCompComponent implements OnInit {
 		this.searchTextOnChange.emit(event);
 		if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")
 			this.currentAlphabet = null;
+	}
+	
+	//Loader
+	startSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'visible';
+	}
+	stopSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
 	}
 }

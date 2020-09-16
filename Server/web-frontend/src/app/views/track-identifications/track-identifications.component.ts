@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { EMPTY} from 'rxjs';
+import { catchError, map, retry } from 'rxjs/operators';
+import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TrackIdentificationsSidenavComponent } from './track-identifications-sidenav/track-identifications-sidenav.component';
-import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-track-identifications',
@@ -38,9 +39,19 @@ export class TrackIdentificationsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.startLoader();
+		this.startSidenavLoader();
 		document.getElementById("geotags-route").classList.add("activeRoute");
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){spoorIdentificationID,animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					this.stopSidenavLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -275,5 +286,14 @@ export class TrackIdentificationsComponent implements OnInit {
 	}
 	stopLoader() {
 		document.getElementById('loader-container').style.visibility = 'hidden';
+	}
+	//Loader
+	startSidenavLoader() {
+		console.log("PARENT SIDENAV START LOADER");
+		document.getElementById('search-nav-loader-container').style.visibility = 'visible';
+	}
+	stopSidenavLoader() {
+		console.log("PARENT SIDENAV STOP LOADER");
+		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
 	}
 }

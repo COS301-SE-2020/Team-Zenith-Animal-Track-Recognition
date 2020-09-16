@@ -45,6 +45,7 @@
     height: 100%;
     width: 350px;
     border-right: 2px solid #CCCCCC;
+	overflow-x: hidden;
 }
 
 

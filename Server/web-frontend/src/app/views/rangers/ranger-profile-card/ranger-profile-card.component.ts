@@ -16,25 +16,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class RangerProfileCardComponent implements OnInit {
 
 	@Input() searchText: string;
-	@Input() rangersList;
+	@Input() rangersList: any = null;
 	numRangers: any;
 	sorted: string;
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
 
-	ngOnInit(): void { 
-		this.startLoader(); 
+	ngOnInit(): void { 		
+		this.stopLoader();
 	}
 
-
 	public ngOnChanges(changes: SimpleChanges) {
-		this.startLoader();
-		if (changes.rangers) {
-			//If rangers has updated
-			this.changeDetection.detectChanges();
+		if (changes.rangersList) {
+			this.stopLoader();
 		}
-		this.stopLoader();
 	}
 
 	//Ranger CRUD Quick-Actions

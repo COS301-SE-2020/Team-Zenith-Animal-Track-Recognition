@@ -1,7 +1,4 @@
 <div class="ranger-profile-cards-container">
-    <div id="loader-container">
-        <mat-spinner id="loader"></mat-spinner>
-    </div>
     <div class="ranger-profile-card-container" *ngFor="let ranger of rangersList | filter:searchText">
         <mat-card class="ranger-profile-card" id="ranger{{ranger.rangerID}}ProfileCard">
             <div class="ranger-profile-card-header">

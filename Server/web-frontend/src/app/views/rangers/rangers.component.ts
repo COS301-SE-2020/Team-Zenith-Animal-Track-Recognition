@@ -1,6 +1,8 @@
-import { map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { EMPTY} from 'rxjs';
+import { catchError, map, retry } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
 @Component({
@@ -11,18 +13,29 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 export class RangersComponent implements OnInit {
 
 	@ViewChild('sidenav') sidenav;
-	rangers: any;
+	rangers: any = null;
 	searchText: string;
 	selection: string;
 	currentAlphabet;
 	sorted: string;
 
-	constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient,  private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
+		this.startLoader();
+		this.startSidenavLoader();
 		document.getElementById('rangers-route-link').classList.add('activeRoute');
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){rangerID,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					this.stopSidenavLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -36,6 +49,8 @@ export class RangersComponent implements OnInit {
 	}
 
 	refresh(updateOp: string) {
+		this.startLoader();
+		this.startSidenavLoader();
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){rangerID,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
 			.subscribe((data: any[]) => {
@@ -55,6 +70,8 @@ export class RangersComponent implements OnInit {
 						this.removeRanger(removedRanger[0].rangerID);
 						break;
 				}
+				//Force ngOnChanges to detect the change
+				this.rangers = this.rangers.slice();
 				this.sort('bySurname');
 			});
 	}
@@ -91,6 +108,8 @@ export class RangersComponent implements OnInit {
 	//Sorting and Filtering
 	//Sort functions
 	sort(selection: string) {
+		this.startLoader();
+		this.startSidenavLoader();
 		switch (selection) {
 			case "byLevel":
 				this.sortLevel();
@@ -100,6 +119,7 @@ export class RangersComponent implements OnInit {
 				break;
 		}
 		this.selection = selection;
+		this.rangers = this.rangers.slice();
 	}
 	sortLevel() {
 		for (let i = 0; i < this.rangers.length - 1; i++) {
@@ -122,5 +142,19 @@ export class RangersComponent implements OnInit {
 				}
 			}
 		}
+	}
+	
+	//Loader
+	startLoader() {
+		document.getElementById("loader-container").style.visibility = "visible";
+	}
+	stopLoader() {
+		document.getElementById("loader-container").style.visibility = "hidden";
+	}
+	startSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'visible';
+	}
+	stopSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
 	}
 }

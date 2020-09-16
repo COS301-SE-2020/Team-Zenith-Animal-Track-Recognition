@@ -13,7 +13,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 export class TrackIdentificationsSidenavComponent implements OnInit {
 
-	//https://codersloth.com/blogs/a-simple-time-ago-pipe-to-display-relative-time-in-angular/  <--- Time-ago Pipe
 	@ViewChild('trackMatTab') trackMatTab;
 	@ViewChild('trackPaginator') trackPaginator;
 	@Input() searchText: string;
@@ -24,18 +23,19 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 	activeTrack: any = null;
 	originType: string = "track-identifications";
 
-	public ngOnChanges(changes: SimpleChanges) {
-		this.startLoader();
-		if (changes.displayedTracks) {
-			//If tracks has updated
-			this.changeDetection.detectChanges();
-		}
-		this.stopLoader();
-	}
 
 	constructor(private http: HttpClient, private changeDetection: ChangeDetectorRef, private router: Router, private snackBar: MatSnackBar) { }
-
-	ngOnInit(): void {}
+	
+	public ngOnChanges(changes: SimpleChanges) {
+		if (changes.fullTrackList && changes.fullTrackList.currentValue) {
+			this.trackPaginator.length = this.fullTrackList.length;
+		}
+		if (changes.displayedTracks && changes.displayedTracks.currentValue) {
+			this.stopLoader();
+		}
+	}
+	ngOnInit(): void {
+	}
 
 	viewTrack(track: any) {
 		this.activeTrack = null;
@@ -59,9 +59,11 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 
 	//Loader
 	startLoader() {
+		console.log("SIDENAV STart LOADER");
 		document.getElementById('search-nav-loader-container').style.visibility = 'visible';
 	}
 	stopLoader() {
+		console.log("SIDENAV STOP LOADER");
 		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
 	}
 }

@@ -5,30 +5,8 @@
 	border-bottom: 2px solid #CCCCCC;
 	display: flex;
 	flex-direction: row;
-	justify-content: flex-start;
+	justify-content: flex-end;
 	align-items: center;
-}
-#utility-navigation-searchbar-container
-{
-	height: 100%;
-	width: 40%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-#utility-navigation-searchbar
-{
-	height: 50%;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-}
-.mat-form-field
-{
-	width: 75%;  
-	font-size: 110%;
 }
 :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix 
 {
@@ -44,7 +22,7 @@
 #utility-navigation-utilities-container
 {
 	height: 100%;
-	width: 60%;
+	width: 20%;
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-end;
@@ -59,7 +37,7 @@
 #user-profile-container
 {
 	height: 100%;
-	width: 30%;
+	width: 100%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;

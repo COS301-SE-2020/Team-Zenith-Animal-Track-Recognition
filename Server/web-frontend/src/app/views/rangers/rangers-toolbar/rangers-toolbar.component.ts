@@ -62,12 +62,26 @@ export class RangersToolbarComponent implements OnInit {
 	}
 
 	updateSearchText(event) {
+		if (!this.rangers || this.rangers.length == 0) {
+			return;
+		}
+		if (this.rangers.length == 1) {
+			return;
+		}
 		this.searchTextOnChange.emit(event);
 		if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")
 			this.currentAlphabet = null;
 	}
 
 	sort(selection: string) {
+		if (!this.rangers || this.rangers.length == 0) {
+			this.snackBar.open('There is no data to sort. Please add a ranger and try again.', "Dismiss", { duration: 5000, });			
+			return;
+		}
+		if (this.rangers.length == 1) {
+			this.snackBar.open('Sorting requires two or more rangers.', "Dismiss", { duration: 5000, });			
+			return;
+		}
 		this.sortOptionOnChange.emit(selection);
 	}
 
