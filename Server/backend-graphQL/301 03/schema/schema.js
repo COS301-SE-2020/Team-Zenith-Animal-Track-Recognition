@@ -980,7 +980,7 @@ const RootQuery = new GraphQLObjectType({
                     unloked:false
                 }
                 listOfTrophys.push(trophyA)
-                
+
                 let Make_1st_ID ={
                     name:"Make 1st ID",
                     text:"Make 1st ID",
@@ -1010,6 +1010,16 @@ const RootQuery = new GraphQLObjectType({
                 if (listOfSID.length>=50)
                 Make_50_ID.unloked=true
                 listOfTrophys.push(Make_50_ID)
+
+                let Make_200_ID ={
+                    name:"Make 200 ID",
+                    text:"Make 200 ID",
+                    hiddin:false,
+                    unloked:false
+                }
+                if (listOfSID.length>=200)
+                Make_50_ID.unloked=true
+                listOfTrophys.push(Make_200_ID)
 
                 return listOfTrophys    
             }
