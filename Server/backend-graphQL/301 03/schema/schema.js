@@ -3,15 +3,6 @@ const verbose = true;
 const debugLoging =true;
 var dateOBJ = new Date();
 const graphql = require('graphql');
-const tf = require('@tensorflow/tfjs');
-
-const fs = require('fs')
-
-
-const loadGraphModel = require('@tensorflow/tfjs-converter').loadGraphModel;
-const MODEL_URL = 'models/model.json';
-
-const model = loadGraphModel(MODEL_URL);
 
 const {
     GraphQLObjectType,
@@ -280,6 +271,9 @@ const PICTURES_TYPE = new GraphQLObjectType({
             type: GraphQLString
         },
         kindOfPicture: {
+            type: GraphQLString
+        },
+        text:{
             type: GraphQLString
         }
 
@@ -1823,6 +1817,9 @@ const Mutation = new GraphQLObjectType({
                 },
                 tgas: {
                     type: new GraphQLList(new GraphQLNonNull(GraphQLString))
+                },
+                imageText:{
+                    type:GraphQLString
                 }
             },
             resolve(parent, args) {
@@ -2628,7 +2625,7 @@ if (CACHE) {
 
             if (updated)
                 animals.doc(doc.id).set(temp)
-
+            temp.animalID=temp.animalID.toString()
             animalData.push(temp);
         });
         redeyNeedConterDown();
