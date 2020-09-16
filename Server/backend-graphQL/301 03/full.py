@@ -83,7 +83,7 @@ print("Total validation images:", total_val)
 
 
 batch_size = 64
-epochs = 10 
+epochs = 30 
 IMG_HEIGHT = 350
 IMG_WIDTH = 350
 

@@ -45,7 +45,7 @@ let habitats = db.collection("habitats");
 let pictures = db.collection("pictures");
 let spoorIdentifications = db.collection("spoorIdentifications");
 let dietTypes = db.collection("dietTypes");
-let logs = db.collection("dietTypes");
+let logIns = db.collection("logIns");
 //google db
 
 //google storage
@@ -63,6 +63,7 @@ let animalData = []
 let pictureData = []
 let spoorIdentificationData = []
 let dietTypeData = []
+let recentLogins = []
 
 const MES_TYPE = new GraphQLObjectType({
     name: "mesig",
@@ -83,7 +84,25 @@ const LOCATION_TYPE = new GraphQLObjectType({
         }
     })
 });
-
+const RECENT_LOGIN_TYPE =new GraphQLObjectType({
+    name: "recentLogins",
+    fields: () => ({
+        rangerID: {
+            type: USER_TYPE,
+            resolve(parent, args) {
+                return _.find(usersData, {
+                    rangerID: parent.rangerID
+                })
+            }
+        },
+        time: {
+            type: GraphQLString
+        },
+        platform: {
+            type: GraphQLString
+        }
+    })
+})
 const DATE_AND_TIME_TYPE = new GraphQLObjectType({
     name: "dateAndTime",
     fields: () => ({
@@ -506,8 +525,15 @@ const RootQuery = new GraphQLObjectType({
                 })
                 if (a === undefined)
                     return null
-                else if (a.password == args.password)
+                else if (a.password == args.password){
+                    let LI={
+                        rangerID:a.rangerID,
+                        time:Date.now().toString(),
+                        platform:"app"
+                    }
+                    RecentLogins.push(LI)
                     return a
+                }
                 else return null
             }
         },
@@ -528,7 +554,15 @@ const RootQuery = new GraphQLObjectType({
                 if (a === undefined)
                     return null
                 else if (a.password == args.password && a.accessLevel > 2)
+                {
+                    let LI={
+                        rangerID:a.rangerID,
+                        time:Date.now().toString(),
+                        platform:"wdb"
+                    }
+                    RecentLogins.push(LI)
                     return a
+                }
                 else return null
             }
 
@@ -1020,6 +1054,20 @@ const RootQuery = new GraphQLObjectType({
                 listOfTrophys.push(Make_200_ID)
 
                 return listOfTrophys
+            }
+        },
+        recentLogins:{
+            type:new GraphQLList(RECENT_LOGIN_TYPE),
+            
+            resolve(parent, args) {
+
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == null) {
+                    return null;
+                }
+                return recentLogins
             }
         }
 
