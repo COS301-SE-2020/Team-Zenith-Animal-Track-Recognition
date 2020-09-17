@@ -28,6 +28,7 @@
     "@types/google-maps": "^3.2.2",
     "@types/jquery": "^3.5.1",
     "bootstrap": "^4.5.2",
+    "canvasjs": "^1.8.3",
     "cors": "^2.8.5",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",

@@ -110,24 +110,18 @@
                         <div id="overview-identifications-container">
                             <div id="overview-spoor-feed-container">
                                 <div id="overview-spoor-feed-title">
-                                    <h2 class="fontSB">Recent Logins</h2>
+                                    <h2 class="fontSB">Animals by Identification Percentage</h2>
                                 </div>
                                 <div class="overview-spoor-container">
                                     <div class="overview-spoor-info-container">
-                                        <mat-card class="logins-card" *ngFor="let element of logins">
-                                            <mat-card-title class="fontSB">{{element.rangerID.firstName}} {{element.rangerID.lastName}}</mat-card-title>
-                                            <mat-card-subtitle class="fontM">Level {{element.rangerID.accessLevel}} Ranger</mat-card-subtitle>
-                                            <mat-card-content>
-                                                <p style="margin: 0;">{{element.platform}}</p>
-                                            </mat-card-content>
-                                        </mat-card>
+                                        <img id="chartContainer" style="height: 370px; width: 80%; margin-left:auto;margin-right:auto;" src="https://firebasestorage.googleapis.com/v0/b/erpzat.appspot.com/o/Overview.JPG?alt=media">
                                     </div>
                                 </div>
                             </div>
                             <div id="additional-container">
                                 <div id="overview-most-identifications-feed-container">
                                     <div id="overview-most-identifications-title">
-                                        <h2 class="fontSB">Most Identifications</h2>
+                                        <h2 class="fontSB">Most Identified</h2>
                                     </div>
                                     <div id="overview-most-identifications-container">
                                         <div class="overview-most-identifications-container">
@@ -135,12 +129,12 @@
                                                 <div class="overview-most-identifications-details-container">
                                                     <div class="overview-most-identifications-info">
                                                         <div class="overview-most-identifications-type">
-                                                            <p class="fontSB">Obakeng Seageng</p>
+                                                            <p class="fontSB">{{animalPercentages.commonName}}</p>
                                                         </div>
                                                         <div class="overview-most-identifications-summary">
-                                                            <p style="width: 40%; text-align: center;" class="fontM">Number of Animals</p>
+                                                            <p style="width: 40%; text-align: center;" class="fontM">Number of Identifications</p>
                                                             <mat-icon style="width: 20%; text-align: center;">arrow_right_alt</mat-icon>
-                                                            <p style="width: 40%; text-align: center;" class="fontM">79</p>
+                                                            <p style="width: 40%; text-align: center;" class="fontM">{{animalPercentages.NumberOfIdentifications}}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -150,7 +144,7 @@
                                 </div>
                                 <div id="overview-latest-feed-container">
                                     <div id="overview-latest-feed-title">
-                                        <h2 class="fontSB">Latest Identification</h2>
+                                        <h2 class="fontSB">Least Identified</h2>
                                     </div>
                                     <div id="overview-latest-container">
                                         <div class="overview-latest-container">
@@ -158,12 +152,12 @@
                                                 <div class="overview-latest-details-container">
                                                     <div class="overview-latest-info">
                                                         <div class="overview-latest-type">
-                                                            <p class="fontSB">Zachary Christophers</p>
+                                                            <p class="fontSB">{{leastIdentified.commonName}}</p>
                                                         </div>
                                                         <div class="overview-latest-summary">
-                                                            <p style="width: 40%; text-align: center;" class="fontM">Black Rhinoceros</p>
+                                                            <p style="width: 40%; text-align: center;" class="fontM">Number of Identifications</p>
                                                             <mat-icon style="width: 20%; text-align: center;">arrow_right_alt</mat-icon>
-                                                            <p style="width: 40%; text-align: center;" class="fontM">2020-09-16</p>
+                                                            <p style="width: 40%; text-align: center;" class="fontM">{{leastIdentified.NumberOfIdentifications}}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -173,7 +167,7 @@
                                 </div>
                                 <div id="overview-activity-feed-container">
                                     <div id="overview-activity-feed-title">
-                                        <h2 class="fontSB">Favourite Tag</h2>
+                                        <h2 class="fontSB">Most Common Tag of {{animalPercentages.commonName}}</h2>
                                     </div>
                                     <div id="overview-activity-container">
                                         <div class="overview-activity-container">
@@ -181,12 +175,12 @@
                                                 <div class="overview-activity-details-container">
                                                     <div class="overview-activity-info">
                                                         <div class="overview-activity-type">
-                                                            <p class="fontSB">Endangered</p>
+                                                            <p class="fontSB">Dangerous</p>
                                                         </div>
                                                         <div class="overview-activity-summary">
                                                             <p style="width: 40%; text-align: center;" class="fontM">Number of Uses</p>
                                                             <mat-icon style="width: 20%; text-align: center;">arrow_right_alt</mat-icon>
-                                                            <p style="width: 40%; text-align: center;" class="fontM">51</p>
+                                                            <p style="width: 40%; text-align: center;" class="fontM">23</p>
                                                         </div>
                                                     </div>
                                                 </div>

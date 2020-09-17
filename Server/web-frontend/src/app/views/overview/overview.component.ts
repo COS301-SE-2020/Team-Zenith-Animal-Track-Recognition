@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { EMPTY } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import * as CanvasJS from './canvasjs.min';
 
 @Component({
   selector: 'app-overview',
@@ -15,12 +16,15 @@ export class OverviewComponent implements OnInit {
   mostTracked: any;
   rangers: any;
   latest: any;
+  animalPercentages: any;
+  leastIdentified: any;
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     document.getElementById("overview-route").classList.add("activeRoute");
     this.mostTracked = { mosotTrakedRanger: '' };
+    this.latest = { ranger: { firstName: '', lastName: '' }, animal: { commonName: '' } };
 
     this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
       '"){rangerID,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
@@ -97,6 +101,42 @@ export class OverviewComponent implements OnInit {
         temp.push(Object.values(Object.values(data)[0])[0]);
         this.latest = temp[0][0];
         this.timeToString(this.latest);
+      });
+
+    this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsStats3(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+      '"){commonName,NumberOfIdentifications}}')
+      .pipe(
+        retry(3),
+        catchError(() => {
+          this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+          this.stopLoader();
+          this.stopSidenavLoader();
+          return EMPTY;
+        })
+      )
+      .subscribe((data: any[]) => {
+        let temp = [];
+        temp = Object.values(Object.values(data)[0]);
+        this.animalPercentages = temp[0];
+
+      });
+
+    this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsStats4(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+      '"){commonName,NumberOfIdentifications}}')
+      .pipe(
+        retry(3),
+        catchError(() => {
+          this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+          this.stopLoader();
+          this.stopSidenavLoader();
+          return EMPTY;
+        })
+      )
+      .subscribe((data: any[]) => {
+        let temp = [];
+        temp = Object.values(Object.values(data)[0]);
+        this.leastIdentified = temp[0];
+
       });
 
     setTimeout(() => {
