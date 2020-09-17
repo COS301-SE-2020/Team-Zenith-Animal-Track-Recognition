@@ -232,15 +232,15 @@ void navigateBack(context) {
   Navigator.of(context).pop();
 }
 
-void navigateToHomeView() {
-  _navigationService.navigateTo(Routes.homeViewRoute);
+void navigateToHomeView(var context) {
+  Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
 }
 
 void navigateToSearchView() {
   _navigationService.navigateTo(Routes.searchViewRoute);
 }
 
-void navigateToProfile() {
+void navigateToProfile(var context) {
   _navigationService.navigateTo(Routes.profileViewRoute);
 }
 

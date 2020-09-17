@@ -164,10 +164,9 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
   @override
   Widget build(BuildContext context, UploadViewModel model) {
     return Container(
-        color: Colors.white,
-        width: 225,
-        child: Drawer(
-            child: ListView(
+      width: 250,
+      child: Drawer(
+        child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
@@ -179,14 +178,17 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
               child: null,
             ),
             ListTile(
+                leading: Icon(Icons.home),
+                title: text16LeftBoldGrey("Home"),
+                dense: true,
+                onTap: () => {navigateToHomeView(context)}),
+            ListTile(
                 leading: Icon(Icons.account_circle),
                 title: text16LeftBoldGrey("Profile"),
                 dense: true,
-                onTap: () => {navigateToProfile()}),
+                onTap: () => {navigateToProfile(context)}),
             ListTile(
-                leading: model.newNotifications == false
-                    ? Icon(Icons.verified_user)
-                    : badge,
+                leading: Icon(Icons.verified_user),
                 title: text16LeftBoldGrey("Achievements"),
                 dense: true,
                 onTap: () => {navigateToAchievements()}),
@@ -198,10 +200,15 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   prefs.setBool("loggedIn", false);
+                  prefs.setInt("accessLevel", null);
+                  prefs.setString("token", null);
+                  prefs.setString("rangerID", null);
                   navigateToLogin(context);
                 }),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }
 

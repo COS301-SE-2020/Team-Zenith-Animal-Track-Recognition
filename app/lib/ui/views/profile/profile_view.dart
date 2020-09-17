@@ -5,6 +5,7 @@ import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -98,7 +99,8 @@ class ProfileView extends StatelessWidget {
                   ? WillPopScope(
                       onWillPop: () async {
                         if (Navigator.canPop(context)) {
-                          navigate(context);
+                          print("object");
+                          navigateToHomeView(context);
                         }
                         return;
                       },
@@ -396,10 +398,9 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
   @override
   Widget build(BuildContext context, ProfileViewModel model) {
     return Container(
-        color: Colors.white,
-        width: 225,
-        child: Drawer(
-            child: ListView(
+      width: 250,
+      child: Drawer(
+        child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
@@ -411,14 +412,25 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
               child: null,
             ),
             ListTile(
+                leading: Icon(Icons.home),
+                title: text16LeftBoldGrey("Home"),
+                dense: true,
+                onTap: () => {navigateToHomeView(context)}),
+            ListTile(
                 leading: Icon(Icons.account_circle),
                 title: text16LeftBoldGrey("Profile"),
                 dense: true,
-                onTap: () => {navigateToProfile()}),
+                onTap: () => {
+                      Fluttertoast.showToast(
+                          msg: "Already on profile page",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          backgroundColor: Colors.grey[200],
+                          textColor: Colors.black,
+                          fontSize: 16.0)
+                    }),
             ListTile(
-                leading: model.newNotifications == false
-                    ? Icon(Icons.verified_user)
-                    : badge,
+                leading: Icon(Icons.verified_user),
                 title: text16LeftBoldGrey("Achievements"),
                 dense: true,
                 onTap: () => {navigateToAchievements()}),
@@ -430,10 +442,15 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   prefs.setBool("loggedIn", false);
+                  prefs.setInt("accessLevel", null);
+                  prefs.setString("token", null);
+                  prefs.setString("rangerID", null);
                   navigateToLogin(context);
                 }),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }
 

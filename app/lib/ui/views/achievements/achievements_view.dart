@@ -142,22 +142,22 @@ class NavDrawer extends ViewModelWidget<AchievementsViewModel> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: Colors.white,
                   image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: AssetImage('assets/images/E1.jpg'))),
+                      image: AssetImage('assets/images/ERP_Tech.png'))),
               child: null,
             ),
             ListTile(
                 leading: Icon(Icons.home),
                 title: text16LeftBoldGrey("Home"),
                 dense: true,
-                onTap: () => {navigateToHomeView()}),
+                onTap: () => {navigateToHomeView(context)}),
             ListTile(
                 leading: Icon(Icons.account_circle),
                 title: text16LeftBoldGrey("Profile"),
                 dense: true,
-                onTap: () => {navigateToProfile()}),
+                onTap: () => {navigateToProfile(context)}),
             ListTile(
                 leading: Icon(Icons.verified_user),
                 title: text16LeftBoldGrey("Achievements"),
@@ -171,6 +171,9 @@ class NavDrawer extends ViewModelWidget<AchievementsViewModel> {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   prefs.setBool("loggedIn", false);
+                  prefs.setInt("accessLevel", null);
+                  prefs.setString("token", null);
+                  prefs.setString("rangerID", null);
                   navigateToLogin(context);
                 }),
           ],

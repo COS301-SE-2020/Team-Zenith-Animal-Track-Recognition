@@ -3,6 +3,7 @@ import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/home/home_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:badges/badges.dart';
@@ -236,10 +237,9 @@ class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
   @override
   Widget build(BuildContext context, HomeViewModel model) {
     return Container(
-        color: Colors.white,
-        width: 225,
-        child: Drawer(
-            child: ListView(
+      width: 250,
+      child: Drawer(
+        child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
@@ -251,14 +251,25 @@ class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
               child: null,
             ),
             ListTile(
+                leading: Icon(Icons.home),
+                title: text16LeftBoldGrey("Home"),
+                dense: true,
+                onTap: () => {
+                      Fluttertoast.showToast(
+                          msg: "Already on home page",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          backgroundColor: Colors.grey[200],
+                          textColor: Colors.black,
+                          fontSize: 16.0)
+                    }),
+            ListTile(
                 leading: Icon(Icons.account_circle),
                 title: text16LeftBoldGrey("Profile"),
                 dense: true,
-                onTap: () => {navigateToProfile()}),
+                onTap: () => {navigateToProfile(context)}),
             ListTile(
-                leading: model.newNotifications == false
-                    ? Icon(Icons.verified_user)
-                    : badge,
+                leading: Icon(Icons.verified_user),
                 title: text16LeftBoldGrey("Achievements"),
                 dense: true,
                 onTap: () => {navigateToAchievements()}),
@@ -270,9 +281,14 @@ class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   prefs.setBool("loggedIn", false);
+                  prefs.setInt("accessLevel", null);
+                  prefs.setString("token", null);
+                  prefs.setString("rangerID", null);
                   navigateToLogin(context);
                 }),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }
