@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:   
-    working_directory: ~/app
+    working_directory: ~/Team-Zenith-Animal-Track-Recognition/app
     docker:
       - image: cirrusci/flutter:v1.5.8 
 
@@ -9,7 +9,8 @@ jobs:
       only: master
 
     steps:
-      - checkout
+      - checkout:
+          path: ~/Team-Zenith-Animal-Track-Recognition
 
       - run:
           name: Run Flutter doctor
