@@ -1,5 +1,6 @@
 import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:ERP_RANGER/ui/views/identification/identification_view.dart';
 import 'package:ERP_RANGER/ui/views/userconfirmed/user_confirmed_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -159,35 +160,6 @@ class Scroll extends ViewModelWidget<UserConfirmedViewModel> {
                   ],
                 ),
                 Divider(),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                        flex: 1,
-                        child: IconButtons(
-                            iconData: Icons.check,
-                            subTitle: "CONFIRM SPOOR",
-                            index: 0)),
-                    Expanded(
-                        flex: 1,
-                        child: IconButtons(
-                          iconData: Icons.autorenew,
-                          subTitle: "CLASSIFY TRACK",
-                          index: 0,
-                        )),
-                    Expanded(
-                        flex: 1,
-                        child: IconButtons(
-                            iconData: Icons.camera_alt,
-                            subTitle: "RECAPTURE TRACK",
-                            index: 1)),
-                    Expanded(
-                        flex: 1,
-                        child: IconButtons(
-                            iconData: Icons.share,
-                            subTitle: "SHARE IMAGE",
-                            index: 2)),
-                  ],
-                )
               ],
             ),
           );
