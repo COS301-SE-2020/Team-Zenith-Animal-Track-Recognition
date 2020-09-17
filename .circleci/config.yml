@@ -1,6 +1,7 @@
 version: 2
 jobs:
-  build:    
+  build:   
+    working_directory: ~/app
     docker:
       - image: cirrusci/flutter:v1.5.8 
 
