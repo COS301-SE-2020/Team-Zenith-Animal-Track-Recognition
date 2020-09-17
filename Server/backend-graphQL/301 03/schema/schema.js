@@ -50,7 +50,7 @@ let logIns = db.collection("logIns");
 
 //google storage
 let storage = ADMIN.storage().bucket()
-    //google storage
+//google storage
 
 let mesData = [{
     msg: "deleted",
@@ -586,7 +586,7 @@ const RootQuery = new GraphQLObjectType({
                 })
                 let events = []
 
-                
+
                 if (args.rangerID != undefined) {
                     console.log("a")
                     events = _.filter(spoorIdentificationData, {
@@ -763,9 +763,9 @@ const RootQuery = new GraphQLObjectType({
                         })
                     if (args.phoneNumber != undefined) {
                         temp = _.filter(temp, {
-                                phoneNumber: args.phoneNumber
-                            })
-                            // temp = temp.trim();
+                            phoneNumber: args.phoneNumber
+                        })
+                        // temp = temp.trim();
                     }
                     return temp;
                 }
@@ -1165,7 +1165,7 @@ const Mutation = new GraphQLObjectType({
                 }
                 usersData.push(newuser)
 
-                let x = users.doc(UID).set(newuser).then(function(docRef) {
+                let x = users.doc(UID).set(newuser).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
 
@@ -1332,7 +1332,7 @@ const Mutation = new GraphQLObjectType({
                     rangerID: args.rangerID
                 })
                 usersData.splice(b, 1)
-                users.doc(args.rangerID).delete().then(function() {
+                users.doc(args.rangerID).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
                 return mesData[0];
@@ -1442,7 +1442,7 @@ const Mutation = new GraphQLObjectType({
 
                 usersData.splice(b, 1)
 
-                users.doc(args.groupID).delete().then(function() {
+                users.doc(args.groupID).delete().then(function () {
                     console.log("Document successfully deleted!");
                 })
                 return MesData[0];
@@ -1572,7 +1572,7 @@ const Mutation = new GraphQLObjectType({
                     threatLevel: "TBA"
                 }
 
-                animals.doc(args.classification).set(newAnimal).then(function(docRef) {
+                animals.doc(args.classification).set(newAnimal).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
 
@@ -1716,7 +1716,7 @@ const Mutation = new GraphQLObjectType({
                 }
                 newAnimal.classification = args.classification
                 animalData.push(newAnimal)
-                animals.doc(args.classification).set(newAnimal).then(function(docRef) {
+                animals.doc(args.classification).set(newAnimal).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
 
@@ -1955,7 +1955,7 @@ const Mutation = new GraphQLObjectType({
                 }
                 let tempID = IDID.toString()
 
-                spoorIdentifications.doc(tempID).set(newSpoorIdentification).then(function(docRef) {
+                spoorIdentifications.doc(tempID).set(newSpoorIdentification).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
 
@@ -2010,8 +2010,7 @@ const Mutation = new GraphQLObjectType({
                     token: args.token
                 })
                 let newingID = uplodeBase64(args.base64imge)
-                let potentialMatchesarry = _.sortBy(AIIterface(newingID), ["confidence"])
-
+                let potentialMatchesarry = _.sortBy(AIIterfaceZero(args.animalID), ["confidence"])
                 let newSpoorIdentification = {
                     spoorIdentificationID: IDID.toString(),
                     dateAndTime: {
@@ -2035,13 +2034,13 @@ const Mutation = new GraphQLObjectType({
                     picturesID: newingID,
                 }
                 let tempID = IDID.toString()
-
-                spoorIdentifications.doc(tempID).set(newSpoorIdentification).then(function(docRef) {
+                spoorIdentifications.doc(tempID).set(newSpoorIdentification).then(function (docRef) {
                     console.log("Document written with ID: ", docRef.id);
                 })
 
                 spoorIdentificationData.push(newSpoorIdentification)
                 addImgIDToAnimal(newSpoorIdentification.animal, newSpoorIdentification.picture)
+
                 return newSpoorIdentification;
             }
         },
@@ -2115,10 +2114,10 @@ const Mutation = new GraphQLObjectType({
                     newSpoorIdentification.tags = args.tags
                 }
 
-                spoorIdentifications.doc(newSpoorIdentification.spoorIdentificationID).set(newSpoorIdentification).then(function(docRef) {
-                        console.log("Document written with ID: ", docRef.id);
-                    })
-                    // newSpoorIdentification.spoorIdentificationID = spoorIdentificationID
+                spoorIdentifications.doc(newSpoorIdentification.spoorIdentificationID).set(newSpoorIdentification).then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+                // newSpoorIdentification.spoorIdentificationID = spoorIdentificationID
                 spoorIdentificationData.push(newSpoorIdentification)
                 return newSpoorIdentification;
             }
@@ -2184,8 +2183,8 @@ const Mutation = new GraphQLObjectType({
                 dietTypes.where("diet", "==", args.dietName)
                     .get()
                     .then(
-                        function(querySnapshot) {
-                            querySnapshot.forEach(function(doc) {
+                        function (querySnapshot) {
+                            querySnapshot.forEach(function (doc) {
                                 dietTypes.doc(doc.id).delete()
                             });
                         }
@@ -2405,10 +2404,10 @@ module.exports = new GraphQLSchema({
 if (CACHE) {
     redeyNeedConterUP();
 
-    users.onSnapshot(function(querySnapshot) {
+    users.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
         usersData = [];
-        querySnapshot.forEach(function(doc) {
+        querySnapshot.forEach(function (doc) {
             let UID = ""
             let updated = false;
             if (doc.data().rangerID == undefined) {
@@ -2454,10 +2453,10 @@ if (CACHE) {
     });
 
 
-    groups.onSnapshot(function(querySnapshot) {
+    groups.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
         groupData = [];
-        querySnapshot.forEach(function(doc) {
+        querySnapshot.forEach(function (doc) {
             let newGoupe = doc.data()
             groupData.push(newGoupe)
             if (newGoupe.priority == undefined) {
@@ -2468,20 +2467,20 @@ if (CACHE) {
         redeyNeedConterDown();
     });
 
-    habitats.onSnapshot(function(querySnapshot) {
+    habitats.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
         habitatData = []
-        querySnapshot.forEach(function(doc) {
+        querySnapshot.forEach(function (doc) {
             let newHabitat = doc.data()
             habitatData.push(newHabitat)
         });
         redeyNeedConterDown();
     });
 
-    pictures.onSnapshot(function(querySnapshot) {
+    pictures.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
         pictureData = []
-        querySnapshot.forEach(function(doc) {
+        querySnapshot.forEach(function (doc) {
             let newPicture = doc.data()
             newPicture.pictureID = doc.id.toString()
             newPicture.picturesID = doc.id.toString()
@@ -2491,10 +2490,10 @@ if (CACHE) {
         redeyNeedConterDown();
     });
 
-    spoorIdentifications.onSnapshot(function(querySnapshot) {
+    spoorIdentifications.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
         spoorIdentificationData = []
-        querySnapshot.forEach(function(doc) {
+        querySnapshot.forEach(function (doc) {
 
 
             let newSpoorID = doc.data()
@@ -2507,7 +2506,7 @@ if (CACHE) {
             }
             newSpoorID.animal = newSpoorID.animal.toString()
             newSpoorID.similar = getSimilarimgTrak(newSpoorID.animal.toString())
-                // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
+            // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
             spoorIdentificationData.push(newSpoorID)
             if (newSpoorID.month == 8 || newSpoorID.month == "08" || newSpoorID.month == "8") {
                 // spoorIdentifications.doc(doc.id).delete();
@@ -2516,10 +2515,10 @@ if (CACHE) {
         redeyNeedConterDown();
     });
 
-    dietTypes.onSnapshot(function(querySnapshot) {
+    dietTypes.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
         dietTypeData = []
-        querySnapshot.forEach(function(doc) {
+        querySnapshot.forEach(function (doc) {
             let diet = doc.data().diet
 
             if (!dietTypeData.includes(diet)) {
@@ -2531,10 +2530,10 @@ if (CACHE) {
         redeyNeedConterDown();
     })
 
-    animals.onSnapshot(function(querySnapshot) {
+    animals.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
         animalData = [];
-        querySnapshot.forEach(function(doc) {
+        querySnapshot.forEach(function (doc) {
             let temp = {
                 classification: doc.id,
                 animalID: doc.data().animalID,
@@ -2773,10 +2772,28 @@ function AIIterface(ImgID, base64imge) {
 
         try {
             fs.unlinkSync(path)
-                //file removed
+            //file removed
         } catch (err) {
             console.error(err)
         }
+    }
+    return potentialMatches;
+
+
+
+}
+
+function AIIterfaceZero(animalID) {
+    potentialMatches = []
+    for (let i = 0; i < animalData.length; i++) {
+        let newPM = {
+            animal: i,
+            confidence: parseFloat(0.01)
+        }
+        if (i.toString() == animalID.toString()) {
+            newPM.confidence = 1.0
+        }
+        potentialMatches.push(newPM)
     }
     return potentialMatches;
 
@@ -2792,7 +2809,7 @@ function uplodeBase64(Img, folder = "trak") {
     async function uploadFile() {
         let filename = newImgID + ".jpeg"
         let bucketName = "root"
-            // Uploads a local file to the bucket
+        // Uploads a local file to the bucket
         await storage.upload(filename, {
             // Support for HTTP requests made with `Accept-Encoding: gzip`
             gzip: false,
@@ -2818,7 +2835,7 @@ function uplodeBase64(Img, folder = "trak") {
 
         try {
             fs.unlinkSync(path)
-                //file removed
+            //file removed
         } catch (err) {
             console.error(err)
         }
@@ -2844,7 +2861,7 @@ function uplodeBase64URL(Img, folder = "ranger") {
     async function uploadFile() {
         let filename = newImgID + ".jpeg"
         let bucketName = "root"
-            // Uploads a local file to the bucket
+        // Uploads a local file to the bucket
         await storage.upload(filename, {
             // Support for HTTP requests made with `Accept-Encoding: gzip`
             gzip: false,
@@ -2870,7 +2887,7 @@ function uplodeBase64URL(Img, folder = "ranger") {
 
         try {
             fs.unlinkSync(path)
-                //file removed
+            //file removed
         } catch (err) {
             console.error(err)
         }
@@ -3054,8 +3071,8 @@ function selectRandomRanger() {
 function revres() {
     spoorIdentifications.get()
         .then(
-            function(querySnapshot) {
-                querySnapshot.forEach(function(doc) {
+            function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
 
                     let e = doc.data()
                     e.ranger = selectRandomRanger()
@@ -3074,8 +3091,8 @@ function revres() {
 
 function addImgIDToAnimal(animalID, imgID) {
 
-    animals.where("animalID", "==", animalID.toString()).get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
+    animals.where("animalID", "==", animalID.toString()).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
             let e = doc.data()
 
             e.pictures.push(imgID)
@@ -3088,8 +3105,8 @@ function addImgIDToAnimal(animalID, imgID) {
 
 function addURLToRanger(rangerID, URLa) {
 
-    users.where("rangerID", "==", rangerID.toString()).get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
+    users.where("rangerID", "==", rangerID.toString()).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
             let e = doc.data()
             e.pictureURL = URLa
             users.doc(doc.id).set(e)
@@ -3119,7 +3136,7 @@ function redeyNeedConterUP() {
 
 function removeDuplicates(array) {
     let x = {};
-    array.forEach(function(i) {
+    array.forEach(function (i) {
         if (!x[i]) {
             x[i] = true
         }
