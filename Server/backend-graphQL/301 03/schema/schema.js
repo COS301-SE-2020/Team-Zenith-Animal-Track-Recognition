@@ -38,6 +38,7 @@ ADMIN.initializeApp({
 
 
 let db = ADMIN.firestore();
+db.settings({ ignoreUndefinedProperties: true })
 let animals = db.collection("animals");
 let users = db.collection("users");
 let groups = db.collection("groups");
@@ -683,6 +684,7 @@ const RootQuery = new GraphQLObjectType({
                 }
                 let obj ={mosotTrakedRanger:usersData[rangerFind].rangerID}
                 obj.AnimalTracked=cont
+                console.log(obj)
                 return obj
             }
         },
