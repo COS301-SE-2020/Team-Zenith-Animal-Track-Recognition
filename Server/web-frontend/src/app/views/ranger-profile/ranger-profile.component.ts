@@ -1,8 +1,8 @@
-import { Component, OnInit, Input  } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-import { MatTabsModule } from '@angular/material/tabs'; 
+import { MatTabsModule } from '@angular/material/tabs';
 import { EditRangerInfoComponent } from './../rangers/edit-ranger-info/edit-ranger-info.component';
 import { DeleteRangerComponent } from './../rangers/delete-ranger/delete-ranger.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -71,16 +71,19 @@ export class RangerProfileComponent implements OnInit {
 				info2: 'Syncerus Caffer'
 			}
 		},
-	];  
+	];
+	trackIdentifications: any;
+	filteredListArray: any;
+	displayedTracks: any;
 
 
 	/*Place holder values*/
 	constructor(
-		private http: HttpClient, 
-		private router: Router, 
-		private activatedRoute: ActivatedRoute, 
-		public dialog: MatDialog, 
-		private snackBar: MatSnackBar ) { }
+		private http: HttpClient,
+		private router: Router,
+		private activatedRoute: ActivatedRoute,
+		public dialog: MatDialog,
+		private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
 		this.startLoader();
@@ -88,7 +91,6 @@ export class RangerProfileComponent implements OnInit {
 		//Determine which user was navigated to and fetch their information
 		const url = new URLSearchParams(window.location.search);
 		this.userToken = url.get('ranger');
-
 
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'",rangerID:"' + this.userToken + '"){rangerID,accessLevel,eMail,firstName,lastName,phoneNumber}}')
@@ -99,14 +101,35 @@ export class RangerProfileComponent implements OnInit {
 				this.stopLoader();
 			});
 
-			this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'"){spoorIdentificationID,animal{classification,animalID,commonName,heightM,heightF,weightM,weightF,dietType,lifeSpan,Offspring,gestationPeriod,animalOverview,animalDescription,animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName,pictureURL},potentialMatches{confidence},picture{picturesID,URL,kindOfPicture}}}')
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
-				this.spoorIdentifications = temp[0];
-				// this.timeToString();
+				this.trackIdentifications = temp[0];
+				this.filteredListArray = temp[0];
+
+				//Only display a certain number of tracks per sidenav page
+				this.displayedTracks = temp[0].slice(0, 25);
+				//Add 'time ago' field to each track
+				this.timeToString();
+
+				//Check if a track was selected from the query parameters
+				this.filterRanger();
 			});
+	}
+	
+	filterRanger() {
+		this.filteredListArray = [];
+
+		for (let i = 0; i < this.trackIdentifications.length; i++) {
+			if ((this.trackIdentifications[i]['ranger']['firstName'] + ' ' + this.trackIdentifications[i]['ranger']['lastName']) == (this.user['firstName'] + ' ' + this.user['lastName'])) {
+				this.filteredListArray.push(this.trackIdentifications[i]);
+			}
+		}
+		this.displayedTracks = [];
+		this.displayedTracks = this.filteredListArray.slice(0, this.filteredListArray.length > 10 ? 10 : this.filteredListArray.length);
+		this.stopLoader();
 	}
 
 	route(temp: string) {
@@ -174,6 +197,20 @@ export class RangerProfileComponent implements OnInit {
 		catch (e) {
 			return false;
 		}
+	}
+
+	timeToString() {
+		this.trackIdentifications.forEach(element => {
+			let temp = element.dateAndTime;
+			temp.month = temp.month < 10 ? '0' + temp.month : temp.month;
+			temp.day = temp.day < 10 ? '0' + temp.day : temp.day;
+			temp.hour = temp.hour < 10 ? '0' + temp.hour : temp.hour;
+			temp.min = temp.min < 10 ? '0' + temp.min : temp.min;
+			temp.second = temp.second < 10 ? '0' + temp.second : temp.second;
+			const str: string = temp.year + "-" + temp.month + "-" + temp.day + "T" + temp.hour + ":" + temp.min + ":" + temp.second + ".000Z";
+			element.timeAsString = str;
+			element.dateObj = new Date(temp.year, temp.month, temp.day, temp.hour, temp.min, temp.second);
+		});
 	}
 	//Loader
 	startLoader() {

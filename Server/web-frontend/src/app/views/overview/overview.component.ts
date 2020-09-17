@@ -50,9 +50,37 @@ export class OverviewComponent implements OnInit {
       .subscribe((data: any[]) => {
         let temp = [];
         temp = Object.values(Object.values(data)[0]);
-        this.logins = temp[0];
-        console.log(temp[0]);
+        if (temp[0].length > 5) {
+          this.logins = [];
+          this.logins.push(temp[0][temp[0].length - 1]);
+          this.logins.push(temp[0][temp[0].length - 2]);
+          this.logins.push(temp[0][temp[0].length - 3]);
+          this.logins.push(temp[0][temp[0].length - 4]);
+          this.logins.push(temp[0][temp[0].length - 5]);
+        } else {
+          this.logins = [];
+          this.logins = temp[0];
+          this.logins.reverse();
+        }
       });
+
+    // this.http.get<any>(ROOT_QUERY_STRING + '?query=query{recentLogins(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+    //   '"){rangerID{firstName,lastName,accessLevel},time,platform}}')
+    //   .pipe(
+    //     retry(3),
+    //     catchError(() => {
+    //       this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+    //       this.stopLoader();
+    //       this.stopSidenavLoader();
+    //       return EMPTY;
+    //     })
+    //   )
+    //   .subscribe((data: any[]) => {
+    //     let temp = [];
+    //     temp = Object.values(Object.values(data)[0]);
+    //     this.logins = temp[0];
+    //     console.log(temp[0]);
+    //   });
   }
 
   stopLoader() {
