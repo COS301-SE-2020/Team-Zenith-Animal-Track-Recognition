@@ -1,18 +1,49 @@
 <div id="rangers-view-workspace-container">
-    <app-rangers-toolbar [rangers]="rangers" (rangersOnChange)="updateRangerList($event)"></app-rangers-toolbar>
+    <app-rangers-toolbar [rangers]="rangers" (rangersOnChange)="updateRangerList($event)" 
+		[searchText]="searchText" (searchTextOnChange)="updateSearchText($event)" 
+		[selection]="selection" (sortOptionOnChange)="sort($event)"></app-rangers-toolbar>
     <div id="rangers-view-workspace">
         <mat-drawer-container id="ranger-search-sidenav-container">
             <mat-drawer id="ranger-search-sidenav" #sidenav mode="side">
-                <app-ranger-search-sidenav-comp [rangers]="rangers" (rangersOnChange)="updateRangerList($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"></app-ranger-search-sidenav-comp>
+				<div id="search-nav-loader-container" class="loader-container">
+					<mat-spinner id="loader"></mat-spinner>
+				</div>
+				<ng-container *ngIf="rangers; else emptyRangerSidenavDisplay">
+					<ng-container *ngIf="rangers.length != 0; else emptyRangerSidenavDisplay">
+						<app-ranger-search-sidenav-comp [rangers]="rangers" (rangersOnChange)="updateRangerList($event)" 
+							[searchText]="searchText" (searchTextOnChange)="updateSearchText($event)" [selection]="selection"></app-ranger-search-sidenav-comp>
+					</ng-container>
+				</ng-container>
+				<ng-template #emptyRangerSidenavDisplay>
+					<div id="empty-sidenav-display-message-container" class="empty-display-message-container">
+						<div id="empty-sidenav-display-message" class="empty-display-message">
+							<p class="fontM">There is no data to display.</p>
+						</div>
+					</div>
+				</ng-template>
                 <div id="sidenav-close-btn-container" (click)="closeSidenav()">
                     <button id="side-nav-close-btn" mat-icon-button><mat-icon>chevron_left</mat-icon></button>
                 </div>
             </mat-drawer>
             <mat-drawer-content id="ranger-search-sidenav-content">
+				<div id="loader-container" >
+					<mat-spinner id="loader"></mat-spinner>
+				</div>
                 <div id="sidenav-open-btn-container" (click)="openSidenav()">
                     <button id="side-nav-open-btn" mat-icon-button><mat-icon>chevron_right</mat-icon></button>
                 </div>
-                <app-ranger-profile-card [rangersList]="rangers" (rangersOnChange)="updateRangerList($event)" [searchText]="searchText"></app-ranger-profile-card>
+				<ng-container *ngIf="rangers; else emptyRangerCardsDisplay">
+					<ng-container *ngIf="rangers.length != 0; else emptyRangerCardsDisplay">
+						<app-ranger-profile-card [rangersList]="rangers" (rangersOnChange)="updateRangerList($event)" [searchText]="searchText"></app-ranger-profile-card>
+					</ng-container>
+				</ng-container>
+				<ng-template #emptyRangerCardsDisplay>
+					<div class="empty-display-message-container">
+						<div class="empty-display-message">
+							<p class="fontM">There is no data to display.</p>
+						</div>
+					</div>
+				</ng-template>
             </mat-drawer-content>
         </mat-drawer-container>
     </div>

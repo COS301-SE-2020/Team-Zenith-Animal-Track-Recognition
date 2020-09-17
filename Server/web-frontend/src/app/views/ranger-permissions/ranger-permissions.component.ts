@@ -40,7 +40,8 @@ export class RangerPermissionsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.startLoader();
-		document.getElementById("rangers-route").classList.add("activeRoute");
+		document.getElementById("rangers-route-link").classList.add("activeRoute");
+		document.getElementById("rangers-perm-route").classList.add("activeRoute");
 
 		//Replace Permissions with appropiate icon
 		PERMISSIONS.forEach(function (perm) {
@@ -82,7 +83,6 @@ export class RangerPermissionsComponent implements OnInit {
 		document.getElementById("overview-route").classList.remove("activeRoute");
 		document.getElementById("rangers-route").classList.remove("activeRoute");
 		document.getElementById("geotags-route").classList.remove("activeRoute");
-		document.getElementById("settings-route").classList.remove("activeRoute");
 
 		this.router.navigate([location]);
 	}
@@ -124,14 +124,12 @@ export class RangerPermissionsComponent implements OnInit {
 				let t = [];
 				t = Object.values(Object.values(data)[0]);
 			});
+	}
 
-		this.router.navigate(["/geotags"], { queryParams: { reloadPerms: "true" } });
-	}
-	
 	viewRangerProfile(token: string) {
-		this.router.navigate(['rangers/profiles', token]);
+		this.router.navigate(['rangers/profiles'], { queryParams: { ranger: token } });
 	}
-	
+
 	//Loader
 	startLoader() {
 		document.getElementById('loader-container').style.visibility = 'visible';

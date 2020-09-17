@@ -1,32 +1,44 @@
 <div id="dialog-progressbar-container">
-	<mat-progress-bar mode="indeterminate" id="dialog-progressbar"></mat-progress-bar>
+    <mat-progress-bar mode="indeterminate" id="dialog-progressbar"></mat-progress-bar>
 </div>
 <h1 mat-dialog-title>Edit Ranger Information</h1>
 <mat-dialog-content id="add-ranger-form-container">
-    <form [formGroup]="editUserForm" id="add-new-ranger-form">
+    <form [formGroup]="editUserForm" id="add-new-ranger-form" (ngSubmit)="onSubmit(false)">
         <div class="add-new-ranger-input-container">
             <mat-form-field appearance="outline">
                 <mat-label>First Name</mat-label>
                 <input matInput formControlName="firstName" placeholder="First Name" value="{{data.firstName}}">
+				<mat-error *ngIf="editUser.firstName.invalid && (editUser.firstName.dirty || editUser.firstName.touched)" class="alert">
+					{{validationMsg(editUser.firstName, 'firstName')}}
+				</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Last Name</mat-label>
                 <input matInput formControlName="lastName" placeholder="Last Name" value="{{data.lastName}}">
+				<mat-error *ngIf="editUser.lastName.invalid && (editUser.lastName.dirty || editUser.lastName.touched)" class="alert">
+					{{validationMsg(editUser.lastName, 'lastName')}}
+				</mat-error>
             </mat-form-field>
         </div>
         <div class="add-new-ranger-input-container">
             <mat-form-field appearance="outline">
                 <mat-label>Email</mat-label>
                 <input matInput formControlName="email" placeholder="Email" value="{{data.email}}">
+				<mat-error *ngIf="editUser.email.invalid && (editUser.email.dirty || editUser.email.touched)" class="alert">
+					{{validationMsg(editUser.email, 'email')}}
+				</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Phone Number</mat-label>
                 <input matInput formControlName="phoneNumber" placeholder="Phone Number" value="{{data.phoneNumber}}">
+				<mat-error *ngIf="editUser.phoneNumber.invalid && (editUser.phoneNumber.dirty || editUser.phoneNumber.touched)" class="alert">
+					{{validationMsg(editUser.phoneNumber, 'phoneNumber')}}
+				</mat-error>
             </mat-form-field>
         </div>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
     <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>
-    <button type="submit" mat-button (click)="onSubmit(false)" id="add-ranger-btn" class="fontSB">SAVE CHANGES</button>
+    <button type="submit" mat-button (click)="onSubmit(false)" id="add-ranger-btn" class="fontSB buttonColour">SAVE CHANGES</button>
 </mat-dialog-actions>
