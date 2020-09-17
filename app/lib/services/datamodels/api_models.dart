@@ -209,8 +209,6 @@ class InfoModel {
   }
 }
 
-class LoginResponse {}
-
 class TrophyModel {
   String title;
   String descrption;

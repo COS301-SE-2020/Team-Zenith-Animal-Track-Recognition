@@ -5,6 +5,7 @@ connectivity_for_web=/home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/
 connectivity_macos=/home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/connectivity_macos-0.1.0+4/
 flutter_keyboard_visibility=/home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_keyboard_visibility-3.2.2/
 flutter_plugin_android_lifecycle=/home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.8/
+fluttertoast=/home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-7.1.1/
 geolocator=/home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/geolocator-6.0.0+4/
 google_maps_flutter=/home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-0.5.31/
 image_downloader=/home/phahla/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/image_downloader-0.20.0/

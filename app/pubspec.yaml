@@ -64,6 +64,8 @@ dependencies:
   # image picker
   image_picker: ^0.6.3+4
 
+  fluttertoast: ^7.1.1
+
   # bages 
   badges: ^1.1.1
 

@@ -672,13 +672,13 @@ class MockApi implements Api {
   }
 
   @override
-  Future<LoginResponse> getLoginModel(String email, String password) async {
+  Future<bool> getLoginModel(String email, String password) async {
     int accessLevel = 3;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt("accessLevel", accessLevel);
     prefs.setString("token", "h10hYNuJeTbmWH1ZSi5R");
     prefs.setString("rangerID", "PfPF3c4kjcsefABkEbw4");
-    return new LoginResponse();
+    return true;
   }
 
   @override

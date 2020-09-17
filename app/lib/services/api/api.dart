@@ -24,7 +24,7 @@ abstract class Api {
 
   Future<InfoModel> getInfoModel(String name);
 
-  Future<LoginResponse> getLoginModel(String email, String password);
+  Future<bool> getLoginModel(String email, String password);
 
   Future<List<String>> getTags();
 

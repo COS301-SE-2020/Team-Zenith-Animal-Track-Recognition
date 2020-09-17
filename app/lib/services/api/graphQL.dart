@@ -106,7 +106,6 @@ class GraphQL implements Api {
 
       String query =
           'mutation{identificationBase64(token: "$token" ,latitude: $lat, longitude: $long, tgas: $tag ,base64imge: "$pic" ){spoorIdentificationID, potentialMatches{animal{commonName, classification, pictures{URL}}confidence}}}';
-      print(query);
 
       final http.Response response = await http.post(
         link,
@@ -114,7 +113,6 @@ class GraphQL implements Api {
         body: json.encode({'query': query}),
       );
 
-      print(response.body);
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
 
@@ -180,7 +178,6 @@ class GraphQL implements Api {
       } else {
         throw HttpException('500');
       }
-      print("Animal list size: " + identifiedList.length.toString());
       return identifiedList;
     } on SocketException {
       throw VerificationException(
@@ -193,25 +190,49 @@ class GraphQL implements Api {
   }
 
   @override
-  Future<LoginResponse> getLoginModel(String email, String password) async {
+  Future<bool> getLoginModel(String email, String password) async {
     email = Uri.encodeFull(email);
     password = Uri.encodeFull(password);
 
-    final http.Response response = await http.get(
-      "$domain" +
-          "graphql?query=query{login(eMail:\"$email\",password:\"$password\"){token,accessLevel,rangerID}}",
-    );
+    try {
+      var connectivity = await (Connectivity().checkConnectivity());
+      if (ConnectivityResult.none == connectivity) {
+        throw Exception("");
+      }
 
-    if (response.statusCode == 200) {
-      var body = json.decode(response.body);
+      final http.Response response = await http
+          .get(
+            "$domain" +
+                "graphql?query=query{login(eMail:\"$email\",password:\"$password\"){token,accessLevel,rangerID}}",
+          )
+          .timeout(const Duration(seconds: 7));
 
-      int accessLevel = int.parse(body["data"]["login"]["accessLevel"]);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool("notification", true);
-      prefs.setInt("accessLevel", accessLevel);
-      prefs.setString("token", body["data"]["login"]["token"]);
-      prefs.setString("rangerID", body["data"]["login"]["rangerID"]);
-      return new LoginResponse();
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+
+        if (body['data']['login'] == null) {
+          return false;
+        }
+        int accessLevel = int.parse(body["data"]["login"]["accessLevel"]);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool("notification", true);
+        prefs.setInt("accessLevel", accessLevel);
+        prefs.setString("token", body["data"]["login"]["token"]);
+        prefs.setString("rangerID", body["data"]["login"]["rangerID"]);
+        prefs.setBool('loggedIn', true);
+        return true;
+      } else {
+        return false;
+      }
+    } on SocketException {
+      throw VerificationException(
+          'Request Timed Out, Unable to Connect to The Server ');
+    } on HttpException {
+      throw VerificationException("Service is Unavailable");
+    } on TimeoutException {
+      throw VerificationException('Request Timed Out');
+    } on Exception {
+      throw VerificationException('No Internet Connection');
     }
   }
 
@@ -327,8 +348,6 @@ class GraphQL implements Api {
     String link = "$domain" + "graphql?";
     ConfirmModel animal;
 
-    print('Arrived here');
-
     try {
       var connectivity = await (Connectivity().checkConnectivity());
       if (ConnectivityResult.none == connectivity) {
@@ -338,15 +357,11 @@ class GraphQL implements Api {
       String query =
           'mutation{UplodeBase64Identification(token: "$token",animalID: "$finalTemp" , latitude: $lat, longitude: $long, tgas: "$tags" ,base64imge: "$pic"){spoorIdentificationID, animal{commonName, classification, pictures{URL}}}}';
 
-      print(query.toString());
-
       final http.Response response = await http.post(
         link,
         headers: {"Content-Type": "application/json"},
         body: json.encode({'query': query}),
       );
-
-      print(response.body.toString());
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -367,7 +382,6 @@ class GraphQL implements Api {
             image: image,
             species: species,
             type: "Track");
-        print('Sucesss');
         return animal;
       } else {
         throw HttpException('500');
@@ -617,9 +631,7 @@ class GraphQL implements Api {
         if (body['data']['spoorIdentification'].toString() == "[]") {
           throw VerificationException("Animal Data Not Found");
         }
-        print("=======================================");
-        print(body);
-        print("=======================================");
+
         var list =
             body['data']['spoorIdentification'][0]['potentialMatches'] as List;
 
@@ -639,7 +651,6 @@ class GraphQL implements Api {
         int day;
 
         int temp = (list.length - 1);
-        print(animal);
         if (body['data']['spoorIdentification'][0]['location']['latitude'] !=
                 null &&
             body['data']['spoorIdentification'][0]['location']['latitude'] !=
@@ -1201,8 +1212,6 @@ class GraphQL implements Api {
               "graphql?query=query{spoorIdentification(token: \"$token\", ranger: \"$id\"){spoorIdentificationID,location{latitude, longitude}, dateAndTime{year, day, month},picture{URL}, ranger{firstName, lastName}, animal{commonName, classification},potentialMatches{confidence} }}")
           .timeout(const Duration(seconds: 7));
 
-      print("Response: " + response.statusCode.toString());
-
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
 
@@ -1468,7 +1477,6 @@ class GraphQL implements Api {
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
         prefs.setBool('notifications', false);
-        print(prefs.getBool('notifications'));
 
         List<TrophyModel> trophies = new List();
 
@@ -1525,7 +1533,6 @@ class GraphQL implements Api {
         }
         return trophies;
       } else {
-        print(response.statusCode);
         throw HttpException('500');
       }
     } on SocketException {

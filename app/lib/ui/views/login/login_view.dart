@@ -12,28 +12,43 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
-          body: Container(
-        color: Colors.white,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              logo,
-              Container(
-                  key: Key('UserName'),
-                  margin: new EdgeInsets.only(
-                      right: 20, left: 20, top: 20, bottom: 10),
-                  child: UserName()),
-              Container(
-                  key: Key('Password'),
-                  margin: new EdgeInsets.only(
-                      right: 20, left: 20, top: 10, bottom: 10),
-                  child: Password()),
-              UploadButton()
-            ],
-          ),
+          body: Stack(children: [
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 25),
+          width: double.infinity,
+          height: double.infinity,
+          color: Colors.white,
         ),
-      )),
+        Container(
+          height: double.infinity,
+          child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              child: Padding(
+                padding: EdgeInsets.all(5),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 70,
+                    ),
+                    logo,
+                    SizedBox(
+                      height: 25,
+                    ),
+                    UserName(),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Password(),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    UploadButton()
+                  ],
+                ),
+              )),
+        ),
+      ])),
       viewModelBuilder: () => LoginViewModel(),
     );
   }
@@ -55,7 +70,7 @@ class UploadButton extends ViewModelWidget<LoginViewModel> {
       child: RaisedButton(
         key: Key('LoginButton'),
         onPressed: () {
-          model.login();
+          model.login(context);
         },
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
@@ -120,7 +135,7 @@ class UserName extends HookViewModelWidget<LoginViewModel> {
           hintText: "Username",
           filled: true,
           fillColor: Colors.grey[300]),
-      onSubmitted: (value) => {model.login()},
+      onSubmitted: (value) => {model.login(context)},
       style: TextStyle(
           fontFamily: 'MavenPro',
           fontWeight: FontWeight.normal,
@@ -174,7 +189,7 @@ class Password extends HookViewModelWidget<LoginViewModel> {
           hintText: "Password",
           filled: true,
           fillColor: Colors.grey[300]),
-      onSubmitted: (value) => {model.login()},
+      onSubmitted: (value) => {model.login(context)},
       style: TextStyle(
           fontFamily: 'MavenPro',
           fontWeight: FontWeight.normal,
@@ -194,32 +209,3 @@ Widget text(String text, double font) {
         color: Colors.blue[300]),
   );
 }
-
-// Container(
-//   margin: EdgeInsets.only(
-//         right: 15,
-//         left: 15,
-//         top: 5,
-//         bottom: 5,
-//       ),
-//   width: 200,
-//   child: RaisedButton(
-//     onPressed: () {model.login();},
-//     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-//     padding: EdgeInsets.all(0.0),
-//     child: Ink(
-//       decoration: BoxDecoration(
-//           gradient: LinearGradient(colors: [Color(0xff374ABE), Color(0xff64B6FF)],
-//             begin: Alignment.centerLeft,
-//             end: Alignment.centerRight,
-//           ),
-//           borderRadius: BorderRadius.circular(30.0)
-//       ),
-//       child: Container(
-//         constraints: BoxConstraints(maxWidth: 200.0),
-//         alignment: Alignment.center,
-//         child: text20CenterBoldWhite("LOGIN"),
-//       ),
-//     ),
-//   ),
-// ),

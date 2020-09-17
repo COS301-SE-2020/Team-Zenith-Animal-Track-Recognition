@@ -25,7 +25,7 @@ final Api _api = locator<GraphQL>();
 Future<bool> getLoggedIn() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool loggedIn = prefs.getBool('loggedIn') ?? false;
-  return true;
+  return loggedIn;
 }
 
 void showOptions(BuildContext context) {
@@ -270,19 +270,16 @@ void navigateToLogin(var context) {
 //================================ Widget Section =====================================//
 Widget logo = new Container(
   alignment: Alignment.center,
-  //margin: new EdgeInsets.only(right:5,left:5),
-  padding: new EdgeInsets.all(5),
   decoration: BoxDecoration(
-    color: Colors.white,
+    // color: Colors.white,
     borderRadius: BorderRadius.circular(10),
-    border: Border.all(width: 2.0, color: Colors.black),
     image: DecorationImage(
       image: AssetImage("assets/images/ERP_Tech.png"),
       fit: BoxFit.fill,
     ),
   ),
-  height: 150,
-  width: 150,
+  height: 200,
+  width: 200,
 );
 
 Widget internetImage = new Container(

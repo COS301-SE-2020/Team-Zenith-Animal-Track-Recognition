@@ -42,16 +42,14 @@ class _MyApp extends State<MyApp> {
           return progressIndicator();
         }
         if (snapshot.hasData) {
-          return snapshot.hasData == true
-              ? MaterialApp(
-                  theme: basicTheme(),
-                  initialRoute: snapshot.data
-                      ? Routes.loginViewRoute
-                      : Routes.homeViewRoute,
-                  onGenerateRoute: Router().onGenerateRoute,
-                  navigatorKey: locator<NavigationService>().navigatorKey,
-                )
-              : progressIndicator();
+          return MaterialApp(
+            theme: basicTheme(),
+            initialRoute: snapshot.data == false
+                ? Routes.loginViewRoute
+                : Routes.homeViewRoute,
+            onGenerateRoute: Router().onGenerateRoute,
+            navigatorKey: locator<NavigationService>().navigatorKey,
+          );
         } else {
           return progressIndicator();
         }
