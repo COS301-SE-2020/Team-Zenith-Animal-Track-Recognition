@@ -11,20 +11,14 @@ The Animal Track Recognition system is an application which will support ERP ran
 **DEMO 2 Recorded Video**
 * Video: [Animal Track Recognition DEMO 2 Video](https://drive.google.com/file/d/1Wsltu0sKa-cJ66aMKDCI91PJNubGCKhR/view?usp=sharing)
 
-**DEMO 3 Recorded Video**
-* Video: [Animal Track Recognition DEMO 3 Video](https://drive.google.com/file/d/1NfFtj9OYAtGpqkuROMzn-vF3PaGLdv0p/view?usp=sharing)
+**Functional Requirement (SRS) Document - (Updated DEMO2)**
+* PDF: [Animal Track Recognition SRS Doc](https://drive.google.com/file/d/1fFZ2abwsEy2jyUbLJCvffx-5dfQE1YqG/view?usp=sharing)
 
-**Functional Requirement (SRS) Document - (Updated DEMO3)**
-* PDF: [Animal Track Recognition SRS Doc](https://drive.google.com/file/d/1oRBwN6Q5jwNZRo7e2CYcJZq8blsWhXrt/view?usp=sharing)
-
-**User Manual Document - (Updated DEMO3)**
-* PDF: [Animal Track Recognition User Manual Doc](https://drive.google.com/file/d/1pQlmszwagnivW9OQMFKbwCMBjoqXrBQB/view?usp=sharing)
+**User Manual Document - (Updated DEMO2)**
+* PDF: [Animal Track Recognition User Manual Doc](https://drive.google.com/file/d/138Y-w3XJszpY5oBIsyVg4-csuZC8hga1/view?usp=sharing)
 
 **Coding Standards Document**
 * PDF: [Animal Track Recognition Coding Standards](https://drive.google.com/file/d/1Eb0PFPzKs8F8VZHP1lAfKrqgMnvFt7ab/view?usp=sharing)
-
-**Technical Installation Document**
-* PDF: [Animal Track Recognition Technical Installation](https://drive.google.com/file/d/1UeiqJjHNQ6rENaCLJBwjIjLHdTP63iit/view?usp=sharing)
 
 **Project Managment Tools**
 * Slack: https://teamzenithhq.slack.com

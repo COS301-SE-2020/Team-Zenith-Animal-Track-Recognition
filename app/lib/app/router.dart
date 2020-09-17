@@ -1,4 +1,4 @@
-import 'package:ERP_RANGER/ui/views/forgot/forget_view.dart';
+import 'package:ERP_RANGER/ui/views/achievements/achievements_view.dart';
 import 'package:ERP_RANGER/ui/views/home/home_view.dart';
 import 'package:ERP_RANGER/ui/views/animals/animal_view.dart';
 import 'package:ERP_RANGER/ui/views/confirmed/confirmed_view.dart';
@@ -22,7 +22,6 @@ import 'package:auto_route/auto_route_annotations.dart';
       page: IdentificationView,
       initial: false,
       name: "identificationViewRoute"),
-  MaterialRoute(page: ForgetView, initial: false, name: "forgetViewRoute"),
   MaterialRoute(
       page: NotConfirmedView, initial: false, name: "notConfirmedViewRoute"),
   MaterialRoute(page: ProfileView, initial: false, name: "profileViewRoute"),
@@ -33,5 +32,7 @@ import 'package:auto_route/auto_route_annotations.dart';
   MaterialRoute(page: SearchView, initial: false, name: "searchViewRoute"),
   MaterialRoute(
       page: UserConfirmedView, initial: false, name: "userConfirmedViewRoute"),
+  MaterialRoute(
+      page: AchievementsView, initial: false, name: "achievementsViewRoute"),
 ])
 class $Router {}

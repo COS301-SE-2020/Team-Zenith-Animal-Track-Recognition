@@ -15,7 +15,9 @@ class UploadView extends StatelessWidget {
   Widget build(BuildContext context) {
     BottomNavigation bottomNavigation = BottomNavigation();
     bottomNavigation.setIndex(2);
+
     return ViewModelBuilder<UploadViewModel>.reactive(
+      onModelReady: (model) => model.notify(),
       builder: (context, model, child) => WillPopScope(
         onWillPop: () async {
           if (Navigator.canPop(context)) {
@@ -26,13 +28,67 @@ class UploadView extends StatelessWidget {
         child: Scaffold(
           drawer: NavDrawer(),
           appBar: AppBar(
-            backgroundColor: Colors.black,
+            leading: Builder(
+              builder: (BuildContext context) {
+                return model.newNotifications == false
+                    ? IconButton(
+                        icon: const Icon(Icons.menu),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        tooltip: MaterialLocalizations.of(context)
+                            .openAppDrawerTooltip,
+                      )
+                    : IconButton(
+                        icon: new Stack(
+                          children: [
+                            new Icon(Icons.menu),
+                            new Positioned(
+                              right: 0,
+                              child: new Container(
+                                  padding: EdgeInsets.all(1),
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    minWidth: 12,
+                                    minHeight: 12,
+                                  ),
+                                  child: Container(
+                                    height: 5,
+                                    width: 5,
+                                    decoration: new BoxDecoration(
+                                      color: Colors.red,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  )),
+                            )
+                          ],
+                        ),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        tooltip: MaterialLocalizations.of(context)
+                            .openAppDrawerTooltip,
+                      );
+              },
+            ),
             actions: <Widget>[
               IconBuilder(icon: Icons.search, type: "search"),
-              IconBuilder(icon: Icons.more_vert, type: "vert")
             ],
-            title: text18LeftBoldWhite(
-              "Upload Track Identification",
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: <Color>[
+                    Color.fromRGBO(33, 78, 125, 1),
+                    Color.fromRGBO(80, 156, 208, 1)
+                  ])),
+            ),
+            title: text22LeftBoldWhite(
+              "ERP RANGER",
             ),
           ),
           body: Container(
@@ -47,7 +103,7 @@ class UploadView extends StatelessWidget {
             child: Icon(
               Icons.camera_alt,
             ),
-            backgroundColor: Colors.black,
+            backgroundColor: Color.fromRGBO(205, 21, 67, 1),
           ),
           bottomNavigationBar: BottomNavigation(),
           backgroundColor: Colors.grey,
@@ -70,7 +126,6 @@ class SliverBody extends ViewModelWidget<UploadViewModel> {
             header,
             spoorImageBlock,
             attachAnimal,
-            SpoorLocationInput(),
             attachATag,
             UploadButton()
           ]),
@@ -108,41 +163,45 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
 
   @override
   Widget build(BuildContext context, UploadViewModel model) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: text22LeftBoldWhite("Side Menu"),
-            decoration: BoxDecoration(
-                color: Colors.grey,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/springbok.jpg'))),
-          ),
-          ListTile(
-              leading: Icon(Icons.verified_user),
-              title: text16LeftBoldGrey("Profile"),
-              onTap: () => {navigateToProfile()}),
-          ListTile(
-              leading: Icon(Icons.settings),
-              title: text16LeftBoldGrey("Settings"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.edit),
-              title: text16LeftBoldGrey("Preference"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: text16LeftBoldGrey("Logout"),
-              onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setBool("loggedIn", false);
-                navigateToLogin(context);
-              }),
-        ],
-      ),
-    );
+    return Container(
+        color: Colors.white,
+        width: 225,
+        child: Drawer(
+            child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/ERP_Tech.png'))),
+              child: null,
+            ),
+            ListTile(
+                leading: Icon(Icons.account_circle),
+                title: text16LeftBoldGrey("Profile"),
+                dense: true,
+                onTap: () => {navigateToProfile()}),
+            ListTile(
+                leading: model.newNotifications == false
+                    ? Icon(Icons.verified_user)
+                    : badge,
+                title: text16LeftBoldGrey("Achievements"),
+                dense: true,
+                onTap: () => {navigateToAchievements()}),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                dense: true,
+                title: text16LeftBoldGrey("Logout"),
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool("loggedIn", false);
+                  navigateToLogin(context);
+                }),
+          ],
+        )));
   }
 }
 
@@ -160,7 +219,7 @@ class LeftImage extends ViewModelWidget<UploadViewModel> {
         color: Colors.grey,
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
-          image: FileImage(model.image),
+          image: MemoryImage(model.image.readAsBytesSync()),
           fit: BoxFit.fill,
         ),
       ),
@@ -178,16 +237,49 @@ class GalleryButton extends ViewModelWidget<UploadViewModel> {
   Widget build(BuildContext context, UploadViewModel model) {
     return model.valueGallery == false
         ? GestureDetector(
-            child: Container(
-              margin: new EdgeInsets.only(bottom: 10),
-              child: Row(
-                children: <Widget>[
-                  Expanded(flex: 1, child: leftBlock),
-                  Expanded(flex: 5, child: text14LeftBoldGrey("From Gallery")),
-                  Expanded(flex: 1, child: rightIcon),
-                ],
-              ),
-            ),
+            child: model.showGalleryError == false
+                ? Container(
+                    margin: new EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(flex: 1, child: leftBlock),
+                        Expanded(
+                            flex: 5, child: text14LeftBoldGrey("From Gallery")),
+                        Expanded(flex: 1, child: rightIcon),
+                      ],
+                    ),
+                  )
+                : Container(
+                    margin: new EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(flex: 1, child: leftBlock),
+                        Expanded(
+                            flex: 5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: text14LeftBoldGrey("From Gallery"),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  "Either Gallery or Camera must contain an image",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.red,
+                                    fontFamily: 'MavenPro',
+                                  ),
+                                )),
+                              ],
+                            )),
+                        Expanded(flex: 1, child: rightIcon),
+                      ],
+                    ),
+                  ),
             onTap: () async {
               model.uploadFromGallery();
             },
@@ -218,16 +310,49 @@ class CameraButton extends ViewModelWidget<UploadViewModel> {
   Widget build(BuildContext context, UploadViewModel model) {
     return model.valueCamera == false
         ? GestureDetector(
-            child: Container(
-              margin: new EdgeInsets.only(bottom: 10),
-              child: Row(
-                children: <Widget>[
-                  Expanded(flex: 1, child: leftBlock),
-                  Expanded(flex: 5, child: text14LeftBoldGrey("From Camera")),
-                  Expanded(flex: 1, child: rightIcon),
-                ],
-              ),
-            ),
+            child: model.showCameraError == false
+                ? Container(
+                    margin: new EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(flex: 1, child: leftBlock),
+                        Expanded(
+                            flex: 5, child: text14LeftBoldGrey("From Camera")),
+                        Expanded(flex: 1, child: rightIcon),
+                      ],
+                    ),
+                  )
+                : Container(
+                    margin: new EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(flex: 1, child: leftBlock),
+                        Expanded(
+                            flex: 5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: text14LeftBoldGrey("From Canera"),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  "Either Camera or Gallery must contain an image",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.red,
+                                    fontFamily: 'MavenPro',
+                                  ),
+                                )),
+                              ],
+                            )),
+                        Expanded(flex: 1, child: rightIcon),
+                      ],
+                    ),
+                  ),
             onTap: () async {
               model.uploadFromCamera();
             },
@@ -254,28 +379,73 @@ class TagBox extends HookViewModelWidget<UploadViewModel> {
   TagBox({
     Key key,
   }) : super(reactive: true);
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
-    var text = useTextEditingController();
-    return TextField(
-      controller: text,
-      onChanged: viewModel.addTag,
-      decoration: InputDecoration(
-          hintText: "Enter tag",
-          isDense: true,
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          filled: true,
-          fillColor: Colors.grey[100]),
-      style: TextStyle(
-          fontFamily: 'MavenPro',
-          fontWeight: FontWeight.normal,
-          color: Colors.grey),
+    final TextEditingController _typeAheadController = TextEditingController();
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Expanded(
+          child: TypeAheadFormField(
+            textFieldConfiguration: TextFieldConfiguration(
+                controller: _typeAheadController,
+                decoration: InputDecoration(
+                    hintText: "Enter animal tag",
+                    hintStyle: TextStyle(
+                        fontFamily: 'MavenPro',
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey),
+                    isDense: true,
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    errorText: viewModel.showTagError == false
+                        ? null
+                        : viewModel.tagErrorString,
+                    errorStyle: TextStyle(
+                        fontFamily: 'MavenPro',
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.red),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        gapPadding: 0),
+                    filled: true,
+                    fillColor: Colors.grey[100]),
+                onChanged: (value) => viewModel.tag = value,
+                onSubmitted: (value) => null),
+            suggestionsCallback: (pattern) {
+              return viewModel.getTagSuggestions(pattern);
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(suggestion),
+              );
+            },
+            transitionBuilder: (context, suggestionsBox, controller) {
+              return suggestionsBox;
+            },
+            onSuggestionSelected: (suggestion) {
+              _typeAheadController.text = suggestion;
+              viewModel.setTag(suggestion);
+            },
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter a tag';
+              } else {
+                return value;
+              }
+            },
+            onSaved: (value) => viewModel.setTag(value),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -284,7 +454,6 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
   AnimalBox({
     Key key,
   }) : super(reactive: true);
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
     final TextEditingController _typeAheadController = TextEditingController();
@@ -308,8 +477,22 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.all(Radius.circular(10))),
+                    errorText: viewModel.showAnimalError == false
+                        ? null
+                        : viewModel.animalErrorString,
+                    errorStyle: TextStyle(
+                        fontFamily: 'MavenPro',
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.red),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        gapPadding: 0),
                     filled: true,
-                    fillColor: Colors.grey[100])),
+                    fillColor: Colors.grey[100]),
+                onChanged: (value) => viewModel.chosenAnimal = value,
+                onSubmitted: (value) => null),
             suggestionsCallback: (pattern) {
               return viewModel.getSuggestions(pattern);
             },
@@ -328,9 +511,10 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
             validator: (value) {
               if (value.isEmpty) {
                 return 'Please select an animal';
+              } else {
+                return value;
               }
             },
-            onSaved: (value) => viewModel.setChosenAnimal(value),
           ),
         ),
       ],
@@ -347,10 +531,15 @@ class Latitude extends HookViewModelWidget<UploadViewModel> {
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
     var text = useTextEditingController();
     return TextField(
+      key: Key('Latitude'),
       controller: text,
       onChanged: viewModel.updateLat,
       decoration: InputDecoration(
-          hintText: "Enter latitude",
+          hintText: "Enter latitude coordintates",
+          hintStyle: TextStyle(
+              fontFamily: 'MavenPro',
+              fontWeight: FontWeight.normal,
+              color: Colors.grey),
           isDense: true,
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
@@ -358,6 +547,17 @@ class Latitude extends HookViewModelWidget<UploadViewModel> {
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.blue),
               borderRadius: BorderRadius.all(Radius.circular(10))),
+          errorText:
+              viewModel.showLatError == false ? null : viewModel.latErrorString,
+          errorStyle: TextStyle(
+              fontFamily: 'MavenPro',
+              fontSize: 12,
+              fontWeight: FontWeight.normal,
+              color: Colors.red),
+          errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              gapPadding: 0),
           filled: true,
           fillColor: Colors.grey[100]),
       style: TextStyle(
@@ -377,10 +577,16 @@ class Longitude extends HookViewModelWidget<UploadViewModel> {
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
     var text = useTextEditingController();
     return TextField(
+      key: Key('Longitude'),
       controller: text,
       onChanged: viewModel.updateLong,
+      onSubmitted: (value) => null,
       decoration: InputDecoration(
-          hintText: "Enter longitude",
+          hintText: "Enter longitude coordintates",
+          hintStyle: TextStyle(
+              fontFamily: 'MavenPro',
+              fontWeight: FontWeight.normal,
+              color: Colors.grey),
           isDense: true,
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
@@ -388,6 +594,18 @@ class Longitude extends HookViewModelWidget<UploadViewModel> {
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.blue),
               borderRadius: BorderRadius.all(Radius.circular(10))),
+          errorText: viewModel.showLongError == false
+              ? null
+              : viewModel.longErrorString,
+          errorStyle: TextStyle(
+              fontFamily: 'MavenPro',
+              fontSize: 12,
+              fontWeight: FontWeight.normal,
+              color: Colors.red),
+          errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              gapPadding: 0),
           filled: true,
           fillColor: Colors.grey[100]),
       style: TextStyle(
@@ -403,6 +621,7 @@ class SpoorLocationInput extends ViewModelWidget<UploadViewModel> {
   @override
   Widget build(BuildContext context, UploadViewModel model) {
     return Container(
+      key: Key('SpoorLocationInput'),
       width: 100,
       padding: EdgeInsets.all(5),
       margin: EdgeInsets.all(15),
@@ -435,22 +654,22 @@ class SpoorLocation extends ViewModelWidget<UploadViewModel> {
             margin: new EdgeInsets.only(left: 5),
             padding: new EdgeInsets.all(0),
             alignment: Alignment.centerLeft,
-            child: text14LeftBoldGrey("Longitude: ")),
-        Container(
-            margin: new EdgeInsets.only(left: 0),
-            padding: new EdgeInsets.all(5),
-            alignment: Alignment.centerLeft,
-            child: Longitude()),
-        Container(
-            margin: new EdgeInsets.only(left: 5),
-            padding: new EdgeInsets.all(0),
-            alignment: Alignment.centerLeft,
             child: text14LeftBoldGrey("Latitude: ")),
         Container(
             margin: new EdgeInsets.only(left: 0),
             padding: new EdgeInsets.all(5),
             alignment: Alignment.centerLeft,
             child: Latitude()),
+        Container(
+            margin: new EdgeInsets.only(left: 5),
+            padding: new EdgeInsets.all(0),
+            alignment: Alignment.centerLeft,
+            child: text14LeftBoldGrey("Longitude: ")),
+        Container(
+            margin: new EdgeInsets.only(left: 0),
+            padding: new EdgeInsets.all(5),
+            alignment: Alignment.centerLeft,
+            child: Longitude()),
       ],
     );
   }
@@ -471,7 +690,7 @@ class UploadButton extends ViewModelWidget<UploadViewModel> {
       width: 80,
       child: RaisedButton(
           child: text16CenterBoldWhite("UPLOAD TRACK"),
-          color: Colors.grey,
+          color: Color.fromRGBO(33, 78, 125, 1),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.all(10),
@@ -498,6 +717,7 @@ Widget containerTitle(String title) {
 }
 
 Widget attachAnimal = new Container(
+  key: Key('attachAnimal'),
   height: 115,
   width: 100,
   padding: EdgeInsets.all(5),
@@ -532,6 +752,7 @@ Widget attachATagButton = new Container(
 );
 
 Widget attachATag = new Container(
+  key: Key('attachATag'),
   height: 115,
   width: 100,
   padding: EdgeInsets.all(5),
@@ -580,7 +801,13 @@ Widget leftBlock = new Container(
   margin: new EdgeInsets.only(right: 5, left: 5),
   padding: new EdgeInsets.all(5),
   decoration: BoxDecoration(
-    color: Colors.grey,
+    gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: <Color>[
+          Color.fromRGBO(33, 78, 125, 1),
+          Color.fromRGBO(80, 156, 208, 1)
+        ]),
     borderRadius: BorderRadius.circular(10),
   ),
   height: 30,

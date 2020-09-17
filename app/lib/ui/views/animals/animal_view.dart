@@ -1,7 +1,6 @@
 import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/animals/animal_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
-import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,10 +16,78 @@ class AnimalView extends StatelessWidget {
     return ViewModelBuilder<AnimalViewModel>.reactive(
       builder: (context, model, child) => FutureBuilder(
           future: model.getCategories(context),
-          // ignore: missing_return
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return progressIndicator();
+              return Scaffold(
+                drawer: NavDrawer(),
+                appBar: AppBar(
+                  leading: Builder(
+                    builder: (BuildContext context) {
+                      return model.newNotifications == false
+                          ? IconButton(
+                              icon: const Icon(Icons.menu),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context)
+                                  .openAppDrawerTooltip,
+                            )
+                          : IconButton(
+                              icon: new Stack(
+                                children: [
+                                  new Icon(Icons.menu),
+                                  new Positioned(
+                                    right: 0,
+                                    child: new Container(
+                                        padding: EdgeInsets.all(1),
+                                        decoration: new BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        constraints: BoxConstraints(
+                                          minWidth: 12,
+                                          minHeight: 12,
+                                        ),
+                                        child: Container(
+                                          height: 5,
+                                          width: 5,
+                                          decoration: new BoxDecoration(
+                                            color: Colors.red,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        )),
+                                  )
+                                ],
+                              ),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context)
+                                  .openAppDrawerTooltip,
+                            );
+                    },
+                  ),
+                  title: text22LeftBoldWhite(
+                    "ERP RANGER",
+                  ),
+                  actions: <Widget>[
+                    IconBuilder(icon: Icons.search, type: "search"),
+                  ],
+                  flexibleSpace: Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: <Color>[
+                          Color.fromRGBO(33, 78, 125, 1),
+                          Color.fromRGBO(80, 156, 208, 1)
+                        ])),
+                  ),
+                ),
+                body: internetError(snapshot.error.toString()),
+                bottomNavigationBar: BottomNavigation(),
+              );
             }
             if (snapshot.hasData) {
               return snapshot.hasData
@@ -32,16 +99,76 @@ class AnimalView extends StatelessWidget {
                         return;
                       },
                       child: DefaultTabController(
+                        key: Key('DynamicTab'),
                         length: snapshot.data.length,
                         child: Scaffold(
                           drawer: NavDrawer(),
                           appBar: AppBar(
-                            backgroundColor: Colors.black,
-                            title: text18LeftBoldWhite("Animal Information"),
+                            leading: Builder(
+                              builder: (BuildContext context) {
+                                return model.newNotifications == false
+                                    ? IconButton(
+                                        icon: const Icon(Icons.menu),
+                                        onPressed: () {
+                                          Scaffold.of(context).openDrawer();
+                                        },
+                                        tooltip:
+                                            MaterialLocalizations.of(context)
+                                                .openAppDrawerTooltip,
+                                      )
+                                    : IconButton(
+                                        icon: new Stack(
+                                          children: [
+                                            new Icon(Icons.menu),
+                                            new Positioned(
+                                              right: 0,
+                                              child: new Container(
+                                                  padding: EdgeInsets.all(1),
+                                                  decoration: new BoxDecoration(
+                                                    color: Colors.red,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6),
+                                                  ),
+                                                  constraints: BoxConstraints(
+                                                    minWidth: 12,
+                                                    minHeight: 12,
+                                                  ),
+                                                  child: Container(
+                                                    height: 5,
+                                                    width: 5,
+                                                    decoration:
+                                                        new BoxDecoration(
+                                                      color: Colors.red,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                  )),
+                                            )
+                                          ],
+                                        ),
+                                        onPressed: () {
+                                          Scaffold.of(context).openDrawer();
+                                        },
+                                        tooltip:
+                                            MaterialLocalizations.of(context)
+                                                .openAppDrawerTooltip,
+                                      );
+                              },
+                            ),
+                            title: text22LeftBoldWhite("ERP RANGER"),
                             actions: <Widget>[
                               IconBuilder(icon: Icons.search, type: "search"),
-                              IconBuilder(icon: Icons.more_vert, type: "vert")
                             ],
+                            flexibleSpace: Container(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: <Color>[
+                                    Color.fromRGBO(33, 78, 125, 1),
+                                    Color.fromRGBO(80, 156, 208, 1)
+                                  ])),
+                            ),
                             bottom: TabBar(
                               isScrollable: true,
                               tabs: snapshot.data.tabs,
@@ -76,41 +203,45 @@ class NavDrawer extends ViewModelWidget<AnimalViewModel> {
 
   @override
   Widget build(BuildContext context, AnimalViewModel model) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: text22LeftBoldWhite("Side Menu"),
-            decoration: BoxDecoration(
-                color: Colors.grey,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/springbok.jpg'))),
-          ),
-          ListTile(
-              leading: Icon(Icons.verified_user),
-              title: text16LeftBoldGrey("Profile"),
-              onTap: () => {navigateToProfile()}),
-          ListTile(
-              leading: Icon(Icons.settings),
-              title: text16LeftBoldGrey("Settings"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.edit),
-              title: text16LeftBoldGrey("Preference"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: text16LeftBoldGrey("Logout"),
-              onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setBool("loggedIn", false);
-                navigateToLogin(context);
-              }),
-        ],
-      ),
-    );
+    return Container(
+        color: Colors.white,
+        width: 225,
+        child: Drawer(
+            child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/ERP_Tech.png'))),
+              child: null,
+            ),
+            ListTile(
+                leading: Icon(Icons.account_circle),
+                title: text16LeftBoldGrey("Profile"),
+                dense: true,
+                onTap: () => {navigateToProfile()}),
+            ListTile(
+                leading: model.newNotifications == false
+                    ? Icon(Icons.verified_user)
+                    : badge,
+                title: text16LeftBoldGrey("Achievements"),
+                dense: true,
+                onTap: () => {navigateToAchievements()}),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                dense: true,
+                title: text16LeftBoldGrey("Logout"),
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool("loggedIn", false);
+                  navigateToLogin(context);
+                }),
+          ],
+        )));
   }
 }
 
@@ -159,7 +290,6 @@ Widget getWidget(var animalTabList) {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            // border: Border.all(color: Colors.grey[200] , width: 2,style: BorderStyle.solid)
           ),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -170,10 +300,10 @@ Widget getWidget(var animalTabList) {
                     dense: true,
                     child: Row(children: [
                       Expanded(
-                          flex: 2,
+                          flex: 3,
                           child: imageBlock(animalTabList[index].image)),
                       Expanded(
-                          flex: 4,
+                          flex: 5,
                           child: cardText(
                               animalTabList[index].animalName,
                               animalTabList[index].sizeM,
@@ -201,10 +331,11 @@ class ViewButton extends ViewModelWidget<AnimalViewModel> {
   @override
   Widget build(BuildContext context, AnimalViewModel model) {
     return ButtonTheme(
+      key: Key('ViewInfoButton'),
       minWidth: 200,
       child: RaisedButton(
           child: text12CenterBoldWhite("VIEW INFO"),
-          color: Colors.grey,
+          color: Color.fromRGBO(33, 78, 125, 1),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.all(10),
@@ -224,13 +355,14 @@ Widget imageBlock(String imageLink) {
     decoration: BoxDecoration(
       image: DecorationImage(
         image: NetworkImage(imageLink),
+        //image: AssetImage(imageLink),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,
       borderRadius: BorderRadius.circular(15),
     ),
     height: 90,
-    width: 80,
+    width: 90,
   );
 }
 //=============================IMAGE BLOCK======================
@@ -241,8 +373,8 @@ Widget cardText(String name, String sizeM, String sizeF, String weightM,
   return Container(
       margin: EdgeInsets.all(0),
       alignment: Alignment.center,
-      height: 105,
-      width: 75,
+      height: 90,
+      width: 90,
       child: Column(children: <Widget>[
         Expanded(
             flex: 1,
@@ -250,7 +382,7 @@ Widget cardText(String name, String sizeM, String sizeF, String weightM,
                 alignment: Alignment.centerLeft,
                 margin: EdgeInsets.all(0),
                 padding: EdgeInsets.all(0),
-                child: text14RightBoldGrey(name))),
+                child: text18RightBoldGrey(name))),
         Expanded(
             flex: 1,
             child: Container(
@@ -284,7 +416,7 @@ Widget middleRow(
                     child: text12LeftNormGrey("Size:"),
                   )),
               Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(
                     child: column2(sizeF, sizeM, context),
                   )),
@@ -304,7 +436,7 @@ Widget middleRow(
                     child: text12LeftNormGrey("Weight:"),
                   )),
               Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: Container(
                     child: column(weightF, weightM, context),
                   )),
@@ -323,8 +455,11 @@ Widget column(String metricF, String metricM, var context) {
         // flex: 1,
         child: Row(
           children: <Widget>[
-            Container(
-              child: text12RighttNormGrey('$metricF kg'),
+            Expanded(
+              flex: 4,
+              child: Container(
+                child: text12RighttNormGrey('$metricF'),
+              ),
             ),
             Expanded(
                 flex: 1,
@@ -342,8 +477,11 @@ Widget column(String metricF, String metricM, var context) {
         //flex: 1,
         child: Row(
           children: <Widget>[
-            Container(
-              child: text12RighttNormGrey('$metricM kg'),
+            Expanded(
+              flex: 4,
+              child: Container(
+                child: text12RighttNormGrey('$metricM'),
+              ),
             ),
             Expanded(
                 flex: 1,
@@ -365,11 +503,13 @@ Widget column2(String metricF, String metricM, var context) {
   return Row(
     children: <Widget>[
       Expanded(
-        //flex: 1,
         child: Row(
           children: <Widget>[
-            Container(
-              child: text12RighttNormGrey('$metricF m'),
+            Expanded(
+              flex: 4,
+              child: Container(
+                child: text12RighttNormGrey('$metricF cm'),
+              ),
             ),
             Expanded(
                 flex: 1,
@@ -384,11 +524,13 @@ Widget column2(String metricF, String metricM, var context) {
         ),
       ),
       Expanded(
-        //flex: 1,
         child: Row(
           children: <Widget>[
-            Container(
-              child: text12RighttNormGrey('$metricM m'),
+            Expanded(
+              flex: 4,
+              child: Container(
+                child: text12RighttNormGrey('$metricM cm'),
+              ),
             ),
             Expanded(
                 flex: 1,

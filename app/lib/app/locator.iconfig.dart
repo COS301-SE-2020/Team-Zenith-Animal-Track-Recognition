@@ -6,18 +6,16 @@
 
 import 'package:ERP_RANGER/services/third_party_services_module.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:ERP_RANGER/services/api/fake_api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
-import 'package:ERP_RANGER/services/identification_service.dart';
+import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:get_it/get_it.dart';
 
 void $initGetIt(GetIt g, {String environment}) {
   final thirdPartyServicesModule = _$ThirdPartyServicesModule();
   g.registerLazySingleton<DialogService>(
       () => thirdPartyServicesModule.dialogService);
-  g.registerLazySingleton<FakeApi>(() => FakeApi());
   g.registerLazySingleton<GraphQL>(() => GraphQL());
-  g.registerLazySingleton<IdentificationService>(() => IdentificationService());
+  g.registerLazySingleton<MockApi>(() => MockApi());
   g.registerLazySingleton<NavigationService>(
       () => thirdPartyServicesModule.navigationService);
   g.registerLazySingleton<SnackbarService>(

@@ -1,1 +1,0 @@
-[{"type":"IdentificationService","typeImpl":"IdentificationService","isAsync":false,"preResolve":false,"injectableType":2,"imports":["package:ERP_RANGER/services/identification_service.dart"],"dependsOn":[],"dependencies":[],"constructorName":"","isAbstract":false}]

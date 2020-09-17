@@ -4,7 +4,7 @@ import 'package:ERP_RANGER/ui/views/profile/profile_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/rendering/sliver_persistent_header.dart';
+import 'package:flutter/rendering.dart';
 import 'package:stacked/stacked.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +18,73 @@ class ProfileView extends StatelessWidget {
           future: model.getRecentIdentifications(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return progressIndicator();
+              return Scaffold(
+                drawer: NavDrawer(),
+                appBar: AppBar(
+                  leading: Builder(
+                    builder: (BuildContext context) {
+                      return model.newNotifications == false
+                          ? IconButton(
+                              icon: const Icon(Icons.menu),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context)
+                                  .openAppDrawerTooltip,
+                            )
+                          : IconButton(
+                              icon: new Stack(
+                                children: [
+                                  new Icon(Icons.menu),
+                                  new Positioned(
+                                    right: 0,
+                                    child: new Container(
+                                        padding: EdgeInsets.all(1),
+                                        decoration: new BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        constraints: BoxConstraints(
+                                          minWidth: 12,
+                                          minHeight: 12,
+                                        ),
+                                        child: Container(
+                                          height: 5,
+                                          width: 5,
+                                          decoration: new BoxDecoration(
+                                            color: Colors.red,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        )),
+                                  )
+                                ],
+                              ),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context)
+                                  .openAppDrawerTooltip,
+                            );
+                    },
+                  ),
+                  title: text22LeftBoldWhite("ERP RANGER"),
+                  actions: <Widget>[
+                    IconBuilder(icon: Icons.search, type: "search"),
+                  ],
+                  flexibleSpace: Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: <Color>[
+                          Color.fromRGBO(33, 78, 125, 1),
+                          Color.fromRGBO(80, 156, 208, 1)
+                        ])),
+                  ),
+                ),
+                body: internetError(snapshot.error.toString()),
+              );
             }
             if (snapshot.hasData) {
               int userLevel = snapshot.data.userLevel;
@@ -29,31 +95,93 @@ class ProfileView extends StatelessWidget {
                 bottomNavigation.setIndex(3);
               }
               return snapshot.hasData
-                  ? Scaffold(
-                      drawer: NavDrawer(),
-                      appBar: AppBar(
-                        backgroundColor: Colors.black,
-                        leading: IconBuilder(icon: Icons.menu, type: "search"),
-                        title: text18LeftBoldWhite("Profile"),
-                        actions: <Widget>[
-                          IconBuilder(icon: Icons.search, type: "search"),
-                          IconBuilder(icon: Icons.more_vert, type: "vert")
-                        ],
-                      ),
-                      body: Container(
-                          color: Colors.grey[300],
-                          child: ProfileViewList(
-                            tempObject: snapshot.data,
-                          )),
-                      bottomNavigationBar: BottomNavigation(),
-                      floatingActionButton: FloatingActionButton(
-                        onPressed: () {
-                          captureImage();
-                        },
-                        child: Icon(
-                          Icons.camera_alt,
+                  ? WillPopScope(
+                      onWillPop: () async {
+                        if (Navigator.canPop(context)) {
+                          navigate(context);
+                        }
+                        return;
+                      },
+                      child: Scaffold(
+                        drawer: NavDrawer(),
+                        appBar: AppBar(
+                          leading: Builder(
+                            builder: (BuildContext context) {
+                              return model.newNotifications == false
+                                  ? IconButton(
+                                      icon: const Icon(Icons.menu),
+                                      onPressed: () {
+                                        Scaffold.of(context).openDrawer();
+                                      },
+                                      tooltip: MaterialLocalizations.of(context)
+                                          .openAppDrawerTooltip,
+                                    )
+                                  : IconButton(
+                                      icon: new Stack(
+                                        children: [
+                                          new Icon(Icons.menu),
+                                          new Positioned(
+                                            right: 0,
+                                            child: new Container(
+                                                padding: EdgeInsets.all(1),
+                                                decoration: new BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(6),
+                                                ),
+                                                constraints: BoxConstraints(
+                                                  minWidth: 12,
+                                                  minHeight: 12,
+                                                ),
+                                                child: Container(
+                                                  height: 5,
+                                                  width: 5,
+                                                  decoration: new BoxDecoration(
+                                                    color: Colors.red,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                )),
+                                          )
+                                        ],
+                                      ),
+                                      onPressed: () {
+                                        Scaffold.of(context).openDrawer();
+                                      },
+                                      tooltip: MaterialLocalizations.of(context)
+                                          .openAppDrawerTooltip,
+                                    );
+                            },
+                          ),
+                          title: text22LeftBoldWhite("ERP RANGER"),
+                          actions: <Widget>[
+                            IconBuilder(icon: Icons.search, type: "search"),
+                          ],
+                          flexibleSpace: Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: <Color>[
+                                  Color.fromRGBO(33, 78, 125, 1),
+                                  Color.fromRGBO(80, 156, 208, 1)
+                                ])),
+                          ),
                         ),
-                        backgroundColor: Colors.black,
+                        body: Container(
+                            color: Colors.grey[300],
+                            child: ProfileViewList(
+                              tempObject: snapshot.data,
+                            )),
+                        bottomNavigationBar: BottomNavigation(),
+                        floatingActionButton: FloatingActionButton(
+                          onPressed: () {
+                            captureImage();
+                          },
+                          child: Icon(
+                            Icons.camera_alt,
+                          ),
+                          backgroundColor: Color.fromRGBO(205, 21, 67, 1),
+                        ),
                       ),
                     )
                   : progressIndicator();
@@ -133,6 +261,7 @@ class ProfileViewList extends ViewModelWidget<ProfileViewModel> {
   Widget build(BuildContext context, ProfileViewModel viewModel) {
     animalList = tempObject.animalList;
     return CustomScrollView(
+      key: Key('ProfileList'),
       slivers: <Widget>[
         SliverPersistentHeader(
           pinned: true,
@@ -144,7 +273,7 @@ class ProfileViewList extends ViewModelWidget<ProfileViewModel> {
             delegate: SliverChildBuilderDelegate((context, index) {
           return GestureDetector(
             onTap: () {
-              navigateToIdentification(animalList[index].name.toLowerCase());
+              navigateToIdentification(animalList[index].id);
             },
             child: Card(
               shape: RoundedRectangleBorder(
@@ -192,7 +321,13 @@ class ProfileViewList extends ViewModelWidget<ProfileViewModel> {
                                 margin: new EdgeInsets.only(
                                     left: 15, right: 10, bottom: 6),
                                 decoration: BoxDecoration(
-                                    color: Colors.black,
+                                    gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: <Color>[
+                                          Color.fromRGBO(33, 78, 125, 1),
+                                          Color.fromRGBO(80, 156, 208, 1)
+                                        ]),
                                     borderRadius: BorderRadius.circular(10)),
                                 child:
                                     text12LeftBoldWhite(animalList[index].tag),
@@ -260,47 +395,52 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
 
   @override
   Widget build(BuildContext context, ProfileViewModel model) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: text22LeftBoldWhite("Side Menu"),
-            decoration: BoxDecoration(
-                color: Colors.grey,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/springbok.jpg'))),
-          ),
-          ListTile(
-              leading: Icon(Icons.verified_user),
-              title: text16LeftBoldGrey("Profile"),
-              onTap: () => {navigateToProfile()}),
-          ListTile(
-              leading: Icon(Icons.settings),
-              title: text16LeftBoldGrey("Settings"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.edit),
-              title: text16LeftBoldGrey("Preference"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: text16LeftBoldGrey("Logout"),
-              onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setBool("loggedIn", false);
-                navigateToLogin(context);
-              }),
-        ],
-      ),
-    );
+    return Container(
+        color: Colors.white,
+        width: 225,
+        child: Drawer(
+            child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/ERP_Tech.png'))),
+              child: null,
+            ),
+            ListTile(
+                leading: Icon(Icons.account_circle),
+                title: text16LeftBoldGrey("Profile"),
+                dense: true,
+                onTap: () => {navigateToProfile()}),
+            ListTile(
+                leading: model.newNotifications == false
+                    ? Icon(Icons.verified_user)
+                    : badge,
+                title: text16LeftBoldGrey("Achievements"),
+                dense: true,
+                onTap: () => {navigateToAchievements()}),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                dense: true,
+                title: text16LeftBoldGrey("Logout"),
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool("loggedIn", false);
+                  navigateToLogin(context);
+                }),
+          ],
+        )));
   }
 }
 
 Widget profileinfo(ProfileInfoModel profileInfo) {
   String pic = profileInfo.picture;
   return Container(
+    key: Key('profileinfo'),
     color: Colors.white,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -399,16 +539,6 @@ Widget summary(ProfileInfoModel profileInfo) {
               Expanded(
                   flex: 1,
                   child: Container(
-                    alignment: Alignment.centerRight,
-                    color: Colors.white,
-                    height: 30,
-                    width: 30,
-                    child:
-                        Center(child: text20LeftBoldBlack("$spoorIdentified")),
-                  )),
-              Expanded(
-                  flex: 1,
-                  child: Container(
                     margin: new EdgeInsets.all(0),
                     color: Colors.white,
                     height: 30,
@@ -417,14 +547,24 @@ Widget summary(ProfileInfoModel profileInfo) {
                       Expanded(
                           flex: 1,
                           child: Container(
-                              alignment: Alignment.bottomLeft,
+                              alignment: Alignment.bottomRight,
                               child: text12LeftBoldGrey("Tracks"))),
                       Expanded(
                           flex: 1,
                           child: Container(
-                              alignment: Alignment.topLeft,
+                              alignment: Alignment.topRight,
                               child: text12LeftBoldGrey("Identified")))
                     ]),
+                  )),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    color: Colors.white,
+                    height: 30,
+                    width: 30,
+                    child:
+                        Center(child: text20LeftBoldBlack("$spoorIdentified")),
                   )),
             ],
           ),
@@ -437,15 +577,6 @@ Widget summary(ProfileInfoModel profileInfo) {
               Expanded(
                   flex: 1,
                   child: Container(
-                      alignment: Alignment.centerRight,
-                      color: Colors.white,
-                      height: 30,
-                      width: 30,
-                      child: Center(
-                          child: text20LeftBoldBlack("$animalsTracked")))),
-              Expanded(
-                  flex: 1,
-                  child: Container(
                     margin: new EdgeInsets.all(0),
                     color: Colors.white,
                     height: 30,
@@ -454,15 +585,24 @@ Widget summary(ProfileInfoModel profileInfo) {
                       Expanded(
                           flex: 1,
                           child: Container(
-                              alignment: Alignment.bottomLeft,
+                              alignment: Alignment.bottomRight,
                               child: text12LeftBoldGrey("Animals"))),
                       Expanded(
                           flex: 1,
                           child: Container(
-                              alignment: Alignment.topLeft,
+                              alignment: Alignment.topRight,
                               child: text12LeftBoldGrey("Tracked")))
                     ]),
                   )),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      color: Colors.white,
+                      height: 30,
+                      width: 30,
+                      child: Center(
+                          child: text20LeftBoldBlack("$animalsTracked")))),
             ],
           ),
         ),
@@ -473,15 +613,6 @@ Widget summary(ProfileInfoModel profileInfo) {
               Expanded(
                   flex: 1,
                   child: Container(
-                      alignment: Alignment.centerRight,
-                      color: Colors.white,
-                      height: 30,
-                      width: 30,
-                      child: Center(
-                          child: text20LeftBoldBlack("$speciesTracked")))),
-              Expanded(
-                  flex: 1,
-                  child: Container(
                     margin: new EdgeInsets.all(0),
                     color: Colors.white,
                     height: 30,
@@ -490,15 +621,24 @@ Widget summary(ProfileInfoModel profileInfo) {
                       Expanded(
                           flex: 1,
                           child: Container(
-                              alignment: Alignment.bottomLeft,
-                              child: text12LeftBoldGrey("Species"))),
+                              alignment: Alignment.bottomRight,
+                              child: text12LeftBoldGrey("Access"))),
                       Expanded(
                           flex: 1,
                           child: Container(
-                              alignment: Alignment.topLeft,
-                              child: text12LeftBoldGrey("Tracked")))
+                              alignment: Alignment.topRight,
+                              child: text12LeftBoldGrey("Level")))
                     ]),
                   )),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      color: Colors.white,
+                      height: 30,
+                      width: 30,
+                      child: Center(
+                          child: text20LeftBoldBlack("$speciesTracked")))),
             ],
           ),
         ),
@@ -508,27 +648,33 @@ Widget summary(ProfileInfoModel profileInfo) {
 }
 
 Widget profilepic(String profilePicture) {
-  return Container(
-    alignment: Alignment.center,
-    margin: new EdgeInsets.only(bottom: 5, right: 10, top: 5, left: 5),
-    padding: new EdgeInsets.all(5),
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: NetworkImage(profilePicture),
-        fit: BoxFit.fill,
-      ),
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(100),
-    ),
-    height: 70,
-  );
+  return profilePicture == "N/A"
+      ? Container(
+          alignment: Alignment.center,
+          margin: new EdgeInsets.only(bottom: 5, right: 10, top: 5, left: 5),
+          padding: new EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/circle.png"),
+              fit: BoxFit.fill,
+            ),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(100),
+          ),
+          height: 70,
+        )
+      : Container(
+          alignment: Alignment.center,
+          margin: new EdgeInsets.only(bottom: 5, right: 10, top: 5, left: 5),
+          padding: new EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(profilePicture),
+              fit: BoxFit.fill,
+            ),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(100),
+          ),
+          height: 70,
+        );
 }
-
-// Container(
-//   child: Row(children: <Widget>[
-//     Expanded(flex:1,child: IconButtons(iconData:Icons.edit,subTitle:"EDIT PROFILE",index:0)),
-//     Expanded(flex:1,child: IconButtons(iconData:Icons.lock,subTitle:"CHANGE PASSWORD",index:1)),
-//     Expanded(flex:1,child: IconButtons(iconData:Icons.settings,subTitle:"PREFERENCE",index:2)),
-//     Expanded(flex:1,child: IconButtons(iconData:Icons.power_settings_new,subTitle:"LOGOUT",index:3)),
-//   ],),
-// )

@@ -12,10 +12,6 @@ import 'package:stacked_hooks/stacked_hooks.dart';
 class IdentificationView extends StatelessWidget {
   IdentificationView({@required this.name});
   String name;
-  CameraPosition _myLocation = CameraPosition(
-    target: LatLng(-25.882171, 28.264653),
-    zoom: 15,
-  );
 
   Completer<GoogleMapController> _controller = Completer();
 
@@ -26,7 +22,21 @@ class IdentificationView extends StatelessWidget {
           future: model.getResults(name),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return progressIndicator();
+              return WillPopScope(
+                onWillPop: () async {
+                  if (Navigator.canPop(context)) {
+                    navigateBack(context);
+                  }
+                  return;
+                },
+                child: Scaffold(
+                    body: Stack(
+                  children: [
+                    internetError(snapshot.error.toString()),
+                    backButton(context),
+                  ],
+                )),
+              );
             }
             if (snapshot.hasData) {
               return snapshot.hasData
@@ -42,8 +52,7 @@ class IdentificationView extends StatelessWidget {
                           children: <Widget>[
                             Container(
                               child: GoogleMap(
-                                initialCameraPosition: _myLocation =
-                                    CameraPosition(
+                                initialCameraPosition: CameraPosition(
                                   target: LatLng(model.coordinatesLat,
                                       model.coordinatesLong),
                                   zoom: 15,
@@ -70,6 +79,25 @@ class IdentificationView extends StatelessWidget {
   }
 }
 
+class IconBuilder extends ViewModelWidget<IdentificationViewModel> {
+  IconData icon;
+  IconBuilder({Key key, this.icon}) : super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, IdentificationViewModel model) {
+    return Container(
+      margin: EdgeInsets.all(0),
+      padding: EdgeInsets.all(0),
+      child: IconButton(
+          padding: EdgeInsets.all(0),
+          icon: Icon(icon, color: Colors.white),
+          onPressed: () {
+            navigateToSearchView();
+          }),
+    );
+  }
+}
+
 class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
   SpoorListBody({
     Key key,
@@ -78,6 +106,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
     return DraggableScrollableSheet(
+      key: Key('SpoorListBody'),
       initialChildSize: 0.32,
       minChildSize: 0.10,
       maxChildSize: 0.99,
@@ -91,7 +120,8 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
             controller: myscrollController,
             children: <Widget>[
               Container(
-                  color: Colors.grey[850],
+                  decoration:
+                      BoxDecoration(color: Color.fromRGBO(33, 78, 125, 1)),
                   child: Row(
                     children: <Widget>[
                       Expanded(flex: 1, child: icon),
@@ -132,7 +162,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
               ),
               Divider(thickness: 2),
               Column(children: <Widget>[
-                similarSpoors(context),
+                similarSpoors(),
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -324,6 +354,7 @@ class ViewInfoFunctionality extends ViewModelWidget<IdentificationViewModel> {
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
     return Container(
+      key: Key('ViewInfoFunctionality'),
       margin: new EdgeInsets.only(bottom: 0, left: 3, right: 3),
       padding: new EdgeInsets.all(0.0),
       decoration: BoxDecoration(
@@ -342,7 +373,7 @@ class ViewInfoFunctionality extends ViewModelWidget<IdentificationViewModel> {
             child: IconButton(
               icon: Icon(Icons.pets),
               onPressed: () {
-                navigateToInfo(model.confident.name.toLowerCase());
+                navigateToInfo(model.confident.species);
               },
             ),
           ),
@@ -453,6 +484,7 @@ class ConfidentAnimalIdentiication
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
     return Container(
+      key: Key('ConfidentAnimalIdentiication'),
       alignment: Alignment.center,
       margin: new EdgeInsets.all(10),
       padding: new EdgeInsets.only(left: 8),
@@ -580,51 +612,6 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
               ),
             ),
           ),
-          // Container(
-          //   alignment: Alignment.centerLeft,
-          //   margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-          //   padding: new EdgeInsets.all(5),
-          //   child: Row(
-          //     children: <Widget>[
-          //       Expanded(
-          //         flex: 1,
-          //         child: text12LeftNormGrey('Coordinates: '),
-          //       ),
-          //       Expanded(
-          //           flex: 3,
-          //           child: Row(children: [
-          //             Expanded(
-          //               flex: 1,
-          //               child: GestureDetector(
-          //                 onLongPress: () {
-          //                   model.setEditSpoorCoordLat();
-          //                 },
-          //                 child: Container(
-          //                     margin: new EdgeInsets.only(right: 2),
-          //                     child: model.editSpoorCoordLat
-          //                         ? TextInputField(indexIdentifier: 1)
-          //                         : text12LeftNormBlack(
-          //                             "Latitude: " + model.getCoordLat)),
-          //               ),
-          //             ),
-          //             Expanded(
-          //               flex: 1,
-          //               child: GestureDetector(
-          //                 onLongPress: () {
-          //                   model.setEditSpoorCoordLong();
-          //                 },
-          //                 child: Container(
-          //                     margin: new EdgeInsets.only(left: 2),
-          //                     child: model.editSpoorCoordLong
-          //                         ? TextInputField(indexIdentifier: 2)
-          //                         : text12LeftNormBlack(
-          //                             "Longitude: " + model.getCoordLong)),
-          //               ),
-          //             ),
-          //           ]))
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );
@@ -641,6 +628,7 @@ class TextInputField extends HookViewModelWidget<IdentificationViewModel> {
     var text = useTextEditingController();
     if (indexIdentifier == 0) {
       return Container(
+        key: Key('TextInputField'),
         alignment: Alignment.centerLeft,
         child: TextField(
           controller: text,
@@ -842,7 +830,7 @@ Widget accuracyScore(String score, var context) {
   );
 }
 
-Widget similarSpoors(var context) {
+Widget similarSpoors() {
   return Container(
     alignment: Alignment.centerLeft,
     margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
@@ -870,6 +858,7 @@ Widget swapImageBlock(String link, int index, IdentificationViewModel model) {
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
           image: NetworkImage(link),
+          //image: AssetImage(link),
           fit: BoxFit.fill,
         ),
       ),
@@ -880,33 +869,46 @@ Widget swapImageBlock(String link, int index, IdentificationViewModel model) {
 }
 
 Widget innerImageBlock(String link) {
-  return InkWell(
-    onTap: () => print(""),
-    child: new Container(
-      alignment: Alignment.center,
-      margin: new EdgeInsets.all(5),
-      padding: new EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(10),
-        image: DecorationImage(
-          image: NetworkImage(link),
-          fit: BoxFit.fill,
-        ),
-      ),
-      height: 150,
-      width: 150,
-    ),
-  );
+  return link == "N/A"
+      ? Container(
+          alignment: Alignment.center,
+          margin: new EdgeInsets.all(5),
+          padding: new EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: AssetImage("assets/images/logo.jpeg"),
+              fit: BoxFit.fill,
+            ),
+          ),
+          height: 150,
+          width: 150,
+        )
+      : Container(
+          alignment: Alignment.center,
+          margin: new EdgeInsets.all(5),
+          padding: new EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: NetworkImage(link),
+              fit: BoxFit.fill,
+            ),
+          ),
+          height: 150,
+          width: 150,
+        );
 }
 
 Widget icon = new Container(
   alignment: Alignment(0, 0),
   margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
   decoration: BoxDecoration(
-      color: Colors.grey[850],
+      color: Color.fromRGBO(33, 78, 125, 1),
       borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: Colors.grey[850])),
+      border: Border.all(color: Color.fromRGBO(33, 78, 125, 1))),
   child: Center(
     child: IconButton(
       alignment: Alignment(0, 0),
@@ -924,7 +926,7 @@ Widget text(String name, var context) {
     alignment: Alignment(0, 0),
     margin: new EdgeInsets.only(bottom: 3, left: 10, right: 3),
     decoration: BoxDecoration(
-      color: Colors.grey[850],
+      color: Color.fromRGBO(33, 78, 125, 1),
       borderRadius: BorderRadius.circular(10),
     ),
     height: 50,
@@ -963,15 +965,15 @@ Widget backButton(context) {
         left: 10,
       ),
       decoration: BoxDecoration(
-          color: Colors.grey[850],
+          color: Colors.white,
           borderRadius: BorderRadius.circular(13),
-          border: Border.all(color: Colors.grey[850])),
+          border: Border.all(color: Colors.white)),
       child: GestureDetector(
         onTap: () {
           Navigator.pop(context);
         },
         child: Center(
-          child: Icon(Icons.arrow_back, color: Colors.white),
+          child: Icon(Icons.arrow_back, color: Colors.black),
         ),
       ));
 }
@@ -998,6 +1000,7 @@ Widget confidentImageBlock(String image) {
     decoration: BoxDecoration(
       image: DecorationImage(
         image: NetworkImage(image),
+        //image: AssetImage(image),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,

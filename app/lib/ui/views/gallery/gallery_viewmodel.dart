@@ -1,43 +1,33 @@
 import 'package:ERP_RANGER/app/locator.dart';
-import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
-import 'package:ERP_RANGER/services/api/fake_api.dart';
+import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 
-class GalleryViewModel extends BaseViewModel{
-  String _title = 'Home View';
-  String get title => '$_title $_counter ';
+class GalleryViewModel extends BaseViewModel {
+  bool newNotifications = false;
+  final Api api = locator<GraphQL>();
+  Future<TempObject> getSpoor(var context) async {
+    List<String> categories = new List();
+    categories.add("Appearance");
+    categories.add("Tracks");
 
-  final NavigationService _navigationService = locator<NavigationService>();
-  final Api _api = locator<FakeApi>();
+    TabModel tabModel =
+        TabModel(categories: categories, length: categories.length);
+    List<Tab> tabs = new List();
 
-  int _counter = 0;
-  int get counter => _counter;
-
-  Future<TempObject>getSpoor() async{
-      TabModel tabModel = await _api.getTabModel("Appearance", "Tracks","Droppings");
-      List<Tab> tabs = new List();
-      for(int i = 0; i < tabModel.categories.length; i++){
-        tabs.add( Tab( child: Text( tabModel.categories[i], style: TextStyle( color:Colors.white, fontWeight: FontWeight.bold, fontSize: 10,)),));
-      }
-      return TempObject(tabs: tabs,length: tabModel.length);
-  }
-
-  void navigate(context) {
-     Navigator.of(context).pop();
-  }
-
-  void updateCounter(){
-    _counter++;
-    notifyListeners();
+    for (int i = 0; i < tabModel.categories.length; i++) {
+      tabs.add(Tab(
+          child: text12CenterBoldWhite(tabModel.categories[i].toUpperCase())));
+    }
+    newNotifications = await api.getNewTrophyNotification();
+    return TempObject(tabs: tabs, length: tabModel.length);
   }
 }
 
-class TempObject{
+class TempObject {
   List<Tab> tabs;
   int length;
   TempObject({this.tabs, this.length});

@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  build:   
+    working_directory: ~/Team-Zenith-Animal-Track-Recognition/app
+    docker:
+      - image: cirrusci/flutter:latest
+
+    branches:
+      only: master
+
+    steps:
+      - checkout:
+          path: ~/Team-Zenith-Animal-Track-Recognition
+
+      - run:
+          name: Run Flutter doctor
+          command: flutter doctor
+          
+      - run:
+          name: Get Packages
+          command: flutter pub get
+
+      - run:
+          name: Run the application tests
+          command: flutter test
+
+      - run:
+          name: Build the Android version
+          command: flutter build apk 
+
+      - store_artifacts:
+          path: build/app/outputs/apk/release/app-release.apk

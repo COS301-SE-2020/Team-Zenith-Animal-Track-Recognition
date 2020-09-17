@@ -1,7 +1,9 @@
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/gallery/gallery_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class GalleryView extends StatelessWidget {
@@ -14,40 +16,170 @@ class GalleryView extends StatelessWidget {
     bottomNavigation.setIndex(1);
     return ViewModelBuilder<GalleryViewModel>.reactive(
       builder: (context, model, child) => FutureBuilder(
-        future: model.getSpoor(),
-        builder: (context, snapshot){
-          if(snapshot.hasError){
-             return text("Error", 20);
-          }
-          if(snapshot.hasData){
-            return WillPopScope(
-              onWillPop:() async{
-                if(Navigator.canPop(context)){
-                  model.navigate(context);
-                }
-                return;
-              },
-              child: DefaultTabController(
-                length: snapshot.data.length,
-                child: Scaffold(
-                  appBar: AppBar(
-                    leading: null,
-                    backgroundColor: Colors.black,
-                    title: text(galleryModel.name, 22),
-                    actions: <Widget>[IconBuilder(icon:Icons.more_vert,type:"vert")],
-                    bottom: TabBar(tabs: snapshot.data.tabs,indicatorWeight: 3,),
-                  ),
-                  body: Container(
-                    padding: EdgeInsets.all(10),
-                    color: Colors.grey[300], 
-                    child: TabBarView(children:getBodyWidgets(snapshot.data.length,galleryModel.galleryList),),
-                  ),
-                  bottomNavigationBar: BottomNavigation(),                                
+        future: model.getSpoor(context),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Scaffold(
+              drawer: NavDrawer(),
+              appBar: AppBar(
+                leading: Builder(
+                  builder: (BuildContext context) {
+                    return model.newNotifications == false
+                        ? IconButton(
+                            icon: const Icon(Icons.menu),
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            tooltip: MaterialLocalizations.of(context)
+                                .openAppDrawerTooltip,
+                          )
+                        : IconButton(
+                            icon: new Stack(
+                              children: [
+                                new Icon(Icons.menu),
+                                new Positioned(
+                                  right: 0,
+                                  child: new Container(
+                                      padding: EdgeInsets.all(1),
+                                      decoration: new BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      constraints: BoxConstraints(
+                                        minWidth: 12,
+                                        minHeight: 12,
+                                      ),
+                                      child: Container(
+                                        height: 5,
+                                        width: 5,
+                                        decoration: new BoxDecoration(
+                                          color: Colors.red,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      )),
+                                )
+                              ],
+                            ),
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            tooltip: MaterialLocalizations.of(context)
+                                .openAppDrawerTooltip,
+                          );
+                  },
                 ),
-              ),           
+                title: text18LeftBoldWhite(
+                  "ERP RANGER",
+                ),
+                actions: <Widget>[IconBuilder(icon: Icons.search)],
+                flexibleSpace: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: <Color>[
+                        Color.fromRGBO(33, 78, 125, 1),
+                        Color.fromRGBO(80, 156, 208, 1)
+                      ])),
+                ),
+              ),
+              body: internetError(snapshot.error.toString()),
             );
-          }else{
-            return text("Null no Data", 20);
+          }
+          if (snapshot.hasData) {
+            return snapshot.hasData
+                ? WillPopScope(
+                    onWillPop: () async {
+                      if (Navigator.canPop(context)) {
+                        navigateBack(context);
+                      }
+                      return;
+                    },
+                    child: DefaultTabController(
+                      length: snapshot.data.length,
+                      child: Scaffold(
+                        drawer: NavDrawer(),
+                        appBar: AppBar(
+                          leading: Builder(
+                            builder: (BuildContext context) {
+                              return model.newNotifications == false
+                                  ? IconButton(
+                                      icon: const Icon(Icons.menu),
+                                      onPressed: () {
+                                        Scaffold.of(context).openDrawer();
+                                      },
+                                      tooltip: MaterialLocalizations.of(context)
+                                          .openAppDrawerTooltip,
+                                    )
+                                  : IconButton(
+                                      icon: new Stack(
+                                        children: [
+                                          new Icon(Icons.menu),
+                                          new Positioned(
+                                            right: 0,
+                                            child: new Container(
+                                                padding: EdgeInsets.all(1),
+                                                decoration: new BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(6),
+                                                ),
+                                                constraints: BoxConstraints(
+                                                  minWidth: 12,
+                                                  minHeight: 12,
+                                                ),
+                                                child: Container(
+                                                  height: 5,
+                                                  width: 5,
+                                                  decoration: new BoxDecoration(
+                                                    color: Colors.red,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                )),
+                                          )
+                                        ],
+                                      ),
+                                      onPressed: () {
+                                        Scaffold.of(context).openDrawer();
+                                      },
+                                      tooltip: MaterialLocalizations.of(context)
+                                          .openAppDrawerTooltip,
+                                    );
+                            },
+                          ),
+                          backgroundColor: Colors.black,
+                          title: appBarTitle(galleryModel.name, context),
+                          actions: <Widget>[IconBuilder(icon: Icons.search)],
+                          flexibleSpace: Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: <Color>[
+                                  Color.fromRGBO(33, 78, 125, 1),
+                                  Color.fromRGBO(80, 156, 208, 1)
+                                ])),
+                          ),
+                          bottom: TabBar(
+                            tabs: snapshot.data.tabs,
+                            indicatorWeight: 3,
+                          ),
+                        ),
+                        body: Container(
+                          padding: EdgeInsets.all(10),
+                          color: Colors.grey[300],
+                          child: TabBarView(
+                            children: getBodyWidgets(
+                                snapshot.data.length, galleryModel.galleryList),
+                          ),
+                        ),
+                        bottomNavigationBar: BottomNavigation(),
+                      ),
+                    ),
+                  )
+                : progressIndicator();
+          } else {
+            return progressIndicator();
           }
         },
       ),
@@ -57,24 +189,24 @@ class GalleryView extends StatelessWidget {
 }
 
 //========================== VIEW BODY =======================
-List<Widget> getBodyWidgets(int len, var data){
+List<Widget> getBodyWidgets(int len, var data) {
   List<Widget> widget = new List();
-  for(int i = 0; i < len; i++){
+  for (int i = 0; i < len; i++) {
     widget.add(getWidget(data[i]));
   }
   return widget;
 }
 
-Widget getWidget(var animalTabList){
+Widget getWidget(var animalTabList) {
   return GridView.count(
-    crossAxisCount: 3,
-    children: List.generate(animalTabList.length, (index){
+    crossAxisCount: 2,
+    children: List.generate(animalTabList.length, (index) {
       return Container(
         alignment: Alignment.center,
         margin: new EdgeInsets.all(5),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(animalTabList[index]),
+            image: NetworkImage(animalTabList[index]),
             fit: BoxFit.fill,
           ),
           color: Colors.grey,
@@ -88,52 +220,68 @@ Widget getWidget(var animalTabList){
 
 //========================== APPBAR ICONS =======================
 class IconBuilder extends ViewModelWidget<GalleryViewModel> {
-  String type;
   IconData icon;
-  IconBuilder({Key key,this.icon,this.type}) : super(reactive: true);
+  IconBuilder({Key key, this.icon}) : super(reactive: true);
 
   @override
   Widget build(BuildContext context, GalleryViewModel model) {
     return Container(
       margin: EdgeInsets.all(0),
       padding: EdgeInsets.all(0),
-       child: IconButton(
-        padding: EdgeInsets.all(0),
-        icon: Icon(icon, color: Colors.white),
-        onPressed: (){
-        }
-      ),
+      child: IconButton(
+          padding: EdgeInsets.all(0),
+          icon: Icon(icon, color: Colors.white),
+          onPressed: () {
+            navigateToSearchView();
+          }),
     );
   }
 }
+
 //========================== APPBAR ICONS =======================
+class NavDrawer extends ViewModelWidget<GalleryViewModel> {
+  NavDrawer({Key key}) : super(reactive: true);
 
-
-//================================== TEXT TEMPLATES =============================
-Widget text(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.white
-    ),
-  );
+  @override
+  Widget build(BuildContext context, GalleryViewModel model) {
+    return Container(
+        color: Colors.white,
+        width: 225,
+        child: Drawer(
+            child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/ERP_Tech.png'))),
+              child: null,
+            ),
+            ListTile(
+                leading: Icon(Icons.account_circle),
+                title: text16LeftBoldGrey("Profile"),
+                dense: true,
+                onTap: () => {navigateToProfile()}),
+            ListTile(
+                leading: model.newNotifications == false
+                    ? Icon(Icons.verified_user)
+                    : badge,
+                title: text16LeftBoldGrey("Achievements"),
+                dense: true,
+                onTap: () => {navigateToAchievements()}),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                dense: true,
+                title: text16LeftBoldGrey("Logout"),
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool("loggedIn", false);
+                  navigateToLogin(context);
+                }),
+          ],
+        )));
+  }
 }
-
-Widget text2(String text, double font){
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: font,
-      fontFamily: 'Helvetica',
-      fontWeight: FontWeight.bold,
-      color: Colors.grey
-    ),
-  );
-}
-//================================== TEXT TEMPLATES =============================
-

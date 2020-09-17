@@ -4,14 +4,12 @@ import 'package:ERP_RANGER/services/api/graphQL.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 import 'package:social_share/social_share.dart';
 import 'package:image_downloader/image_downloader.dart';
 
 class IdentificationViewModel extends BaseViewModel {
-  final NavigationService _navigationService = locator<NavigationService>();
-  final DialogService _dialogService = locator<DialogService>();
   final Api _api = locator<GraphQL>();
+  //final Api _api = locator<MockApi>();
 
   SpoorModel _confident;
   List<SpoorModel> _recentIdentifications;
@@ -28,10 +26,6 @@ class IdentificationViewModel extends BaseViewModel {
   List<SpoorModel> get recentIdentifications => _recentIdentifications;
   SimilarSpoorModel get similarSpoorModel => _similarSpoorModel;
 
-  String url =
-      "https://images.unsplash.com/photo-1596467328033-1122519a3b16?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2134&q=80";
-  String get getUrl => url;
-
   Future<void> shareImage() async {
     try {
       // Saved with this method.
@@ -41,10 +35,7 @@ class IdentificationViewModel extends BaseViewModel {
       }
 
       // Below is a method of obtaining saved image information.
-      var fileName = await ImageDownloader.findName(imageId);
       var path = await ImageDownloader.findPath(imageId);
-      var size = await ImageDownloader.findByteSize(imageId);
-      var mimeType = await ImageDownloader.findMimeType(imageId);
       SocialShare.shareOptions("Check out this track", imagePath: path);
     } on PlatformException catch (error) {
       print(error);
@@ -83,8 +74,6 @@ class IdentificationViewModel extends BaseViewModel {
         notifyListeners();
       }
     }
-    //date = value;
-    //setEditDate();
   }
 
 //=======================Date================================
@@ -121,7 +110,6 @@ class IdentificationViewModel extends BaseViewModel {
         notifyListeners();
       }
     }
-    ;
   }
 //=======================Lat================================
 
@@ -157,7 +145,6 @@ class IdentificationViewModel extends BaseViewModel {
         notifyListeners();
       }
     }
-    ;
   }
 //=======================Long================================
 
@@ -178,7 +165,6 @@ class IdentificationViewModel extends BaseViewModel {
       _confident.name = value;
       setEditSpoorName();
     }
-    ;
   }
 //=======================Confident Name================================
 
@@ -199,7 +185,6 @@ class IdentificationViewModel extends BaseViewModel {
       _confident.name = value;
       setEditSpoorSpecies();
     }
-    ;
   }
 
 //=======================Confident Species================================

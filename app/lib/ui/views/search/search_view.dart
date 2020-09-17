@@ -1,14 +1,9 @@
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/search/search_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:path/path.dart';
-
-SearchModel searchModel7 = SearchModel(
-    commonName: "Buffalo",
-    species: "Cape Buffalo",
-    image:
-        "https://images.unsplash.com/photo-1508605375977-9fe795aea86a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1148&q=80");
+import 'package:shared_preferences/shared_preferences.dart';
 
 List<SearchModel> searchList = new List<SearchModel>();
 List<SearchModel> displayList = new List<SearchModel>();
@@ -23,7 +18,81 @@ class SearchView extends StatelessWidget {
           future: model.getSearchList(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return text("Error", 20);
+              return Scaffold(
+                drawer: NavDrawer(),
+                appBar: AppBar(
+                  leading: Builder(
+                    builder: (BuildContext context) {
+                      return model.newNotifications == false
+                          ? IconButton(
+                              icon: const Icon(Icons.menu),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context)
+                                  .openAppDrawerTooltip,
+                            )
+                          : IconButton(
+                              icon: new Stack(
+                                children: [
+                                  new Icon(Icons.menu),
+                                  new Positioned(
+                                    right: 0,
+                                    child: new Container(
+                                        padding: EdgeInsets.all(1),
+                                        decoration: new BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        constraints: BoxConstraints(
+                                          minWidth: 12,
+                                          minHeight: 12,
+                                        ),
+                                        child: Container(
+                                          height: 5,
+                                          width: 5,
+                                          decoration: new BoxDecoration(
+                                            color: Colors.red,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        )),
+                                  )
+                                ],
+                              ),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context)
+                                  .openAppDrawerTooltip,
+                            );
+                    },
+                  ),
+                  title: text22LeftBoldWhite("ERP RANGER"),
+                  actions: <Widget>[
+                    IconBuilder(
+                        icon: Icons.search, colors: Colors.white, index: 0),
+                  ],
+                  flexibleSpace: Container(
+                    padding: EdgeInsets.zero,
+                    margin: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: <Color>[
+                          Color.fromRGBO(33, 78, 125, 1),
+                          Color.fromRGBO(80, 156, 208, 1)
+                        ])),
+                  ),
+                  bottom:
+                      TabBar(key: Key('SearchTab'), indicatorWeight: 3, tabs: [
+                    tabBarTitles("ANIMAL", context),
+                    tabBarTitles("SPECIES", context),
+                  ]),
+                ),
+                body: internetError(snapshot.error.toString()),
+              );
             }
             if (snapshot.hasData) {
               displayList.clear();
@@ -33,33 +102,102 @@ class SearchView extends StatelessWidget {
               return WillPopScope(
                 onWillPop: () async {
                   if (Navigator.canPop(context)) {
-                    model.navigate(context);
+                    navigate(context);
                   }
                   return;
                 },
                 child: DefaultTabController(
+                    key: Key('DefaultTabController'),
                     length: 2,
                     child: Scaffold(
+                      drawer: NavDrawer(),
                       appBar: AppBar(
-                        backgroundColor: Colors.black,
-                        title: text("Search View", 25),
+                        leading: Builder(
+                          builder: (BuildContext context) {
+                            return model.newNotifications == false
+                                ? IconButton(
+                                    icon: const Icon(Icons.menu),
+                                    onPressed: () {
+                                      Scaffold.of(context).openDrawer();
+                                    },
+                                    tooltip: MaterialLocalizations.of(context)
+                                        .openAppDrawerTooltip,
+                                  )
+                                : IconButton(
+                                    icon: new Stack(
+                                      children: [
+                                        new Icon(Icons.menu),
+                                        new Positioned(
+                                          right: 0,
+                                          child: new Container(
+                                              padding: EdgeInsets.all(1),
+                                              decoration: new BoxDecoration(
+                                                color: Colors.red,
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              constraints: BoxConstraints(
+                                                minWidth: 12,
+                                                minHeight: 12,
+                                              ),
+                                              child: Container(
+                                                height: 5,
+                                                width: 5,
+                                                decoration: new BoxDecoration(
+                                                  color: Colors.red,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                              )),
+                                        )
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Scaffold.of(context).openDrawer();
+                                    },
+                                    tooltip: MaterialLocalizations.of(context)
+                                        .openAppDrawerTooltip,
+                                  );
+                          },
+                        ),
+                        title: text22LeftBoldWhite("ERP RANGER"),
                         actions: <Widget>[
                           IconBuilder(
-                              icon: Icons.search, colors: Colors.grey, index: 0)
+                              icon: Icons.search,
+                              colors: Colors.white,
+                              index: 0),
                         ],
-                        bottom: TabBar(tabs: [
-                          text("ANIMAL", 15),
-                          text("SPECIES", 15),
-                        ]),
+                        flexibleSpace: Container(
+                          padding: EdgeInsets.zero,
+                          margin: EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: <Color>[
+                                Color.fromRGBO(33, 78, 125, 1),
+                                Color.fromRGBO(80, 156, 208, 1)
+                              ])),
+                        ),
+                        bottom: TabBar(
+                            key: Key('SearchTab'),
+                            indicatorWeight: 3,
+                            tabs: [
+                              tabBarTitles("ANIMAL", context),
+                              tabBarTitles("SPECIES", context),
+                            ]),
                       ),
                       body: Container(
+                          key: Key('SearchCon'),
                           color: Colors.grey[200],
                           child: TabBarView(
+                            key: Key('SearchTabBar'),
                             children: <Widget>[
                               ListBody(
+                                key: Key('SearchBodyA'),
                                 animalList: snapshot.data.animals,
                               ),
                               ListBody(
+                                key: Key('SearchBodyS'),
                                 animalList: snapshot.data.species,
                               ),
                             ],
@@ -67,11 +205,59 @@ class SearchView extends StatelessWidget {
                     )),
               );
             } else {
-              return text("Null no Data", 20);
+              return progressIndicator();
             }
           }),
       viewModelBuilder: () => SearchViewModel(),
     );
+  }
+}
+
+class NavDrawer extends ViewModelWidget<SearchViewModel> {
+  //List<HomeModel> animalList;
+  NavDrawer({Key key}) : super(reactive: true);
+
+  @override
+  Widget build(BuildContext context, SearchViewModel model) {
+    return Container(
+        color: Colors.white,
+        width: 225,
+        child: Drawer(
+            child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/ERP_Tech.png'))),
+              child: null,
+            ),
+            ListTile(
+                leading: Icon(Icons.account_circle),
+                title: text16LeftBoldGrey("Profile"),
+                dense: true,
+                onTap: () => {navigateToProfile()}),
+            ListTile(
+                leading: model.newNotifications == false
+                    ? Icon(Icons.verified_user)
+                    : badge,
+                title: text16LeftBoldGrey("Achievements"),
+                dense: true,
+                onTap: () => {navigateToAchievements()}),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                dense: true,
+                title: text16LeftBoldGrey("Logout"),
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool("loggedIn", false);
+                  navigateToLogin(context);
+                }),
+          ],
+        )));
   }
 }
 
@@ -96,7 +282,7 @@ class IconBuilder extends ViewModelWidget<SearchViewModel> {
             if (index == 0) {
               showSearch(context: context, delegate: DataSearch(model: model));
             } else {
-              model.navigateToInfo(name.toLowerCase());
+              navigateToInfo(name);
             }
           }),
     );
@@ -110,19 +296,13 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
   @override
   Widget build(BuildContext context, SearchViewModel model) {
     return ListView.builder(
+        key: Key('ListAnimals'),
         itemCount: animalList.length,
         itemBuilder: (context, index) {
           return animalList[index].image == ""
               ? Container(
                   margin: new EdgeInsets.only(left: 30, top: 17, bottom: 10),
-                  child: Text(
-                    animalList[index].commonName,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        fontFamily: 'Arciform',
-                        color: Colors.grey),
-                  ),
+                  child: text16LeftBoldGrey(animalList[index].commonName),
                 )
               : Container(
                   margin: new EdgeInsets.all(12),
@@ -135,107 +315,17 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
                   child: ListTile(
                     dense: true,
                     leading: imageBlock(animalList[index].image),
-                    title: text4(animalList[index].species, 17),
-                    subtitle: text4(animalList[index].commonName, 13),
+                    title: text16LeftBoldGrey(animalList[index].species),
+                    subtitle: text12LeftBoldGrey(animalList[index].commonName),
                     trailing: IconBuilder(
-                      icon: Icons.remove_red_eye,
-                      colors: Colors.grey,
-                      index: 1,
-                      name: animalList[index].commonName,
-                    ),
+                        icon: Icons.remove_red_eye,
+                        colors: Colors.grey,
+                        index: 1,
+                        name: animalList[index].species),
                   ),
                 );
         });
   }
-}
-
-Widget imageBlock(String image) {
-  return Container(
-    alignment: Alignment.center,
-    // margin: new EdgeInsets.only(bottom:10, left:15,right:10,top:10 ),
-    //padding: new EdgeInsets.all(5),
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: NetworkImage(image),
-        fit: BoxFit.fill,
-      ),
-      color: Colors.grey,
-      borderRadius: BorderRadius.circular(10),
-    ),
-    height: 50,
-    width: 50,
-  );
-}
-
-//================================== TEXT TEMPLATES =============================
-Widget text(String text, double font) {
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-        fontSize: font,
-        fontFamily: 'Helvetica',
-        fontWeight: FontWeight.bold,
-        color: Colors.white),
-  );
-}
-
-Widget text2(String text, double font) {
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-        fontSize: font,
-        fontFamily: 'Helvetica',
-        fontWeight: FontWeight.bold,
-        color: Colors.grey),
-  );
-}
-
-Widget text3(String text, double font) {
-  return Text(
-    text,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-        fontSize: font,
-        fontFamily: 'Helvetica',
-        fontWeight: FontWeight.normal,
-        color: Colors.grey),
-  );
-}
-
-Widget text4(String text, double font) {
-  return Text(
-    text,
-    textAlign: TextAlign.left,
-    style: TextStyle(
-        fontSize: font,
-        fontFamily: 'Helvetica',
-        fontWeight: FontWeight.bold,
-        color: Colors.grey),
-  );
-}
-
-Widget text5(String text, double font) {
-  return Text(
-    text,
-    textAlign: TextAlign.right,
-    style: TextStyle(
-        fontSize: font,
-        fontFamily: 'Helvetica',
-        fontWeight: FontWeight.bold,
-        color: Colors.grey),
-  );
-}
-
-//================================== TEXT TEMPLATES =============================
-Widget iconButton(var model) {
-  return IconButton(
-      icon: Icon(Icons.remove_red_eye),
-      onPressed: () {
-        print("object");
-        model.navigateToInformation();
-      });
 }
 
 class DataSearch extends SearchDelegate<List<SearchModel>> {
@@ -302,11 +392,39 @@ class DataSearch extends SearchDelegate<List<SearchModel>> {
             child: ListTile(
               dense: true,
               leading: imageBlock(suggestionList[index].image),
-              title: text4(suggestionList[index].species, 17),
-              subtitle: text4(suggestionList[index].commonName, 13),
+              title: text16LeftBoldGrey(suggestionList[index].species),
+              subtitle: text16LeftBoldGrey(suggestionList[index].commonName),
               trailing: iconButton(model),
             ),
           );
         });
   }
+}
+
+Widget imageBlock(String image) {
+  return Container(
+    alignment: Alignment.center,
+    // margin: new EdgeInsets.only(bottom:10, left:15,right:10,top:10 ),
+    //padding: new EdgeInsets.all(5),
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: NetworkImage(image),
+        //image: AssetImage(image),
+        fit: BoxFit.fill,
+      ),
+      color: Colors.grey,
+      borderRadius: BorderRadius.circular(10),
+    ),
+    height: 50,
+    width: 50,
+  );
+}
+
+Widget iconButton(var model) {
+  return IconButton(
+      icon: Icon(Icons.remove_red_eye),
+      onPressed: () {
+        print("object");
+        model.navigateToInformation();
+      });
 }

@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
-import 'package:ERP_RANGER/services/api/fake_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
+import 'package:badges/badges.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,15 +12,13 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:progress_indicators/progress_indicators.dart';
-import 'package:ERP_RANGER/assets/my_custom_icons.dart';
-import 'package:geolocator/geolocator.dart';
 
 import 'api/graphQL.dart';
 
 final NavigationService _navigationService = locator<NavigationService>();
 final Api _api = locator<GraphQL>();
+//final Api _api = locator<MockApi>();
 
 //============================ Functionality Section ==================================//
 
@@ -227,8 +224,16 @@ void navigate(context) {
   Navigator.popUntil(context, ModalRoute.withName('/'));
 }
 
+void navigateToAchievements() {
+  _navigationService.navigateTo(Routes.achievementsViewRoute);
+}
+
 void navigateBack(context) {
   Navigator.of(context).pop();
+}
+
+void navigateToHomeView() {
+  _navigationService.navigateTo(Routes.homeViewRoute);
 }
 
 void navigateToSearchView() {
@@ -240,15 +245,13 @@ void navigateToProfile() {
 }
 
 void navigateToInfo(String name) async {
-  print(name);
   InfoModel infoModel = await _api.getInfoModel(name);
   _navigationService.navigateTo(Routes.informationViewRoute,
       arguments: InformationViewArguments(animalInfo: infoModel));
 }
 
 void navigateToGallery(String i) async {
-  print(i);
-  GalleryModel galleryModel = await _api.getGalleryModel(i.toLowerCase());
+  GalleryModel galleryModel = await _api.getGalleryModel(i);
   _navigationService.navigateTo(Routes.gallerylViewRoute,
       arguments: GalleryViewArguments(galleryModel: galleryModel));
 }
@@ -270,32 +273,95 @@ Widget logo = new Container(
   //margin: new EdgeInsets.only(right:5,left:5),
   padding: new EdgeInsets.all(5),
   decoration: BoxDecoration(
-    color: Colors.grey,
+    color: Colors.white,
     borderRadius: BorderRadius.circular(10),
+    border: Border.all(width: 2.0, color: Colors.black),
     image: DecorationImage(
-      image: AssetImage("assets/images/logo.jpeg"),
+      image: AssetImage("assets/images/ERP_Tech.png"),
       fit: BoxFit.fill,
     ),
   ),
-  height: 130,
-  width: 130,
+  height: 150,
+  width: 150,
 );
 
+Widget internetImage = new Container(
+  alignment: Alignment.center,
+  padding: new EdgeInsets.all(5),
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+    image: DecorationImage(
+      image: AssetImage("assets/images/internet.png"),
+      fit: BoxFit.fill,
+    ),
+  ),
+  height: 250,
+  width: 250,
+);
+
+Widget serverImage = new Container(
+  alignment: Alignment.center,
+  padding: new EdgeInsets.all(5),
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+    image: DecorationImage(
+      image: AssetImage("assets/images/serverError.jpg"),
+      fit: BoxFit.fill,
+    ),
+  ),
+  height: 250,
+  width: 250,
+);
+
+Widget internetError(String errorMessage) {
+  return errorMessage == "No Internet Connection"
+      ? Container(
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                internetImage,
+                Container(
+                    margin: new EdgeInsets.only(
+                        right: 20, left: 20, top: 20, bottom: 100),
+                    child: text22CenterNormBlack(errorMessage)),
+              ],
+            ),
+          ),
+        )
+      : Container(
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                serverImage,
+                Container(
+                    margin: new EdgeInsets.only(
+                        right: 20, left: 20, top: 20, bottom: 100),
+                    child: text22CenterNormBlack(errorMessage)),
+              ],
+            ),
+          ),
+        );
+}
+
+Widget badge = new Badge(
+    badgeColor: Colors.red,
+    badgeContent: Container(),
+    child: Icon(Icons.verified_user));
+
 Widget tabBarTitles(String title, var context) {
-  return Text(title,
-      textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.headline3);
+  return text12CenterBoldWhite(title);
 }
 
 Widget progressIndicator() {
   return Container(
+      key: Key('progressIndicator'),
       color: Colors.white,
       child: Center(
-        child: HeartbeatProgressIndicator(
-          child: new Directionality(
-              textDirection: TextDirection.rtl,
-              child: Icon(MyCustomIcons.logo)),
-        ),
+        child: Image.asset('assets/images/loading.gif'),
       ));
 }
 
@@ -308,22 +374,39 @@ Widget appBarTitle(String title, var context) {
 }
 
 Widget imageBlock(String imageLink) {
-  return Container(
-    alignment: Alignment.center,
-    margin: new EdgeInsets.only(
-      left: 15,
-      right: 10,
-    ),
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: NetworkImage(imageLink),
-        fit: BoxFit.fill,
-      ),
-      color: Colors.grey,
-      borderRadius: BorderRadius.circular(15),
-    ),
-    height: 75,
-  );
+  return imageLink == "N/A"
+      ? Container(
+          alignment: Alignment.center,
+          margin: new EdgeInsets.only(
+            left: 15,
+            right: 10,
+          ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/logo.jpeg"),
+              fit: BoxFit.fill,
+            ),
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          height: 75,
+        )
+      : Container(
+          alignment: Alignment.center,
+          margin: new EdgeInsets.only(
+            left: 15,
+            right: 10,
+          ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(imageLink),
+              fit: BoxFit.fill,
+            ),
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          height: 75,
+        );
 }
 
 Widget textColumn(String name, String time, String species, String location,
@@ -424,8 +507,15 @@ Widget textRow(String accuracy) {
 }
 
 Widget bottomNavigationText(String title, var context) {
-  return Text(title,
-      textAlign: TextAlign.right, style: Theme.of(context).textTheme.subtitle1);
+  return Text(
+    title,
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+      fontFamily: 'MavenPro',
+    ),
+  );
 }
 
 Widget percentageText(String title, double font) {

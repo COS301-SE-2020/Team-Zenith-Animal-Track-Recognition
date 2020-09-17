@@ -5,6 +5,7 @@ import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:badges/badges.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key key}) : super(key: key);
@@ -18,28 +19,80 @@ class HomeView extends StatelessWidget {
       builder: (context, model, child) => FutureBuilder(
           future: model.getRecentIdentifications(),
           builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return progressIndicator();
-            }
             if (snapshot.hasData) {
               return snapshot.hasData
                   ? Scaffold(
-                      drawer: NavDrawer(),
+                      drawer: HomeNavDrawer(),
                       appBar: AppBar(
-                        //automaticallyImplyLeading: true,
-                        backgroundColor: Colors.black,
-                        title: text18LeftBoldWhite(
-                          "Recent Indentifications",
+                        leading: Builder(
+                          builder: (BuildContext context) {
+                            return model.newNotifications == false
+                                ? IconButton(
+                                    icon: const Icon(Icons.menu),
+                                    onPressed: () {
+                                      Scaffold.of(context).openDrawer();
+                                    },
+                                    tooltip: MaterialLocalizations.of(context)
+                                        .openAppDrawerTooltip,
+                                  )
+                                : IconButton(
+                                    icon: new Stack(
+                                      children: [
+                                        new Icon(Icons.menu),
+                                        new Positioned(
+                                          right: 0,
+                                          child: new Container(
+                                              padding: EdgeInsets.all(1),
+                                              decoration: new BoxDecoration(
+                                                color: Colors.red,
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              constraints: BoxConstraints(
+                                                minWidth: 12,
+                                                minHeight: 12,
+                                              ),
+                                              child: Container(
+                                                height: 5,
+                                                width: 5,
+                                                decoration: new BoxDecoration(
+                                                  color: Colors.red,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                              )),
+                                        )
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Scaffold.of(context).openDrawer();
+                                    },
+                                    tooltip: MaterialLocalizations.of(context)
+                                        .openAppDrawerTooltip,
+                                  );
+                          },
+                        ),
+                        title: text22LeftBoldWhite(
+                          "ERP RANGER",
                         ),
                         actions: <Widget>[
-                          IconBuilder(icon: Icons.search, type: "search"),
-                          IconBuilder(icon: Icons.more_vert, type: "vert")
+                          IconBuilder(icon: Icons.search),
                         ],
+                        flexibleSpace: Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: <Color>[
+                                Color.fromRGBO(33, 78, 125, 1),
+                                Color.fromRGBO(80, 156, 208, 1)
+                              ])),
+                        ),
                       ),
                       body: Container(
+                        key: Key('List'),
                         padding: EdgeInsets.all(10),
                         color: Colors.grey[300],
-                        child: ListBody(animalList: snapshot.data),
+                        child: HomeListBody(animalList: model.animals),
                       ),
                       bottomNavigationBar: BottomNavigation(),
                       floatingActionButton: FloatingActionButton(
@@ -49,7 +102,7 @@ class HomeView extends StatelessWidget {
                         child: Icon(
                           Icons.camera_alt,
                         ),
-                        backgroundColor: Colors.black,
+                        backgroundColor: Color.fromRGBO(205, 21, 67, 1),
                       ),
                     )
                   : progressIndicator();
@@ -63,9 +116,8 @@ class HomeView extends StatelessWidget {
 }
 
 class IconBuilder extends ViewModelWidget<HomeViewModel> {
-  String type;
   IconData icon;
-  IconBuilder({Key key, this.icon, this.type}) : super(reactive: true);
+  IconBuilder({Key key, this.icon}) : super(reactive: true);
 
   @override
   Widget build(BuildContext context, HomeViewModel model) {
@@ -73,35 +125,38 @@ class IconBuilder extends ViewModelWidget<HomeViewModel> {
       margin: EdgeInsets.all(0),
       padding: EdgeInsets.all(0),
       child: IconButton(
+          key: Key('Search'),
           padding: EdgeInsets.all(0),
           icon: Icon(icon, color: Colors.white),
           onPressed: () {
-            if (type == "search") {
-              navigateToSearchView();
-            } else {}
+            navigateToSearchView();
           }),
     );
   }
 }
 //========================== APPBAR ICONS =======================
 
-class ListBody extends ViewModelWidget<HomeViewModel> {
+class HomeListBody extends ViewModelWidget<HomeViewModel> {
   List<HomeModel> animalList;
-  ListBody({Key key, this.animalList}) : super(reactive: true);
+  HomeListBody({Key key, this.animalList}) : super(reactive: true);
 
   @override
   Widget build(BuildContext context, HomeViewModel model) {
+    model.getRecentIdentifications();
     return ListView.builder(
+        key: Key('HomeListBody'),
         itemCount: animalList.length,
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
         itemBuilder: (context, index) {
           return GestureDetector(
+            key: Key('TrackID'),
             onTap: () {
               navigateToIdentification(animalList[index].id);
             },
             child: Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
-              elevation: 0,
               margin: new EdgeInsets.all(10),
               child: Container(
                 padding: new EdgeInsets.all(0),
@@ -142,7 +197,13 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
                                 margin: new EdgeInsets.only(
                                     left: 15, right: 10, bottom: 6),
                                 decoration: BoxDecoration(
-                                    color: Colors.black,
+                                    gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: <Color>[
+                                          Color.fromRGBO(33, 78, 125, 1),
+                                          Color.fromRGBO(80, 156, 208, 1)
+                                        ]),
                                     borderRadius: BorderRadius.circular(10)),
                                 child: text12LeftBoldWhite(
                                   animalList[index].tag,
@@ -155,7 +216,6 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
                                 alignment: Alignment.center,
                                 margin:
                                     new EdgeInsets.only(right: 10, bottom: 6),
-                                //decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(10)),
                                 child: textRow(animalList[index].score),
                               ),
                             ),
@@ -170,46 +230,49 @@ class ListBody extends ViewModelWidget<HomeViewModel> {
   }
 }
 
-class NavDrawer extends ViewModelWidget<HomeViewModel> {
-  //List<HomeModel> animalList;
-  NavDrawer({Key key}) : super(reactive: true);
+class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
+  HomeNavDrawer({Key key}) : super(reactive: true);
 
   @override
   Widget build(BuildContext context, HomeViewModel model) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: text22LeftBoldWhite("Side Menu"),
-            decoration: BoxDecoration(
-                color: Colors.grey,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/springbok.jpg'))),
-          ),
-          ListTile(
-              leading: Icon(Icons.verified_user),
-              title: text16LeftBoldGrey("Profile"),
-              onTap: () => {navigateToProfile()}),
-          ListTile(
-              leading: Icon(Icons.settings),
-              title: text16LeftBoldGrey("Settings"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.edit),
-              title: text16LeftBoldGrey("Preference"),
-              onTap: () => {}),
-          ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: text16LeftBoldGrey("Logout"),
-              onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setBool("loggedIn", false);
-                navigateToLogin(context);
-              }),
-        ],
-      ),
-    );
+    return Container(
+        color: Colors.white,
+        width: 225,
+        child: Drawer(
+            child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/ERP_Tech.png'))),
+              child: null,
+            ),
+            ListTile(
+                leading: Icon(Icons.account_circle),
+                title: text16LeftBoldGrey("Profile"),
+                dense: true,
+                onTap: () => {navigateToProfile()}),
+            ListTile(
+                leading: model.newNotifications == false
+                    ? Icon(Icons.verified_user)
+                    : badge,
+                title: text16LeftBoldGrey("Achievements"),
+                dense: true,
+                onTap: () => {navigateToAchievements()}),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                dense: true,
+                title: text16LeftBoldGrey("Logout"),
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool("loggedIn", false);
+                  navigateToLogin(context);
+                }),
+          ],
+        )));
   }
 }
