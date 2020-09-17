@@ -586,7 +586,7 @@ const RootQuery = new GraphQLObjectType({
                 })
                 let events=[]
                 if (!args.rangerID==undefined)
-                let events = _.filter(spoorIdentificationData, {
+                events = _.filter(spoorIdentificationData, {
                     ranger: args.rangerID
                 })
                 else
@@ -627,7 +627,7 @@ const RootQuery = new GraphQLObjectType({
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 animalID: {
-                    type: new GraphQLNonNull(GraphQLString)
+                    type: GraphQLString
                 },
             },
             resolve(parent, args) {
@@ -640,9 +640,13 @@ const RootQuery = new GraphQLObjectType({
                 if (a == null) {
                     return null;
                 }
-                let events = _.filter(spoorIdentificationData, {
+                let events=[]
+                if (args.animalID!=undefined)
+                events = _.filter(spoorIdentificationData, {
                     animal: args.animalID
                 })
+                else
+                events = _.filter(spoorIdentificationData, true)
                 let imgs = _.find(animalData, {
                     animalID: args.animalID
                 })
