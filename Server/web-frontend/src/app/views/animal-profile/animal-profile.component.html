@@ -12,10 +12,9 @@
         </div>
         <div id="animals-toolbar">
             <mat-select id="animals-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
-                <mat-option>Add New Image</mat-option>
-                <mat-option (click)="openEditAnimalDialog()">Edit Information</mat-option>
+                <mat-option (click)="openAddNewImageDialog()">Add New Image</mat-option>
+                <mat-option (click)="openEditAnimalDialog(0)">Edit Information</mat-option>
                 <mat-option (click)="viewAnimalPhotos(animal.classification)">View Photos</mat-option>
-                <mat-option>Upload Identification</mat-option>
             </mat-select>
         </div>
     </div>
@@ -25,7 +24,7 @@
                 <div id="animal-profile-info-image-container">
                     <div id="animal-profile-info-image">
                         <div id="animal-profile-info-image-wrapper">
-                            <img src="{{animal.pictures[0].URL}}" alt="Picture of {{animal.commonName}}, {{animal.classification}}">
+                            <img *ngIf="animal" src="{{animal.pictures[0].URL}}" alt="Picture of {{animal.commonName}}, {{animal.classification}}">
                         </div>
                     </div>
                 </div>
@@ -33,7 +32,7 @@
                     <div id="animal-profile-info-details" class="animal-profile-title-container">
                         <div>
                             <h1 class="fontSB" *ngIf="animal">{{animal.classification | titlecase }}</h1>
-                            <button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>
+                            <button mat-flat-button class="buttonColour" (click)="openEditAnimalDialog(1)">Edit</button>
                         </div>
                         <p class="fontM" *ngIf="animal">{{animal.commonName}}</p>
                     </div>
@@ -43,13 +42,13 @@
                             <div id="animal-height-female" class="animal-biometric-content">
                                 <span>
 									<i class="fa fa-venus animal-female-icon" aria-hidden="true"></i>
-									<p class="fontM">{{animal.heightF}}cm</p>
+									<p class="fontM" *ngIf="animal">{{animal.heightF}} cm</p>
 								</span>
                             </div>
                             <div class="animal-biometric-content">
                                 <span>
 									<i class="fa fa-mars animal-male-icon" aria-hidden="true"></i>
-									<p class="fontM">{{animal.heightM}}cm</p>
+									<p class="fontM" *ngIf="animal">{{animal.heightM}} cm</p>
 								</span>
                             </div>
                         </div>
@@ -58,32 +57,32 @@
                             <div id="animal-weight-female" class="animal-biometric-content">
                                 <span>
 									<i class="fa fa-venus animal-female-icon" aria-hidden="true"></i>
-									<p class="fontM">{{animal.weightF}}kg</p>
+									<p class="fontM" *ngIf="animal">{{animal.weightF}} kg</p>
 								</span>
                             </div>
                             <div class="animal-biometric-content">
                                 <span>
 									<i class="fa fa-mars animal-male-icon" aria-hidden="true"></i>
-									<p class="fontM">{{animal.weightM}}kg</p>
+									<p class="fontM" *ngIf="animal">{{animal.weightM}} kg</p>
 								</span>
                             </div>
                         </div>
                         <div id="animal-profile-info-biometrics-gestation" class="animal-biometrics-container">
                             <p class="fontM">Gestation Period</p>
                             <div class="animal-biometric-content">
-                                <p class="fontM">{{animal.gestationPeriod}}</p>
+                                <p class="fontM" *ngIf="animal">{{animal.gestationPeriod}}</p>
                             </div>
                             <div class="animal-biometric-content">
-                                <p class="fontM">{{animal.Offspring}} Offspring</p>
+                                <p class="fontM" *ngIf="animal">{{animal.Offspring}} {{getOffspringType(animal.dietType, animal.Offspring)}}</p>
                             </div>
                         </div>
                         <div class="animal-biometrics-container">
                             <p class="fontM">Lifespan & Diet</p>
                             <div class="animal-biometric-content">
-                                <p class="fontM">{{animal.lifeSpan}}</p>
+                                <p class="fontM" *ngIf="animal">{{animal.lifeSpan}}</p>
                             </div>
                             <div class="animal-biometric-content">
-                                <p class="fontM">{{animal.dietType}}</p>
+                                <p class="fontM" *ngIf="animal">{{animal.dietType}}</p>
                             </div>
                         </div>
                     </div>
@@ -97,10 +96,6 @@
                 <div id="animal-profile-statistics-title" class="animal-profile-title-container">
                     <div>
                         <h1 class="fontSB">Statistics</h1>
-                    </div>
-                    <div id="animal-profile-statistics-toggle">
-                        <p class="fontM activeStat">Ranger Statistics</p>
-                        <p class="fontM">Animal Statistics</p>
                     </div>
                 </div>
                 <div id="animal-profile-statistics">
@@ -173,19 +168,9 @@
                                     <mat-divider></mat-divider>
                                     <div id="animal-profile-information-quicklinks-list">
                                         <mat-selection-list #shoes [multiple]="false">
-                                            <div mat-subheader class="animal-profile-information-quicklinks-subheader">Animal Description</div>
-                                            <mat-list-option (click)="navigateToSection('animal-profile-information-description-section')">Description</mat-list-option>
-                                            <div mat-subheader class="animal-profile-information-quicklinks-subheader">Animal Behaviour</div>
-                                            <mat-list-option (click)="navigateToSection('animal-profile-information-fbehaviour-section')">Female Behaviour</mat-list-option>
-                                            <mat-list-option (click)="navigateToSection('animal-profile-information-mbehaviour-section')">Male Behaviour</mat-list-option>
-                                            <!--<div mat-subheader class="animal-profile-information-quicklinks-subheader">Habitat Information</div>
-                                            <mat-list-option (click)="navigateToSection('animal-profile-information-habitatdescrip-section')">Habitat Description</mat-list-option>
-                                            <mat-list-option (click)="navigateToSection('animal-profile-information-habitatfeatures-section')">Distinguishing Features</mat-list-option>-->
-                                            <div mat-subheader class="animal-profile-information-quicklinks-subheader">Threat Information</div>
-                                            <mat-list-option (click)="navigateToSection('animal-profile-information-fthreat-section')">Female Behaviour</mat-list-option>
-                                            <mat-list-option (click)="navigateToSection('animal-profile-information-fthreat-section')">Threat Level</mat-list-option>
-                                            <mat-list-option (click)="navigateToSection('animal-profile-information-mthreat-section')">Male Behaviour</mat-list-option>
-                                            <mat-list-option (click)="navigateToSection('animal-profile-information-mthreat-section')">Threat Level</mat-list-option>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-description-section')">Animal Description</mat-list-option>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-fbehaviour-section')">Animal Behaviour</mat-list-option>
+                                            <mat-list-option (click)="navigateToSection('animal-profile-information-fthreat-section')">Animal Threat</mat-list-option>
                                         </mat-selection-list>
                                     </div>
                                 </div>
@@ -195,7 +180,7 @@
                                     <div id="animal-profile-information-description" class="animal-profile-information-content">
                                         <div id="animal-profile-information-description-title" class="animal-profile-information-content-title">
                                             <h1 class="fontSB">Animal Description</h1>
-                                            <button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>
+                                            <button mat-flat-button class="buttonColour" (click)="openEditAnimalDialog()">Edit</button>
                                         </div>
                                         <mat-divider></mat-divider>
                                         <div id="animal-profile-information-content">
@@ -214,7 +199,7 @@
                                     <div id="animal-profile-information-behaviour" class="animal-profile-information-content">
                                         <div id="animal-profile-information-behaviour-title" class="animal-profile-information-content-title">
                                             <h1 class="fontSB">Behavioural Information</h1>
-                                            <button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>
+                                            <button mat-flat-button class="buttonColour" (click)="openEditAnimalDialog(3)">Edit</button>
                                         </div>
                                         <mat-divider></mat-divider>
                                         <div id="animal-profile-information-content">
@@ -223,7 +208,7 @@
                                                     <h2 class="fontSB">Female Behaviour</h2>
                                                 </div>
                                                 <div class="animal-profile-information-text">
-                                                    <p class="fontM" *ngIf="animal">{{animal.typicalBehaviourF['behaviour']}}</p>
+                                                    <p class="fontM" *ngIf="animal">{{animal.typicalBehaviourF.behaviour}}</p>
                                                 </div>
                                             </div>
                                             <div id="animal-profile-information-mbehaviour-section" class="animal-profile-information-section">
@@ -231,14 +216,13 @@
                                                     <h2 class="fontSB">Male Behaviour</h2>
                                                 </div>
                                                 <div class="animal-profile-information-text">
-                                                    <p class="fontM" *ngIf="animal">{{animal.typicalBehaviourM['behaviour']}}</p>
+                                                    <p class="fontM" *ngIf="animal">{{animal.typicalBehaviourF.behaviour}}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!--
-                                <div id="animal-profile-information-habitat-container" class="animal-profile-information-content-container">
+                                <!--div id="animal-profile-information-habitat-container" class="animal-profile-information-content-container">
                                     <div id="animal-profile-information-habitat" class="animal-profile-information-content">
                                         <div class="animal-profile-information-content-title">
                                             <h1 class="fontSB">Habitat Information</h1>
@@ -264,29 +248,29 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>-->
+                                </div-->
                                 <div id="animal-profile-information-threat-container" class="animal-profile-information-content-container">
                                     <div id="animal-profile-information-threat" class="animal-profile-information-content">
                                         <div class="animal-profile-information-content-title">
                                             <h1 class="fontSB">Threat Information</h1>
-                                            <button mat-flat-button (click)="openEditAnimalDialog()">Edit</button>
+                                            <button mat-flat-button class="buttonColour" (click)="openEditAnimalDialog(6)">Edit</button>
                                         </div>
                                         <mat-divider></mat-divider>
                                         <div id="animal-profile-information-content">
                                             <div id="animal-profile-information-fthreat-section" class="animal-profile-information-section">
                                                 <div class="animal-profile-information-subtitle">
-                                                    <h2 class="fontSB">Female Threat Behaviour</h2>
+                                                    <h2 class="fontSB">Female Threat Level</h2>
                                                 </div>
                                                 <div class="animal-profile-information-text">
-                                                    <p class="fontM" *ngIf="animal">{{animal.typicalBehaviourF['threatLevel']}}</p>
+                                                    <p class="fontM" *ngIf="animal">{{animal.typicalBehaviourF.threatLevel}}</p>
                                                 </div>
                                             </div>
                                             <div id="animal-profile-information-mthreat-section" class="animal-profile-information-section">
                                                 <div class="animal-profile-information-subtitle">
-                                                    <h2 class="fontSB">Male Threat Behaviour</h2>
+                                                    <h2 class="fontSB">Male Threat Level</h2>
                                                 </div>
                                                 <div class="animal-profile-information-text">
-                                                    <p class="fontM" *ngIf="animal">{{animal.typicalBehaviourM['threatLevel']}}</p>
+                                                    <p class="fontM" *ngIf="animal">{{animal.typicalBehaviourF.threatLevel}}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -421,12 +405,6 @@
                     </ng-template>
                 </mat-tab>
                 <mat-tab label="Activity">
-                </mat-tab>
-                <mat-tab label="Group Management">
-                    <ng-template matTabContent>
-                        <div id="animal-profile-groups-container">
-                        </div>
-                    </ng-template>
                 </mat-tab>
             </mat-tab-group>
         </div>

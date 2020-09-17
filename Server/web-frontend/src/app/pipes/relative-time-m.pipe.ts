@@ -23,7 +23,6 @@ export class RelativeTimeMPipe implements PipeTransform {
       we are using the transform function of DatePipe from 'angular/common' to format given Date value.
       Don't forget to import add it to your providers array of app.module.ts. 
       See other formating from DatePipe here - https://angular.io/api/common/DatePipe#pre-defined-format-options
-
       */
       // const upperLimit = 31536000;
       // if(differenceInSeconds > upperLimit){
