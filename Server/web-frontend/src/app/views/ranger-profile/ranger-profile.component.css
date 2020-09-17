@@ -279,6 +279,7 @@
     flex-direction: row;
     justify-content: align-start;
     align-items: center;
+	display: none;
 }
 
 .ranger-profile-stats-icon {
@@ -373,16 +374,17 @@
 }
 
 #ranger-profile-spoors-container {
-    width: 85%;
+    width: 90%;
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    flex-direction: row;
+    justify-content: space-between;
+	flex-wrap: wrap;
     padding-top: 2%;
 }
 
 .ranger-profile-spoor-container {
     height: 210px;
-    width: 45%;
+    width: 48%;
     background-color: white;
     border-radius: 15px;
     box-shadow: 0px 2px 8px #BBB;
@@ -433,7 +435,7 @@
 
 .ranger-profile-spoor-info {
     height: 100%;
-    width: 40%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -505,7 +507,7 @@
 
 .ranger-profile-spoor-accuracy-container {
     height: 100%;
-    width: 30%;
+    width: 20%;
     display: flex;
     flex-direction: row;
     justify-content: center;

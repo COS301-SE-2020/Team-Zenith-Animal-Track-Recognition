@@ -280,7 +280,7 @@
                         </div>
                     </ng-template>
                 </mat-tab>
-                <mat-tab label="Spoor Identifications">
+                <mat-tab label="Track Identifications">
                     <ng-template matTabContent>
                         <div id="animal-profile-identifications-container">
                             <div id="animal-profile-spoor-feed-container">
@@ -289,29 +289,32 @@
                                     <button mat-flat-button>View All</button>
                                 </div>
                                 <div id="animal-profile-spoors-container">
-                                    <div class="animal-profile-spoor-container" *ngFor="let spoorId of spoorIdentifications">
+                                    <div class="animal-profile-spoor-container" *ngFor="let spoorId of displayedTracks">
                                         <div class="animal-profile-spoor-info-container">
                                             <div class="animal-profile-spoor-image-container">
-                                                <div class="animal-profile-spoor-image"></div>
+                                                <div class="animal-profile-spoor-image">
+												    <img src="{{spoorId.picture.URL}}" alt="">
+												</div>
                                             </div>
                                             <div class="animal-profile-spoor-info">
                                                 <div class="animal-profile-spoor-animal-name">
-                                                    <p class="fontSB">{{spoorId.commonName}}</p>
-                                                    <p class="fontM">{{spoorId.classification}}</p>
+                                                    <p class="fontSB">{{spoorId.animal.commonName}}</p>
+                                                    <p class="fontM">{{spoorId.animal.classification}}</p>
+                                                    <p class="fontM">Identified By {{spoorId.ranger.firstName}} {{spoorId.ranger.lastName}}</p>
                                                 </div>
                                                 <div class="animal-profile-spoor-date">
                                                     <mat-icon>event</mat-icon>
-                                                    <p class="fontM">{{spoorId.dateTime}}</p>
+                                                    <p class="fontM">{{spoorId.timeAsString.substring(0,10)}}</p>
                                                 </div>
                                                 <div class="animal-profile-spoor-location">
                                                     <mat-icon>room</mat-icon>
-                                                    <p class="fontM">{{spoorId.coordinates}}</p>
+                                                    <p class="fontM">{{spoorId.location.latitude}} {{spoorId.location.longitude}}</p>
                                                 </div>
                                             </div>
                                             <div class="animal-profile-spoor-accuracy-container">
                                                 <div class="animal-profile-spoor-accuracy">
                                                     <div class="animal-profile-spoor-accuracyscore">
-                                                        <p class="fontB">{{spoorId.accuracyScore}}</p>
+                                                        <p class="fontB">{{spoorId.potentialMatches[spoorId.potentialMatches.length - 1].confidence|percent}}</p>
                                                     </div>
                                                     <div class="animal-profile-spoor-accuracy-title">
                                                         <p class="fontSB">ACCURACY<br/>SCORE</p>
@@ -322,18 +325,12 @@
                                                 <button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
 													<mat-icon>more_vert</mat-icon>
 												</button>
-                                                <mat-menu #menu="matMenu" xPosition="before">
-                                                    <button mat-menu-item>
-														<span>View Information</span>
+                                                  <mat-menu #menu="matMenu" xPosition="before">
+                                                    <button mat-menu-item (click)="viewOnTrackMap(spoorId.spoorIdentificationID)">
+														<span>View On Track Map</span>
 													</button>
-                                                    <button mat-menu-item>
+                                                    <button mat-menu-item (click)="viewRangerProfile(spoorId.ranger.rangerID)">
 														<span>View Animal</span>
-													</button>
-                                                    <button mat-menu-item>
-														<span>Edit Information</span>
-													</button>
-                                                    <button mat-menu-item>
-														<span>Delete Identification</span>
 													</button>
                                                 </mat-menu>
                                             </div>
@@ -354,7 +351,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="animal-profile-activity-feed-container">
+                       <!--     <div id="animal-profile-activity-feed-container">
                                 <div id="animal-profile-activity-feed-title">
                                     <h2 class="fontSB">Recent Activity</h2>
                                     <button mat-flat-button>View All</button>
@@ -400,12 +397,12 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </ng-template>
                 </mat-tab>
-                <mat-tab label="Activity">
-                </mat-tab>
+               <!-- <mat-tab label="Activity">
+                </mat-tab>-->
             </mat-tab-group>
         </div>
     </div>

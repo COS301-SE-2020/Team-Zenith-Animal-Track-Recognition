@@ -102,20 +102,21 @@ export class RangerProfileComponent implements OnInit {
 			});
 
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
+			'",ranger:"' + this.userToken + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.trackIdentifications = temp[0];
 				this.filteredListArray = temp[0];
-
-				//Only display a certain number of tracks per sidenav page
-				this.displayedTracks = temp[0].slice(0, 25);
 				//Add 'time ago' field to each track
 				this.timeToString();
+			//	this.createTagList();
+
+				//Only display a certain number of tracks per sidenav page
+				this.displayedTracks = this.trackIdentifications.slice(0, 25);
 
 				//Check if a track was selected from the query parameters
-				this.filterRanger();
+				//this.filterRanger();
 			});
 	}
 	
@@ -198,7 +199,12 @@ export class RangerProfileComponent implements OnInit {
 			return false;
 		}
 	}
-
+	createTagList() {
+		this.trackIdentifications.forEach(element => {
+			let temp = element.tag.split(",");
+			element.dateObj = new Date(temp.year, temp.month, temp.day, temp.hour, temp.min, temp.second);
+		});
+	}	
 	timeToString() {
 		this.trackIdentifications.forEach(element => {
 			let temp = element.dateAndTime;
@@ -211,6 +217,15 @@ export class RangerProfileComponent implements OnInit {
 			element.timeAsString = str;
 			element.dateObj = new Date(temp.year, temp.month, temp.day, temp.hour, temp.min, temp.second);
 		});
+	}
+	viewAnimalProfile(animalClassi: string) {
+		let classification = animalClassi.split(" ");
+		let classificationQuery = classification[0] + "_" + classification[1];
+		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
+	}
+	viewOnTrackMap(trackId: any) {
+		console.log("trackID in profile view: " + trackId);
+		this.router.navigate(['identifications'], { queryParams: { openTrackId: trackId } });
 	}
 	//Loader
 	startLoader() {

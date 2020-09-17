@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { EMPTY} from 'rxjs';
+import { catchError, map, retry } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
@@ -20,15 +23,26 @@ export class AnimalsGalleryComponent implements OnInit {
 	test: boolean;
 	selection: string;
 	
-	constructor(private http: HttpClient) { }	
+	constructor(private http: HttpClient, private snackBar: MatSnackBar) { }	
 
 	ngOnInit(): void {
 		this.test = true;
+		this.startLoader();
+		this.startSidenavLoader();
 		document.getElementById("animals-route-link").classList.add("activeRoute");
 		document.getElementById("animals-gallery-route").classList.add("activeRoute");
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
 			'lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{URL}}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					this.stopSidenavLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -186,5 +200,11 @@ export class AnimalsGalleryComponent implements OnInit {
 	}
 	stopLoader() {
 		document.getElementById("loader-container").style.visibility = "hidden";
+	}
+	startSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'visible';
+	}
+	stopSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
 	}
 }
