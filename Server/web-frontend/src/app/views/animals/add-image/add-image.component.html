@@ -1,0 +1,26 @@
+<div id="dialog-progressbar-container">
+    <mat-progress-bar mode="indeterminate" id="dialog-progressbar"></mat-progress-bar>
+</div>
+<h1 mat-dialog-title>Add New Image</h1>
+<mat-dialog-content id="upload-animal-container">
+    <form id="add-animal-image-form" [formGroup]="addAnimalImage">
+        <div id="add-animal-image-container">
+            <mat-form-field class="add-animal-image-form-input" appearance="outline" style="float: left; align-self: start;">
+                <mat-label>Common Name</mat-label>
+                <input matInput formControlName="commonName" value="{{data.animal.commonName}}">
+                <mat-hint>Required</mat-hint>
+            </mat-form-field>
+            <mat-form-field align="center" appearance="outline">
+                <mat-label>Image Description</mat-label>
+                <textarea matInput id="text-area-block" rows="6"></textarea>
+            </mat-form-field>
+            <div id="browse-btn-div">
+                <input type="file" mat-button (change)="uploadFile($event)" id="browse-btn" class="fontSB buttonColour">
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>
+    <button type="submit" mat-button (click)="onSubmit(false)" id="add-animal-btn" class="fontSB buttonColour">ADD ANIMAL</button>
+</mat-dialog-actions>

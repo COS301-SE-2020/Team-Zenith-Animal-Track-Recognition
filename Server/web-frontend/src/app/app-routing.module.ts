@@ -1,5 +1,5 @@
+import { AnimalGroupsComponent } from './views/animals/animals-groups/animal-groups.component';
 import { AuthGuardService as AuthGuard } from './services/auth-guard.service';
-import { SettingsComponent } from './views/settings/settings.component';
 import { RangersComponent } from './views/rangers/rangers.component';
 import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.component';
 import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
@@ -19,8 +19,8 @@ const routes: Routes = [
   { path: 'animals', component: AnimalsComponent, canActivate: [AuthGuard] },
   { path: 'animals/information', component: AnimalProfileComponent, canActivate: [AuthGuard] },
   { path: 'animals/gallery', component: AnimalsGalleryComponent, canActivate: [AuthGuard] },
+  { path: 'animals/groups', component: AnimalGroupsComponent, canActivate: [AuthGuard] },
   { path: 'animals/gallery/photos', component: AnimalPhotosComponent, canActivate: [AuthGuard] },
-  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'rangers', component: RangersComponent, canActivate: [AuthGuard] },  
   { path: 'rangers/profiles', component: RangerProfileComponent, canActivate: [AuthGuard] },
   { path: 'rangers/permissions', component: RangerPermissionsComponent, canActivate: [AuthGuard] },
@@ -32,7 +32,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
   ],
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

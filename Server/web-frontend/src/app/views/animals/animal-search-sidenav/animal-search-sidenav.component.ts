@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
@@ -10,19 +10,26 @@ import { HttpClient } from '@angular/common/http';
 export class AnimalSearchSidenavComponent implements OnInit {
 	@Input() animals: any;
 	@Input() searchText: string;
-	@Input() sortByCommonName: boolean;
+	@Input() sortBy: any = [];
+	@Input() selection: string;
 
 	@Output() animalsOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
 
 	currentAlphabet: any;
 
-	constructor(private http: HttpClient, private router: Router) { }
-
-	ngOnInit(): void {
-		this.sortByCommonName = true;
+	constructor(private changeDetection: ChangeDetectorRef, private http: HttpClient, private router: Router) { }
+	
+	public ngOnChanges(changes: SimpleChanges) {
+		if (changes.animals) {
+			this.stopSidenavLoader();
+		}
 	}
 	
+	ngOnInit(): void {
+		this.stopSidenavLoader();
+	}
+
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}
@@ -41,39 +48,20 @@ export class AnimalSearchSidenavComponent implements OnInit {
 		}
 	}
 
+	checkResult(str: string) {
+		return str == this.selection;
+	}
+
 	updateSearchText(event) {
 		this.searchTextOnChange.emit(event);
 		if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")
 			this.currentAlphabet = null;
 	}
-
-	toggle(bool: boolean) {
-		this.sortByCommonName = bool;
-		this.sort(bool);
+	//Loader
+	startSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'visible';
 	}
-
-	sort(bool: boolean) {
-		if (bool) {
-			for (let i = 0; i < this.animals.length - 1; i++) {
-				for (let j = i + 1; j < this.animals.length; j++) {
-					if (this.animals[i].commonName.toUpperCase() > this.animals[j].commonName.toUpperCase()) {
-						let temp = this.animals[i];
-						this.animals[i] = this.animals[j];
-						this.animals[j] = temp;
-					}
-				}
-			}
-		} else {
-			for (let i = 0; i < this.animals.length - 1; i++) {
-				for (let j = i + 1; j < this.animals.length; j++) {
-					if (this.animals[i].groupID[0].groupName > this.animals[j].groupID[0].groupName) {
-						let temp = this.animals[i];
-						this.animals[i] = this.animals[j];
-						this.animals[j] = temp;
-					}
-				}
-			}
-		}
+	stopSidenavLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
 	}
-
 }

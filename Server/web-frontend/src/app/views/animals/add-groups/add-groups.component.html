@@ -1,0 +1,33 @@
+<div id="dialog-progressbar-container">
+    <mat-progress-bar mode="indeterminate" id="dialog-progressbar"></mat-progress-bar>
+</div>
+<h1 mat-dialog-title>Edit Animal Information - {{data.animal.classification | titlecase}} ({{data.animal.commonName}})</h1>
+<mat-dialog-content>
+    <form [formGroup]="addGroupsForm" id="add-group-form">
+        <mat-tab-group mat-align-tabs="start" [(selectedIndex)]="data.tab">
+            <mat-tab label="Description">
+                <div class="add-group-form-content">
+                    <mat-form-field class="add-animal-form-input" appearance="outline">
+                        <mat-label>Common Name</mat-label>
+                        <input matInput formControlName="commonName" value="{{data.animal.commonName}}">
+                        <mat-hint>Optional</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field class="add-animal-form-input" appearance="outline">
+                        <mat-label>Classification</mat-label>
+                        <input matInput formControlName="classification" value="{{data.animal.classification}}">
+                        <mat-hint>Optional</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="add-group-form-texarea">
+                        <mat-label>Animal Description</mat-label>
+                        <textarea rows="5" matInput #animalDescrip formControlName="animalDescription" value="{{data.animal.animalDescription}}"></textarea>
+                        <mat-hint align="start">{{animalDescrip.value?.length || 0}}/1500 (Optional)</mat-hint>
+                    </mat-form-field>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>
+    <button type="submit" mat-button (click)="onSubmit(false)" id="add-ranger-btn" class="fontSB">SAVE CHANGES</button>
+</mat-dialog-actions>

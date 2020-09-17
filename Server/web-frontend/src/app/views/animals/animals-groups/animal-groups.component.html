@@ -1,0 +1,49 @@
+<div id="animal-groups-workspace-container">
+    <div id="loader-container">
+        <mat-spinner id="loader"></mat-spinner>
+    </div>
+    <div id="animals-groups-toolbar-container">
+        <div id="animals-groups-toolbar-navigationtree-container">
+            <div id="animals-groups-toolbar-navigation">
+                <a (click)="route('animals')" class="fontM">Animals</a>
+                <mat-icon>chevron_right</mat-icon>
+                <a href="javascript:void(0)" class="fontM activeView">Animal Groups</a>
+            </div>
+        </div>
+        <!-- <div id="animals-groups-toolbar">
+            <mat-select id="animals-groups-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
+                <mat-option (click)="openAddGroupDialog()">Add New Group</mat-option>
+            </mat-select>
+        </div> -->
+    </div>
+    <div id="animal-groups-view-workspace">
+
+        <div id="animal-groups-controls-container">
+            <mat-accordion multi>
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="fontSB">Animal</mat-panel-title>
+                        <mat-panel-description>Set Animal Groups</mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <table mat-table [dataSource]="animalGroupsDataSource" class="mat-elevation-z8" id="animal-groups-table">
+                        <ng-container *ngFor="let group of animalGroupsColumns" matColumnDef="{{group}}" class="animal-groups-table-columns">
+                            <th mat-header-cell *matHeaderCellDef class="animal-groups-table-columns" (click)="openAddGroupDialog(group)">{{group}}</th>
+                            <td mat-pcell *matCellDef="let element" class="animal-cell">
+                                <ng-container *ngIf="isAnimal(group)">
+                                    <span (click)="viewAnimalProfile(element['classification'])">{{element[group]}}</span>
+                                </ng-container>
+                                <ng-container *ngIf="!isAnimal(group)">
+                                    <mat-radio-button style="border-radius: 70% !important;" name="{{element['animalID']}}" [checked]="true" *ngIf="isGroup(element[group])"></mat-radio-button>
+                                    <mat-radio-button style="border-radius: 70% !important;" name="{{element['animalID']}}" [checked]="false" *ngIf="!isGroup(element[group])" (change)="updateLevel(element['animalID'],group)"></mat-radio-button>
+                                </ng-container>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="animalGroupsColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: animalGroupsColumns;"></tr>
+                    </table>
+
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </div>
+</div>

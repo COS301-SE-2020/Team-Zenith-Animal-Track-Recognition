@@ -6,6 +6,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimalPhotoDetailsComponent } from './animal-photo-details/animal-photo-details.component'; 
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import { AddImageComponent } from '../../add-image/add-image.component';
 
 @Component({
   selector: 'app-animal-photos',
@@ -15,122 +16,54 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 export class AnimalPhotosComponent implements OnInit {
 
 	animal: any;
+	tracksList: any;
 	animalClassi: string;
 	femaleBehaviour: string;
 	maleBehaviour: string;
-	
-	/*Place holder values*/
-	defaultImage = "https://upload.wikimedia.org/wikipedia/commons/8/86/Solid_grey.svg";
-	trackImages = [
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		},		
-		{
-			imagePlaceholder: 'Elephant',
-		}
-	];
 
 	constructor(
 		private http: HttpClient,
 		private router: Router,
 		private activatedRoute: ActivatedRoute,
 		public dialog: MatDialog,
-		private snackBar: MatSnackBar,
+		private snackBar: MatSnackBar
 	) { }
 
 	ngOnInit(): void {
-		this.startLoader();
+		this.startPhotoGalleryLoader();
+		this.startTrackGalleryLoader();
+		//Highlight current view in side navigation
 		document.getElementById('animals-route-link').classList.add('activeRoute');
 		document.getElementById("animals-gallery-route").classList.add("activeRoute");
-		//Determine which user was navigated to and fetch their information
+		
+		//Determine which animal was navigated to and fetch their information
 		const classificationQuery = new URLSearchParams(window.location.search);
 		const animal = classificationQuery.get("classification").split("_");
-
 		this.animalClassi = animal[0] + " " + animal[1];
+		
+		//Fetch animal from db
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsByClassification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'", classification:"' + this.animalClassi + '"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
-			'lifeSpan,gestationPeriod,animalOverview,animalDescription,pictures{URL}}}')
+			'", classification:"' + this.animalClassi + '"){classification,animalID,commonName,pictures{picturesID, URL, kindOfPicture}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.animal = temp[0];
-				this.stopLoader();
-			});
+				this.stopPhotoGalleryLoader();
+		});
+		//Fetch all track identifications for a the animal current being viewed
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'", classification:"' +  this.animalClassi + '"){spoorIdentificationID,animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}}dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.tracksList = temp[0];
+				this.stopTrackGalleryLoader();
+		});	
 	}
 	
-	openPhotoDetails(isTrack: boolean, photoUrl: any, photoIndex: number) {
+	//Functions for animal photo viewing and adding
+	viewAnimalPhotoDetails(photoIndex: number) {
+		//Open AnimalPhotoDetailsComponent and display the selected photo 
 		const animalPhotoDetailsDialogRef = this.dialog.open(AnimalPhotoDetailsComponent, {
 			height: '100%',
 			width: '100%',
@@ -138,32 +71,58 @@ export class AnimalPhotosComponent implements OnInit {
 			disableClose: true,
 			id: 'animal-photo-details-dialog',
 			data: {
-				isTrack: isTrack,
-				currentImage: photoUrl,
-				currentIndex: photoIndex,
-				imageList: this.animal.pictures,
-				animal: this.animal
-			},
+				initialIndex: photoIndex,
+				entity: this.animal,
+				photoType: "Animal"
+			}
 		});
 		animalPhotoDetailsDialogRef.afterClosed().subscribe(result => {
-			this.stopLoader();
+			this.stopPhotoGalleryLoader()
 			if (result == "success") {
-				//If animal was successfully edited refresh component and notify parent
-				//this.animalsOnChange.emit('update');
+				this.snackBar.open('Photo successfully set as main.', "Dismiss", { duration: 3000, });
+				this.ngOnInit();
 			}
 			else if (result == 'error') {
-				//this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });
+				this.snackBar.open('An error occured when updating the main photo. Please try again.', "Dismiss", { duration: 5000, });
 			}
 		});
 	}
+	viewTrackPhotoDetails(photoIndex: number) {
+		//Open AnimalPhotoDetailsComponent and display the selected photo 
+		const animalPhotoDetailsDialogRef = this.dialog.open(AnimalPhotoDetailsComponent, {
+			height: '100%',
+			width: '100%',
+			autoFocus: true,
+			disableClose: true,
+			id: 'animal-photo-details-dialog',
+			data: {
+				initialIndex: photoIndex,
+				entity: this.tracksList,
+				photoType: "Track"
+			}
+		});
+	}
+	openAddNewPhotoDialog() {
+		const editDialogRef = this.dialog.open(AddImageComponent, {
+			height: '75%',
+			width: '60%',
+			autoFocus: true,
+			disableClose: true,
+			id: 'add-new-image-dialog',
+			data: {
+				animal: this.animal
+			},
+		});
+		editDialogRef.afterClosed().subscribe(result => {
+			if (result == "success") {
+			}
+			else if (result == 'error') {
+				this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });
+			}
+		});
+	}
+
 	route(temp: string) {
-		document.getElementById("animals-route-link").classList.remove("activeRoute");
-		document.getElementById("animals-gallery-route").classList.remove("activeRoute");
-		document.getElementById("overview-route").classList.remove("activeRoute");
-		document.getElementById("rangers-route").classList.remove("activeRoute");
-		document.getElementById("geotags-route").classList.remove("activeRoute");
-		document.getElementById("settings-route").classList.remove("activeRoute");
-		
 		this.router.navigate([temp]);
 	}
 
@@ -173,11 +132,21 @@ export class AnimalPhotosComponent implements OnInit {
 		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
 	}
 	
-	//Loader
-	startLoader() {
-		document.getElementById('loader-container').style.visibility = 'visible';
+	//Loaders
+	startPhotoGalleryLoader() {
+		if (document.getElementById('animal-photo-gallery-loader') != null)
+			document.getElementById('animal-photo-gallery-loader').style.visibility = 'visible';
 	}
-	stopLoader() {
-		document.getElementById('loader-container').style.visibility = 'hidden';
+	stopPhotoGalleryLoader() {
+		if (document.getElementById('animal-photo-gallery-loader') != null)
+			document.getElementById('animal-photo-gallery-loader').style.visibility = 'hidden';
+	}	
+	startTrackGalleryLoader() {
+		if (document.getElementById('animal-track-gallery-loader') != null)
+			document.getElementById('animal-track-gallery-loader').style.visibility = 'visible';
+	}
+	stopTrackGalleryLoader() {
+		if (document.getElementById('animal-track-gallery-loader') != null)
+			document.getElementById('animal-track-gallery-loader').style.visibility = 'hidden';
 	}
 }

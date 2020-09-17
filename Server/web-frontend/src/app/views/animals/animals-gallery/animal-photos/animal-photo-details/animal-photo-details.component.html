@@ -1,126 +1,89 @@
 <mat-drawer-container id="animal-search-sidenav-container">
     <mat-drawer id="animal-search-sidenav" #sidenav mode="side" position="end" (openedStart)="fillWidth()" (closedStart)="fillHeight()">
-		<div id="animal-photos-track-info-container" *ngFor="let trackInfo of trackInfoPlaceholder">
+		<div id="search-nav-loader-container" class="loader-container">
+			<mat-spinner id="loader"></mat-spinner>
+		</div>
+		<div id="animal-photos-track-info-container" *ngIf="data.photoType == 'Animal'">
 			<div id="animal-photos-track-info-title">
 				<button mat-icon-button aria-label="Close Track Info Button" (click)="toggleSidenav()">
 					<mat-icon>close</mat-icon>
 				</button>
 				<div>
-					<ng-container *ngIf="isTrack(); else animalPhotoInformation" >
-						<p id="animal-photos-track-title-animal" class="fontSB">{{trackInfo.commonName}} Track Identified</p>
-						<p id="animal-photos-track-title-capturedby" class="fontM">Captured by {{trackInfo.capturedBy}}</p>
+					<p id="animal-photos-track-title-animal" class="fontSB">Photo of {{data.entity.commonName}}</p>
+					<!--<p id="animal-photos-track-title-capturedby" class="fontM">Uploaded by Patricia Berlein</p>-->
+				</div>
+			</div>
+			<div id="animal-photos-description-container">
+				<div id="animal-photos-description-container-title">
+					<p class="fontSB">Photo Description</p>
+				</div>
+				<div id="animal-photo-descr">
+					<ng-container *ngIf="data.entity.pictures[currentPhotoIndex].description; else defaultDescription">
+						<p class="fontM">{{data.entity.pictures[currentPhotoIndex].description}}</p>
 					</ng-container>
-					<ng-template #animalPhotoInformation>
-						<p id="animal-photos-track-title-animal" class="fontSB">Photo of {{data.animal.commonName}}</p>
-						<p id="animal-photos-track-title-capturedby" class="fontM">Uploaded by Patricia Berlein</p>
+					<ng-template #defaultDescription>
+						<p class="fontM">No description has been provided for this photo.</p>
 					</ng-template>
 				</div>
 			</div>
-			<ng-container *ngIf="isTrack();">
-				<div id="animal-photos-track-id-results">
-					<div id="animal-photos-track-id-title">
-						<p class="fontSB">Track Identification Results</p>
-					</div>
-					<div id="animal-photos-track-id-result">
-						<div id="animal-photos-track-id-image">
-							<!-- Place Image of Track here <img id="animal-photo-detail-current-image" src="{{data.currentImage}}">-->
-							<div></div>
-						</div>
-						<div id="animal-photos-track-id-score">
-							<p id="animal-photos-track-title-commonname" class="fontM">{{trackInfo.commonName}}</p>
-							<p id="animal-photos-track-title-classification" class="fontM">{{trackInfo.classification}}</p>
-							<p id="animal-photos-track-accuracyscore-title" class="fontSB">Accuracy Score</p>
-							<p id="animal-photos-track-accuracy-score" class="fontB">{{trackInfo.accuracyScore}}</p>
-						</div>
-					</div>
-				</div>
-			</ng-container>
-			<div id="animal-photos-track-geotag-container">
-				<div id="animal-photos-geotag-container-title">
-					<ng-container *ngIf="isTrack(); else animalImageMetadata">
-						<p class="fontSB">Track Geotag Information</p>
-					</ng-container>
-					<ng-template #animalImageMetadata>
-						<p class="fontSB">Photo Metadata</p>
-					</ng-template>
-				</div>
-				<div id="animal-photos-track-geotag-info">
-					<div id="animal-photos-geotag-location-info">
-						<div class="animal-photos-geotag-entry-container">
-							<div class="animal-photos-geotag-icon-container">
-								<mat-icon>room</mat-icon>
-							</div>
-							<div class="animal-photos-geotag-text-container">
-								<p class="fontM">{{trackInfo.trackLocation}}</p>
-								<p class="fontM">{{trackInfo.coordinates}}</p>
-							</div>
-						</div>
-					</div>
-					<div id="animal-photos-geotag-date-info">
-						<div class="animal-photos-geotag-entry-container">
-							<div class="animal-photos-geotag-icon-container">
-								<mat-icon>event</mat-icon>
-							</div>
-							<div class="animal-photos-geotag-text-container">
-								<p class="fontM">{{trackInfo.date}}</p>
-								<p class="fontM">{{trackInfo.dayTime}}</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<ng-container *ngIf="isTrack();">
-				<div id="animal-photos-track-tags-container">
-					<div id="animal-photos-tags-container-title">
-						<p class="fontSB">Tag Information</p>
-					</div>
-					<div id="animal-photos-track-tag-list">
-						<mat-chip-list>
-							<mat-chip selected>Found near riverbed</mat-chip>
-							<mat-chip color="warn" selected>Possible injury</mat-chip>
-							<mat-chip>Infant</mat-chip>
-						</mat-chip-list>
-					</div>
-				</div>
-			</ng-container>
 		</div>
-    </mat-drawer>
+		<div id="animal-track-photo-info-sidenav">
+			<app-track-identifications-info *ngIf="data.photoType == 'Track'" [activeTrack]="activeTrack" [originType]="originType" (viewingTrackOnChange)="closeSideNav($event)"></app-track-identifications-info>
+		</div>
+	</mat-drawer>
     <mat-drawer-content id="animal-search-sidenav-content">
+		<div id="loader-container">
+			<mat-spinner id="loader"></mat-spinner>
+		</div>
 		<div id="animal-photo-details-container">
 			<div id="animal-photo-details-toolbar">
 				<button mat-icon-button aria-label="Back Button" (click)="closeDialog()">
-					<mat-icon>arrow_back</mat-icon>
+					<mat-icon>close</mat-icon>
 				</button>
 				<div>
-					<button mat-icon-button aria-label="Track Info Button" (click)="toggleSidenav()">
-						<mat-icon>info</mat-icon>
-					</button>
+					<ng-container *ngIf="data.photoType != 'Single Track'" >
+						<button mat-icon-button aria-label="Track Info Button" (click)="toggleSidenav()">
+							<mat-icon>info</mat-icon>
+						</button>
+					</ng-container>
 					<button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
 						<mat-icon>more_vert</mat-icon>
 					</button>
 					<mat-menu #menu="matMenu" xPosition="before">
-						<button mat-menu-item (click)="viewAnimalProfile(data.animal.classification)">
-							<span>Set As Main Image</span>
-						</button>
-						<button mat-menu-item (click)="viewAnimalProfile(data.animal.classification)">
-							<span>View Animal Information</span>
-						</button>
-						<ng-container *ngIf="isTrack();" >
-							<button mat-menu-item>
-								<span>View Track Information</span>
+						<ng-container *ngIf="data.photoType == 'Animal'" >
+							<button mat-menu-item (click)="setAsMainPhoto(currentPhotoIndex)">
+								<span>Set As Main Photo</span>
+							</button>
+						</ng-container>
+						<ng-container *ngIf="data.photoType != 'Animal';else viewAnimalInfoAlt">
+							<button mat-menu-item (click)="viewAnimalProfile(data.entity[currentPhotoIndex].animal.classification)">
+								<span>View Animal Information</span>
+							</button>
+						</ng-container>
+						<ng-template #viewAnimalInfoAlt>
+							<button mat-menu-item (click)="viewAnimalProfile(data.entity.classification)">
+								<span>View Animal Information</span>
+							</button>
+						</ng-template>
+						<ng-container *ngIf="data.photoType == 'Track'" >
+							<button mat-menu-item (click)="viewOnTrackMap(data.entity[currentPhotoIndex].spoorIdentificationID)">
+								<span>View On Track Map</span>
 							</button>
 						</ng-container>
 					</mat-menu>
 				</div>
 			</div>
-			<button id="animal-photo-navigation-btn-left" class="animal-photo-navigation-btn" (click)="prevImage()" mat-icon-button aria-label="Previous Image Button">
+			<button id="animal-photo-navigation-btn-left" class="animal-photo-navigation-btn" *ngIf="data.photoType != 'Single Track'" (click)="prevPhoto()" mat-icon-button aria-label="Previous Image Button">
 				<mat-icon>chevron_left</mat-icon>
 			</button>	
-			<button id="animal-photo-navigation-btn-right" class="animal-photo-navigation-btn" (click)="nextImage()" mat-icon-button aria-label="Previous Image Button">
+			<button id="animal-photo-navigation-btn-right" class="animal-photo-navigation-btn" *ngIf="data.photoType != 'Single Track'" (click)="nextPhoto()" mat-icon-button aria-label="Previous Image Button">
 				<mat-icon>chevron_right</mat-icon>
 			</button>	
 			<div id="animal-photo-image-container">
-				<img id="animal-photo-detail-current-image" src="{{data.currentImage}}">
+				<img id="animal-photo-detail-current-image" *ngIf="this.data.photoType == 'Animal'; else showTrackPhoto" src="{{data.entity.pictures[currentPhotoIndex].URL}}">
+				<ng-template #showTrackPhoto>
+					<img id="animal-photo-detail-current-image" src="{{data.entity[currentPhotoIndex].picture.URL}}">
+				</ng-template>
 			</div>
 		</div>
 	</mat-drawer-content>

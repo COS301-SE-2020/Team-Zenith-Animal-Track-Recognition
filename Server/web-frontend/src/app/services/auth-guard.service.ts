@@ -12,6 +12,13 @@ export class AuthGuardService implements CanActivate {
       this.router.navigate(['login']);
       return false;
     }
+    document.getElementById("animals-route-link").classList.remove("activeRoute");
+    document.getElementById("animals-gallery-route").classList.remove("activeRoute");
+    document.getElementById("animals-groups-route").classList.remove("activeRoute");
+    document.getElementById("overview-route").classList.remove("activeRoute");
+    document.getElementById("rangers-route-link").classList.remove("activeRoute");
+    document.getElementById("rangers-perm-route").classList.remove("activeRoute");
+    document.getElementById("geotags-route").classList.remove("activeRoute");
     return true;
   }
 }
