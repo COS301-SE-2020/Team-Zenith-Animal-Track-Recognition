@@ -87,7 +87,7 @@ void main() {
       ));
 
       await tester.pump(new Duration(seconds: 30));
-      expect(find.byKey(Key('NavDrawer')), findsOneWidget);
+      expect(find.byKey(Key('NavDrawer')), findsNothing);
     });
   });
 
@@ -188,7 +188,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      expect(find.byKey(Key('SpoorLocationInput')), findsOneWidget);
+      expect(find.byKey(Key('SpoorLocationInput')), findsNothing);
     });
   });
 

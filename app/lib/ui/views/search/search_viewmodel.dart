@@ -1,13 +1,14 @@
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
+import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:stacked/stacked.dart';
 
 class SearchViewModel extends BaseViewModel {
-  final Api _api = locator<GraphQL>();
+  //final Api _api = locator<GraphQL>();
   bool newNotifications = false;
-  //final Api _api = locator<MockApi>();
+  final Api _api = locator<MockApi>();
 
   Future<TempObject> getSearchList() async {
     List<SearchModel> list = await _api.getSearchModel();
@@ -66,7 +67,7 @@ class SearchViewModel extends BaseViewModel {
     for (int i = 0; i < 4; i++) {
       displayList.add(list[i]);
     }
-    newNotifications = await _api.getNewTrophyNotification();
+    //newNotifications = await _api.getNewTrophyNotification();
     TempObject tempObject = new TempObject(
         animals: animals,
         species: speciesList,

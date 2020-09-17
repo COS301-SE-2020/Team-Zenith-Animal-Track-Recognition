@@ -1,6 +1,7 @@
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
+import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,8 @@ class ConfirmedViewModel extends BaseViewModel {
   ConfirmModel get confidentAnimal => _confidentAnimal;
   List<ConfirmModel> get confirmedList => _confirmedList;
 
-  final Api _api = locator<GraphQL>();
-  //final Api _api = locator<MockApi>();
+  //final Api _api = locator<GraphQL>();
+  final Api _api = locator<MockApi>();
 
   void setLoaded(bool loaded) {
     this._loaded = loaded;
