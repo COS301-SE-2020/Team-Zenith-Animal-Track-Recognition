@@ -2594,10 +2594,18 @@ if (CACHE) {
             newSpoorID.animal = newSpoorID.animal.toString()
             newSpoorID.similar = getSimilarimgTrak(newSpoorID.animal.toString())
             // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
+            if(Array.isArray( newSpoorID.tags)!=true)
+            {
+                newSpoorID.tags=[]
+                newSpoorID.tags.push("a tag")
+                console.log(newSpoorID.tags)
+            }
+            
             spoorIdentificationData.push(newSpoorID)
             if (newSpoorID.month == 8 || newSpoorID.month == "08" || newSpoorID.month == "8") {
                 // spoorIdentifications.doc(doc.id).delete();
             }
+            
         });
         redeyNeedConterDown();
     });
