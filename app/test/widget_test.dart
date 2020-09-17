@@ -303,49 +303,49 @@ void main() {
     });
   });
 
-  group('Confirmation View Tests', () {
-    testWidgets('Test presence of confimration data',
-        (WidgetTester tester) async {
-      final Api _api = locator<MockApi>();
-      File image = File(
-          '/root/Team-Zenith-Animal-Track-Recognition/app/app/assets/images/ANV1.jpeg');
+  // group('Confirmation View Tests', () {
+  //   testWidgets('Test presence of confimration data',
+  //       (WidgetTester tester) async {
+  //     final Api _api = locator<MockApi>();
+  //     File image = File(
+  //         '/root/Team-Zenith-Animal-Track-Recognition/app/app/assets/images/ANV1.jpeg');
 
-      String url = base64Encode(image.readAsBytesSync());
-      List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
+  //     String url = base64Encode(image.readAsBytesSync());
+  //     List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
 
-      await tester.pumpWidget(MaterialApp(
-        home: ConfirmedView(
-          image: image,
-          confirmedAnimals: animals,
-        ),
-      ));
+  //     await tester.pumpWidget(MaterialApp(
+  //       home: ConfirmedView(
+  //         image: image,
+  //         confirmedAnimals: animals,
+  //       ),
+  //     ));
 
-      await tester.pump(new Duration(seconds: 30));
-      //await tester.pumpAndSettle();
+  //     await tester.pump(new Duration(seconds: 30));
+  //     //await tester.pumpAndSettle();
 
-      expect(find.byKey(Key('Scroll')), findsWidgets);
-    });
+  //     expect(find.byKey(Key('Scroll')), findsWidgets);
+  //   });
 
-    testWidgets('Test presence of image data', (WidgetTester tester) async {
-      final Api _api = locator<MockApi>();
-      File image = File(
-          '/root/Team-Zenith-Animal-Track-Recognition/app/app/assets/images/ANV1.jpeg');
-      String url = base64Encode(image.readAsBytesSync());
-      List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
+  //   testWidgets('Test presence of image data', (WidgetTester tester) async {
+  //     final Api _api = locator<MockApi>();
+  //     File image = File(
+  //         '/root/Team-Zenith-Animal-Track-Recognition/app/app/assets/images/ANV1.jpeg');
+  //     String url = base64Encode(image.readAsBytesSync());
+  //     List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
 
-      await tester.pumpWidget(MaterialApp(
-        home: ConfirmedView(
-          image: image,
-          confirmedAnimals: animals,
-        ),
-      ));
+  //     await tester.pumpWidget(MaterialApp(
+  //       home: ConfirmedView(
+  //         image: image,
+  //         confirmedAnimals: animals,
+  //       ),
+  //     ));
 
-      await tester.pump(new Duration(seconds: 30));
-      //await tester.pumpAndSettle();
+  //     await tester.pump(new Duration(seconds: 30));
+  //     //await tester.pumpAndSettle();
 
-      expect(find.byKey(Key('imageBlock')), findsWidgets);
-    });
-  });
+  //     expect(find.byKey(Key('imageBlock')), findsWidgets);
+  //   });
+  // });
 
   // group('NotConfirmedView Tests', () {
   //   testWidgets('Test presence of not identified data',
