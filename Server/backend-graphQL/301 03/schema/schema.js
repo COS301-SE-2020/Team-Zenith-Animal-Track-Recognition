@@ -541,10 +541,11 @@ const RootQuery = new GraphQLObjectType({
                 else if (a.password == args.password) {
                     let LI = {
                         rangerID: a.rangerID,
-                        time: Date.now().toString(),
+                        time: getDate(),
                         platform: "app"
                     }
                     recentLogins.push(LI)
+                    logIns.doc(LI.time).set(LI)
                     return a
                 } else return null
             }
@@ -568,10 +569,11 @@ const RootQuery = new GraphQLObjectType({
                 else if (a.password == args.password && a.accessLevel > 2) {
                     let LI = {
                         rangerID: a.rangerID,
-                        time: Date.now().toString(),
+                        time: getDate(),
                         platform: "wdb"
                     }
                     recentLogins.push(LI)
+                    logIns.doc(LI.time).set(LI)
                     return a
                 } else return null
             }
@@ -2783,7 +2785,14 @@ if (CACHE) {
         redeyNeedConterDown();
     });
 
-
+    logIns.onSnapshot(function (querySnapshot){
+        redeyNeedConterUP();
+        recentLogins=[]
+        querySnapshot.forEach(function (doc) {
+            recentLogins.push(doc)
+        })
+        redeyNeedConterDown();
+    })
     redeyNeedConterDown();
 } else {}
 
@@ -3205,3 +3214,16 @@ function removeDuplicates(array) {
     })
     return Object.keys(x)
 };
+
+function getDate(){
+    let date_ob = new Date();
+let date = ("0" + date_ob.getDate()).slice(-2);
+let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+let year = date_ob.getFullYear();
+let hours = date_ob.getHours();
+let minutes = date_ob.getMinutes();
+let seconds = date_ob.getSeconds();
+let milliseconds = date_ob.getMilliseconds()
+return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds+":"+milliseconds
+
+}
