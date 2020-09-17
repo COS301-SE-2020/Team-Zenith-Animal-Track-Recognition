@@ -15,7 +15,7 @@ from tensorflow.keras import datasets, layers, models
 redistabut=False
 redistabut=not(redistabut)# comint out to matane files in posison
 if(redistabut):
-    import AIFileSplit
+    import fileSplit
 
 
 today = datetime.datetime.now()
@@ -83,7 +83,7 @@ print("Total validation images:", total_val)
 
 
 batch_size = 64
-epochs = 10
+epochs = 30 
 IMG_HEIGHT = 350
 IMG_WIDTH = 350
 
@@ -126,10 +126,9 @@ def plotImages(images_arr):
     plt.tight_layout()
     plt.show()
 sample_training_images, _ = next(train_data_gen)
-print (sample_training_images[:5])
 
-
-plotImages(sample_training_images[:5])
+print(sample_training_images[0].shape)
+# plotImages(sample_training_images[:5])
 model = Sequential([
     Conv2D(16, 3, padding='same', activation='relu',
            input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
@@ -140,8 +139,7 @@ model = Sequential([
     MaxPooling2D(),
     Flatten(),
     Dense(512, activation='relu'),
-    Dense(len( os.listdir(train_dir))),
-    tf.keras.layers.Softmax()
+    Dense(len( os.listdir(train_dir)))
 ])
 
 
@@ -183,11 +181,16 @@ plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
 
 plt.show()
-model.add(tf.keras.layers.Softmax())
+
 sentence=date_time+""
 sentence=sentence.replace("/", "")
 sentence='saved_model/mane/'+sentence+"/"
 sentence=sentence.replace(" ", "")
 sentence=sentence.replace(":", "")
-model.save(sentence) 
-print(a)
+probability_model = tf.keras.Sequential([model, 
+                                         tf.keras.layers.Softmax()])
+probability_model.save(sentence) 
+
+
+
+
