@@ -3,7 +3,7 @@ jobs:
   build:   
     working_directory: ~/Team-Zenith-Animal-Track-Recognition/app
     docker:
-      - image: cirrusci/flutter:v1.5.8 
+      - image: cirrusci/flutter::latest
 
     branches:
       only: master
