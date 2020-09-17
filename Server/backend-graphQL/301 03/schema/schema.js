@@ -2096,7 +2096,7 @@ const Mutation = new GraphQLObjectType({
                     track: newingID,
                     similar: getSimilarimgTrak(_.last(potentialMatchesarry).animal),
                     tags: tag,
-                    picturesID: newingID,
+                    picture: newingID,
                 }
                 let tempID = IDID.toString()
 
@@ -2661,6 +2661,10 @@ if (CACHE) {
                     element.confidence = 0
                 }
             });
+            if (newSpoorID.picture==undefined &&newSpoorID.pictureID!=undefined )
+{
+    newSpoorID.picture=newSpoorID.pictureID
+}
             spoorIdentificationData.push(newSpoorID)
             if (newSpoorID.month == 8 || newSpoorID.month == "08" || newSpoorID.month == "8") {
                 // spoorIdentifications.doc(doc.id).delete();
@@ -2913,7 +2917,7 @@ function AIIterface(ImgID, base64imge) {
         {
             let newPM = {
                 animal: element.animalID,
-                confidence: parseFloat((Math.random() * (0.120 - 0.020) ).toFixed(4))
+                confidence: parseFloat((Math.random() * (0.120 - 0.020)).toFixed(4))
             }
             if (element.animalID == 11) {
                 newPM.confidence = arri[0]
