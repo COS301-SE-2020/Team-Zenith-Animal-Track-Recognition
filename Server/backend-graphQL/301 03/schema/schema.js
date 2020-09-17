@@ -30,6 +30,7 @@ let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
 const {
     start
 } = require('repl');
+const e = require('express');
 ADMIN.initializeApp({
     credential: ADMIN.credential.cert(serviceAccount),
     storageBucket: "gs://erpzat.appspot.com"
@@ -38,6 +39,9 @@ ADMIN.initializeApp({
 
 
 let db = ADMIN.firestore();
+db.settings({
+    ignoreUndefinedProperties: true
+})
 let animals = db.collection("animals");
 let users = db.collection("users");
 let groups = db.collection("groups");
@@ -458,6 +462,17 @@ const ANIMALS_STATS_TYPE = new GraphQLObjectType({
         }
     })
 })
+const ANIMALS_STATS_2_TYPE = new GraphQLObjectType({
+    name: "animalsStats2",
+    fields: () => ({
+        commonName: {
+            type: GraphQLString
+        },
+        NumberOfIdentifications: {
+            type: GraphQLInt
+        }
+    })
+})
 
 const RANGERS_STATS_TYPE = new GraphQLObjectType({
     name: "rangersStats",
@@ -465,12 +480,10 @@ const RANGERS_STATS_TYPE = new GraphQLObjectType({
         mostTrackedAnimal: {
             type: ANIMAL_TYPE,
             resolve(parent, args) {
-
-                let temp = undefined;
-                
-                    temp = _.find(animalData, {
-                        animalID: parent.mostTrackedAnimal.toString()
-                    })
+                console.log(parent.mostTrackedAnimal)
+                let temp = _.find(animalData, {
+                    animalID: parent.mostTrackedAnimal.toString()
+                })
                 return temp;
             }
         },
@@ -485,8 +498,7 @@ const RANGERS_STATS_TYPE = new GraphQLObjectType({
 const RANGERS_STATS2_TYPE = new GraphQLObjectType({
     name: "rangersStats2",
     fields: () => ({
-        mosotTrakedRanger:
-        {
+        mosotTrakedRanger: {
             type: USER_TYPE,
             resolve(parent, args) {
                 return _.find(usersData, {
@@ -543,10 +555,11 @@ const RootQuery = new GraphQLObjectType({
                 else if (a.password == args.password) {
                     let LI = {
                         rangerID: a.rangerID,
-                        time: Date.now().toString(),
+                        time: getDate(),
                         platform: "app"
                     }
                     recentLogins.push(LI)
+                    logIns.doc(LI.time).set(LI)
                     return a
                 } else return null
             }
@@ -570,10 +583,11 @@ const RootQuery = new GraphQLObjectType({
                 else if (a.password == args.password && a.accessLevel > 2) {
                     let LI = {
                         rangerID: a.rangerID,
-                        time: Date.now().toString(),
+                        time: getDate(),
                         platform: "wdb"
                     }
                     recentLogins.push(LI)
+                    logIns.doc(LI.time).set(LI)
                     return a
                 } else return null
             }
@@ -643,10 +657,7 @@ const RootQuery = new GraphQLObjectType({
             args: {
                 token: {
                     type: new GraphQLNonNull(GraphQLString)
-                },
-                rangerID: {
-                    type: GraphQLString
-                },
+                }
             },
             resolve(parent, args) {
                 let a = _.find(usersData, {
@@ -658,23 +669,23 @@ const RootQuery = new GraphQLObjectType({
                 a = _.find(usersData, {
                     token: args.rangerID
                 })
-                let rangerFind =0
-                let cont  =-1
-                let data =[]
-                for (let i =0;i<usersData.length;i++)
-                {
-                    data =_.filter(spoorIdentificationData,{
-                        ranger:usersData[i].rangerID
+                let rangerFind = 0
+                let cont = -1
+                let data = []
+                for (let i = 0; i < usersData.length; i++) {
+                    data = _.filter(spoorIdentificationData, {
+                        ranger: usersData[i].rangerID
                     })
-                    if (data.length>cont)
-                    {
-                        rangerFind=i
-                        cont=data.length
+                    if (data.length > cont) {
+                        rangerFind = i
+                        cont = data.length
 
                     }
                 }
-                let obj ={mosotTrakedRanger:usersData[rangerFind].rangerID}
-                obj.AnimalTracked=cont
+                let obj = {
+                    mosotTrakedRanger: usersData[rangerFind].rangerID
+                }
+                obj.AnimalTracked = cont
                 return obj
             }
         },
@@ -715,6 +726,83 @@ const RootQuery = new GraphQLObjectType({
                     NumberOfSpoors: 0
                 }
                 return stastsRerurnd
+            }
+        },
+        animalsStats2: {
+            type: new GraphQLList(ANIMALS_STATS_2_TYPE),
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                obj = []
+                animalData.forEach(element => {
+                    let anil=element.commonName
+                    let cont =_.filter(spoorIdentificationData,{
+                        animal:element.animalID
+                    }).length
+
+                    obj.push(
+                        {
+                            commonName:anil,
+                            NumberOfIdentifications:cont
+                        }
+                    )
+                });
+                return obj
+            }
+        },
+        animalsStats3: {
+            type: ANIMALS_STATS_2_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                obj = []
+                animalData.forEach(element => {
+                    let anil=element.commonName
+                    let cont =_.filter(spoorIdentificationData,{
+                        animal:element.animalID
+                    }).length
+
+                    obj.push(
+                        {
+                            commonName:anil,
+                            NumberOfIdentifications:cont
+                        }
+                    )
+                });
+                obj =_.orderBy(obj,["NumberOfIdentifications"],["desc"])
+                return obj[0]
+            }
+        },
+        animalsStats4: {
+            type: ANIMALS_STATS_2_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                obj = []
+                animalData.forEach(element => {
+                    let anil=element.commonName
+                    let cont =_.filter(spoorIdentificationData,{
+                        animal:element.animalID
+                    }).length
+
+                    obj.push(
+                        {
+                            commonName:anil,
+                            NumberOfIdentifications:cont
+                        }
+                    )
+                });
+                obj =_.orderBy(obj,["NumberOfIdentifications"])
+                return obj[0]
             }
         },
         groups: {
@@ -977,6 +1065,9 @@ const RootQuery = new GraphQLObjectType({
                 negat: {
                     type: GraphQLString
                 },
+                sigil: {
+                    type: GraphQLString
+                }
 
             },
             resolve(parent, args) {
@@ -1026,6 +1117,12 @@ const RootQuery = new GraphQLObjectType({
                 } else {
                     return temp
                 }
+
+                if (args.sigil != undefined) {
+                    last = temp[0]
+                    temp = []
+                    temp.push(last)
+                }
                 return temp
 
             }
@@ -1066,13 +1163,13 @@ const RootQuery = new GraphQLObjectType({
                 let listOfSID = _.filter(spoorIdentificationData, {
                     ranger: a.rangerID
                 })
-                let trophyA = {
-                    name: "",
-                    text: "",
-                    hiddin: false,
-                    unloked: false
-                }
-                listOfTrophys.push(trophyA)
+                // let trophyA = {
+                //     name: "",
+                //     text: "",
+                //     hiddin: false,
+                //     unloked: false
+                // }
+                // listOfTrophys.push(trophyA)
 
                 let Make_1st_ID = {
                     name: "Make 1st ID",
@@ -2561,10 +2658,20 @@ if (CACHE) {
             newSpoorID.animal = newSpoorID.animal.toString()
             newSpoorID.similar = getSimilarimgTrak(newSpoorID.animal.toString())
             // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
+            if (Array.isArray(newSpoorID.tags) != true) {
+                newSpoorID.tags = []
+                newSpoorID.tags.push("a tag")
+            }
+            newSpoorID.potentialMatches.forEach(element => {
+                if (isNaN(element.confidence)) {
+                    element.confidence = 0
+                }
+            });
             spoorIdentificationData.push(newSpoorID)
             if (newSpoorID.month == 8 || newSpoorID.month == "08" || newSpoorID.month == "8") {
                 // spoorIdentifications.doc(doc.id).delete();
             }
+
         });
         redeyNeedConterDown();
     });
@@ -2775,9 +2882,17 @@ if (CACHE) {
         redeyNeedConterDown();
     });
 
+    logIns.onSnapshot(function (querySnapshot) {
+        redeyNeedConterUP();
+        recentLogins = []
+        querySnapshot.forEach(function (doc) {
+            recentLogins.push(doc.data())
+        })
+        redeyNeedConterDown();
 
+    })
     redeyNeedConterDown();
-} else {}
+}
 
 function AIIterface(ImgID, base64imge) {
     potentialMatches = []
@@ -3197,3 +3312,16 @@ function removeDuplicates(array) {
     })
     return Object.keys(x)
 };
+
+function getDate() {
+    let date_ob = new Date();
+    let date = ("0" + date_ob.getDate()).slice(-2);
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+    let year = date_ob.getFullYear();
+    let hours = date_ob.getHours();
+    let minutes = date_ob.getMinutes();
+    let seconds = date_ob.getSeconds();
+    let milliseconds = date_ob.getMilliseconds()
+    return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds + ":" + milliseconds
+
+}

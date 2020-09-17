@@ -488,18 +488,18 @@ List<Widget> getCarousel() {
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   child: Stack(
                     children: <Widget>[
-                      Image.network(
-                        item,
-                        fit: BoxFit.cover,
-                        width: 1000.0,
-                        height: 500,
-                      ),
-                      // Image.asset(
+                      // Image.network(
                       //   item,
                       //   fit: BoxFit.cover,
                       //   width: 1000.0,
                       //   height: 500,
                       // ),
+                      Image.asset(
+                        item,
+                        fit: BoxFit.cover,
+                        width: 1000.0,
+                        height: 500,
+                      ),
                       Positioned(
                         bottom: 0.0,
                         left: 0.0,

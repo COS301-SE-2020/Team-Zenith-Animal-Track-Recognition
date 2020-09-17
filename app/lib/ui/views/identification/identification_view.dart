@@ -857,8 +857,8 @@ Widget swapImageBlock(String link, int index, IdentificationViewModel model) {
         color: Colors.grey,
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
-          image: NetworkImage(link),
-          //image: AssetImage(link),
+          //image: NetworkImage(link),
+          image: AssetImage(link),
           fit: BoxFit.fill,
         ),
       ),
@@ -893,7 +893,7 @@ Widget innerImageBlock(String link) {
             color: Colors.grey,
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
-              image: NetworkImage(link),
+              image: AssetImage(link),
               fit: BoxFit.fill,
             ),
           ),
@@ -999,8 +999,8 @@ Widget confidentImageBlock(String image) {
     //padding: new EdgeInsets.all(5),
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: NetworkImage(image),
-        //image: AssetImage(image),
+        //image: NetworkImage(image),
+        image: AssetImage(image),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,

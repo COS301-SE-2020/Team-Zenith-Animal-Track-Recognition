@@ -2,11 +2,11 @@
     <mat-tab-group mat-align-tabs="center" #trackMatTab>
         <mat-tab label="All tracks">
             <div id="ranger-search-results-container">
-                <div id="empty-sidenav-display-message-container" class="empty-display-message-container" [hidden]="displayedTracks">
+                <!-- <div id="empty-sidenav-display-message-container" class="empty-display-message-container" [hidden]="displayedTracks">
                     <div id="empty-sidenav-display-message" class="empty-display-message">
                         <p class="fontM">There is no data to display.</p>
                     </div>
-                </div>
+                </div> -->
                 <mat-selection-list id="track-identification-search-results" [multiple]="false" class="ranger-search-results-entries">
                     <div class="track-identification-container" (click)="viewTrack(track)" *ngFor="let track of displayedTracks; let trackTimeAgo of trackDateTimes">
                         <div class="track-identification-image-container">
