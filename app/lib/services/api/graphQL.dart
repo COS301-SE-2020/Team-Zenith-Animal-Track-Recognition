@@ -96,7 +96,8 @@ class GraphQL implements Api {
       token = Uri.encodeFull(token);
 
       String link = "$domain" + "graphql?";
-      List<String> tag;
+      List<String> tag = new List<String>();
+      tag.add('"Track"');
 
       Position position =
           await getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);

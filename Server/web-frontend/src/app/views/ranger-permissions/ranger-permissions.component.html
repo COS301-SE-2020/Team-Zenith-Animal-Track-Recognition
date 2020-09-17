@@ -12,38 +12,6 @@
         </div>
     </div>
     <div id="ranger-permissions-view-workspace">
-        <div id="ranger-permissions-levelKey-container">
-            <div class="ranger-permissions-levelKey">
-                <div class="ranger-permissions-level fontSB">
-                    <mat-icon>looks_one</mat-icon>&nbsp;Level 1 Ranger</div>
-                <p class="fontM">Access Control Level</p>
-                <div class="ranger-permissions-acl">Low:&nbsp;
-                    <mat-icon>lens</mat-icon>
-                    <mat-icon>panorama_fish_eye</mat-icon>
-                    <mat-icon>panorama_fish_eye</mat-icon>
-                </div>
-            </div>
-            <div class="ranger-permissions-levelKey">
-                <div class="ranger-permissions-level fontSB">
-                    <mat-icon>looks_two</mat-icon>&nbsp;Level 2 Ranger</div>
-                <p class="fontM">Access Control Level</p>
-                <div class="ranger-permissions-acl">Medium:&nbsp;
-                    <mat-icon>lens</mat-icon>
-                    <mat-icon>lens</mat-icon>
-                    <mat-icon>panorama_fish_eye</mat-icon>
-                </div>
-            </div>
-            <div class="ranger-permissions-levelKey">
-                <div class="ranger-permissions-level fontSB">
-                    <mat-icon>looks_3</mat-icon>&nbsp;Level 3 Ranger</div>
-                <p class="fontM">Access Control Level</p>
-                <div class="ranger-permissions-acl">High:&nbsp;
-                    <mat-icon>lens</mat-icon>
-                    <mat-icon>lens</mat-icon>
-                    <mat-icon>lens</mat-icon>
-                </div>
-            </div>
-        </div>
         <div id="ranger-permissions-controls-container">
             <mat-accordion multi>
                 <mat-expansion-panel>
@@ -84,22 +52,22 @@
                         <ng-container matColumnDef="Level 1 Ranger">
                             <th mat-header-cell *matHeaderCellDef>Level 1 Ranger</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-radio-button name="{{element.lastName}}" *ngIf="isLevel(element.accessLevel, 1)" checked="true"></mat-radio-button>
-                                <mat-radio-button name="{{element.lastName}}" *ngIf="!isLevel(element.accessLevel, 1)" checked="false" (change)="updateLevel(element.rangerID, 1)"></mat-radio-button>
+                                <mat-radio-button name="{{element.rangerID}}" *ngIf="isLevel(element.accessLevel, 1)" checked="true"></mat-radio-button>
+                                <mat-radio-button name="{{element.rangerID}}" *ngIf="!isLevel(element.accessLevel, 1)" checked="false" (change)="updateLevel(element.rangerID, 1)"></mat-radio-button>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="Level 2 Ranger">
                             <th mat-header-cell *matHeaderCellDef>Level 2 Ranger</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-radio-button name="{{element.lastName}}" *ngIf="isLevel(element.accessLevel, 2)" checked="true"></mat-radio-button>
-                                <mat-radio-button name="{{element.lastName}}" *ngIf="!isLevel(element.accessLevel, 2)" checked="false" (change)="updateLevel(element.rangerID, 2)"></mat-radio-button>
+                                <mat-radio-button name="{{element.rangerID}}" *ngIf="isLevel(element.accessLevel, 2)" checked="true"></mat-radio-button>
+                                <mat-radio-button name="{{element.rangerID}}" *ngIf="!isLevel(element.accessLevel, 2)" checked="false" (change)="updateLevel(element.rangerID, 2)"></mat-radio-button>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="Level 3 Ranger">
                             <th mat-header-cell *matHeaderCellDef>Level 3 Ranger</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-radio-button name="{{element.lastName}}" *ngIf="isLevel(element.accessLevel, 3)" checked="true"></mat-radio-button>
-                                <mat-radio-button name="{{element.lastName}}" *ngIf="!isLevel(element.accessLevel, 3)" checked="false" (change)="updateLevel(element.rangerID, 3)"></mat-radio-button>
+                                <mat-radio-button name="{{element.rangerID}}" *ngIf="isLevel(element.accessLevel, 3)" checked="true"></mat-radio-button>
+                                <mat-radio-button name="{{element.rangerID}}" *ngIf="!isLevel(element.accessLevel, 3)" checked="false" (change)="updateLevel(element.rangerID, 3)"></mat-radio-button>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="Assigned Level">

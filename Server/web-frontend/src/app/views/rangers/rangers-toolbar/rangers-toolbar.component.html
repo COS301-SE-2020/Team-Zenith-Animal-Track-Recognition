@@ -1,14 +1,17 @@
 <div id="rangers-toolbar-container">
     <div id="rangers-toolbar-navigationtree-container">
         <div id="rangers-toolbar-navigation">
-            <a href="javascript:void(0)" class="fontM activeView">Rangers</a>
+            <a href="javascript:void(0)" style="color: white;" class="fontM activeView">Rangers</a>
         </div>
     </div>
     <div id="rangers-toolbar">
+        <mat-form-field id="rangers-toolbar-search-bar" appearance="outline">
+            <input id="search-sidenav-input" matInput placeholder="Search Rangers" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" (ngModelChange)="updateSearchText($event)">
+            <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
         <mat-select id="rangers-toolbar-sortby-btn" class="fontR" placeholder="Sort By" disableOptionCentering>
-            <mat-option value="abc" (click)="toggle(true)" *ngIf="display">Alphabetical</mat-option>
-            <mat-option value="rangerLevel" (click)="toggle(false)" *ngIf="display">Ranger Level</mat-option>
-            <mat-option value="activity" *ngIf="display">Recent Activity</mat-option>
+            <mat-option value="surname" (click)="sort('bySurname')">Surname</mat-option>
+            <mat-option value="level" (click)="sort('byLevel')">Level</mat-option>
         </mat-select>
         <mat-select id="rangers-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
             <mat-option (click)="openAddRangerDialog()">Add New Ranger</mat-option>

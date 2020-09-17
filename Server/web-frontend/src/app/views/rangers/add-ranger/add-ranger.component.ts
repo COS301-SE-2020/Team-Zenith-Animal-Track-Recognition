@@ -15,23 +15,51 @@ export class AddRangerComponent implements OnInit {
 	addUserForm: FormGroup;
 	loading = false;
 	submitted = false;
+	minRangerAge = 16;
+	maxRangerAge = 100;
+	maxDate = new Date(new Date().getFullYear() - this.minRangerAge, new Date().getMonth(), new Date().getDay());
 
 	hide = true;
 	constructor(private formBuilder: FormBuilder, private router: Router, private http: HttpClient, public dialogRef: MatDialogRef<AddRangerComponent>) { }
 
 	ngOnInit(): void {
 		this.addUserForm = this.formBuilder.group({
-			firstName: ['', Validators.required],
-			lastName: ['', Validators.required],
-			email: ['', Validators.required],
-			phoneNumber: ['', Validators.required],
+			firstName: ['', [Validators.required, Validators.pattern(/^[a-z ,.'-]+$/i)]],
+			lastName: ['', [Validators.required, Validators.pattern(/^[a-z ,.'-]+$/i)]],
+			email: ['', [Validators.required, Validators.email]],
+			phoneNumber: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(15), Validators.pattern(/^[0-9]+$/)]],
 			password: ['', Validators.required],
 			dob: ['', Validators.required]
 		});		
 		document.getElementById('add-ranger-dialog').style.overflow = "hidden";
 	}
 
-	get f() { return this.addUserForm.controls; }
+	//Form controls and error handling
+	get addUser() { return this.addUserForm.controls; }
+	validationMsg(formCtrl: any, formCtrlName: string) {
+		if (formCtrl.hasError('required')) {
+			return 'Please enter a value';
+		}
+		switch (formCtrlName) {
+			case "firstName":
+				return this.addUser.firstName.hasError('pattern') ? 'Please only enter letters' : '';
+			break;
+			case "lastName":
+				return this.addUser.lastName.hasError('pattern') ? 'Please only enter letters' : '';
+			break;
+			case "email":
+				return this.addUser.email.hasError('email') ? 'Please enter a valid email address i.e example@domain.com' : '';
+			break;
+			case "phoneNumber":
+				if(this.addUser.phoneNumber.hasError('minlength'))
+					return 'Phone number can not be less than 7 digits';		
+				if(this.addUser.phoneNumber.hasError('maxlength'))
+					return 'Phone number can not be more than 15 digits';				
+				if(this.addUser.phoneNumber.hasError('pattern'))
+					return 'Phone number can only contain digits';
+			break;
+		}
+	}
 
 	onSubmit(test: boolean) {
 		if (test) { return true; }
@@ -41,13 +69,13 @@ export class AddRangerComponent implements OnInit {
 		}
 		this.loading = true;
 		this.startLoader();
-		let phoneNumber: string = "" + this.f.phoneNumber.value;
+		let phoneNumber: string = "" + this.addUser.phoneNumber.value;
 		phoneNumber = phoneNumber.trim();
 
-		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{addUser(firstName:"' + encodeURIComponent(this.f.firstName.value) +
-			'",lastName:"' + encodeURIComponent(this.f.lastName.value) + '",password:"' + encodeURIComponent(this.f.password.value) +
+		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{addUser(firstName:"' + encodeURIComponent(this.addUser.firstName.value) +
+			'",lastName:"' + encodeURIComponent(this.addUser.lastName.value) + '",password:"' + encodeURIComponent(this.addUser.password.value) +
 			'",token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",accessLevel:"1",eMail:"' +
-			encodeURIComponent(this.f.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}', '')
+			encodeURIComponent(this.addUser.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}', '')
 			.subscribe({ 
 				next: data => this.dialogRef.close("success"), 
 				error: error => this.dialogRef.close("error")

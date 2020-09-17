@@ -235,6 +235,11 @@ class NavDrawer extends ViewModelWidget<SearchViewModel> {
               child: null,
             ),
             ListTile(
+                leading: Icon(Icons.home),
+                title: text16LeftBoldGrey("Home"),
+                dense: true,
+                onTap: () => {navigateToHomeView()}),
+            ListTile(
                 leading: Icon(Icons.account_circle),
                 title: text16LeftBoldGrey("Profile"),
                 dense: true,

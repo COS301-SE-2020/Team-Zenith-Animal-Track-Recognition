@@ -288,11 +288,7 @@ class UploadViewModel extends BaseViewModel {
     validateTagInput();
     validateLongInput();
     validateLatInput();
-    if (_showAnimalError ||
-        _showTagError ||
-        _showLongError ||
-        _showLatError ||
-        showErrors) {
+    if (_showAnimalError || _showTagError || showErrors) {
       notifyListeners();
     } else {
       _longitude = null;
@@ -303,14 +299,11 @@ class UploadViewModel extends BaseViewModel {
       _showGalleryError = false;
       _showAnimalError = false;
       _showTagError = false;
-      _showLongError = false;
-      _showLatError = false;
-      _latErrorString = null;
-      _longErrorString = null;
       _animalErrorString = null;
       _tagErrorString = null;
 
       notifyListeners();
+
       double id = await api.getAnimalID(chosenAnimal);
 
       Position position =

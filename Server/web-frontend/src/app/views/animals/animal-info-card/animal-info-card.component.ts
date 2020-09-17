@@ -27,22 +27,20 @@ export class AnimalInfoCardComponent implements OnInit {
 		private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
-		this.startLoader();
+		this.stopLoader();
 	}
 
 	public ngOnChanges(changes: SimpleChanges) {
-		this.startLoader();
-		if (changes.animals) {
-			//If animals has updated
-			this.changeDetection.detectChanges();
+		if (changes.animalsList) {
+			this.stopLoader();
 		}
-		this.stopLoader();
 	}
 
 	//Animal CRUD Quick-Actions
 
 	//EDIT 
 	openEditAnimalDialog(animalID) {
+
 		const dialogConfig = new MatDialogConfig();
 
 		//Get animal information for chosen card
@@ -60,7 +58,8 @@ export class AnimalInfoCardComponent implements OnInit {
 			disableClose: true,
 			id: 'edit-animal-dialog',
 			data: {
-				animal: chosenAnimal
+				animal: chosenAnimal,
+				tab: 0
 			},
 		});
 
@@ -76,10 +75,12 @@ export class AnimalInfoCardComponent implements OnInit {
 		});
 	}
 
+	viewAnimalIdentifications(id: string){
+		this.router.navigate(['identifications']);
+	}
+	
 	viewAnimalProfile(animalClassi: string) {
-		let classification = animalClassi.split(" ");
-		let classificationQuery = classification[0] + "_" + classification[1];
-		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
+		this.router.navigate(['animals/information'], { queryParams: { classification: animalClassi.replace(" ", "_") } });
 	}
 	viewAnimalPhotos(animalClassi: string) {
 		let classification = animalClassi.split(" ");
@@ -90,6 +91,7 @@ export class AnimalInfoCardComponent implements OnInit {
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}
+
 
 	sort(bool: boolean) {
 		if (bool) {

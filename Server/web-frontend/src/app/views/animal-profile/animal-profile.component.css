@@ -15,7 +15,8 @@
     display: flex;
     flex-direction: row;
     border-bottom: 2px solid #CCCCCC;
-    background-color: white;
+    color: white;
+    background-image: linear-gradient(-135deg, #509CD0, #214E7D);
 }
 
 #animals-toolbar-navigationtree-container {
@@ -35,10 +36,11 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    color: white;
 }
 
 #animals-toolbar-navigation>a {
-    color: #AAAAAA;
+    color: #d8d8d8;
     font-size: 130%;
     text-decoration: none;
     transition: all 0.2s ease-in-out;
@@ -49,12 +51,12 @@
 }
 
 #animals-toolbar-navigation>a:hover {
-    color: #1A1A1A;
+    color: white;
     cursor: pointer;
 }
 
 #animals-toolbar-navigation>a.activeView {
-    color: #1A1A1A;
+    color: white;
 }
 
 #animals-toolbar {
@@ -68,7 +70,7 @@
 }
 
 #animals-toolbar-actions-btn {
-    background: rgba(104, 110, 121, 1);
+    background: rgb(245, 245, 245);
     width: 30%;
     border: 1px solid #CCCCCC;
     padding: 0.5em 0.5em;
@@ -83,13 +85,29 @@
 
 :host ::ng-deep #animals-toolbar-actions-btn .mat-select-value-text,
  :host ::ng-deep #animals-toolbar-actions-btn .mat-select-placeholder {
+    color: black !important;
+}
+
+:host ::ng-deep .mat-flat-button {
+    background-color: #7F93B8 !important;
     color: white !important;
+}
+
+:host ::ng-deep .mat-flat-button:hover {
+    background-color: #5084D3 !important;
+    color: white !important;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
 }
 
 #animal-profile-view-workspace {
     height: 88%;
     width: 100%;
     display: flex;
+    background-color: #CED8E6;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
@@ -98,7 +116,7 @@
 }
 
 #animal-profile-info-container {
-    height: 150px;
+    height: 250px;
     min-height: 250px;
     width: 100%;
     background-color: white;
@@ -267,6 +285,8 @@
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-start;
+    margin-top: 2%;
+    padding-top: 20px;
 }
 
 #animal-profile-info-overview-container>p {
@@ -331,7 +351,7 @@
 }
 
 #animal-profile-statistics {
-    height: 65%;
+    height: 80%;
     width: 90%;
     display: flex;
     flex-direction: row;
@@ -413,16 +433,20 @@
 /* Animal Profile Feed */
 
 .animal-profile-information-content-container {
-    height: 800px;
+    height: max-content;
     width: 100%;
     display: flex;
+    float: right;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+    padding-top: 3%;
+    margin-left: 27%;
+    padding-bottom: 3%;
 }
 
 .animal-profile-information-content {
-    height: 80%;
     width: 90%;
     background-color: white;
     box-shadow: 0px 2px 8px #BBB;
@@ -430,10 +454,8 @@
     display: flex;
     flex-direction: column;
     padding: 3%;
-}
-
-#animal-profile-information-description-container {
-    height: 400px;
+    padding-bottom: 1%;
+    overflow: hidden;
 }
 
 .animal-profile-information-content-title {
@@ -480,20 +502,17 @@
     justify-content: flex-start;
 }
 
-#animal-profile-information-threat {
-    height: 500px;
-}
-
 
 /* Animal Profile Feed - Animal Information Tab - Quicklink Navigation Styling */
 
 #animal-profile-information-quicklinks-container {
-    height: 900px;
+    height: max-content;
+    position: fixed;
     width: 20%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 3%;
+    padding-top: 1%;
 }
 
 #animal-profile-information-quicklinks-content {
@@ -543,6 +562,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    overflow: hidden;
 }
 
 .animal-profile-information-subtitle {
@@ -553,7 +573,7 @@
 .animal-profile-information-subtitle>h2 {
     color: rgba(0, 0, 0, .90);
     font-size: 110%;
-    padding-top: 2%;
+    padding-top: 1%;
     margin: 0;
 }
 

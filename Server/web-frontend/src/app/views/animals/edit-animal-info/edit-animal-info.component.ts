@@ -11,9 +11,10 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 })
 export class EditAnimalInfoComponent implements OnInit {
 
+	test: boolean = false;
+	testString: string;
 	editAnimalForm: FormGroup;
 	diet: string;
-	//DUMMY DATA
 	dietTypeList: string[];
 
 	constructor(
@@ -24,7 +25,12 @@ export class EditAnimalInfoComponent implements OnInit {
 
 	ngOnInit(): void {
 
+		if (this.test == true) {
+			return;
+		}
+
 		this.fillDietTypes();
+		console.log(this.data.animal);
 
 		const fheight: string = this.data.animal.heightF;
 		if (fheight.indexOf('-') > 0) {
@@ -54,7 +60,7 @@ export class EditAnimalInfoComponent implements OnInit {
 		} else {
 			this.data.animal.weightMLB = this.data.animal.weightMUB = Number.parseFloat(mweight);
 		}
-		
+
 		setTimeout(() => {
 			if (this.dietTypeList.includes(this.data.animal.dietType) == false) {
 				this.data.animal.dietType = "Not Specified";
@@ -63,17 +69,17 @@ export class EditAnimalInfoComponent implements OnInit {
 
 
 		this.editAnimalForm = this.formBuilder.group({
-			commonName: [this.data.animal.commonName],
-			classification: [this.data.animal.classification],
+			commonName: [this.data.animal.commonName, Validators.pattern(/^[a-z ,.'-]+$/i)],
+			classification: [this.data.animal.classification, Validators.pattern(/^[a-z ,.'-]+$/i)],
 			animalDescription: [this.data.animal.animalDescription],
-			heightFLB: [this.data.animal.heightFLB],
-			heightFUB: [this.data.animal.heightFUB],
-			heightMLB: [this.data.animal.heightMLB],
-			heightMUB: [this.data.animal.heightMUB],
-			weightFLB: [this.data.animal.weightFLB],
-			weightFUB: [this.data.animal.weightFUB],
-			weightMLB: [this.data.animal.weightMLB],
-			weightMUB: [this.data.animal.weightMUB],
+			heightFLB: [this.data.animal.heightFLB, Validators.pattern(/^[0-9]*$/)],
+			heightFUB: [this.data.animal.heightFUB, Validators.pattern(/^[0-9]*$/)],
+			heightMLB: [this.data.animal.heightMLB, Validators.pattern(/^[0-9]*$/)],
+			heightMUB: [this.data.animal.heightMUB, Validators.pattern(/^[0-9]*$/)],
+			weightFLB: [this.data.animal.weightFLB, Validators.pattern(/^[0-9]*$/)],
+			weightFUB: [this.data.animal.weightFUB, Validators.pattern(/^[0-9]*$/)],
+			weightMLB: [this.data.animal.weightMLB, Validators.pattern(/^[0-9]*$/)],
+			weightMUB: [this.data.animal.weightMUB, Validators.pattern(/^[0-9]*$/)],
 			gestationPeriod: [this.data.animal.gestationPeriod],
 			numOffspring: [Number.parseInt(this.data.animal.Offspring)],
 			lifeSpan: [this.data.animal.lifeSpan],
@@ -89,46 +95,93 @@ export class EditAnimalInfoComponent implements OnInit {
 	}
 
 	fillDietTypes() {
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{dietType(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '")}')
-			.subscribe((data: any[]) => {
-				let temp = [];
-				temp = Object.values(data)[0]['dietType'];
-				this.dietTypeList = temp;
-			});
+		if (this.test == true) {
+			return;
+		} else {
+			this.http.get<any>(ROOT_QUERY_STRING + '?query=query{dietType(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '")}')
+				.subscribe((data: any[]) => {
+					let temp = [];
+					temp = Object.values(data)[0]['dietType'];
+					this.dietTypeList = temp;
+				});
+		}
 	}
 
-	get f() { return this.editAnimalForm.controls; }
+	get editAnimal() {
+		if (this.test == true) {
+			return {};
+		}
+		return this.editAnimalForm.controls;
+	}
+	validationMsg(formCtrl: any, formCtrlName: string) {
+			switch (formCtrlName) {
+				case "commonName":
+					return this.editAnimal.commonName.hasError('pattern') ? 'Please only enter letters' : '';
+				break;
+				case "classification":
+					return this.editAnimal.classification.hasError('pattern') ? 'Please only enter letters' : '';
+				break;
+				case "heightFLB":
+					return this.editAnimal.heightFLB.hasError('pattern') ? 'Please only enter digits' : '';
+				break;				
+				case "heightFUB":
+					return this.editAnimal.heightFUB.hasError('pattern') ? 'Please only enter digits' : '';
+				break;
+				case "heightMLB":
+					return this.editAnimal.heightMLB.hasError('pattern') ? 'Please only enter digits' : '';
+				break;	
+				case "heightMUB":
+					return this.editAnimal.heightMUB.hasError('pattern') ? 'Please only enter digits' : '';
+				break;	
+				case "weightFLB":
+					return this.editAnimal.weightFLB.hasError('pattern') ? 'Please only enter digits' : '';
+				break;
+				case "weightFUB":
+					return this.editAnimal.weightFUB.hasError('pattern') ? 'Please only enter digits' : '';
+				break;
+				case "weightMLB":
+					return this.editAnimal.weightMLB.hasError('pattern') ? 'Please only enter digits' : '';
+				break;	
+				case "weightMUB":
+					return this.editAnimal.weightMUB.hasError('pattern') ? 'Please only enter digits' : '';
+				break;
+			}
+		}
 
 	onSubmit(test: boolean) {
-
-		let heightF, heightM, weightF, weightM;
-		heightF = this.f.heightFLB.value + "-" + this.f.heightFUB.value;
-		heightM = this.f.heightMLB.value + "-" + this.f.heightMUB.value;
-		weightF = this.f.weightFLB.value + "-" + this.f.weightFUB.value;
-		weightM = this.f.weightMLB.value + "-" + this.f.weightMUB.value;
-
 		if (false === test) {
+			
+			if (this.editAnimalForm.invalid) {
+				return;
+			}
+			
+			let heightF, heightM, weightF, weightM;
+			heightF = this.editAnimal.heightFLB.value + "-" + this.editAnimal.heightFUB.value;
+			heightM = this.editAnimal.heightMLB.value + "-" + this.editAnimal.heightMUB.value;
+			weightF = this.editAnimal.weightFLB.value + "-" + this.editAnimal.weightFUB.value;
+			weightM = this.editAnimal.weightMLB.value + "-" + this.editAnimal.weightMUB.value;
+
 			this.startLoader();
 
-			const desc: string = this.remQuotes(('' + this.f.animalDescription.value));
-			const mb: string = this.remQuotes(('' + this.f.maleBehaviour.value));
-			const fb: string = this.remQuotes(('' + this.f.femaleBehaviour.value));
-			const mt: string = this.remQuotes(('' + this.f.maleThreat.value));
-			const ft: string = this.remQuotes(('' + this.f.femaleThreat.value));
+			const desc: string = this.remQuotes(('' + this.editAnimal.animalDescription.value));
+			const mb: string = this.remQuotes(('' + this.editAnimal.maleBehaviour.value));
+			const fb: string = this.remQuotes(('' + this.editAnimal.femaleBehaviour.value));
+			const mt: string = this.remQuotes(('' + this.editAnimal.maleThreat.value));
+			const ft: string = this.remQuotes(('' + this.editAnimal.femaleThreat.value));
 
 			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{' +
 				'updateAnimal(token:"' + encodeURIComponent(JSON.parse(localStorage.getItem('currentToken'))['value']) +
-				'",classification:"' + encodeURIComponent(this.f.classification.value) +
-				'",commonName:"' + encodeURIComponent(this.f.commonName.value) +
-				'",lifeSpan:"' + encodeURIComponent(this.f.lifeSpan.value) +
+				'",classification:"' + encodeURIComponent(this.editAnimal.classification.value) +
+				'",commonName:"' + encodeURIComponent(this.editAnimal.commonName.value) +
+				'",lifeSpan:"' + encodeURIComponent(this.editAnimal.lifeSpan.value) +
 				'",animalDescription:"' + encodeURIComponent(desc) +
 				'",heightF:"' + encodeURIComponent(heightF) +
 				'",heightM:"' + encodeURIComponent(heightM) +
 				'",weightM:"' + encodeURIComponent(weightM) +
 				'",weightF:"' + encodeURIComponent(weightF) +
-				'",dietType:"' + encodeURIComponent(this.f.dietType.value) +
-				'",gestationPeriod:"' + encodeURIComponent(this.f.gestationPeriod.value) +
-				'",Offspring:"' + encodeURIComponent(this.f.numOffspring.value > 0 ? this.f.numOffspring.value : 1) +
+				'",dietType:"' + encodeURIComponent(this.editAnimal.dietType.value) +
+				'",gestationPeriod:"' + encodeURIComponent(this.editAnimal.gestationPeriod.value) +
+				'",Offspring:"' + encodeURIComponent(this.editAnimal.numOffspring.value > 0 ? this.editAnimal.numOffspring.value : 1) +
 				'",typicalBehaviourM:"' + encodeURIComponent(mb) +
 				'",typicalBehaviourF:"' + encodeURIComponent(fb) +
 				'",typicalThreatLevelM:"' + encodeURIComponent(mt) +
@@ -151,23 +204,17 @@ export class EditAnimalInfoComponent implements OnInit {
 		return word;
 	}
 
-	sort(): void {
-		for (let i = 0; i < this.dietTypeList.length - 1; i++) {
-			for (let j = i; j < this.dietTypeList.length; j++) {
-				if (('' + this.dietTypeList[i]) > ('' + this.dietTypeList[j])) {
-					let temp = this.dietTypeList[i];
-					this.dietTypeList[i] = this.dietTypeList[j];
-					this.dietTypeList[j] = temp;
-				}
-			}
-		}
-	}
-
 	closeDialog() {
+		if(this.test == true){
+			return;
+		}
 		this.dialogRef.close("cancel");
 	}
 
 	attachProgressbar() {
+		if(this.test == true){
+			return;
+		}
 		//Append progress bar to dialog
 		let matDialog = document.getElementById('edit-animal-dialog');
 		let progressBar = document.getElementById("dialog-progressbar-container");
@@ -176,10 +223,16 @@ export class EditAnimalInfoComponent implements OnInit {
 
 	//Loader - Progress bar
 	startLoader() {
+		if(this.test == true){
+			return;
+		}
 		this.attachProgressbar();
 		document.getElementById("dialog-progressbar-container").style.visibility = "visible";
 	}
 	stopLoader() {
+		if(this.test == true){
+			return;
+		}
 		document.getElementById("dialog-progressbar-container").style.visibility = "hidden";
 	}
 }
