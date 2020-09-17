@@ -25,18 +25,14 @@ export class AnimalsGalleryCardComponent implements OnInit {
 		private snackBar: MatSnackBar) 
 	{ }
 
+	public ngOnChanges(changes: SimpleChanges) {
+		if (changes.animalsList) {
+			this.stopLoader();
+		}
+	}
 
 	ngOnInit(): void {
 		this.test = true;
-		this.startLoader();
-	}
-
-	public ngOnChanges(changes: SimpleChanges) {
-		this.startLoader();
-		if (changes.animals) {
-		//If animals has updated
-		this.changeDetection.detectChanges();
-		}
 		this.stopLoader();
 	}
 

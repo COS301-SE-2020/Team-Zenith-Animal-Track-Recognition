@@ -99,13 +99,13 @@
         </div>
         <div id="ranger-profile-feed-container">
             <mat-tab-group mat-align-tabs="center" dynamicHeight>
-                <mat-tab label="Overview" id="ranger-profile-overview-tab">
+                <mat-tab label="Identified Tracks" id="ranger-profile-overview-tab">
                     <ng-template matTabContent>
                         <div id="ranger-profile-overview-container">
                             <div id="ranger-profile-spoor-feed-container">
                                 <div id="ranger-profile-spoor-feed-title">
-                                    <h2 class="fontSB">Recently Identified Spoors</h2>
-                                    <button class="buttonColour" mat-flat-button>View All</button>
+                                    <h2 class="fontSB">Recently Identified Tracks</h2>
+                                    <!--<button class="buttonColour" mat-flat-button>View All</button>-->
                                 </div>
                                 <div id="ranger-profile-spoors-container">
                                     <div class="ranger-profile-spoor-container" *ngFor="let spoorId of displayedTracks">
@@ -133,7 +133,7 @@
                                             <div class="ranger-profile-spoor-accuracy-container">
                                                 <div class="ranger-profile-spoor-accuracy">
                                                     <div class="ranger-profile-spoor-accuracyscore">
-                                                        <p class="fontB">{{spoorId.potentialMatches[0].confidence|percent}}</p>
+                                                        <p class="fontB">{{spoorId.potentialMatches[spoorId.potentialMatches.length - 1].confidence|percent}}</p>
                                                     </div>
                                                     <div class="ranger-profile-spoor-accuracy-title">
                                                         <p class="fontSB">ACCURACY<br/>SCORE</p>
@@ -145,17 +145,11 @@
 													<mat-icon>more_vert</mat-icon>
 												</button>
                                                 <mat-menu #menu="matMenu" xPosition="before">
-                                                    <button mat-menu-item>
-														<span>View Information</span>
+                                                    <button mat-menu-item (click)="viewOnTrackMap(spoorId.spoorIdentificationID)">
+														<span>View On Track Map</span>
 													</button>
-                                                    <button mat-menu-item>
+                                                    <button mat-menu-item (click)="viewAnimalProfile(spoorId.animal.classification)">
 														<span>View Animal</span>
-													</button>
-                                                    <button mat-menu-item>
-														<span>Edit Information</span>
-													</button>
-                                                    <button mat-menu-item>
-														<span>Delete Identification</span>
 													</button>
                                                 </mat-menu>
                                             </div>
@@ -168,8 +162,7 @@
                                             <div class="ranger-profile-spoor-tags">
                                                 <mat-chip-list>
                                                     <mat-chip selected>Found near riverbed</mat-chip>
-                                                    <mat-chip color="warn" selected>Possible injury</mat-chip>
-                                                    <mat-chip>Infant</mat-chip>
+													<!--mat-chip *ngFor="let tag of spoorId.tagList">{{tag.text}}</mat-chip-->
                                                 </mat-chip-list>
                                             </div>
                                         </div>

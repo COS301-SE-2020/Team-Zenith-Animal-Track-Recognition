@@ -20,7 +20,9 @@ export class AnimalProfileComponent implements OnInit {
 	animalClassi: string;
 	femaleBehaviour: string;
 	maleBehaviour: string;
-
+	trackIdentifications: any;
+	filteredListArray: any;
+	displayedTracks: any;
 
 	constructor(
 		private http: HttpClient,
@@ -53,6 +55,24 @@ export class AnimalProfileComponent implements OnInit {
 				this.animal.animalOverview = desc.substring(0, desc.indexOf('.') + 1);
 
 				this.stopLoader();
+			});
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'",classification:"' + this.animalClassi + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
+			.subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				this.trackIdentifications = temp[0];
+				this.filteredListArray = temp[0];
+				//Add 'time ago' field to each track
+				this.timeToString();
+			//	this.createTagList();
+
+				//Only display a certain number of tracks per sidenav page
+				this.displayedTracks = this.trackIdentifications.slice(0, 25);
+				console.log(this.displayedTracks);
+
+				//Check if a track was selected from the query parameters
+				//this.filterRanger();
 			});
 	}
 
@@ -142,12 +162,30 @@ export class AnimalProfileComponent implements OnInit {
 			}
 		});
 	}
-
+	timeToString() {
+		this.trackIdentifications.forEach(element => {
+			let temp = element.dateAndTime;
+			temp.month = temp.month < 10 ? '0' + temp.month : temp.month;
+			temp.day = temp.day < 10 ? '0' + temp.day : temp.day;
+			temp.hour = temp.hour < 10 ? '0' + temp.hour : temp.hour;
+			temp.min = temp.min < 10 ? '0' + temp.min : temp.min;
+			temp.second = temp.second < 10 ? '0' + temp.second : temp.second;
+			const str: string = temp.year + "-" + temp.month + "-" + temp.day + "T" + temp.hour + ":" + temp.min + ":" + temp.second + ".000Z";
+			element.timeAsString = str;
+			element.dateObj = new Date(temp.year, temp.month, temp.day, temp.hour, temp.min, temp.second);
+		});
+	}
 	navigateToSection(elementId: string): void {
 		const elmnt = document.getElementById(elementId);
 		elmnt.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
 	}
-
+	viewRangerProfile(rangerID: string) {
+		this.router.navigate(['rangers/profiles'], { queryParams: { ranger: rangerID } });
+	}
+	viewOnTrackMap(trackId: any) {
+		console.log("trackID in profile view: " + trackId);
+		this.router.navigate(['identifications'], { queryParams: { openTrackId: trackId } });
+	}
 	//Loader
 	startLoader() {
 		document.getElementById('loader-container').style.visibility = 'visible';

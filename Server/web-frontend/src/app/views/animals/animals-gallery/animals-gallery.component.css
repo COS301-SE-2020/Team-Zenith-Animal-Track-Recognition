@@ -27,6 +27,7 @@
     width: 200px;
     border-right: 2px solid #CCCCCC;
     box-shadow: 1px 0px 5px #DDDDDD;
+	overflow-x: hidden;
 }
 
 #sidenav-close-btn-container {
