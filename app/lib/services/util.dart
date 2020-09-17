@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
+import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:badges/badges.dart';
 import 'package:camera/camera.dart';
@@ -17,8 +18,8 @@ import 'package:progress_indicators/progress_indicators.dart';
 import 'api/graphQL.dart';
 
 final NavigationService _navigationService = locator<NavigationService>();
-final Api _api = locator<GraphQL>();
-//final Api _api = locator<MockApi>();
+//final Api _api = locator<GraphQL>();
+final Api _api = locator<MockApi>();
 
 //============================ Functionality Section ==================================//
 
@@ -399,7 +400,7 @@ Widget imageBlock(String imageLink) {
           ),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(imageLink),
+              image: AssetImage(imageLink),
               fit: BoxFit.fill,
             ),
             color: Colors.grey,

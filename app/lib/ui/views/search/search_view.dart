@@ -408,8 +408,8 @@ Widget imageBlock(String image) {
     //padding: new EdgeInsets.all(5),
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: NetworkImage(image),
-        //image: AssetImage(image),
+        //image: NetworkImage(image),
+        image: AssetImage(image),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,

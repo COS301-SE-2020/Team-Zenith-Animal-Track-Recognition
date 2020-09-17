@@ -1,6 +1,7 @@
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
+import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
@@ -8,8 +9,8 @@ import 'package:social_share/social_share.dart';
 import 'package:image_downloader/image_downloader.dart';
 
 class IdentificationViewModel extends BaseViewModel {
-  final Api _api = locator<GraphQL>();
-  //final Api _api = locator<MockApi>();
+  //final Api _api = locator<GraphQL>();
+  final Api _api = locator<MockApi>();
 
   SpoorModel _confident;
   List<SpoorModel> _recentIdentifications;

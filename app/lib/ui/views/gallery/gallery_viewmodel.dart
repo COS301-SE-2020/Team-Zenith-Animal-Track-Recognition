@@ -22,7 +22,7 @@ class GalleryViewModel extends BaseViewModel {
       tabs.add(Tab(
           child: text12CenterBoldWhite(tabModel.categories[i].toUpperCase())));
     }
-    newNotifications = await api.getNewTrophyNotification();
+    //newNotifications = await api.getNewTrophyNotification();
     return TempObject(tabs: tabs, length: tabModel.length);
   }
 }

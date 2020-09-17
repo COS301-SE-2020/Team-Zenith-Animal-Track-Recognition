@@ -354,8 +354,8 @@ Widget imageBlock(String imageLink) {
     margin: new EdgeInsets.only(bottom: 10, left: 15, right: 10, top: 10),
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: NetworkImage(imageLink),
-        //image: AssetImage(imageLink),
+        //image: NetworkImage(imageLink),
+        image: AssetImage(imageLink),
         fit: BoxFit.fill,
       ),
       color: Colors.grey,

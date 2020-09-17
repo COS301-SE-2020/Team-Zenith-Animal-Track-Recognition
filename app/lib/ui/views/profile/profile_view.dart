@@ -669,7 +669,7 @@ Widget profilepic(String profilePicture) {
           padding: new EdgeInsets.all(5),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(profilePicture),
+              image: AssetImage(profilePicture),
               fit: BoxFit.fill,
             ),
             color: Colors.white,

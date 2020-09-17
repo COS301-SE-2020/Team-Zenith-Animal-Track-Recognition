@@ -206,7 +206,7 @@ Widget getWidget(var animalTabList) {
         margin: new EdgeInsets.all(5),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(animalTabList[index]),
+            image: AssetImage(animalTabList[index]),
             fit: BoxFit.fill,
           ),
           color: Colors.grey,

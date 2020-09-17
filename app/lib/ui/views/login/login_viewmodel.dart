@@ -1,13 +1,15 @@
 import 'package:ERP_RANGER/app/router.gr.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
+import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:stacked/stacked.dart';
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class LoginViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
-  final Api api = locator<GraphQL>();
+  //final Api api = locator<GraphQL>();
+  final Api api = locator<MockApi>();
 
   String _username;
   String get username => _username;

@@ -1,14 +1,15 @@
 import 'package:ERP_RANGER/app/locator.dart';
 import 'package:ERP_RANGER/services/api/api.dart';
 import 'package:ERP_RANGER/services/api/graphQL.dart';
+import 'package:ERP_RANGER/services/api/mock_api.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:ERP_RANGER/services/util.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class AnimalViewModel extends BaseViewModel {
-  //final Api api = locator<MockApi>();
-  final Api api = locator<GraphQL>();
+  final Api api = locator<MockApi>();
+  //final Api api = locator<GraphQL>();
   bool newNotifications = false;
 
   Future<TempObject> getCategories(var context) async {
@@ -23,7 +24,7 @@ class AnimalViewModel extends BaseViewModel {
       List<AnimalModel> animals =
           await api.getAnimalModel(tabModel.categories[i]);
       animalList.add(animals);
-      newNotifications = await api.getNewTrophyNotification();
+      //newNotifications = await api.getNewTrophyNotification();
     }
     return TempObject(
         tabs: tabs, length: tabModel.length, animalList: animalList);
