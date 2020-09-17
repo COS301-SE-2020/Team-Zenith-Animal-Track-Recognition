@@ -571,7 +571,7 @@ const RootQuery = new GraphQLObjectType({
                     type: new GraphQLNonNull(GraphQLString)
                 },
                 rangerID: {
-                    type: new GraphQLNonNull(GraphQLString)
+                    type: GraphQLString
                 },
             },
             resolve(parent, args) {
@@ -584,10 +584,13 @@ const RootQuery = new GraphQLObjectType({
                 a = _.find(usersData, {
                     token: args.rangerID
                 })
-
+                let events=[]
+                if (!args.rangerID==undefined)
                 let events = _.filter(spoorIdentificationData, {
                     ranger: args.rangerID
                 })
+                else
+                events=_.filter(spoorIdentificationData, true)
                 if (events != undefined && events.length != 0) {
                     let stast = [
                         [],
