@@ -15,6 +15,10 @@ jobs:
       - run:
           name: Run Flutter doctor
           command: flutter doctor
+          
+      - run:
+          name: Get Packages
+          command: flutter pub get
 
       - run:
           name: Run the application tests
