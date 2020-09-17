@@ -39,7 +39,9 @@ ADMIN.initializeApp({
 
 
 let db = ADMIN.firestore();
-db.settings({ ignoreUndefinedProperties: true })
+db.settings({
+    ignoreUndefinedProperties: true
+})
 let animals = db.collection("animals");
 let users = db.collection("users");
 let groups = db.collection("groups");
@@ -480,8 +482,8 @@ const RANGERS_STATS_TYPE = new GraphQLObjectType({
             resolve(parent, args) {
                 console.log(parent.mostTrackedAnimal)
                 let temp = _.find(animalData, {
-                        animalID: parent.mostTrackedAnimal.toString()
-                    })
+                    animalID: parent.mostTrackedAnimal.toString()
+                })
                 return temp;
             }
         },
@@ -496,8 +498,7 @@ const RANGERS_STATS_TYPE = new GraphQLObjectType({
 const RANGERS_STATS2_TYPE = new GraphQLObjectType({
     name: "rangersStats2",
     fields: () => ({
-        mosotTrakedRanger:
-        {
+        mosotTrakedRanger: {
             type: USER_TYPE,
             resolve(parent, args) {
                 return _.find(usersData, {
@@ -668,23 +669,23 @@ const RootQuery = new GraphQLObjectType({
                 a = _.find(usersData, {
                     token: args.rangerID
                 })
-                let rangerFind =0
-                let cont  =-1
-                let data =[]
-                for (let i =0;i<usersData.length;i++)
-                {
-                    data =_.filter(spoorIdentificationData,{
-                        ranger:usersData[i].rangerID
+                let rangerFind = 0
+                let cont = -1
+                let data = []
+                for (let i = 0; i < usersData.length; i++) {
+                    data = _.filter(spoorIdentificationData, {
+                        ranger: usersData[i].rangerID
                     })
-                    if (data.length>cont)
-                    {
-                        rangerFind=i
-                        cont=data.length
+                    if (data.length > cont) {
+                        rangerFind = i
+                        cont = data.length
 
                     }
                 }
-                let obj ={mosotTrakedRanger:usersData[rangerFind].rangerID}
-                obj.AnimalTracked=cont
+                let obj = {
+                    mosotTrakedRanger: usersData[rangerFind].rangerID
+                }
+                obj.AnimalTracked = cont
                 return obj
             }
         },
@@ -727,18 +728,18 @@ const RootQuery = new GraphQLObjectType({
                 return stastsRerurnd
             }
         },
-        animalsStats2:{
+        animalsStats2: {
             type: new GraphQLList(ANIMALS_STATS_2_TYPE),
-            args:{
+            args: {
                 token: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
-            resolve(parent, args){
-                obj=[]
+            resolve(parent, args) {
+                obj = []
                 animalData.forEach(element => {
                     animal
-                    
+
                 });
             }
         },
@@ -1002,7 +1003,7 @@ const RootQuery = new GraphQLObjectType({
                 negat: {
                     type: GraphQLString
                 },
-                sigil:{
+                sigil: {
                     type: GraphQLString
                 }
 
@@ -1055,10 +1056,9 @@ const RootQuery = new GraphQLObjectType({
                     return temp
                 }
 
-                if (args.sigil!=undefined)
-                {
-                    last =temp[0]
-                    temp=[]
+                if (args.sigil != undefined) {
+                    last = temp[0]
+                    temp = []
                     temp.push(last)
                 }
                 return temp
@@ -2596,22 +2596,22 @@ if (CACHE) {
             newSpoorID.animal = newSpoorID.animal.toString()
             newSpoorID.similar = getSimilarimgTrak(newSpoorID.animal.toString())
             // addImgIDToAnimal(newSpoorID.animal,newSpoorID.picture)
-            if(Array.isArray( newSpoorID.tags)!=true)
-            {
-                newSpoorID.tags=[]
+            if (Array.isArray(newSpoorID.tags) != true) {
+                newSpoorID.tags = []
                 newSpoorID.tags.push("a tag")
                 console.log(newSpoorID.tags)
             }
             newSpoorID.potentialMatches.forEach(element => {
-                if (isNaN( e.confidence))
-                e.confidence=0
+                if (isNaN(element.confidence))
+                    element.confidence = 0
+                // console.log(e)
             });
-            
+
             spoorIdentificationData.push(newSpoorID)
             if (newSpoorID.month == 8 || newSpoorID.month == "08" || newSpoorID.month == "8") {
                 // spoorIdentifications.doc(doc.id).delete();
             }
-            
+
         });
         redeyNeedConterDown();
     });
@@ -2822,19 +2822,19 @@ if (CACHE) {
         redeyNeedConterDown();
     });
 
-    logIns.onSnapshot(function (querySnapshot){
+    logIns.onSnapshot(function (querySnapshot) {
         redeyNeedConterUP();
-        recentLogins=[]
+        recentLogins = []
         querySnapshot.forEach(function (doc) {
             recentLogins.push(doc.data())
         })
         redeyNeedConterDown();
-        
+
     })
     redeyNeedConterDown();
-} 
+}
 
-function  AIIterface(ImgID, base64imge) {
+function AIIterface(ImgID, base64imge) {
     potentialMatches = []
     let filename = ImgID + ".jpg"
     saveBase64FileSy(base64imge, filename)
@@ -3253,15 +3253,15 @@ function removeDuplicates(array) {
     return Object.keys(x)
 };
 
-function getDate(){
+function getDate() {
     let date_ob = new Date();
-let date = ("0" + date_ob.getDate()).slice(-2);
-let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-let year = date_ob.getFullYear();
-let hours = date_ob.getHours();
-let minutes = date_ob.getMinutes();
-let seconds = date_ob.getSeconds();
-let milliseconds = date_ob.getMilliseconds()
-return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds+":"+milliseconds
+    let date = ("0" + date_ob.getDate()).slice(-2);
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+    let year = date_ob.getFullYear();
+    let hours = date_ob.getHours();
+    let minutes = date_ob.getMinutes();
+    let seconds = date_ob.getSeconds();
+    let milliseconds = date_ob.getMilliseconds()
+    return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds + ":" + milliseconds
 
 }
