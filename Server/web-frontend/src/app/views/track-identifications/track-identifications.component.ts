@@ -19,7 +19,7 @@ export class TrackIdentificationsComponent implements OnInit {
 	@ViewChild('trackIdentificationsSidenav') trackSidenav: TrackIdentificationsSidenavComponent;
 	@ViewChild('sidenav') sidenav;
 	activeTrack: any = null;
-	filteredListArray = [];
+	filteredListArray;
 	currentAlphabet;
 	displayedTracks: any;
 	defaultLocation: string = 'Address not found';
@@ -121,9 +121,10 @@ export class TrackIdentificationsComponent implements OnInit {
 				(this.trackIdentifications[i]['ranger']['firstName'] + ' ' + this.trackIdentifications[i]['ranger']['lastName']) == (this.selectedFilter)) {
 				if (((!this.initWithOpenTrack) ||
 					(this.initWithOpenTrack && this.trackIdentifications[i].spoorIdentificationID !== this.initWithOpenTrackId))) {
-					//setTimeout(() => this.addTrackMarker(this.trackIdentifications[i]), i * 100);
-					this.addTrackMarker(this.trackIdentifications[i]);
+					setTimeout(() => this.addTrackMarker(this.trackIdentifications[i]), i * 15);
+					//this.addTrackMarker(this.trackIdentifications[i]);
 					this.filteredListArray.push(this.trackIdentifications[i]);
+					console.log('helllo');
 				}
 			}
 		}
@@ -238,7 +239,8 @@ export class TrackIdentificationsComponent implements OnInit {
 			temp.second = temp.second < 10 ? '0' + temp.second : temp.second;
 			const str: string = temp.year + "-" + temp.month + "-" + temp.day + "T" + temp.hour + ":" + temp.min + ":" + temp.second + ".000Z";
 			element.timeAsString = str;
-			element.dateObj = new Date(temp.year, temp.month, temp.day, temp.hour, temp.min, temp.second);
+			let t: number = parseInt(temp.month) - 1;
+			element.dateObj = new Date(temp.year, t, temp.day, temp.hour, temp.min, temp.second);
 		});
 	}
 	setTrackAddress(track: any) {

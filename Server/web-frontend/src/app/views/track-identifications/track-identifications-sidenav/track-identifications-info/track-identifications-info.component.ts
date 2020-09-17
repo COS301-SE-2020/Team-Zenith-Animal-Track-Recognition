@@ -1,5 +1,5 @@
-import { AnimalPhotoDetailsComponent } from './../../../animals/animals-gallery/animal-photos/animal-photo-details/animal-photo-details.component'; 
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
+import { AnimalPhotoDetailsComponent } from './../../../animals/animals-gallery/animal-photos/animal-photo-details/animal-photo-details.component';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GoogleMap } from '@angular/google-maps';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
@@ -8,9 +8,9 @@ import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-track-identifications-info',
-  templateUrl: './track-identifications-info.component.html',
-  styleUrls: ['./track-identifications-info.component.css']
+	selector: 'app-track-identifications-info',
+	templateUrl: './track-identifications-info.component.html',
+	styleUrls: ['./track-identifications-info.component.css']
 })
 export class TrackIdentificationsInfoComponent implements OnInit {
 
@@ -21,9 +21,9 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	@ViewChild('simTracksMatTab') simTracksMatTab;
 	geoCoder: google.maps.Geocoder;
 	similarTrackList: any = null;
-	
+
 	constructor(private changeDetection: ChangeDetectorRef, private http: HttpClient, public dialog: MatDialog, private router: Router) { }
-	
+
 	public ngOnChanges(changes: SimpleChanges) {
 		if (changes) {
 			this.changeDetection.detectChanges();
@@ -34,7 +34,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 
 	ngOnInit(): void {
 	}
-	
+
 	backToTrackList() {
 		this.viewingTrackOnChange.emit("back");
 	}
@@ -52,28 +52,28 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	prevSimilarTrack() {
 		this.simTracksMatTab.selectedIndex -= 1;
 	}
-	
+
+
 	//Track Identification manipulation
 	timeToString() {
 		let temp = this.activeTrack.dateAndTime;
-		this.activeTrack.dateObj = new Date(temp.year, temp.month, temp.day, temp.hour, temp.min, temp.second);
+		this.activeTrack.dateObj = new Date(temp.year, (temp.month - 1), temp.day, temp.hour, temp.min, temp.second);
 	}
-	setTrackAddress()
-	{
+	setTrackAddress() {
 		//Determine physical location name of each track through Reverse Geocoding
 		this.geoCoder = new google.maps.Geocoder;
-		var latlng = {lat: this.activeTrack.location.latitude, lng: this.activeTrack.location.longitude};
+		var latlng = { lat: this.activeTrack.location.latitude, lng: this.activeTrack.location.longitude };
 		var temp = this.activeTrack;
-		this.geoCoder.geocode({'location': latlng}, function(results, status) {
+		this.geoCoder.geocode({ 'location': latlng }, function (results, status) {
 			if (status === 'OK') {
 				if (results[0]) {
 					temp.location.addresses = results;
-				} 
+				}
 				else {
 					//Address could not be obtained
 					temp.location.addresses = null;
 				}
-			} 
+			}
 			else {
 				//console.log('Geocoder failed due to: ' + status);
 				temp.location.addresses = null;
@@ -81,11 +81,11 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 		});
 		this.timeToString();
 	}
-	
+
 	updateSimilarTracks() {
 		//Load similar tracks for the same animal being viewed
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'", classification:"' +  this.activeTrack.animal.classification + '"){spoorIdentificationID,animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}}dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
+			'", classification:"' + this.activeTrack.animal.classification + '"){spoorIdentificationID,animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}}dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -94,7 +94,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 					if (trackList[i].spoorIdentificationID === this.activeTrack.spoorIdentificationID)
 						trackList.splice(i, 1);
 				}
-				
+
 				//Split similar tracks into groups of up to 3 and limit it to 9 similar tracks
 				var maxNumSimilarTracks = 9;
 				if (trackList.length < maxNumSimilarTracks) {
@@ -102,11 +102,11 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 				}
 				this.similarTrackList = [];
 				for (let j = 0; j < maxNumSimilarTracks; j += 3) {
-					this.similarTrackList.push(trackList.slice(j, j+3));
+					this.similarTrackList.push(trackList.slice(j, j + 3));
 				}
-			});		
+			});
 	}
-	
+
 	viewAnimalProfile(animalClassi: string) {
 		let classification = animalClassi.split(" ");
 		let classificationQuery = classification[0] + "_" + classification[1];
@@ -136,6 +136,6 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}
-	
+
 
 }

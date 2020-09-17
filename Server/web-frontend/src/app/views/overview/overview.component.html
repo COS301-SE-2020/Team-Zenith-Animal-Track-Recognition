@@ -42,12 +42,12 @@
                                                 <div class="overview-most-identifications-details-container">
                                                     <div class="overview-most-identifications-info">
                                                         <div class="overview-most-identifications-type">
-                                                            <p class="fontSB">Obakeng Seageng</p>
+                                                            <p class="fontSB">{{mostTracked.mosotTrakedRanger.firstName}} {{mostTracked.mosotTrakedRanger.lastName}}</p>
                                                         </div>
                                                         <div class="overview-most-identifications-summary">
                                                             <p style="width: 40%; text-align: center;" class="fontM">Number of Animals</p>
                                                             <mat-icon style="width: 20%; text-align: center;">arrow_right_alt</mat-icon>
-                                                            <p style="width: 40%; text-align: center;" class="fontM">79</p>
+                                                            <p style="width: 40%; text-align: center;" class="fontM">{{mostTracked.AnimalTracked}}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -65,12 +65,12 @@
                                                 <div class="overview-latest-details-container">
                                                     <div class="overview-latest-info">
                                                         <div class="overview-latest-type">
-                                                            <p class="fontSB">Zachary Christophers</p>
+                                                            <p class="fontSB">{{latest.ranger.firstName}} {{latest.ranger.lastName}}</p>
                                                         </div>
                                                         <div class="overview-latest-summary">
-                                                            <p style="width: 40%; text-align: center;" class="fontM">Black Rhinoceros</p>
+                                                            <p style="width: 40%; text-align: center;" class="fontM">{{latest.animal.commonName}}</p>
                                                             <mat-icon style="width: 20%; text-align: center;">arrow_right_alt</mat-icon>
-                                                            <p style="width: 40%; text-align: center;" class="fontM">2020-09-16</p>
+                                                            <p style="width: 40%; text-align: center;" class="fontM">{{latest.timeAsString | relativeTime}}</p>
                                                         </div>
                                                     </div>
                                                 </div>
