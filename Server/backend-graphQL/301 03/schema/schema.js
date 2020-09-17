@@ -458,6 +458,7 @@ const ANIMALS_STATS_TYPE = new GraphQLObjectType({
         }
     })
 })
+
 const RANGERS_STATS_TYPE = new GraphQLObjectType({
     name: "rangersStats",
     fields: () => ({
@@ -466,13 +467,10 @@ const RANGERS_STATS_TYPE = new GraphQLObjectType({
             resolve(parent, args) {
 
                 let temp = undefined;
-                if (CACHE) {
+                
                     temp = _.find(animalData, {
                         animalID: parent.mostTrackedAnimal.toString()
                     })
-                } else {
-                    //todo
-                }
                 return temp;
             }
         },
@@ -480,6 +478,23 @@ const RANGERS_STATS_TYPE = new GraphQLObjectType({
             type: GraphQLString
         },
         nuberOfanamils: {
+            type: GraphQLString
+        }
+    })
+})
+const RANGERS_STATS2_TYPE = new GraphQLObjectType({
+    name: "rangersStats2",
+    fields: () => ({
+        mosotTrakedRanger:
+        {
+            type: USER_TYPE,
+            resolve(parent, args) {
+                return _.find(usersData, {
+                    rangerID: parent.mosotTrakedRanger
+                })
+            }
+        },
+        AnimalTracked: {
             type: GraphQLString
         }
     })
@@ -588,7 +603,6 @@ const RootQuery = new GraphQLObjectType({
 
 
                 if (args.rangerID != undefined) {
-                    console.log("a")
                     events = _.filter(spoorIdentificationData, {
                         ranger: args.rangerID
                     })
@@ -622,6 +636,46 @@ const RootQuery = new GraphQLObjectType({
                     }
                     return stastsRerurnd
                 } else return null
+            }
+        },
+        rangersStats2: {
+            type: RANGERS_STATS2_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                rangerID: {
+                    type: GraphQLString
+                },
+            },
+            resolve(parent, args) {
+                let a = _.find(usersData, {
+                    token: args.token
+                })
+                if (a == null) {
+                    return null;
+                }
+                a = _.find(usersData, {
+                    token: args.rangerID
+                })
+                let rangerFind =0
+                let cont  =-1
+                let data =[]
+                for (let i =0;i<usersData.length;i++)
+                {
+                    data =_.filter(spoorIdentificationData,{
+                        ranger:usersData[i].rangerID
+                    })
+                    if (data.length>cont)
+                    {
+                        rangerFind=i
+                        cont=data.length
+
+                    }
+                }
+                let obj ={mosotTrakedRanger:usersData[rangerFind].rangerID}
+                obj.AnimalTracked=cont
+                return obj
             }
         },
         animalsStats: {
