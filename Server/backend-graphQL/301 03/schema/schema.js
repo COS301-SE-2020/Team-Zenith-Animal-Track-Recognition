@@ -738,17 +738,15 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 obj = []
                 animalData.forEach(element => {
-                    let anil=element.commonName
-                    let cont =_.filter(spoorIdentificationData,{
-                        animal:element.animalID
+                    let anil = element.commonName
+                    let cont = _.filter(spoorIdentificationData, {
+                        animal: element.animalID
                     }).length
 
-                    obj.push(
-                        {
-                            commonName:anil,
-                            NumberOfIdentifications:cont
-                        }
-                    )
+                    obj.push({
+                        commonName: anil,
+                        NumberOfIdentifications: cont
+                    })
                 });
                 return obj
             }
@@ -763,19 +761,17 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 obj = []
                 animalData.forEach(element => {
-                    let anil=element.commonName
-                    let cont =_.filter(spoorIdentificationData,{
-                        animal:element.animalID
+                    let anil = element.commonName
+                    let cont = _.filter(spoorIdentificationData, {
+                        animal: element.animalID
                     }).length
 
-                    obj.push(
-                        {
-                            commonName:anil,
-                            NumberOfIdentifications:cont
-                        }
-                    )
+                    obj.push({
+                        commonName: anil,
+                        NumberOfIdentifications: cont
+                    })
                 });
-                obj =_.orderBy(obj,["NumberOfIdentifications"],["desc"])
+                obj = _.orderBy(obj, ["NumberOfIdentifications"], ["desc"])
                 return obj[0]
             }
         },
@@ -789,19 +785,17 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 obj = []
                 animalData.forEach(element => {
-                    let anil=element.commonName
-                    let cont =_.filter(spoorIdentificationData,{
-                        animal:element.animalID
+                    let anil = element.commonName
+                    let cont = _.filter(spoorIdentificationData, {
+                        animal: element.animalID
                     }).length
 
-                    obj.push(
-                        {
-                            commonName:anil,
-                            NumberOfIdentifications:cont
-                        }
-                    )
+                    obj.push({
+                        commonName: anil,
+                        NumberOfIdentifications: cont
+                    })
                 });
-                obj =_.orderBy(obj,["NumberOfIdentifications"])
+                obj = _.orderBy(obj, ["NumberOfIdentifications"])
                 return obj[0]
             }
         },
@@ -2908,33 +2902,37 @@ function AIIterface(ImgID, base64imge) {
     arri = []
 
 
+
     for (let i = 0; i < arrs.length; i++) {
         arrs[i] = arrs[i].trim()
         arri.push(parseFloat(arrs[i].substring(2, arrs[i].length - 1)))
     }
+    animalData.forEach(element => {
 
-    for (let i = 0; i < animalData.length; i++) {
-        let newPM = {
-            animal: i,
-            confidence: parseFloat((Math.random() * (0.120 - 0.0200) + 0.0200).toFixed(4))
+
+        {
+            let newPM = {
+                animal: element.animalID,
+                confidence: parseFloat((Math.random() * (0.120 - 0.020) ).toFixed(4))
+            }
+            if (element.animalID == 11) {
+                newPM.confidence = arri[0]
+            }
+            if (element.animalID == 10) {
+                newPM.confidence = arri[3]
+            }
+            if (element.animalID == 7) {
+                newPM.confidence = arri[5]
+            }
+            if (element.animalID == 12) {
+                newPM.confidence = arri[6]
+            }
+            if (element.animalID == 9) {
+                newPM.confidence = arri[8]
+            }
+            potentialMatches.push(newPM)
         }
-        if (i == 11) {
-            newPM.confidence = arri[0]
-        }
-        if (i == 10) {
-            newPM.confidence = arri[3]
-        }
-        if (i == 7) {
-            newPM.confidence = arri[5]
-        }
-        if (i == 12) {
-            newPM.confidence = arri[6]
-        }
-        if (i == 9) {
-            newPM.confidence = arri[8]
-        }
-        potentialMatches.push(newPM)
-    } {
+    }); {
         const fs = require('fs')
 
         const path = './' + filename
