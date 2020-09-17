@@ -684,7 +684,6 @@ const RootQuery = new GraphQLObjectType({
                 }
                 let obj ={mosotTrakedRanger:usersData[rangerFind].rangerID}
                 obj.AnimalTracked=cont
-                console.log(obj)
                 return obj
             }
         },
@@ -725,6 +724,20 @@ const RootQuery = new GraphQLObjectType({
                     NumberOfSpoors: 0
                 }
                 return stastsRerurnd
+            }
+        },
+        animalsStats2:{
+            type: new GraphQLList(ANIMALS_STATS_2_TYPE),
+            args:{
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args){
+                obj=[]
+                ana.forEach(element => {
+                    
+                });
             }
         },
         groups: {
@@ -2805,9 +2818,9 @@ if (CACHE) {
         
     })
     redeyNeedConterDown();
-} else 
+} 
 
-function AIIterface(ImgID, base64imge) {
+function  AIIterface(ImgID, base64imge) {
     potentialMatches = []
     let filename = ImgID + ".jpg"
     saveBase64FileSy(base64imge, filename)
