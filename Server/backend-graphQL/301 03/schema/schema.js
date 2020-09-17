@@ -643,10 +643,7 @@ const RootQuery = new GraphQLObjectType({
             args: {
                 token: {
                     type: new GraphQLNonNull(GraphQLString)
-                },
-                rangerID: {
-                    type: GraphQLString
-                },
+                }
             },
             resolve(parent, args) {
                 let a = _.find(usersData, {
