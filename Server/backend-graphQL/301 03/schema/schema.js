@@ -1084,13 +1084,13 @@ const RootQuery = new GraphQLObjectType({
                 let listOfSID = _.filter(spoorIdentificationData, {
                     ranger: a.rangerID
                 })
-                let trophyA = {
-                    name: "",
-                    text: "",
-                    hiddin: false,
-                    unloked: false
-                }
-                listOfTrophys.push(trophyA)
+                // let trophyA = {
+                //     name: "",
+                //     text: "",
+                //     hiddin: false,
+                //     unloked: false
+                // }
+                // listOfTrophys.push(trophyA)
 
                 let Make_1st_ID = {
                     name: "Make 1st ID",
