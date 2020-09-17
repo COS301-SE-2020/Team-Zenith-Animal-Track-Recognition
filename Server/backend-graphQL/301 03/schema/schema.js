@@ -1055,7 +1055,11 @@ const RootQuery = new GraphQLObjectType({
         },
         recentLogins: {
             type: new GraphQLList(RECENT_LOGIN_TYPE),
-
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+            },
             resolve(parent, args) {
 
                 let a = _.find(usersData, {
