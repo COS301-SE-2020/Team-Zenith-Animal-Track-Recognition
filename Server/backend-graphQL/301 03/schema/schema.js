@@ -465,10 +465,8 @@ const RANGERS_STATS_TYPE = new GraphQLObjectType({
         mostTrackedAnimal: {
             type: ANIMAL_TYPE,
             resolve(parent, args) {
-
-                let temp = undefined;
-                
-                    temp = _.find(animalData, {
+                console.log(parent.mostTrackedAnimal)
+                let temp = _.find(animalData, {
                         animalID: parent.mostTrackedAnimal.toString()
                     })
                 return temp;
@@ -977,6 +975,9 @@ const RootQuery = new GraphQLObjectType({
                 negat: {
                     type: GraphQLString
                 },
+                sigil:{
+                    type: GraphQLString
+                }
 
             },
             resolve(parent, args) {
@@ -1025,6 +1026,13 @@ const RootQuery = new GraphQLObjectType({
                     }
                 } else {
                     return temp
+                }
+
+                if (args.sigil!=undefined)
+                {
+                    last =temp[0]
+                    temp=[]
+                    temp.push(last)
                 }
                 return temp
 
