@@ -2744,7 +2744,7 @@ function AIIterface(ImgID, base64imge) {
     for (let i = 0; i < animalData.length; i++) {
         let newPM = {
             animal: i,
-            confidence: parseFloat(0.0)
+            confidence: parseFloat((Math.random() * (0.120 - 0.0200) + 0.0200).toFixed(4))
         }
         if (i == 11) {
             newPM.confidence = arri[0]
