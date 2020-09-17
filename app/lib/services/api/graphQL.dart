@@ -108,12 +108,16 @@ class GraphQL implements Api {
       String query =
           'mutation{identificationBase64(token: "$token" ,latitude: $lat, longitude: $long, tgas: $tag ,base64imge: "$pic" ){spoorIdentificationID, potentialMatches{animal{commonName, classification, pictures{URL}}confidence}}}';
 
+      print(query.toString());
+
       final http.Response response = await http.post(
         link,
         headers: {"Content-Type": "application/json"},
         body: json.encode({'query': query}),
       );
 
+      print(response.body.toString());
+      print(response.statusCode.toString());
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
 
@@ -466,7 +470,7 @@ class GraphQL implements Api {
         String location;
         String ranger;
         String date;
-        String tag = "TBD";
+        String tag = "Track";
         String pic;
         String score;
         double count;
@@ -567,7 +571,11 @@ class GraphQL implements Api {
                       [0]['confidence']
                   .toString();
               count = double.parse(score) * 100;
-              score = count.toString().substring(0, score.length - 1) + "%";
+
+              score =
+                  count.toString().substring(0, count.toString().length - 1) +
+                      "%";
+
               int index = score.indexOf('.');
               if (index == (score.indexOf("%") - 1)) {
                 score = score.replaceAll('.', "");
@@ -589,6 +597,7 @@ class GraphQL implements Api {
           _cards.add(new HomeModel(
               cName, sName, location, ranger, date, score, tag, pic, id));
         }
+
         return _cards;
       } else {
         throw HttpException('500');
@@ -1322,7 +1331,9 @@ class GraphQL implements Api {
                       [0]['confidence']
                   .toString();
               count = double.parse(score) * 100;
-              score = count.toString().substring(0, score.length - 1) + "%";
+              score =
+                  count.toString().substring(0, count.toString().length - 1) +
+                      "%";
               int index = score.indexOf('.');
               if (index == (score.indexOf("%") - 1)) {
                 score = score.replaceAll('.', "");
