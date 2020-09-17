@@ -458,6 +458,17 @@ const ANIMALS_STATS_TYPE = new GraphQLObjectType({
         }
     })
 })
+const ANIMALS_STATS_2_TYPE = new GraphQLObjectType({
+    name: "animalsStats2",
+    fields: () => ({
+        commonName: {
+            type: GraphQLString
+        },
+        NumberOfIdentifications: {
+            type: GraphQLInt
+        }
+    })
+})
 
 const RANGERS_STATS_TYPE = new GraphQLObjectType({
     name: "rangersStats",
@@ -2786,12 +2797,13 @@ if (CACHE) {
         redeyNeedConterUP();
         recentLogins=[]
         querySnapshot.forEach(function (doc) {
-            recentLogins.push(doc)
+            recentLogins.push(doc.data())
         })
         redeyNeedConterDown();
+        
     })
     redeyNeedConterDown();
-} else {}
+} else 
 
 function AIIterface(ImgID, base64imge) {
     potentialMatches = []
