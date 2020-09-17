@@ -753,6 +753,32 @@ const RootQuery = new GraphQLObjectType({
                 return obj
             }
         },
+        animalsStats3: {
+            type: ANIMALS_STATS_2_TYPE,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+                obj = []
+                animalData.forEach(element => {
+                    let anil=element.commonName
+                    let cont =_.filter(spoorIdentificationData,{
+                        animal:element.animalID
+                    }).length
+
+                    obj.push(
+                        {
+                            commonName:anil,
+                            NumberOfIdentifications:cont
+                        }
+                    )
+                });
+                obj =_.orderBy(obj,["NumberOfIdentifications"],["desc"])
+                return obj[0]
+            }
+        },
         groups: {
             type: GraphQLList(GROUP_TYPE),
             args: {
