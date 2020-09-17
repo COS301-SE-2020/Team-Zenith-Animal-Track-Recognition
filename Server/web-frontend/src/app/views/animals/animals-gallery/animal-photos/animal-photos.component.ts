@@ -108,13 +108,14 @@ export class AnimalPhotosComponent implements OnInit {
 			width: '60%',
 			autoFocus: true,
 			disableClose: true,
-			id: 'add-new-image-dialog',
+			id: 'add-image-dialog',
 			data: {
 				animal: this.animal
 			},
 		});
 		editDialogRef.afterClosed().subscribe(result => {
 			if (result == "success") {
+				this.ngOnInit();
 			}
 			else if (result == 'error') {
 				this.snackBar.open('An error occured when editting the animal. Please try again.', "Dismiss", { duration: 5000, });

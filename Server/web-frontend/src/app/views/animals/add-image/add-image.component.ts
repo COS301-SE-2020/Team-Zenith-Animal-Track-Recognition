@@ -39,9 +39,9 @@ export class AddImageComponent implements OnInit {
   onSubmit(test: boolean) {
 
     //canvas.width = this.fileToUpload.
-
     if (false === test) {
-      //this.startLoader();
+			this.startLoader();
+
 
 
       this.http.post<any>(ROOT_QUERY_STRING + '?', {
@@ -124,13 +124,12 @@ export class AddImageComponent implements OnInit {
     let progressBar = document.getElementById("dialog-progressbar-container");
     matDialog.insertBefore(progressBar, matDialog.firstChild);
   }
-  //Loader - Progress bar
-  startLoader() {
-    //this.attachProgressbar();
-    document.getElementById("dialog-progressbar-container").style.visibility = "visible";
-  }
-
-  stopLoader() {
-    document.getElementById("dialog-progressbar-container").style.visibility = "hidden";
-  }
+	//Loader - Progress bar
+	startLoader() {
+		this.attachProgressbar();
+		document.getElementById("dialog-progressbar-container").style.visibility = "visible";
+	}
+	stopLoader() {
+		document.getElementById("dialog-progressbar-container").style.visibility = "hidden";
+	}
 }
