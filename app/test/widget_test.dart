@@ -307,8 +307,7 @@ void main() {
     testWidgets('Test presence of confimration data',
         (WidgetTester tester) async {
       final Api _api = locator<MockApi>();
-      File image = File(
-          'C:/Users/user-pc/Documents/GitHub/Team-Zenith-Animal-Track-Recognition/app/assets/images/ANV1.jpeg');
+      File image = File('assets/images/ANV1.jpeg');
       String url = base64Encode(image.readAsBytesSync());
       List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
 
@@ -327,8 +326,7 @@ void main() {
 
     testWidgets('Test presence of image data', (WidgetTester tester) async {
       final Api _api = locator<MockApi>();
-      File image = File(
-          'C:/Users/user-pc/Documents/GitHub/Team-Zenith-Animal-Track-Recognition/app/assets/images/ANV1.jpeg');
+      File image = File('assets/images/ANV1.jpeg');
       String url = base64Encode(image.readAsBytesSync());
       List<ConfirmModel> animals = await _api.identifyImage(url, "0", "0");
 
@@ -349,8 +347,7 @@ void main() {
   group('NotConfirmedView Tests', () {
     testWidgets('Test presence of not identified data',
         (WidgetTester tester) async {
-      File image = File(
-          'C:/Users/user-pc/Documents/GitHub/Team-Zenith-Animal-Track-Recognition/app/assets/images/ANV1.jpeg');
+      File image = File('assets/images/ANV1.jpeg');
 
       await tester.pumpWidget(MaterialApp(
         home: NotConfirmedView(
@@ -370,8 +367,7 @@ void main() {
         (WidgetTester tester) async {
       final Api _api = locator<MockApi>();
       _api.getLoginModel('Test@gmail', '12345');
-      File image = File(
-          'C:/Users/user-pc/Documents/GitHub/Team-Zenith-Animal-Track-Recognition/app/assets/images/ANV1.jpeg');
+      File image = File('assets/images/ANV1.jpeg');
       ConfirmModel identifiedAnimal = ConfirmModel(
           accuracyScore: 82,
           type: "Track",
