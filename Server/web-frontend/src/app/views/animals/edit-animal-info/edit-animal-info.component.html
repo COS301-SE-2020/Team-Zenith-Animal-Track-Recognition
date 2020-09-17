@@ -4,23 +4,32 @@
 <h1 mat-dialog-title>Edit Animal Information - {{data.animal.classification | titlecase}} ({{data.animal.commonName}})</h1>
 <mat-dialog-content>
     <form [formGroup]="editAnimalForm" id="edit-animal-form">
-        <mat-tab-group mat-align-tabs="start">
+        <mat-tab-group mat-align-tabs="start" [(selectedIndex)]="data.tab">
             <mat-tab label="Description">
                 <div class="edit-animal-form-content">
                     <mat-form-field class="add-animal-form-input" appearance="outline">
                         <mat-label>Common Name</mat-label>
                         <input matInput formControlName="commonName" value="{{data.animal.commonName}}">
                         <mat-hint>Optional</mat-hint>
+						<mat-error *ngIf="editAnimal.commonName.invalid && (editAnimal.commonName.dirty || editAnimal.commonName.touched)" class="alert">
+							{{validationMsg(editAnimal.commonName, 'commonName')}}
+						</mat-error>
                     </mat-form-field>
                     <mat-form-field class="add-animal-form-input" appearance="outline">
                         <mat-label>Classification</mat-label>
                         <input matInput formControlName="classification" value="{{data.animal.classification}}">
                         <mat-hint>Optional</mat-hint>
+						<mat-error *ngIf="editAnimal.classification.invalid && (editAnimal.classification.dirty || editAnimal.classification.touched)" class="alert">
+							{{validationMsg(editAnimal.classification, 'classification')}}
+						</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="edit-animal-form-texarea">
                         <mat-label>Animal Description</mat-label>
                         <textarea rows="5" matInput #animalDescrip formControlName="animalDescription" value="{{data.animal.animalDescription}}"></textarea>
                         <mat-hint align="start">{{animalDescrip.value?.length || 0}}/1500 (Optional)</mat-hint>
+						<mat-error *ngIf="editAnimal.animalDescription.invalid && (editAnimal.animalDescription.dirty || editAnimal.animalDescription.touched)" class="alert">
+							{{validationMsg(editAnimal.animalDescription, 'animalDescription')}}
+						</mat-error>
                     </mat-form-field>
                 </div>
             </mat-tab>
@@ -35,11 +44,17 @@
                                     <mat-form-field appearance="outline">
                                         <input type="number" step="0.1" matInput formControlName="heightFLB" value="{{data.animal.heightFLB}}">
                                         <mat-hint>Optional</mat-hint>
+										<mat-error *ngIf="editAnimal.heightFLB.invalid && (editAnimal.heightFLB.dirty || editAnimal.heightFLB.touched)" class="alert">
+											{{validationMsg(editAnimal.heightFLB, 'heightFLB')}}
+										</mat-error>
                                     </mat-form-field>
                                     <p>to</p>
                                     <mat-form-field appearance="outline">
                                         <input type="number" step="0.1" matInput formControlName="heightFUB" value="{{data.animal.heightFUB}}">
                                         <mat-hint>Optional</mat-hint>
+										<mat-error *ngIf="editAnimal.heightFUB.invalid && (editAnimal.heightFUB.dirty || editAnimal.heightFUB.touched)" class="alert">
+											{{validationMsg(editAnimal.heightFUB, 'heightFUB')}}
+										</mat-error>
                                     </mat-form-field>
                                     <span matSuffix>cm</span>
                                 </div>
@@ -50,11 +65,17 @@
                                     <mat-form-field appearance="outline">
                                         <input type="number" matInput formControlName="weightFLB" value="{{data.animal.weightFLB}}">
                                         <mat-hint>Optional</mat-hint>
+										<mat-error *ngIf="editAnimal.weightFLB.invalid && (editAnimal.weightFLB.dirty || editAnimal.weightFLB.touched)" class="alert">
+											{{validationMsg(editAnimal.weightFLB, 'weightFLB')}}
+										</mat-error>
                                     </mat-form-field>
                                     <p>to</p>
                                     <mat-form-field appearance="outline">
                                         <input type="number" matInput formControlName="weightFUB" value="{{data.animal.weightFUB}}">
                                         <mat-hint>Optional</mat-hint>
+										<mat-error *ngIf="editAnimal.weightFUB.invalid && (editAnimal.weightFUB.dirty || editAnimal.weightFUB.touched)" class="alert">
+											{{validationMsg(editAnimal.weightFUB, 'weightFUB')}}
+										</mat-error>
                                     </mat-form-field>
                                     <span matSuffix>kg</span>
                                 </div>
@@ -204,5 +225,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="center">
     <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>
-    <button type="submit" mat-button (click)="onSubmit(false)" id="add-ranger-btn" class="fontSB">SAVE CHANGES</button>
+    <button type="submit" mat-button (click)="onSubmit(false)" id="add-ranger-btn" class="fontSB buttonColour">SAVE CHANGES</button>
 </mat-dialog-actions>

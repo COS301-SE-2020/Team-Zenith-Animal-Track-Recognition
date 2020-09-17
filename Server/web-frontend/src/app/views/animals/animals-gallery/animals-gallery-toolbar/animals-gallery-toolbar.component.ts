@@ -5,11 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-animals-gallery-toolbar',
-  templateUrl: './animals-gallery-toolbar.component.html',
-  styleUrls: ['./animals-gallery-toolbar.component.css']
+	selector: 'app-animals-gallery-toolbar',
+	templateUrl: './animals-gallery-toolbar.component.html',
+	styleUrls: ['./animals-gallery-toolbar.component.css']
 })
 export class AnimalsGalleryToolbarComponent implements OnInit {
+	@Input() selection: string;
+
+	@Output() sortOptionOnChange: EventEmitter<string> = new EventEmitter();
 
 	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { }
 
@@ -22,8 +25,11 @@ export class AnimalsGalleryToolbarComponent implements OnInit {
 		document.getElementById("overview-route").classList.remove("activeRoute");
 		document.getElementById("rangers-route").classList.remove("activeRoute");
 		document.getElementById("geotags-route").classList.remove("activeRoute");
-		document.getElementById("settings-route").classList.remove("activeRoute");
-		
+
 		this.router.navigate([location]);
+	}
+
+	sort(selection: string) {
+		this.sortOptionOnChange.emit(selection);
 	}
 }

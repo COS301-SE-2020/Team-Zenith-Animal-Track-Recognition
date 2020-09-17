@@ -29,7 +29,7 @@
                     <div id="ranger-profile-info-details">
                         <div>
                             <h1 class="fontSB" *ngIf="user">{{user.firstName}}&nbsp;{{user.lastName}}</h1>
-                            <button mat-flat-button (click)="openEditRangerDialog(user.rangerID)">Edit</button>
+                            <button id="open-ranger-edit-dialog" class="buttonColour" mat-flat-button (click)="openEditRangerDialog(user.rangerID)">Edit</button>
                         </div>
                         <p class="fontM" *ngIf="user">Level {{user.accessLevel}} Ranger</p>
                     </div>
@@ -105,7 +105,7 @@
                             <div id="ranger-profile-spoor-feed-container">
                                 <div id="ranger-profile-spoor-feed-title">
                                     <h2 class="fontSB">Recently Identified Spoors</h2>
-                                    <button mat-flat-button>View All</button>
+                                    <button class="buttonColour" mat-flat-button>View All</button>
                                 </div>
                                 <div id="ranger-profile-spoors-container">
                                     <div class="ranger-profile-spoor-container" *ngFor="let spoorId of spoorIdentifications">
@@ -178,7 +178,7 @@
                             <div id="ranger-profile-activity-feed-container">
                                 <div id="ranger-profile-activity-feed-title">
                                     <h2 class="fontSB">Recent Activity</h2>
-                                    <button mat-flat-button>View All</button>
+                                    <button class="buttonColour" mat-flat-button>View All</button>
                                 </div>
                                 <div id="ranger-profile-activity-container">
                                     <div class="ranger-profile-activity-container" *ngFor="let activity of activities">
@@ -228,11 +228,6 @@
                 <mat-tab label="Activity">
                 </mat-tab>
                 <mat-tab label="Identified Spoors">
-                </mat-tab>
-                <mat-tab label="Permissions">
-                    <ng-template matTabContent > 
-                        
-                    </ng-template> 
                 </mat-tab>
             </mat-tab-group>
         </div>

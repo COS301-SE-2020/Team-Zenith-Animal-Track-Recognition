@@ -1,9 +1,13 @@
-<div id="identifications-view-workspace-container">
-    <app-track-identifications-toolbar [trackIds]="trackIdentifications" (tracksOnChange)="updateTrackList($event)"></app-track-identifications-toolbar>
+<div id="identifications-view-workspace-container" class="normalView">
+    <app-track-identifications-toolbar (selectedFilterOnChange)="updateFilter($event)" (sortByGroupsOnChange)="setFilterType($event)" [trackIds]="trackIdentifications"></app-track-identifications-toolbar>
     <div id="identifications-view-workspace">
         <mat-drawer-container id="identifications-search-sidenav-container">
             <mat-drawer id="identifications-search-sidenav" #sidenav mode="side" opened="true" (opened)="showCloseBtn()" (closed)="showOpenBtn()">
-                <app-track-identifications-sidenav [trackDateTimes]="timeAsString" [trackIds]="trackIdentifications" (tracksOnChange)="updateTrackList($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"></app-track-identifications-sidenav>
+                <div id="search-nav-loader-container" class="loader-container">
+                    <mat-spinner id="loader"></mat-spinner>
+                </div>
+                <app-track-identifications-sidenav #trackIdentificationsSidenav [filteredListArray]="filteredListArray" [fullTrackList]="trackIdentifications" [displayedTracks]="displayedTracks" (focusOnTrackChange)="zoomOnTrack($event)" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"
+                    (trackPageOnChange)="iterateDisplayedTracks($event)"></app-track-identifications-sidenav>
             </mat-drawer>
             <mat-drawer-content id="identifications-search-sidenav-content">
                 <div id="sidenav-close-btn-container" (click)="closeSidenav()">
@@ -13,6 +17,14 @@
                     <button id="side-nav-open-btn" mat-icon-button><mat-icon>chevron_right</mat-icon></button>
                 </div>
                 <div id="identifications-map-container">
+                    <div class="empty-display-message-container" [hidden]="filteredListArray">
+                        <div class="empty-display-message">
+                            <p class="fontM">There is no data to display.</p>
+                        </div>
+                    </div>
+                    <div id="fullscreen-btn-container" (click)="toggleFullScreen()">
+                        <button id="fullscreen-btn" mat-icon-button><mat-icon>fullscreen</mat-icon></button>
+                    </div>
                     <div id="loader-container">
                         <mat-spinner id="loader"></mat-spinner>
                     </div>

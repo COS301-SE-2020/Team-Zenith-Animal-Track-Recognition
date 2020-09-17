@@ -1,105 +1,34 @@
 <div id="ranger-search-sidenav">
-    <div id="search-nav-loader-container" class="loader-container">
-        <mat-spinner id="loader"></mat-spinner>
-    </div>
     <mat-tab-group mat-align-tabs="center" #trackMatTab>
         <mat-tab label="All tracks">
-            <div id="ranger-search-controls-container">
-                <mat-form-field appearance="outline">
-                    <input id="search-sidenav-input" matInput placeholder="Search Tracks..." type="text" name="search">
-                    <mat-icon matPrefix>search</mat-icon>
-                </mat-form-field>
-            </div>
             <div id="ranger-search-results-container">
+                <div id="empty-sidenav-display-message-container" class="empty-display-message-container" [hidden]="displayedTracks">
+                    <div id="empty-sidenav-display-message" class="empty-display-message">
+                        <p class="fontM">There is no data to display.</p>
+                    </div>
+                </div>
                 <mat-selection-list id="track-identification-search-results" [multiple]="false" class="ranger-search-results-entries">
-                    <div class="track-identification-container" (click)="viewTrack(track)" *ngFor="let track of trackIds; let trackTimeAgo of trackDateTimes">
+                    <div class="track-identification-container" (click)="viewTrack(track)" *ngFor="let track of displayedTracks; let trackTimeAgo of trackDateTimes">
                         <div class="track-identification-image-container">
                             <img src="{{track.picture.URL}}" alt="Track image">
                         </div>
                         <div class="track-identification-info-container">
                             <div class="track-identification-animal-name">
                                 <span><p class="track-identification-animal-commonName fontSB">{{track.animal.commonName}}</p><p class="track-identification-capture-date fontR">{{trackTimeAgo.timeAsString | relativeTime }}</p></span>
-                                <p class="track-identification-animal-classification fontM">{{track.animal.classification}}</p>
+                                <p class="track-identification-animal-classification fontM">{{track.animal.classification | titlecase}}</p>
                             </div>
                             <p class="track-identification-capture-ranger fontM" *ngIf="track.ranger;">Captured by {{track.ranger.firstName}} {{track.ranger.lastName}}</p>
-                            <span><p class="fontSB">ACCURACY SCORE:&nbsp;</p><p class="track-identification-accuracy-score fontB">{{track.potentialMatches[0].confidence | percent }}</p></span>
+                            <span><p class="fontSB">ACCURACY SCORE:&nbsp;</p><p class="track-identification-accuracy-score fontB">{{track.potentialMatches[track.potentialMatches.length - 1].confidence | percent }}</p></span>
                         </div>
                     </div>
                 </mat-selection-list>
+                <div id="track-identification-container-pagination-controls">
+                    <mat-paginator #trackPaginator (page)="onPageChange($event)" [pageSize]="25" [hidePageSize]="true"></mat-paginator>
+                </div>
             </div>
         </mat-tab>
         <mat-tab label="Track">
-            <!--<ng-template matTabContent> -->
-            <div id="animal-photos-track-info-container">
-                <div id="animal-photos-track-info-title">
-                    <button mat-icon-button aria-label="Close Track Info Button" (click)="backToTrackList()">
-						<mat-icon>arrow_back</mat-icon>
-					</button>
-                    <div>
-                        <p id="animal-photos-track-title-animal" class="fontSB" *ngIf="activeTrack">{{activeTrack.animal.commonName}} Track Identified</p>
-                        <p id="animal-photos-track-title-capturedby" class="fontM" *ngIf="activeTrack">Captured by {{activeTrack.ranger.firstName}} {{activeTrack.ranger.lastName}}</p>
-                    </div>
-                </div>
-                <div id="animal-photos-track-id-results">
-                    <div id="animal-photos-track-id-title">
-                        <p class="fontSB">Track Identification Results</p>
-                    </div>
-                    <div id="animal-photos-track-id-result">
-                        <div id="animal-photos-track-id-image">
-                            <!-- Place Image of Track here <img id="animal-photo-detail-current-image" src="{{data.currentImage}}">-->
-                            <div></div>
-                        </div>
-                        <div id="animal-photos-track-id-score">
-                            <p id="animal-photos-track-title-commonname" class="fontM" *ngIf="activeTrack">{{activeTrack.animal.commonName}}</p>
-                            <p id="animal-photos-track-title-classification" class="fontM" *ngIf="activeTrack">{{activeTrack.animal.classification}}</p>
-                            <p id="animal-photos-track-accuracyscore-title" class="fontSB">Accuracy Score</p>
-                            <p id="animal-photos-track-accuracy-score" class="fontB" *ngIf="activeTrack">{{activeTrack.potentialMatches[0].confidence | percent}}</p>
-                        </div>
-                    </div>
-                </div>
-                <div id="animal-photos-track-geotag-container">
-                    <div id="animal-photos-geotag-container-title">
-                        <p class="fontSB">Track Geotag Information</p>
-                    </div>
-                    <div id="animal-photos-track-geotag-info">
-                        <div id="animal-photos-geotag-location-info">
-                            <div class="animal-photos-geotag-entry-container">
-                                <div class="animal-photos-geotag-icon-container">
-                                    <mat-icon>room</mat-icon>
-                                </div>
-                                <div class="animal-photos-geotag-text-container">
-                                    <p class="fontM" *ngIf="activeTrack">Kruger National Park</p>
-                                    <p class="fontM" *ngIf="activeTrack">{{activeTrack.location.latitude}},{{activeTrack.location.longitude}}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="animal-photos-geotag-date-info">
-                            <div class="animal-photos-geotag-entry-container">
-                                <div class="animal-photos-geotag-icon-container">
-                                    <mat-icon>event</mat-icon>
-                                </div>
-                                <div class="animal-photos-geotag-text-container">
-                                    <p class="fontM" *ngIf="activeTrack">{{activeTrack.dateAndTime.year}}</p>
-                                    <p class="fontM" *ngIf="activeTrack">{{activeTrack.dateAndTime.day}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="animal-photos-track-tags-container">
-                    <div id="animal-photos-tags-container-title">
-                        <p class="fontSB">Tag Information</p>
-                    </div>
-                    <div id="animal-photos-track-tag-list">
-                        <mat-chip-list>
-                            <mat-chip selected>Found near riverbed</mat-chip>
-                            <mat-chip color="warn" selected>Possible injury</mat-chip>
-                            <mat-chip>Infant</mat-chip>
-                        </mat-chip-list>
-                    </div>
-                </div>
-            </div>
-            <!-- </ng-template> -->
+            <app-track-identifications-info *ngIf="activeTrack" [activeTrack]="activeTrack" [originType]="originType" (viewingTrackOnChange)="backToTrackList($event)"></app-track-identifications-info>
         </mat-tab>
     </mat-tab-group>
 </div>

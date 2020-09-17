@@ -80,11 +80,11 @@ export class RangerProfileComponent implements OnInit {
 		private router: Router, 
 		private activatedRoute: ActivatedRoute, 
 		public dialog: MatDialog, 
-		private snackBar: MatSnackBar, ) { }
+		private snackBar: MatSnackBar ) { }
 
 	ngOnInit(): void {
 		this.startLoader();
-		document.getElementById('rangers-route').classList.add('activeRoute');
+		document.getElementById('rangers-route-link').classList.add('activeRoute');
 		//Determine which user was navigated to and fetch their information
 		const url = new URLSearchParams(window.location.search);
 		this.userToken = url.get('ranger');
@@ -125,7 +125,7 @@ export class RangerProfileComponent implements OnInit {
 			disableClose: true,
 			id: 'edit-ranger-dialog',
 			data: {
-				rangerID: this.userToken,
+				rangerID: this.user.rangerID,
 				firstName: this.user.firstName,
 				lastName: this.user.lastName,
 				phoneNumber: this.user.phoneNumber,
@@ -145,7 +145,7 @@ export class RangerProfileComponent implements OnInit {
 		});
 	}
 	//DELETE Ranger
-	openDeleteRangerDialog(rangerID) {
+	openDeleteRangerDialog(rangerID: any) {
 		try {
 			const dialogConfig = new MatDialogConfig();
 
@@ -157,7 +157,7 @@ export class RangerProfileComponent implements OnInit {
 				id: 'delete-ranger-dialog',
 				data: {
 					name: this.user.firstName + " " + this.user.lastName,
-					rangerID: this.userToken
+					rangerID: this.user.rangerID
 				},
 			});
 			deleteDialogRef.afterClosed().subscribe(result => {

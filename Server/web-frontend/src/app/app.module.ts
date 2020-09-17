@@ -1,3 +1,4 @@
+import { AnimalGroupsComponent } from './views/animals/animals-groups/animal-groups.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -34,9 +35,12 @@ import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-pe
 import { TrackIdentificationsComponent } from './views/track-identifications/track-identifications.component';
 import { TrackIdentificationsToolbarComponent } from './views/track-identifications/track-identifications-toolbar/track-identifications-toolbar.component';
 import { TrackIdentificationsSidenavComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-sidenav.component';
-import { SettingsComponent } from './views/settings/settings.component';
+import { TrackIdentificationsInfoComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-info/track-identifications-info.component';
+import { AddImageComponent } from './views/animals/add-image/add-image.component';
+import { AddGroupsComponent } from './views/animals/add-groups/add-groups.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 import { UtilityNavigationComponent } from './components/utility-navigation/utility-navigation.component';
+import { DragDropDirective } from './views/animals/add-image/drag-drop.directive';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -55,6 +59,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -64,6 +69,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
 
@@ -71,12 +77,14 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
   declarations: [
     AppComponent,
     AddRangerComponent,
+    AddGroupsComponent,
     LoginComponent,
     OverviewComponent,
     AnimalsComponent,
     AnimalsGalleryComponent,
     AnimalsGalleryToolbarComponent,
     AnimalsGalleryCardComponent,
+    AnimalGroupsComponent,
     AnimalPhotosComponent,
     AnimalPhotoDetailsComponent,
     RangersComponent,
@@ -86,7 +94,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     TrackIdentificationsComponent,
     TrackIdentificationsToolbarComponent,
     TrackIdentificationsSidenavComponent,
-    SettingsComponent,
+    TrackIdentificationsInfoComponent,
     SideNavigationComponent,
     UtilityNavigationComponent,
     RangerPermissionsComponent,
@@ -99,8 +107,10 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     AddAnimalComponent,
     RangerProfileComponent,
     AnimalProfileComponent,
-    RelativeTimeMPipe
-  ],
+    RelativeTimeMPipe,
+    AddImageComponent,
+    DragDropDirective
+	],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -114,11 +124,13 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     MatIconModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatMenuModule,
     MatSelectModule,
     MatSidenavModule,
     MatListModule,
     MatCardModule,
     MatMenuModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -135,6 +147,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     MatProgressBarModule,
     MatDividerModule,
     MatGridListModule,
+    MatPaginatorModule,
     GoogleMapsModule
   ],
   providers: [AuthGuardService],

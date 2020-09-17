@@ -13,27 +13,28 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class RangersToolbarComponent implements OnInit {
 	@Input() rangers;
 	@Input() searchText: string;
-	@Input() sortBySurname: boolean;
+	@Input() selection: string;
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() searchTextOnChange: EventEmitter<string> = new EventEmitter();
+	@Output() sortOptionOnChange: EventEmitter<string> = new EventEmitter();
 
 	currentAlphabet: any;
 	sorted: string;
 	display: boolean = true;
-	
+
 	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { }
-	
+
 	ngOnInit(): void { }
 
 	openAddRangerDialog() {
 		const dialogConfig = new MatDialogConfig();
 
-		const addDialogRef = this.dialog.open(AddRangerComponent, { 
-			height: '55%', 
-			width: '35%', 
-			id: 'add-ranger-dialog', 
-			autoFocus: true, 
-			disableClose: true 
+		const addDialogRef = this.dialog.open(AddRangerComponent, {
+			height: '55%',
+			width: '35%',
+			id: 'add-ranger-dialog',
+			autoFocus: true,
+			disableClose: true
 		});
 		addDialogRef.afterClosed().subscribe(result => {
 			this.stopLoader();
@@ -50,57 +51,40 @@ export class RangersToolbarComponent implements OnInit {
 	route(location: string) {
 		this.router.navigate([location]);
 	}
-	
+
 	checkIfNew(title: string, pos: number) {
 		if (this.currentAlphabet === ('' + title).charAt(pos).toLowerCase()) {
-		  return false;
+			return false;
 		} else {
-		  this.currentAlphabet = ('' + title).charAt(pos).toLowerCase();
-		  return true;
+			this.currentAlphabet = ('' + title).charAt(pos).toLowerCase();
+			return true;
 		}
-	  }
-	
-		updateSearchText(event) {
-			this.searchTextOnChange.emit(event);
-			if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")
-				this.currentAlphabet = null;
+	}
+
+	updateSearchText(event) {
+		if (!this.rangers || this.rangers.length == 0) {
+			return;
 		}
-	
-		toggle(bool: boolean) {
-			this.sortBySurname = bool;
-			this.sort(bool);
+		if (this.rangers.length == 1) {
+			return;
 		}
-	
-		sort(bool: boolean) {
-			let temp: string;
-			if (bool) {
-				for (let i = 0; i < this.rangers.length - 1; i++) {
-					for (let j = i + 1; j < this.rangers.length; j++) {
-						if (this.rangers[i].lastName.toUpperCase() > this.rangers[j].lastName.toUpperCase()) {
-							let temp = this.rangers[i];
-							this.rangers[i] = this.rangers[j];
-							this.rangers[j] = temp;
-						}
-					}
-				}
-				temp = "Sorted alphabetically";
-			} 
-			else {
-				for (let i = 0; i < this.rangers.length - 1; i++) {
-					for (let j = i + 1; j < this.rangers.length; j++) {
-						if (this.rangers[i].accessLevel > this.rangers[j].accessLevel) {
-							let temp = this.rangers[i];
-							this.rangers[i] = this.rangers[j];
-							this.rangers[j] = temp;
-						}
-					}
-				}
-				temp = "Sorted by ranger level";
-			}
-			this.sorted = temp;
-			return temp;
+		this.searchTextOnChange.emit(event);
+		if ((<HTMLInputElement>document.getElementById("search-sidenav-input")).value == "")
+			this.currentAlphabet = null;
+	}
+
+	sort(selection: string) {
+		if (!this.rangers || this.rangers.length == 0) {
+			this.snackBar.open('There is no data to sort. Please add a ranger and try again.', "Dismiss", { duration: 5000, });			
+			return;
 		}
-	
+		if (this.rangers.length == 1) {
+			this.snackBar.open('Sorting requires two or more rangers.', "Dismiss", { duration: 5000, });			
+			return;
+		}
+		this.sortOptionOnChange.emit(selection);
+	}
+
 	//Loader
 	startLoader() {
 		document.getElementById('loader-container').style.visibility = 'visible';
