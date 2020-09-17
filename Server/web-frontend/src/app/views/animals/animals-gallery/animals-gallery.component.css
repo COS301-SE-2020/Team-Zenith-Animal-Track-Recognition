@@ -33,7 +33,7 @@
     height: 10%;
     width: 100%;
     display: flex;
-    background-color: #5084D3;
+    background-image: linear-gradient(-135deg, #509CD0, #214E7D);
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
