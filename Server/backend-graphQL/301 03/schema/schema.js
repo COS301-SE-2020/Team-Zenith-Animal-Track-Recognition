@@ -584,13 +584,15 @@ const RootQuery = new GraphQLObjectType({
                 a = _.find(usersData, {
                     token: args.rangerID
                 })
-                let events=[]
-                if (!args.rangerID==undefined)
-                events = _.filter(spoorIdentificationData, {
-                    ranger: args.rangerID
-                })
-                else
-                events=_.filter(spoorIdentificationData, true)
+                let events = []
+                
+                if (args.rangerID != undefined) {
+                    console.log("a")
+                    events = _.filter(spoorIdentificationData, {
+                        ranger: args.rangerID
+                    })
+                } else
+                    events = _.filter(spoorIdentificationData, true)
                 if (events != undefined && events.length != 0) {
                     let stast = [
                         [],
@@ -640,13 +642,13 @@ const RootQuery = new GraphQLObjectType({
                 if (a == null) {
                     return null;
                 }
-                let events=[]
-                if (args.animalID!=undefined)
-                events = _.filter(spoorIdentificationData, {
-                    animal: args.animalID
-                })
+                let events = []
+                if (args.animalID != undefined)
+                    events = _.filter(spoorIdentificationData, {
+                        animal: args.animalID
+                    })
                 else
-                events = _.filter(spoorIdentificationData, true)
+                    events = _.filter(spoorIdentificationData, true)
                 let imgs = _.find(animalData, {
                     animalID: args.animalID
                 })
@@ -929,7 +931,7 @@ const RootQuery = new GraphQLObjectType({
                     return null;
                 }
                 let temp = spoorIdentificationData
-                temp =_.orderBy(temp, ['dateAndTime.year', 'dateAndTime.month', 'dateAndTime.day', 'dateAndTime.hour', 'dateAndTime.min', 'dateAndTime.second'], ['desc', 'desc', 'desc', 'desc', 'desc', 'desc'])
+                temp = _.orderBy(temp, ['dateAndTime.year', 'dateAndTime.month', 'dateAndTime.day', 'dateAndTime.hour', 'dateAndTime.min', 'dateAndTime.second'], ['desc', 'desc', 'desc', 'desc', 'desc', 'desc'])
                 if (args.ranger != undefined) {
                     if (args.negat == undefined) {
                         temp = _.filter(temp, {
