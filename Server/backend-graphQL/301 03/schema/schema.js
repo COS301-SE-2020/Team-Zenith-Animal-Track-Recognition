@@ -30,6 +30,7 @@ let serviceAccount = require('../do_NOT_git/erpzat-ad44c0c89f83.json');
 const {
     start
 } = require('repl');
+const e = require('express');
 ADMIN.initializeApp({
     credential: ADMIN.credential.cert(serviceAccount),
     storageBucket: "gs://erpzat.appspot.com"
@@ -735,7 +736,8 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve(parent, args){
                 obj=[]
-                ana.forEach(element => {
+                animalData.forEach(element => {
+                    animal
                     
                 });
             }
@@ -2600,6 +2602,10 @@ if (CACHE) {
                 newSpoorID.tags.push("a tag")
                 console.log(newSpoorID.tags)
             }
+            newSpoorID.potentialMatches.forEach(element => {
+                if (isNaN( e.confidence))
+                e.confidence=0
+            });
             
             spoorIdentificationData.push(newSpoorID)
             if (newSpoorID.month == 8 || newSpoorID.month == "08" || newSpoorID.month == "8") {
