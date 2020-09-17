@@ -738,9 +738,19 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 obj = []
                 animalData.forEach(element => {
-                    animal
+                    let anil=element.commonName
+                    let cont =_.filter(spoorIdentificationData,{
+                        animal:element.animalID
+                    }).length
 
+                    obj.push(
+                        {
+                            commonName:anil,
+                            NumberOfIdentifications:cont
+                        }
+                    )
                 });
+                return obj
             }
         },
         groups: {
@@ -2599,14 +2609,12 @@ if (CACHE) {
             if (Array.isArray(newSpoorID.tags) != true) {
                 newSpoorID.tags = []
                 newSpoorID.tags.push("a tag")
-                console.log(newSpoorID.tags)
             }
             newSpoorID.potentialMatches.forEach(element => {
-                if (isNaN(element.confidence))
+                if (isNaN(element.confidence)) {
                     element.confidence = 0
-                // console.log(e)
+                }
             });
-
             spoorIdentificationData.push(newSpoorID)
             if (newSpoorID.month == 8 || newSpoorID.month == "08" || newSpoorID.month == "8") {
                 // spoorIdentifications.doc(doc.id).delete();
