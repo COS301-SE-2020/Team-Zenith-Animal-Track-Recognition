@@ -929,7 +929,7 @@ const RootQuery = new GraphQLObjectType({
                     return null;
                 }
                 let temp = spoorIdentificationData
-                _.orderBy(temp, ['dateAndTime.year', 'dateAndTime.month', 'dateAndTime.day', 'dateAndTime.hour', 'dateAndTime.min', 'dateAndTime.second'], ['desc', 'desc', 'desc', 'desc', 'desc', 'desc'])
+                temp =_.orderBy(temp, ['dateAndTime.year', 'dateAndTime.month', 'dateAndTime.day', 'dateAndTime.hour', 'dateAndTime.min', 'dateAndTime.second'], ['desc', 'desc', 'desc', 'desc', 'desc', 'desc'])
                 temp.reverse()
                 if (args.ranger != undefined) {
                     if (args.negat == undefined) {
