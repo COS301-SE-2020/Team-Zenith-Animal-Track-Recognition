@@ -347,55 +347,55 @@ void main() {
     });
   });
 
-  group('NotConfirmedView Tests', () {
-    testWidgets('Test presence of not identified data',
-        (WidgetTester tester) async {
-      File image = File(
-          '/root/Team-Zenith-Animal-Track-Recognition/app/app/assets/images/ANV1.jpeg');
+  // group('NotConfirmedView Tests', () {
+  //   testWidgets('Test presence of not identified data',
+  //       (WidgetTester tester) async {
+  //     File image = File(
+  //         '/root/Team-Zenith-Animal-Track-Recognition/app/app/assets/images/ANV1.jpeg');
 
-      await tester.pumpWidget(MaterialApp(
-        home: NotConfirmedView(
-          image: image,
-        ),
-      ));
+  //     await tester.pumpWidget(MaterialApp(
+  //       home: NotConfirmedView(
+  //         image: image,
+  //       ),
+  //     ));
 
-      await tester.pump(new Duration(seconds: 30));
-      //await tester.pumpAndSettle();
+  //     await tester.pump(new Duration(seconds: 30));
+  //     //await tester.pumpAndSettle();
 
-      expect(find.byKey(Key('NotConScroll')), findsWidgets);
-    });
-  });
+  //     expect(find.byKey(Key('NotConScroll')), findsWidgets);
+  //   });
+  // });
 
-  group('User confirmed View Tests', () {
-    testWidgets('Test presence of multiple dynamic identification info',
-        (WidgetTester tester) async {
-      final Api _api = locator<MockApi>();
-      _api.getLoginModel('Test@gmail', '12345');
-      File image = File(
-          '/root/Team-Zenith-Animal-Track-Recognition/app/app/assets/images/ANV1.jpeg');
-      ConfirmModel identifiedAnimal = ConfirmModel(
-          accuracyScore: 82,
-          type: "Track",
-          animalName: "Elephant",
-          species: "African Bush",
-          image: "assets/images/Elephant.jpeg");
-      List<String> categories = new List();
-      categories.add("Appearance");
-      categories.add("Tracks");
-      categories.add("Droppings");
+  // group('User confirmed View Tests', () {
+  //   testWidgets('Test presence of multiple dynamic identification info',
+  //       (WidgetTester tester) async {
+  //     final Api _api = locator<MockApi>();
+  //     _api.getLoginModel('Test@gmail', '12345');
+  //     File image = File(
+  //         '/root/Team-Zenith-Animal-Track-Recognition/app/app/assets/images/ANV1.jpeg');
+  //     ConfirmModel identifiedAnimal = ConfirmModel(
+  //         accuracyScore: 82,
+  //         type: "Track",
+  //         animalName: "Elephant",
+  //         species: "African Bush",
+  //         image: "assets/images/Elephant.jpeg");
+  //     List<String> categories = new List();
+  //     categories.add("Appearance");
+  //     categories.add("Tracks");
+  //     categories.add("Droppings");
 
-      await tester.pumpWidget(MaterialApp(
-        home: UserConfirmedView(
-          confirmedAnimal: identifiedAnimal,
-          image: image,
-          tags: categories,
-        ),
-      ));
+  //     await tester.pumpWidget(MaterialApp(
+  //       home: UserConfirmedView(
+  //         confirmedAnimal: identifiedAnimal,
+  //         image: image,
+  //         tags: categories,
+  //       ),
+  //     ));
 
-      await tester.pump(new Duration(seconds: 30));
-      //await tester.pumpAndSettle();
+  //     await tester.pump(new Duration(seconds: 30));
+  //     //await tester.pumpAndSettle();
 
-      expect(find.byKey(Key('UserScroll')), findsOneWidget);
-    });
-  });
+  //     expect(find.byKey(Key('UserScroll')), findsOneWidget);
+  //   });
+  // });
 }
