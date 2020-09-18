@@ -24,7 +24,7 @@ The Animal Track Recognition system is an application which will support ERP ran
 * PDF: [Animal Track Recognition SRS Doc](https://drive.google.com/file/d/1B2uRbB4OfB8ZyqGJhJZgpsOzRUC537nE/view?usp=sharing)
 
 **Testing Policy Document**
-* PDF: [Animal Track Recognition SR Doc](https://drive.google.com/file/d/1rzsviKbDg-vjijxBzxvjNvDEdMghTkkW/view?usp=sharing)
+* PDF: [Animal Track Recognition Testing Policy Doc](https://drive.google.com/file/d/1rzsviKbDg-vjijxBzxvjNvDEdMghTkkW/view?usp=sharing)
 
 **User Manual Document**
 * PDF: [Animal Track Recognition User Manual Doc](https://drive.google.com/file/d/138Y-w3XJszpY5oBIsyVg4-csuZC8hga1/view?usp=sharing)
