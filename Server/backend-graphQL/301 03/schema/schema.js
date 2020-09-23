@@ -2639,8 +2639,6 @@ if (CACHE) {
         redeyNeedConterUP();
         spoorIdentificationData = []
         querySnapshot.forEach(function (doc) {
-
-
             let newSpoorID = doc.data()
             if (doc.data().picture == undefined)
                 newSpoorID.picture = selerRandomImg()
@@ -2933,6 +2931,9 @@ function AIIterface(ImgID, base64imge) {
             }
             if (element.animalID == 9) {
                 newPM.confidence = arri[8]
+            }
+            if (element.animalID == 15) {
+                newPM.confidence = arri[2]
             }
             potentialMatches.push(newPM)
         }
