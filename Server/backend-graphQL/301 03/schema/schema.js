@@ -2918,7 +2918,7 @@ function AIIterface(ImgID, base64imge) {
                 confidence: parseFloat((Math.random() * (0.120 - 0.020)).toFixed(4))
             }
             if (element.animalID == 11) {
-                newPM.confidence = arri[0]
+                newPM.confidence = arri[1]
             }
             if (element.animalID == 10) {
                 newPM.confidence = arri[3]
