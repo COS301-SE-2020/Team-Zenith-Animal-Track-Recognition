@@ -14,6 +14,7 @@ class IdentificationViewModel extends BaseViewModel {
   SpoorModel _confident;
   List<SpoorModel> _recentIdentifications;
   SimilarSpoorModel _similarSpoorModel;
+  List<String> _tracks;
   bool loaded = false;
   String _location;
   String _date;
@@ -21,6 +22,7 @@ class IdentificationViewModel extends BaseViewModel {
 
   String get location => _location;
   String get date => _date;
+  List<String> get tracks => _tracks;
 
   SpoorModel get confident => _confident;
   List<SpoorModel> get recentIdentifications => _recentIdentifications;
@@ -215,6 +217,8 @@ class IdentificationViewModel extends BaseViewModel {
       pic = _confident.pic;
       recentIdentifications.removeAt(0);
       _similarSpoorModel = await _api.getSpoorSimilarModel(animal);
+      GalleryModel gallery = await _api.getGalleryModel(animal);
+      _tracks = gallery.galleryList[1];
       loaded = true;
     }
     return 21;
@@ -232,7 +236,6 @@ class IdentificationViewModel extends BaseViewModel {
 
   void setTags() {
     _tags.clear();
-    _tags.add("Endangered");
-    _tags.add("Harmless");
+    _tags.add(_recentIdentifications[0].tag);
   }
 }

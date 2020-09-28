@@ -165,8 +165,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
                 similarSpoors(),
                 Row(
                   children: <Widget>[
-                    Expanded(
-                        flex: 1, child: similarSpoor(model.similarSpoorModel))
+                    Expanded(flex: 1, child: similarSpoor(model.tracks))
                   ],
                 )
               ]),
@@ -181,8 +180,6 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: Row(
                   children: <Widget>[
-                    // Expanded(flex: 1, child: EditSpoorFunctionality(title:"Edit Spoor",)),
-                    // SizedBox(height: 1.0),
                     Expanded(
                         flex: 1,
                         child: ViewInfoFunctionality(
@@ -257,22 +254,13 @@ class Tags extends ViewModelWidget<IdentificationViewModel> {
         scrollDirection: Axis.horizontal,
         itemCount: model.tags.length,
         itemBuilder: (BuildContext context, int index) {
-          return Expanded(
-            flex: 1,
+          return Container(
             child: GestureDetector(
                 onLongPress: () {
                   model.setEditSpoorCoordLong();
                 },
                 child: text16LeftNormBlack(model.tags[index] + "    ")),
           );
-          // return Chip(
-          //   avatar: CircleAvatar(
-          //       radius: 10,
-          //       backgroundColor: Colors.grey.shade600,
-          //       child: text12LeftNormBlack(model.tags[index][0].toUpperCase())),
-          //   label: text12LeftNormBlack(model.tags[index]),
-          //   backgroundColor: Colors.grey[100],
-          // );
         });
   }
 }
@@ -774,14 +762,14 @@ Widget attachATagButton(var context) {
       child: text18LeftBoldBlack("Track Tags"));
 }
 
-Widget similarSpoor(SimilarSpoorModel similarSpoorModel) {
+Widget similarSpoor(List<String> tracks) {
   return Container(
     height: 150,
     color: Colors.white,
     child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: similarSpoorModel.similarSpoors.length,
+        itemCount: tracks.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             alignment: Alignment.center,
@@ -793,10 +781,7 @@ Widget similarSpoor(SimilarSpoorModel similarSpoorModel) {
             width: 150,
             child: Column(
               children: <Widget>[
-                Expanded(
-                    child:
-                        innerImageBlock(similarSpoorModel.similarSpoors[index]),
-                    flex: 4),
+                Expanded(child: innerImageBlock(tracks[index]), flex: 4),
               ],
             ),
           );
