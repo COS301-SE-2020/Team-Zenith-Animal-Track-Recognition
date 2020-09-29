@@ -2244,17 +2244,19 @@ const Mutation = new GraphQLObjectType({
                 if (args.ranger != undefined) {
                     newSpoorIdentification.ranger = args.ranger
                 }
-                if (args.animal != undefined) {
+                if (args.animal != undefined)
+                    if (args.animal != newSpoorIdentification.animal) {
 
-                    let animalToupdate = _.find(animalData, {
-                        animalID: args.animal
-                    })
+                        let animalToupdate = _.find(animalData, {
+                            animalID: args.animal
+                        })
 
-                    animalToupdate.pictures = _.without(animalToupdate.pictures ,newSpoorIdentification.picture)
-                    animals.doc(animalToupdate.classification).set(animalToupdate)
-                    addImgIDToAnimal(args.animal, newSpoorIdentification.picture)
-                    newSpoorIdentification.animal = args.animal
-                }
+                        animalToupdate.pictures = _.without(animalToupdate.pictures, newSpoorIdentification.picture)
+                        animals.doc(animalToupdate.classification).set(animalToupdate)
+                        addImgIDToAnimal(args.animal, newSpoorIdentification.picture)
+                        newSpoorIdentification.animal = args.animal
+                        
+                    }
                 if (args.tags != undefined) {
                     newSpoorIdentification.tags = args.tags
                 }
@@ -2659,10 +2661,9 @@ if (CACHE) {
                     element.confidence = 0
                 }
             });
-            if (newSpoorID.picture==undefined &&newSpoorID.pictureID!=undefined )
-{
-    newSpoorID.picture=newSpoorID.pictureID
-}
+            if (newSpoorID.picture == undefined && newSpoorID.pictureID != undefined) {
+                newSpoorID.picture = newSpoorID.pictureID
+            }
             spoorIdentificationData.push(newSpoorID)
             if (newSpoorID.month == 8 || newSpoorID.month == "08" || newSpoorID.month == "8") {
                 // spoorIdentifications.doc(doc.id).delete();
