@@ -2253,7 +2253,7 @@ const Mutation = new GraphQLObjectType({
                     animalToupdate.pictures = animalToupdate.pictures.filter(item => item != newSpoorIdentification.picture)
                     addImgIDToAnimal(args.animal, newSpoorIdentification.picture)
                     newSpoorIdentification.animal = args.animal
-
+                    animals.doc(animalToupdate.classification).set(animalToupdate)
                 }
                 if (args.tags != undefined) {
                     newSpoorIdentification.tags = args.tags
