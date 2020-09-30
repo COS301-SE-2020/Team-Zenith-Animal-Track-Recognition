@@ -20,6 +20,7 @@ export class AnimalPhotosComponent implements OnInit {
 	animalClassi: string;
 	femaleBehaviour: string;
 	maleBehaviour: string;
+	tempTracks: any;
 
 	constructor(
 		private http: HttpClient,
@@ -35,7 +36,8 @@ export class AnimalPhotosComponent implements OnInit {
 		//Highlight current view in side navigation
 		document.getElementById('animals-route-link').classList.add('activeRoute');
 		document.getElementById("animals-gallery-route").classList.add("activeRoute");
-		
+		this.tempTracks = [];
+
 		//Determine which animal was navigated to and fetch their information
 		const classificationQuery = new URLSearchParams(window.location.search);
 		const animal = classificationQuery.get("classification").split("_");
@@ -48,6 +50,17 @@ export class AnimalPhotosComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.animal = temp[0];
+
+				temp = [];
+				this.animal['pictures'].forEach(element => {
+					if(('' + element['kindOfPicture']).toLowerCase() == 'animal'){
+						temp.push(element);
+					}else{
+						this.tempTracks.push(element);
+					}
+				});
+				this.animal['pictures'] = temp;
+
 				this.stopPhotoGalleryLoader();
 		});
 		//Fetch all track identifications for a the animal current being viewed
@@ -57,6 +70,9 @@ export class AnimalPhotosComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.tracksList = temp[0];
+				this.tempTracks.foreach(e => {
+					this.tracksList['pictures'].push(e);
+				});
 				this.stopTrackGalleryLoader();
 		});	
 	}
