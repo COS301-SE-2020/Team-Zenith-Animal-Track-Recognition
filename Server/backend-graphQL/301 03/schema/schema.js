@@ -2255,7 +2255,7 @@ const Mutation = new GraphQLObjectType({
                         animals.doc(animalToupdate.classification).set(animalToupdate)
                         addImgIDToAnimal(args.animal, newSpoorIdentification.picture)
                         newSpoorIdentification.animal = args.animal
-                        
+
                     }
                 if (args.tags != undefined) {
                     newSpoorIdentification.tags = args.tags
@@ -2658,12 +2658,19 @@ if (CACHE) {
             }
             newSpoorID.potentialMatches.forEach(element => {
                 if (isNaN(element.confidence)) {
-                    element.confidence = 0
+                    element.confidence = 0.002
                 }
             });
             if (newSpoorID.picture == undefined && newSpoorID.pictureID != undefined) {
                 newSpoorID.picture = newSpoorID.pictureID
             }
+            newSpoorID.potentialMatches.forEach(element => {
+                if (element.confidence == undefined)
+                    element.confidence = 0.001
+            });
+
+            newSpoorID.potentialMatches = _.orderBy(newSpoorID.potentialMatches, ["confidence"])
+            console.log(newSpoorID.potentialMatches)
             spoorIdentificationData.push(newSpoorID)
             if (newSpoorID.month == 8 || newSpoorID.month == "08" || newSpoorID.month == "8") {
                 // spoorIdentifications.doc(doc.id).delete();
