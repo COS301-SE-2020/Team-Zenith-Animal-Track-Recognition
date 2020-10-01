@@ -2670,7 +2670,7 @@ if (CACHE) {
             });
 
             newSpoorID.potentialMatches = _.orderBy(newSpoorID.potentialMatches, ["confidence"])
-            console.log(newSpoorID.potentialMatches)
+            
             spoorIdentificationData.push(newSpoorID)
             if (newSpoorID.month == 8 || newSpoorID.month == "08" || newSpoorID.month == "8") {
                 // spoorIdentifications.doc(doc.id).delete();
