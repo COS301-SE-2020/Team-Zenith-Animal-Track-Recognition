@@ -196,6 +196,7 @@ class ProfileView extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class IconButtons extends ViewModelWidget<ProfileViewModel> {
   IconData iconData;
   String subTitle;
@@ -232,6 +233,7 @@ class IconButtons extends ViewModelWidget<ProfileViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class IconBuilder extends ViewModelWidget<ProfileViewModel> {
   String type;
   IconData icon;
@@ -255,6 +257,7 @@ class IconBuilder extends ViewModelWidget<ProfileViewModel> {
 }
 
 //========================== APPBAR ICONS =======================
+// ignore: must_be_immutable
 class ProfileViewList extends ViewModelWidget<ProfileViewModel> {
   TempObject tempObject;
   List<ProfileModel> animalList;
@@ -373,7 +376,8 @@ class ProfileViewDelegate implements SliverPersistentHeaderDelegate {
   }
 
   @override
-  bool shouldRed(BuildContext context, legate) {
+  // ignore: override_on_non_overriding_member
+  Future<bool> shouldRed(BuildContext context, legate) async {
     return true;
   }
 
@@ -383,10 +387,12 @@ class ProfileViewDelegate implements SliverPersistentHeaderDelegate {
   }
 
   @override
+  // ignore: todo
   // TODO: implement snapConfiguration
   FloatingHeaderSnapConfiguration get snapConfiguration => null;
 
   @override
+  // ignore: todo
   // TODO: implement stretchConfiguration
   OverScrollHeaderStretchConfiguration get stretchConfiguration => null;
 }

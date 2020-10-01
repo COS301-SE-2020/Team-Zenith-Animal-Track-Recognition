@@ -311,6 +311,7 @@ class GraphQL implements Api {
 
   @override
   void sendConfirmationSpoor(List<ConfirmModel> list, String tag) {
+    // ignore: todo
     // TODO: implement sendConfirmationSpoor
   }
 
@@ -948,7 +949,6 @@ class GraphQL implements Api {
       similarSpoor.add('N/A');
       similarSpoor.add('N/A');
       if (response.statusCode == 200) {
-        var body = json.decode(response.body);
       } else {
         throw HttpException('500');
       }
@@ -1563,14 +1563,6 @@ class GraphQL implements Api {
           'Trophy 8',
           'Trophy 9',
           'Trophy 10'
-        ];
-
-        List<String> descriptions = [
-          'Make First Identification',
-          'Make 50 Identifications',
-          'Make 75 Identifications',
-          'Make 100 Identifications',
-          'Track All Big 5 Animals',
         ];
 
         List<String> images = [

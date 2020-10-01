@@ -11,6 +11,7 @@ import 'package:stacked/stacked.dart';
 
 final List<String> imgList = new List();
 
+// ignore: must_be_immutable
 class InformationView extends StatelessWidget {
   InfoModel animalInfo;
   InformationView({this.animalInfo});
@@ -132,6 +133,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
   }
 }
 
+// ignore: must_be_immutable
 class Scroll extends ViewModelWidget<InformationViewModel> {
   InfoModel infomodel;
   Scroll({this.infomodel}) : super(reactive: true);
@@ -183,6 +185,7 @@ class Scroll extends ViewModelWidget<InformationViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class Tabz extends ViewModelWidget<InformationViewModel> {
   InfoModel infoModel;
   Tabz({this.infoModel}) : super(reactive: true);
@@ -226,6 +229,7 @@ class Tabz extends ViewModelWidget<InformationViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class ViewButton extends ViewModelWidget<InformationViewModel> {
   String name;
   ViewButton({Key key, this.name}) : super(key: key, reactive: true);

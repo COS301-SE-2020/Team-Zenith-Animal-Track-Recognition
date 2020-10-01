@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:badges/badges.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key key}) : super(key: key);
@@ -116,6 +115,7 @@ class HomeView extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class IconBuilder extends ViewModelWidget<HomeViewModel> {
   IconData icon;
   IconBuilder({Key key, this.icon}) : super(reactive: true);
@@ -137,6 +137,7 @@ class IconBuilder extends ViewModelWidget<HomeViewModel> {
 }
 //========================== APPBAR ICONS =======================
 
+// ignore: must_be_immutable
 class HomeListBody extends ViewModelWidget<HomeViewModel> {
   List<HomeModel> animalList;
   HomeListBody({Key key, this.animalList}) : super(reactive: true);

@@ -7,6 +7,7 @@ import 'api.dart';
 @lazySingleton
 class MockApi implements Api {
   @override
+  // ignore: missing_return
   Future<List<AnimalModel>> getAnimalModel(String category) async {
     List<AnimalModel> animalList = new List();
 
@@ -830,6 +831,7 @@ class MockApi implements Api {
 
   @override
   void sendConfirmationSpoor(List<ConfirmModel> list, String tag) {
+    // ignore: todo
     // TODO: implement sendConfirmationSpoor
   }
 
@@ -853,20 +855,16 @@ class MockApi implements Api {
   }
 
   @override
-  Future<List<String>> getAnimalTags() {
-    // TODO: implement getAnimalTags
-    throw UnimplementedError();
-  }
+  Future<List<String>> getAnimalTags() => throw UnimplementedError();
 
   @override
-  Future<ConfirmModel> manualClassification(
-      String pic, double lat, double long, double animalID, List<String> tags) {
-    // TODO: implement manualClassification
-    throw UnimplementedError();
-  }
+  Future<ConfirmModel> manualClassification(String pic, double lat, double long,
+          double animalID, List<String> tags) =>
+      throw UnimplementedError();
 
   @override
   Future<double> getAnimalID(String animalName) {
+    // ignore: todo
     // TODO: implement getAnimalID
     throw UnimplementedError();
   }
@@ -923,6 +921,7 @@ class MockApi implements Api {
 
   @override
   Future<bool> getNewTrophyNotification() {
+    // ignore: todo
     // TODO: implement getNewTrophyNotification
     throw UnimplementedError();
   }

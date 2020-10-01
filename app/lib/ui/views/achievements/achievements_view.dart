@@ -89,6 +89,7 @@ class AchievementsView extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class ListBody extends ViewModelWidget<AchievementsViewModel> {
   List<TrophyModel> trophies;
   ListBody({Key key, this.trophies}) : super(reactive: true);
@@ -183,6 +184,7 @@ class NavDrawer extends ViewModelWidget<AchievementsViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class IconBuilder extends ViewModelWidget<AchievementsViewModel> {
   String type;
   IconData icon;

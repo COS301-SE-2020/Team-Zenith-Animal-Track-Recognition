@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
+// ignore: must_be_immutable
 class GalleryView extends StatelessWidget {
   GalleryModel galleryModel;
   GalleryView(this.galleryModel);
@@ -219,6 +220,7 @@ Widget getWidget(var animalTabList) {
 //========================== VIEW BODY =======================
 
 //========================== APPBAR ICONS =======================
+// ignore: must_be_immutable
 class IconBuilder extends ViewModelWidget<GalleryViewModel> {
   IconData icon;
   IconBuilder({Key key, this.icon}) : super(reactive: true);

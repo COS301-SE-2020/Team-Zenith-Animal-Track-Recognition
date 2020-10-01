@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 
+// ignore: must_be_immutable
 class IdentificationView extends StatelessWidget {
   IdentificationView({@required this.name});
   String name;
@@ -79,6 +80,7 @@ class IdentificationView extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class IconBuilder extends ViewModelWidget<IdentificationViewModel> {
   IconData icon;
   IconBuilder({Key key, this.icon}) : super(reactive: true);
@@ -208,6 +210,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class OtherMatches extends ViewModelWidget<IdentificationViewModel> {
   List<SpoorModel> list;
   OtherMatches({this.list});
@@ -265,6 +268,7 @@ class Tags extends ViewModelWidget<IdentificationViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class ChildPopup extends ViewModelWidget<IdentificationViewModel> {
   String pic;
   String aname;
@@ -299,6 +303,7 @@ class ChildPopup extends ViewModelWidget<IdentificationViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class ViewMapFunctionality extends ViewModelWidget<IdentificationViewModel> {
   String title;
   ViewMapFunctionality({Key key, this.title}) : super(key: key, reactive: true);
@@ -334,6 +339,7 @@ class ViewMapFunctionality extends ViewModelWidget<IdentificationViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class ViewInfoFunctionality extends ViewModelWidget<IdentificationViewModel> {
   String title;
   ViewInfoFunctionality({Key key, this.title})
@@ -372,6 +378,7 @@ class ViewInfoFunctionality extends ViewModelWidget<IdentificationViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class DownloadFunctionality extends ViewModelWidget<IdentificationViewModel> {
   String title;
   DownloadFunctionality({Key key, this.title})
@@ -606,11 +613,13 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class TextInputField extends HookViewModelWidget<IdentificationViewModel> {
   int indexIdentifier;
   TextInputField({Key key, this.indexIdentifier}) : super(reactive: true);
 
   @override
+  // ignore: missing_return
   Widget buildViewModelWidget(
       BuildContext context, IdentificationViewModel model) {
     var text = useTextEditingController();

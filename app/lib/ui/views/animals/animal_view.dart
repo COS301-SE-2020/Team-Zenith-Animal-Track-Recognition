@@ -332,6 +332,7 @@ Widget getWidget(var animalTabList) {
 //========================== VIEW BODY =======================
 
 //=============================VIEW BUTTON======================
+// ignore: must_be_immutable
 class ViewButton extends ViewModelWidget<AnimalViewModel> {
   String name;
   ViewButton({this.name, Key key}) : super(key: key, reactive: true);

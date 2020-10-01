@@ -102,6 +102,7 @@ class BackButton extends ViewModelWidget<ConfirmedViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class Scroll extends ViewModelWidget<ConfirmedViewModel> {
   FinalObject finalObject;
   ConfirmModel confidentAnimal;
@@ -237,6 +238,7 @@ class SpoorIdentification extends ViewModelWidget<ConfirmedViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class IconButtons extends ViewModelWidget<ConfirmedViewModel> {
   IconData iconData;
   String subTitle;

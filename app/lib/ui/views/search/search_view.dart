@@ -296,6 +296,7 @@ class IconBuilder extends ViewModelWidget<SearchViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class ListBody extends ViewModelWidget<SearchViewModel> {
   List<SearchModel> animalList;
   ListBody({Key key, this.animalList}) : super(reactive: true);
@@ -340,6 +341,7 @@ class DataSearch extends SearchDelegate<List<SearchModel>> {
   DataSearch({this.model});
   @override
   List<Widget> buildActions(BuildContext context) {
+    // ignore: todo
     // TODO: implement buildActions
     // actions for app bar
     return [
@@ -353,6 +355,7 @@ class DataSearch extends SearchDelegate<List<SearchModel>> {
 
   @override
   Widget buildLeading(BuildContext context) {
+    // ignore: todo
     // TODO: implement buildLeading
     // leading icon on the left of appbar
     return IconButton(
@@ -369,6 +372,7 @@ class DataSearch extends SearchDelegate<List<SearchModel>> {
   @override
   Widget buildResults(BuildContext context) {
     // show some result based on the selection
+    // ignore: todo
     // TODO: implement buildResults
     throw UnimplementedError();
   }
@@ -376,6 +380,7 @@ class DataSearch extends SearchDelegate<List<SearchModel>> {
   @override
   Widget buildSuggestions(BuildContext context) {
     // show when someone searches for something
+    // ignore: todo
     // TODO: implement buildSuggestions
 
     final suggestionList = query.isEmpty

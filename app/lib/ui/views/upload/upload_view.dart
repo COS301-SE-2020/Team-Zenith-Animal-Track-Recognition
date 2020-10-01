@@ -135,6 +135,7 @@ class SliverBody extends ViewModelWidget<UploadViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class IconBuilder extends ViewModelWidget<UploadViewModel> {
   String type;
   IconData icon;
@@ -309,6 +310,7 @@ class GalleryButton extends ViewModelWidget<UploadViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class CameraButton extends ViewModelWidget<UploadViewModel> {
   String caption;
   CameraButton({Key key, this.caption}) : super(reactive: true);
@@ -382,11 +384,11 @@ class CameraButton extends ViewModelWidget<UploadViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class TagBox extends HookViewModelWidget<UploadViewModel> {
   TagBox({
     Key key,
   }) : super(reactive: true);
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {

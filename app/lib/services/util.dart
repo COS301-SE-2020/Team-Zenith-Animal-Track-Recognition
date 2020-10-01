@@ -12,7 +12,6 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:progress_indicators/progress_indicators.dart';
 
 import 'api/graphQL.dart';
 
