@@ -2244,17 +2244,19 @@ const Mutation = new GraphQLObjectType({
                 if (args.ranger != undefined) {
                     newSpoorIdentification.ranger = args.ranger
                 }
-                if (args.animal != undefined) {
+                if (args.animal != undefined)
+                    if (args.animal != newSpoorIdentification.animal) {
 
-                    let animalToupdate = _.find(animalData, {
-                        animalID: args.animal
-                    })
+                        let animalToupdate = _.find(animalData, {
+                            animalID: args.animal
+                        })
 
-                    animalToupdate.pictures = animalToupdate.pictures.filter(item => item != newSpoorIdentification.picture)
-                    addImgIDToAnimal(args.animal, newSpoorIdentification.picture)
-                    newSpoorIdentification.animal = args.animal
+                        animalToupdate.pictures = _.without(animalToupdate.pictures, newSpoorIdentification.picture)
+                        animals.doc(animalToupdate.classification).set(animalToupdate)
+                        addImgIDToAnimal(args.animal, newSpoorIdentification.picture)
+                        newSpoorIdentification.animal = args.animal
 
-                }
+                    }
                 if (args.tags != undefined) {
                     newSpoorIdentification.tags = args.tags
                 }
@@ -2639,8 +2641,6 @@ if (CACHE) {
         redeyNeedConterUP();
         spoorIdentificationData = []
         querySnapshot.forEach(function (doc) {
-
-
             let newSpoorID = doc.data()
             if (doc.data().picture == undefined)
                 newSpoorID.picture = selerRandomImg()
@@ -2658,13 +2658,19 @@ if (CACHE) {
             }
             newSpoorID.potentialMatches.forEach(element => {
                 if (isNaN(element.confidence)) {
-                    element.confidence = 0
+                    element.confidence = 0.002
                 }
             });
-            if (newSpoorID.picture==undefined &&newSpoorID.pictureID!=undefined )
-{
-    newSpoorID.picture=newSpoorID.pictureID
-}
+            if (newSpoorID.picture == undefined && newSpoorID.pictureID != undefined) {
+                newSpoorID.picture = newSpoorID.pictureID
+            }
+            newSpoorID.potentialMatches.forEach(element => {
+                if (element.confidence == undefined)
+                    element.confidence = 0.001
+            });
+
+            newSpoorID.potentialMatches = _.orderBy(newSpoorID.potentialMatches, ["confidence"])
+            
             spoorIdentificationData.push(newSpoorID)
             if (newSpoorID.month == 8 || newSpoorID.month == "08" || newSpoorID.month == "8") {
                 // spoorIdentifications.doc(doc.id).delete();
@@ -2920,7 +2926,7 @@ function AIIterface(ImgID, base64imge) {
                 confidence: parseFloat((Math.random() * (0.120 - 0.020)).toFixed(4))
             }
             if (element.animalID == 11) {
-                newPM.confidence = arri[0]
+                newPM.confidence = arri[1]
             }
             if (element.animalID == 10) {
                 newPM.confidence = arri[3]
@@ -2933,6 +2939,9 @@ function AIIterface(ImgID, base64imge) {
             }
             if (element.animalID == 9) {
                 newPM.confidence = arri[8]
+            }
+            if (element.animalID == 15) {
+                newPM.confidence = arri[2]
             }
             potentialMatches.push(newPM)
         }
