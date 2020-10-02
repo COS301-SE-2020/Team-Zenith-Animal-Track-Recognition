@@ -1,35 +1,33 @@
-import { AnimalPhotoDetailsComponent } from './../../../animals/animals-gallery/animal-photos/animal-photo-details/animal-photo-details.component';
 import { Component, OnInit, Input, Output, ViewChild, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { AnimalsService } from './../../../../../../services/animals.service';
 import { HttpClient } from '@angular/common/http';
 import { GoogleMap } from '@angular/google-maps';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { Track } from 'src/app/models/track';
-import { TracksService } from './../../../../services/tracks.service';
-import { TrackViewNavigationService } from './../../../../services/track-view-navigation.service';
 import { RelativeTimeMPipe } from 'src/app/pipes/relative-time-m.pipe';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { Router } from '@angular/router';
 
 @Component({
-	selector: 'app-track-identifications-info',
-	templateUrl: './track-identifications-info.component.html',
-	styleUrls: ['./track-identifications-info.component.css']
+  selector: 'app-animal-track-info',
+  templateUrl: './animal-track-info.component.html',
+  styleUrls: ['./animal-track-info.component.css']
 })
-export class TrackIdentificationsInfoComponent implements OnInit {
+export class AnimalTrackInfoComponent implements OnInit {
 
-	activeTrack: Track = null;
-	@Input() originType: string;
+	@Input() activeTrack: any;
+	@Output() viewingTrackOnChange: EventEmitter<Object> = new EventEmitter();
 	@ViewChild('otherMatchesMatTab') otherMatchesMatTab;
 	@ViewChild('simTracksMatTab') simTracksMatTab;
 	geoCoder: google.maps.Geocoder;
 	similarTrackList: any = null;
 
-	constructor(private changeDetection: ChangeDetectorRef, private http: HttpClient, public dialog: MatDialog, 
-		private router: Router, private tracksService: TracksService, private trackViewNavService: TrackViewNavigationService) {
-		tracksService.activeTrack$.subscribe(
+	constructor(private changeDetection: ChangeDetectorRef, public dialog: MatDialog, 
+		private router: Router, private animalsService: AnimalsService) {
+		/*animalsService.activeTrack$.subscribe(
 			track => {
 				this.activeTrack = track;
-			});
+			});*/
 	}
 
 	public ngOnChanges(changes: SimpleChanges) {
@@ -43,11 +41,8 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	ngOnInit(): void {
 		
 	}
-
 	backToTrackList() {
-		this.trackViewNavService.changeTab("Tracklist");
-		this.trackViewNavService.zoomOnTrack(this.activeTrack.spoorIdentificationID + ',resetZoom');
-		this.tracksService.changeActiveTrack(null);
+		this.viewingTrackOnChange.emit("back");
 	}
 	nextPotentialMatch() {
 		if (this.otherMatchesMatTab.selectedIndex != 2)
@@ -95,7 +90,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 
 	updateSimilarTracks() {
 		//Load similar tracks for the same animal being viewed
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+		/*this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'", classification:"' + this.activeTrack.animal.classification + '"){spoorIdentificationID,animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}}dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];
@@ -115,29 +110,13 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 				for (let j = 0; j < maxNumSimilarTracks; j += 3) {
 					this.similarTrackList.push(trackList.slice(j, j + 3));
 				}
-			});
+			});*/
 	}
 
 	viewAnimalProfile(animalClassi: string) {
 		let classification = animalClassi.split(" ");
 		let classificationQuery = classification[0] + "_" + classification[1];
 		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
-	}
-	viewTrackPhotoDetails() {
-		//Open AnimalPhotoDetailsComponent and display the selected photo 
-		let mediaList = [this.activeTrack];
-		const animalPhotoDetailsDialogRef = this.dialog.open(AnimalPhotoDetailsComponent, {
-			height: '100%',
-			width: '100%',
-			autoFocus: true,
-			disableClose: true,
-			id: 'animal-photo-details-dialog',
-			data: {
-				initialIndex: 0,
-				entity: mediaList,
-				photoType: "Single Track"
-			}
-		});
 	}
 	viewAnimalPhotos(animalClassi: string) {
 		let classification = animalClassi.split(" ");
@@ -147,6 +126,5 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}
-
 
 }

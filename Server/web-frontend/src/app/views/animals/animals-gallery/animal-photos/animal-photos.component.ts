@@ -5,13 +5,15 @@ import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dial
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimalPhotoDetailsComponent } from './animal-photo-details/animal-photo-details.component'; 
+import { AnimalsService } from './../../../../services/animals.service';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { AddImageComponent } from '../../add-image/add-image.component';
 
 @Component({
-  selector: 'app-animal-photos',
-  templateUrl: './animal-photos.component.html',
-  styleUrls: ['./animal-photos.component.css']
+	selector: 'app-animal-photos',
+	templateUrl: './animal-photos.component.html',
+	styleUrls: ['./animal-photos.component.css'],
+	providers: [AnimalsService]
 })
 export class AnimalPhotosComponent implements OnInit {
 
@@ -22,6 +24,7 @@ export class AnimalPhotosComponent implements OnInit {
 	maleBehaviour: string;
 
 	constructor(
+		private animalsService: AnimalsService,
 		private http: HttpClient,
 		private router: Router,
 		private activatedRoute: ActivatedRoute,

@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AnimalsService } from './../../../../../services/animals.service';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -32,6 +33,7 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 	};
 	
 	constructor(
+		private animalsService: AnimalsService,
 		@Inject(MAT_DIALOG_DATA) public data: any, 
 		public dialogRef: MatDialogRef<AnimalPhotoDetailsComponent>,
 		private http: HttpClient,
@@ -54,6 +56,8 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 		if (this.data.photoType == "Track") {
 			this.startSidenavLoader();
 			this.activeTrack = this.data.entity[this.currentPhotoIndex];
+			console.log("active track is : ");
+			console.log(this.activeTrack);
 			this.stopSidenavLoader();
 		}
 	}

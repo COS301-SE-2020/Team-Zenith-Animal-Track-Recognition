@@ -1,26 +1,12 @@
 <div id="animal-photos-track-info-container">
     <div id="animal-photos-track-info-title">
         <button mat-icon-button aria-label="Close Track Info Button" (click)="backToTrackList()">
-			<mat-icon>arrow_back</mat-icon>
+			<mat-icon>close</mat-icon>
 		</button>
         <div>
             <p id="animal-photos-track-title-animal" class="fontSB" *ngIf="activeTrack">{{activeTrack.animal.commonName}} Track Identified</p>
             <p id="animal-photos-track-title-capturedby" class="fontM" *ngIf="activeTrack">Captured by {{activeTrack.ranger.firstName}} {{activeTrack.ranger.lastName}}</p>
         </div>
-        <button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
-			<mat-icon>more_vert</mat-icon>
-		</button>
-        <mat-menu #menu="matMenu" xPosition="before">
-            <button *ngIf="activeTrack" (click)="viewAnimalProfile(activeTrack.animal.classification)" mat-menu-item>
-				<span>View Animal Information</span>
-			</button>
-            <button *ngIf="activeTrack" (click)="viewTrackPhotoDetails()" mat-menu-item>
-				<span>View Track Photo</span>
-			</button>
-            <button *ngIf="activeTrack" (click)="viewAnimalPhotos(activeTrack.animal.classification)" mat-menu-item>
-				<span>View Animal Photos</span>
-			</button>
-        </mat-menu>
     </div>
     <div id="animal-photos-track-info-content">
         <div id="animal-photos-track-image-container">

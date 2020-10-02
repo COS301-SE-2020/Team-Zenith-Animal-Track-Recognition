@@ -1,0 +1,27 @@
+<div id="animal-photos-track-info-container">
+    <div id="animal-photos-track-info-title">
+		<div id="animal-profile-card-contextMenu">
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
+				<mat-icon>more_vert</mat-icon>
+			</button>
+            <mat-menu #menu="matMenu" xPosition="before">
+                <button mat-menu-item>
+					<span>Option 1</span>
+				</button>
+                <button mat-menu-item>
+					<span>Option 2</span>
+				</button>
+                <button mat-menu-item>
+					<span>Option 3</span>
+				</button>
+            </mat-menu>
+		</div>
+        <div>
+            <p id="animal-photos-track-title-animal" class="fontSB">Heatmap</p>
+            <p id="animal-photos-track-title-capturedby" class="fontM">Set heatmap settings below</p>
+        </div>
+        <button mat-icon-button aria-label="Close Track Info Button" (click)="backToTrackList()">
+			<mat-icon>arrow_forward</mat-icon>
+		</button>
+    </div>
+</div>

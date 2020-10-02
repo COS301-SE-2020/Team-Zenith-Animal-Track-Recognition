@@ -4,6 +4,10 @@ import { Router } from '@angular/router';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { RelativeTimeMPipe } from 'src/app/pipes/relative-time-m.pipe';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Track } from 'src/app/models/track';
+import { TracksService } from './../../../services/tracks.service';
+import { TrackViewNavigationService } from './../../../services/track-view-navigation.service';
+
 
 @Component({
 	selector: 'app-track-identifications-sidenav',
@@ -16,17 +20,43 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 	@ViewChild('trackMatTab') trackMatTab;
 	@ViewChild('trackPaginator') trackPaginator;
 	@Input() searchText: string;
-	@Input() fullTrackList: any;
+	trackIdentifications: Track[] = null;
 	@Input() selectedFilter: any;
 	@Input() filteredListArray: any;
-	@Input() displayedTracks: any = null;
 	@Output() trackPageOnChange: EventEmitter<Object> = new EventEmitter();
-	@Output() focusOnTrackChange: EventEmitter<Object> = new EventEmitter();
-	activeTrack: any = null;
 	originType: string = "track-identifications";
+	activeTrack: Track = null;
 
-
-	constructor(private http: HttpClient, private changeDetection: ChangeDetectorRef, private router: Router, private snackBar: MatSnackBar) { }
+	constructor(private http: HttpClient, private changeDetection: ChangeDetectorRef, 
+		private router: Router, private snackBar: MatSnackBar, private tracksService: TracksService, private trackViewNavService: TrackViewNavigationService) { 
+		tracksService.activeTrack$.subscribe(
+			track => {
+				this.activeTrack = track;
+		}
+		);
+		tracksService.identifications.subscribe(
+			trackList => {
+				this.trackIdentifications = trackList;
+				if (trackList != null && trackList.length > 0)
+					this.stopLoader();
+			}
+		);
+		trackViewNavService.trackSidenavTab$.subscribe(
+			tab => {
+				switch(tab) {
+					case "Track":
+						this.trackMatTab.selectedIndex = 2;
+					break;
+					case "Tracklist":
+						this.trackMatTab.selectedIndex = 1;
+					break;
+					case "Heatmap":
+						this.trackMatTab.selectedIndex = 0;
+					break;
+				}
+			}
+		);
+	}
 
 	public ngOnChanges(changes: SimpleChanges) {
 		if (changes.filteredListArray && changes.filteredListArray.currentValue) {
@@ -39,20 +69,14 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 			this.stopLoader();
 		}
 	}
+	
 	ngOnInit(): void {
 	}
 
-	viewTrack(track: any) {
-		this.activeTrack = null;
-		this.activeTrack = track;
-		this.focusOnTrackChange.emit(track.spoorIdentificationID + ',' + track.location.latitude + ',' + track.location.longitude);
-		this.trackMatTab.selectedIndex = 1;
-	}
-
-	backToTrackList(status: any) {
-		this.trackMatTab.selectedIndex = 0;
-		this.focusOnTrackChange.emit(this.activeTrack.spoorIdentificationID + ',resetZoom');
-		this.activeTrack = null;
+	viewTrack(track: Track) {
+		this.tracksService.changeActiveTrack(track);
+		this.trackViewNavService.changeTab("Track");
+		this.trackViewNavService.zoomOnTrack(track.spoorIdentificationID + ',' + track.location.latitude + ',' + track.location.longitude);
 	}
 
 	onPageChange($event) {
@@ -62,11 +86,9 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 
 	//Loader
 	startLoader() {
-		console.log("SIDENAV STart LOADER");
 		document.getElementById('search-nav-loader-container').style.visibility = 'visible';
 	}
 	stopLoader() {
-		console.log("SIDENAV STOP LOADER");
 		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
 	}
 }

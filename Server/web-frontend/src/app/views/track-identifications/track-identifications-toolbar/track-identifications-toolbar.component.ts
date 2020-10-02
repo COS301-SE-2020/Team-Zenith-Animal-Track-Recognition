@@ -1,10 +1,11 @@
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatOption } from '@angular/material/core';
+import { TrackViewNavigationService } from './../../../services/track-view-navigation.service';
 
 @Component({
 	selector: 'app-track-identifications-toolbar',
@@ -19,14 +20,17 @@ export class TrackIdentificationsToolbarComponent implements OnInit {
 	@Output() tracksOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() sortByGroupsOnChange: EventEmitter<Object> = new EventEmitter();
 	@Output() selectedFilterOnChange: EventEmitter<Object> = new EventEmitter();
+	@ViewChild("filterOptionSelect") filterOptionSelect;
 
+	filterByOption: string = "";
 	filterOptions: any = [];
 	animals = [];
 	animalGroups = [];
 	rangers = [];
 	tags = [];
+	showHeatmap: boolean = false;
 
-	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { }
+	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar, private trackViewNavService: TrackViewNavigationService) { }
 
 	ngOnInit(): void {
 		this.startLoader();
@@ -65,6 +69,23 @@ export class TrackIdentificationsToolbarComponent implements OnInit {
 		this.stopLoader();
 	}
 
+	toggleHeatmap() {
+		this.showHeatmap = !this.showHeatmap;
+		if (this.showHeatmap)
+			this.trackViewNavService.toggleHeatmap("on");
+		else if (!this.showHeatmap)
+			this.trackViewNavService.toggleHeatmap("off");
+	}
+	toggleHeatmapSettings() {
+		if (this.filterByOption != 'Animal') {
+			this.trackViewNavService.toggleHeatmap("off");
+			this.trackViewNavService.toggleHeatmapSettings("off");
+			return;
+		}
+		if (this.filterByOption == 'Animal' && !this.filterOptionSelect.empty) {
+			this.trackViewNavService.toggleHeatmapSettings("on");
+		}
+	}
 	route(location: string) {
 		this.router.navigate([location]);
 	}
@@ -76,16 +97,19 @@ export class TrackIdentificationsToolbarComponent implements OnInit {
 				this.animals.forEach(element => {
 					this.filterOptions.push(element);
 				});
+				this.filterByOption = "Animal";
 				break;
 			case 1:
 				this.animalGroups.forEach(element => {
 					this.filterOptions.push(element);
 				});
+				this.filterByOption = "Group";
 				break;
 			case 2:
 				this.rangers.forEach(element => {
 					this.filterOptions.push(element);
 				});
+				this.filterByOption = "Ranger";
 				break;
 		}
 		this.sortByGroupsOnChange.emit(choice);

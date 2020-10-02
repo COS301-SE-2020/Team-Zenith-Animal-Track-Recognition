@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "^10.0.14",
     "@angular/router": "^10.0.14",
     "@auth0/angular-jwt": "^5.0.1",
+    "@googlemaps/markerclustererplus": "^1.0.2",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
     "@types/google-maps": "^3.2.2",
     "@types/jquery": "^3.5.1",

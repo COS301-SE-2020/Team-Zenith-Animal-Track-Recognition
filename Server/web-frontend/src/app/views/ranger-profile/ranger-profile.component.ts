@@ -6,6 +6,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { EditRangerInfoComponent } from './../rangers/edit-ranger-info/edit-ranger-info.component';
 import { DeleteRangerComponent } from './../rangers/delete-ranger/delete-ranger.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TRACKS_QUERY_STRING } from 'src/app/models/data';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 
 
@@ -101,7 +102,7 @@ export class RangerProfileComponent implements OnInit {
 				this.stopLoader();
 			});
 
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+		this.http.get<any>(TRACKS_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'",ranger:"' + this.userToken + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];

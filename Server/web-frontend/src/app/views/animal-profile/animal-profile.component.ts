@@ -6,6 +6,7 @@ import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dial
 import { MatTabsModule } from '@angular/material/tabs';
 import { EditAnimalInfoComponent } from './../animals/edit-animal-info/edit-animal-info.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TRACKS_QUERY_STRING } from 'src/app/models/data';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { AddImageComponent } from '../animals/add-image/add-image.component';
 
@@ -56,7 +57,7 @@ export class AnimalProfileComponent implements OnInit {
 
 				this.stopLoader();
 			});
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+		this.http.get<any>(TRACKS_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'",classification:"' + this.animalClassi + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
 			.subscribe((data: any[]) => {
 				let temp = [];

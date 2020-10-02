@@ -154,7 +154,10 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+	left: 0;
     padding-top: 5%;
+	position: absolute;
+	top: 0;
 }
 
 #empty-sidenav-display-message-container {

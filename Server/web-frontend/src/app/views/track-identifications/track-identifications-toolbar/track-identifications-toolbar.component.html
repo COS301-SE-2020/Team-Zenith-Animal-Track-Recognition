@@ -5,14 +5,24 @@
         </div>
     </div>
     <div id="identifications-toolbar">
-        <mat-select id="identifications-filter-btn" class="identifications-select-btn" class="fontR" placeholder="Filter By" disableOptionCentering>
-            <mat-option value="commonName" (click)="updateFilter(0)">Common Name</mat-option>
-            <mat-option value="animalGroup" (click)="updateFilter(1)">Animal Group</mat-option>
-            <mat-option value="identifyingRanger" (click)="updateFilter(2)">Identifying Ranger</mat-option>
-            <!-- <mat-option value="tagChoice" (click)="updateFilter(3)">Tag</mat-option> -->
-        </mat-select>
-        <mat-select id="identifications-toolbar-actions-btn" class="fontM" placeholder="Choose Filter..." disableOptionCentering>
-            <mat-option *ngFor="let element of filterOptions" [value]="element" (click)="filterList(element)">{{element}}</mat-option>
-        </mat-select>
+		<div id="heatmap-toggle-btn-container" class="identifications-toolbar-tool-container">
+			<button mat-stroked-button (click)="toggleHeatmap()" matTooltip="{{showHeatmap ? 'Heatmap (On)' : 'Heatmap (Off)'}}" [disabled]="filterOptionSelect.empty || filterByOption != 'Animal'">
+				<mat-icon>{{showHeatmap ? 'blur_on' : 'blur_off'}}</mat-icon>
+				<p>Heatmap</p>
+			</button>
+		</div>
+		<div class="identifications-toolbar-tool-container">
+			<mat-select id="identifications-filter-btn" class="identifications-select-btn" class="fontR" placeholder="Filter By" disableOptionCentering>
+				<mat-option value="commonName" (click)="updateFilter(0)">Animal</mat-option>
+				<mat-option value="animalGroup" (click)="updateFilter(1)">Group</mat-option>
+				<mat-option value="identifyingRanger" (click)="updateFilter(2)">Ranger</mat-option>
+				<!-- <mat-option value="tagChoice" (click)="updateFilter(3)">Tag</mat-option> -->
+			</mat-select>
+		</div>
+		<div  class="identifications-toolbar-tool-container">
+			<mat-select id="identifications-toolbar-actions-btn" class="fontM" #filterOptionSelect placeholder="Choose Filter..." disableOptionCentering (selectionChange)="toggleHeatmapSettings()">
+				<mat-option *ngFor="let element of filterOptions" [value]="element" (click)="filterList(element)">{{element}}</mat-option>
+			</mat-select>
+		<div>
     </div>
 </div>
