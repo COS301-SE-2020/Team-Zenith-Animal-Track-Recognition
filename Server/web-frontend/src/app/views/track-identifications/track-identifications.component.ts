@@ -23,7 +23,6 @@ export class TrackIdentificationsComponent implements OnInit {
 	@ViewChild('sidenav') sidenav;
 	activeTrack: any = null;
 	activeTrackInfo: any = null;
-	filteredListArray;
 	currentAlphabet;
 	displayedTracks: any;
 	defaultLocation: string = 'Address not found';
@@ -38,14 +37,11 @@ export class TrackIdentificationsComponent implements OnInit {
 		heatmap: [] = [],
 		tracks: [] = []
 	};
+	markerClusterer: any;
+	markerClustererOptions = { imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m' };		
 	pageSize: number = 25;
-	searchText: string;
-	sortBySurname: boolean = true;
-	sorted: string;
 	trackHltCircle: any;
 	trackIdentifications: Track[] = null;
-	selectedFilter: string;
-	filterType: any;
 	showHeatmap: boolean = false;
 	showHeatmapSettings: boolean = false;
 	
@@ -67,11 +63,32 @@ export class TrackIdentificationsComponent implements OnInit {
 		//Get the latest collection of track identifications
 		tracksService.identifications.subscribe(
 			trackList => {
-				this.trackIdentifications = trackList;	
-				if (trackList != null && trackList.length > 0)
-					this.addTrackMarkers();
+				//Add track markers to the map if tracks are present
+				if (trackList != null && trackList.length > 0) {
+					//Add track markers to the map if initial list of tracks
+					if (this.trackIdentifications == null) {
+						this.trackIdentifications = trackList;	
+						this.addTrackMarkers();
+					}
+					else {
+						//Updating identifications with filtered tracks
+						this.trackIdentifications = trackList;
+					}
+				}
+				else if (trackList != null && trackList.length == 0) {
+					if (this.trackIdentifications != null) {
+						//If the track list returned is not the initial value but is empty nonetheless (if filtered for example)
+						this.trackIdentifications = trackList;
+					}
+				}
 			}
 		);
+		//Determines which filter option is applied to the tracks and markers
+		tracksService.trackFilter$.subscribe(
+			filter => {
+				this.filterTrackMarkers(filter);
+			}
+		);		
 		//Determines which track is being zoomed on
 		trackViewNavService.trackMapZoom$.subscribe(
 			coords => {
@@ -104,8 +121,6 @@ export class TrackIdentificationsComponent implements OnInit {
 
 	ngOnInit(): void {
 		document.getElementById("geotags-route").classList.add("activeRoute");
-		this.selectedFilter = '';
-		this.filterType = 0;
 		this.startLoader();
 		this.startSidenavLoader();
 		const spoorIdQuery = new URLSearchParams(window.location.search);
@@ -143,54 +158,52 @@ export class TrackIdentificationsComponent implements OnInit {
 			zoom: 7
 		});
 	}
-
+	
+	//Track Identification Marker functions
 	addTrackMarkers() {
 		//Place track markers on map
-		this.mapMarkers.markers = [];
-		this.mapMarkers.tracks = [];
-		this.mapMarkers.heatmap	= [];
+		
+		if (this.mapMarkers.markers.length > 0) {
+			//Clear all track markers first
+			this.clearAllMarkers();
+		}
+
+		this.mapMarkers.markers.length = 0;
+		this.mapMarkers.tracks.length = 0;
+		this.mapMarkers.heatmap.length = 0;
+		
+		
 		if (this.initWithOpenTrack) {
 			//If query param exists, open track that corresponds to that id first
 			let trackMarker = this.trackIdentifications.filter(x => x.spoorIdentificationID == this.initWithOpenTrackId);
 			this.addTrackMarker(trackMarker[0]);
 			let requestedTrack = this.getTrackMarker(this.initWithOpenTrackId);
 			google.maps.event.trigger(requestedTrack, 'click');
+			this.initWithOpenTrack =  false;
 			//this.snackBar.open('Track displayed!', "Dismiss", { duration: 3000, });
 		}
-		this.filteredListArray = [];
-
+		
 		for (let i = 0; i < this.trackIdentifications.length; i++) {
-			let groupName = false;
-			if (this.filterType == 1) {
-				for (let j = 0; j < (this.trackIdentifications[i]['animal']['groupID']).length; j++) {
-					if (('' + ((this.trackIdentifications[i]['animal']['groupID'])[j])['groupName'] == (this.selectedFilter)) && this.selectedFilter != '') {
-						groupName = true;
-						//console.log((this.trackIdentifications[i]['animal']['groupID'])[j]['groupName']);
-					}
-				}
-			}
-			if (this.selectedFilter == '' ||
-				('' + this.trackIdentifications[i]['animal']['commonName']) == (this.selectedFilter) ||
-				groupName ||
-				(this.trackIdentifications[i]['ranger']['firstName'] + ' ' + this.trackIdentifications[i]['ranger']['lastName']) == (this.selectedFilter)) {
+			this.addTrackMarker(this.trackIdentifications[i]);
+		}
+		
+		/*
 				if (((!this.initWithOpenTrack) ||
 					(this.initWithOpenTrack && this.trackIdentifications[i].spoorIdentificationID !== this.initWithOpenTrackId))) {
 					//setTimeout(() => this.addTrackMarker(this.trackIdentifications[i]), i * 15);
 					this.addTrackMarker(this.trackIdentifications[i]);
 					this.filteredListArray.push(this.trackIdentifications[i]);
 				}
-			}
-		}
-		this.displayedTracks = [];
-		this.displayedTracks = this.filteredListArray.slice(0, this.filteredListArray.length > 25 ? 25 : this.filteredListArray.length);
+				
+		*/
+
+		//this.displayedTracks = [];
+		//this.displayedTracks = this.filteredListArray.slice(0, this.filteredListArray.length > 25 ? 25 : this.filteredListArray.length);
 
 		// Add a marker clusterer to manage the markers.
-		var markerCluster = null;
-		var mcOptions = { imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m' };		
-		markerCluster = new MarkerClusterer(this.map, this.mapMarkers.markers, mcOptions);
+		this.markerClusterer = new MarkerClusterer(this.map, this.mapMarkers.markers, this.markerClustererOptions);
 		this.stopLoader();
 	}
-
 	addTrackMarker(track: Track) {
 		//Create the track marker icon
 		var markerIcon = {
@@ -225,7 +238,7 @@ export class TrackIdentificationsComponent implements OnInit {
 				'<span><p class="track-identification-animal-commonName fontSB">' + track.animal.commonName + ' Track</span>' +
 				'</div>' + 
 				'<p class="track-identification-capture-ranger fontM">Captured by: ' + track.ranger.firstName + ' ' + track.ranger.lastName + '</p>' +
-				'<span><p class="fontSB">ACCURACY SCORE:&nbsp;' + (track.potentialMatches[track.potentialMatches.length - 1].confidence * 100) + '%</p></span>' +
+				'<span><p class="fontSB">ACCURACY SCORE:&nbsp;' + Math.round((track.potentialMatches[track.potentialMatches.length - 1].confidence * 100)) + '%</p></span>' +
 				'</div></div></div>');
 			this.infoWindow.open(this.map, animalTrack);
 		});
@@ -235,16 +248,41 @@ export class TrackIdentificationsComponent implements OnInit {
 		this.mapMarkers.tracks.push(track);
 		this.mapMarkers.heatmap.push(new google.maps.LatLng(track.location.latitude, track.location.longitude));
 	}
-
-	updateFilter(ev) {
-		this.selectedFilter = ev;
-		this.initMap();
+	filterTrackMarkers(filterChoice: string) {
+		if (filterChoice == "All") {
+			//Show all map markers
+			this.setMapOnAll(this.map);
+			this.markerClusterer.setMap(null);
+			this.markerClusterer = new MarkerClusterer(this.map, this.mapMarkers.markers, this.markerClustererOptions);
+			return;
+		}
+		//Hide all tracks
+		var filteredMarkers = [];
+		this.markerClusterer.setMap(null);
+		this.setMapOnAll(null);
+		for (let i = 0; i < this.mapMarkers.markers.length; i++) {
+			for (let j = 0; j < this.trackIdentifications.length; j++) {
+				if (this.mapMarkers.tracks[i].spoorIdentificationID == this.trackIdentifications[j].spoorIdentificationID) {
+					this.mapMarkers.markers[i].setMap(this.map);
+					filteredMarkers.push(this.mapMarkers.markers[i]);
+				}
+			}
+		}
+		this.markerClusterer = new MarkerClusterer(this.map, filteredMarkers, this.markerClustererOptions);
+	}
+	setMapOnAll(map: google.maps.Map | null) {
+		for (let i = 0; i < this.mapMarkers.markers.length; i++) {
+			this.mapMarkers.markers[i].setMap(map);
+		}
+	}
+	clearAllMarkers() {
+		//Remove track markers from map
+		if (this.markerClusterer)
+			this.markerClusterer.setMap(null);
+		this.setMapOnAll(null);
+		this.mapMarkers.markers.length = 0;
 	}
 
-	setFilterType(ev) {
-		this.filterType = ev;
-	}
-	
 	//Heatmap related functions
 	toggleHeatmap(state: string) {
 		switch(state) {
@@ -255,7 +293,8 @@ export class TrackIdentificationsComponent implements OnInit {
 				this.heatmap.setMap(this.map);
 			break;
 			case "off":
-				this.heatmap.setMap(null);
+				if (this.heatmap)
+					this.heatmap.setMap(null);
 			break;
 		}
 	}
@@ -355,12 +394,8 @@ export class TrackIdentificationsComponent implements OnInit {
 		});
 	}
 
-	updateSearchText(event) {
-		this.searchText = event;
-	}
-
 	iterateDisplayedTracks($event) {
-		this.displayedTracks = this.filteredListArray.slice($event.event.pageIndex * $event.event.pageSize, $event.event.pageIndex * $event.event.pageSize + $event.event.pageSize);
+		//this.displayedTracks = this.filteredListArray.slice($event.event.pageIndex * $event.event.pageSize, $event.event.pageIndex * $event.event.pageSize + $event.event.pageSize);
 		//console.log(this.displayedTracks);
 	}
 

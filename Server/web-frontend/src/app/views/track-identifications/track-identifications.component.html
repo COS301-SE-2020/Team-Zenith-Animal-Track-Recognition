@@ -1,12 +1,12 @@
 <div id="identifications-view-workspace-container" class="normalView">
-    <app-track-identifications-toolbar (selectedFilterOnChange)="updateFilter($event)" (sortByGroupsOnChange)="setFilterType($event)" [trackIds]="trackIdentifications"></app-track-identifications-toolbar>
+    <app-track-identifications-toolbar [trackIds]="trackIdentifications"></app-track-identifications-toolbar>
     <div id="identifications-view-workspace">
         <mat-drawer-container id="identifications-search-sidenav-container">
             <mat-drawer id="identifications-search-sidenav" #sidenav mode="side" opened="true" (opened)="showCloseBtn()" (closed)="showOpenBtn()">
                 <div id="search-nav-loader-container" class="loader-container">
                     <mat-spinner id="loader"></mat-spinner>
                 </div>
-                <app-track-identifications-sidenav #trackIdentificationsSidenav [filteredListArray]="filteredListArray" [searchText]="searchText" (searchTextOnChange)="updateSearchText($event)"
+                <app-track-identifications-sidenav #trackIdentificationsSidenav
                     (trackPageOnChange)="iterateDisplayedTracks($event)"></app-track-identifications-sidenav>
             </mat-drawer>
             <mat-drawer-content id="identifications-search-sidenav-content">
@@ -17,7 +17,7 @@
                     <button id="side-nav-open-btn" mat-icon-button><mat-icon>chevron_right</mat-icon></button>
                 </div>
                 <div id="identifications-map-container">
-                    <div class="empty-display-message-container" [hidden]="filteredListArray">
+                    <div class="empty-display-message-container" [hidden]="trackIdentifications == null">
                         <div class="empty-display-message">
                             <p class="fontM">There is no data to display.</p>
                         </div>

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { clone, cloneDeep } from "lodash";
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from './message.service';
@@ -14,6 +15,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class TracksService {
 	
+	private _: any;
 	private activeTrackSource = new BehaviorSubject<Track>(null);
 	activeTrack$ = this.activeTrackSource.asObservable();
 	
@@ -22,6 +24,10 @@ export class TracksService {
 	readonly displayedTracks = this._displayedTracks.asObservable();
 	//Store a local copy of all track identifications
 	private trackIdentificationsStore: { trackIdentifications: Track[] } = { trackIdentifications: null };
+	
+	//Determines which filter option is currently selected
+	private trackFilterSource = new Subject<string>();
+	trackFilter$ = this.trackFilterSource.asObservable();
 	
 	dummyLocations: any = [
 		{
@@ -44,7 +50,7 @@ export class TracksService {
 		},		
 		{
 			location: {
-				latitude: -23.732555, 
+				latitude: -23.732555,
 				longitude: 31.869679
 			}
 		},		
@@ -108,6 +114,34 @@ export class TracksService {
 		this.activeTrackSource.next(track);
 	}
 	
+	changeTrackFilter(filterCategory: string, filterChoice: string) {
+		//Make a copy of all the tracks to filter through
+		var allTracks = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
+		var filteredTracks = [];
+		if (filterChoice == "All") {
+			this._displayedTracks.next(allTracks);
+			this.trackFilterSource.next(filterChoice);
+			return;
+		}
+		
+		for (let i = 0; i < allTracks.length; i++) {
+			let groupName = false;
+			if (filterCategory == "Group") {
+				for (let j = 0; j < (allTracks[i]['animal']['groupID']).length; j++) {
+					if (('' + ((allTracks[i]['animal']['groupID'])[j])['groupName'] == (filterChoice)) && filterChoice != '') {
+						groupName = true;
+					}
+				}
+			}
+			if (filterChoice == '' || ('' + allTracks[i]['animal']['commonName']) == (filterChoice) || groupName ||
+				(allTracks[i]['ranger']['firstName'] + ' ' + allTracks[i]['ranger']['lastName']) == (filterChoice)) {
+					filteredTracks.push(allTracks[i]);
+			}
+		}
+		this._displayedTracks.next(filteredTracks);
+		this.trackFilterSource.next(filterChoice);
+	}
+		
 	//HTTPS Requests
 	getTrackIdentifications(token: string)
 	{
@@ -130,6 +164,7 @@ export class TracksService {
 					let t: number = parseInt(temp.month) - 1;
 					element.dateObj = new Date(temp.year, t, temp.day, temp.hour, temp.min, temp.second);
 				});
+				//DUMMY LOCATIONS TO SET MARKERS WITHIN KRUGER PARK
 				for (let i = 0; i < this.dummyLocations.length; i++) {
 					this.trackIdentificationsStore.trackIdentifications[i].location = this.dummyLocations[i].location;
 				}

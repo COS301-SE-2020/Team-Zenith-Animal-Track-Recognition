@@ -22,7 +22,6 @@ export class TrackViewNavigationService {
 	private trackHeatmapSettingsSource = new Subject<string>();
 	trackHeatmapSettings$ = this.trackHeatmapSettingsSource.asObservable();
 
-	// Service message commands
 	changeTab(tab: string) {
 		this.trackSidenavSource.next(tab);
 	}
