@@ -513,11 +513,10 @@ class GraphQL implements Api {
         // print("list length: " + list.length.toString());
         // print("Limit: " + limit.toString());
         for (int i = 0; i < limit; i++) {
-          print("count: " + i.toString());
           var list = body['data']['spoorIdentification'][i]['potentialMatches']
               as List;
 
-          for (int k = 0; k < list.length - 1; k++) {
+          for (int k = 0; k < list.length; k++) {
             con = double.parse(body['data']['spoorIdentification'][i]
                     ['potentialMatches'][k]['confidence']
                 .toString());
@@ -595,8 +594,7 @@ class GraphQL implements Api {
 
           if (body['data']['spoorIdentification'][i]['location']['latitude'] !=
                   null &&
-              body['data']['spoorIdentification'][index]['location']
-                      ['longitude'] !=
+              body['data']['spoorIdentification'][i]['location']['longitude'] !=
                   null) {
             location = body['data']['spoorIdentification'][i]['location']
                         ['latitude']
@@ -610,8 +608,7 @@ class GraphQL implements Api {
 
           if (body['data']['spoorIdentification'][i]['ranger']['firstName'] !=
                   null &&
-              body['data']['spoorIdentification'][index]['ranger']
-                      ['lastName'] !=
+              body['data']['spoorIdentification'][i]['ranger']['lastName'] !=
                   null) {
             ranger = body['data']['spoorIdentification'][i]['ranger']
                         ['firstName']
@@ -640,9 +637,8 @@ class GraphQL implements Api {
           }
           _cards.add(new HomeModel(
               cName, sName, location, ranger, date, score, tag, pic, id));
-          print("Number: " + i.toString() + " Animal: " + cName);
         }
-        print("card length: " + _cards.length.toString());
+
         return _cards;
       } else {
         throw HttpException('500');
@@ -1284,6 +1280,7 @@ class GraphQL implements Api {
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
+        var list = body['data']['spoorIdentification'] as List;
 
         String cName;
         String sName;
@@ -1301,7 +1298,7 @@ class GraphQL implements Api {
         int year;
         int day;
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < list.length; i++) {
           if (body['data']['spoorIdentification'][i]['animal']['commonName'] !=
               null) {
             cName = body['data']['spoorIdentification'][i]['animal']

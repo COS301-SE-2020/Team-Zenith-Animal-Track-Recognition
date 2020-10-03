@@ -58,6 +58,7 @@ class IdentificationView extends StatelessWidget {
                                   zoom: 15,
                                 ),
                                 mapType: MapType.normal,
+                                markers: Set<Marker>.of(model.markers),
                                 onMapCreated: (GoogleMapController controller) {
                                   _controller.complete(controller);
                                 },

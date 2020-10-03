@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:social_share/social_share.dart';
 import 'package:image_downloader/image_downloader.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class IdentificationViewModel extends BaseViewModel {
   final Api _api = locator<GraphQL>();
@@ -19,7 +20,9 @@ class IdentificationViewModel extends BaseViewModel {
   String _location;
   String _date;
   String pic;
+  List<Marker> _markers = <Marker>[];
 
+  List<Marker> get markers => _markers;
   String get location => _location;
   String get date => _date;
   List<String> get tracks => _tracks;
@@ -217,10 +220,16 @@ class IdentificationViewModel extends BaseViewModel {
       pic = _confident.pic;
       recentIdentifications.removeAt(0);
       _similarSpoorModel = await _api.getSpoorSimilarModel(animal);
-      GalleryModel gallery = await _api.getGalleryModel(animal);
+      GalleryModel gallery = await _api.getGalleryModel(_confident.species);
       _tracks = gallery.galleryList[1];
       loaded = true;
     }
+
+    _markers.add(Marker(
+        markerId: MarkerId('SomeId'),
+        position: LatLng(coordinatesLat, coordinatesLong),
+        infoWindow: InfoWindow(title: 'Track Identification')));
+
     return 21;
   }
 
