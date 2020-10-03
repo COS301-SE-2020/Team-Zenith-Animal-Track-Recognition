@@ -19,12 +19,8 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 
 	@ViewChild('trackMatTab') trackMatTab;
 	@ViewChild('trackPaginator') trackPaginator;
-	@Input() searchText: string;
 	trackIdentifications: Track[] = null;
-	@Input() selectedFilter: any;
-	@Input() filteredListArray: any;
 	@Output() trackPageOnChange: EventEmitter<Object> = new EventEmitter();
-	originType: string = "track-identifications";
 	activeTrack: Track = null;
 
 	constructor(private http: HttpClient, private changeDetection: ChangeDetectorRef, 
@@ -36,9 +32,20 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 		);
 		tracksService.identifications.subscribe(
 			trackList => {
-				this.trackIdentifications = trackList;
-				if (trackList != null && trackList.length > 0)
+				if (trackList != null && trackList.length > 0) {
+					this.trackIdentifications = trackList;
+					this.trackPaginator.length = this.trackIdentifications.length;
+					this.trackPaginator.firstPage();
 					this.stopLoader();
+				}
+				else if (trackList != null && trackList.length == 0) {
+					if (this.trackIdentifications != null) {
+						//If the track list returned is not the initial value but is empty nonetheless (if filtered for example)
+						this.trackIdentifications = trackList;
+						this.trackPaginator.length = this.trackIdentifications.length;
+						this.trackPaginator.firstPage();
+					}
+				}
 			}
 		);
 		trackViewNavService.trackSidenavTab$.subscribe(
@@ -56,18 +63,6 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 				}
 			}
 		);
-	}
-
-	public ngOnChanges(changes: SimpleChanges) {
-		if (changes.filteredListArray && changes.filteredListArray.currentValue) {
-			if (this.trackPaginator) {
-				this.trackPaginator.length = this.filteredListArray.length;
-				this.trackPaginator.firstPage();
-			}
-		}
-		if (changes.displayedTracks && changes.displayedTracks.currentValue) {
-			this.stopLoader();
-		}
 	}
 	
 	ngOnInit(): void {
