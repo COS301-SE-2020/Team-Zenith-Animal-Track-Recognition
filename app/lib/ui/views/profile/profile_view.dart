@@ -79,8 +79,8 @@ class ProfileView extends StatelessWidget {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: <Color>[
-                          Color.fromRGBO(33, 78, 125, 1),
-                          Color.fromRGBO(80, 156, 208, 1)
+                          Color.fromRGBO(58, 119, 168, 1),
+                          Color.fromRGBO(77, 151, 203, 1)
                         ])),
                   ),
                 ),
@@ -164,8 +164,8 @@ class ProfileView extends StatelessWidget {
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                     colors: <Color>[
-                                  Color.fromRGBO(33, 78, 125, 1),
-                                  Color.fromRGBO(80, 156, 208, 1)
+                                  Color.fromRGBO(58, 119, 168, 1),
+                                  Color.fromRGBO(77, 151, 203, 1)
                                 ])),
                           ),
                         ),
@@ -330,8 +330,8 @@ class ProfileViewList extends ViewModelWidget<ProfileViewModel> {
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                         colors: <Color>[
-                                          Color.fromRGBO(33, 78, 125, 1),
-                                          Color.fromRGBO(80, 156, 208, 1)
+                                          Color.fromRGBO(58, 119, 168, 1),
+                                          Color.fromRGBO(77, 151, 203, 1)
                                         ]),
                                     borderRadius: BorderRadius.circular(10)),
                                 child:
@@ -411,7 +411,7 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 0, 0, 0),
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/ERP_Tech.png'))),

@@ -143,7 +143,7 @@ class NavDrawer extends ViewModelWidget<AchievementsViewModel> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 0, 0, 0),
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/ERP_Tech.png'))),

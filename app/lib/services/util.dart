@@ -357,7 +357,7 @@ Widget progressIndicator() {
       key: Key('progressIndicator'),
       color: Colors.white,
       child: Center(
-        child: Image.asset('assets/images/loading.gif'),
+        child: Image.asset('assets/images/loading4.gif'),
       ));
 }
 
@@ -422,7 +422,7 @@ Widget textColumn(String name, String time, String species, String location,
                     flex: 1,
                     child: Container(
                       color: Colors.white,
-                      child: text18LeftBoldBlack(name),
+                      child: text16LeftBoldBlack(name),
                     )),
                 Expanded(
                     flex: 1,

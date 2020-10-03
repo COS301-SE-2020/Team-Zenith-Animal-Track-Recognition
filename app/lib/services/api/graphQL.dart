@@ -108,16 +108,12 @@ class GraphQL implements Api {
       String query =
           'mutation{identificationBase64(token: "$token" ,latitude: $lat, longitude: $long, tgas: $tag ,base64imge: "$pic" ){spoorIdentificationID, potentialMatches{animal{commonName, classification, pictures{URL}}confidence}}}';
 
-      print(query.toString());
-
       final http.Response response = await http.post(
         link,
         headers: {"Content-Type": "application/json"},
         body: json.encode({'query': query}),
       );
 
-      print(response.body.toString());
-      print(response.statusCode.toString());
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
 
@@ -480,8 +476,6 @@ class GraphQL implements Api {
               "graphql?query=query{spoorIdentification(token: \"$token\"){spoorIdentificationID,location{latitude, longitude}, dateAndTime{year, day, month},picture{URL}, ranger{firstName, lastName}, animal{commonName, classification},potentialMatches{animal{commonName, classification, pictures{URL}},confidence} }}")
           .timeout(const Duration(seconds: 7));
 
-      // print("Response: " + response.statusCode.toString());
-      // print("Response: " + response.body.toString());
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
         var list = body['data']['spoorIdentification'] as List;
@@ -511,10 +505,7 @@ class GraphQL implements Api {
           limit = 30;
         }
 
-        // print("list length: " + list.length.toString());
-        // print("Limit: " + limit.toString());
         for (int i = 0; i < limit; i++) {
-          print("count: " + i.toString());
           var list = body['data']['spoorIdentification'][i]['potentialMatches']
               as List;
 
@@ -641,9 +632,7 @@ class GraphQL implements Api {
           }
           _cards.add(new HomeModel(
               cName, sName, location, ranger, date, score, tag, pic, id));
-          print("Number: " + i.toString() + " Animal: " + cName);
         }
-        print("card length: " + _cards.length.toString());
         return _cards;
       } else {
         throw HttpException('500');
@@ -681,8 +670,6 @@ class GraphQL implements Api {
               "graphql?query=query{spoorIdentification(token: \"$token\",spoorIdentificationID: \"$animal\" ){spoorIdentificationID,picture{URL},location{latitude, longitude}, dateAndTime{year, day, month}, ranger{firstName, lastName},potentialMatches{animal{commonName, classification, pictures{URL}},confidence}tags }}")
           .timeout(const Duration(seconds: 7));
 
-      print("Response: " + response.statusCode.toString());
-      print(response.body.toString());
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
 
@@ -1115,7 +1102,7 @@ class GraphQL implements Api {
             body["data"]["animalsByClassification"]["typicalBehaviourM"] !=
                 "") {
           behaviour = body["data"]["animalsByClassification"]
-                  ["typicalBehaviourM"]
+                  ["typicalBehaviourM"]['behaviour']
               .toString();
         } else {
           behaviour = "N/A";

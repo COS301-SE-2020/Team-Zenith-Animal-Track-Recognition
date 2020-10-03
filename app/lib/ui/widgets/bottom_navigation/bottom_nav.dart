@@ -94,9 +94,9 @@ class BottomNavigationState extends State<BottomNavigation> {
                       title: bottomNavigationText('Profile', context),
                     )
                   ],
-                  selectedItemColor: Colors.blue,
+                  selectedItemColor: Color.fromRGBO(80, 156, 208, 1),
                   selectedIconTheme: IconThemeData(
-                    color: Colors.blue,
+                    color: Color.fromRGBO(80, 156, 208, 1),
                   ),
                   unselectedLabelStyle: TextStyle(
                       fontSize: 14,
@@ -130,9 +130,9 @@ class BottomNavigationState extends State<BottomNavigation> {
                       title: bottomNavigationText('Profile', context),
                     )
                   ],
-                  selectedItemColor: Colors.blue,
+                  selectedItemColor: Color.fromRGBO(80, 156, 208, 1),
                   selectedIconTheme: IconThemeData(
-                    color: Colors.blue,
+                    color: Color.fromRGBO(80, 156, 208, 1),
                   ),
                   unselectedLabelStyle: TextStyle(
                       fontSize: 14,

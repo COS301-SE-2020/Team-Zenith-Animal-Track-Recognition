@@ -71,7 +71,7 @@ class InfoListBody extends ViewModelWidget<InformationViewModel> {
       key: Key('Carousel'),
       slivers: <Widget>[
         SliverToBoxAdapter(
-          child: SizedBox(height: 500, child: CarouselWithIndicator()),
+          child: SizedBox(height: 350, child: CarouselWithIndicator()),
         )
       ],
     );
@@ -102,6 +102,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
               options: CarouselOptions(
                   autoPlay: true,
                   enlargeCenterPage: true,
+                  pauseAutoPlayOnTouch: true,
                   aspectRatio: 16 / 12,
                   onPageChanged: (index, reason) {
                     setState(() {
@@ -151,6 +152,7 @@ class Scroll extends ViewModelWidget<InformationViewModel> {
             margin: new EdgeInsets.all(0.0),
             decoration: BoxDecoration(
               color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
             ),
             child: ListView(
               padding: new EdgeInsets.only(top: 10.0),
@@ -242,7 +244,7 @@ class ViewButton extends ViewModelWidget<InformationViewModel> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          color: Color.fromRGBO(33, 78, 125, 1),
+          color: Color.fromRGBO(61, 122, 172, 1),
           padding: EdgeInsets.symmetric(
             vertical: 16,
             horizontal: MediaQuery.of(context).size.width / 4,
@@ -494,16 +496,10 @@ List<Widget> getCarousel() {
                     children: <Widget>[
                       Image.network(
                         item,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                         width: 1000.0,
                         height: 500,
                       ),
-                      // Image.asset(
-                      //   item,
-                      //   fit: BoxFit.cover,
-                      //   width: 1000.0,
-                      //   height: 500,
-                      // ),
                       Positioned(
                         bottom: 0.0,
                         left: 0.0,
