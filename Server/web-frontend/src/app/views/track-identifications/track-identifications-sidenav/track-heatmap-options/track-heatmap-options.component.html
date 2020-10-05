@@ -1,7 +1,7 @@
-<div id="animal-photos-track-info-container">
-    <div id="animal-photos-track-info-title">
-		<div id="animal-profile-card-contextMenu">
-            <button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
+<div id="heatmap-options-container">
+    <div id="heatmap-options-title">
+		<div id="heatmap-options-title-contextMenu">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
 				<mat-icon>more_vert</mat-icon>
 			</button>
             <mat-menu #menu="matMenu" xPosition="before">
@@ -17,11 +17,57 @@
             </mat-menu>
 		</div>
         <div>
-            <p id="animal-photos-track-title-animal" class="fontSB">Heatmap</p>
-            <p id="animal-photos-track-title-capturedby" class="fontM">Set heatmap settings below</p>
+            <p id="heatmap-options-title-main" class="fontSB">Heatmap</p>
+            <p id="heatmap-options-title-sub" class="fontM">Set heatmap settings below</p>
         </div>
         <button mat-icon-button aria-label="Close Track Info Button" (click)="backToTrackList()">
 			<mat-icon>arrow_forward</mat-icon>
 		</button>
     </div>
+	<div id="heatmap-options-content-container">
+		<div id="heatmap-timerange-options-container" class="heatmap-content-section-container">
+			<div class="heatmap-content-title-container fontSB">
+				<p>Heatmap Time Range</p>
+			</div>
+			<div class="heatmap-content-container">
+				<mat-button-toggle-group name="heatmap-timerange" value="oneWeek">
+				  <mat-button-toggle value="oneWeek">1 Week</mat-button-toggle>
+				  <mat-button-toggle value="oneMonth">1 Month</mat-button-toggle>
+				  <mat-button-toggle value="sixMonths">6 Months</mat-button-toggle>
+				  <mat-button-toggle value="oneYear">1 Year</mat-button-toggle>
+				</mat-button-toggle-group>
+			</div>
+		</div>
+		<div id="heatmap-colour-options-container" class="heatmap-content-section-container">
+			<div class="heatmap-content-title-container fontSB">
+				<p>Heatmap Intensity Colour</p>
+			</div>
+			<div class="heatmap-content-container">
+				<div id="heatmap-intensity-colour-legend-container">
+					<div id="heatmap-intensity-colour-legend"></div>
+					<div id="heatmap-intensity-colour-legend-markings">
+						<p class="fontSB">1 hr</p>
+						<p class="fontSB">24 hrs</p>
+						<p class="fontSB">48 hrs</p>
+						<p class="fontSB">72 hrs +</p>
+					</div>
+				</div>
+				<div id="heatmap-intensity-colour-options-container">
+					<mat-button-toggle-group id="heatmap-color-options" name="heatmap-color-options" value="redGreen">
+					  <mat-button-toggle value="redGreen" id="heatmap-colour-option-redGreen" (click)="changeHeatmapColour('redGreen')"></mat-button-toggle>
+					  <mat-button-toggle value="redBlue" id="heatmap-colour-option-redBlue" (click)="changeHeatmapColour('redBlue')"></mat-button-toggle>
+					  <mat-button-toggle value="greenBlue" id="heatmap-colour-option-greenBlue" (click)="changeHeatmapColour('greenBlue')"></mat-button-toggle>
+					</mat-button-toggle-group>
+				</div>
+			</div>
+		</div>
+		<div id="heatmap-colour-legend-container" class="heatmap-content-section-container">
+			<div class="heatmap-content-title-container fontSB">
+				<p>Track Radius of Influence</p>
+			</div>
+			<div class="heatmap-content-container">
+				<mat-slider id="heatmap-track-radius-slider" thumbLabel tickInterval="20" min="10" max="300" step="5" value="200" (input)="changeHeatmapRadius($event)"></mat-slider>
+			</div>
+		</div>
+	</div>
 </div>

@@ -19,6 +19,7 @@ export class TrackIdentificationsToolbarComponent implements OnInit {
 	@Input() trackIds;
 	@Input() selectedFilter: string;
 	@Output() sortByGroupsOnChange: EventEmitter<Object> = new EventEmitter();
+	@ViewChild("filterTypeSelect") filterTypeSelect;
 	@ViewChild("filterOptionSelect") filterOptionSelect;
 
 	filterByOption: string = "";
@@ -34,7 +35,6 @@ export class TrackIdentificationsToolbarComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.startLoader();
-		var count = 1;
 		//Replace Groups with appropiate radio button
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){commonName}}')
@@ -96,19 +96,19 @@ export class TrackIdentificationsToolbarComponent implements OnInit {
 	updateFilter(choice: string) {
 		this.filterOptions = [];
 		switch (choice) {
-			case "animal":
+			case "Animal":
 				this.animals.forEach(element => {
 					this.filterOptions.push(element);
 				});
 				this.filterByOption = "Animal";
 				break;
-			case "group":
+			case "Group":
 				this.animalGroups.forEach(element => {
 					this.filterOptions.push(element);
 				});
 				this.filterByOption = "Group";
 				break;
-			case "ranger":
+			case "Ranger":
 				this.rangers.forEach(element => {
 					this.filterOptions.push(element);
 				});
@@ -118,7 +118,7 @@ export class TrackIdentificationsToolbarComponent implements OnInit {
 		this.sortByGroupsOnChange.emit(choice);
 	}
 
-	filterList(filter) {
+	filterList(filter: any) {
 		if (filter == "All Animals" || filter == "All Rangers" || filter == "All Groups")
 			filter = "All";
 		this.tracksService.changeTrackFilter(this.filterByOption, filter);

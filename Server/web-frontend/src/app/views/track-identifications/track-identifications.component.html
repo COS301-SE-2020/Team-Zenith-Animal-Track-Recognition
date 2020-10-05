@@ -1,5 +1,5 @@
 <div id="identifications-view-workspace-container" class="normalView">
-    <app-track-identifications-toolbar [trackIds]="trackIdentifications"></app-track-identifications-toolbar>
+    <app-track-identifications-toolbar #trackIdentificationsToolbar [trackIds]="trackIdentifications"></app-track-identifications-toolbar>
     <div id="identifications-view-workspace">
         <mat-drawer-container id="identifications-search-sidenav-container">
             <mat-drawer id="identifications-search-sidenav" #sidenav mode="side" opened="true" (opened)="showCloseBtn()" (closed)="showOpenBtn()">
@@ -25,7 +25,7 @@
                     <div id="fullscreen-btn-container" (click)="toggleFullScreen()">
                         <button id="fullscreen-btn" mat-icon-button><mat-icon>fullscreen</mat-icon></button>
                     </div>
-                    <div id="heatmap-btn-container" (click)="toggleHeatmapTab()" [hidden]="!showHeatmapSettings">
+                    <div id="heatmap-btn-container" (click)="toggleHeatmapTab()" [hidden]="!showHeatmapSettingsBtn">
                         <button mat-stroked-button><mat-icon>blur_on</mat-icon><p>Heatmap Settings<p></button>
                     </div>
                     <div id="loader-container">

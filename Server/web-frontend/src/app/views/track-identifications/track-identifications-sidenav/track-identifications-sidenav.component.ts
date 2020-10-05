@@ -1,9 +1,6 @@
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { RelativeTimeMPipe } from 'src/app/pipes/relative-time-m.pipe';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Track } from 'src/app/models/track';
 import { TracksService } from './../../../services/tracks.service';
 import { TrackViewNavigationService } from './../../../services/track-view-navigation.service';
@@ -23,8 +20,7 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 	@Output() trackPageOnChange: EventEmitter<Object> = new EventEmitter();
 	activeTrack: Track = null;
 
-	constructor(private http: HttpClient, private changeDetection: ChangeDetectorRef, 
-		private router: Router, private snackBar: MatSnackBar, private tracksService: TracksService, private trackViewNavService: TrackViewNavigationService) { 
+	constructor(private tracksService: TracksService, private trackViewNavService: TrackViewNavigationService) { 
 		tracksService.activeTrack$.subscribe(
 			track => {
 				this.activeTrack = track;
@@ -47,7 +43,7 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 					}
 				}
 			}
-		);
+		);	
 		trackViewNavService.trackSidenavTab$.subscribe(
 			tab => {
 				switch(tab) {
@@ -77,6 +73,10 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 	onPageChange($event) {
 		let pageEvent = { 'event': $event, 'hasNextPage': this.trackPaginator.hasNextPage() };
 		this.trackPageOnChange.emit(pageEvent);
+	}
+	
+	changeTrackFilter(filterType: string, filter: string) {
+		this.tracksService.changeTrackFilter(filterType, filter);
 	}
 
 	//Loader

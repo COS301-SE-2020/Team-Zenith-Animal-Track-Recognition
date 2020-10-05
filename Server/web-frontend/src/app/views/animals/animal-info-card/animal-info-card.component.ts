@@ -75,10 +75,6 @@ export class AnimalInfoCardComponent implements OnInit {
 		});
 	}
 
-	viewAnimalIdentifications(id: string){
-		this.router.navigate(['identifications']);
-	}
-	
 	viewAnimalProfile(animalClassi: string) {
 		this.router.navigate(['animals/information'], { queryParams: { classification: animalClassi.replace(" ", "_") } });
 	}
@@ -87,7 +83,9 @@ export class AnimalInfoCardComponent implements OnInit {
 		let classificationQuery = classification[0] + "_" + classification[1];
 		this.router.navigate(['animals/gallery/photos'], { queryParams: { classification: classificationQuery } });
 	}
-
+	viewIdentifications(commonName: string) {
+		this.router.navigate(['identifications'], { queryParams: { filterType: "Animals", filter: commonName } });
+	}
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}

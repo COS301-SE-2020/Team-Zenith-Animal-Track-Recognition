@@ -286,7 +286,7 @@
                             <div id="animal-profile-spoor-feed-container">
                                 <div id="animal-profile-spoor-feed-title">
                                     <h2 class="fontSB">Recently Identified Spoors</h2>
-                                    <button mat-flat-button>View All</button>
+                                    <button mat-flat-button (click)="viewIdentifications()">View All</button>
                                 </div>
                                 <div id="animal-profile-spoors-container">
                                     <div class="animal-profile-spoor-container" *ngFor="let spoorId of displayedTracks">

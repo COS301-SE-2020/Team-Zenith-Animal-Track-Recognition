@@ -73,7 +73,7 @@ export class AnimalPhotosComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				this.tracksList = temp[0];
-				this.tempTracks.foreach(e => {
+				this.tempTracks.forEach(e => {
 					this.tracksList['pictures'].push(e);
 				});
 				this.stopTrackGalleryLoader();

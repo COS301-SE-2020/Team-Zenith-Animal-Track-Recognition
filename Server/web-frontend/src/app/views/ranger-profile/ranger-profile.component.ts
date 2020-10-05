@@ -225,8 +225,10 @@ export class RangerProfileComponent implements OnInit {
 		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
 	}
 	viewOnTrackMap(trackId: any) {
-		console.log("trackID in profile view: " + trackId);
 		this.router.navigate(['identifications'], { queryParams: { openTrackId: trackId } });
+	}
+	viewIdentifications() {
+		this.router.navigate(['identifications'], { queryParams: { filterType: "Rangers", filter: this.user.firstName + ' ' + this.user.lastName } });
 	}
 	//Loader
 	startLoader() {

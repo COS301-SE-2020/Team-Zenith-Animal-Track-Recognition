@@ -114,7 +114,9 @@ export class RangerProfileCardComponent implements OnInit {
 	viewRangerProfile(rangerID: string) {
 		this.router.navigate(['rangers/profiles'], { queryParams: { ranger: rangerID } });
 	}
-
+	viewIdentifications(firstName: string, lastName: string) {
+		this.router.navigate(['identifications'], { queryParams: { filterType: "Rangers", filter: firstName + ' ' + lastName } });
+	}
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}

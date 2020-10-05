@@ -30,76 +30,88 @@ export class TracksService {
 	trackFilter$ = this.trackFilterSource.asObservable();
 	
 	dummyLocations: any = [
-		{
+		{//Zebra
 			location: {
-				latitude: -23.988384, 
-				longitude: 31.554741
+				latitude: -24.088384, 
+				longitude: 31.545741
+			}
+		},
+		{//Red Hartebeest
+			location: {
+				latitude: -24.088384, 
+				longitude: 31.545741
 			}
 		},		
-		{
+		{//Buffalo
 			location: {
-				latitude: -23.939820, 
-				longitude: 31.704810
+				latitude: -24.288384, 
+				longitude: 31.550741
 			}
 		},		
-		{
+		{//Zebra
 			location: {
-				latitude: -23.801680, 
-				longitude: 31.491808
+				latitude: -24.088384, 
+				longitude: 31.545741
 			}
 		},		
-		{
+		{//Zebra
 			location: {
-				latitude: -23.732555,
-				longitude: 31.869679
+				latitude: -24.088384, 
+				longitude: 31.545741
 			}
 		},		
-		{
+		{//Hippo
 			location: {
-				latitude: -24.042702, 
-				longitude: 31.784478
+				latitude: -24.088384, 
+				longitude: 31.545741
 			}
 		},		
-		{
+		{//Black Wildebeest
 			location: {
-				latitude: -24.082828, 
-				longitude: 31.502766
+				latitude: -24.088384, 
+				longitude: 31.545741
 			}
 		},		
-		{
+		{//Buffalo
 			location: {
-				latitude: -24.021379, 
-				longitude: 31.637438
+				latitude: -24.286384, 
+				longitude: 31.544741
 			}
 		},		
-		{
+		{//Black Backed Jackal
 			location: {
-				latitude: -24.086589, 
-				longitude: 31.587966
+				latitude: -24.088384, 
+				longitude: 31.545741
 			}
 		},		
-		{
+		{//Black Backed Jacakl
 			location: {
-				latitude: -24.196869, 
-				longitude: 31.306254
+				latitude: -24.088384, 
+				longitude: 31.545741
 			}
 		},		
-		{
+		{//Waterbuck
 			location: {
-				latitude: -24.215657, 
-				longitude: 31.517934
+				latitude: -24.088384, 
+				longitude: 31.545741
 			}
 		},		
-		{
+		{//Buffalo
 			location: {
-				latitude: -23.908438, 
-				longitude: 31.834002
+				latitude: -24.290384, 
+				longitude: 31.540741
 			}
 		},		
-		{
+		{//Buffalo
 			location: {
-				latitude: -23.920992, 
-				longitude: 31.739187
+				latitude: -24.284384, 
+				longitude: 31.536741
+			}
+		},		
+		{//Buffalo
+			location: {
+				latitude: -24.292384, 
+				longitude: 31.532741
 			}
 		}
 	];
@@ -143,7 +155,7 @@ export class TracksService {
 	}
 		
 	//HTTPS Requests
-	getTrackIdentifications(token: string)
+	getTrackIdentifications(token: string, initParams: any)
 	{
 		const getIdentificationsQueryUrl = this.trackRootQueryUrl + '(token:"' + token + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},' +
 			'commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},' +
@@ -169,6 +181,8 @@ export class TracksService {
 					this.trackIdentificationsStore.trackIdentifications[i].location = this.dummyLocations[i].location;
 				}
 				this._displayedTracks.next(Object.assign({}, this.trackIdentificationsStore).trackIdentifications);
+				if (initParams.initWithFilter)
+					this.changeTrackFilter(initParams.filterType, initParams.filter);
 			},
 				error => {
 					this._displayedTracks.next([]);

@@ -17,20 +17,6 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 	activeTrack: any = null;
 	currentPhotoIndex: number;
 	trackList: any;
-	originType: string = "photo-details";
-	
-	/*Place holder values*/
-	trackInfoPlaceholder = {
-			commonName: 'Elephant',
-			classification: 'Loxodonta Africanus',
-			trackLocation: 'Kruger National Park',
-			coordinates: '-24.019097, 31.559270',
-			accuracyScore: '67%',
-			capturedBy: 'Kagiso Ndlovu',
-			date: '09/09/2020',
-			dayTime: 'Fri, 09:17',
-			descr: 'Photo of animal grazing by the waterside (top left corner).'
-	};
 	
 	constructor(
 		private animalsService: AnimalsService,
@@ -56,8 +42,6 @@ export class AnimalPhotoDetailsComponent implements OnInit {
 		if (this.data.photoType == "Track") {
 			this.startSidenavLoader();
 			this.activeTrack = this.data.entity[this.currentPhotoIndex];
-			console.log("active track is : ");
-			console.log(this.activeTrack);
 			this.stopSidenavLoader();
 		}
 	}

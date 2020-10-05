@@ -21,9 +21,25 @@ export class TrackViewNavigationService {
 	//Determines whether heatmap settings are available
 	private trackHeatmapSettingsSource = new Subject<string>();
 	trackHeatmapSettings$ = this.trackHeatmapSettingsSource.asObservable();
+	
+	//Determines which heatmap colour is set
+	private trackHeatmapColourSource = new Subject<string>();
+	trackHeatmapColour$ = this.trackHeatmapColourSource.asObservable();
+	
+	//Determines the radius of the heatmap around each track
+	private trackHeatmapRadiusSource = new Subject<number>();
+	trackHeatmapRadius$ = this.trackHeatmapRadiusSource.asObservable();
 
 	changeTab(tab: string) {
 		this.trackSidenavSource.next(tab);
+	}
+	
+	changeHeatmapColour(colour: string) {
+		this.trackHeatmapColourSource.next(colour);
+	}
+	
+	changeHeatmapRadius(radius: number) {
+		this.trackHeatmapRadiusSource.next(radius);
 	}
 	
 	toggleHeatmap(status: string) {

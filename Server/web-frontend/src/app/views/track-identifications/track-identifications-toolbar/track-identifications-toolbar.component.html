@@ -12,10 +12,10 @@
 			</button>
 		</div>
 		<div class="identifications-toolbar-tool-container">
-			<mat-select id="identifications-filter-btn" class="identifications-select-btn" class="fontR" placeholder="Filter By" disableOptionCentering>
-				<mat-option value="commonName" (click)="updateFilter('animal')">Animal</mat-option>
-				<mat-option value="animalGroup" (click)="updateFilter('group')">Group</mat-option>
-				<mat-option value="identifyingRanger" (click)="updateFilter('ranger')">Ranger</mat-option>
+			<mat-select id="identifications-filter-btn" class="identifications-select-btn fontR" #filterTypeSelect (valueChange)="updateFilter($event.value)" placeholder="Filter By" disableOptionCentering>
+				<mat-option value="commonName" (click)="updateFilter('Animal')">Animal</mat-option>
+				<mat-option value="animalGroup" (click)="updateFilter('Group')">Group</mat-option>
+				<mat-option value="identifyingRanger" (click)="updateFilter('Ranger')">Ranger</mat-option>
 				<!-- <mat-option value="tagChoice" (click)="updateFilter(3)">Tag</mat-option> -->
 			</mat-select>
 		</div>

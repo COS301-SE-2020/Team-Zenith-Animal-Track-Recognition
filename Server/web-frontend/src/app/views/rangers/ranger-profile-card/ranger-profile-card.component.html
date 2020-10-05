@@ -14,7 +14,7 @@
                     <button mat-menu-item (click)="openEditRangerDialog(ranger.rangerID)">
 						<span>Edit Information</span>
 					</button>
-                    <button mat-menu-item>
+                    <button mat-menu-item (click)="viewIdentifications(ranger.firstName, ranger.lastName)">
 						<span>View Identifications</span>
 					</button>
                     <button mat-menu-item (click)="openEditPerms()">

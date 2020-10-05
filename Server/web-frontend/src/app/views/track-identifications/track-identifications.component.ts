@@ -6,6 +6,7 @@ import MarkerClusterer from "@googlemaps/markerclustererplus";
 import { Router, ActivatedRoute } from '@angular/router';
 import { Track } from 'src/app/models/track';
 import { TrackIdentificationsSidenavComponent } from './track-identifications-sidenav/track-identifications-sidenav.component';
+import { TrackIdentificationsToolbarComponent } from './track-identifications-toolbar/track-identifications-toolbar.component';
 import { TracksService } from './../../services/tracks.service';
 import { TrackViewNavigationService } from './../../services/track-view-navigation.service';
 
@@ -19,37 +20,59 @@ import { TrackViewNavigationService } from './../../services/track-view-navigati
 export class TrackIdentificationsComponent implements OnInit {
 
 	//y=-0.001929x^{2}+10.00
-	@ViewChild('trackIdentificationsSidenav') trackSidenav: TrackIdentificationsSidenavComponent;
-	@ViewChild('sidenav') sidenav;
-	activeTrack: any = null;
-	activeTrackInfo: any = null;
-	currentAlphabet;
-	displayedTracks: any;
-	defaultLocation: string = 'Address not found';
+	
+	//Map & Map Marker Variables
+	kruger = { lat: -23.988, lng: 31.554 };
+	rietvlei = { lat: -25.8739714, lng: 28.2661832};
+	defaultMapCenter = this.kruger; 	//Default locations where the map is centered
 	geoCoder: google.maps.Geocoder;
-	heatmap: any = null;
-	initWithOpenTrack: boolean = false;
-	initWithOpenTrackId: any;
 	infoWindow: google.maps.InfoWindow;
 	map: google.maps.Map;
 	mapMarkers = {
 		markers: [] = [],
-		heatmap: [] = [],
 		tracks: [] = []
 	};
 	markerClusterer: any;
-	markerClustererOptions = { imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m' };		
-	pageSize: number = 25;
+	markerClustererOptions = { imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m' };	
 	trackHltCircle: any;
 	trackIdentifications: Track[] = null;
-	showHeatmap: boolean = false;
-	showHeatmapSettings: boolean = false;
 	
-	//Default Map Settings
-	//Default locations where the map is centered
-	kruger = { lat: -23.988, lng: 31.554 };
-	rietvlei = { lat: -25.8739714, lng: 28.2661832};
-	defaultMapCenter = this.kruger;
+	//Heatmap Variables
+	heatmap: any = null;
+	heatmapColourRedGreen = ["rgba(31, 255, 0, 0)",
+    "rgba(143, 250, 0, 1)",
+    "rgba(255, 244, 0, 1)",
+    "rgba(255, 112, 0, 1)",
+    "rgba(255, 0, 0, 1)"];
+	heatmapColourRedBlue = ["rgba(0, 232, 255, 0)",
+    "rgba(0, 110, 255, 1)",
+    "rgba(46, 0, 255, 1)",
+    "rgba(255, 0, 0, 1)"];
+	heatmapColourGreenBlue = ["rgba(4, 0, 250, 0)",
+    "rgba(0, 146, 255, 1)",
+    "rgba(22, 255, 0, 1)",
+    "rgba(255, 252, 0, 1)"];
+	heatmapColour = this.heatmapColourRedGreen;
+	heatmapRadius = 200;
+	showHeatmap: boolean = false;
+	showHeatmapSettingsBtn: boolean = false;
+
+	//Query Parameters
+	initWithOpenTrack: boolean = false;
+	initWithOpenTrackId: any;
+	initWithTrackFilter: boolean = false;
+	initWithFilterValue: any;
+
+	//Track Variables	
+	activeTrack: any = null;
+	activeTrackInfo: any = null;
+	defaultTrackLocation: string = 'Address not found';
+	
+	//View Navigation
+	pageSize: number = 25;
+	@ViewChild('sidenav') sidenav;	
+	@ViewChild('trackIdentificationsSidenav') trackSidenav: TrackIdentificationsSidenavComponent;
+	@ViewChild('trackIdentificationsToolbar') trackToolbar: TrackIdentificationsToolbarComponent;
 	
 	constructor(private activatedRoute: ActivatedRoute, private router: Router, 
 		private tracksService: TracksService, private trackViewNavService: TrackViewNavigationService) { 
@@ -106,15 +129,27 @@ export class TrackIdentificationsComponent implements OnInit {
 			state => {
 				switch(state) {
 					case "on":
-						this.showHeatmapSettings = true;
+						this.showHeatmapSettingsBtn = true;
 					break;
 					case "off":
-						this.showHeatmapSettings = false;
+						this.showHeatmapSettingsBtn = false;
 					break;
 					case "inactive":
 						this.toggleHeatmapTab();
 					break;
 				};
+			}
+		);
+		//Determines which colour the heatmap is set to
+		trackViewNavService.trackHeatmapColour$.subscribe(
+			colour => {
+				this.changeHeatmapColour(colour);
+			}
+		);
+		//Determines the radius of the heatmap around each track
+		trackViewNavService.trackHeatmapRadius$.subscribe(
+			radius => {
+				this.changeHeatmapRadius(radius);
 			}
 		);
 	}
@@ -123,6 +158,8 @@ export class TrackIdentificationsComponent implements OnInit {
 		document.getElementById("geotags-route").classList.add("activeRoute");
 		this.startLoader();
 		this.startSidenavLoader();
+		
+		//Check if a track was selected from the query parameters
 		const spoorIdQuery = new URLSearchParams(window.location.search);
 		const requestedSpoorId = spoorIdQuery.get("openTrackId");
 		if (requestedSpoorId != null) {
@@ -130,21 +167,21 @@ export class TrackIdentificationsComponent implements OnInit {
 			this.initWithOpenTrackId = requestedSpoorId;
 			//this.snackBar.open('Displaying track on the map...');
 		}
+		
 		this.initMap();
-		this.getTrackIdentifications();
-		//Check if a track was selected from the query parameters
-		/*
-				this.filteredListArray = temp[0];
-
-				//Only display a certain number of tracks per sidenav page
-				this.displayedTracks = temp[0].slice(0, this.pageSize);
-
-			});
-		*/
+		
+		//Check if a filter parameter was set from another view
+		const requestedTrackFilterType = spoorIdQuery.get("filterType");
+		if (requestedTrackFilterType != null) {
+			const requestedTrackFilter = spoorIdQuery.get("filter");
+			this.getTrackIdentifications({initWithFilter: true, filterType: requestedTrackFilterType, filter: requestedTrackFilter});
+		}
+		else
+			this.getTrackIdentifications({initWithFilter: false});
 	}
 	
-	getTrackIdentifications() {
-		this.tracksService.getTrackIdentifications(JSON.parse(localStorage.getItem('currentToken'))['value']);
+	getTrackIdentifications(initWithFilter: any) {
+		this.tracksService.getTrackIdentifications(JSON.parse(localStorage.getItem('currentToken'))['value'], initWithFilter);
 	}
 
 	initMap() {
@@ -154,6 +191,7 @@ export class TrackIdentificationsComponent implements OnInit {
 			mapTypeId: 'roadmap',
 			maxZoom: 15,
 			minZoom: 5,
+			scaleControl: true,
 			streetViewControl: false,
 			zoom: 7
 		});
@@ -169,9 +207,7 @@ export class TrackIdentificationsComponent implements OnInit {
 		}
 
 		this.mapMarkers.markers.length = 0;
-		this.mapMarkers.tracks.length = 0;
-		this.mapMarkers.heatmap.length = 0;
-		
+		this.mapMarkers.tracks.length = 0;		
 		
 		if (this.initWithOpenTrack) {
 			//If query param exists, open track that corresponds to that id first
@@ -179,30 +215,26 @@ export class TrackIdentificationsComponent implements OnInit {
 			this.addTrackMarker(trackMarker[0]);
 			let requestedTrack = this.getTrackMarker(this.initWithOpenTrackId);
 			google.maps.event.trigger(requestedTrack, 'click');
-			this.initWithOpenTrack =  false;
 			//this.snackBar.open('Track displayed!', "Dismiss", { duration: 3000, });
 		}
 		
 		for (let i = 0; i < this.trackIdentifications.length; i++) {
-			this.addTrackMarker(this.trackIdentifications[i]);
+			if (!this.initWithOpenTrack) {
+				this.addTrackMarker(this.trackIdentifications[i]);
+			}
+			else if (this.initWithOpenTrack) {
+				if (this.trackIdentifications[i].spoorIdentificationID != this.initWithOpenTrackId)
+					this.addTrackMarker(this.trackIdentifications[i]);
+			}
 		}
 		
-		/*
-				if (((!this.initWithOpenTrack) ||
-					(this.initWithOpenTrack && this.trackIdentifications[i].spoorIdentificationID !== this.initWithOpenTrackId))) {
-					//setTimeout(() => this.addTrackMarker(this.trackIdentifications[i]), i * 15);
-					this.addTrackMarker(this.trackIdentifications[i]);
-					this.filteredListArray.push(this.trackIdentifications[i]);
-				}
-				
-		*/
-
-		//this.displayedTracks = [];
-		//this.displayedTracks = this.filteredListArray.slice(0, this.filteredListArray.length > 25 ? 25 : this.filteredListArray.length);
 
 		// Add a marker clusterer to manage the markers.
 		this.markerClusterer = new MarkerClusterer(this.map, this.mapMarkers.markers, this.markerClustererOptions);
+		
 		this.stopLoader();
+		this.initWithOpenTrack =  false;
+		this.initWithTrackFilter =  false;
 	}
 	addTrackMarker(track: Track) {
 		//Create the track marker icon
@@ -215,6 +247,7 @@ export class TrackIdentificationsComponent implements OnInit {
 		}
 		let animalTrack = new google.maps.Marker({
 			animation: null,
+			draggable: true,
 			icon: markerIcon,
 			map: this.map,
 			position: new google.maps.LatLng(track.location.latitude, track.location.longitude),
@@ -246,7 +279,6 @@ export class TrackIdentificationsComponent implements OnInit {
 		//Store track marker with it's associated track and heatmap location data
 		this.mapMarkers.markers.push(animalTrack);
 		this.mapMarkers.tracks.push(track);
-		this.mapMarkers.heatmap.push(new google.maps.LatLng(track.location.latitude, track.location.longitude));
 	}
 	filterTrackMarkers(filterChoice: string) {
 		if (filterChoice == "All") {
@@ -284,11 +316,46 @@ export class TrackIdentificationsComponent implements OnInit {
 	}
 
 	//Heatmap related functions
+	changeHeatmapColour(colour: string) {
+		if (this.heatmap) {
+			switch(colour) {
+				case "redGreen":
+					this.heatmapColour = this.heatmapColourRedGreen;
+					this.heatmap.set("gradient", this.heatmapColourRedGreen);
+				break;
+				case "redBlue":
+					this.heatmapColour = this.heatmapColourRedBlue;
+					this.heatmap.set("gradient", this.heatmapColourRedBlue);
+				break;
+				case "greenBlue":
+					this.heatmapColour = this.heatmapColourGreenBlue;
+					this.heatmap.set("gradient", this.heatmapColourGreenBlue);
+				break;
+			}
+		}
+	}
+	changeHeatmapRadius(radius: number) {
+		if (this.heatmap) {
+			this.heatmapRadius = radius;
+			this.heatmap.set("radius", radius);
+		}
+	}
+	generateHeatmap() {
+		var heatmapData = [];
+		this.trackIdentifications.forEach(track => {
+			heatmapData.push(new google.maps.LatLng(track.location.latitude, track.location.longitude));		
+		});
+		return heatmapData;
+	}
 	toggleHeatmap(state: string) {
 		switch(state) {
 			case "on":
+				var heatmapData = this.generateHeatmap();
 				this.heatmap = new google.maps.visualization.HeatmapLayer({
-					data: this.mapMarkers.heatmap
+					data: heatmapData,
+					dissipating: true,
+					gradient: this.heatmapColour,
+					radius: this.heatmapRadius
 				});
 				this.heatmap.setMap(this.map);
 			break;

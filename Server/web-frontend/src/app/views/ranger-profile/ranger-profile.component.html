@@ -105,7 +105,7 @@
                             <div id="ranger-profile-spoor-feed-container">
                                 <div id="ranger-profile-spoor-feed-title">
                                     <h2 class="fontSB">Recently Identified Tracks</h2>
-                                    <!--<button class="buttonColour" mat-flat-button>View All</button>-->
+                                    <button class="buttonColour" mat-flat-button (click)="viewIdentifications()">View All</button>
                                 </div>
                                 <div id="ranger-profile-spoors-container">
                                     <div class="ranger-profile-spoor-container" *ngFor="let spoorId of displayedTracks">

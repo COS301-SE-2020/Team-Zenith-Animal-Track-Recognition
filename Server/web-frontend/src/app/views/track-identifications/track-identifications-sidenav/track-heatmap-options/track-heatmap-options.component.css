@@ -1,12 +1,11 @@
-/* Track */
-#animal-photos-track-info-container {
+#heatmap-options-container {
     height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
 	justify-content: flex-start;
 }
-#animal-photos-track-info-title {
+#heatmap-options-title {
     height: 10%;
     width: 100%;
     box-shadow: 0px 1px 5px #EEE;
@@ -18,25 +17,155 @@
 	margin: 1% 0;
 	padding: 0 1%;
 }
-#animal-photos-track-info-title > div {
+#heatmap-options-title > div {
 	margin-left: 2%;
     display: flex;
     flex-direction: column;
 }
-#animal-photos-track-info-title > button {
+#heatmap-options-title > button {
 	margin-left: auto;
 }
 
-#animal-profile-card-contextMenu
+#heatmap-options-title-contextMenu
 {
 	height: 100%;
 }
-#animal-photos-track-title-animal,
-#animal-photos-track-title-capturedby {
+#heatmap-options-title-main,
+#heatmap-options-title-sub {
     padding: 0;
     margin: 0;
 }
-#animal-photos-track-title-capturedby {
+#heatmap-options-title-sub {
     color: #BBB;
     font-size: 90%;
+}
+#heatmap-options-content-container
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	height: 90%;
+	width: 100%;
+}
+.heatmap-content-section-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	height: 30%;
+	width: 100%;
+	border-bottom: 1px solid #CCC;
+}
+#heatmap-colour-options-container
+{
+	height: 40%;
+}
+
+.heatmap-content-title-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: flex-end;
+	height: 30%;
+	width: 100%;
+	padding: 0 5%;
+}
+#heatmap-colour-options-container > .heatmap-content-title-container
+{
+	height: 20%;
+}
+.heatmap-content-title-container > p {
+	color: rgba(0, 0, 0, 0.4);
+	margin: 0;
+	padding: 0;
+}
+.heatmap-content-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	height: 70%;
+	width: 100%;
+	padding: 0 5%;
+}
+#heatmap-colour-options-container > .heatmap-content-container {
+	height: 80%;
+	flex-direction: column;
+	padding: 0;
+}
+#heatmap-intensity-colour-legend-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: center;
+	height: 50%;
+	width: 100%;
+	padding: 0 5%;
+}
+#heatmap-intensity-colour-legend {
+	background-image: linear-gradient(135deg, red, yellow, green);
+	height: 15%;
+	width: 100%;
+}
+#heatmap-intensity-colour-legend-markings {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	height: 50%;
+	width: 100%;
+}
+#heatmap-intensity-colour-legend-markings  > p{
+	color: rgba(0, 0, 0, 0.6);
+	font-size: 80%;
+	margin: 0;
+	padding: 0;
+}
+#heatmap-intensity-colour-options-container {
+	height: 50%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 0 5%;
+}
+#heatmap-color-options { 
+	height: 70%;
+	width: 90%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	border: none;
+}
+#heatmap-color-options > .mat-button-toggle { 
+	height: 100%;
+	width: 20%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	border: none;
+}
+#heatmap-color-options > .mat-button-toggle-checked {
+	border: 2px solid #509CD0;
+	background-color: white;
+}
+:host ::ng-deep #heatmap-color-options > .mat-button-toggle > .mat-button-toggle-button { 
+	height: 75%;
+	width: 75%;
+}
+:host ::ng-deep #heatmap-colour-option-redGreen > .mat-button-toggle-button {
+	background-image: linear-gradient(135deg, red, yellow, green);
+}
+:host ::ng-deep #heatmap-colour-option-redBlue > .mat-button-toggle-button {
+	background-image: linear-gradient(135deg, red, purple, blue);
+}
+:host ::ng-deep #heatmap-colour-option-greenBlue > .mat-button-toggle-button{
+	background-image: linear-gradient(135deg, yellow, green, blue);
+}
+#heatmap-track-radius-slider
+{
+	width: 100%;
 }

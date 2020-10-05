@@ -29,4 +29,24 @@ export class TrackHeatmapOptionsComponent implements OnInit {
 		else
 			this.trackViewNavService.changeTab("Tracklist");
 	}
+	
+	changeHeatmapColour(colour: string) {
+		var heatmapColourLegend = document.getElementById("heatmap-intensity-colour-legend");
+		switch(colour) {
+			case "redGreen":
+				heatmapColourLegend.style.backgroundImage = "linear-gradient(135deg, red, yellow, green)";
+			break;
+			case "redBlue":
+				heatmapColourLegend.style.backgroundImage = "linear-gradient(135deg, red, purple, blue)";
+			break;
+			case "greenBlue":
+				heatmapColourLegend.style.backgroundImage = "linear-gradient(135deg, yellow, green, blue)";
+			break;
+		}
+		this.trackViewNavService.changeHeatmapColour(colour);
+	}
+	
+	changeHeatmapRadius(event: any) {
+		this.trackViewNavService.changeHeatmapRadius(event.value);
+	}
 }
