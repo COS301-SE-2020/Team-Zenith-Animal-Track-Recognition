@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EMPTY} from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
@@ -19,7 +19,7 @@ export class RangersComponent implements OnInit {
 	currentAlphabet;
 	sorted: string;
 
-	constructor(private http: HttpClient,  private snackBar: MatSnackBar) { }
+	constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
 		this.startLoader();
@@ -53,6 +53,14 @@ export class RangersComponent implements OnInit {
 		this.startSidenavLoader();
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){rangerID,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -75,7 +83,7 @@ export class RangersComponent implements OnInit {
 				this.sort('bySurname');
 			});
 	}
-	
+
 	//Ranger CRUD Operations
 	updateRangerList(updatedList: string) {
 		this.refresh(updatedList);
@@ -92,7 +100,7 @@ export class RangersComponent implements OnInit {
 	removeRanger(t: string) {
 		this.rangers.splice(this.rangers.findIndex(x => x.rangerID == t), 1);
 	}
-	
+
 	//Ranger Search sidenav
 	openSidenav() {
 		this.sidenav.open();
@@ -130,7 +138,7 @@ export class RangersComponent implements OnInit {
 					this.rangers[j] = temp;
 				}
 			}
-		}		
+		}
 	}
 	sortSurname() {
 		for (let i = 0; i < this.rangers.length - 1; i++) {
@@ -143,7 +151,7 @@ export class RangersComponent implements OnInit {
 			}
 		}
 	}
-	
+
 	//Loader
 	startLoader() {
 		document.getElementById("loader-container").style.visibility = "visible";

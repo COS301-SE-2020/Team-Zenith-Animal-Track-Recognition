@@ -1,3 +1,4 @@
+import { AppComponent } from './../../app.component';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -62,7 +63,7 @@ export class LoginComponent implements OnInit {
         data => {
 			if (data != null)
 			{
-				this.snackBar.open("Signed in.", "Dismiss", { duration: 2500, });
+        this.snackBar.open("Signed in.", "Dismiss", { duration: 2500, });
 				this.router.navigate([this.returnUrl]);
 			}
 			else

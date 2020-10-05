@@ -28,7 +28,7 @@
 			</div>
 		</div>
 		<div id="animal-track-photo-info-sidenav">
-			<app-track-identifications-info *ngIf="data.photoType == 'Track'" [activeTrack]="activeTrack" [originType]="originType" (viewingTrackOnChange)="closeSideNav($event)"></app-track-identifications-info>
+			<app-animal-track-info *ngIf="data.photoType == 'Track'" [activeTrack]="activeTrack" (viewingTrackOnChange)="closeSideNav($event)"></app-animal-track-info>
 		</div>
 	</mat-drawer>
     <mat-drawer-content id="animal-search-sidenav-content">

@@ -1,8 +1,11 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import { catchError, retry } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
 	selector: 'app-add-groups',
@@ -21,6 +24,7 @@ export class AddGroupsComponent implements OnInit {
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private http: HttpClient,
+		private snackBar: MatSnackBar,
 		private formBuilder: FormBuilder,
 		public dialogRef: MatDialogRef<AddGroupsComponent>) { }
 
@@ -100,6 +104,14 @@ export class AddGroupsComponent implements OnInit {
 			return;
 		} else {
 			this.http.get<any>(ROOT_QUERY_STRING + '?query=query{dietType(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '")}')
+				.pipe(
+					retry(3),
+					catchError(() => {
+						this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+						this.stopLoader();
+						return EMPTY;
+					})
+				)
 				.subscribe((data: any[]) => {
 					let temp = [];
 					temp = Object.values(data)[0]['dietType'];
@@ -149,6 +161,14 @@ export class AddGroupsComponent implements OnInit {
 				'",typicalThreatLevelM:"' + encodeURIComponent(mt) +
 				'",typicalThreatLevelF:"' + encodeURIComponent(ft) +
 				'"){animalID}}', '')
+				.pipe(
+					retry(3),
+					catchError(() => {
+						this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+						this.stopLoader();
+						return EMPTY;
+					})
+				)
 				.subscribe({
 					next: data => this.dialogRef.close('success'),
 					error: error => this.dialogRef.close('error')
@@ -167,14 +187,14 @@ export class AddGroupsComponent implements OnInit {
 	}
 
 	closeDialog() {
-		if(this.test == true){
+		if (this.test == true) {
 			return;
 		}
 		this.dialogRef.close("cancel");
 	}
 
 	attachProgressbar() {
-		if(this.test == true){
+		if (this.test == true) {
 			return;
 		}
 		//Append progress bar to dialog
@@ -185,14 +205,14 @@ export class AddGroupsComponent implements OnInit {
 
 	//Loader - Progress bar
 	startLoader() {
-		if(this.test == true){
+		if (this.test == true) {
 			return;
 		}
 		this.attachProgressbar();
 		document.getElementById("dialog-progressbar-container").style.visibility = "visible";
 	}
 	stopLoader() {
-		if(this.test == true){
+		if (this.test == true) {
 			return;
 		}
 		document.getElementById("dialog-progressbar-container").style.visibility = "hidden";

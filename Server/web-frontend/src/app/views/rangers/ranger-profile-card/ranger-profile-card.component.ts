@@ -20,6 +20,7 @@ export class RangerProfileCardComponent implements OnInit {
 	numRangers: any;
 	sorted: string;
 	@Output() rangersOnChange: EventEmitter<Object> = new EventEmitter();
+	isAdmin: boolean;
 
 	constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, private changeDetection: ChangeDetectorRef, private snackBar: MatSnackBar) { }
 
@@ -31,6 +32,7 @@ export class RangerProfileCardComponent implements OnInit {
 		if (changes.rangersList) {
 			this.stopLoader();
 		}
+		this.isAdmin = Number.parseInt(JSON.parse(localStorage.getItem('currentToken'))['level']) > 3;
 	}
 
 	//Ranger CRUD Quick-Actions
@@ -114,7 +116,9 @@ export class RangerProfileCardComponent implements OnInit {
 	viewRangerProfile(rangerID: string) {
 		this.router.navigate(['rangers/profiles'], { queryParams: { ranger: rangerID } });
 	}
-
+	viewIdentifications(firstName: string, lastName: string) {
+		this.router.navigate(['identifications'], { queryParams: { filterType: "Rangers", filter: firstName + ' ' + lastName } });
+	}
 	route(temp: string) {
 		this.router.navigate([temp]);
 	}

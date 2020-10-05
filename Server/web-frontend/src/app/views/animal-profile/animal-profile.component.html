@@ -104,24 +104,6 @@
                             <div class="animal-profile-stats-icon"></div>
                         </div>
                         <div class="animal-profile-stats-info">
-                            <p class="animal-profile-stat-text fontM">Population</p>
-                            <p class="animal-profile-stat-num fontSB">36</p>
-                        </div>
-                    </div>
-                    <div class="animal-profile-stats-container">
-                        <div class="animal-profile-stats-icon-container">
-                            <div class="animal-profile-stats-icon"></div>
-                        </div>
-                        <div class="animal-profile-stats-info">
-                            <p class="animal-profile-stat-text fontM">Locations</p>
-                            <p class="animal-profile-stat-num fontSB">3</p>
-                        </div>
-                    </div>
-                    <div class="animal-profile-stats-container">
-                        <div class="animal-profile-stats-icon-container">
-                            <div class="animal-profile-stats-icon"></div>
-                        </div>
-                        <div class="animal-profile-stats-info">
                             <p class="animal-profile-stat-text fontM">Images</p>
                             <p class="animal-profile-stat-num fontSB">104</p>
                         </div>
@@ -286,15 +268,15 @@
                             <div id="animal-profile-spoor-feed-container">
                                 <div id="animal-profile-spoor-feed-title">
                                     <h2 class="fontSB">Recently Identified Spoors</h2>
-                                    <button mat-flat-button>View All</button>
+                                    <button mat-flat-button (click)="viewIdentifications()">View All</button>
                                 </div>
                                 <div id="animal-profile-spoors-container">
                                     <div class="animal-profile-spoor-container" *ngFor="let spoorId of displayedTracks">
                                         <div class="animal-profile-spoor-info-container">
                                             <div class="animal-profile-spoor-image-container">
                                                 <div class="animal-profile-spoor-image">
-												    <img src="{{spoorId.picture.URL}}" alt="">
-												</div>
+                                                    <img src="{{spoorId.picture.URL}}" alt="">
+                                                </div>
                                             </div>
                                             <div class="animal-profile-spoor-info">
                                                 <div class="animal-profile-spoor-animal-name">
@@ -325,7 +307,7 @@
                                                 <button mat-icon-button [matMenuTriggerFor]="menu" class="animal-profile-card-contextMenu">
 													<mat-icon>more_vert</mat-icon>
 												</button>
-                                                  <mat-menu #menu="matMenu" xPosition="before">
+                                                <mat-menu #menu="matMenu" xPosition="before">
                                                     <button mat-menu-item (click)="viewOnTrackMap(spoorId.spoorIdentificationID)">
 														<span>View On Track Map</span>
 													</button>
@@ -351,7 +333,7 @@
                                     </div>
                                 </div>
                             </div>
-                       <!--     <div id="animal-profile-activity-feed-container">
+                            <!--     <div id="animal-profile-activity-feed-container">
                                 <div id="animal-profile-activity-feed-title">
                                     <h2 class="fontSB">Recent Activity</h2>
                                     <button mat-flat-button>View All</button>
@@ -401,7 +383,7 @@
                         </div>
                     </ng-template>
                 </mat-tab>
-               <!-- <mat-tab label="Activity">
+                <!-- <mat-tab label="Activity">
                 </mat-tab>-->
             </mat-tab-group>
         </div>

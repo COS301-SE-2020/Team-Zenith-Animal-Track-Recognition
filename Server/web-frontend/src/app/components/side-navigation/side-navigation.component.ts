@@ -8,6 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class SideNavigationComponent implements OnInit {
 	test: boolean = false;
+	isAdmin: boolean = false;
 
 	@ViewChild('animalsPanel') animalsPanel: any;
 	@ViewChild('rangersPanel') rangersPanel: any;
@@ -16,6 +17,7 @@ export class SideNavigationComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.test = true;
+		this.isAdmin = Number.parseInt(JSON.parse(localStorage.getItem('currentToken'))['level']) > 3;
 	}
 
 	route(location: string) {

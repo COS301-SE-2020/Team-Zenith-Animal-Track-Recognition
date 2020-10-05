@@ -1,20 +1,23 @@
 <div id="ranger-search-sidenav">
-    <mat-tab-group mat-align-tabs="center" #trackMatTab>
+    <mat-tab-group mat-align-tabs="center" #trackMatTab [selectedIndex]="1">
+		<mat-tab label="Heatmap">
+            <app-track-heatmap-options></app-track-heatmap-options>
+		</mat-tab>
         <mat-tab label="All tracks">
             <div id="ranger-search-results-container">
-                <!-- <div id="empty-sidenav-display-message-container" class="empty-display-message-container" [hidden]="displayedTracks">
+                <div id="empty-sidenav-display-message-container" class="empty-display-message-container" [hidden]="trackIdentifications != null && trackIdentifications.length > 0">
                     <div id="empty-sidenav-display-message" class="empty-display-message">
                         <p class="fontM">There is no data to display.</p>
                     </div>
-                </div> -->
+                </div>
                 <mat-selection-list id="track-identification-search-results" [multiple]="false" class="ranger-search-results-entries">
-                    <div class="track-identification-container" (click)="viewTrack(track)" *ngFor="let track of displayedTracks; let trackTimeAgo of trackDateTimes">
+                    <div class="track-identification-container" (click)="viewTrack(track)" *ngFor="let track of trackIdentifications; let trackTimeAgo of trackDateTimes">
                         <div class="track-identification-image-container">
                             <img src="{{track.picture.URL}}" alt="Track image">
                         </div>
                         <div class="track-identification-info-container">
                             <div class="track-identification-animal-name">
-                                <span><p class="track-identification-animal-commonName fontSB">{{track.animal.commonName}}</p><p class="track-identification-capture-date fontR">{{trackTimeAgo.timeAsString | relativeTime }}</p></span>
+                                <span><p class="track-identification-animal-commonName fontSB">{{track.animal.commonName}}</p><p class="track-identification-capture-date fontR">{{trackTimeAgo.recency | relativeTime }}</p></span>
                                 <p class="track-identification-animal-classification fontM">{{track.animal.classification | titlecase}}</p>
                             </div>
                             <p class="track-identification-capture-ranger fontM" *ngIf="track.ranger;">Captured by {{track.ranger.firstName}} {{track.ranger.lastName}}</p>
@@ -28,7 +31,9 @@
             </div>
         </mat-tab>
         <mat-tab label="Track">
-            <app-track-identifications-info *ngIf="activeTrack" [activeTrack]="activeTrack" [originType]="originType" (viewingTrackOnChange)="backToTrackList($event)"></app-track-identifications-info>
+			<ng-container *ngIf="activeTrack">
+            <app-track-identifications-info [originType]="originType"></app-track-identifications-info>
+			</ng-container>
         </mat-tab>
     </mat-tab-group>
 </div>

@@ -1,9 +1,12 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
+import { catchError, retry } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-add-image',
@@ -25,7 +28,8 @@ export class AddImageComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient,
     private formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<AddImageComponent>) { }
+    public dialogRef: MatDialogRef<AddImageComponent>, 
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.addAnimalImage = this.formBuilder.group({
@@ -41,13 +45,19 @@ export class AddImageComponent implements OnInit {
     //canvas.width = this.fileToUpload.
     if (false === test) {
 			this.startLoader();
-
-
-
       this.http.post<any>(ROOT_QUERY_STRING + '?', {
         query:'mutation{addIMG64ToAnilmil(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
           '",IMG64:"' + this.cardImageBase64 + '",animalID:"' + this.data.animal.animalID + '")}',variables:{}
-      }).subscribe({
+      })
+      .pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
+      .subscribe({
         next: data => this.dialogRef.close("success"),
         error: error => this.dialogRef.close("error")
       });

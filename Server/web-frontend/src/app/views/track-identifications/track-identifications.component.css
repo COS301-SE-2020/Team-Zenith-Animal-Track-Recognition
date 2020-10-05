@@ -75,7 +75,56 @@
     right: 2%;
     z-index: 5;
 }
+@keyframes fade {
+    from {
+        opacity: 0.1;
+    }
+    to {
+        opacity: 1.0;
+    }
+}
 
+#heatmap-btn-container {
+    height: 40px;
+    width: 175px;
+    background-color: white;
+    box-shadow: 0px 0px 5px #BBBBBB;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    position: absolute;
+    top: 15%;
+    left: 2%;
+    z-index: 5;
+    animation: fadePop 0.7s ease-in-out 0s 1 normal none;
+}
+#heatmap-btn-container > button {
+	border: none;
+	padding: 0 2px;
+	width: 100%;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+}
+#heatmap-btn-container.activeHeatmapTab > button {
+	color: #509CD0;
+
+}
+:host ::ng-deep #heatmap-btn-container  span.mat-button-wrapper
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+}
+:host ::ng-deep #heatmap-btn-container  span.mat-button-wrapper > p
+{
+	margin: 0;
+	padding: 0;
+}
 #sidenav-open-btn-container,
 #sidenav-close-btn-container {
     position: absolute;
@@ -137,7 +186,7 @@
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: space-around;
-    overflow: auto;
+    overflow: hidden;
 }
 
 #identifications-google-map-container {

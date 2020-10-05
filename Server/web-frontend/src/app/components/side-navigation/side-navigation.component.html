@@ -41,7 +41,7 @@
                         <mat-icon class="side-navigation-wireframeIcon">supervisor_account</mat-icon>
                         <p class="fontM">Rangers</p>
                     </div>
-                    <div class="side-navigation-expansion-btn" (click)='toggleRangersPanel()'>
+                    <div *ngIf="isAdmin" class="side-navigation-expansion-btn" (click)='toggleRangersPanel()'>
                         <mat-icon id="rangers-expand-btn-icon">expand_more</mat-icon>
                     </div>
                 </div>

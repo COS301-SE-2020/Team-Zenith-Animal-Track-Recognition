@@ -3,8 +3,9 @@ import { logging } from 'protractor';
 import { User } from './../models/user';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
+import { catchError, map, retry } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AuthService {
   public currentUser: Observable<User>;
   private isAuthorized = false;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentToken')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -39,7 +40,10 @@ export class AuthService {
   }
 
   login(username, password) {
-    return this.http.get<any>(ROOT_QUERY_STRING + '?query=query{wdbLogin(eMail:"' + username + '",password:"' + password + '"){token, firstName, lastName, rangerID}}')
+    console.log(username);
+    console.log(password);
+    
+    return this.http.get<any>(ROOT_QUERY_STRING + '?query=query{wdbLogin(eMail:"' + username + '",password:"' + password + '"){token, firstName, lastName, rangerID, accessLevel}}')
       .pipe(map(user => {
         if (null === user.data.wdbLogin) {
           this.isAuthorized = false;
@@ -52,7 +56,8 @@ export class AuthService {
           value: user.data.wdbLogin.token,
           expiry: now.getTime() + 7200000,
           firstName: user.data.wdbLogin.firstName,
-          currentID: user.data.wdbLogin.rangerID
+          currentID: user.data.wdbLogin.rangerID,
+          level: user.data.wdbLogin.accessLevel
         };
 
         localStorage.setItem('currentToken', JSON.stringify(tkn));
@@ -60,11 +65,18 @@ export class AuthService {
         this.isAuthorized = true;
 
         return user;
-      }));
+      })).pipe(
+        retry(3),
+        catchError(() => {
+          this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+          return EMPTY;
+        })
+      );
   }
 
   logout() {
     localStorage.removeItem('currentToken');
+    document.location.href = '/';
     this.currentUserSubject.next(null);
   }
 }

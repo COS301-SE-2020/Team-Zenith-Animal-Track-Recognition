@@ -16,8 +16,8 @@ export class UtilityNavigationComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService) {
   }
 
-  ngOnInit(): void { 
-    this.rangerName = 'Hi, ' + JSON.parse(localStorage.getItem('currentToken'))['firstName'] +'!';
+  ngOnInit(): void {
+    this.rangerName = 'Hi, ' + JSON.parse(localStorage.getItem('currentToken'))['firstName'] + '!';
   }
 
   logout(): void {

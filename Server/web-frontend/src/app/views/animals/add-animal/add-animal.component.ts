@@ -1,9 +1,12 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { doesNotReject } from 'assert';
+import { catchError, retry } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
 	selector: 'app-add-animal',
@@ -13,7 +16,11 @@ import { doesNotReject } from 'assert';
 export class AddAnimalComponent implements OnInit {
 
 	addAnimalForm: FormGroup;
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddAnimalComponent>) { 
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+		private http: HttpClient, 
+		private snackBar: MatSnackBar, 
+		private formBuilder: FormBuilder, 
+		public dialogRef: MatDialogRef<AddAnimalComponent>) {
 	}
 
 	ngOnInit(): void {
@@ -33,37 +40,45 @@ export class AddAnimalComponent implements OnInit {
 		switch (formCtrlName) {
 			case "commonName":
 				return this.addAnimal.commonName.hasError('pattern') ? 'Please only enter letters' : '';
-			break;
+				break;
 			case "classification":
 				return this.addAnimal.classification.hasError('pattern') ? 'Please only enter letters' : '';
-			break;
+				break;
 		}
 	}
 
 
 	onSubmit(test: boolean) {
 		if (false === test) {
-			
-		if (this.addAnimalForm.invalid) {
-			return;
-		}
+
+			if (this.addAnimalForm.invalid) {
+				return;
+			}
 			this.startLoader();
 
 			const cont: boolean = (this.addAnimal.animalDescription.value).includes('.');
 			let animalDescription = this.addAnimal.animalDescription.value;
 
-			if(!cont){
+			if (!cont) {
 				let fullstop = ".";
-				animalDescription=animalDescription.concat(fullstop);
+				animalDescription = animalDescription.concat(fullstop);
 			}
 			this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{wdbAddAnimal(token:"' +
 				JSON.parse(localStorage.getItem('currentToken'))['value'] + '",classification:"' + encodeURIComponent(this.addAnimal.classification.value) +
 				'",commonName:"' + encodeURIComponent(this.addAnimal.commonName.value) + '",animalDescription:"' +
 				encodeURIComponent(animalDescription) + '"){animalID}}', '')
-				.subscribe({ 
-					next: data => this.dialogRef.close("success"), 
-					error: error => this.dialogRef.close("error") 
-				}); 
+				.pipe(
+					retry(3),
+					catchError(() => {
+						this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+						this.stopLoader();
+						return EMPTY;
+					})
+				)
+				.subscribe({
+					next: data => this.dialogRef.close("success"),
+					error: error => this.dialogRef.close("error")
+				});
 		}
 		else {
 			return true;
@@ -73,8 +88,7 @@ export class AddAnimalComponent implements OnInit {
 		this.dialogRef.close("cancel");
 	}
 
-	attachProgressbar()
-	{
+	attachProgressbar() {
 		//Append progress bar to dialog
 		let matDialog = document.getElementById('add-animal-dialog');
 		let progressBar = document.getElementById("dialog-progressbar-container");
