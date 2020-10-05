@@ -1,9 +1,11 @@
-import { first } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError, first, retry } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import { EMPTY } from 'rxjs';
 
 @Component({
 	selector: 'app-delete-ranger',
@@ -17,6 +19,7 @@ export class DeleteRangerComponent implements OnInit {
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private http: HttpClient,
+		private snackBar: MatSnackBar,
 		private router: Router,
 		public dialogRef: MatDialogRef<DeleteRangerComponent>) { }
 
@@ -30,6 +33,14 @@ export class DeleteRangerComponent implements OnInit {
 		this.startLoader();
 		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{deleteUser(' + 'tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'",' + 'rangerID:"' + this.data.rangerID + '"){msg}}', '')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe({
 				next: data => this.dialogRef.close("success"),
 				error: error => this.dialogRef.close("error")

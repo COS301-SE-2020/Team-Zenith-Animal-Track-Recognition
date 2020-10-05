@@ -1,3 +1,4 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimalPhotoDetailsComponent } from './../../../animals/animals-gallery/animal-photos/animal-photo-details/animal-photo-details.component';
 import { Component, OnInit, Input, Output, ViewChild, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -9,6 +10,8 @@ import { TrackViewNavigationService } from './../../../../services/track-view-na
 import { RelativeTimeMPipe } from 'src/app/pipes/relative-time-m.pipe';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { Router } from '@angular/router';
+import { catchError, retry } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
 	selector: 'app-track-identifications-info',
@@ -24,8 +27,13 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	geoCoder: google.maps.Geocoder;
 	similarTrackList: any = null;
 
-	constructor(private changeDetection: ChangeDetectorRef, private http: HttpClient, public dialog: MatDialog, 
-		private router: Router, private tracksService: TracksService, private trackViewNavService: TrackViewNavigationService) {
+	constructor(private changeDetection: ChangeDetectorRef,
+		private http: HttpClient,
+		private snackBar: MatSnackBar,
+		public dialog: MatDialog,
+		private router: Router,
+		private tracksService: TracksService,
+		private trackViewNavService: TrackViewNavigationService) {
 		tracksService.activeTrack$.subscribe(
 			track => {
 				this.activeTrack = track;
@@ -41,7 +49,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		
+
 	}
 
 	backToTrackList() {
@@ -97,6 +105,13 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 		//Load similar tracks for the same animal being viewed
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'", classification:"' + this.activeTrack.animal.classification + '"){spoorIdentificationID,animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}}dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);

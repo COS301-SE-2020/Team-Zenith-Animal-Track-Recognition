@@ -7,6 +7,8 @@ import { MatAccordion } from '@angular/material/expansion';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddGroupsComponent } from '../add-groups/add-groups.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EMPTY } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-animal-groups',
@@ -30,6 +32,14 @@ export class AnimalGroupsComponent implements OnInit {
 		//Replace Groups with appropiate radio button
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){classification,animalID,commonName,groupID{groupID}}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -39,6 +49,14 @@ export class AnimalGroupsComponent implements OnInit {
 
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{groups(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){groupName, groupID}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(Object.values(data)[0])[0]);
@@ -158,7 +176,16 @@ export class AnimalGroupsComponent implements OnInit {
 		let temp = this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateAnimalGroup('
 			+ 'token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
 			+ 'animalID:"' + tkn + '",'
-			+ 'groupID:"' + lvl + '"){animalID}}', '').subscribe((data: any[]) => {
+			+ 'groupID:"' + lvl + '"){animalID}}', '')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
+			.subscribe((data: any[]) => {
 				let t = [];
 				t = Object.values(Object.values(data)[0]);
 			});
