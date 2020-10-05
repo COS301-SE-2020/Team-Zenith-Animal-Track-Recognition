@@ -33,7 +33,7 @@ class LoginView extends StatelessWidget {
                     ),
                     logo,
                     SizedBox(
-                      height: 25,
+                      height: 35,
                     ),
                     UserName(),
                     SizedBox(
@@ -61,12 +61,12 @@ class UploadButton extends ViewModelWidget<LoginViewModel> {
   Widget build(BuildContext context, LoginViewModel model) {
     return Container(
       margin: EdgeInsets.only(
-        right: 15,
-        left: 15,
+        // right: 15,
+        // left: 15,
         top: 5,
         bottom: 5,
       ),
-      width: 200,
+      width: 300,
       child: RaisedButton(
         key: Key('LoginButton'),
         onPressed: () {
@@ -77,17 +77,10 @@ class UploadButton extends ViewModelWidget<LoginViewModel> {
         padding: EdgeInsets.all(0.0),
         child: Ink(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromRGBO(33, 78, 125, 1),
-                  Color.fromRGBO(80, 156, 208, 1)
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
+              color: Color.fromRGBO(61, 122, 172, 1),
               borderRadius: BorderRadius.circular(30.0)),
           child: Container(
-            constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50),
+            constraints: BoxConstraints(maxWidth: 300.0, minHeight: 50),
             alignment: Alignment.center,
             child: text20CenterBoldWhite("LOGIN"),
           ),
@@ -132,7 +125,7 @@ class UserName extends HookViewModelWidget<LoginViewModel> {
               borderRadius: BorderRadius.all(Radius.circular(10)),
               gapPadding: 0),
           prefixIcon: Icon(Icons.person),
-          hintText: "Username",
+          hintText: "Email",
           filled: true,
           fillColor: Colors.grey[300]),
       onSubmitted: (value) => {model.login(context)},

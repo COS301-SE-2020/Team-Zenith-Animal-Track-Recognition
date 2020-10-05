@@ -80,8 +80,8 @@ class AnimalView extends StatelessWidget {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: <Color>[
-                          Color.fromRGBO(33, 78, 125, 1),
-                          Color.fromRGBO(80, 156, 208, 1)
+                          Color.fromRGBO(58, 119, 168, 1),
+                          Color.fromRGBO(77, 151, 203, 1)
                         ])),
                   ),
                 ),
@@ -165,8 +165,8 @@ class AnimalView extends StatelessWidget {
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
                                       colors: <Color>[
-                                    Color.fromRGBO(33, 78, 125, 1),
-                                    Color.fromRGBO(80, 156, 208, 1)
+                                    Color.fromRGBO(58, 119, 168, 1),
+                                    Color.fromRGBO(77, 151, 203, 1)
                                   ])),
                             ),
                             bottom: TabBar(
@@ -211,7 +211,7 @@ class NavDrawer extends ViewModelWidget<AnimalViewModel> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 0, 0, 0),
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/ERP_Tech.png'))),
@@ -294,6 +294,7 @@ Widget getWidget(var animalTabList) {
           alignment: Alignment.centerLeft,
           margin: new EdgeInsets.all(10),
           padding: new EdgeInsets.all(0),
+          height: 180,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -304,7 +305,7 @@ Widget getWidget(var animalTabList) {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ListTileTheme(
-                    dense: true,
+                    dense: false,
                     child: Row(children: [
                       Expanded(
                           flex: 3,
@@ -322,7 +323,7 @@ Widget getWidget(var animalTabList) {
                               context)),
                     ])),
                 ListTileTheme(
-                    dense: true,
+                    dense: false,
                     child:
                         ViewButton(name: animalTabList[index].classification)),
               ]),
@@ -332,6 +333,7 @@ Widget getWidget(var animalTabList) {
 //========================== VIEW BODY =======================
 
 //=============================VIEW BUTTON======================
+// ignore: must_be_immutable
 class ViewButton extends ViewModelWidget<AnimalViewModel> {
   String name;
   ViewButton({this.name, Key key}) : super(key: key, reactive: true);
@@ -339,10 +341,10 @@ class ViewButton extends ViewModelWidget<AnimalViewModel> {
   Widget build(BuildContext context, AnimalViewModel model) {
     return ButtonTheme(
       key: Key('ViewInfoButton'),
-      minWidth: 200,
+      minWidth: 280,
       child: RaisedButton(
-          child: text12CenterBoldWhite("VIEW INFO"),
-          color: Color.fromRGBO(33, 78, 125, 1),
+          child: text14CenterBoldWhite("View Information"),
+          color: Color.fromRGBO(61, 122, 172, 1),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.all(10),
@@ -358,7 +360,7 @@ class ViewButton extends ViewModelWidget<AnimalViewModel> {
 Widget imageBlock(String imageLink) {
   return Container(
     alignment: Alignment.center,
-    margin: new EdgeInsets.only(bottom: 10, left: 15, right: 10, top: 10),
+    margin: new EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
     decoration: BoxDecoration(
       image: DecorationImage(
         image: NetworkImage(imageLink),
@@ -368,8 +370,7 @@ Widget imageBlock(String imageLink) {
       color: Colors.grey,
       borderRadius: BorderRadius.circular(15),
     ),
-    height: 90,
-    width: 90,
+    height: 100,
   );
 }
 //=============================IMAGE BLOCK======================
@@ -380,8 +381,7 @@ Widget cardText(String name, String sizeM, String sizeF, String weightM,
   return Container(
       margin: EdgeInsets.all(0),
       alignment: Alignment.center,
-      height: 90,
-      width: 90,
+      height: 110,
       child: Column(children: <Widget>[
         Expanded(
             flex: 1,
@@ -393,13 +393,13 @@ Widget cardText(String name, String sizeM, String sizeF, String weightM,
         Expanded(
             flex: 1,
             child: Container(
-                margin: EdgeInsets.all(0),
+                margin: EdgeInsets.only(bottom: 4),
                 padding: EdgeInsets.all(0),
                 child: middleRow(sizeM, sizeF, weightM, weightF, context))),
         Expanded(
             flex: 1,
             child: Container(
-                margin: EdgeInsets.all(0),
+                margin: EdgeInsets.only(bottom: 2),
                 padding: EdgeInsets.all(0),
                 child: bottomRow(diet, gestation, context))),
       ]));

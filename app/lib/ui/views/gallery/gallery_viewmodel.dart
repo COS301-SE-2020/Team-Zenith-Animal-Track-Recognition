@@ -9,6 +9,19 @@ import 'package:stacked/stacked.dart';
 class GalleryViewModel extends BaseViewModel {
   bool newNotifications = false;
   final Api api = locator<GraphQL>();
+
+  bool _selected = false;
+  bool get selected => _selected;
+
+  var _image;
+  get image => _image;
+
+  void selectedVal(bool select, var img) {
+    _selected = select;
+    _image = img;
+    notifyListeners();
+  }
+
   Future<TempObject> getSpoor(var context) async {
     List<String> categories = new List();
     categories.add("Appearance");

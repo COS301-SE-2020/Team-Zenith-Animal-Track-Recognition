@@ -5,6 +5,7 @@ import 'package:ERP_RANGER/ui/views/notconfirmed/notconfirmed_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+// ignore: must_be_immutable
 class NotConfirmedView extends StatelessWidget {
   File image;
   NotConfirmedView({this.image, Key key}) : super(key: key);
@@ -95,6 +96,7 @@ class BackButton extends ViewModelWidget<NotConfirmedViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class IconButtons extends ViewModelWidget<NotConfirmedViewModel> {
   IconData iconData;
   String subTitle;

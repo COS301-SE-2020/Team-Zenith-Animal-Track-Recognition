@@ -68,6 +68,7 @@ dependencies:
 
   # bages 
   badges: ^1.1.1
+  flutter_icons: ^1.1.0
 
   # download
   dio: any
@@ -317,3 +318,6 @@ flutter:
     - assets/images/trophies/silver.png
     - assets/images/trophies/track.png
     - assets/images/loading.gif
+    - assets/images/loading2.gif
+    - assets/images/loading3.gif
+    - assets/images/loading4.gif

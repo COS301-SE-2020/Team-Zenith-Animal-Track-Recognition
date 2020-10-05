@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 
+// ignore: must_be_immutable
 class IdentificationView extends StatelessWidget {
   IdentificationView({@required this.name});
   String name;
@@ -80,6 +81,7 @@ class IdentificationView extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class IconBuilder extends ViewModelWidget<IdentificationViewModel> {
   IconData icon;
   IconBuilder({Key key, this.icon}) : super(reactive: true);
@@ -121,19 +123,33 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
             controller: myscrollController,
             children: <Widget>[
               Container(
-                  decoration:
-                      BoxDecoration(color: Color.fromRGBO(33, 78, 125, 1)),
+                  padding: new EdgeInsets.all(3.0),
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: <Color>[
+                        Color.fromRGBO(58, 119, 168, 1),
+                        Color.fromRGBO(77, 151, 203, 1)
+                      ])),
                   child: Row(
                     children: <Widget>[
-                      Expanded(flex: 1, child: icon),
+                      Expanded(
+                        flex: 1,
+                        child: IconButton(
+                          alignment: Alignment(0, 0),
+                          icon: Icon(
+                            Icons.keyboard_arrow_up,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {},
+                        ),
+                      ),
                       SizedBox(height: 1.0),
                       Expanded(
                           flex: 4, child: text(model.confident.name, context)),
                     ],
                   )),
-              // SizedBox(height: 10),
-              // BarInfo(),
-              // Divider(thickness: 2),
               Column(
                 children: <Widget>[
                   identifyText(context),
@@ -184,7 +200,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
                     Expanded(
                         flex: 1,
                         child: ViewInfoFunctionality(
-                          title: "View Animal Info",
+                          title: "Animal Info",
                         )),
                     SizedBox(height: 1.0),
                     Expanded(
@@ -209,6 +225,7 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class OtherMatches extends ViewModelWidget<IdentificationViewModel> {
   List<SpoorModel> list;
   OtherMatches({this.list});
@@ -216,19 +233,27 @@ class OtherMatches extends ViewModelWidget<IdentificationViewModel> {
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
     final theme = Theme.of(context).copyWith(dividerColor: Colors.white);
+    int findLen() {
+      if (list.length >= 6) {
+        return 6;
+      } else {
+        return list.length;
+      }
+    }
+
     return Theme(
       data: theme,
       child: ExpansionTile(
-          title: text18LeftBoldBlack("Other Possible Matches"),
+          title: text16LeftBoldBlack("Other Possible Matches"),
           backgroundColor: Colors.white,
           children: <Widget>[
             Container(
-              height: 250,
+              height: 200,
               color: Colors.white,
               child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  itemCount: list.length,
+                  itemCount: findLen(),
                   itemBuilder: (BuildContext context, int index) {
                     return ChildPopup(
                         pic: list[index].pic,
@@ -266,6 +291,7 @@ class Tags extends ViewModelWidget<IdentificationViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class ChildPopup extends ViewModelWidget<IdentificationViewModel> {
   String pic;
   String aname;
@@ -282,12 +308,13 @@ class ChildPopup extends ViewModelWidget<IdentificationViewModel> {
   Widget build(BuildContext context, IdentificationViewModel model) {
     return Container(
       alignment: Alignment.center,
+      margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
       height: 110,
-      width: 150,
+      width: 110,
       child: Column(
         children: <Widget>[
           Expanded(child: swapImageBlock(pic, index, model), flex: 4),
@@ -300,6 +327,7 @@ class ChildPopup extends ViewModelWidget<IdentificationViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class ViewMapFunctionality extends ViewModelWidget<IdentificationViewModel> {
   String title;
   ViewMapFunctionality({Key key, this.title}) : super(key: key, reactive: true);
@@ -328,13 +356,14 @@ class ViewMapFunctionality extends ViewModelWidget<IdentificationViewModel> {
                   37.4220041, -122.0862462, 'Google Headquarters are here'),
             ),
           ),
-          text14LeftBoldGrey("$title"),
+          text12LeftBoldGrey("$title"),
         ],
       ),
     );
   }
 }
 
+// ignore: must_be_immutable
 class ViewInfoFunctionality extends ViewModelWidget<IdentificationViewModel> {
   String title;
   ViewInfoFunctionality({Key key, this.title})
@@ -366,13 +395,14 @@ class ViewInfoFunctionality extends ViewModelWidget<IdentificationViewModel> {
               },
             ),
           ),
-          text14LeftBoldGrey("$title"),
+          text12LeftBoldGrey("$title"),
         ],
       ),
     );
   }
 }
 
+// ignore: must_be_immutable
 class DownloadFunctionality extends ViewModelWidget<IdentificationViewModel> {
   String title;
   DownloadFunctionality({Key key, this.title})
@@ -403,7 +433,7 @@ class DownloadFunctionality extends ViewModelWidget<IdentificationViewModel> {
               },
             ),
           ),
-          text14LeftBoldGrey("$title"),
+          text12LeftBoldGrey("$title"),
         ],
       ),
     );
@@ -550,7 +580,7 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
           Container(
             child: Row(
               children: <Widget>[
-                Expanded(flex: 8, child: text18LeftBoldBlack("Track Location")),
+                Expanded(flex: 8, child: text16LeftBoldBlack("Track Location")),
               ],
             ),
           ),
@@ -564,7 +594,7 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: text16LeftBoldBlack('Location:          '),
+                  child: text14LeftBoldBlack('Location:          '),
                 ),
                 Expanded(
                     flex: 3,
@@ -572,7 +602,7 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
                         ? TextInputField(
                             indexIdentifier: 0,
                           )
-                        : text16LeftNormBlack(model.location))
+                        : text14LeftNormBlack(model.location))
               ],
             ),
           ),
@@ -588,7 +618,7 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
                 children: <Widget>[
                   Expanded(
                     flex: 1,
-                    child: text16LeftBoldBlack('Date: '),
+                    child: text14LeftBoldBlack('Date: '),
                   ),
                   Expanded(
                       flex: 3,
@@ -596,7 +626,7 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
                           ? TextInputField(
                               indexIdentifier: 0,
                             )
-                          : text16LeftNormBlack(model.getDate))
+                          : text14LeftNormBlack(model.getDate))
                 ],
               ),
             ),
@@ -607,11 +637,13 @@ class BarInfo extends ViewModelWidget<IdentificationViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class TextInputField extends HookViewModelWidget<IdentificationViewModel> {
   int indexIdentifier;
   TextInputField({Key key, this.indexIdentifier}) : super(reactive: true);
 
   @override
+  // ignore: missing_return
   Widget buildViewModelWidget(
       BuildContext context, IdentificationViewModel model) {
     var text = useTextEditingController();
@@ -760,34 +792,40 @@ Widget attachATagButton(var context) {
   return Container(
       margin: EdgeInsets.only(left: 7),
       alignment: Alignment.centerLeft,
-      child: text18LeftBoldBlack("Track Tags"));
+      child: text16LeftBoldBlack("Track Tags"));
 }
 
 Widget similarSpoor(List<String> tracks) {
-  return Container(
-    height: 150,
-    color: Colors.white,
-    child: ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: tracks.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            height: 100,
-            width: 150,
-            child: Column(
-              children: <Widget>[
-                Expanded(child: innerImageBlock(tracks[index]), flex: 4),
-              ],
-            ),
-          );
-        }),
-  );
+  if (tracks != null) {
+    print(tracks);
+  }
+
+  return tracks.isEmpty == true
+      ? Center(
+          child: Container(
+          margin: EdgeInsets.all(5),
+          child: text16CenterNormalGrey("[No Similar Spoor Found]"),
+        ))
+      : Container(
+          height: 200,
+          color: Colors.white,
+          child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: tracks.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                    margin: EdgeInsets.all(5),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    height: 150,
+                    width: 150,
+                    child: innerImageBlock(tracks[index]));
+              }),
+        );
 }
 
 Widget name(String name, var context) {
@@ -795,7 +833,7 @@ Widget name(String name, var context) {
       alignment: Alignment.centerLeft,
       padding: new EdgeInsets.all(5),
       margin: new EdgeInsets.only(left: 2),
-      child: text14LeftBoldBlack(name));
+      child: text12LeftBoldBlack(name));
 }
 
 Widget animalSpecies(String species, var context) {
@@ -803,7 +841,7 @@ Widget animalSpecies(String species, var context) {
     alignment: Alignment.centerLeft,
     margin: new EdgeInsets.only(left: 2),
     padding: new EdgeInsets.all(5),
-    child: text14LeftBoldGrey(species),
+    child: text12LeftBoldGrey(species),
   );
 }
 
@@ -812,21 +850,21 @@ Widget accuracyScore(String score, var context) {
     alignment: Alignment.centerLeft,
     margin: new EdgeInsets.only(left: 2),
     padding: new EdgeInsets.all(5),
-    child: text14LeftBoldGrey(score),
+    child: text12LeftBoldGrey(score),
   );
 }
 
 Widget similarSpoors() {
   return Container(
     alignment: Alignment.centerLeft,
-    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
+    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10, top: 10),
     padding: new EdgeInsets.all(5),
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(10),
     ),
     //height: 0,
-    child: text18LeftBoldBlack(
+    child: text16LeftBoldBlack(
       "Similar Tracks",
     ),
   );
@@ -840,7 +878,7 @@ Widget swapImageBlock(String link, int index, IdentificationViewModel model) {
       margin: new EdgeInsets.all(5),
       padding: new EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
           image: NetworkImage(link),
@@ -888,33 +926,11 @@ Widget innerImageBlock(String link) {
         );
 }
 
-Widget icon = new Container(
-  alignment: Alignment(0, 0),
-  margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
-  decoration: BoxDecoration(
-      color: Color.fromRGBO(33, 78, 125, 1),
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: Color.fromRGBO(33, 78, 125, 1))),
-  child: Center(
-    child: IconButton(
-      alignment: Alignment(0, 0),
-      icon: Icon(
-        Icons.keyboard_arrow_up,
-        color: Colors.white,
-      ),
-      onPressed: () {},
-    ),
-  ),
-);
-
 Widget text(String name, var context) {
   return Container(
     alignment: Alignment(0, 0),
     margin: new EdgeInsets.only(bottom: 3, left: 10, right: 3),
-    decoration: BoxDecoration(
-      color: Color.fromRGBO(33, 78, 125, 1),
-      borderRadius: BorderRadius.circular(10),
-    ),
+    color: Color.fromRGBO(0, 0, 0, 0),
     height: 50,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -924,15 +940,17 @@ Widget text(String name, var context) {
         Expanded(
           flex: 1,
           child: Container(
+            color: Color.fromRGBO(0, 0, 0, 0),
             alignment: Alignment.centerLeft,
-            child: text22LeftBoldWhite('$name Track identified'),
+            child: text18LeftBoldWhite('$name Track identified'),
           ),
         ),
         Expanded(
           flex: 1,
           child: Container(
+            color: Color.fromRGBO(0, 0, 0, 0),
             alignment: Alignment.centerLeft,
-            child: text16LeftBoldWhite('Swipe up for more options'),
+            child: text14LeftBoldWhite('Swipe up for more options'),
           ),
         )
       ],
@@ -967,8 +985,8 @@ Widget backButton(context) {
 Widget identifyText(var context) {
   return Container(
     alignment: Alignment.centerLeft,
-    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10),
-    padding: new EdgeInsets.all(5),
+    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10, top: 10),
+    padding: new EdgeInsets.only(left: 5, top: 10),
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(10),
@@ -1001,7 +1019,7 @@ Widget animal(var context) {
   return Container(
     alignment: Alignment.centerLeft,
     padding: new EdgeInsets.all(0),
-    child: text14LeftBoldBlack("Animal: "),
+    child: text12LeftBoldBlack("Animal: "),
   );
 }
 
@@ -1009,7 +1027,7 @@ Widget animalVal(String name, var context) {
   return new Container(
     alignment: Alignment.centerLeft,
     padding: new EdgeInsets.all(0),
-    child: text14LeftBoldGrey(name),
+    child: text12LeftBoldGrey(name),
   );
 }
 
@@ -1017,14 +1035,14 @@ Widget species(var context) {
   return Container(
       alignment: Alignment.centerLeft,
       padding: new EdgeInsets.all(0),
-      child: text14LeftBoldBlack("Species:"));
+      child: text12LeftBoldBlack("Species:"));
 }
 
 Widget speciesVal(String species, var context) {
   return new Container(
     alignment: Alignment.centerLeft,
     padding: new EdgeInsets.all(0),
-    child: text14LeftBoldGrey(species),
+    child: text12LeftBoldGrey(species),
   );
 }
 
@@ -1032,12 +1050,12 @@ Widget accuracy(var context) {
   return Container(
       alignment: Alignment.centerLeft,
       padding: new EdgeInsets.all(0),
-      child: text14LeftBoldBlack("Accuracy Score:"));
+      child: text12LeftBoldBlack("Accuracy Score:"));
 }
 
 Widget score(String score) {
   return Container(
       alignment: Alignment.centerLeft,
       padding: new EdgeInsets.all(0),
-      child: percentageText("$score", 45));
+      child: percentageText("$score", 40));
 }

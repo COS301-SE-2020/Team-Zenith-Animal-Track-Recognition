@@ -81,8 +81,8 @@ class SearchView extends StatelessWidget {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: <Color>[
-                          Color.fromRGBO(33, 78, 125, 1),
-                          Color.fromRGBO(80, 156, 208, 1)
+                          Color.fromRGBO(58, 119, 168, 1),
+                          Color.fromRGBO(77, 151, 203, 1)
                         ])),
                   ),
                   bottom:
@@ -174,8 +174,8 @@ class SearchView extends StatelessWidget {
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                   colors: <Color>[
-                                Color.fromRGBO(33, 78, 125, 1),
-                                Color.fromRGBO(80, 156, 208, 1)
+                                Color.fromRGBO(58, 119, 168, 1),
+                                Color.fromRGBO(77, 151, 203, 1)
                               ])),
                         ),
                         bottom: TabBar(
@@ -227,7 +227,7 @@ class NavDrawer extends ViewModelWidget<SearchViewModel> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 0, 0, 0),
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/ERP_Tech.png'))),
@@ -296,6 +296,7 @@ class IconBuilder extends ViewModelWidget<SearchViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class ListBody extends ViewModelWidget<SearchViewModel> {
   List<SearchModel> animalList;
   ListBody({Key key, this.animalList}) : super(reactive: true);
@@ -321,6 +322,7 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
                   ),
                   child: ListTile(
                     dense: true,
+                    onTap: () => navigateToInfo(animalList[index].species),
                     leading: imageBlock(animalList[index].image),
                     title: text16LeftBoldGrey(animalList[index].species),
                     subtitle: text12LeftBoldGrey(animalList[index].commonName),
@@ -340,6 +342,7 @@ class DataSearch extends SearchDelegate<List<SearchModel>> {
   DataSearch({this.model});
   @override
   List<Widget> buildActions(BuildContext context) {
+    // ignore: todo
     // TODO: implement buildActions
     // actions for app bar
     return [
@@ -353,6 +356,7 @@ class DataSearch extends SearchDelegate<List<SearchModel>> {
 
   @override
   Widget buildLeading(BuildContext context) {
+    // ignore: todo
     // TODO: implement buildLeading
     // leading icon on the left of appbar
     return IconButton(
@@ -369,6 +373,7 @@ class DataSearch extends SearchDelegate<List<SearchModel>> {
   @override
   Widget buildResults(BuildContext context) {
     // show some result based on the selection
+    // ignore: todo
     // TODO: implement buildResults
     throw UnimplementedError();
   }
@@ -376,6 +381,7 @@ class DataSearch extends SearchDelegate<List<SearchModel>> {
   @override
   Widget buildSuggestions(BuildContext context) {
     // show when someone searches for something
+    // ignore: todo
     // TODO: implement buildSuggestions
 
     final suggestionList = query.isEmpty
@@ -419,7 +425,7 @@ Widget imageBlock(String image) {
         //image: AssetImage(image),
         fit: BoxFit.fill,
       ),
-      color: Colors.grey,
+      color: Colors.white,
       borderRadius: BorderRadius.circular(10),
     ),
     height: 50,

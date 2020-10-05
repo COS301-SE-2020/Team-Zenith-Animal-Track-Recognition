@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:badges/badges.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key key}) : super(key: key);
@@ -84,8 +83,8 @@ class HomeView extends StatelessWidget {
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                   colors: <Color>[
-                                Color.fromRGBO(33, 78, 125, 1),
-                                Color.fromRGBO(80, 156, 208, 1)
+                                Color.fromRGBO(58, 119, 168, 1),
+                                Color.fromRGBO(77, 151, 203, 1)
                               ])),
                         ),
                       ),
@@ -116,6 +115,7 @@ class HomeView extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class IconBuilder extends ViewModelWidget<HomeViewModel> {
   IconData icon;
   IconBuilder({Key key, this.icon}) : super(reactive: true);
@@ -137,6 +137,7 @@ class IconBuilder extends ViewModelWidget<HomeViewModel> {
 }
 //========================== APPBAR ICONS =======================
 
+// ignore: must_be_immutable
 class HomeListBody extends ViewModelWidget<HomeViewModel> {
   List<HomeModel> animalList;
   HomeListBody({Key key, this.animalList}) : super(reactive: true);
@@ -202,8 +203,8 @@ class HomeListBody extends ViewModelWidget<HomeViewModel> {
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                         colors: <Color>[
-                                          Color.fromRGBO(33, 78, 125, 1),
-                                          Color.fromRGBO(80, 156, 208, 1)
+                                          Color.fromRGBO(58, 119, 168, 1),
+                                          Color.fromRGBO(77, 151, 203, 1)
                                         ]),
                                     borderRadius: BorderRadius.circular(10)),
                                 child: text12LeftBoldWhite(
@@ -244,7 +245,7 @@ class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 0, 0, 0),
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/ERP_Tech.png'))),

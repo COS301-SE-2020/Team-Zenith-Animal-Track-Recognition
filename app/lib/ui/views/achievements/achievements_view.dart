@@ -89,6 +89,7 @@ class AchievementsView extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class ListBody extends ViewModelWidget<AchievementsViewModel> {
   List<TrophyModel> trophies;
   ListBody({Key key, this.trophies}) : super(reactive: true);
@@ -142,7 +143,7 @@ class NavDrawer extends ViewModelWidget<AchievementsViewModel> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 0, 0, 0),
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/ERP_Tech.png'))),
@@ -183,6 +184,7 @@ class NavDrawer extends ViewModelWidget<AchievementsViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class IconBuilder extends ViewModelWidget<AchievementsViewModel> {
   String type;
   IconData icon;

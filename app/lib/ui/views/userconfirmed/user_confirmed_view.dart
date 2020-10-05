@@ -1,6 +1,5 @@
 import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
-import 'package:ERP_RANGER/ui/views/identification/identification_view.dart';
 import 'package:ERP_RANGER/ui/views/userconfirmed/user_confirmed_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -102,6 +101,7 @@ class BackButton extends ViewModelWidget<UserConfirmedViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class Scroll extends ViewModelWidget<UserConfirmedViewModel> {
   FinalObject finalObject;
   ConfirmModel confidentAnimal;
@@ -191,6 +191,7 @@ class SpoorIdentification extends ViewModelWidget<UserConfirmedViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class IconButtons extends ViewModelWidget<UserConfirmedViewModel> {
   IconData iconData;
   String subTitle;

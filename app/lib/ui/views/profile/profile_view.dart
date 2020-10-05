@@ -79,8 +79,8 @@ class ProfileView extends StatelessWidget {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: <Color>[
-                          Color.fromRGBO(33, 78, 125, 1),
-                          Color.fromRGBO(80, 156, 208, 1)
+                          Color.fromRGBO(58, 119, 168, 1),
+                          Color.fromRGBO(77, 151, 203, 1)
                         ])),
                   ),
                 ),
@@ -164,8 +164,8 @@ class ProfileView extends StatelessWidget {
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                     colors: <Color>[
-                                  Color.fromRGBO(33, 78, 125, 1),
-                                  Color.fromRGBO(80, 156, 208, 1)
+                                  Color.fromRGBO(58, 119, 168, 1),
+                                  Color.fromRGBO(77, 151, 203, 1)
                                 ])),
                           ),
                         ),
@@ -196,6 +196,7 @@ class ProfileView extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class IconButtons extends ViewModelWidget<ProfileViewModel> {
   IconData iconData;
   String subTitle;
@@ -232,6 +233,7 @@ class IconButtons extends ViewModelWidget<ProfileViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class IconBuilder extends ViewModelWidget<ProfileViewModel> {
   String type;
   IconData icon;
@@ -255,6 +257,7 @@ class IconBuilder extends ViewModelWidget<ProfileViewModel> {
 }
 
 //========================== APPBAR ICONS =======================
+// ignore: must_be_immutable
 class ProfileViewList extends ViewModelWidget<ProfileViewModel> {
   TempObject tempObject;
   List<ProfileModel> animalList;
@@ -327,8 +330,8 @@ class ProfileViewList extends ViewModelWidget<ProfileViewModel> {
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                         colors: <Color>[
-                                          Color.fromRGBO(33, 78, 125, 1),
-                                          Color.fromRGBO(80, 156, 208, 1)
+                                          Color.fromRGBO(58, 119, 168, 1),
+                                          Color.fromRGBO(77, 151, 203, 1)
                                         ]),
                                     borderRadius: BorderRadius.circular(10)),
                                 child:
@@ -373,7 +376,8 @@ class ProfileViewDelegate implements SliverPersistentHeaderDelegate {
   }
 
   @override
-  bool shouldRed(BuildContext context, legate) {
+  // ignore: override_on_non_overriding_member
+  Future<bool> shouldRed(BuildContext context, legate) async {
     return true;
   }
 
@@ -383,10 +387,12 @@ class ProfileViewDelegate implements SliverPersistentHeaderDelegate {
   }
 
   @override
+  // ignore: todo
   // TODO: implement snapConfiguration
   FloatingHeaderSnapConfiguration get snapConfiguration => null;
 
   @override
+  // ignore: todo
   // TODO: implement stretchConfiguration
   OverScrollHeaderStretchConfiguration get stretchConfiguration => null;
 }
@@ -405,7 +411,7 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 0, 0, 0),
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/ERP_Tech.png'))),

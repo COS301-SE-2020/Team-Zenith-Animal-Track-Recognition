@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
+// ignore: must_be_immutable
 class GalleryView extends StatelessWidget {
   GalleryModel galleryModel;
   GalleryView(this.galleryModel);
@@ -78,8 +79,8 @@ class GalleryView extends StatelessWidget {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: <Color>[
-                        Color.fromRGBO(33, 78, 125, 1),
-                        Color.fromRGBO(80, 156, 208, 1)
+                        Color.fromRGBO(58, 119, 168, 1),
+                        Color.fromRGBO(77, 151, 203, 1)
                       ])),
                 ),
               ),
@@ -156,8 +157,8 @@ class GalleryView extends StatelessWidget {
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                     colors: <Color>[
-                                  Color.fromRGBO(33, 78, 125, 1),
-                                  Color.fromRGBO(80, 156, 208, 1)
+                                  Color.fromRGBO(58, 119, 168, 1),
+                                  Color.fromRGBO(77, 151, 203, 1)
                                 ])),
                           ),
                           bottom: TabBar(
@@ -192,33 +193,98 @@ class GalleryView extends StatelessWidget {
 List<Widget> getBodyWidgets(int len, var data) {
   List<Widget> widget = new List();
   for (int i = 0; i < len; i++) {
-    widget.add(getWidget(data[i]));
+    widget.add(GridItem(
+      animalTabList: data[i],
+    ));
   }
   return widget;
 }
 
-Widget getWidget(var animalTabList) {
-  return GridView.count(
-    crossAxisCount: 2,
-    children: List.generate(animalTabList.length, (index) {
-      return Container(
-        alignment: Alignment.center,
-        margin: new EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(animalTabList[index]),
-            fit: BoxFit.fill,
-          ),
-          color: Colors.grey,
-          borderRadius: BorderRadius.circular(15),
-        ),
-      );
-    }),
-  );
+// ignore: must_be_immutable
+class GridItem extends ViewModelWidget<GalleryViewModel> {
+  var animalTabList;
+  GridItem({this.animalTabList}) : super(reactive: true);
+  @override
+  Widget build(BuildContext context, GalleryViewModel model) {
+    return model.selected
+        ? GestureDetector(
+            onTap: () {
+              model.selectedVal(!model.selected, null);
+            },
+            child: Stack(
+              children: [
+                GridView.count(
+                  crossAxisCount: 2,
+                  children: List.generate(animalTabList.length, (index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      margin: new EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(animalTabList[index]),
+                          fit: BoxFit.fill,
+                        ),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    );
+                  }),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.black54,
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: new EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(model.image),
+                        fit: BoxFit.fill,
+                      ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    height: 300,
+                    width: 300,
+                  ),
+                ),
+              ],
+            ),
+          )
+        : GridView.count(
+            crossAxisCount: 2,
+            children: List.generate(animalTabList.length, (index) {
+              return GestureDetector(
+                onTap: () {
+                  model.selectedVal(!model.selected, animalTabList[index]);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: new EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(animalTabList[index]),
+                      fit: BoxFit.fill,
+                    ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              );
+            }),
+          );
+  }
 }
+
 //========================== VIEW BODY =======================
 
 //========================== APPBAR ICONS =======================
+// ignore: must_be_immutable
 class IconBuilder extends ViewModelWidget<GalleryViewModel> {
   IconData icon;
   IconBuilder({Key key, this.icon}) : super(reactive: true);
@@ -252,7 +318,7 @@ class NavDrawer extends ViewModelWidget<GalleryViewModel> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 0, 0, 0),
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/ERP_Tech.png'))),

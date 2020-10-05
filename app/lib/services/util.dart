@@ -12,7 +12,6 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:progress_indicators/progress_indicators.dart';
 
 import 'api/graphQL.dart';
 
@@ -358,7 +357,7 @@ Widget progressIndicator() {
       key: Key('progressIndicator'),
       color: Colors.white,
       child: Center(
-        child: Image.asset('assets/images/loading.gif'),
+        child: Image.asset('assets/images/loading4.gif'),
       ));
 }
 
@@ -423,7 +422,7 @@ Widget textColumn(String name, String time, String species, String location,
                     flex: 1,
                     child: Container(
                       color: Colors.white,
-                      child: text18LeftBoldBlack(name),
+                      child: text16LeftBoldBlack(name),
                     )),
                 Expanded(
                     flex: 1,

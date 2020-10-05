@@ -7,6 +7,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class UploadView extends StatelessWidget {
   const UploadView({Key key}) : super(key: key);
@@ -83,8 +84,8 @@ class UploadView extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: <Color>[
-                    Color.fromRGBO(33, 78, 125, 1),
-                    Color.fromRGBO(80, 156, 208, 1)
+                    Color.fromRGBO(58, 119, 168, 1),
+                    Color.fromRGBO(77, 151, 203, 1)
                   ])),
             ),
             title: text22LeftBoldWhite(
@@ -135,6 +136,7 @@ class SliverBody extends ViewModelWidget<UploadViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class IconBuilder extends ViewModelWidget<UploadViewModel> {
   String type;
   IconData icon;
@@ -171,7 +173,7 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 0, 0, 0),
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('assets/images/ERP_Tech.png'))),
@@ -249,7 +251,7 @@ class GalleryButton extends ViewModelWidget<UploadViewModel> {
                     margin: new EdgeInsets.only(bottom: 10),
                     child: Row(
                       children: <Widget>[
-                        Expanded(flex: 1, child: leftBlock),
+                        Expanded(flex: 1, child: leftBlock2),
                         Expanded(
                             flex: 5, child: text14LeftBoldGrey("From Gallery")),
                         Expanded(flex: 1, child: rightIcon),
@@ -309,6 +311,7 @@ class GalleryButton extends ViewModelWidget<UploadViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class CameraButton extends ViewModelWidget<UploadViewModel> {
   String caption;
   CameraButton({Key key, this.caption}) : super(reactive: true);
@@ -382,19 +385,21 @@ class CameraButton extends ViewModelWidget<UploadViewModel> {
   }
 }
 
+// ignore: must_be_immutable
 class TagBox extends HookViewModelWidget<UploadViewModel> {
   TagBox({
     Key key,
   }) : super(reactive: true);
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
     final TextEditingController _typeAheadController = TextEditingController();
-    return Column(
+    return Row(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
+        Expanded(flex: 1, child: Icon(AntDesign.tag)),
         Expanded(
+          flex: 8,
           child: TypeAheadFormField(
             textFieldConfiguration: TextFieldConfiguration(
                 controller: _typeAheadController,
@@ -464,10 +469,12 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
   @override
   Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
     final TextEditingController _typeAheadController = TextEditingController();
-    return Column(
+    return Row(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
+        Expanded(flex: 1, child: Icon(Zocial.evernote)),
         Expanded(
+          flex: 8,
           child: TypeAheadFormField(
             textFieldConfiguration: TextFieldConfiguration(
                 controller: _typeAheadController,
@@ -697,7 +704,7 @@ class UploadButton extends ViewModelWidget<UploadViewModel> {
       width: 80,
       child: RaisedButton(
           child: text16CenterBoldWhite("UPLOAD TRACK"),
-          color: Color.fromRGBO(33, 78, 125, 1),
+          color: Color.fromRGBO(61, 122, 172, 1),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.all(10),
@@ -806,18 +813,14 @@ Widget rightIcon = new Container(
 Widget leftBlock = new Container(
   alignment: Alignment.center,
   margin: new EdgeInsets.only(right: 5, left: 5),
-  padding: new EdgeInsets.all(5),
-  decoration: BoxDecoration(
-    gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: <Color>[
-          Color.fromRGBO(33, 78, 125, 1),
-          Color.fromRGBO(80, 156, 208, 1)
-        ]),
-    borderRadius: BorderRadius.circular(10),
-  ),
-  height: 30,
-  width: 30,
+  // height: 20,
+  // width: 10,
+  child: Icon(Icons.add_a_photo),
+);
+
+Widget leftBlock2 = new Container(
+  alignment: Alignment.center,
+  margin: new EdgeInsets.only(right: 5, left: 5),
+  child: Icon(MaterialIcons.photo_library),
 );
 //================================== TEXT TEMPLATES =============================
