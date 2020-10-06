@@ -2904,48 +2904,29 @@ function AIIterface(ImgID, base64imge) {
     saveBase64FileSy(base64imge, filename)
     const pythonProcess = spawnSync('python', ["AIRun.py", filename]);
     let temp = pythonProcess.output.toString()
-
-    var strPos = temp.indexOf("tf.Tensor(");
-    var endpos = temp.indexOf("dtype=string)");
-    temp = temp.substring(strPos + 13, endpos - 15)
-    arrs = temp.split(' ')
-    arri = []
-
-
-
-    for (let i = 0; i < arrs.length; i++) {
-        arrs[i] = arrs[i].trim()
-        arri.push(parseFloat(arrs[i].substring(2, arrs[i].length - 1)))
-    }
-    animalData.forEach(element => {
-
-
-        {
-            let newPM = {
-                animal: element.animalID,
-                confidence: parseFloat((Math.random() * (0.120 - 0.020)).toFixed(4))
-            }
-            if (element.animalID == 11) {
-                newPM.confidence = arri[1]
-            }
-            if (element.animalID == 10) {
-                newPM.confidence = arri[3]
-            }
-            if (element.animalID == 7) {
-                newPM.confidence = arri[5]
-            }
-            if (element.animalID == 12) {
-                newPM.confidence = arri[6]
-            }
-            if (element.animalID == 9) {
-                newPM.confidence = arri[8]
-            }
-            if (element.animalID == 15) {
-                newPM.confidence = arri[2]
-            }
-            potentialMatches.push(newPM)
+    var strPos = temp.indexOf("[[");
+    var endpos = temp.indexOf("]]");
+    temp = temp.substring(strPos+2 , endpos )
+    temp=temp.split("], [")
+    let arr=[]
+    temp.forEach(element => {
+        temp2= element.split(",")
+        temp2[0]=temp2[0].replace("'","").replace("'","")
+        temp2[1]=parseFloat(temp2[1])
+        console.log(temp2)
+        animalID=_.find(animalData,{
+            classification:temp2[0]
+        })
+        let newPM = {
+            animal: animalID.animalID,
+            confidence: temp2[1]
         }
-    }); {
+        potentialMatches.push(newPM)
+    });
+
+
+
+    {
         const fs = require('fs')
 
         const path = './' + filename
@@ -2965,16 +2946,14 @@ function AIIterface(ImgID, base64imge) {
 
 function AIIterfaceZero(animalID) {
     potentialMatches = []
-    for (let i = 0; i < animalData.length; i++) {
+    animalData.forEach(element => {
         let newPM = {
-            animal: i,
-            confidence: parseFloat(0.01)
+            animal: element.animalID,
+            confidence: 0.01
         }
-        if (i.toString() == animalID.toString()) {
-            newPM.confidence = 1.0
-        }
-        potentialMatches.push(newPM)
-    }
+        if (newPM.animal=animalID)
+            newPM.confidence=1.0
+    });
     return potentialMatches;
 
 

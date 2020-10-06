@@ -12,10 +12,10 @@ from tensorflow.keras.layers import Dense, Conv2D, Flatten, Dropout, MaxPooling2
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import datasets, layers, models
 
-redistabut=True
-redistabut=not(redistabut)# comint out to matane files in posison
-if(redistabut):
-    import fileSplit
+# redistabut=True
+# redistabut=not(redistabut)# comint out to matane files in posison
+# if(redistabut):
+#     import fileSplit
 
 
 today = datetime.datetime.now()
@@ -50,7 +50,7 @@ class Unbuffered:
 sys.stdout=Unbuffered(sys.stdout)
 cwd = os.getcwd()
 
-PATH = os.path.join(cwd, 'TrainingData350gray')
+PATH = os.path.join(cwd, 'Training')
 print(PATH)
 train_dir = os.path.join(PATH, 'train')
 validation_dir = os.path.join(PATH, 'validation')
@@ -75,8 +75,8 @@ MLstep=0
 Tgroth=0
 Tepochs=1
 
-MaxEpochs=10
-
+MaxEpochs=20
+MinEpochs=10
 Tbatch_size = 32
 TIMG_HEIGHT = 500
 TIMG_WIDTH = 500
@@ -96,7 +96,7 @@ def plotImages(images_arr):
             ax.axis('off')
         plt.tight_layout()
         plt.show()
-def trane(groth=0,batch_size = 32,IMG_HEIGHT = 350,IMG_WIDTH = 350,MaxEpochs=10,PATH=PATH):
+def trane(groth=0,batch_size = Tbatch_size,IMG_HEIGHT = TIMG_HEIGHT,IMG_WIDTH = TIMG_WIDTH,MaxEpochs=MaxEpochs,MinEpochs=MinEpochs,PATH=PATH):
     tryningAcaracy=0.0
     CurintEpoch=0
     train_image_generator = ImageDataGenerator(rescale=1./255,
@@ -119,12 +119,12 @@ def trane(groth=0,batch_size = 32,IMG_HEIGHT = 350,IMG_WIDTH = 350,MaxEpochs=10,
     # print(sample_training_images[0].shape)
     # plotImages(sample_training_images[:5])
     model = Sequential([
-        Conv2D(32+groth, 3, padding='same', activation='relu',
+        Conv2D(64+groth, 3, padding='same', activation='relu',
             input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
         MaxPooling2D(),
-        Conv2D(64+groth, 3, padding='same', activation='relu'),
-        MaxPooling2D(),
         Conv2D(128+groth, 3, padding='same', activation='relu'),
+        MaxPooling2D(),
+        Conv2D(256+groth, 3, padding='same', activation='relu'),
         MaxPooling2D(),
         Flatten(),
         Dense(512, activation='relu'),
@@ -138,7 +138,7 @@ def trane(groth=0,batch_size = 32,IMG_HEIGHT = 350,IMG_WIDTH = 350,MaxEpochs=10,
 
     testVal=0.0
 
-    while(testVal>=tryningAcaracy and CurintEpoch<MaxEpochs ):
+    while((testVal>=tryningAcaracy and CurintEpoch<MaxEpochs )or (CurintEpoch<MinEpochs)):
         history = model.fit(
             train_data_gen,
             steps_per_epoch=total_train // batch_size,
