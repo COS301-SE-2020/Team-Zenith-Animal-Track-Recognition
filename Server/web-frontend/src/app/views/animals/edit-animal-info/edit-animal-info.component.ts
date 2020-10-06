@@ -1,8 +1,11 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import { EMPTY } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-edit-animal-info',
@@ -20,6 +23,7 @@ export class EditAnimalInfoComponent implements OnInit {
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private http: HttpClient,
+		private snackBar: MatSnackBar,
 		private formBuilder: FormBuilder,
 		public dialogRef: MatDialogRef<EditAnimalInfoComponent>) { }
 
@@ -113,47 +117,47 @@ export class EditAnimalInfoComponent implements OnInit {
 		return this.editAnimalForm.controls;
 	}
 	validationMsg(formCtrl: any, formCtrlName: string) {
-			switch (formCtrlName) {
-				case "commonName":
-					return this.editAnimal.commonName.hasError('pattern') ? 'Please only enter letters' : '';
+		switch (formCtrlName) {
+			case "commonName":
+				return this.editAnimal.commonName.hasError('pattern') ? 'Please only enter letters' : '';
 				break;
-				case "classification":
-					return this.editAnimal.classification.hasError('pattern') ? 'Please only enter letters' : '';
+			case "classification":
+				return this.editAnimal.classification.hasError('pattern') ? 'Please only enter letters' : '';
 				break;
-				case "heightFLB":
-					return this.editAnimal.heightFLB.hasError('pattern') ? 'Please only enter digits' : '';
-				break;				
-				case "heightFUB":
-					return this.editAnimal.heightFUB.hasError('pattern') ? 'Please only enter digits' : '';
+			case "heightFLB":
+				return this.editAnimal.heightFLB.hasError('pattern') ? 'Please only enter digits' : '';
 				break;
-				case "heightMLB":
-					return this.editAnimal.heightMLB.hasError('pattern') ? 'Please only enter digits' : '';
-				break;	
-				case "heightMUB":
-					return this.editAnimal.heightMUB.hasError('pattern') ? 'Please only enter digits' : '';
-				break;	
-				case "weightFLB":
-					return this.editAnimal.weightFLB.hasError('pattern') ? 'Please only enter digits' : '';
+			case "heightFUB":
+				return this.editAnimal.heightFUB.hasError('pattern') ? 'Please only enter digits' : '';
 				break;
-				case "weightFUB":
-					return this.editAnimal.weightFUB.hasError('pattern') ? 'Please only enter digits' : '';
+			case "heightMLB":
+				return this.editAnimal.heightMLB.hasError('pattern') ? 'Please only enter digits' : '';
 				break;
-				case "weightMLB":
-					return this.editAnimal.weightMLB.hasError('pattern') ? 'Please only enter digits' : '';
-				break;	
-				case "weightMUB":
-					return this.editAnimal.weightMUB.hasError('pattern') ? 'Please only enter digits' : '';
+			case "heightMUB":
+				return this.editAnimal.heightMUB.hasError('pattern') ? 'Please only enter digits' : '';
 				break;
-			}
+			case "weightFLB":
+				return this.editAnimal.weightFLB.hasError('pattern') ? 'Please only enter digits' : '';
+				break;
+			case "weightFUB":
+				return this.editAnimal.weightFUB.hasError('pattern') ? 'Please only enter digits' : '';
+				break;
+			case "weightMLB":
+				return this.editAnimal.weightMLB.hasError('pattern') ? 'Please only enter digits' : '';
+				break;
+			case "weightMUB":
+				return this.editAnimal.weightMUB.hasError('pattern') ? 'Please only enter digits' : '';
+				break;
 		}
+	}
 
 	onSubmit(test: boolean) {
 		if (false === test) {
-			
+
 			if (this.editAnimalForm.invalid) {
 				return;
 			}
-			
+
 			let heightF, heightM, weightF, weightM;
 			heightF = this.editAnimal.heightFLB.value + "-" + this.editAnimal.heightFUB.value;
 			heightM = this.editAnimal.heightMLB.value + "-" + this.editAnimal.heightMUB.value;
@@ -186,6 +190,14 @@ export class EditAnimalInfoComponent implements OnInit {
 				'",typicalThreatLevelM:"' + encodeURIComponent(mt) +
 				'",typicalThreatLevelF:"' + encodeURIComponent(ft) +
 				'"){animalID}}', '')
+				.pipe(
+					retry(3),
+					catchError(() => {
+						this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+						this.stopLoader();
+						return EMPTY;
+					})
+				)
 				.subscribe({
 					next: data => this.dialogRef.close('success'),
 					error: error => this.dialogRef.close('error')
@@ -204,14 +216,14 @@ export class EditAnimalInfoComponent implements OnInit {
 	}
 
 	closeDialog() {
-		if(this.test == true){
+		if (this.test == true) {
 			return;
 		}
 		this.dialogRef.close("cancel");
 	}
 
 	attachProgressbar() {
-		if(this.test == true){
+		if (this.test == true) {
 			return;
 		}
 		//Append progress bar to dialog
@@ -222,14 +234,14 @@ export class EditAnimalInfoComponent implements OnInit {
 
 	//Loader - Progress bar
 	startLoader() {
-		if(this.test == true){
+		if (this.test == true) {
 			return;
 		}
 		this.attachProgressbar();
 		document.getElementById("dialog-progressbar-container").style.visibility = "visible";
 	}
 	stopLoader() {
-		if(this.test == true){
+		if (this.test == true) {
 			return;
 		}
 		document.getElementById("dialog-progressbar-container").style.visibility = "hidden";

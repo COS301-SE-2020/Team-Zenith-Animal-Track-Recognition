@@ -8,6 +8,8 @@ import { DeleteRangerComponent } from './../rangers/delete-ranger/delete-ranger.
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TRACKS_QUERY_STRING } from 'src/app/models/data';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
+import { EMPTY } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 
 
 
@@ -95,6 +97,14 @@ export class RangerProfileComponent implements OnInit {
 
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'",rangerID:"' + this.userToken + '"){rangerID,accessLevel,eMail,firstName,lastName,phoneNumber}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -104,6 +114,14 @@ export class RangerProfileComponent implements OnInit {
 
 		this.http.get<any>(TRACKS_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'",ranger:"' + this.userToken + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -111,7 +129,7 @@ export class RangerProfileComponent implements OnInit {
 				this.filteredListArray = temp[0];
 				//Add 'time ago' field to each track
 				this.timeToString();
-			//	this.createTagList();
+				//	this.createTagList();
 
 				//Only display a certain number of tracks per sidenav page
 				this.displayedTracks = this.trackIdentifications.slice(0, 25);
@@ -120,7 +138,7 @@ export class RangerProfileComponent implements OnInit {
 				//this.filterRanger();
 			});
 	}
-	
+
 	filterRanger() {
 		this.filteredListArray = [];
 
@@ -205,7 +223,7 @@ export class RangerProfileComponent implements OnInit {
 			let temp = element.tag.split(",");
 			element.dateObj = new Date(temp.year, temp.month, temp.day, temp.hour, temp.min, temp.second);
 		});
-	}	
+	}
 	timeToString() {
 		this.trackIdentifications.forEach(element => {
 			let temp = element.dateAndTime;

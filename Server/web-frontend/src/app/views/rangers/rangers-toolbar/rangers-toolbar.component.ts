@@ -21,10 +21,13 @@ export class RangersToolbarComponent implements OnInit {
 	currentAlphabet: any;
 	sorted: string;
 	display: boolean = true;
+	isAdmin: boolean = false;
 
 	constructor(private router: Router, public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { }
 
-	ngOnInit(): void { }
+	ngOnInit(): void {
+		this.isAdmin = Number.parseInt(JSON.parse(localStorage.getItem('currentToken'))['level']) > 3;
+	}
 
 	openAddRangerDialog() {
 		const dialogConfig = new MatDialogConfig();
@@ -75,11 +78,11 @@ export class RangersToolbarComponent implements OnInit {
 
 	sort(selection: string) {
 		if (!this.rangers || this.rangers.length == 0) {
-			this.snackBar.open('There is no data to sort. Please add a ranger and try again.', "Dismiss", { duration: 5000, });			
+			this.snackBar.open('There is no data to sort. Please add a ranger and try again.', "Dismiss", { duration: 5000, });
 			return;
 		}
 		if (this.rangers.length == 1) {
-			this.snackBar.open('Sorting requires two or more rangers.', "Dismiss", { duration: 5000, });			
+			this.snackBar.open('Sorting requires two or more rangers.', "Dismiss", { duration: 5000, });
 			return;
 		}
 		this.sortOptionOnChange.emit(selection);

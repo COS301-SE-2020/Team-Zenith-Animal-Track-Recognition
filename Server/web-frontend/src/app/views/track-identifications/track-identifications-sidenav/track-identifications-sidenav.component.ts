@@ -24,7 +24,7 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 		tracksService.activeTrack$.subscribe(
 			track => {
 				this.activeTrack = track;
-		}
+			}
 		);
 		tracksService.identifications.subscribe(
 			trackList => {
@@ -40,16 +40,16 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 		);	
 		trackViewNavService.trackSidenavTab$.subscribe(
 			tab => {
-				switch(tab) {
+				switch (tab) {
 					case "Track":
 						this.trackMatTab.selectedIndex = 2;
-					break;
+						break;
 					case "Tracklist":
 						this.trackMatTab.selectedIndex = 1;
-					break;
+						break;
 					case "Heatmap":
 						this.trackMatTab.selectedIndex = 0;
-					break;
+						break;
 				}
 			}
 		);

@@ -17,10 +17,10 @@
                     <button mat-menu-item (click)="viewIdentifications(ranger.firstName, ranger.lastName)">
 						<span>View Identifications</span>
 					</button>
-                    <button mat-menu-item (click)="openEditPerms()">
+                    <button *ngIf="isAdmin" mat-menu-item (click)="openEditPerms()">
 						<span>Change Level</span>
 					</button>
-                    <button mat-menu-item (click)="openDeleteRangerDialog(ranger.rangerID)">
+                    <button *ngIf="isAdmin" mat-menu-item (click)="openDeleteRangerDialog(ranger.rangerID)">
 						<span>Delete Ranger</span>
 					</button>
                 </mat-menu>

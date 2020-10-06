@@ -1,8 +1,11 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatAccordion } from '@angular/material/expansion';
+import { EMPTY } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 
 export interface Permissions {
 	permission: string;
@@ -36,7 +39,9 @@ export class RangerPermissionsComponent implements OnInit {
 	rangerPermissionsColumns: string[] = ['Ranger', 'Level 1 Ranger', 'Level 2 Ranger', 'Level 3 Ranger', 'Assigned Level'];
 	rangerPermissionsDataSource: any;
 
-	constructor(private router: Router, private http: HttpClient) { }
+	constructor(private router: Router,
+		private snackBar: MatSnackBar,
+		private http: HttpClient) { }
 
 	ngOnInit(): void {
 		this.startLoader();
@@ -65,6 +70,14 @@ export class RangerPermissionsComponent implements OnInit {
 		//Replace Permissions with appropiate radio button
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){rangerID,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -120,7 +133,16 @@ export class RangerPermissionsComponent implements OnInit {
 		let temp = this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateUser('
 			+ 'tokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",'
 			+ 'rangerID:"' + tkn + '",'
-			+ 'accessLevel:"' + lvl + '"){lastName,rangerID}}', '').subscribe((data: any[]) => {
+			+ 'accessLevel:"' + lvl + '"){lastName,rangerID}}', '')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
+			.subscribe((data: any[]) => {
 				let t = [];
 				t = Object.values(Object.values(data)[0]);
 			});

@@ -1,6 +1,6 @@
 print("redistabuting files")
 
-dataset="Training Data 350"
+dataset="TrainingData350gray"
 import random
 
 import os 

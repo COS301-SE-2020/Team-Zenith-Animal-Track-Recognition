@@ -25,6 +25,8 @@ export class OverviewComponent implements OnInit {
     document.getElementById("overview-route").classList.add("activeRoute");
     this.mostTracked = { mosotTrakedRanger: '' };
     this.latest = { ranger: { firstName: '', lastName: '' }, animal: { commonName: '' } };
+    this.leastIdentified = { commonName: ''};
+    this.animalPercentages = { commonName: ''};
 
     this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
       '"){rangerID,password,accessLevel,eMail,firstName,lastName,phoneNumber}}')

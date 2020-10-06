@@ -1,3 +1,4 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
@@ -5,6 +6,8 @@ import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dial
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { EMPTY } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-add-ranger',
@@ -20,17 +23,21 @@ export class AddRangerComponent implements OnInit {
 	maxDate = new Date(new Date().getFullYear() - this.minRangerAge, new Date().getMonth(), new Date().getDay());
 
 	hide = true;
-	constructor(private formBuilder: FormBuilder, private router: Router, private http: HttpClient, public dialogRef: MatDialogRef<AddRangerComponent>) { }
+	constructor(private formBuilder: FormBuilder,
+		private router: Router,
+		private snackBar: MatSnackBar,
+		private http: HttpClient,
+		public dialogRef: MatDialogRef<AddRangerComponent>) { }
 
 	ngOnInit(): void {
 		this.addUserForm = this.formBuilder.group({
 			firstName: ['', [Validators.required, Validators.pattern(/^[a-z ,.'-]+$/i)]],
 			lastName: ['', [Validators.required, Validators.pattern(/^[a-z ,.'-]+$/i)]],
 			email: ['', [Validators.required, Validators.email]],
-			phoneNumber: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(15), Validators.pattern(/^[0-9]+$/)]],
+			phoneNumber: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(15), Validators.pattern(/^[0-9, ()+-]+$/)]],
 			password: ['', Validators.required],
 			dob: ['', Validators.required]
-		});		
+		});
 		document.getElementById('add-ranger-dialog').style.overflow = "hidden";
 	}
 
@@ -43,21 +50,21 @@ export class AddRangerComponent implements OnInit {
 		switch (formCtrlName) {
 			case "firstName":
 				return this.addUser.firstName.hasError('pattern') ? 'Please only enter letters' : '';
-			break;
+				break;
 			case "lastName":
 				return this.addUser.lastName.hasError('pattern') ? 'Please only enter letters' : '';
-			break;
+				break;
 			case "email":
 				return this.addUser.email.hasError('email') ? 'Please enter a valid email address i.e example@domain.com' : '';
-			break;
+				break;
 			case "phoneNumber":
-				if(this.addUser.phoneNumber.hasError('minlength'))
-					return 'Phone number can not be less than 7 digits';		
-				if(this.addUser.phoneNumber.hasError('maxlength'))
-					return 'Phone number can not be more than 15 digits';				
-				if(this.addUser.phoneNumber.hasError('pattern'))
+				if (this.addUser.phoneNumber.hasError('minlength'))
+					return 'Phone number can not be less than 7 digits';
+				if (this.addUser.phoneNumber.hasError('maxlength'))
+					return 'Phone number can not be more than 15 digits';
+				if (this.addUser.phoneNumber.hasError('pattern'))
 					return 'Phone number can only contain digits';
-			break;
+				break;
 		}
 	}
 
@@ -76,18 +83,25 @@ export class AddRangerComponent implements OnInit {
 			'",lastName:"' + encodeURIComponent(this.addUser.lastName.value) + '",password:"' + encodeURIComponent(this.addUser.password.value) +
 			'",token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",accessLevel:"1",eMail:"' +
 			encodeURIComponent(this.addUser.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}', '')
-			.subscribe({ 
-				next: data => this.dialogRef.close("success"), 
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
+			.subscribe({
+				next: data => this.dialogRef.close("success"),
 				error: error => this.dialogRef.close("error")
 			});
 	}
 	closeDialog() {
 		this.dialogRef.close("cancel");
 	}
-	
-	
-	attachProgressbar()
-	{
+
+
+	attachProgressbar() {
 		//Append progress bar to dialog
 		let matDialog = document.getElementById('add-ranger-dialog');
 		let progressBar = document.getElementById("dialog-progressbar-container");

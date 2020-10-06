@@ -7,6 +7,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatOption } from '@angular/material/core';
 import { TracksService } from './../../../services/tracks.service';
 import { TrackViewNavigationService } from './../../../services/track-view-navigation.service';
+import { catchError, retry } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
 	selector: 'app-track-identifications-toolbar',
@@ -38,6 +40,14 @@ export class TrackIdentificationsToolbarComponent implements OnInit {
 		//Replace Groups with appropiate radio button
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animals(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){commonName}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(Object.values(data)[0])[0]);
@@ -49,6 +59,14 @@ export class TrackIdentificationsToolbarComponent implements OnInit {
 
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{groups(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){groupName}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(Object.values(data)[0])[0]);
@@ -60,6 +78,14 @@ export class TrackIdentificationsToolbarComponent implements OnInit {
 
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{users(tokenIn:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'"){firstName, lastName}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(Object.values(data)[0])[0]);

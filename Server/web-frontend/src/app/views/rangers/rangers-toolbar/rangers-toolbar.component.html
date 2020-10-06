@@ -13,7 +13,7 @@
             <mat-option value="surname" (click)="sort('bySurname')">Surname</mat-option>
             <mat-option value="level" (click)="sort('byLevel')">Level</mat-option>
         </mat-select>
-        <mat-select id="rangers-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
+        <mat-select *ngIf="isAdmin" id="rangers-toolbar-actions-btn" class="fontM" placeholder="Actions" disableOptionCentering>
             <mat-option (click)="openAddRangerDialog()">Add New Ranger</mat-option>
             <mat-option (click)='route("rangers/permissions")'>Manage Levels</mat-option>
         </mat-select>

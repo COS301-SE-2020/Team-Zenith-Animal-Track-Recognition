@@ -3,7 +3,10 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
-import {MatProgressBarModule} from '@angular/material/progress-bar'; 
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { catchError, retry } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-edit-ranger-info',
@@ -11,23 +14,24 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 	styleUrls: ['./edit-ranger-info.component.css']
 })
 export class EditRangerInfoComponent implements OnInit {
+	[x: string]: any;
 	editUserForm: FormGroup;
 	loading = false;
 	submitted = false;
-	
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<EditRangerInfoComponent>) { }
+
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private snackBar: MatSnackBar, private http: HttpClient, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<EditRangerInfoComponent>) { }
 
 	ngOnInit(): void {
 		this.editUserForm = this.formBuilder.group({
 			firstName: [this.data.firstName, [Validators.required, Validators.pattern(/^[a-z ,.'-]+$/i)]],
 			lastName: [this.data.lastName, [Validators.required, Validators.pattern(/^[a-z ,.'-]+$/i)]],
 			email: [this.data.email, [Validators.required, Validators.email]],
-			phoneNumber: [this.data.phoneNumber, [Validators.required, Validators.minLength(7), Validators.maxLength(15), Validators.pattern(/^[0-9]+$/)]]
+			phoneNumber: [this.data.phoneNumber, [Validators.required, Validators.minLength(7), Validators.maxLength(15), Validators.pattern(/^[0-9, +-]+$/)]]
 		});
 		document.getElementById('edit-ranger-dialog').style.overflow = "hidden";
 	}
 
-//Form controls and error handling
+	//Form controls and error handling
 	get editUser() { return this.editUserForm.controls; }
 	validationMsg(formCtrl: any, formCtrlName: string) {
 		if (formCtrl.hasError('required')) {
@@ -36,21 +40,21 @@ export class EditRangerInfoComponent implements OnInit {
 		switch (formCtrlName) {
 			case "firstName":
 				return this.editUser.firstName.hasError('pattern') ? 'Please only enter letters' : '';
-			break;
+				break;
 			case "lastName":
 				return this.editUser.lastName.hasError('pattern') ? 'Please only enter letters' : '';
-			break;
+				break;
 			case "email":
 				return this.editUser.email.hasError('email') ? 'Please enter a valid email address i.e example@domain.com' : '';
-			break;
+				break;
 			case "phoneNumber":
-				if(this.editUser.phoneNumber.hasError('minlength'))
-					return 'Phone number can not be less than 7 digits';		
-				if(this.editUser.phoneNumber.hasError('maxlength'))
-					return 'Phone number can not be more than 15 digits';				
-				if(this.editUser.phoneNumber.hasError('pattern'))
+				if (this.editUser.phoneNumber.hasError('minlength'))
+					return 'Phone number can not be less than 7 digits';
+				if (this.editUser.phoneNumber.hasError('maxlength'))
+					return 'Phone number can not be more than 15 digits';
+				if (this.editUser.phoneNumber.hasError('pattern'))
 					return 'Phone number can only contain digits';
-			break;
+				break;
 		}
 	}
 
@@ -65,17 +69,24 @@ export class EditRangerInfoComponent implements OnInit {
 		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateUser(' + 'tokenSend:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'",' + 'rangerID:"' + this.data.rangerID + '",' + 'eMail:"' + this.editUser.email.value + '",' + 'lastName:"' + this.editUser.lastName.value + '",' +
 			'phoneNumber:"' + this.editUser.phoneNumber.value + '",' + 'firstName:"' + this.editUser.firstName.value + '"){lastName,rangerID}}', '')
-			.subscribe({ 
-				next: data => this.dialogRef.close("success"), 
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopLoader();
+					return EMPTY;
+				})
+			)
+			.subscribe({
+				next: data => this.dialogRef.close("success"),
 				error: error => this.dialogRef.close("error")
 			});
 	}
 	closeDialog() {
 		this.dialogRef.close("cancel");
 	}
-	
-	attachProgressbar()
-	{
+
+	attachProgressbar() {
 		//Append progress bar to dialog
 		let matDialog = document.getElementById('edit-ranger-dialog');
 		let progressBar = document.getElementById("dialog-progressbar-container");

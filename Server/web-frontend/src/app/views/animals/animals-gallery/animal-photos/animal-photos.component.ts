@@ -4,10 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AnimalPhotoDetailsComponent } from './animal-photo-details/animal-photo-details.component'; 
+import { AnimalPhotoDetailsComponent } from './animal-photo-details/animal-photo-details.component';
 import { AnimalsService } from './../../../../services/animals.service';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { AddImageComponent } from '../../add-image/add-image.component';
+import { catchError, retry } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
 	selector: 'app-animal-photos',
@@ -45,10 +47,18 @@ export class AnimalPhotosComponent implements OnInit {
 		const classificationQuery = new URLSearchParams(window.location.search);
 		const animal = classificationQuery.get("classification").split("_");
 		this.animalClassi = animal[0] + " " + animal[1];
-		
+
 		//Fetch animal from db
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsByClassification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 			'", classification:"' + this.animalClassi + '"){classification,animalID,commonName,pictures{picturesID, URL, kindOfPicture}}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopTrackGalleryLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -56,19 +66,27 @@ export class AnimalPhotosComponent implements OnInit {
 
 				temp = [];
 				this.animal['pictures'].forEach(element => {
-					if(('' + element['kindOfPicture']).toLowerCase() == 'animal'){
+					if (('' + element['kindOfPicture']).toLowerCase() == 'animal') {
 						temp.push(element);
-					}else{
+					} else {
 						this.tempTracks.push(element);
 					}
 				});
 				this.animal['pictures'] = temp;
 
 				this.stopPhotoGalleryLoader();
-		});
+			});
 		//Fetch all track identifications for a the animal current being viewed
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-			'", classification:"' +  this.animalClassi + '"){spoorIdentificationID,animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}}dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
+			'", classification:"' + this.animalClassi + '"){spoorIdentificationID,animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}}dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},confidence},picture{picturesID,URL,kindOfPicture}}}')
+			.pipe(
+				retry(3),
+				catchError(() => {
+					this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
+					this.stopTrackGalleryLoader();
+					return EMPTY;
+				})
+			)
 			.subscribe((data: any[]) => {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
@@ -77,9 +95,9 @@ export class AnimalPhotosComponent implements OnInit {
 					this.tracksList['pictures'].push(e);
 				});
 				this.stopTrackGalleryLoader();
-		});	
+			});
 	}
-	
+
 	//Functions for animal photo viewing and adding
 	viewAnimalPhotoDetails(photoIndex: number) {
 		//Open AnimalPhotoDetailsComponent and display the selected photo 
@@ -151,7 +169,7 @@ export class AnimalPhotosComponent implements OnInit {
 		let classificationQuery = classification[0] + "_" + classification[1];
 		this.router.navigate(['animals/information'], { queryParams: { classification: classificationQuery } });
 	}
-	
+
 	//Loaders
 	startPhotoGalleryLoader() {
 		if (document.getElementById('animal-photo-gallery-loader') != null)
@@ -160,7 +178,7 @@ export class AnimalPhotosComponent implements OnInit {
 	stopPhotoGalleryLoader() {
 		if (document.getElementById('animal-photo-gallery-loader') != null)
 			document.getElementById('animal-photo-gallery-loader').style.visibility = 'hidden';
-	}	
+	}
 	startTrackGalleryLoader() {
 		if (document.getElementById('animal-track-gallery-loader') != null)
 			document.getElementById('animal-track-gallery-loader').style.visibility = 'visible';

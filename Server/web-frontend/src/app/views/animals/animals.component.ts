@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, IterableDiffers } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EMPTY} from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
@@ -234,7 +234,7 @@ export class AnimalsComponent implements OnInit {
 			var upperBoundAsANumber = Number(upperBoundWeightValue);
 		}
 	}
-	
+
 	//Loader
 	startLoader() {
 		document.getElementById("loader-container").style.visibility = "visible";
