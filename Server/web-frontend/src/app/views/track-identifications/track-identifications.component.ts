@@ -18,8 +18,6 @@ import { TrackViewNavigationService } from './../../services/track-view-navigati
 })
 
 export class TrackIdentificationsComponent implements OnInit {
-
-	//y=-0.001929x^{2}+10.00
 	
 	//Map & Map Marker Variables
 	kruger = { lat: -23.988, lng: 31.554 };
@@ -54,6 +52,7 @@ export class TrackIdentificationsComponent implements OnInit {
     "rgba(255, 252, 0, 1)"];
 	heatmapColour = this.heatmapColourRedGreen;
 	heatmapRadius = 200;
+	heatmapTimeRange = "1 Week";
 	showHeatmap: boolean = false;
 	showHeatmapSettingsBtn: boolean = false;
 
@@ -122,6 +121,12 @@ export class TrackIdentificationsComponent implements OnInit {
 		trackViewNavService.trackHeatmap$.subscribe(
 			state => {
 				this.toggleHeatmap(state);
+			}
+		);
+		//Determines whether the heatmap is currently viewable
+		trackViewNavService.trackHeatmapTimeRange$.subscribe(
+			timeRange => {
+				this.changeHeatmapTimeRange(timeRange);
 			}
 		);
 		//Determine whether the heatmap settings tab is open, closed or simply inactive
@@ -247,7 +252,6 @@ export class TrackIdentificationsComponent implements OnInit {
 		}
 		let animalTrack = new google.maps.Marker({
 			animation: null,
-			draggable: true,
 			icon: markerIcon,
 			map: this.map,
 			position: new google.maps.LatLng(track.location.latitude, track.location.longitude),
@@ -340,16 +344,48 @@ export class TrackIdentificationsComponent implements OnInit {
 			this.heatmap.set("radius", radius);
 		}
 	}
+	changeHeatmapTimeRange(timeRange: string) {
+		this.heatmapTimeRange = timeRange;
+		this.toggleHeatmap("on");
+	}
 	generateHeatmap() {
 		var heatmapData = [];
+		var todaysDate = new Date();
+		let timeRangeNum;
+		//Filter out tracks that do not fall within the time range
+		switch(this.heatmapTimeRange) {
+			case "1 Week":
+				timeRangeNum = todaysDate.setDate(todaysDate.getDate() - 7);
+			break;
+			case "1 Month":
+				timeRangeNum = todaysDate.setMonth(todaysDate.getMonth() - 1);
+			break;
+			case "6 Months":
+				timeRangeNum = todaysDate.setMonth(todaysDate.getMonth() - 6);
+			break;
+			case "1 Year":
+				timeRangeNum = todaysDate.setFullYear(todaysDate.getFullYear() - 1);
+			break;
+		}
+		var timeRange = new Date(timeRangeNum);
+		
 		this.trackIdentifications.forEach(track => {
-			heatmapData.push(new google.maps.LatLng(track.location.latitude, track.location.longitude));		
+				//Apply weightings according to y=-0.001929x^{2}+10.00
+			if (track.dateObj > timeRange) {
+				const timeDiff = Math.abs(timeRange.getTime() - track.dateObj.getTime()) / 1000 / 3600;
+				//console.log("time diff is: " + timeDiff);
+				var trackWeight = (-0.001929 * Math.pow(timeDiff, 2)) + 10.0;
+				//console.log("Track weight is: " + (Math.round(trackWeight * 100) / 100).toFixed(2));
+				heatmapData.push({location: new google.maps.LatLng(track.location.latitude, track.location.longitude), weight: Math.abs(Math.round(trackWeight * 100) / 100).toFixed(2)});		
+			}
 		});
 		return heatmapData;
 	}
 	toggleHeatmap(state: string) {
 		switch(state) {
 			case "on":
+				if (this.heatmap)
+					this.heatmap.setMap(null);
 				var heatmapData = this.generateHeatmap();
 				this.heatmap = new google.maps.visualization.HeatmapLayer({
 					data: heatmapData,

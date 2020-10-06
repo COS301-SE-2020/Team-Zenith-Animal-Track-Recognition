@@ -30,11 +30,11 @@
 				<p>Heatmap Time Range</p>
 			</div>
 			<div class="heatmap-content-container">
-				<mat-button-toggle-group name="heatmap-timerange" value="oneWeek">
-				  <mat-button-toggle value="oneWeek">1 Week</mat-button-toggle>
-				  <mat-button-toggle value="oneMonth">1 Month</mat-button-toggle>
-				  <mat-button-toggle value="sixMonths">6 Months</mat-button-toggle>
-				  <mat-button-toggle value="oneYear">1 Year</mat-button-toggle>
+				<mat-button-toggle-group name="heatmap-timerange" (change)="changeHeatmapTimeRange($event.value)" value="1 Week">
+				  <mat-button-toggle value="1 Week">1 Week</mat-button-toggle>
+				  <mat-button-toggle value="1 Month">1 Month</mat-button-toggle>
+				  <mat-button-toggle value="6 Months">6 Months</mat-button-toggle>
+				  <mat-button-toggle value="1 Year">1 Year</mat-button-toggle>
 				</mat-button-toggle-group>
 			</div>
 		</div>
