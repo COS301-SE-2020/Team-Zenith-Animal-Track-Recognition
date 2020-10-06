@@ -54,7 +54,6 @@ class ConfirmedViewModel extends BaseViewModel {
   }
 
   void reclassify(int index) {
-    print(index);
     _confirmedList.add(_confidentAnimal);
     _confidentAnimal = _confirmedList[index];
     _confirmedList.removeAt(index);

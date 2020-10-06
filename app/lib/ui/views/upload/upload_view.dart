@@ -2,7 +2,6 @@ import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/ui/views/upload/upload_viewmodel.dart';
 import 'package:ERP_RANGER/ui/widgets/bottom_navigation/bottom_nav.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
@@ -97,15 +96,6 @@ class UploadView extends StatelessWidget {
             color: Colors.grey[100],
             child: SliverBody(),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              captureImage();
-            },
-            child: Icon(
-              Icons.camera_alt,
-            ),
-            backgroundColor: Color.fromRGBO(205, 21, 67, 1),
-          ),
           bottomNavigationBar: BottomNavigation(),
           backgroundColor: Colors.grey,
         ),
@@ -166,7 +156,7 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
   @override
   Widget build(BuildContext context, UploadViewModel model) {
     return Container(
-      width: 250,
+      width: 180,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -180,24 +170,24 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
               child: null,
             ),
             ListTile(
-                leading: Icon(Icons.home),
-                title: text16LeftBoldGrey("Home"),
+                leading: Icon(Icons.home, color: Colors.black87),
+                title: text16LeftNormBlack("Home"),
                 dense: true,
                 onTap: () => {navigateToHomeView(context)}),
             ListTile(
-                leading: Icon(Icons.account_circle),
-                title: text16LeftBoldGrey("Profile"),
+                leading: Icon(Icons.account_circle, color: Colors.black87),
+                title: text16LeftNormBlack("Profile"),
                 dense: true,
                 onTap: () => {navigateToProfile(context)}),
             ListTile(
-                leading: Icon(Icons.verified_user),
-                title: text16LeftBoldGrey("Achievements"),
+                leading: Icon(Icons.verified_user, color: Colors.black87),
+                title: text16LeftNormBlack("Achievements"),
                 dense: true,
                 onTap: () => {navigateToAchievements()}),
             ListTile(
-                leading: Icon(Icons.exit_to_app),
+                leading: Icon(Icons.exit_to_app, color: Colors.black87),
                 dense: true,
-                title: text16LeftBoldGrey("Logout"),
+                title: text16LeftNormBlack("Logout"),
                 onTap: () async {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
@@ -225,7 +215,7 @@ class LeftImage extends ViewModelWidget<UploadViewModel> {
       margin: new EdgeInsets.only(right: 5, left: 5),
       padding: new EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
           image: MemoryImage(model.image.readAsBytesSync()),
@@ -253,7 +243,7 @@ class GalleryButton extends ViewModelWidget<UploadViewModel> {
                       children: <Widget>[
                         Expanded(flex: 1, child: leftBlock2),
                         Expanded(
-                            flex: 5, child: text14LeftBoldGrey("From Gallery")),
+                            flex: 5, child: text14LeftNormGrey("From Gallery")),
                         Expanded(flex: 1, child: rightIcon),
                       ],
                     ),
@@ -270,7 +260,7 @@ class GalleryButton extends ViewModelWidget<UploadViewModel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  child: text14LeftBoldGrey("From Gallery"),
+                                  child: text14LeftNormGrey("From Gallery"),
                                 ),
                                 Expanded(
                                     child: Text(
@@ -327,7 +317,7 @@ class CameraButton extends ViewModelWidget<UploadViewModel> {
                       children: <Widget>[
                         Expanded(flex: 1, child: leftBlock),
                         Expanded(
-                            flex: 5, child: text14LeftBoldGrey("From Camera")),
+                            flex: 5, child: text14LeftNormGrey("From Camera")),
                         Expanded(flex: 1, child: rightIcon),
                       ],
                     ),
@@ -373,7 +363,7 @@ class CameraButton extends ViewModelWidget<UploadViewModel> {
               child: Row(
                 children: <Widget>[
                   Expanded(flex: 1, child: LeftImage()),
-                  Expanded(flex: 5, child: text14LeftBoldGrey("From Camera")),
+                  Expanded(flex: 5, child: text14LeftNormGrey("From Camera")),
                   Expanded(flex: 1, child: rightIcon),
                 ],
               ),
@@ -536,159 +526,6 @@ class AnimalBox extends HookViewModelWidget<UploadViewModel> {
   }
 }
 
-class Latitude extends HookViewModelWidget<UploadViewModel> {
-  Latitude({
-    Key key,
-  }) : super(reactive: true);
-
-  @override
-  Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
-    var text = useTextEditingController();
-    return TextField(
-      key: Key('Latitude'),
-      controller: text,
-      onChanged: viewModel.updateLat,
-      decoration: InputDecoration(
-          hintText: "Enter latitude coordintates",
-          hintStyle: TextStyle(
-              fontFamily: 'MavenPro',
-              fontWeight: FontWeight.normal,
-              color: Colors.grey),
-          isDense: true,
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          errorText:
-              viewModel.showLatError == false ? null : viewModel.latErrorString,
-          errorStyle: TextStyle(
-              fontFamily: 'MavenPro',
-              fontSize: 12,
-              fontWeight: FontWeight.normal,
-              color: Colors.red),
-          errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              gapPadding: 0),
-          filled: true,
-          fillColor: Colors.grey[100]),
-      style: TextStyle(
-          fontFamily: 'MavenPro',
-          fontWeight: FontWeight.normal,
-          color: Colors.grey),
-    );
-  }
-}
-
-class Longitude extends HookViewModelWidget<UploadViewModel> {
-  Longitude({
-    Key key,
-  }) : super(reactive: true);
-
-  @override
-  Widget buildViewModelWidget(BuildContext context, UploadViewModel viewModel) {
-    var text = useTextEditingController();
-    return TextField(
-      key: Key('Longitude'),
-      controller: text,
-      onChanged: viewModel.updateLong,
-      onSubmitted: (value) => null,
-      decoration: InputDecoration(
-          hintText: "Enter longitude coordintates",
-          hintStyle: TextStyle(
-              fontFamily: 'MavenPro',
-              fontWeight: FontWeight.normal,
-              color: Colors.grey),
-          isDense: true,
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          errorText: viewModel.showLongError == false
-              ? null
-              : viewModel.longErrorString,
-          errorStyle: TextStyle(
-              fontFamily: 'MavenPro',
-              fontSize: 12,
-              fontWeight: FontWeight.normal,
-              color: Colors.red),
-          errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              gapPadding: 0),
-          filled: true,
-          fillColor: Colors.grey[100]),
-      style: TextStyle(
-          fontFamily: 'MavenPro',
-          fontWeight: FontWeight.normal,
-          color: Colors.grey),
-    );
-  }
-}
-
-class SpoorLocationInput extends ViewModelWidget<UploadViewModel> {
-  SpoorLocationInput({Key key}) : super(key: key, reactive: true);
-  @override
-  Widget build(BuildContext context, UploadViewModel model) {
-    return Container(
-      key: Key('SpoorLocationInput'),
-      width: 100,
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.all(15),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.white)),
-      child: Column(
-        children: <Widget>[
-          Container(
-              margin: EdgeInsets.only(top: 13, bottom: 10),
-              child: containerTitle("Track Location")),
-          SpoorLocation(),
-        ],
-      ),
-    );
-  }
-}
-
-class SpoorLocation extends ViewModelWidget<UploadViewModel> {
-  SpoorLocation({
-    Key key,
-  }) : super(reactive: true);
-  @override
-  Widget build(BuildContext context, UploadViewModel model) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-            margin: new EdgeInsets.only(left: 5),
-            padding: new EdgeInsets.all(0),
-            alignment: Alignment.centerLeft,
-            child: text14LeftBoldGrey("Latitude: ")),
-        Container(
-            margin: new EdgeInsets.only(left: 0),
-            padding: new EdgeInsets.all(5),
-            alignment: Alignment.centerLeft,
-            child: Latitude()),
-        Container(
-            margin: new EdgeInsets.only(left: 5),
-            padding: new EdgeInsets.all(0),
-            alignment: Alignment.centerLeft,
-            child: text14LeftBoldGrey("Longitude: ")),
-        Container(
-            margin: new EdgeInsets.only(left: 0),
-            padding: new EdgeInsets.all(5),
-            alignment: Alignment.centerLeft,
-            child: Longitude()),
-      ],
-    );
-  }
-}
-
 class UploadButton extends ViewModelWidget<UploadViewModel> {
   UploadButton({Key key}) : super(reactive: true);
 
@@ -727,7 +564,7 @@ Widget containerTitle(String title) {
   return Container(
       margin: EdgeInsets.only(left: 7),
       alignment: Alignment.centerLeft,
-      child: text12LeftBoldGrey(title));
+      child: text12LeftBoldBlack(title));
 }
 
 Widget attachAnimal = new Container(

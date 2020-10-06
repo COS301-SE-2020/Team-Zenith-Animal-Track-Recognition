@@ -42,9 +42,7 @@ class IdentificationViewModel extends BaseViewModel {
       // Below is a method of obtaining saved image information.
       var path = await ImageDownloader.findPath(imageId);
       SocialShare.shareOptions("Check out this track", imagePath: path);
-    } on PlatformException catch (error) {
-      print(error);
-    }
+    } on PlatformException {}
   }
 //=======================Date================================
 

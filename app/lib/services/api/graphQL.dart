@@ -65,6 +65,10 @@ class GraphQL implements Api {
               animalList = list
                   .map<AnimalModel>((json) => AnimalModel.fromJson(json))
                   .toList();
+
+              if (animalList == null || animalList.length == 0) {
+                animalList = null;
+              }
             }
           }
         }
@@ -503,6 +507,10 @@ class GraphQL implements Api {
 
         if (list.length > 30) {
           limit = 30;
+        } else if (list.length == 0) {
+          _cards.add(new HomeModel(
+              'null', null, null, null, null, null, null, null, null));
+          return _cards;
         }
 
         if (body['data']['spoorIdentification'] == null ||
@@ -1266,7 +1274,7 @@ class GraphQL implements Api {
     try {
       var connectivity = await (Connectivity().checkConnectivity());
       if (ConnectivityResult.none == connectivity) {
-        throw SocketException("");
+        throw Exception("");
       }
 
       final http.Response response = await http
@@ -1501,7 +1509,7 @@ class GraphQL implements Api {
     try {
       var connectivity = await (Connectivity().checkConnectivity());
       if (ConnectivityResult.none == connectivity) {
-        throw SocketException("");
+        throw Exception("");
       }
       final http.Response response = await http
           .get("$domain" +

@@ -7,6 +7,7 @@ import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:badges/badges.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -41,16 +42,22 @@ void showOptions(BuildContext context) {
                   // show the camera
                   showCamera(context);
                 },
-                leading: Icon(Icons.photo_camera),
-                title: Text("Take a picture"),
+                leading: Icon(
+                  Icons.add_a_photo,
+                  color: Colors.black,
+                ),
+                title: text16LeftNormGrey("Take a picture"),
               ),
               ListTile(
                   onTap: () {
                     Navigator.pop(context);
                     showPhotoLibrary();
                   },
-                  leading: Icon(Icons.photo_library),
-                  title: Text("Choose from photo library"))
+                  leading: Icon(
+                    MaterialIcons.photo_library,
+                    color: Colors.black,
+                  ),
+                  title: text16LeftNormGrey("Choose from photo library"))
             ]));
       });
 }
@@ -382,7 +389,7 @@ Widget imageBlock(String imageLink) {
               image: AssetImage("assets/images/logo.jpeg"),
               fit: BoxFit.fill,
             ),
-            color: Colors.grey,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(15),
           ),
           height: 75,
@@ -398,7 +405,7 @@ Widget imageBlock(String imageLink) {
               image: NetworkImage(imageLink),
               fit: BoxFit.fill,
             ),
-            color: Colors.grey,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(15),
           ),
           height: 75,
@@ -496,8 +503,8 @@ Widget textColumn(String name, String time, String species, String location,
 Widget textRow(String accuracy) {
   return Row(
     children: <Widget>[
-      Expanded(flex: 2, child: text14LeftBoldGrey("ACCURACY SCORE")),
-      Expanded(flex: 1, child: text14RightBoldGrey(accuracy)),
+      Expanded(flex: 2, child: text14LeftBoldBlack("Accuracy Score")),
+      Expanded(flex: 1, child: text14RightNormBlack(accuracy)),
     ],
   );
 }

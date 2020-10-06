@@ -26,7 +26,61 @@ class InformationView extends StatelessWidget {
         builder: (context, snapshot) {
           model.getInfo(animalInfo.commonName);
           if (snapshot.hasError) {
-            return progressIndicator();
+            return Scaffold(
+              appBar: AppBar(
+                leading: Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: new Stack(
+                        children: [
+                          new Icon(Icons.menu),
+                          new Positioned(
+                            right: 0,
+                            child: new Container(
+                                padding: EdgeInsets.all(1),
+                                decoration: new BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                constraints: BoxConstraints(
+                                  minWidth: 12,
+                                  minHeight: 12,
+                                ),
+                                child: Container(
+                                  height: 5,
+                                  width: 5,
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                )),
+                          )
+                        ],
+                      ),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      tooltip: MaterialLocalizations.of(context)
+                          .openAppDrawerTooltip,
+                    );
+                  },
+                ),
+                title: text18LeftBoldWhite(
+                  "ERP RANGER",
+                ),
+                flexibleSpace: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: <Color>[
+                        Color.fromRGBO(58, 119, 168, 1),
+                        Color.fromRGBO(77, 151, 203, 1)
+                      ])),
+                ),
+              ),
+              body: internetError(snapshot.error.toString()),
+            );
           }
           if (snapshot.hasData) {
             imgList.clear();

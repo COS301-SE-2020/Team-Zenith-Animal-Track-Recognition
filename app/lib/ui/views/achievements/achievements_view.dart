@@ -1,6 +1,7 @@
 import 'package:ERP_RANGER/services/util.dart';
 import 'package:ERP_RANGER/services/datamodels/api_models.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
@@ -134,9 +135,10 @@ class NavDrawer extends ViewModelWidget<AchievementsViewModel> {
   NavDrawer({Key key}) : super(reactive: true);
 
   @override
+  @override
   Widget build(BuildContext context, AchievementsViewModel model) {
     return Container(
-      width: 250,
+      width: 180,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -150,24 +152,32 @@ class NavDrawer extends ViewModelWidget<AchievementsViewModel> {
               child: null,
             ),
             ListTile(
-                leading: Icon(Icons.home),
-                title: text16LeftBoldGrey("Home"),
+                leading: Icon(Icons.home, color: Colors.black87),
+                title: text16LeftNormBlack("Home"),
                 dense: true,
                 onTap: () => {navigateToHomeView(context)}),
             ListTile(
-                leading: Icon(Icons.account_circle),
-                title: text16LeftBoldGrey("Profile"),
+                leading: Icon(Icons.account_circle, color: Colors.black87),
+                title: text16LeftNormBlack("Profile"),
                 dense: true,
                 onTap: () => {navigateToProfile(context)}),
             ListTile(
-                leading: Icon(Icons.verified_user),
-                title: text16LeftBoldGrey("Achievements"),
+                leading: Icon(Icons.verified_user, color: Colors.black87),
+                title: text16LeftNormBlack("Achievements"),
                 dense: true,
-                onTap: () => {navigateToAchievements()}),
+                onTap: () => {
+                      Fluttertoast.showToast(
+                          msg: "Already on achievements page",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          backgroundColor: Colors.grey[200],
+                          textColor: Colors.black,
+                          fontSize: 16.0)
+                    }),
             ListTile(
-                leading: Icon(Icons.exit_to_app),
+                leading: Icon(Icons.exit_to_app, color: Colors.black87),
                 dense: true,
-                title: text16LeftBoldGrey("Logout"),
+                title: text16LeftNormBlack("Logout"),
                 onTap: () async {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();

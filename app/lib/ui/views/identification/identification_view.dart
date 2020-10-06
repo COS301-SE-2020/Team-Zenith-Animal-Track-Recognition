@@ -23,20 +23,61 @@ class IdentificationView extends StatelessWidget {
           future: model.getResults(name),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return WillPopScope(
-                onWillPop: () async {
-                  if (Navigator.canPop(context)) {
-                    navigateBack(context);
-                  }
-                  return;
-                },
-                child: Scaffold(
-                    body: Stack(
-                  children: [
-                    internetError(snapshot.error.toString()),
-                    backButton(context),
-                  ],
-                )),
+              return Scaffold(
+                appBar: AppBar(
+                  leading: Builder(
+                    builder: (BuildContext context) {
+                      return IconButton(
+                        icon: new Stack(
+                          children: [
+                            new Icon(Icons.menu),
+                            new Positioned(
+                              right: 0,
+                              child: new Container(
+                                  padding: EdgeInsets.all(1),
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    minWidth: 12,
+                                    minHeight: 12,
+                                  ),
+                                  child: Container(
+                                    height: 5,
+                                    width: 5,
+                                    decoration: new BoxDecoration(
+                                      color: Colors.red,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  )),
+                            )
+                          ],
+                        ),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        tooltip: MaterialLocalizations.of(context)
+                            .openAppDrawerTooltip,
+                      );
+                    },
+                  ),
+                  title: text18LeftBoldWhite(
+                    "ERP RANGER",
+                  ),
+                  actions: <Widget>[IconBuilder(icon: Icons.search)],
+                  flexibleSpace: Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: <Color>[
+                          Color.fromRGBO(58, 119, 168, 1),
+                          Color.fromRGBO(77, 151, 203, 1)
+                        ])),
+                  ),
+                ),
+                body: internetError(snapshot.error.toString()),
               );
             }
             if (snapshot.hasData) {
@@ -241,30 +282,38 @@ class OtherMatches extends ViewModelWidget<IdentificationViewModel> {
       }
     }
 
-    return Theme(
-      data: theme,
-      child: ExpansionTile(
-          title: text16LeftBoldBlack("Other Possible Matches"),
-          backgroundColor: Colors.white,
-          children: <Widget>[
-            Container(
-              height: 200,
-              color: Colors.white,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: findLen(),
-                  itemBuilder: (BuildContext context, int index) {
-                    return ChildPopup(
-                        pic: list[index].pic,
-                        aname: list[index].name,
-                        species: list[index].species,
-                        score: list[index].score,
-                        index: index);
-                  }),
-            )
-          ]),
-    );
+    list = null;
+
+    return list == null
+        ? Center(
+            child: Container(
+            margin: EdgeInsets.all(5),
+            child: text16CenterNormalGrey("[No Other Possible Matches Found]"),
+          ))
+        : Theme(
+            data: theme,
+            child: ExpansionTile(
+                title: text16LeftBoldBlack("Other Possible Matches"),
+                backgroundColor: Colors.white,
+                children: <Widget>[
+                  Container(
+                    height: 200,
+                    color: Colors.white,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: findLen(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return ChildPopup(
+                              pic: list[index].pic,
+                              aname: list[index].name,
+                              species: list[index].species,
+                              score: list[index].score,
+                              index: index);
+                        }),
+                  )
+                ]),
+          );
   }
 }
 
@@ -796,10 +845,6 @@ Widget attachATagButton(var context) {
 }
 
 Widget similarSpoor(List<String> tracks) {
-  if (tracks != null) {
-    print(tracks);
-  }
-
   return tracks.isEmpty == true
       ? Center(
           child: Container(

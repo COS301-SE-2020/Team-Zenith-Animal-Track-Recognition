@@ -101,9 +101,9 @@ class BottomNavigationState extends State<BottomNavigation> {
                   unselectedLabelStyle: TextStyle(
                       fontSize: 14,
                       fontFamily: 'MavenPro',
-                      color: Colors.black),
+                      color: Colors.black87),
                   showUnselectedLabels: true,
-                  unselectedItemColor: Colors.black,
+                  unselectedItemColor: Colors.black87,
                   onTap: _onTap,
                   currentIndex: _currentTabIndex,
                 ),
@@ -137,9 +137,9 @@ class BottomNavigationState extends State<BottomNavigation> {
                   unselectedLabelStyle: TextStyle(
                       fontSize: 14,
                       fontFamily: 'Helvetica',
-                      color: Colors.black),
+                      color: Colors.black87),
                   showUnselectedLabels: true,
-                  unselectedItemColor: Colors.black,
+                  unselectedItemColor: Colors.black87,
                   onTap: _onTap2,
                   currentIndex: _currentTabIndex,
                 ),

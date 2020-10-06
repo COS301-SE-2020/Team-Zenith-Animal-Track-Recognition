@@ -20,9 +20,55 @@ class ConfirmedView extends StatelessWidget {
           if (snapshot.hasError) {
             return Scaffold(
               appBar: AppBar(
-                backgroundColor: Colors.black,
-                title: text18LeftBoldWhite(
-                  "Image Confirmation",
+                leading: Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: new Stack(
+                        children: [
+                          new Icon(Icons.menu),
+                          new Positioned(
+                            right: 0,
+                            child: new Container(
+                                padding: EdgeInsets.all(1),
+                                decoration: new BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                constraints: BoxConstraints(
+                                  minWidth: 12,
+                                  minHeight: 12,
+                                ),
+                                child: Container(
+                                  height: 5,
+                                  width: 5,
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                )),
+                          )
+                        ],
+                      ),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      tooltip: MaterialLocalizations.of(context)
+                          .openAppDrawerTooltip,
+                    );
+                  },
+                ),
+                title: text22LeftBoldWhite(
+                  "ERP RANGER",
+                ),
+                flexibleSpace: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: <Color>[
+                        Color.fromRGBO(58, 119, 168, 1),
+                        Color.fromRGBO(77, 151, 203, 1)
+                      ])),
                 ),
               ),
               body: internetError(snapshot.error.toString()),
@@ -429,7 +475,7 @@ Widget confidentImageBlock(String image) {
         image: NetworkImage(image),
         fit: BoxFit.fill,
       ),
-      color: Colors.grey,
+      color: Colors.white,
       borderRadius: BorderRadius.circular(15),
     ),
     height: 130,
@@ -519,7 +565,7 @@ Widget innerImageBlock(String link) {
     margin: new EdgeInsets.all(5),
     padding: new EdgeInsets.all(5),
     decoration: BoxDecoration(
-      color: Colors.grey,
+      color: Colors.white,
       borderRadius: BorderRadius.circular(10),
       image: DecorationImage(
         image: NetworkImage(link),
@@ -613,7 +659,6 @@ class Tags extends ViewModelWidget<ConfirmedViewModel> {
           selected: defualtChoiceIndex == index,
           selectedColor: Colors.grey.shade600,
           onSelected: (bool selected) {
-            print(index);
             defualtChoiceIndex = selected ? index : null;
             if (defualtChoiceIndex == null) {
               model.setTag(null);
