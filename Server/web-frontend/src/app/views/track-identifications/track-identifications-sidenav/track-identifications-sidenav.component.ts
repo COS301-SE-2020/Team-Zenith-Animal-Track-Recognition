@@ -28,18 +28,12 @@ export class TrackIdentificationsSidenavComponent implements OnInit {
 		);
 		tracksService.identifications.subscribe(
 			trackList => {
-				if (trackList != null && trackList.length > 0) {
+				if (trackList != null) {
 					this.trackIdentifications = trackList;
-					this.trackPaginator.length = this.trackIdentifications.length;
-					this.trackPaginator.firstPage();
-					this.stopLoader();
-				}
-				else if (trackList != null && trackList.length == 0) {
-					if (this.trackIdentifications != null) {
-						//If the track list returned is not the initial value but is empty nonetheless (if filtered for example)
-						this.trackIdentifications = trackList;
+					if (this.trackPaginator) {
 						this.trackPaginator.length = this.trackIdentifications.length;
 						this.trackPaginator.firstPage();
+						this.stopLoader();
 					}
 				}
 			}

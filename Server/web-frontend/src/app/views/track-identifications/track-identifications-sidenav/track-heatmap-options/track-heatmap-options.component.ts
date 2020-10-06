@@ -45,8 +45,10 @@ export class TrackHeatmapOptionsComponent implements OnInit {
 		}
 		this.trackViewNavService.changeHeatmapColour(colour);
 	}
-	
 	changeHeatmapRadius(event: any) {
 		this.trackViewNavService.changeHeatmapRadius(event.value);
+	}
+	changeHeatmapTimeRange(timeRange: any) {
+		this.trackViewNavService.changeHeatmapTimeRange(timeRange);
 	}
 }

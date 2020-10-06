@@ -29,6 +29,10 @@ export class TrackViewNavigationService {
 	//Determines the radius of the heatmap around each track
 	private trackHeatmapRadiusSource = new Subject<number>();
 	trackHeatmapRadius$ = this.trackHeatmapRadiusSource.asObservable();
+	
+	//Determines the time range of the heatmap
+	private trackHeatmapTimeRangeSource = new Subject<string>();
+	trackHeatmapTimeRange$ = this.trackHeatmapTimeRangeSource.asObservable();
 
 	changeTab(tab: string) {
 		this.trackSidenavSource.next(tab);
@@ -41,7 +45,9 @@ export class TrackViewNavigationService {
 	changeHeatmapRadius(radius: number) {
 		this.trackHeatmapRadiusSource.next(radius);
 	}
-	
+	changeHeatmapTimeRange(timeRange: any) {
+		this.trackHeatmapTimeRangeSource.next(timeRange);
+	}
 	toggleHeatmap(status: string) {
 		this.trackHeatmapSource.next(status);
 	}

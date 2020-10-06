@@ -31,84 +31,98 @@ export class TracksService {
 	
 	dummyLocations: any = [
 		{//Zebra
+			dateObj: new Date(),
 			location: {
 				latitude: -24.088384, 
 				longitude: 31.545741
 			}
 		},
 		{//Red Hartebeest
+			dateObj: new Date(),
 			location: {
 				latitude: -24.088384, 
 				longitude: 31.545741
 			}
 		},		
 		{//Buffalo
+			dateObj: new Date("10/05/2020"),
 			location: {
 				latitude: -24.288384, 
 				longitude: 31.550741
 			}
 		},		
 		{//Zebra
+			dateObj: new Date(),
 			location: {
 				latitude: -24.088384, 
 				longitude: 31.545741
 			}
 		},		
 		{//Zebra
+			dateObj: new Date(),
 			location: {
 				latitude: -24.088384, 
 				longitude: 31.545741
 			}
 		},		
 		{//Hippo
+			dateObj: new Date(),
 			location: {
 				latitude: -24.088384, 
 				longitude: 31.545741
 			}
 		},		
 		{//Black Wildebeest
+			dateObj: new Date(),
 			location: {
 				latitude: -24.088384, 
 				longitude: 31.545741
 			}
 		},		
 		{//Buffalo
+			dateObj: new Date("10/01/2020"),
 			location: {
 				latitude: -24.286384, 
 				longitude: 31.544741
 			}
 		},		
 		{//Black Backed Jackal
+			dateObj: new Date(),
 			location: {
 				latitude: -24.088384, 
 				longitude: 31.545741
 			}
 		},		
 		{//Black Backed Jacakl
+			dateObj: new Date(),
 			location: {
 				latitude: -24.088384, 
 				longitude: 31.545741
 			}
 		},		
 		{//Waterbuck
+			dateObj: new Date(),
 			location: {
 				latitude: -24.088384, 
 				longitude: 31.545741
 			}
 		},		
 		{//Buffalo
+			dateObj: new Date("10/07/2019"),
 			location: {
 				latitude: -24.290384, 
 				longitude: 31.540741
 			}
 		},		
 		{//Buffalo
+			dateObj: new Date("04/07/2020"),
 			location: {
 				latitude: -24.284384, 
 				longitude: 31.536741
 			}
 		},		
 		{//Buffalo
+			dateObj: new Date("09/07/2020"),
 			location: {
 				latitude: -24.292384, 
 				longitude: 31.532741
@@ -179,6 +193,7 @@ export class TracksService {
 				//DUMMY LOCATIONS TO SET MARKERS WITHIN KRUGER PARK
 				for (let i = 0; i < this.dummyLocations.length; i++) {
 					this.trackIdentificationsStore.trackIdentifications[i].location = this.dummyLocations[i].location;
+					this.trackIdentificationsStore.trackIdentifications[i].dateObj = this.dummyLocations[i].dateObj;
 				}
 				this._displayedTracks.next(Object.assign({}, this.trackIdentificationsStore).trackIdentifications);
 				if (initParams.initWithFilter)
