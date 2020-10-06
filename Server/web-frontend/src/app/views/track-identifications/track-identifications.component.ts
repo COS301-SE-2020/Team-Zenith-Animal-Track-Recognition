@@ -348,6 +348,28 @@ export class TrackIdentificationsComponent implements OnInit {
 		this.heatmapTimeRange = timeRange;
 		this.toggleHeatmap("on");
 	}
+	calculateTrackWeighting(timeDifference: number, timeRange: string) {
+		var timeRangeFactor;
+		switch(timeRange) {
+			case "1 Week":
+				console.log("Time range is 1 week, time difference is: " + timeDifference);
+				timeRangeFactor = -0.0003542999;
+			break;
+			case "1 Month":
+				timeRangeFactor = -0.0000192899;
+			break;
+			case "6 Months":
+				timeRangeFactor = -0.0000005358;
+			break;
+			case "1 Year":
+				timeRangeFactor = -0.0000001339;
+			break;
+		}
+		//var trackWeight = (timeRangeFactor * Math.pow(timeDifference, 2)) + 10.0;
+		var trackWeight = (timeRangeFactor * Math.pow(timeDifference, 2)) + 10.0;
+		console.log("calculated weight is " + trackWeight);
+		return Math.abs(Math.round(trackWeight * 100) / 100).toFixed(2);
+	}
 	generateHeatmap() {
 		var heatmapData = [];
 		var todaysDate = new Date();
@@ -368,15 +390,17 @@ export class TrackIdentificationsComponent implements OnInit {
 			break;
 		}
 		var timeRange = new Date(timeRangeNum);
+		var todaysDateMilli = todaysDate.getTime();
 		
 		this.trackIdentifications.forEach(track => {
-				//Apply weightings according to y=-0.001929x^{2}+10.00
-			if (track.dateObj > timeRange) {
-				const timeDiff = Math.abs(timeRange.getTime() - track.dateObj.getTime()) / 1000 / 3600;
-				//console.log("time diff is: " + timeDiff);
-				var trackWeight = (-0.001929 * Math.pow(timeDiff, 2)) + 10.0;
-				//console.log("Track weight is: " + (Math.round(trackWeight * 100) / 100).toFixed(2));
-				heatmapData.push({location: new google.maps.LatLng(track.location.latitude, track.location.longitude), weight: Math.abs(Math.round(trackWeight * 100) / 100).toFixed(2)});		
+			if (track.dateObj.getTime() > timeRange.getTime()) {
+				//const timeDiff = Math.abs(todaysDate.getTime() - track.dateObj.getTime()) / 3600000;
+				var timeDiff = Math.abs(todaysDateMilli - track.dateObj.getTime()) / 3600000;
+				//console.log("track Obj: " + track);
+				console.log("time diff is: " + timeDiff);
+				var trackWeight = this.calculateTrackWeighting(timeDiff, this.heatmapTimeRange);
+				console.log("Track weight is: " + trackWeight + " with date " + track.dateObj.toDateString());
+				heatmapData.push({location: new google.maps.LatLng(track.location.latitude, track.location.longitude), weight: trackWeight});		
 			}
 		});
 		return heatmapData;
