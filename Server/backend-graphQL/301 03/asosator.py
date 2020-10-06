@@ -6,4 +6,3 @@ fodervalidation = os.listdir(wdvalidation)
 with open('your_file.txt', 'w') as f:
     for item in fodervalidation:
         f.write("%s\n" % item)
-print(fodervalidation)

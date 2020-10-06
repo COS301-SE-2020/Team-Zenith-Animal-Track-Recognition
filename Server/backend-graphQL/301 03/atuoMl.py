@@ -85,6 +85,9 @@ Ngroth=Tgroth
 Nbatch_size = Tbatch_size
 NIMG_HEIGHT = TIMG_HEIGHT
 NIMG_WIDTH = TIMG_WIDTH
+def create_dir(dir):
+    if not os.path.exists(dir):
+        os.makedirs(dir)
 def plotImages(images_arr):
         fig, axes = plt.subplots(1, 5, figsize=(20, 20))
         axes = axes.flatten()
@@ -93,7 +96,7 @@ def plotImages(images_arr):
             ax.axis('off')
         plt.tight_layout()
         plt.show()
-def trane(groth=0,batch_size = 32,IMG_HEIGHT = 350,IMG_WIDTH = 350,MaxEpochs=10):
+def trane(groth=0,batch_size = 32,IMG_HEIGHT = 350,IMG_WIDTH = 350,MaxEpochs=10,PATH=PATH):
     tryningAcaracy=0.0
     CurintEpoch=0
     train_image_generator = ImageDataGenerator(rescale=1./255,
@@ -153,15 +156,29 @@ def trane(groth=0,batch_size = 32,IMG_HEIGHT = 350,IMG_WIDTH = 350,MaxEpochs=10)
         CurintEpoch=CurintEpoch+Tepochs
         sentence="A"+str(val_acc[-1])+"E"+str(CurintEpoch)+"G"+str(groth)+"S"
         sentence=sentence.replace("/", "")
-        sentence='evoModel/'+date_time+"/"+sentence+"/"
+        sentence='evoModel/'+date_time+"/"+sentence
         sentence=sentence.replace(" ", "")
         sentence=sentence.replace(":", "")
+        
+        cwd = os.getcwd()
+        dataset="TrainingData350gray"
+        wdvalidation=os.path.join(PATH,"validation")
+        fodervalidation = os.listdir(wdvalidation)
+        create_dir("P/"+sentence)
+        with open("P/"+sentence+".txt", 'w') as f:
+            for item in fodervalidation:
+                f.write("%s\n" % item)
+
+
+        sentence=sentence+"/"
         model.save("M/"+sentence)
         probability_model = tf.keras.Sequential([model, 
                                                 tf.keras.layers.Softmax()])
         probability_model.save("P/"+sentence) 
         if (testVal<=tryningAcaracy):
             tryningAcaracy=testVal
+
+
     return tryningAcaracy
 
 ModilValAcc=trane(Tgroth)
