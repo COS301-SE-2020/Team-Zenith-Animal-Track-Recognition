@@ -1,6 +1,6 @@
 print("redistabuting files")
 
-dataset="TrainingData350gray"
+dataset="testA"
 import random
 
 import os 
@@ -11,10 +11,23 @@ cwd = os.getcwd()
 
 
 wdvalidation=os.path.join( os.path.join(  cwd , dataset),"validation")
-fodervalidation = os.listdir(wdvalidation)
 wdtrain=os.path.join( os.path.join(  cwd , dataset),"train")
 
 # print(fodervalidation)
+
+def create_dir(dir):
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+create_dir(wdvalidation)
+create_dir(wdtrain)
+
+fodervalidation = os.listdir(wdvalidation)
+for i in fodervalidation:
+    create_dir(os.path.join(wdtrain,i))
+    
+fodertrain = os.listdir(wdtrain)
+for i in fodertrain:
+    create_dir(os.path.join(wdvalidation,i))
 
 for i in fodervalidation:
     wdv = os.path.join(wdvalidation,i)
