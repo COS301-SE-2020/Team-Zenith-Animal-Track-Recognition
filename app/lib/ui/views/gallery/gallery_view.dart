@@ -168,7 +168,7 @@ class GalleryView extends StatelessWidget {
                         ),
                         body: Container(
                           padding: EdgeInsets.all(10),
-                          color: Colors.grey[300],
+                          color: Colors.grey[100],
                           child: TabBarView(
                             children: getBodyWidgets(
                                 snapshot.data.length, galleryModel.galleryList),

@@ -505,6 +505,12 @@ class GraphQL implements Api {
           limit = 30;
         }
 
+        if (body['data']['spoorIdentification'] == null ||
+            body['data']['spoorIdentification'] == "[]" ||
+            body['data']['spoorIdentification'] == [] ||
+            body['data']['spoorIdentification'].length == 0) {
+          return null;
+        }
         for (int i = 0; i < limit; i++) {
           var list = body['data']['spoorIdentification'][i]['potentialMatches']
               as List;
@@ -1288,122 +1294,140 @@ class GraphQL implements Api {
         int year;
         int day;
 
-        for (int i = 0; i < 15; i++) {
-          if (body['data']['spoorIdentification'][i]['animal']['commonName'] !=
-              null) {
-            cName = body['data']['spoorIdentification'][i]['animal']
-                    ['commonName']
-                .toString();
-          } else {
-            cName = 'N/A';
-          }
+        int length = 0;
+        if (body['data']['spoorIdentification'].length >= 15) {
+          length = 15;
+        } else {
+          length = body['data']['spoorIdentification'].length;
+        }
 
-          if (body['data']['spoorIdentification'][i]['animal']
-                  ['classification'] !=
-              null) {
-            sName = body['data']['spoorIdentification'][i]['animal']
-                    ['classification']
-                .toString();
-          } else {
-            sName = 'N/A';
-          }
-
-          if (body['data']['spoorIdentification'][i]['dateAndTime']['month'] !=
-                  null &&
-              body['data']['spoorIdentification'][i]['dateAndTime']['day'] !=
-                  null &&
-              body['data']['spoorIdentification'][i]['dateAndTime']['year'] !=
-                  null) {
-            mon = int.parse(body['data']['spoorIdentification'][i]
-                    ['dateAndTime']['month']
-                .toString());
-            day = int.parse(body['data']['spoorIdentification'][i]
-                    ['dateAndTime']['day']
-                .toString());
-            year = int.parse(body['data']['spoorIdentification'][i]
-                    ['dateAndTime']['year']
-                .toString());
-
-            track = new DateTime(year, mon, day);
-            Duration difference = now.difference(track);
-            date = (difference.inHours / 24).floor().toString() + " days ago";
-          } else {
-            date = "N/A";
-          }
-
-          if (body['data']['spoorIdentification'][i]['location']['latitude'] !=
-                  null &&
-              body['data']['spoorIdentification'][i]['location']['longitude'] !=
-                  null) {
-            location = body['data']['spoorIdentification'][i]['location']
-                        ['latitude']
-                    .toString() +
-                " , " +
-                body['data']['spoorIdentification'][i]['location']['longitude']
-                    .toString();
-          } else {
-            location = 'N/A';
-          }
-
-          if (body['data']['spoorIdentification'][i]['ranger']['firstName'] !=
-                  null &&
-              body['data']['spoorIdentification'][i]['ranger']['lastName'] !=
-                  null) {
-            ranger = body['data']['spoorIdentification'][i]['ranger']
-                        ['firstName']
-                    .toString() +
-                " " +
-                body['data']['spoorIdentification'][i]['ranger']['lastName']
-                    .toString();
-          } else {
-            ranger = 'N/A';
-          }
-
-          if (body['data']['spoorIdentification'][i]['picture']['URL'] !=
-              null) {
-            pic = body['data']['spoorIdentification'][i]['picture']['URL']
-                .toString();
-          } else {
-            pic = "N/A";
-          }
-
-          var list = body['data']['spoorIdentification'][i]['potentialMatches']
-              as List;
-
-          if (list.length != 0) {
-            if (body['data']['spoorIdentification'][i]['potentialMatches'][0]
-                    ['confidence'] !=
+        if (body['data']['spoorIdentification'].length == 0) {
+          return null;
+        } else {
+          for (int i = 0; i < length; i++) {
+            if (body['data']['spoorIdentification'][i]['animal']
+                    ['commonName'] !=
                 null) {
-              score = body['data']['spoorIdentification'][i]['potentialMatches']
-                      [0]['confidence']
+              cName = body['data']['spoorIdentification'][i]['animal']
+                      ['commonName']
                   .toString();
-              count = double.parse(score) * 100;
-              score =
-                  count.toString().substring(0, count.toString().length - 1) +
-                      "%";
-              int index = score.indexOf('.');
-              if (index == (score.indexOf("%") - 1)) {
-                score = score.replaceAll('.', "");
+            } else {
+              cName = 'N/A';
+            }
+
+            if (body['data']['spoorIdentification'][i]['animal']
+                    ['classification'] !=
+                null) {
+              sName = body['data']['spoorIdentification'][i]['animal']
+                      ['classification']
+                  .toString();
+            } else {
+              sName = 'N/A';
+            }
+
+            if (body['data']['spoorIdentification'][i]['dateAndTime']
+                        ['month'] !=
+                    null &&
+                body['data']['spoorIdentification'][i]['dateAndTime']['day'] !=
+                    null &&
+                body['data']['spoorIdentification'][i]['dateAndTime']['year'] !=
+                    null) {
+              mon = int.parse(body['data']['spoorIdentification'][i]
+                      ['dateAndTime']['month']
+                  .toString());
+              day = int.parse(body['data']['spoorIdentification'][i]
+                      ['dateAndTime']['day']
+                  .toString());
+              year = int.parse(body['data']['spoorIdentification'][i]
+                      ['dateAndTime']['year']
+                  .toString());
+
+              track = new DateTime(year, mon, day);
+              Duration difference = now.difference(track);
+              date = (difference.inHours / 24).floor().toString() + " days ago";
+            } else {
+              date = "N/A";
+            }
+
+            if (body['data']['spoorIdentification'][i]['location']
+                        ['latitude'] !=
+                    null &&
+                body['data']['spoorIdentification'][i]['location']
+                        ['longitude'] !=
+                    null) {
+              location = body['data']['spoorIdentification'][i]['location']
+                          ['latitude']
+                      .toString() +
+                  " , " +
+                  body['data']['spoorIdentification'][i]['location']
+                          ['longitude']
+                      .toString();
+            } else {
+              location = 'N/A';
+            }
+
+            if (body['data']['spoorIdentification'][i]['ranger']['firstName'] !=
+                    null &&
+                body['data']['spoorIdentification'][i]['ranger']['lastName'] !=
+                    null) {
+              ranger = body['data']['spoorIdentification'][i]['ranger']
+                          ['firstName']
+                      .toString() +
+                  " " +
+                  body['data']['spoorIdentification'][i]['ranger']['lastName']
+                      .toString();
+            } else {
+              ranger = 'N/A';
+            }
+
+            if (body['data']['spoorIdentification'][i]['picture']['URL'] !=
+                null) {
+              pic = body['data']['spoorIdentification'][i]['picture']['URL']
+                  .toString();
+            } else {
+              pic = "N/A";
+            }
+
+            var list = body['data']['spoorIdentification'][i]
+                ['potentialMatches'] as List;
+
+            if (list.length != 0) {
+              if (body['data']['spoorIdentification'][i]['potentialMatches'][0]
+                      ['confidence'] !=
+                  null) {
+                score = body['data']['spoorIdentification'][i]
+                        ['potentialMatches'][0]['confidence']
+                    .toString();
+                count = double.parse(score) * 100;
+                score =
+                    count.toString().substring(0, count.toString().length - 1) +
+                        "%";
+                int index = score.indexOf('.');
+                if (index == (score.indexOf("%") - 1)) {
+                  score = score.replaceAll('.', "");
+                }
+              } else {
+                score = 'N/A';
               }
             } else {
               score = 'N/A';
             }
-          } else {
-            score = 'N/A';
+
+            if (body['data']['spoorIdentification'][i]
+                    ['spoorIdentificationID'] !=
+                null) {
+              id = body['data']['spoorIdentification'][i]
+                      ['spoorIdentificationID']
+                  .toString();
+            } else {
+              id = 'N/A';
+            }
+            _cards.add(new ProfileModel(
+                cName, sName, location, ranger, date, score, tag, pic, id));
           }
 
-          if (body['data']['spoorIdentification'][i]['spoorIdentificationID'] !=
-              null) {
-            id = body['data']['spoorIdentification'][i]['spoorIdentificationID']
-                .toString();
-          } else {
-            id = 'N/A';
-          }
-          _cards.add(new ProfileModel(
-              cName, sName, location, ranger, date, score, tag, pic, id));
+          return _cards;
         }
-
-        return _cards;
       } else {
         throw HttpException('500');
       }
@@ -1489,9 +1513,13 @@ class GraphQL implements Api {
       if (res.statusCode == 200) {
         var body = json.decode(res.body);
 
-        tracks = body['data']['rangersStats']['spoors'].toString();
-
-        noAnimals = body['data']['rangersStats']['nuberOfanamils'].toString();
+        if (body['data']['rangersStats'] == null) {
+          tracks = '0';
+          noAnimals = '0';
+        } else {
+          tracks = body['data']['rangersStats']['spoors'].toString();
+          noAnimals = body['data']['rangersStats']['nuberOfanamils'].toString();
+        }
       }
 
       SharedPreferences prefs = await SharedPreferences.getInstance();

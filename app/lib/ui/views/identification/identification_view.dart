@@ -898,7 +898,7 @@ Widget innerImageBlock(String link) {
           margin: new EdgeInsets.all(5),
           padding: new EdgeInsets.all(5),
           decoration: BoxDecoration(
-            color: Colors.grey,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
               image: AssetImage("assets/images/logo.jpeg"),
@@ -913,7 +913,7 @@ Widget innerImageBlock(String link) {
           margin: new EdgeInsets.all(5),
           padding: new EdgeInsets.all(5),
           decoration: BoxDecoration(
-            color: Colors.grey,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
               image: NetworkImage(link),
@@ -1006,7 +1006,7 @@ Widget confidentImageBlock(String image) {
         //image: AssetImage(image),
         fit: BoxFit.fill,
       ),
-      color: Colors.grey,
+      color: Colors.white,
       borderRadius: BorderRadius.circular(15),
     ),
     height: 170,

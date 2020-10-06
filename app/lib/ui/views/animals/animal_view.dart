@@ -367,7 +367,7 @@ Widget imageBlock(String imageLink) {
         //image: AssetImage(imageLink),
         fit: BoxFit.fill,
       ),
-      color: Colors.grey,
+      color: Colors.white,
       borderRadius: BorderRadius.circular(15),
     ),
     height: 100,

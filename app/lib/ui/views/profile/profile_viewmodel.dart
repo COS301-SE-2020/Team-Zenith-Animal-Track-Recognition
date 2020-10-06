@@ -11,7 +11,7 @@ class ProfileViewModel extends BaseViewModel {
 
   Future<TempObject> getRecentIdentifications() async {
     List<ProfileModel> recentIdentifications = await api.getProfileModel();
-    print('Returned');
+
     ProfileInfoModel infoModel = await api.getProfileInfoData();
     int userlevel = await api.getUserLevel();
     newNotifications = await api.getNewTrophyNotification();

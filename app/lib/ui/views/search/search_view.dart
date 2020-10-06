@@ -188,7 +188,7 @@ class SearchView extends StatelessWidget {
                       ),
                       body: Container(
                           key: Key('SearchCon'),
-                          color: Colors.grey[200],
+                          color: Colors.grey[100],
                           child: TabBarView(
                             key: Key('SearchTabBar'),
                             children: <Widget>[

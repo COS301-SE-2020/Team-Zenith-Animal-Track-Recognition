@@ -88,12 +88,20 @@ class HomeView extends StatelessWidget {
                               ])),
                         ),
                       ),
-                      body: Container(
-                        key: Key('List'),
-                        padding: EdgeInsets.all(10),
-                        color: Colors.grey[300],
-                        child: HomeListBody(animalList: model.animals),
-                      ),
+                      body: model.animals == null
+                          ? Container(
+                              key: Key('List'),
+                              padding: EdgeInsets.all(10),
+                              color: Colors.white,
+                              child: text18CenterBoldGrey(
+                                  "[No Identifications Found]"),
+                            )
+                          : Container(
+                              key: Key('List'),
+                              padding: EdgeInsets.all(10),
+                              color: Colors.grey[100],
+                              child: HomeListBody(animalList: model.animals),
+                            ),
                       bottomNavigationBar: BottomNavigation(),
                       floatingActionButton: FloatingActionButton(
                         onPressed: () {
@@ -107,7 +115,92 @@ class HomeView extends StatelessWidget {
                     )
                   : progressIndicator();
             } else {
-              return progressIndicator();
+              return Scaffold(
+                drawer: HomeNavDrawer(),
+                appBar: AppBar(
+                  leading: Builder(
+                    builder: (BuildContext context) {
+                      return model.newNotifications == false
+                          ? IconButton(
+                              icon: const Icon(Icons.menu),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context)
+                                  .openAppDrawerTooltip,
+                            )
+                          : IconButton(
+                              icon: new Stack(
+                                children: [
+                                  new Icon(Icons.menu),
+                                  new Positioned(
+                                    right: 0,
+                                    child: new Container(
+                                        padding: EdgeInsets.all(1),
+                                        decoration: new BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        constraints: BoxConstraints(
+                                          minWidth: 12,
+                                          minHeight: 12,
+                                        ),
+                                        child: Container(
+                                          height: 5,
+                                          width: 5,
+                                          decoration: new BoxDecoration(
+                                            color: Colors.red,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        )),
+                                  )
+                                ],
+                              ),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context)
+                                  .openAppDrawerTooltip,
+                            );
+                    },
+                  ),
+                  title: text22LeftBoldWhite(
+                    "ERP RANGER",
+                  ),
+                  actions: <Widget>[
+                    IconBuilder(icon: Icons.search),
+                  ],
+                  flexibleSpace: Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: <Color>[
+                          Color.fromRGBO(58, 119, 168, 1),
+                          Color.fromRGBO(77, 151, 203, 1)
+                        ])),
+                  ),
+                ),
+                body: Container(
+                  key: Key('List'),
+                  padding: EdgeInsets.all(10),
+                  color: Colors.white,
+                  child: Center(
+                      child:
+                          text18CenterBoldGrey("[No Identifications Found]")),
+                ),
+                bottomNavigationBar: BottomNavigation(),
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    showOptions(context);
+                  },
+                  child: Icon(
+                    Icons.camera_alt,
+                  ),
+                  backgroundColor: Color.fromRGBO(205, 21, 67, 1),
+                ),
+              );
             }
           }),
       viewModelBuilder: () => HomeViewModel(),

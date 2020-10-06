@@ -72,7 +72,7 @@ class AchievementsView extends StatelessWidget {
                         ),
                         body: Container(
                           padding: EdgeInsets.all(10),
-                          color: Colors.grey[300],
+                          color: Colors.grey[100],
                           child: Center(
                               child: ListBody(
                             trophies: snapshot.data,

@@ -169,11 +169,31 @@ class ProfileView extends StatelessWidget {
                                 ])),
                           ),
                         ),
-                        body: Container(
-                            color: Colors.grey[300],
-                            child: ProfileViewList(
-                              tempObject: snapshot.data,
-                            )),
+                        body: snapshot.data.animalList == null
+                            ? Container(
+                                color: Colors.white,
+                                child: Column(
+                                  children: [
+                                    profileinfo(snapshot.data.infoModel),
+                                    Center(
+                                      child: Container(
+                                        margin: EdgeInsets.only(
+                                            top: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                4),
+                                        color: Colors.white,
+                                        child: text18CenterBoldGrey(
+                                            "[No Identifications Found]"),
+                                      ),
+                                    )
+                                  ],
+                                ))
+                            : Container(
+                                color: Colors.grey[100],
+                                child: ProfileViewList(
+                                  tempObject: snapshot.data,
+                                )),
                         bottomNavigationBar: BottomNavigation(),
                         floatingActionButton: FloatingActionButton(
                           onPressed: () {
@@ -265,6 +285,7 @@ class ProfileViewList extends ViewModelWidget<ProfileViewModel> {
   @override
   Widget build(BuildContext context, ProfileViewModel viewModel) {
     animalList = tempObject.animalList;
+
     return CustomScrollView(
       key: Key('ProfileList'),
       slivers: <Widget>[
