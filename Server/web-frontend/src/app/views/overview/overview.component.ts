@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { EMPTY } from 'rxjs';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
 import { retry, catchError } from 'rxjs/operators';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,9 +12,10 @@ import { RangerStatisticsService } from './../../services/ranger-statistics.serv
 //import * as CanvasJS from './canvasjs.min';
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.css']
+	selector: 'app-overview',
+	templateUrl: './overview.component.html',
+	styleUrls: ['./overview.component.css'],
+	providers: [RangerStatisticsService]
 })
 export class OverviewComponent implements OnInit {
 	logins: any;
@@ -23,11 +27,11 @@ export class OverviewComponent implements OnInit {
 	
 	loginsPerApp = [
 		{
-			"name": "Mobile App Logins",
+			"name": "Mobile Tracking",
 			"value": 0
 		},
 		{
-			"name": "Web App Logins",
+			"name": "Web Dashboard",
 			"value": 0
 		}
 	];
@@ -45,8 +49,6 @@ export class OverviewComponent implements OnInit {
 			"value": 0
 		}
 	];
-	//view: any[] = [];
-
 	showLegend: boolean = true;
 	showLabels: boolean = true;
 	loginsPerAppColorScheme = {
@@ -55,7 +57,13 @@ export class OverviewComponent implements OnInit {
 	loginsPerLevelColorScheme = {
 		domain: ['#E44D25', '#509CD0', '#5AA454']
 	};
-
+	
+	recentLogins = [{rangerID: 1, firstName: 'N/A', lastName: 'N/A', accessLevel: 'N/A', dateObj: new Date(), platform: 'N/A'}];
+	@ViewChild(MatPaginator) paginator: MatPaginator;
+	@ViewChild(MatSort) recentLoginsSort: MatSort;
+	displayedColumns: string[] = ['lastName', 'level', 'date', 'platform'];
+	recentLoginsDataSource = new MatTableDataSource<any>(this.recentLogins);
+	
 	constructor(private router: Router, private rangerStatsService: RangerStatisticsService) { 
 		rangerStatsService.loginsByApplication$.subscribe(
 			logins => {
@@ -67,83 +75,24 @@ export class OverviewComponent implements OnInit {
 				this.loginsPerLevel = logins;
 			}
 		);
-		/*
-		//Get the latest collection of track identifications
-		tracksService.identifications.subscribe(
-			trackList => {
-				//Add track markers to the map if tracks are present
-				if (trackList != null && trackList.length > 0) {
-					//Add track markers to the map if initial list of tracks
-					if (this.trackIdentifications == null) {
-						this.trackIdentifications = trackList;	
-						this.addTrackMarkers();
-					}
-					else {
-						//Updating identifications with filtered tracks
-						this.trackIdentifications = trackList;
-					}
-				}
-				else if (trackList != null && trackList.length == 0) {
-					if (this.trackIdentifications != null) {
-						//If the track list returned is not the initial value but is empty nonetheless (if filtered for example)
-						this.trackIdentifications = trackList;
-					}
-				}
-			}
-		);
-		//Determines which filter option is applied to the tracks and markers
-		tracksService.trackFilter$.subscribe(
-			filter => {
-				this.filterTrackMarkers(filter[0], filter[1]);
-			}
-		);		
-		//Determines which track is being zoomed on
-		trackViewNavService.trackMapZoom$.subscribe(
-			coords => {
-				this.zoomOnTrack(coords);
-			}
-		);
-		//Determines whether the heatmap is currently viewable
-		trackViewNavService.trackHeatmap$.subscribe(
-			state => {
-				this.toggleHeatmap(state);
-			}
-		);
-		//Determines whether the heatmap is currently viewable
-		trackViewNavService.trackHeatmapTimeRange$.subscribe(
-			timeRange => {
-				this.changeHeatmapTimeRange(timeRange);
-			}
-		);
-		//Determine whether the heatmap settings tab is open, closed or simply inactive
-		trackViewNavService.trackHeatmapSettings$.subscribe(
-			state => {
-				switch(state) {
-					case "on":
-						this.showHeatmapSettingsBtn = true;
-					break;
-					case "off":
-						this.showHeatmapSettingsBtn = false;
-					break;
-					case "inactive":
-						this.toggleHeatmapTab();
-					break;
+		rangerStatsService.recentLogins$.subscribe(
+			logins => {
+				this.recentLogins = logins;
+				this.recentLoginsDataSource.data = this.recentLogins;
+				this.recentLoginsDataSource.paginator = this.paginator;
+				this.recentLoginsDataSource.sortingDataAccessor = (ranger, property) => {
+					switch (property) {
+						case 'lastName': return ranger.rangerID.lastName;
+						case 'level': return ranger.rangerID.accessLevel;
+						case 'date': return ranger.dateObj;
+						case 'platform': return ranger.platform;
+					};
 				};
+				this.recentLoginsDataSource.sort = this.recentLoginsSort;
 			}
 		);
-		//Determines which colour the heatmap is set to
-		trackViewNavService.trackHeatmapColour$.subscribe(
-			colour => {
-				this.changeHeatmapColour(colour);
-			}
-		);
-		//Determines the radius of the heatmap around each track
-		trackViewNavService.trackHeatmapRadius$.subscribe(
-			radius => {
-				this.changeHeatmapRadius(radius);
-			}
-		);*/
 	}
+  
 	ngOnInit(): void {
 		document.getElementById("overview-route").classList.add("activeRoute");
 		this.loadStatistics();
@@ -248,17 +197,20 @@ export class OverviewComponent implements OnInit {
 	*/
 	}
 	
-	onSelect(event) {
-		console.log(event);
+	ngAfterViewInit() {
+		//this.recentLoginsDataSource.sort = this.recentLoginsSort;
 	}
 
-	
 	loadStatistics() {
 		this.rangerStatsService.getRangerLogins(JSON.parse(localStorage.getItem('currentToken'))['value']);
 	}
 	
 	route(temp: string) {
 		this.router.navigate([temp]);
+	}
+	
+	viewRangerProfile(token: string) {
+		this.router.navigate(['rangers/profiles'], { queryParams: { ranger: token } });
 	}
 
 	startLoader() {

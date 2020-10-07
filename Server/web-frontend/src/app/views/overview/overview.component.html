@@ -227,22 +227,77 @@
 									<h1>Ranger Login Activity</h1>
 								</div>
 								<div class="statistics-content-main-container">
-									<div id="ranger-loginbyapp-stats-container" class="statistics-content-container-two">
-										<div class="statistics-content-container-title">
-											<p class="fontSB">Logins By Application</p>
+									<div id="ranger-loginby-statistics-content-row1" class="statistics-content-row-container">
+										<div id="ranger-loginbyapp-stats-container" class="statistics-content-container-two">
+											<div class="statistics-content-container-title">
+												<p class="fontSB">Logins By Application</p>
+											</div>
+											<div class="statistics-content-container-content">
+												<ngx-charts-pie-grid [scheme]="loginsPerAppColorScheme" [results]="loginsPerApp"></ngx-charts-pie-grid>
+											</div>
 										</div>
-										<div class="statistics-content-container-content">
-											<ngx-charts-pie-grid [scheme]="loginsPerAppColorScheme" [results]="loginsPerApp" (select)="onSelect($event)"></ngx-charts-pie-grid>
+										<div id="ranger-loginbylevel-stats-container" class="statistics-content-container-two">
+											<div class="statistics-content-container-title">
+												<p class="fontSB">Logins By Ranger Level</p>
+											</div>
+											<div class="statistics-content-container-content">
+												<ngx-charts-advanced-pie-chart [scheme]="loginsPerLevelColorScheme" [results]="loginsPerLevel">
+													</ngx-charts-advanced-pie-chart>	
+											</div>													
 										</div>
 									</div>
-									<div id="ranger-loginbylevel-stats-container" class="statistics-content-container-two">
-										<div class="statistics-content-container-title">
-											<p class="fontSB">Logins By Ranger Level</p>
+									<div  id="ranger-loginby-statistics-content-row2" class="statistics-content-row-container">
+										<div id="ranger-loginbydate-stats-container" class="statistics-content-container-two">
+											<div class="statistics-content-container-title">
+												<p class="fontSB">Logins By Date</p>
+											</div>
+											<div class="statistics-content-container-content">
+												<div id="logins-by-date-graph-container">
+												</div>
+											</div>
 										</div>
-										<div class="statistics-content-container-content">
-											<ngx-charts-advanced-pie-chart [scheme]="loginsPerLevelColorScheme" [results]="loginsPerLevel">
-												</ngx-charts-advanced-pie-chart>	
-										</div>													
+									</div>
+									<div  id="ranger-loginby-statistics-content-row3" class="statistics-content-row-container">
+										<div id="ranger-loginbyranger-stats-container" class="statistics-content-container-two">
+											<div class="statistics-content-container-title">
+												<p class="fontSB">Logins By Ranger</p>
+											</div>
+											<div class="statistics-content-container-content">
+												<div id="logins-by-ranger-table-container">
+													<table id="logins-by-ranger-table" mat-table  matSort matSortActive="date" matSortDirection="desc" [dataSource]="recentLoginsDataSource">
+														<ng-container matColumnDef="lastName">
+															<th mat-header-cell *matHeaderCellDef mat-sort-header>Ranger</th>
+															<td mat-cell class="ranger-cell" *matCellDef="let ranger" (click)="viewRangerProfile(ranger.rangerID.rangerID)">{{ranger.rangerID.firstName}} {{ranger.rangerID.lastName}}</td>
+														</ng-container>
+														<ng-container matColumnDef="level">
+														  <th mat-header-cell *matHeaderCellDef mat-sort-header>Ranger Level</th>
+														  <td mat-cell *matCellDef="let element"> {{element.rangerID.accessLevel}} </td>
+														</ng-container>
+														<ng-container matColumnDef="date">
+														  <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+														  <td mat-cell *matCellDef="let element">{{element.dateObj | date:'h:mm a'}}, {{element.dateObj | date:'fullDate'}}</td>
+														</ng-container>
+														<ng-container matColumnDef="platform">
+														  <th mat-header-cell *matHeaderCellDef mat-sort-header>Platform</th>
+														  <td mat-cell *matCellDef="let element">
+															<ng-container *ngIf="element.platform == 'app'">
+																Mobile Tracking Application
+															</ng-container>
+															<ng-container *ngIf="element.platform == 'Mobile Application'">
+																Mobile Tracking Application
+															</ng-container>
+															<ng-container *ngIf="element.platform == 'wdb'">
+																Web Dashboard Application
+															</ng-container>
+														  </td>
+														</ng-container>
+														<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+														<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+													</table>
+													<mat-paginator id="logins-by-ranger-paginator" [hidePageSize]="true" [pageSize]="5" showFirstLastButtons></mat-paginator>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>

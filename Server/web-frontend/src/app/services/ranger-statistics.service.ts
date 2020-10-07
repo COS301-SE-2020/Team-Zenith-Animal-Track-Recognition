@@ -18,14 +18,19 @@ export class RangerStatisticsService {
 	private userRootQueryUrl = ROOT_QUERY_STRING + '?query=query{user';
 	private loginsRootQueryUrl = ROOT_QUERY_STRING + '?query=query{recentLogins';
 	
-	private _rangerLogins = new BehaviorSubject<any[]>([]);
-	readonly rangerLogins = this._rangerLogins.asObservable();
+	//Ranger Login statistics variables
 	//Store a local copy of all ranger logins
 	private rangerLoginsStore: { rangerLogins: any[] } = { rangerLogins: null };
+	private _rangerLogins = new BehaviorSubject<any[]>([]);
+	readonly rangerLogins = this._rangerLogins.asObservable();
 	
-	//Ranger Login statistics variables
+	private defaultNumRecentLogins = 50;	
+	private recentLoginsSource = new BehaviorSubject<any[]>([]);
+	recentLogins$ = this.recentLoginsSource.asObservable();
+	
 	private loginsByApplicationSource = new Subject<any[]>();
 	loginsByApplication$ = this.loginsByApplicationSource.asObservable();	
+	
 	private loginsByLevelSource = new Subject<any[]>();
 	loginsByLevel$ = this.loginsByLevelSource.asObservable();
 	
@@ -72,46 +77,42 @@ export class RangerStatisticsService {
 	//HTTPS Requests
 	getRangerLogins(token: string)
 	{
-		/*this.http.get<any>(ROOT_QUERY_STRING + '?query=query{recentLogins(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-		'"){rangerID{firstName,lastName,accessLevel},time,platform}}')
-		.pipe(
-			retry(3),
-			catchError(() => {
-				this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
-				this.stopLoader();
-				this.stopSidenavLoader();
-				return EMPTY;
-			})
-		).subscribe((data: any[]) => {
-			let temp = [];
-			temp = Object.values(Object.values(data)[0]);
-			temp[0] = temp[0].reverse();
-			this.logins = [];
-			console.log("logins are: ");
-			console.log(temp[0]);
-			if (temp[0].length > 5) {
-				for (let i = 0; i < 5; i++) {
-					this.logins.push(temp[0][i]);
-				}
-			}	 
-			else {
-				this.logins = temp[0];
-			}
-		});*/
-		const getRangerLoginQueryUrl = this.loginsRootQueryUrl + '(token:"' + token + '"){rangerID{firstName,lastName,accessLevel},time,platform}}';
+		const getRangerLoginQueryUrl = this.loginsRootQueryUrl + '(token:"' + token + '"){rangerID{rangerID, firstName,lastName,accessLevel},time,platform}}';
 		this.http.get<Track[]>(getRangerLoginQueryUrl)
 			.subscribe( data => {
 				this.rangerLoginsStore.rangerLogins = Object.values(Object.values(data)[0])[0];	
-				console.log(this.rangerLoginsStore.rangerLogins);
+				this.rangerLoginsStore.rangerLogins.forEach(ranger => {
+					let temp = ranger.time.split(" ");
+					let temp2 = temp[1].split(":");
+					if (temp2[0].length == 1) 
+						temp2[0] = "0" + temp2[0];
+					if (temp2[1].length == 1) 
+						temp2[1] = "0" + temp2[1];
+					if (temp2[2].length == 1) 
+						temp2[2] = "0" + temp2[2];
+					let dateObjString = temp[0] + "T" + temp2[0] + ":" + temp2[1] + ":" + temp2[2];
+					ranger.dateObj = new Date(dateObjString);
+				});
 				this._rangerLogins.next(Object.assign({}, this.rangerLoginsStore).rangerLogins);
 				this.calculateLoginsByApplication();
 				this.calculateLoginsByLevel();
+				this.getRecentLogins(this.defaultNumRecentLogins);
 			},
 				error => {
 					this._rangerLogins.next([]);
 					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
 				}
 			);
+	}
+	getRecentLogins(numLogins: number) {
+		var allRangerLogins = cloneDeep(this.rangerLoginsStore.rangerLogins);
+		allRangerLogins.reverse();
+		var maxNumLogins = allRangerLogins.length;
+		
+		if (numLogins < maxNumLogins) {
+			maxNumLogins = numLogins;
+		}
+		this.recentLoginsSource.next(allRangerLogins.slice(0, maxNumLogins));
 	}
 	calculateLoginsByApplication() {
 		var allRangerLogins = cloneDeep(this.rangerLoginsStore.rangerLogins);
@@ -127,8 +128,8 @@ export class RangerStatisticsService {
 			}
 		});
 		var numLogins = [
-			{"name": "Mobile App Logins", "value": mobileAppLogins}, 
-			{"name": "Web App Logins", "value": webAppLogins}
+			{"name": "Mobile Tracking", "value": mobileAppLogins}, 
+			{"name": "Web Dashboard", "value": webAppLogins}
 		];
 		//this._displayedTracks.next(filteredTracks);
 		//this.trackFilterSource.next([filterCategory, filterChoice]);
