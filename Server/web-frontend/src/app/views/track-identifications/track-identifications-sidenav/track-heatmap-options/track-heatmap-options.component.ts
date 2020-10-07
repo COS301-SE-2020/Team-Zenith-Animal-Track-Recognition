@@ -11,6 +11,37 @@ import { TrackViewNavigationService } from './../../../../services/track-view-na
 export class TrackHeatmapOptionsComponent implements OnInit {
 
 	activeTrack: Track;
+	heatmapTimeframes = {
+		oneWeek: {
+			frame1: "1 hr",
+			frame2: "1 day",
+			frame3: "3 days",
+			frame4: "4 days",
+			frame5: "6 days +"
+		},
+		oneMonth: {
+			frame1: "1 hr",
+			frame2: "6 days",
+			frame3: "12 days",
+			frame4: "18 days",
+			frame5: "24 days +"			
+		},
+		sixMonths: {
+			frame1: "1 hr",
+			frame2: "1 month",
+			frame3: "2 months",
+			frame4: "4 months",
+			frame5: "5 months +"
+		},
+		oneYear: {
+			frame1: "1 hr",
+			frame2: "2 months",
+			frame3: "5 months",
+			frame4: "7 months",
+			frame5: "9 months +"
+		}
+	};
+	heatmapActiveTimeframe = this.heatmapTimeframes.oneWeek;
 	
 	constructor(private tracksService: TracksService, private trackViewNavService: TrackViewNavigationService) {
 		tracksService.activeTrack$.subscribe(
@@ -49,6 +80,20 @@ export class TrackHeatmapOptionsComponent implements OnInit {
 		this.trackViewNavService.changeHeatmapRadius(event.value);
 	}
 	changeHeatmapTimeRange(timeRange: any) {
+		switch(timeRange) {
+			case "1 Week":
+				this.heatmapActiveTimeframe = this.heatmapTimeframes.oneWeek;
+			break;
+			case "1 Month":
+				this.heatmapActiveTimeframe = this.heatmapTimeframes.oneMonth;
+			break;
+			case "6 Months":
+				this.heatmapActiveTimeframe = this.heatmapTimeframes.sixMonths;
+			break;
+			case "1 Year":
+				this.heatmapActiveTimeframe = this.heatmapTimeframes.oneYear;
+			break;
+		}
 		this.trackViewNavService.changeHeatmapTimeRange(timeRange);
 	}
 }

@@ -74,10 +74,6 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 
 
 	//Track Identification manipulation
-	timeToString() {
-		let temp = this.activeTrack.dateAndTime;
-		this.activeTrack.dateObj = new Date(temp.year, (temp.month - 1), temp.day, temp.hour, temp.min, temp.second);
-	}
 	setTrackAddress() {
 		//Determine physical location name of each track through Reverse Geocoding
 		this.geoCoder = new google.maps.Geocoder;
@@ -98,7 +94,6 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 				temp.location.addresses = null;
 			}
 		});
-		this.timeToString();
 	}
 
 	updateSimilarTracks() {

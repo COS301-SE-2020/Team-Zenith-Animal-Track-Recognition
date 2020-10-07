@@ -105,6 +105,10 @@
 }
 #heatmap-intensity-colour-legend {
 	background-image: linear-gradient(135deg, red, yellow, green);
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-start;
 	height: 15%;
 	width: 100%;
 }

@@ -108,7 +108,7 @@ export class TrackIdentificationsComponent implements OnInit {
 		//Determines which filter option is applied to the tracks and markers
 		tracksService.trackFilter$.subscribe(
 			filter => {
-				this.filterTrackMarkers(filter);
+				this.filterTrackMarkers(filter[0], filter[1]);
 			}
 		);		
 		//Determines which track is being zoomed on
@@ -270,13 +270,21 @@ export class TrackIdentificationsComponent implements OnInit {
 			this.infoWindow = new google.maps.InfoWindow();
 			this.infoWindow.setContent(
 				'<div id="track-info-window">' +
-				'<div class="track-info-image-container"><div class="track-identification-info-container">' +
-				'<div class="track-identification-animal-name">' +
-				'<span><p class="track-identification-animal-commonName fontSB">' + track.animal.commonName + ' Track</span>' +
-				'</div>' + 
-				'<p class="track-identification-capture-ranger fontM">Captured by: ' + track.ranger.firstName + ' ' + track.ranger.lastName + '</p>' +
-				'<span><p class="fontSB">ACCURACY SCORE:&nbsp;' + Math.round((track.potentialMatches[track.potentialMatches.length - 1].confidence * 100)) + '%</p></span>' +
-				'</div></div></div>');
+					'<div class="track-info-image-container">' +
+						'<div class="track-identification-info-container">' +
+							'<div class="track-identification-animal-name">' +
+								'<span>' + 
+									'<p class="track-identification-animal-commonName fontSB">' + track.animal.commonName + ' Track</p>' + 
+								'</span>' +
+							'</div>' + 
+							'<p class="track-identification-capture-ranger fontM">' + track.dateObj.toDateString() + '</p>' +
+							'<p class="track-identification-capture-ranger fontM">Captured by: ' + track.ranger.firstName + ' ' + track.ranger.lastName + '</p>' +
+							'<span>' +
+								'<p class="fontSB">ACCURACY SCORE:&nbsp;' + Math.round((track.potentialMatches[track.potentialMatches.length - 1].confidence * 100)) + '%</p>' + 
+							'</span>' +
+						'</div>' +
+					'</div>' +
+				'</div>');
 			this.infoWindow.open(this.map, animalTrack);
 		});
 		
@@ -284,7 +292,7 @@ export class TrackIdentificationsComponent implements OnInit {
 		this.mapMarkers.markers.push(animalTrack);
 		this.mapMarkers.tracks.push(track);
 	}
-	filterTrackMarkers(filterChoice: string) {
+	filterTrackMarkers(filterCategory: string, filterChoice: string) {
 		if (filterChoice == "All") {
 			//Show all map markers
 			this.setMapOnAll(this.map);
@@ -305,6 +313,10 @@ export class TrackIdentificationsComponent implements OnInit {
 			}
 		}
 		this.markerClusterer = new MarkerClusterer(this.map, filteredMarkers, this.markerClustererOptions);
+		if (filterCategory == "Animal") {
+			this.trackToolbar.showHeatmap = false;
+			this.toggleHeatmap("off");
+		}
 	}
 	setMapOnAll(map: google.maps.Map | null) {
 		for (let i = 0; i < this.mapMarkers.markers.length; i++) {
@@ -352,54 +364,47 @@ export class TrackIdentificationsComponent implements OnInit {
 		var timeRangeFactor;
 		switch(timeRange) {
 			case "1 Week":
-				console.log("Time range is 1 week, time difference is: " + timeDifference);
 				timeRangeFactor = -0.0003542999;
 			break;
 			case "1 Month":
-				timeRangeFactor = -0.0000192899;
+				timeRangeFactor = -0.0000187599;
 			break;
 			case "6 Months":
-				timeRangeFactor = -0.0000005358;
+				timeRangeFactor = -0.0000005199;
 			break;
 			case "1 Year":
-				timeRangeFactor = -0.0000001339;
+				timeRangeFactor = -0.0000001303;
 			break;
 		}
-		//var trackWeight = (timeRangeFactor * Math.pow(timeDifference, 2)) + 10.0;
 		var trackWeight = (timeRangeFactor * Math.pow(timeDifference, 2)) + 10.0;
-		console.log("calculated weight is " + trackWeight);
 		return Math.abs(Math.round(trackWeight * 100) / 100).toFixed(2);
 	}
 	generateHeatmap() {
 		var heatmapData = [];
-		var todaysDate = new Date();
+		const todaysDate = new Date();
+		var cutOffDate = new Date();
 		let timeRangeNum;
 		//Filter out tracks that do not fall within the time range
 		switch(this.heatmapTimeRange) {
 			case "1 Week":
-				timeRangeNum = todaysDate.setDate(todaysDate.getDate() - 7);
+				cutOffDate.setDate(cutOffDate.getDate() - 7);
 			break;
 			case "1 Month":
-				timeRangeNum = todaysDate.setMonth(todaysDate.getMonth() - 1);
+				cutOffDate.setMonth(cutOffDate.getMonth() - 1);
 			break;
 			case "6 Months":
-				timeRangeNum = todaysDate.setMonth(todaysDate.getMonth() - 6);
+				cutOffDate.setMonth(cutOffDate.getMonth() - 6);
 			break;
 			case "1 Year":
-				timeRangeNum = todaysDate.setFullYear(todaysDate.getFullYear() - 1);
+				cutOffDate.setFullYear(cutOffDate.getFullYear() - 1);
 			break;
 		}
-		var timeRange = new Date(timeRangeNum);
 		var todaysDateMilli = todaysDate.getTime();
 		
 		this.trackIdentifications.forEach(track => {
-			if (track.dateObj.getTime() > timeRange.getTime()) {
-				//const timeDiff = Math.abs(todaysDate.getTime() - track.dateObj.getTime()) / 3600000;
+			if (track.dateObj.getTime() > cutOffDate.getTime()) {
 				var timeDiff = Math.abs(todaysDateMilli - track.dateObj.getTime()) / 3600000;
-				//console.log("track Obj: " + track);
-				console.log("time diff is: " + timeDiff);
 				var trackWeight = this.calculateTrackWeighting(timeDiff, this.heatmapTimeRange);
-				console.log("Track weight is: " + trackWeight + " with date " + track.dateObj.toDateString());
 				heatmapData.push({location: new google.maps.LatLng(track.location.latitude, track.location.longitude), weight: trackWeight});		
 			}
 		});
