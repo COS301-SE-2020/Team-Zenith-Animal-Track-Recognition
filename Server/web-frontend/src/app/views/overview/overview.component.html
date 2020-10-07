@@ -1,4 +1,4 @@
-<div id="overview-workspace-container">
+<!--<div id="overview-workspace-container">
     <div id="loader-container">
         <mat-spinner id="loader"></mat-spinner>
     </div>
@@ -194,5 +194,69 @@
                 </mat-tab>
             </mat-tab-group>
         </div>
+    </div>
+</div>-->
+<div id="animal-photos-workspace-container">
+    <div id="loader-container">
+        <mat-spinner id="loader"></mat-spinner>
+    </div>
+    <div id="animals-toolbar-container">
+        <div id="animals-toolbar-navigationtree-container">
+            <div id="animals-toolbar-navigation">
+                <a (click)="route('overview')" class="fontM activeView">Overview</a>
+            </div>
+        </div>
+        <div id="animals-toolbar">
+            <mat-select id="animals-toolbar-actions-btn" class="fontM" placeholder="Placeholder" disableOptionCentering>
+                <mat-option>Option 1</mat-option>
+                <mat-option>Option 2</mat-option>
+            </mat-select>
+        </div>
+    </div>
+    <div id="animal-photos-view-workspace">
+		<div id="animal-photos-feed-container">
+			<mat-tab-group mat-align-tabs="center" dynamicHeight> 
+				<mat-tab label="Ranger Activity">
+					<ng-template matTabContent>
+						<div id="animal-photo-gallery-loader" class="loader-container">
+							<mat-spinner class="loader"></mat-spinner>
+						</div>
+						<div id="ranger-statistics-container">
+							<div id="ranger-login-statistics-container">
+								<div class="statistics-header-container">
+									<h1>Ranger Login Activity</h1>
+								</div>
+								<div class="statistics-content-main-container">
+									<div id="ranger-loginbyapp-stats-container" class="statistics-content-container-two">
+										<div class="statistics-content-container-title">
+											<p class="fontSB">Logins By Application</p>
+										</div>
+										<div class="statistics-content-container-content">
+											<ngx-charts-pie-grid [scheme]="loginsPerAppColorScheme" [results]="loginsPerApp" (select)="onSelect($event)"></ngx-charts-pie-grid>
+										</div>
+									</div>
+									<div id="ranger-loginbylevel-stats-container" class="statistics-content-container-two">
+										<div class="statistics-content-container-title">
+											<p class="fontSB">Logins By Ranger Level</p>
+										</div>
+										<div class="statistics-content-container-content">
+											<ngx-charts-advanced-pie-chart [scheme]="loginsPerLevelColorScheme" [results]="loginsPerLevel">
+												</ngx-charts-advanced-pie-chart>	
+										</div>													
+									</div>
+								</div>
+							</div>
+						</div>
+					</ng-template>
+				</mat-tab>
+				<mat-tab label="Tracking Activity">
+					<ng-template matTabContent>
+						<div id="animal-track-gallery-loader" class="loader-container">
+							<mat-spinner class="loader"></mat-spinner>
+						</div>
+					</ng-template>
+				</mat-tab>
+			</mat-tab-group>
+		</div>
     </div>
 </div>

@@ -77,6 +77,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { DragDropDirective } from './views/animals/add-image/drag-drop.directive';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
 
 @NgModule({
@@ -158,7 +159,8 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     MatGridListModule,
     MatPaginatorModule,
 	MatSliderModule, 
-    GoogleMapsModule
+    GoogleMapsModule,
+	NgxChartsModule
   ],
   providers: [AuthGuardService],
   entryComponents: [

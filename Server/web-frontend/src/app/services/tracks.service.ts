@@ -14,9 +14,7 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class TracksService {
-	
-	private _: any;
-	private activeTrackSource = new BehaviorSubject<Track>(null);
+		private activeTrackSource = new BehaviorSubject<Track>(null);
 	activeTrack$ = this.activeTrackSource.asObservable();
 	
 	private trackRootQueryUrl = TRACKS_QUERY_STRING + '?query=query{spoorIdentification';

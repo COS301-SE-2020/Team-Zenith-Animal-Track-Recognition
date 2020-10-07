@@ -1,10 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { EMPTY } from 'rxjs';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { retry, catchError } from 'rxjs/operators';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
-import * as CanvasJS from './canvasjs.min';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Track } from 'src/app/models/track';
+import { RangerStatisticsService } from './../../services/ranger-statistics.service';
+//import * as CanvasJS from './canvasjs.min';
 
 @Component({
   selector: 'app-overview',
@@ -12,17 +14,140 @@ import * as CanvasJS from './canvasjs.min';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent implements OnInit {
-  logins: any;
-  mostTracked: any;
-  rangers: any;
-  latest: any;
-  animalPercentages: any;
-  leastIdentified: any;
+	logins: any;
+	mostTracked: any;
+	rangers: any;
+	latest: any;
+	animalPercentages: any;
+	leastIdentified: any;
+	
+	loginsPerApp = [
+		{
+			"name": "Mobile App Logins",
+			"value": 0
+		},
+		{
+			"name": "Web App Logins",
+			"value": 0
+		}
+	];
+	loginsPerLevel = [
+		{
+			"name": "Level 1 Logins",
+			"value": 0
+		},
+		{
+			"name": "Level 2 Logins",
+			"value": 0
+		},
+		{
+			"name": "Level 3 Logins",
+			"value": 0
+		}
+	];
+	//view: any[] = [];
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
+	showLegend: boolean = true;
+	showLabels: boolean = true;
+	loginsPerAppColorScheme = {
+		domain: ['#E44D25', '#509CD0']
+	};
+	loginsPerLevelColorScheme = {
+		domain: ['#E44D25', '#509CD0', '#5AA454']
+	};
 
-  ngOnInit(): void {
-    document.getElementById("overview-route").classList.add("activeRoute");
+	constructor(private router: Router, private rangerStatsService: RangerStatisticsService) { 
+		rangerStatsService.loginsByApplication$.subscribe(
+			logins => {
+				this.loginsPerApp = logins;
+			}
+		);
+		rangerStatsService.loginsByLevel$.subscribe(
+			logins => {
+				this.loginsPerLevel = logins;
+			}
+		);
+		/*
+		//Get the latest collection of track identifications
+		tracksService.identifications.subscribe(
+			trackList => {
+				//Add track markers to the map if tracks are present
+				if (trackList != null && trackList.length > 0) {
+					//Add track markers to the map if initial list of tracks
+					if (this.trackIdentifications == null) {
+						this.trackIdentifications = trackList;	
+						this.addTrackMarkers();
+					}
+					else {
+						//Updating identifications with filtered tracks
+						this.trackIdentifications = trackList;
+					}
+				}
+				else if (trackList != null && trackList.length == 0) {
+					if (this.trackIdentifications != null) {
+						//If the track list returned is not the initial value but is empty nonetheless (if filtered for example)
+						this.trackIdentifications = trackList;
+					}
+				}
+			}
+		);
+		//Determines which filter option is applied to the tracks and markers
+		tracksService.trackFilter$.subscribe(
+			filter => {
+				this.filterTrackMarkers(filter[0], filter[1]);
+			}
+		);		
+		//Determines which track is being zoomed on
+		trackViewNavService.trackMapZoom$.subscribe(
+			coords => {
+				this.zoomOnTrack(coords);
+			}
+		);
+		//Determines whether the heatmap is currently viewable
+		trackViewNavService.trackHeatmap$.subscribe(
+			state => {
+				this.toggleHeatmap(state);
+			}
+		);
+		//Determines whether the heatmap is currently viewable
+		trackViewNavService.trackHeatmapTimeRange$.subscribe(
+			timeRange => {
+				this.changeHeatmapTimeRange(timeRange);
+			}
+		);
+		//Determine whether the heatmap settings tab is open, closed or simply inactive
+		trackViewNavService.trackHeatmapSettings$.subscribe(
+			state => {
+				switch(state) {
+					case "on":
+						this.showHeatmapSettingsBtn = true;
+					break;
+					case "off":
+						this.showHeatmapSettingsBtn = false;
+					break;
+					case "inactive":
+						this.toggleHeatmapTab();
+					break;
+				};
+			}
+		);
+		//Determines which colour the heatmap is set to
+		trackViewNavService.trackHeatmapColour$.subscribe(
+			colour => {
+				this.changeHeatmapColour(colour);
+			}
+		);
+		//Determines the radius of the heatmap around each track
+		trackViewNavService.trackHeatmapRadius$.subscribe(
+			radius => {
+				this.changeHeatmapRadius(radius);
+			}
+		);*/
+	}
+	ngOnInit(): void {
+		document.getElementById("overview-route").classList.add("activeRoute");
+		this.loadStatistics();
+	  /*
     this.mostTracked = { mosotTrakedRanger: '' };
     this.latest = { ranger: { firstName: '', lastName: '' }, animal: { commonName: '' } };
     this.leastIdentified = { commonName: ''};
@@ -45,30 +170,6 @@ export class OverviewComponent implements OnInit {
         this.rangers = temp[0];
       });
 
-    this.http.get<any>(ROOT_QUERY_STRING + '?query=query{recentLogins(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-      '"){rangerID{firstName,lastName,accessLevel},time,platform}}')
-      .pipe(
-        retry(3),
-        catchError(() => {
-          this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
-          this.stopLoader();
-          this.stopSidenavLoader();
-          return EMPTY;
-        })
-      )
-      .subscribe((data: any[]) => {
-        let temp = [];
-        temp = Object.values(Object.values(data)[0]);
-        temp[0] = temp[0].reverse();
-        this.logins = [];
-        if (temp[0].length > 5) {
-          for (let i = 0; i < 5; i++) {
-            this.logins.push(temp[0][i]);
-          }
-        } else {
-          this.logins = temp[0];
-        }
-      });
 
     this.http.get<any>(ROOT_QUERY_STRING + '?query=query{rangersStats2(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
       '"){mosotTrakedRanger{firstName,lastName},AnimalTracked}}')
@@ -144,28 +245,29 @@ export class OverviewComponent implements OnInit {
     setTimeout(() => {
       this.stopLoader();
     }, 1000);
-  }
+	*/
+	}
+	
+	onSelect(event) {
+		console.log(event);
+	}
 
-  startLoader() {
-    document.getElementById('loader-container').style.visibility = 'visible';
-  }
-  stopLoader() {
-    document.getElementById('loader-container').style.visibility = 'hidden';
-  }
-  stopSidenavLoader() {
-    throw new Error('Method not implemented.');
-  }
-  timeToString(element) {
-    let temp = element.dateAndTime;
-    temp.month = temp.month < 10 ? '0' + temp.month : temp.month;
-    temp.day = temp.day < 10 ? '0' + temp.day : temp.day;
-    temp.hour = temp.hour < 10 ? '0' + temp.hour : temp.hour;
-    temp.min = temp.min < 10 ? '0' + temp.min : temp.min;
-    temp.second = temp.second < 10 ? '0' + temp.second : temp.second;
-    const str: string = temp.year + "-" + temp.month + "-" + temp.day + "T" + temp.hour + ":" + temp.min + ":" + temp.second + ".000Z";
-    element.timeAsString = str;
-    element.dateObj = new Date(temp.year, temp.month, temp.day, temp.hour, temp.min, temp.second);
+	
+	loadStatistics() {
+		this.rangerStatsService.getRangerLogins(JSON.parse(localStorage.getItem('currentToken'))['value']);
+	}
+	
+	route(temp: string) {
+		this.router.navigate([temp]);
+	}
 
-    return temp;
-  }
+	startLoader() {
+		document.getElementById('loader-container').style.visibility = 'visible';
+	}
+	stopLoader() {
+		document.getElementById('loader-container').style.visibility = 'hidden';
+	}		
+	stopSidenavLoader() {
+		//throw new Error('Method not implemented.');
+	}
 }
