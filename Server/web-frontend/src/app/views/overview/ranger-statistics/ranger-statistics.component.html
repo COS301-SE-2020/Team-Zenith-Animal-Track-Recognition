@@ -37,7 +37,7 @@
 										<div id="ranger-loginby-statistics-content-row1" class="statistics-content-row-container">
 											<div id="ranger-loginbyapp-stats-container" class="statistics-content-container-two">
 												<div class="statistics-content-container-title">
-													<p class="fontSB">Logins By Application</p>
+													<p class="fontSB">Logins By Application - All Time</p>
 												</div>
 												<div class="statistics-content-container-content">
 													<ngx-charts-pie-grid [scheme]="loginsPerAppColorScheme" [results]="loginsPerApp"></ngx-charts-pie-grid>
@@ -45,7 +45,7 @@
 											</div>
 											<div id="ranger-loginbylevel-stats-container" class="statistics-content-container-two">
 												<div class="statistics-content-container-title">
-													<p class="fontSB">Logins By Ranger Level</p>
+													<p class="fontSB">Logins By Ranger Level - All Time</p>
 												</div>
 												<div class="statistics-content-container-content">
 													<ngx-charts-advanced-pie-chart [scheme]="loginsPerLevelColorScheme" [results]="loginsPerLevel">
@@ -56,7 +56,7 @@
 										<div  id="ranger-loginby-statistics-content-row2" class="statistics-content-row-container">
 											<div id="ranger-loginbydate-stats-container" class="statistics-content-container-two">
 												<div class="statistics-content-container-title">
-													<p class="fontSB">Logins By Date</p>
+													<p class="fontSB">Logins By Date - {{loginsByDateStart.toDateString()}} to {{loginsByDateEnd.toDateString()}}</p>
 													<div class="statistics-content-title-toolbar-container">
 														<mat-form-field id="loginsByDatePicker" appearance="fill">
 															<mat-date-range-input [formGroup]="loginsByDateRangeForm" [rangePicker]="loginsByDatePicker">
@@ -81,6 +81,7 @@
 														<ngx-charts-area-chart-stacked [animations]="true" [scheme]="loginsPerDateColorScheme" [legend]="true" 
 															[showXAxisLabel]="true"
 															[showYAxisLabel]="true"
+															[autoScale]="true"
 															[xAxis]="true"
 															[yAxis]="true"
 															[xAxisLabel]="'Login Date'" [yAxisLabel]="'Number of logins'"
