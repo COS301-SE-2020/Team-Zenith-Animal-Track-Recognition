@@ -177,13 +177,22 @@ class AnimalView extends StatelessWidget {
                           ),
                           body: Container(
                             padding: EdgeInsets.all(10),
-                            color: Colors.grey[300],
+                            color: Colors.grey[100],
                             child: TabBarView(
                               children: getBodyWidgets(snapshot.data.length,
-                                  snapshot.data.animalList),
+                                  snapshot.data.animalList, model, context),
                             ),
                           ),
                           bottomNavigationBar: BottomNavigation(),
+                          floatingActionButton: FloatingActionButton(
+                            onPressed: () {
+                              showOptions(context);
+                            },
+                            child: Icon(
+                              Icons.camera_alt,
+                            ),
+                            backgroundColor: Color.fromRGBO(205, 21, 67, 1),
+                          ),
                         ),
                       ),
                     )
@@ -204,7 +213,7 @@ class NavDrawer extends ViewModelWidget<AnimalViewModel> {
   @override
   Widget build(BuildContext context, AnimalViewModel model) {
     return Container(
-      width: 250,
+      width: 180,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -218,24 +227,24 @@ class NavDrawer extends ViewModelWidget<AnimalViewModel> {
               child: null,
             ),
             ListTile(
-                leading: Icon(Icons.home),
-                title: text16LeftBoldGrey("Home"),
+                leading: Icon(Icons.home, color: Colors.black87),
+                title: text16LeftNormBlack("Home"),
                 dense: true,
                 onTap: () => {navigateToHomeView(context)}),
             ListTile(
-                leading: Icon(Icons.account_circle),
-                title: text16LeftBoldGrey("Profile"),
+                leading: Icon(Icons.account_circle, color: Colors.black87),
+                title: text16LeftNormBlack("Profile"),
                 dense: true,
                 onTap: () => {navigateToProfile(context)}),
             ListTile(
-                leading: Icon(Icons.verified_user),
-                title: text16LeftBoldGrey("Achievements"),
+                leading: Icon(Icons.verified_user, color: Colors.black87),
+                title: text16LeftNormBlack("Achievements"),
                 dense: true,
                 onTap: () => {navigateToAchievements()}),
             ListTile(
-                leading: Icon(Icons.exit_to_app),
+                leading: Icon(Icons.exit_to_app, color: Colors.black87),
                 dense: true,
-                title: text16LeftBoldGrey("Logout"),
+                title: text16LeftNormBlack("Logout"),
                 onTap: () async {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
@@ -278,57 +287,66 @@ class IconBuilder extends ViewModelWidget<AnimalViewModel> {
 //========================== APPBAR ICONS =======================
 
 //========================== VIEW BODY =======================
-List<Widget> getBodyWidgets(int len, var data) {
+List<Widget> getBodyWidgets(int len, var data, var model, var context) {
   List<Widget> widget = new List();
   for (int i = 0; i < len; i++) {
-    widget.add(getWidget(data[i]));
+    widget.add(getWidget(data[i], model, context));
   }
   return widget;
 }
 
-Widget getWidget(var animalTabList) {
-  return ListView.builder(
-      itemCount: animalTabList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          alignment: Alignment.centerLeft,
-          margin: new EdgeInsets.all(10),
-          padding: new EdgeInsets.all(0),
-          height: 180,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
+Widget getWidget(var animalTabList, var model, var context) {
+  return animalTabList == null
+      ? Center(
+          child: Container(
+            key: Key('List'),
+            padding: EdgeInsets.all(10),
+            color: Colors.grey[100],
+            child: Center(child: text18CenterNormalGrey("[No Animals Found]")),
           ),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTileTheme(
-                    dense: false,
-                    child: Row(children: [
-                      Expanded(
-                          flex: 3,
-                          child: imageBlock(animalTabList[index].image)),
-                      Expanded(
-                          flex: 5,
-                          child: cardText(
-                              animalTabList[index].animalName,
-                              animalTabList[index].sizeM,
-                              animalTabList[index].sizeF,
-                              animalTabList[index].weightM,
-                              animalTabList[index].weightF,
-                              animalTabList[index].diet,
-                              animalTabList[index].gestation,
-                              context)),
-                    ])),
-                ListTileTheme(
-                    dense: false,
-                    child:
-                        ViewButton(name: animalTabList[index].classification)),
-              ]),
-        );
-      });
+        )
+      : ListView.builder(
+          itemCount: animalTabList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              alignment: Alignment.centerLeft,
+              margin: new EdgeInsets.all(10),
+              padding: new EdgeInsets.all(0),
+              height: 180,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTileTheme(
+                        dense: false,
+                        child: Row(children: [
+                          Expanded(
+                              flex: 3,
+                              child: imageBlock(animalTabList[index].image)),
+                          Expanded(
+                              flex: 5,
+                              child: cardText(
+                                  animalTabList[index].animalName,
+                                  animalTabList[index].sizeM,
+                                  animalTabList[index].sizeF,
+                                  animalTabList[index].weightM,
+                                  animalTabList[index].weightF,
+                                  animalTabList[index].diet,
+                                  animalTabList[index].gestation,
+                                  context)),
+                        ])),
+                    ListTileTheme(
+                        dense: false,
+                        child: ViewButton(
+                            name: animalTabList[index].classification)),
+                  ]),
+            );
+          });
 }
 //========================== VIEW BODY =======================
 
@@ -367,7 +385,7 @@ Widget imageBlock(String imageLink) {
         //image: AssetImage(imageLink),
         fit: BoxFit.fill,
       ),
-      color: Colors.grey,
+      color: Colors.white,
       borderRadius: BorderRadius.circular(15),
     ),
     height: 100,
@@ -389,7 +407,7 @@ Widget cardText(String name, String sizeM, String sizeF, String weightM,
                 alignment: Alignment.centerLeft,
                 margin: EdgeInsets.all(0),
                 padding: EdgeInsets.all(0),
-                child: text18RightBoldGrey(name))),
+                child: text18RightBoldBlack(name))),
         Expanded(
             flex: 1,
             child: Container(
@@ -420,7 +438,7 @@ Widget middleRow(
               Expanded(
                   flex: 1,
                   child: Container(
-                    child: text12LeftNormGrey("Size:"),
+                    child: text12LeftNormBlack("Size:"),
                   )),
               Expanded(
                   flex: 4,
@@ -440,7 +458,7 @@ Widget middleRow(
               Expanded(
                   flex: 1,
                   child: Container(
-                    child: text12LeftNormGrey("Weight:"),
+                    child: text12LeftNormBlack("Weight:"),
                   )),
               Expanded(
                   flex: 4,
@@ -566,7 +584,7 @@ Widget bottomRow(String diet, String gestation, var context) {
           margin: EdgeInsets.only(right: 10),
           child: Row(
             children: <Widget>[
-              Expanded(flex: 1, child: text12LeftNormGrey("Diet: ")),
+              Expanded(flex: 1, child: text12LeftNormBlack("Diet: ")),
               Expanded(
                 flex: 2,
                 child: text12RighttNormGrey(diet),
@@ -581,7 +599,7 @@ Widget bottomRow(String diet, String gestation, var context) {
           margin: EdgeInsets.only(right: 10),
           child: Row(
             children: <Widget>[
-              Expanded(flex: 1, child: text12LeftNormGrey("Gestation: ")),
+              Expanded(flex: 1, child: text12LeftNormBlack("Gestation: ")),
               Expanded(
                 flex: 1,
                 child: text12RighttNormGrey(gestation),

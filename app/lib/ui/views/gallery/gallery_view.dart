@@ -168,7 +168,7 @@ class GalleryView extends StatelessWidget {
                         ),
                         body: Container(
                           padding: EdgeInsets.all(10),
-                          color: Colors.grey[300],
+                          color: Colors.grey[100],
                           child: TabBarView(
                             children: getBodyWidgets(
                                 snapshot.data.length, galleryModel.galleryList),
@@ -193,9 +193,31 @@ class GalleryView extends StatelessWidget {
 List<Widget> getBodyWidgets(int len, var data) {
   List<Widget> widget = new List();
   for (int i = 0; i < len; i++) {
-    widget.add(GridItem(
-      animalTabList: data[i],
-    ));
+    if (data[i] == null || data[i].length == 0) {
+      if (i == 0) {
+        widget.add(Center(
+          child: Container(
+            key: Key('List'),
+            padding: EdgeInsets.all(10),
+            color: Colors.grey[100],
+            child: text18CenterNormalGrey("[No Appearance Pictures Found]"),
+          ),
+        ));
+      } else {
+        widget.add(Center(
+          child: Container(
+            key: Key('List'),
+            padding: EdgeInsets.all(10),
+            color: Colors.grey[100],
+            child: text18CenterNormalGrey("[No Tracks Found]"),
+          ),
+        ));
+      }
+    } else {
+      widget.add(GridItem(
+        animalTabList: data[i],
+      ));
+    }
   }
   return widget;
 }
@@ -309,9 +331,10 @@ class NavDrawer extends ViewModelWidget<GalleryViewModel> {
   NavDrawer({Key key}) : super(reactive: true);
 
   @override
+  @override
   Widget build(BuildContext context, GalleryViewModel model) {
     return Container(
-      width: 250,
+      width: 180,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -325,24 +348,24 @@ class NavDrawer extends ViewModelWidget<GalleryViewModel> {
               child: null,
             ),
             ListTile(
-                leading: Icon(Icons.home),
-                title: text16LeftBoldGrey("Home"),
+                leading: Icon(Icons.home, color: Colors.black87),
+                title: text16LeftNormBlack("Home"),
                 dense: true,
                 onTap: () => {navigateToHomeView(context)}),
             ListTile(
-                leading: Icon(Icons.account_circle),
-                title: text16LeftBoldGrey("Profile"),
+                leading: Icon(Icons.account_circle, color: Colors.black87),
+                title: text16LeftNormBlack("Profile"),
                 dense: true,
                 onTap: () => {navigateToProfile(context)}),
             ListTile(
-                leading: Icon(Icons.verified_user),
-                title: text16LeftBoldGrey("Achievements"),
+                leading: Icon(Icons.verified_user, color: Colors.black87),
+                title: text16LeftNormBlack("Achievements"),
                 dense: true,
                 onTap: () => {navigateToAchievements()}),
             ListTile(
-                leading: Icon(Icons.exit_to_app),
+                leading: Icon(Icons.exit_to_app, color: Colors.black87),
                 dense: true,
-                title: text16LeftBoldGrey("Logout"),
+                title: text16LeftNormBlack("Logout"),
                 onTap: () async {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();

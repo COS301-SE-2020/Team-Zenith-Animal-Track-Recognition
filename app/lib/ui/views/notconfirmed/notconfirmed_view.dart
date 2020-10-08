@@ -19,9 +19,55 @@ class NotConfirmedView extends StatelessWidget {
           if (snapshot.hasError) {
             return Scaffold(
               appBar: AppBar(
-                backgroundColor: Colors.black,
+                leading: Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: new Stack(
+                        children: [
+                          new Icon(Icons.menu),
+                          new Positioned(
+                            right: 0,
+                            child: new Container(
+                                padding: EdgeInsets.all(1),
+                                decoration: new BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                constraints: BoxConstraints(
+                                  minWidth: 12,
+                                  minHeight: 12,
+                                ),
+                                child: Container(
+                                  height: 5,
+                                  width: 5,
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                )),
+                          )
+                        ],
+                      ),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      tooltip: MaterialLocalizations.of(context)
+                          .openAppDrawerTooltip,
+                    );
+                  },
+                ),
                 title: text18LeftBoldWhite(
-                  "Image Confirmation",
+                  "ERP RANGER",
+                ),
+                flexibleSpace: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: <Color>[
+                        Color.fromRGBO(58, 119, 168, 1),
+                        Color.fromRGBO(77, 151, 203, 1)
+                      ])),
                 ),
               ),
               body: internetError(snapshot.error.toString()),
@@ -236,7 +282,6 @@ Widget blocks = new Container(
   alignment: Alignment(0.0, 0.0),
   margin: new EdgeInsets.only(bottom: 3, left: 3, right: 3),
   decoration: BoxDecoration(
-      color: Colors.grey,
       borderRadius: BorderRadius.circular(10),
       border: Border.all(color: Colors.grey)),
   width: 10,

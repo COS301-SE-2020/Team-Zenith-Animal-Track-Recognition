@@ -68,6 +68,7 @@ class UploadButton extends ViewModelWidget<LoginViewModel> {
       ),
       width: 300,
       child: RaisedButton(
+        elevation: 5,
         key: Key('LoginButton'),
         onPressed: () {
           model.login(context);
@@ -124,7 +125,10 @@ class UserName extends HookViewModelWidget<LoginViewModel> {
               borderSide: BorderSide(color: Colors.red),
               borderRadius: BorderRadius.all(Radius.circular(10)),
               gapPadding: 0),
-          prefixIcon: Icon(Icons.person),
+          prefixIcon: Icon(
+            Icons.person,
+            color: Colors.black87,
+          ),
           hintText: "Email",
           filled: true,
           fillColor: Colors.grey[300]),
@@ -159,9 +163,15 @@ class Password extends HookViewModelWidget<LoginViewModel> {
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.blue),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          prefixIcon: Icon(Icons.lock),
+          prefixIcon: Icon(
+            Icons.lock,
+            color: Colors.black87,
+          ),
           suffixIcon: IconButton(
-            icon: Icon(Icons.remove_red_eye),
+            icon: Icon(
+              Icons.remove_red_eye,
+              color: Colors.black87,
+            ),
             onPressed: () {
               model.setObscure();
             },

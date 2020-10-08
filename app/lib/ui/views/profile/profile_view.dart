@@ -19,6 +19,13 @@ class ProfileView extends StatelessWidget {
           future: model.getRecentIdentifications(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
+              int userLevel = model.userlevel;
+              BottomNavigation bottomNavigation = BottomNavigation();
+              if (userLevel == 1) {
+                bottomNavigation.setIndex(2);
+              } else {
+                bottomNavigation.setIndex(3);
+              }
               return Scaffold(
                 drawer: NavDrawer(),
                 appBar: AppBar(
@@ -69,10 +76,10 @@ class ProfileView extends StatelessWidget {
                             );
                     },
                   ),
-                  title: text22LeftBoldWhite("ERP RANGER"),
-                  actions: <Widget>[
-                    IconBuilder(icon: Icons.search, type: "search"),
-                  ],
+                  title: text18LeftBoldWhite(
+                    "ERP RANGER",
+                  ),
+                  actions: <Widget>[IconBuilder(icon: Icons.search)],
                   flexibleSpace: Container(
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -85,6 +92,7 @@ class ProfileView extends StatelessWidget {
                   ),
                 ),
                 body: internetError(snapshot.error.toString()),
+                bottomNavigationBar: BottomNavigation(),
               );
             }
             if (snapshot.hasData) {
@@ -99,7 +107,6 @@ class ProfileView extends StatelessWidget {
                   ? WillPopScope(
                       onWillPop: () async {
                         if (Navigator.canPop(context)) {
-                          print("object");
                           navigateToHomeView(context);
                         }
                         return;
@@ -169,15 +176,35 @@ class ProfileView extends StatelessWidget {
                                 ])),
                           ),
                         ),
-                        body: Container(
-                            color: Colors.grey[300],
-                            child: ProfileViewList(
-                              tempObject: snapshot.data,
-                            )),
+                        body: snapshot.data.animalList == null
+                            ? Container(
+                                color: Colors.white,
+                                child: Column(
+                                  children: [
+                                    profileinfo(snapshot.data.infoModel),
+                                    Center(
+                                      child: Container(
+                                        margin: EdgeInsets.only(
+                                            top: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                4),
+                                        color: Colors.white,
+                                        child: text18CenterNormalGrey(
+                                            "[No Identifications Found]"),
+                                      ),
+                                    )
+                                  ],
+                                ))
+                            : Container(
+                                color: Colors.grey[100],
+                                child: ProfileViewList(
+                                  tempObject: snapshot.data,
+                                )),
                         bottomNavigationBar: BottomNavigation(),
                         floatingActionButton: FloatingActionButton(
                           onPressed: () {
-                            captureImage();
+                            showOptions(context);
                           },
                           child: Icon(
                             Icons.camera_alt,
@@ -265,6 +292,7 @@ class ProfileViewList extends ViewModelWidget<ProfileViewModel> {
   @override
   Widget build(BuildContext context, ProfileViewModel viewModel) {
     animalList = tempObject.animalList;
+
     return CustomScrollView(
       key: Key('ProfileList'),
       slivers: <Widget>[
@@ -404,7 +432,7 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
   @override
   Widget build(BuildContext context, ProfileViewModel model) {
     return Container(
-      width: 250,
+      width: 180,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -418,13 +446,13 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
               child: null,
             ),
             ListTile(
-                leading: Icon(Icons.home),
-                title: text16LeftBoldGrey("Home"),
+                leading: Icon(Icons.home, color: Colors.black87),
+                title: text16LeftNormBlack("Home"),
                 dense: true,
                 onTap: () => {navigateToHomeView(context)}),
             ListTile(
-                leading: Icon(Icons.account_circle),
-                title: text16LeftBoldGrey("Profile"),
+                leading: Icon(Icons.account_circle, color: Colors.black87),
+                title: text16LeftNormBlack("Profile"),
                 dense: true,
                 onTap: () => {
                       Fluttertoast.showToast(
@@ -436,14 +464,14 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
                           fontSize: 16.0)
                     }),
             ListTile(
-                leading: Icon(Icons.verified_user),
-                title: text16LeftBoldGrey("Achievements"),
+                leading: Icon(Icons.verified_user, color: Colors.black87),
+                title: text16LeftNormBlack("Achievements"),
                 dense: true,
                 onTap: () => {navigateToAchievements()}),
             ListTile(
-                leading: Icon(Icons.exit_to_app),
+                leading: Icon(Icons.exit_to_app, color: Colors.black87),
                 dense: true,
-                title: text16LeftBoldGrey("Logout"),
+                title: text16LeftNormBlack("Logout"),
                 onTap: () async {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
@@ -515,7 +543,7 @@ Widget profiletext(ProfileInfoModel profileInfo) {
                       child: Icon(
                         Icons.email,
                         size: 15,
-                        color: Colors.grey,
+                        color: Colors.black,
                       ))),
               Expanded(
                   flex: 10,
@@ -532,7 +560,7 @@ Widget profiletext(ProfileInfoModel profileInfo) {
                   flex: 1,
                   child: Container(
                       alignment: Alignment.centerLeft,
-                      child: Icon(Icons.phone, size: 15, color: Colors.grey))),
+                      child: Icon(Icons.phone, size: 15, color: Colors.black))),
               Expanded(
                   flex: 10,
                   child: Container(
@@ -571,12 +599,12 @@ Widget summary(ProfileInfoModel profileInfo) {
                           flex: 1,
                           child: Container(
                               alignment: Alignment.bottomRight,
-                              child: text12LeftBoldGrey("Tracks"))),
+                              child: text12LeftNormGrey("Tracks"))),
                       Expanded(
                           flex: 1,
                           child: Container(
                               alignment: Alignment.topRight,
-                              child: text12LeftBoldGrey("Identified")))
+                              child: text12LeftNormGrey("Identified")))
                     ]),
                   )),
               Expanded(
@@ -609,12 +637,12 @@ Widget summary(ProfileInfoModel profileInfo) {
                           flex: 1,
                           child: Container(
                               alignment: Alignment.bottomRight,
-                              child: text12LeftBoldGrey("Animals"))),
+                              child: text12LeftNormGrey("Animals"))),
                       Expanded(
                           flex: 1,
                           child: Container(
                               alignment: Alignment.topRight,
-                              child: text12LeftBoldGrey("Tracked")))
+                              child: text12LeftNormGrey("Tracked")))
                     ]),
                   )),
               Expanded(
@@ -645,12 +673,12 @@ Widget summary(ProfileInfoModel profileInfo) {
                           flex: 1,
                           child: Container(
                               alignment: Alignment.bottomRight,
-                              child: text12LeftBoldGrey("Access"))),
+                              child: text12LeftNormGrey("Access"))),
                       Expanded(
                           flex: 1,
                           child: Container(
                               alignment: Alignment.topRight,
-                              child: text12LeftBoldGrey("Level")))
+                              child: text12LeftNormGrey("Level")))
                     ]),
                   )),
               Expanded(

@@ -188,7 +188,7 @@ class SearchView extends StatelessWidget {
                       ),
                       body: Container(
                           key: Key('SearchCon'),
-                          color: Colors.grey[200],
+                          color: Colors.grey[100],
                           child: TabBarView(
                             key: Key('SearchTabBar'),
                             children: <Widget>[
@@ -324,11 +324,11 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
                     dense: true,
                     onTap: () => navigateToInfo(animalList[index].species),
                     leading: imageBlock(animalList[index].image),
-                    title: text16LeftBoldGrey(animalList[index].species),
-                    subtitle: text12LeftBoldGrey(animalList[index].commonName),
+                    title: text16LeftNormBlack(animalList[index].species),
+                    subtitle: text12LeftNormBlack(animalList[index].commonName),
                     trailing: IconBuilder(
                         icon: Icons.remove_red_eye,
-                        colors: Colors.grey,
+                        colors: Colors.black,
                         index: 1,
                         name: animalList[index].species),
                   ),
@@ -437,7 +437,6 @@ Widget iconButton(var model) {
   return IconButton(
       icon: Icon(Icons.remove_red_eye),
       onPressed: () {
-        print("object");
         model.navigateToInformation();
       });
 }
