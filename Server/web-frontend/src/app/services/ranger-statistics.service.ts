@@ -31,6 +31,9 @@ export class RangerStatisticsService {
 	private loginsByApplicationSource = new Subject<any[]>();
 	loginsByApplication$ = this.loginsByApplicationSource.asObservable();	
 	
+	private loginsByDateSource = new Subject<any[]>();
+	loginsByDate$ = this.loginsByDateSource.asObservable();	
+	
 	private loginsByLevelSource = new Subject<any[]>();
 	loginsByLevel$ = this.loginsByLevelSource.asObservable();
 	
@@ -40,39 +43,6 @@ export class RangerStatisticsService {
 		return this._rangerLogins.asObservable();
 	}
 	
-	changeActiveTrack(track: Track) {
-		//this.activeTrackSource.next(track);
-	}
-	
-	changeTrackFilter(filterCategory: string, filterChoice: string) {
-		//Make a copy of all the tracks to filter through
-		/*
-		var allTracks = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
-		var filteredTracks = [];
-		if (filterChoice == "All") {
-			this._displayedTracks.next(allTracks);
-			this.trackFilterSource.next([filterCategory, filterChoice]);
-			return;
-		}
-		
-		for (let i = 0; i < allTracks.length; i++) {
-			let groupName = false;
-			if (filterCategory == "Group") {
-				for (let j = 0; j < (allTracks[i]['animal']['groupID']).length; j++) {
-					if (('' + ((allTracks[i]['animal']['groupID'])[j])['groupName'] == (filterChoice)) && filterChoice != '') {
-						groupName = true;
-					}
-				}
-			}
-			if (filterChoice == '' || ('' + allTracks[i]['animal']['commonName']) == (filterChoice) || groupName ||
-				(allTracks[i]['ranger']['firstName'] + ' ' + allTracks[i]['ranger']['lastName']) == (filterChoice)) {
-					filteredTracks.push(allTracks[i]);
-			}
-		}
-		this._displayedTracks.next(filteredTracks);
-		this.trackFilterSource.next([filterCategory, filterChoice]);
-		*/
-	}
 		
 	//HTTPS Requests
 	getRangerLogins(token: string)
@@ -96,6 +66,10 @@ export class RangerStatisticsService {
 				this._rangerLogins.next(Object.assign({}, this.rangerLoginsStore).rangerLogins);
 				this.calculateLoginsByApplication();
 				this.calculateLoginsByLevel();
+				
+				var startDate = new Date();
+				startDate.setDate(startDate.getDate() - 7);
+				this.getLoginsByDate(startDate, new Date(), "platform");
 				this.getRecentLogins(this.defaultNumRecentLogins);
 			},
 				error => {
@@ -103,6 +77,103 @@ export class RangerStatisticsService {
 					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
 				}
 			);
+	}
+	getLoginsByDate(startDate: any, endDate: any, dataType: string) {
+		var allRangerLogins = cloneDeep(this.rangerLoginsStore.rangerLogins);
+		
+		//Filter out logins that do not fall within the time range
+		var filteredLogins = [];		
+		var startDateTime = startDate.getTime();
+		var endDateTime = endDate.getTime();
+		var loginTime;
+				
+		allRangerLogins.forEach(login => {
+			loginTime = login.dateObj.getTime();
+			if (loginTime >= startDateTime && loginTime <= endDateTime) {
+				filteredLogins.push(login);
+			}
+		});
+		
+		var numDays = Math.abs((endDateTime - startDateTime) / (1000 * 3600 * 24));
+		numDays++;
+		//console.log("Checking dates from " + endDate.toDateString() + " to " + startDate.toDateString());
+		//console.log("Difference in days between start and end dates is:" + numDays);
+		
+		//Count number of logins on a specific date per platform or level
+		var fromDate = new Date(startDateTime);
+		var logins = [];
+		switch(dataType) {
+			case "level":
+				var levelOneSeries = [];
+				var levelTwoSeries = [];
+				var levelThreeSeries = [];
+				var levelOneNumLogins = 0;
+				var levelTwoNumLogins = 0;
+				var levelThreeNumLogins = 0;
+				
+				for (let i = 0; i < numDays; i++) {
+					levelOneNumLogins = 0;
+					levelTwoNumLogins = 0;
+					levelThreeNumLogins = 0;
+					fromDate = new Date(endDateTime);
+					fromDate.setDate(fromDate.getDate() - i);
+					
+					filteredLogins.forEach(ranger => {
+						if (this.isSameDay(ranger.dateObj, fromDate))  {
+							if (ranger.rangerID.accessLevel == "1") {
+								levelOneNumLogins++;
+							}
+							else if (ranger.rangerID.accessLevel == "2") {
+								levelTwoNumLogins++;
+							}
+							else if (ranger.rangerID.accessLevel == "3") {
+								levelThreeNumLogins++;
+							}
+						}
+					});
+					levelOneSeries.push({"value": levelOneNumLogins, "name": fromDate});
+					levelTwoSeries.push({"value": levelTwoNumLogins, "name": fromDate});
+					levelThreeSeries.push({"value": levelThreeNumLogins, "name": fromDate});
+				}
+				logins.push(
+					{"name":"Level 1 Rangers", "series": levelOneSeries.reverse()}, 
+					{"name":"Level 2 Rangers", "series": levelTwoSeries.reverse()}, 
+					{"name":"Level 3 Ranger", "series": levelThreeSeries.reverse()}
+				);
+			break;
+			case "platform":
+				var mobileAppSeries = []; 
+				var webAppSeries = []; 
+				var mobileNumLogins = 0;
+				var webNumLogins = 0;
+				
+				for (let i = 0; i < numDays; i++) {
+					mobileNumLogins = 0;
+					webNumLogins = 0;
+					fromDate = new Date(endDateTime);
+					fromDate.setDate(fromDate.getDate() - i);
+					
+					filteredLogins.forEach(ranger => {
+						if (this.isSameDay(ranger.dateObj, fromDate))  {
+							if (ranger.platform == "app" || ranger.platform == "Mobile Application") {
+								mobileNumLogins++;
+							}
+							else if (ranger.platform == "wdb") {
+								webNumLogins++;
+							}
+						}
+					});
+					mobileAppSeries.push({"value": mobileNumLogins, "name": fromDate});
+					webAppSeries.push({"value": webNumLogins, "name": fromDate});
+				}
+				logins.push(
+					{"name":"Mobile Application", "series": mobileAppSeries.reverse()}, 
+					{"name":"Web Application", "series": webAppSeries.reverse()}
+				);
+			break;
+		}
+		
+		this.loginsByDateSource.next(logins);		
 	}
 	getRecentLogins(numLogins: number) {
 		var allRangerLogins = cloneDeep(this.rangerLoginsStore.rangerLogins);
@@ -158,6 +229,13 @@ export class RangerStatisticsService {
 			{"name": "Level 3 Logins", "value": levelThreeLogins}
 		];
 		this.loginsByLevelSource.next(numLogins);		
+	}
+	
+	isSameDay(date1: any, date2: any) {
+		var isSameDay = false;
+		if (date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear())
+			isSameDay = true;
+		return isSameDay;
 	}
 
 	/**

@@ -1,15 +1,17 @@
-import { AnimalGroupsComponent } from './views/animals/animals-groups/animal-groups.component';
 import { AuthGuardService as AuthGuard } from './services/auth-guard.service';
-import { RangersComponent } from './views/rangers/rangers.component';
-import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.component';
-import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
-import { OverviewComponent } from './views/overview/overview.component';
-import { LoginComponent } from './views/login/login.component';
-import { TrackIdentificationsComponent } from './views/track-identifications/track-identifications.component';
+import { AnimalGroupsComponent } from './views/animals/animals-groups/animal-groups.component';
 import { AnimalsComponent } from './views/animals/animals.component';
 import { AnimalProfileComponent } from './views/animal-profile/animal-profile.component';
 import { AnimalsGalleryComponent } from './views/animals/animals-gallery/animals-gallery.component';
 import { AnimalPhotosComponent } from './views/animals/animals-gallery/animal-photos/animal-photos.component';
+import { AnimalStatisticsComponent } from './views/overview/animal-statistics/animal-statistics.component';
+import { OverviewComponent } from './views/overview/overview.component';
+import { LoginComponent } from './views/login/login.component';
+import { RangersComponent } from './views/rangers/rangers.component';
+import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.component';
+import { RangerPermissionsComponent } from './views/ranger-permissions/ranger-permissions.component';
+import { RangerStatisticsComponent } from './views/overview/ranger-statistics/ranger-statistics.component';
+import { TrackIdentificationsComponent } from './views/track-identifications/track-identifications.component';
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
 
@@ -26,6 +28,8 @@ const routes: Routes = [
   { path: 'rangers/permissions', component: RangerPermissionsComponent, canActivate: [AuthGuard] },
   { path: 'identifications', component: TrackIdentificationsComponent, canActivate: [AuthGuard] },
   { path: 'overview', component: OverviewComponent, canActivate: [AuthGuard] },
+  { path: 'overview/animal-statistics', component: AnimalStatisticsComponent, canActivate: [AuthGuard] },
+  { path: 'overview/ranger-statistics', component: RangerStatisticsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full'}
 ];
 
