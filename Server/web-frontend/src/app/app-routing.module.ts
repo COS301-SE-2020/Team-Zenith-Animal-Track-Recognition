@@ -27,7 +27,7 @@ const routes: Routes = [
   { path: 'rangers/profiles', component: RangerProfileComponent, canActivate: [AuthGuard] },
   { path: 'rangers/permissions', component: RangerPermissionsComponent, canActivate: [AuthGuard] },
   { path: 'identifications', component: TrackIdentificationsComponent, canActivate: [AuthGuard] },
-  { path: 'overview', component: OverviewComponent, canActivate: [AuthGuard] },
+  { path: 'overview', component: RangerStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'overview/animal-statistics', component: AnimalStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'overview/ranger-statistics', component: RangerStatisticsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full'}

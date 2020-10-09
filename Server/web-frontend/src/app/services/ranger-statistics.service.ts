@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { clone, cloneDeep } from "lodash";
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject, EMPTY } from 'rxjs';
+import { catchError, map, retry } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from './message.service';
 import { Track } from 'src/app/models/track';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { TRACKS_QUERY_STRING } from 'src/app/models/data';
+import { TracksService } from './tracks.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,15 +39,33 @@ export class RangerStatisticsService {
 	private loginsByLevelSource = new Subject<any[]>();
 	loginsByLevel$ = this.loginsByLevelSource.asObservable();
 	
+	//Tracking Activity Variables
+	private _displayedTracks = new BehaviorSubject<any[]>([]);
+	readonly displayedTracks = this._displayedTracks.asObservable();
+	//Store a local copy of all track identifications
+	private trackIdentificationsStore: { trackIdentifications: Track[] } = { trackIdentifications: null };
+	
+	private allIdentificationsByDateSource = new Subject<any[]>();
+	allIdentificationsByDate$ = this.allIdentificationsByDateSource.asObservable();
+	private avgScoreAllTimeSource = new Subject<any[]>();
+	avgScoreAllTime$ = this.avgScoreAllTimeSource.asObservable();	
+	private numIdentificationsSource = new Subject<any[]>();
+	numIdentifications$ = this.numIdentificationsSource.asObservable();	
+		private mostIdentifiedSource = new Subject<any[]>();
+	 mostIdentified$ = this.mostIdentifiedSource.asObservable();	
+	
 	constructor(private http: HttpClient, private messageService: MessageService) { }
 	
 	get logins() {
 		return this._rangerLogins.asObservable();
 	}
+	get identifications() {
+		return this._displayedTracks.asObservable();
+	}
 	
 		
-	//HTTPS Requests
-	getRangerLogins(token: string)
+	//Login Activity functions
+	getRangerLoginActivity(token: string)
 	{
 		const getRangerLoginQueryUrl = this.loginsRootQueryUrl + '(token:"' + token + '"){rangerID{rangerID, firstName,lastName,accessLevel},time,platform}}';
 		this.http.get<Track[]>(getRangerLoginQueryUrl)
@@ -202,8 +222,6 @@ export class RangerStatisticsService {
 			{"name": "Mobile Tracking", "value": mobileAppLogins}, 
 			{"name": "Web Dashboard", "value": webAppLogins}
 		];
-		//this._displayedTracks.next(filteredTracks);
-		//this.trackFilterSource.next([filterCategory, filterChoice]);
 		this.loginsByApplicationSource.next(numLogins);
 	}
 	calculateLoginsByLevel() {
@@ -229,6 +247,128 @@ export class RangerStatisticsService {
 			{"name": "Level 3 Logins", "value": levelThreeLogins}
 		];
 		this.loginsByLevelSource.next(numLogins);		
+	}
+	
+	//Tracking Activity Statistics
+	//HTTPS Requests
+	getRangerTrackingActivity(token: string)
+	{
+		const getIdentificationsQueryUrl = this.trackRootQueryUrl + '(token:"' + token + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},' +
+			'commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},' +
+			'ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},' +
+			'confidence},picture{picturesID,URL,kindOfPicture},tags}}';
+		this.http.get<Track[]>(getIdentificationsQueryUrl)
+			.subscribe( data => {
+				this.trackIdentificationsStore.trackIdentifications = Object.values(Object.values(data)[0])[0];	
+				this.trackIdentificationsStore.trackIdentifications.forEach(element => {
+					let temp = element.dateAndTime;
+					element.dateObj = new Date(temp.year, temp.month - 1, temp.day, temp.hour, temp.min, temp.second);
+					element.recency = element.dateObj.toISOString();
+				});
+				//this.calculateLoginsByApplication();
+				//this.calculateLoginsByLevel();
+				
+				var startDate = new Date();
+				startDate.setDate(startDate.getDate() - 7);
+				this.getAllIdentificationsByDate(startDate, new Date());
+				this.getAvgAccuracyScoreAllTime();
+				this.numIdentificationsSource.next([{"name": "Animals Identified", "value":this.trackIdentificationsStore.trackIdentifications.length }]);
+				this.getMostIdsByRanger();
+				this._displayedTracks.next(Object.assign({}, this.trackIdentificationsStore).trackIdentifications);
+			},
+				error => {
+					this._displayedTracks.next([]);
+					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
+				}
+			);
+	}
+	getAllIdentificationsByDate(startDate: any, endDate: any) {
+		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
+		
+		//Filter out logins that do not fall within the time range
+		var filteredIds = [];		
+		var startDateTime = startDate.getTime();
+		var endDateTime = endDate.getTime();
+		var trackTime;
+				
+		allTrackIdentifications.forEach(track => {
+			trackTime = track.dateObj.getTime();
+			if (trackTime >= startDateTime && trackTime <= endDateTime) {
+				filteredIds.push(track);
+			}
+		});
+		
+		var numDays = Math.abs((endDateTime - startDateTime) / (1000 * 3600 * 24));
+		numDays++;
+		//console.log("Checking dates from " + endDate.toDateString() + " to " + startDate.toDateString());
+		//console.log("Difference in days between start and end dates is:" + numDays);
+		
+		//Count number of logins on a specific date per platform or level
+		var fromDate = new Date(startDateTime);
+		var idPerDay = [];
+		var identifications = [];
+		var numIds = 0;
+			
+		for (let i = 0; i < numDays; i++) {
+			numIds = 0;
+			fromDate = new Date(endDateTime);
+			fromDate.setDate(fromDate.getDate() - i);
+					
+			filteredIds.forEach(track => {
+				if (this.isSameDay(track.dateObj, fromDate)) {
+					numIds++;
+				}
+			});
+			idPerDay.push({"value": numIds, "name": fromDate});
+		}
+		identifications.push({"name":"Track Identifications", "series": idPerDay.reverse()});
+
+		this.allIdentificationsByDateSource.next(identifications);		
+	}
+	getAvgAccuracyScoreAllTime() {
+		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
+		var accuracyScore = 0;
+		
+		allTrackIdentifications.forEach(track => {
+			accuracyScore += track.potentialMatches[track.potentialMatches.length - 1].confidence;
+		});
+		
+		var avgScore =  Math.round(((accuracyScore/allTrackIdentifications.length) * 100));
+
+		this.avgScoreAllTimeSource.next([{"name": "Average Accuracy Score","value": avgScore}]);
+	}
+	getMostIdsByRanger() {
+		/*const getMostQueryUrl = this.trackRootQueryUrl + '(token:"' + token + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},' +
+			'commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},' +
+			'ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},' +
+			'confidence},picture{picturesID,URL,kindOfPicture},tags}}';
+		this.http.get<Track[]>(getIdentificationsQueryUrl)
+			.subscribe( data => {
+				this.numIdentificationsSource.next([{"name": "Animals Identified", "value":this.trackIdentificationsStore.trackIdentifications.length }]);
+			},
+				error => {
+					this._displayedTracks.next([]);
+					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
+				}
+			);*/
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{rangersStats2(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+		  '"){mosotTrakedRanger{firstName,lastName},AnimalTracked}}')
+		  .pipe(
+			retry(3),
+			catchError(() => {
+					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
+			  return EMPTY;
+			})
+		  )
+		  .subscribe((data: any[]) => {
+			let temp = [];
+			temp = Object.values(Object.values(data)[0]);
+			var mostTracked = temp[0];
+			console.log("most tracked");
+			console.log(mostTracked);
+			this.mostIdentifiedSource.next([{"name": "Most Animals Identified\n" + mostTracked.mosotTrakedRanger.firstName + " " + mostTracked.mosotTrakedRanger.lastName,
+				"value": 5 }]);
+		  });
 	}
 	
 	isSameDay(date1: any, date2: any) {

@@ -186,15 +186,15 @@ export class TracksService {
 				this.trackIdentificationsStore.trackIdentifications = Object.values(Object.values(data)[0])[0];	
 				this.trackIdentificationsStore.trackIdentifications.forEach(element => {
 					let temp = element.dateAndTime;
-					element.dateObj = new Date(temp.year, temp.month, temp.day, temp.hour, temp.min, temp.second);
+					element.dateObj = new Date(temp.year, temp.month - 1, temp.day, temp.hour, temp.min, temp.second);
 					element.recency = element.dateObj.toISOString();
 				});
 				//DUMMY LOCATIONS TO SET MARKERS WITHIN KRUGER PARK
-				for (let i = 0; i < this.dummyLocations.length; i++) {
+				/*for (let i = 0; i < this.dummyLocations.length; i++) {
 					this.trackIdentificationsStore.trackIdentifications[i].location = this.dummyLocations[i].location;
 					this.trackIdentificationsStore.trackIdentifications[i].dateObj = this.dummyLocations[i].dateObj;
 					this.trackIdentificationsStore.trackIdentifications[i].recency = this.dummyLocations[i].dateObj.toISOString();
-				}
+				}*/
 				this._displayedTracks.next(Object.assign({}, this.trackIdentificationsStore).trackIdentifications);
 				if (initParams.initWithFilter)
 					this.changeTrackFilter(initParams.filterType, initParams.filter);

@@ -79,6 +79,23 @@ export class RangerStatisticsComponent implements OnInit {
 	loginsByDateStart;
 	loginsByDateEnd;
 	loginsByDateFilter = "platform";
+	
+	
+	
+	//Tracking Activity Variables
+	colorScheme = {
+		//domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
+		domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
+	};
+	cardColor: string = '#FFF';
+	mostIdentifications = [];
+	numIdentifications = [];
+	avgIdScoreAllTime = [];
+	allIdentifications = [];
+	allIdsByDateRangeForm: FormGroup;
+	allIdsByDateStart;
+	allIdsByDateEnd;
+
 
 	constructor(private formBuilder: FormBuilder, private router: Router, private rangerStatsService: RangerStatisticsService) { 
 		rangerStatsService.loginsByApplication$.subscribe(
@@ -88,7 +105,6 @@ export class RangerStatisticsComponent implements OnInit {
 		);
 		rangerStatsService.loginsByDate$.subscribe(
 			logins => {
-				console.log(logins);
 				this.loginsPerDate = logins;
 			}
 		);		
@@ -103,9 +119,30 @@ export class RangerStatisticsComponent implements OnInit {
 				this.recentLoginsDataSource.data = this.recentLogins;
 			}
 		);
+		rangerStatsService.allIdentificationsByDate$.subscribe(
+			identifications => {
+				this.allIdentifications = identifications;
+			}
+		);
+		rangerStatsService.numIdentifications$.subscribe(
+			num => {
+				this.numIdentifications = num;
+			}
+		);
+		rangerStatsService.avgScoreAllTime$.subscribe(
+			avgScore => {
+				this.avgIdScoreAllTime = avgScore;
+			}
+		);
+		rangerStatsService.mostIdentified$.subscribe(
+			avgScore => {
+				this.mostIdentifications = avgScore;
+			}
+		);
 	}
 	get loginsByDateRange() { return this.loginsByDateRangeForm.controls; }
-
+	get allIdsByDateRange() { return this.allIdsByDateRangeForm.controls; }
+	
 	ngOnInit(): void {
 		document.getElementById("overview-route").classList.add("activeRoute");
 		
@@ -119,6 +156,19 @@ export class RangerStatisticsComponent implements OnInit {
 		this.loginsByDateRangeForm.controls['loginsByDateEndControl'].valueChanges.subscribe(val => {
 			if (val != null) {
 				this.changeLoginsByDateRange();
+			}
+		});
+		
+		this.allIdsByDateEnd = new Date();
+		this.allIdsByDateStart = new Date(this.allIdsByDateEnd.getTime());
+		this.allIdsByDateStart.setDate(this.allIdsByDateStart.getDate() - 7);
+		this.allIdsByDateRangeForm = this.formBuilder.group({
+			allIdsByDateStartControl: ['', Validators.required],
+			allIdsByDateEndControl: ['', Validators.required]
+		});
+		this.allIdsByDateRangeForm.controls['allIdsByDateEndControl'].valueChanges.subscribe(val => {
+			if (val != null) {
+				this.changeAllIdsByDateRange();
 			}
 		});
 		  
@@ -156,23 +206,6 @@ export class RangerStatisticsComponent implements OnInit {
 			this.rangers = temp[0];
 		  });
 
-
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{rangersStats2(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-		  '"){mosotTrakedRanger{firstName,lastName},AnimalTracked}}')
-		  .pipe(
-			retry(3),
-			catchError(() => {
-			  this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
-			  this.stopLoader();
-			  this.stopSidenavLoader();
-			  return EMPTY;
-			})
-		  )
-		  .subscribe((data: any[]) => {
-			let temp = [];
-			temp = Object.values(Object.values(data)[0]);
-			this.mostTracked = temp[0];
-		  });
 
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 		  '",sigil:"yes"){animal{commonName},ranger{rangerID,accessLevel,firstName,lastName},dateAndTime{year,month,day,hour,min,second}}}')
@@ -233,12 +266,12 @@ export class RangerStatisticsComponent implements OnInit {
 		}, 1000);
 		*/
 	}
-	onChanges(): void {
 
-	}
 	loadStatistics() {
-		this.rangerStatsService.getRangerLogins(JSON.parse(localStorage.getItem('currentToken'))['value']);
+		this.rangerStatsService.getRangerLoginActivity(JSON.parse(localStorage.getItem('currentToken'))['value']);
+		this.rangerStatsService.getRangerTrackingActivity(JSON.parse(localStorage.getItem('currentToken'))['value']);
 	}
+	
 	
 	changeLoginsByDateFilter(filter: any) {
 		this.loginsByDateFilter = filter;
@@ -249,6 +282,15 @@ export class RangerStatisticsComponent implements OnInit {
 		this.loginsByDateEnd = this.loginsByDateRange.loginsByDateEndControl.value;
 		this.rangerStatsService.getLoginsByDate(this.loginsByDateStart, this.loginsByDateEnd, this.loginsByDateFilter);
 	}
+	
+	changeAllIdsByDateRange() {
+		this.allIdsByDateStart = this.allIdsByDateRange.allIdsByDateStartControl.value;
+		this.allIdsByDateEnd = this.allIdsByDateRange.allIdsByDateEndControl.value;
+		this.rangerStatsService.getAllIdentificationsByDate(this.allIdsByDateStart, this.allIdsByDateEnd);
+	}
+	
+	
+	
 	
 	changeRangerStatsTab(index: number) {
 		this.activeRangerStatsTabIndex = index;

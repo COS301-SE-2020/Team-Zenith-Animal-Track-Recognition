@@ -26,6 +26,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	@ViewChild('simTracksMatTab') simTracksMatTab;
 	geoCoder: google.maps.Geocoder;
 	similarTrackList: any = null;
+	otherMatchesList: any = null;
 
 	constructor(private changeDetection: ChangeDetectorRef,
 		private http: HttpClient,
@@ -50,6 +51,20 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 
 	ngOnInit(): void {
 
+				//Split similar tracks into groups of up to 3 and limit it to 9 similar tracks
+		var maxNumOtherTracks = this.activeTrack.potentialMatches.length;
+
+		this.otherMatchesList = [];
+		for (let j = 0; j < maxNumOtherTracks; j += 2) {
+			this.otherMatchesList.push(this.activeTrack.potentialMatches.slice(j, j + 2));
+		}
+		console.log("other poten OG:");
+		console.log(this.activeTrack.potentialMatches);
+		console.log("after");
+		console.log(this.otherMatchesList);
+		/*this.activeTrack.potentialMatch.forEach(match => {
+			this.
+		});*/
 	}
 
 	backToTrackList() {
