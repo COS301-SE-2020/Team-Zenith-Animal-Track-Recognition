@@ -72,7 +72,14 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 		this.simTracksMatTab.selectedIndex -= 1;
 	}
 
-
+	reclassifyTrack(track: any, newAnimal: any, otherMatchIndex: number) {
+		this.tracksService.reclassifyTrack(JSON.parse(localStorage.getItem('currentToken'))['value'], track, newAnimal);
+		//Visually show change
+		this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - otherMatchIndex].animal = this.activeTrack.animal;
+		this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - otherMatchIndex].confidence = this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - 1].confidence;
+		this.activeTrack.animal = newAnimal;
+		this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - 1].confidence = 1.00;
+	}
 	//Track Identification manipulation
 	setTrackAddress() {
 		//Determine physical location name of each track through Reverse Geocoding

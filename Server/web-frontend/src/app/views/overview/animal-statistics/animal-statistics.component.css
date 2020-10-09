@@ -17,7 +17,6 @@
     justify-content: flex-start;
     align-items: center;
     overflow: hidden;
-	border: 1px solid green;
 }
 .mat-tab-group {
     height: 100%;

@@ -20,6 +20,6 @@ export interface Track
 	ranger?: User;
 	potentialMatches?: PotentialMatch[];
 	picture?: Picture;
-	Tags?: String[];
+	tags?: String[];
 	similar?: Picture[];
 }

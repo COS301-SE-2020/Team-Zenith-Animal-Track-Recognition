@@ -18,6 +18,7 @@ export class TracksService {
 	activeTrack$ = this.activeTrackSource.asObservable();
 	
 	private trackRootQueryUrl = TRACKS_QUERY_STRING + '?query=query{spoorIdentification';
+	private reclassifyRootQueryUrl = TRACKS_QUERY_STRING + '?query=mutation{updateIdentification';
 	private _displayedTracks = new BehaviorSubject<Track[]>([]);
 	readonly displayedTracks = this._displayedTracks.asObservable();
 	//Store a local copy of all track identifications
@@ -179,7 +180,7 @@ export class TracksService {
 		const getIdentificationsQueryUrl = this.trackRootQueryUrl + '(token:"' + token + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},' +
 			'commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},' +
 			'ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},' +
-			'confidence},picture{picturesID,URL,kindOfPicture}}}';
+			'confidence},picture{picturesID,URL,kindOfPicture},tags}}';
 		this.http.get<Track[]>(getIdentificationsQueryUrl)
 			.subscribe( data => {
 				this.trackIdentificationsStore.trackIdentifications = Object.values(Object.values(data)[0])[0];	
@@ -200,6 +201,24 @@ export class TracksService {
 			},
 				error => {
 					this._displayedTracks.next([]);
+					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
+				}
+			);
+	}
+	
+	reclassifyTrack(token: any, track: any, newAnimal: any) {
+		//var tags = ["Track", "Found near riverbed"];
+		//console.log(tags.toString());
+		const reclassifyTrackQueryUrl = this.reclassifyRootQueryUrl + '(token:"' + token + '", latitude:' + encodeURIComponent(track.location.latitude) + ', longitude:' + 
+		encodeURIComponent(track.location.longitude) + ', spoorIdentificationID:"' + encodeURIComponent(track.spoorIdentificationID) + '", tags:"' + encodeURIComponent(track.tags.toString()) + 
+		'"){spoorIdentificationID}}';
+		this.http.post<Track[]>(reclassifyTrackQueryUrl, '')
+			.subscribe( data => {
+				//console.log("if data was returned it was:");
+				//console.log(data);
+			},
+				error => {
+					//this._displayedTracks.next([]);
 					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
 				}
 			);

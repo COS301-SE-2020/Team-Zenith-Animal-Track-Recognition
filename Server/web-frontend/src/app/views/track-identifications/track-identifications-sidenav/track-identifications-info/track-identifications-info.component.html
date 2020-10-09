@@ -93,11 +93,16 @@
                             <div class="other-potential-matches-animal">
                                 <div class="other-potential-matches-image-container">
                                     <ng-container *ngIf="activeTrack">
-                                        <div class="other-potential-matches-image" *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 2].animal">
+                                        <div class="other-potential-matches-image" [matMenuTriggerFor]="otherPossibleMatchMenuOne" *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 2].animal">
                                             <img *ngIf="activeTrack" src="{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 2].animal.pictures[0].URL}}">
                                         </div>
                                     </ng-container>
                                 </div>
+								<mat-menu #otherPossibleMatchMenuOne="matMenu" xPosition="before">
+									<button mat-menu-item (click)="reclassifyTrack(activeTrack, activeTrack.potentialMatches[activeTrack.potentialMatches.length - 2].animal, 2)">
+										<span>Reclassify Track</span>
+									</button>
+								</mat-menu>
                                 <div class="other-potential-matches-animal-info">
                                     <p class="other-potential-match-commonname fontSB" *ngIf="activeTrack">
                                         <ng-container *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 2].animal">
@@ -119,11 +124,16 @@
                             <div class="other-potential-matches-animal">
                                 <div class="other-potential-matches-image-container">
                                     <ng-container *ngIf="activeTrack">
-                                        <div class="other-potential-matches-image" *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 3].animal">
+                                        <div class="other-potential-matches-image" [matMenuTriggerFor]="otherPossibleMatchMenuTwo"  *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 3].animal">
                                             <img *ngIf="activeTrack" src="{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 3].animal.pictures[0].URL}}">
                                         </div>
                                     </ng-container>
                                 </div>
+								<mat-menu #otherPossibleMatchMenuTwo="matMenu" xPosition="before">
+									<button mat-menu-item (click)="reclassifyTrack(activeTrack, activeTrack.potentialMatches[activeTrack.potentialMatches.length - 3].animal, 3)">
+										<span>Reclassify Track</span>
+									</button>
+								</mat-menu>
                                 <div class="other-potential-matches-animal-info">
                                     <p class="other-potential-match-commonname fontSB" *ngIf="activeTrack">
                                         <ng-container *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 3].animal">
@@ -149,11 +159,16 @@
                             <div class="other-potential-matches-animal">
                                 <div class="other-potential-matches-image-container">
                                     <ng-container *ngIf="activeTrack">
-                                        <div class="other-potential-matches-image" *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 4].animal">
+                                        <div class="other-potential-matches-image" [matMenuTriggerFor]="otherPossibleMatchMenuThree" *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 4].animal">
                                             <img *ngIf="activeTrack" src="{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 4].animal.pictures[0].URL}}">
                                         </div>
                                     </ng-container>
                                 </div>
+								<mat-menu #otherPossibleMatchMenuThree="matMenu" xPosition="before">
+									<button mat-menu-item (click)="reclassifyTrack(activeTrack, activeTrack.potentialMatches[activeTrack.potentialMatches.length - 4].animal, 4)">
+										<span>Reclassify Track</span>
+									</button>
+								</mat-menu>
                                 <div class="other-potential-matches-animal-info">
                                     <p class="other-potential-match-commonname fontSB" *ngIf="activeTrack">
                                         <ng-container *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 4].animal">
@@ -175,11 +190,16 @@
                             <div class="other-potential-matches-animal">
                                 <div class="other-potential-matches-image-container">
                                     <ng-container *ngIf="activeTrack">
-                                        <div class="other-potential-matches-image" *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 5].animal">
+                                        <div class="other-potential-matches-image" [matMenuTriggerFor]="otherPossibleMatchMenuFour" *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 5].animal">
                                             <img *ngIf="activeTrack" src="{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 5].animal.pictures[0].URL}}">
                                         </div>
                                     </ng-container>
                                 </div>
+								<mat-menu #otherPossibleMatchMenuFour="matMenu" xPosition="before">
+									<button mat-menu-item (click)="reclassifyTrack(activeTrack, activeTrack.potentialMatches[activeTrack.potentialMatches.length - 5].animal, 5)">
+										<span>Reclassify Track</span>
+									</button>
+								</mat-menu>
                                 <div class="other-potential-matches-animal-info">
                                     <p class="other-potential-match-commonname fontSB" *ngIf="activeTrack">
                                         <ng-container *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 5].animal">
@@ -206,12 +226,17 @@
                                 <div class="other-potential-matches-image-container">
                                     <div class="other-potential-matches-image">
                                         <ng-container *ngIf="activeTrack">
-                                            <div class="other-potential-matches-image" *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 6].animal">
+                                            <div class="other-potential-matches-image" [matMenuTriggerFor]="otherPossibleMatchMenuFive" *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 6].animal">
                                                 <img src="{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 6].animal.pictures[0].URL}}">
                                             </div>
                                         </ng-container>
                                     </div>
                                 </div>
+								<mat-menu #otherPossibleMatchMenuFive="matMenu" xPosition="before">
+									<button mat-menu-item (click)="reclassifyTrack(activeTrack, activeTrack.potentialMatches[activeTrack.potentialMatches.length - 6].animal, 6)">
+										<span>Reclassify Track</span>
+									</button>
+								</mat-menu>
                                 <div class="other-potential-matches-animal-info">
                                     <p class="other-potential-match-commonname fontSB" *ngIf="activeTrack">
                                         <ng-container *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 6].animal">
@@ -233,11 +258,16 @@
                             <div class="other-potential-matches-animal">
                                 <div class="other-potential-matches-image-container">
                                     <ng-container *ngIf="activeTrack">
-                                        <div class="other-potential-matches-image" *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 7].animal">
+                                        <div class="other-potential-matches-image" [matMenuTriggerFor]="otherPossibleMatchMenuSix" *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 7].animal">
                                             <img *ngIf="activeTrack" src="{{activeTrack.potentialMatches[activeTrack.potentialMatches.length - 7].animal.pictures[0].URL}}">
                                         </div>
                                     </ng-container>
                                 </div>
+								<mat-menu #otherPossibleMatchMenuSix="matMenu" xPosition="before">
+									<button mat-menu-item (click)="reclassifyTrack(activeTrack, activeTrack.potentialMatches[activeTrack.potentialMatches.length - 7].animal, 7)">
+										<span>Reclassify Track</span>
+									</button>
+								</mat-menu>
                                 <div class="other-potential-matches-animal-info">
                                     <p class="other-potential-match-commonname fontSB" *ngIf="activeTrack">
                                         <ng-container *ngIf="activeTrack.potentialMatches[activeTrack.potentialMatches.length - 7].animal">
@@ -266,11 +296,11 @@
                 <p class="fontSB">Similar Tracks</p>
                 <div class="other-potential-matches-nav">
                     <button mat-icon-button (click)="prevSimilarTrack()">
-									<mat-icon>chevron_left</mat-icon>
-								</button>
+						<mat-icon>chevron_left</mat-icon>
+					</button>
                     <button mat-icon-button (click)="nextSimilarTrack()">
-									<mat-icon>chevron_right</mat-icon>
-								</button>
+						<mat-icon>chevron_right</mat-icon>
+					</button>
                 </div>
             </div>
             <div id="animal-photos-similar-tracks-tab">
@@ -297,7 +327,7 @@
             </div>
             <div id="animal-photos-track-tag-list">
                 <mat-chip-list>
-                    <mat-chip selected>Found near riverbed</mat-chip>
+                    <mat-chip selected *ngFor="let tag of activeTrack.tags">{{tag}}</mat-chip>
                     <mat-chip color="warn" selected>Possible injury</mat-chip>
                     <mat-chip>Infant</mat-chip>
                 </mat-chip-list>
