@@ -151,18 +151,56 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
         ),
         child: Column(children: [
           Expanded(
-            child: CarouselSlider(
-              items: getCarousel(),
-              options: CarouselOptions(
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  pauseAutoPlayOnTouch: true,
-                  aspectRatio: 16 / 12,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _current = index;
-                    });
-                  }),
+            child: Stack(
+              children: [
+                Container(
+                  child: CarouselSlider(
+                    items: getCarousel(),
+                    options: CarouselOptions(
+                        autoPlay: true,
+                        enlargeCenterPage: true,
+                        pauseAutoPlayOnTouch: true,
+                        height: 310,
+                        aspectRatio: 16 / 9,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _current = index;
+                          });
+                        }),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "VIEW",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontFamily: 'MavenPro',
+                        ),
+                      ),
+                      Text(
+                        "GALLERY",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontFamily: 'MavenPro',
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
           Row(
@@ -303,7 +341,7 @@ class ViewButton extends ViewModelWidget<InformationViewModel> {
             vertical: 16,
             horizontal: MediaQuery.of(context).size.width / 4,
           ),
-          child: text16CenterBoldWhite('VIEW GALLERY'),
+          child: text18CenterBoldWhite('VIEW GALLERY'),
           onPressed: () {
             navigateToGallery(name);
           },
@@ -328,155 +366,124 @@ Widget name(String name, String species) {
 }
 
 Widget height(String female, String male) {
-  return Expanded(
-    flex: 1,
-    child: Container(
-      decoration:
-          BoxDecoration(border: Border(right: BorderSide(color: Colors.grey))),
-      child: Column(
-        children: <Widget>[
-          text14LeftBoldBlack('Avg. Height'),
-          Row(
-            children: <Widget>[
-              Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Icon(
-                      Icons.person_pin,
-                      color: Colors.pink[200],
-                      size: 13,
-                    ),
-                  )),
-              Expanded(
-                  flex: 3, child: Container(child: text12LeftNormGrey(female))),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Icon(
-                      Icons.person_pin,
-                      color: Colors.blue[200],
-                      size: 13,
-                    ),
-                  )),
-              Expanded(
-                  flex: 3, child: Container(child: text12LeftNormGrey(male))),
-            ],
-          )
-        ],
-      ),
+  return Container(
+    padding: EdgeInsets.only(left: 7, bottom: 7),
+    decoration:
+        BoxDecoration(border: Border(right: BorderSide(color: Colors.grey))),
+    child: Row(
+      children: <Widget>[
+        Expanded(
+            flex: 3,
+            child: Container(child: text14LeftBoldBlack('Avg. Height: '))),
+        Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(right: 5.0),
+                  child: Icon(
+                    Icons.person_pin,
+                    color: Colors.pink[200],
+                    size: 13,
+                  ),
+                ),
+                Container(child: text14RightNormBlack(female)),
+              ],
+            )),
+        Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(
+                    right: 5.0,
+                  ),
+                  child: Icon(
+                    Icons.person_pin,
+                    color: Colors.blue[200],
+                    size: 13,
+                  ),
+                ),
+                Container(child: text14RightNormBlack(male)),
+              ],
+            )),
+      ],
     ),
   );
 }
 
 Widget weight(String female, String male) {
-  return Expanded(
-    flex: 1,
-    child: Container(
-      decoration:
-          BoxDecoration(border: Border(right: BorderSide(color: Colors.grey))),
-      child: Column(
-        children: <Widget>[
-          text14LeftBoldBlack('Avg. Weight'),
-          Row(
-            children: <Widget>[
-              Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Icon(
-                      Icons.person_pin,
-                      color: Colors.pink[200],
-                      size: 13,
-                    ),
-                  )),
-              Expanded(
-                  flex: 3, child: Container(child: text12LeftNormGrey(female))),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Icon(
-                      Icons.person_pin,
-                      color: Colors.blue[200],
-                      size: 13,
-                    ),
-                  )),
-              Expanded(
-                  flex: 3, child: Container(child: text12LeftNormGrey(male))),
-            ],
-          )
-        ],
-      ),
+  return Container(
+    padding: EdgeInsets.only(left: 7, bottom: 7),
+    decoration:
+        BoxDecoration(border: Border(right: BorderSide(color: Colors.grey))),
+    child: Row(
+      children: <Widget>[
+        Expanded(
+            flex: 3,
+            child: Container(child: text14LeftBoldBlack('Avg. Weight: '))),
+        Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(right: 5.0),
+                  child: Icon(
+                    Icons.person_pin,
+                    color: Colors.pink[200],
+                    size: 13,
+                  ),
+                ),
+                Container(child: text14RightNormBlack(female)),
+              ],
+            )),
+        Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(
+                    right: 5.0,
+                  ),
+                  child: Icon(
+                    Icons.person_pin,
+                    color: Colors.blue[200],
+                    size: 13,
+                  ),
+                ),
+                Container(child: text14RightNormBlack(male)),
+              ],
+            )),
+      ],
     ),
   );
 }
 
 Widget gestation(String period) {
-  return Expanded(
-    flex: 1,
-    child: Container(
-      decoration:
-          BoxDecoration(border: Border(right: BorderSide(color: Colors.grey))),
-      padding: EdgeInsets.only(left: 5.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          text14LeftBoldBlack('Gestation'),
-          Row(
-            children: <Widget>[
-              Expanded(
-                  flex: 2, child: Container(child: text12LeftNormGrey(period))),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(flex: 1, child: Container()),
-              Expanded(
-                  flex: 2,
-                  child: Container(
-                    child: Text(""),
-                  )),
-            ],
-          )
-        ],
-      ),
+  return Container(
+    alignment: Alignment.topLeft,
+    decoration:
+        BoxDecoration(border: Border(right: BorderSide(color: Colors.grey))),
+    padding: EdgeInsets.only(left: 7.0, bottom: 7),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(flex: 1, child: text14LeftBoldBlack('Gestation: ')),
+        Expanded(flex: 2, child: Container(child: text14LeftNormBlack(period))),
+      ],
     ),
   );
 }
 
 Widget diet(String diet) {
-  return Expanded(
-    flex: 1,
-    child: Container(
-      padding: EdgeInsets.only(left: 5.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          text14LeftBoldBlack('Diet'),
-          Row(
-            children: <Widget>[
-              Expanded(
-                  flex: 1, child: Container(child: text12LeftNormGrey(diet))),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(flex: 1, child: Container()),
-              Expanded(
-                  flex: 2,
-                  child: Container(
-                    child: Text(""),
-                  )),
-            ],
-          )
-        ],
-      ),
+  return Container(
+    padding: EdgeInsets.only(left: 7.0, bottom: 7),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(flex: 3, child: text14LeftBoldBlack('Diet: ')),
+        Expanded(flex: 6, child: Container(child: text14LeftNormBlack(diet))),
+      ],
     ),
   );
 }
@@ -484,7 +491,7 @@ Widget diet(String diet) {
 Widget animalDetails(String heightF, String heightM, String weightF,
     String weightM, String gestations, String diets) {
   return Container(
-    child: Row(
+    child: Column(
       children: <Widget>[
         height("$heightF", "$heightM"),
         weight("$weightF", "$weightM"),
@@ -526,9 +533,9 @@ Widget backButton(context) {
         left: 10,
       ),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(13),
-          border: Border.all(color: Colors.white)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(13),
+      ),
       child: GestureDetector(
         onTap: () {
           Navigator.pop(context);
@@ -543,16 +550,18 @@ List<Widget> getCarousel() {
   return imgList
       .map((item) => Container(
             child: Container(
-              margin: EdgeInsets.all(5.0),
+              margin: EdgeInsets.all(1.0),
               child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   child: Stack(
                     children: <Widget>[
-                      Image.network(
-                        item,
-                        fit: BoxFit.fill,
-                        width: 1000.0,
+                      Container(
+                        width: 500.0,
                         height: 500,
+                        child: Image.network(
+                          item,
+                          fit: BoxFit.fill,
+                        ),
                       ),
                       Positioned(
                         bottom: 0.0,

@@ -213,7 +213,7 @@ class NavDrawer extends ViewModelWidget<AnimalViewModel> {
   @override
   Widget build(BuildContext context, AnimalViewModel model) {
     return Container(
-      width: 180,
+      width: 200,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,

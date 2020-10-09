@@ -432,7 +432,7 @@ class NavDrawer extends ViewModelWidget<ProfileViewModel> {
   @override
   Widget build(BuildContext context, ProfileViewModel model) {
     return Container(
-      width: 180,
+      width: 200,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,

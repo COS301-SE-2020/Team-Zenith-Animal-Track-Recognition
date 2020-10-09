@@ -34,8 +34,10 @@ class GraphQL implements Api {
         throw Exception("");
       }
 
-      final http.Response response = await http.get("$domain" +
-          "graphql?query=query{groups(token:\"$token\"){groupName,groupID}}");
+      final http.Response response = await http
+          .get("$domain" +
+              "graphql?query=query{groups(token:\"$token\"){groupName,groupID}}")
+          .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -272,8 +274,10 @@ class GraphQL implements Api {
       if (ConnectivityResult.none == connectivity) {
         throw SocketException("");
       }
-      final http.Response response = await http.get("$domain" +
-          "graphql?query=query{animals(token:\"$token\"){commonName, classification, pictures{URL}}}");
+      final http.Response response = await http
+          .get("$domain" +
+              "graphql?query=query{animals(token:\"$token\"){commonName, classification, pictures{URL}}}")
+          .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -336,8 +340,10 @@ class GraphQL implements Api {
       if (ConnectivityResult.none == connectivity) {
         throw SocketException("");
       }
-      final http.Response response = await http.get("$domain" +
-          "graphql?query=query{animals(token: \"$token\"){animalID, commonName}}");
+      final http.Response response = await http
+          .get("$domain" +
+              "graphql?query=query{animals(token: \"$token\"){animalID, commonName}}")
+          .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -432,8 +438,10 @@ class GraphQL implements Api {
         throw SocketException("");
       }
 
-      final http.Response response = await http.get("$domain" +
-          "graphql?query=query{animals(token: \"$token\"){animalID, commonName}}");
+      final http.Response response = await http
+          .get("$domain" +
+              "graphql?query=query{animals(token: \"$token\"){animalID, commonName}}")
+          .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -478,7 +486,7 @@ class GraphQL implements Api {
       final http.Response response = await http
           .get("$domain" +
               "graphql?query=query{spoorIdentification(token: \"$token\"){spoorIdentificationID,location{latitude, longitude}, dateAndTime{year, day, month},picture{URL}, ranger{firstName, lastName}, animal{commonName, classification},potentialMatches{animal{commonName, classification, pictures{URL}},confidence} }}")
-          .timeout(const Duration(seconds: 7));
+          .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -500,10 +508,6 @@ class GraphQL implements Api {
         int day;
         String id;
         int limit = list.length;
-        int index = 0;
-
-        double con = 0;
-        double high = 0;
 
         if (list.length > 30) {
           limit = 30;
@@ -520,58 +524,51 @@ class GraphQL implements Api {
           return null;
         }
         for (int i = 0; i < limit; i++) {
-          var list = body['data']['spoorIdentification'][i]['potentialMatches']
-              as List;
-
-          for (int k = 0; k < list.length; k++) {
-            con = double.parse(body['data']['spoorIdentification'][i]
-                    ['potentialMatches'][k]['confidence']
-                .toString());
-
-            if (high < con) {
-              high = con;
-              index = k;
-            }
-          }
-
-          if (body['data']['spoorIdentification'][i]['potentialMatches'][index]
-                      ['animal']['commonName'] !=
+          if (body['data']['spoorIdentification'][i]['animal']['commonName'] !=
                   null &&
-              body['data']['spoorIdentification'][i]['potentialMatches'][index]
-                      ['animal']['commonName'] !=
+              body['data']['spoorIdentification'][i]['animal']['commonName'] !=
                   "") {
-            cName = body['data']['spoorIdentification'][i]['potentialMatches']
-                    [index]['animal']['commonName']
+            cName = body['data']['spoorIdentification'][i]['animal']
+                    ['commonName']
                 .toString();
           } else {
             cName = "N/A";
           }
-          if (body['data']['spoorIdentification'][i]['potentialMatches'][index]
-                      ['animal']['classification'] !=
+          if (body['data']['spoorIdentification'][i]['animal']
+                      ['classification'] !=
                   null &&
-              body['data']['spoorIdentification'][i]['potentialMatches'][index]
-                      ['animal']['classification'] !=
+              body['data']['spoorIdentification'][i]['animal']
+                      ['classification'] !=
                   "") {
-            sName = body['data']['spoorIdentification'][i]['potentialMatches']
-                    [index]['animal']['classification']
+            sName = body['data']['spoorIdentification'][i]['animal']
+                    ['classification']
                 .toString();
           } else {
             sName = "N/A";
           }
 
-          if (body['data']['spoorIdentification'][i]['potentialMatches'][index]
-                      ['confidence'] !=
+          if (body['data']['spoorIdentification'][i]['potentialMatches'] !=
                   null &&
-              body['data']['spoorIdentification'][i]['potentialMatches'][index]
-                      ['confidence'] !=
+              body['data']['spoorIdentification'][i]['potentialMatches'] !=
                   "") {
-            score = body['data']['spoorIdentification'][i]['potentialMatches']
-                    [index]['confidence']
-                .toString();
+            for (int l = 0;
+                l <
+                    body['data']['spoorIdentification'][i]['potentialMatches']
+                        .length;
+                l++) {
+              if (body['data']['spoorIdentification'][i]['potentialMatches'][l]
+                      ['animal']['commonName'] ==
+                  body['data']['spoorIdentification'][i]['animal']
+                      ['commonName']) {
+                score = body['data']['spoorIdentification'][i]
+                        ['potentialMatches'][l]['confidence']
+                    .toString();
 
-            count = double.parse(score) * 100;
-            count = count.ceilToDouble();
-            score = count.toString() + "%";
+                count = double.parse(score) * 100;
+                count = count.ceilToDouble();
+                score = count.toString() + "%";
+              }
+            }
           } else {
             score = "N/A";
           }
@@ -642,6 +639,7 @@ class GraphQL implements Api {
           } else {
             id = 'N/A';
           }
+
           _cards.add(new HomeModel(
               cName, sName, location, ranger, date, score, tag, pic, id));
         }
@@ -680,7 +678,7 @@ class GraphQL implements Api {
       final http.Response response = await http
           .get("$domain" +
               "graphql?query=query{spoorIdentification(token: \"$token\",spoorIdentificationID: \"$animal\" ){spoorIdentificationID,picture{URL},location{latitude, longitude}, dateAndTime{year, day, month}, ranger{firstName, lastName},potentialMatches{animal{commonName, classification, pictures{URL}},confidence}tags }}")
-          .timeout(const Duration(seconds: 7));
+          .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -701,8 +699,7 @@ class GraphQL implements Api {
         String pic;
         String score;
         double count;
-        DateTime now = DateTime.now();
-        DateTime track;
+
         int mon;
         int year;
         int day;
@@ -779,9 +776,8 @@ class GraphQL implements Api {
                   ['year']
               .toString());
 
-          track = new DateTime(year, mon, day);
-          Duration difference = now.difference(track);
-          date = (difference.inHours / 24).floor().toString() + " days ago";
+          date =
+              day.toString() + " / " + mon.toString() + " / " + year.toString();
         } else {
           date = "N/A";
         }
@@ -940,7 +936,7 @@ class GraphQL implements Api {
       final http.Response response = await http
           .get("$domain" +
               "graphql?query=query{spoorIdentification(token: \"$token\",spoorIdentificationID: \"$animal\" ){spoorIdentificationID,picture{URL},location{latitude, longitude}, dateAndTime{year, day, month}, ranger{firstName, lastName},potentialMatches{animal{commonName, classification, pictures{URL}},confidence} }}")
-          .timeout(const Duration(seconds: 7));
+          .timeout(const Duration(seconds: 15));
 
       List<String> similarSpoor = new List();
       similarSpoor.add('N/A');
@@ -984,7 +980,7 @@ class GraphQL implements Api {
       final http.Response response = await http
           .get("$domain" +
               "graphql?query=query{groups(token:\"$token\"){groupName}}")
-          .timeout(const Duration(seconds: 7));
+          .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -1045,7 +1041,7 @@ class GraphQL implements Api {
       final http.Response response = await http
           .get("$domain" +
               "graphql?query=query{animalsByClassification(token:\"$token\", classification:\"$name\"){pictures{URL},classification, commonName,animalOverview , heightM, heightF, weightM, weightF, dietType, gestationPeriod, animalDescription, typicalBehaviourM{behaviour, threatLevel}, typicalBehaviourF{behaviour,threatLevel}, habitats{description}}}")
-          .timeout(const Duration(seconds: 7));
+          .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -1218,8 +1214,10 @@ class GraphQL implements Api {
         throw Exception("");
       }
 
-      final http.Response response = await http.get("$domain" +
-          "graphql?query=query{pictures(classification: \"$i\",kindOfPicture: \"animal\" ){picturesID,URL,kindOfPicture}}");
+      final http.Response response = await http
+          .get("$domain" +
+              "graphql?query=query{pictures(classification: \"$i\",kindOfPicture: \"animal\" ){picturesID,URL,kindOfPicture}}")
+          .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -1280,7 +1278,7 @@ class GraphQL implements Api {
       final http.Response response = await http
           .get("$domain" +
               "graphql?query=query{spoorIdentification(token: \"$token\", ranger: \"$id\"){spoorIdentificationID,location{latitude, longitude}, dateAndTime{year, day, month},picture{URL}, ranger{firstName, lastName}, animal{commonName, classification},potentialMatches{confidence} }}")
-          .timeout(const Duration(seconds: 7));
+          .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -1514,7 +1512,7 @@ class GraphQL implements Api {
       final http.Response response = await http
           .get("$domain" +
               "graphql?query=query{users(tokenIn: \"$token\", rangerID: \"$id\"){firstName, lastName,phoneNumber, eMail, pictureURL}}")
-          .timeout(const Duration(seconds: 7));
+          .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -1610,7 +1608,7 @@ class GraphQL implements Api {
       final http.Response response = await http
           .get("$domain" +
               "graphql?query=query{trophy(token: \"$token\"){name, text ,hiddin , unloked}}")
-          .timeout(const Duration(seconds: 7));
+          .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
@@ -1621,8 +1619,8 @@ class GraphQL implements Api {
         List<String> trophyTitled = [
           'New Recruit',
           'First Shot',
-          'Target Inscope',
-          'Sharp Shooter',
+          'Vigilent Ranger',
+          'Eagle Eye ',
           'Hunter',
           'Trophy 6',
           'Trophy 7',

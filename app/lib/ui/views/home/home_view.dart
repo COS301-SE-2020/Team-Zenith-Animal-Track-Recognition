@@ -321,12 +321,17 @@ class HomeListBody extends ViewModelWidget<HomeViewModel> {
           return GestureDetector(
             key: Key('TrackID'),
             onTap: () {
+              print("======================== ID " +
+                  animalList[index].name +
+                  " ======================== Name " +
+                  animalList[index].name);
               navigateToIdentification(animalList[index].id);
             },
             child: Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               margin: new EdgeInsets.all(10),
+              elevation: 3,
               child: Container(
                 padding: new EdgeInsets.all(0),
                 alignment: Alignment.center,
@@ -405,7 +410,7 @@ class HomeNavDrawer extends ViewModelWidget<HomeViewModel> {
   @override
   Widget build(BuildContext context, HomeViewModel model) {
     return Container(
-      width: 180,
+      width: 200,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,

@@ -426,13 +426,13 @@ Widget textColumn(String name, String time, String species, String location,
             child: Row(
               children: <Widget>[
                 Expanded(
-                    flex: 1,
+                    flex: 5,
                     child: Container(
                       color: Colors.white,
                       child: text16LeftBoldBlack(name),
                     )),
                 Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: Container(
                       color: Colors.white,
                       child: text12RighttNormGrey(time),
@@ -450,7 +450,7 @@ Widget textColumn(String name, String time, String species, String location,
                       child: text12LeftNormBlack("Species: "),
                     )),
                 Expanded(
-                    flex: 2,
+                    flex: 3,
                     child: Container(
                       color: Colors.white,
                       child: text12LeftNormGrey(
@@ -470,7 +470,7 @@ Widget textColumn(String name, String time, String species, String location,
                       child: text12LeftNormBlack("Location: "),
                     )),
                 Expanded(
-                    flex: 2,
+                    flex: 3,
                     child: Container(
                       color: Colors.white,
                       child: text12LeftNormGrey(location),
@@ -485,10 +485,10 @@ Widget textColumn(String name, String time, String species, String location,
                     flex: 1,
                     child: Container(
                       color: Colors.white,
-                      child: text12LeftNormBlack("Captured by: "),
+                      child: text12LeftNormBlack("Ranger: "),
                     )),
                 Expanded(
-                    flex: 2,
+                    flex: 3,
                     child: Container(
                       color: Colors.white,
                       child: text12LeftNormGrey(capturedBy),

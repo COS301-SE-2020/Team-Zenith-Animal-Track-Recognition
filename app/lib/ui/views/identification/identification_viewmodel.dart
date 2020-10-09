@@ -31,6 +31,26 @@ class IdentificationViewModel extends BaseViewModel {
   List<SpoorModel> get recentIdentifications => _recentIdentifications;
   SimilarSpoorModel get similarSpoorModel => _similarSpoorModel;
 
+  bool _selected = false;
+  bool get selected => _selected;
+
+  var _image;
+  get image => _image;
+
+  double _currentSize = 0.32;
+  double get currentSize => _currentSize;
+
+  void setSize(double size) {
+    _currentSize = size;
+    notifyListeners();
+  }
+
+  void selectedVal(bool select, var img) {
+    _selected = select;
+    _image = img;
+    notifyListeners();
+  }
+
   Future<void> shareImage() async {
     try {
       // Saved with this method.

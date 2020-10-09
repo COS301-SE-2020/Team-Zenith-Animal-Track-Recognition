@@ -138,7 +138,7 @@ class NavDrawer extends ViewModelWidget<AchievementsViewModel> {
   @override
   Widget build(BuildContext context, AchievementsViewModel model) {
     return Container(
-      width: 180,
+      width: 200,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,

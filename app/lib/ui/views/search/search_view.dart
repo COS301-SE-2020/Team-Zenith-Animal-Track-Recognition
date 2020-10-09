@@ -220,7 +220,7 @@ class NavDrawer extends ViewModelWidget<SearchViewModel> {
   @override
   Widget build(BuildContext context, SearchViewModel model) {
     return Container(
-      width: 250,
+      width: 200,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -326,11 +326,6 @@ class ListBody extends ViewModelWidget<SearchViewModel> {
                     leading: imageBlock(animalList[index].image),
                     title: text16LeftNormBlack(animalList[index].species),
                     subtitle: text12LeftNormBlack(animalList[index].commonName),
-                    trailing: IconBuilder(
-                        icon: Icons.remove_red_eye,
-                        colors: Colors.black,
-                        index: 1,
-                        name: animalList[index].species),
                   ),
                 );
         });
@@ -403,12 +398,11 @@ class DataSearch extends SearchDelegate<List<SearchModel>> {
               borderRadius: BorderRadius.circular(15),
             ),
             child: ListTile(
-              dense: true,
-              leading: imageBlock(suggestionList[index].image),
-              title: text16LeftBoldGrey(suggestionList[index].species),
-              subtitle: text16LeftBoldGrey(suggestionList[index].commonName),
-              trailing: iconButton(model),
-            ),
+                onTap: () => navigateToInfo(suggestionList[index].species),
+                dense: true,
+                leading: imageBlock(suggestionList[index].image),
+                title: text16LeftBoldGrey(suggestionList[index].species),
+                subtitle: text16LeftBoldGrey(suggestionList[index].commonName)),
           );
         });
   }
@@ -431,12 +425,4 @@ Widget imageBlock(String image) {
     height: 50,
     width: 50,
   );
-}
-
-Widget iconButton(var model) {
-  return IconButton(
-      icon: Icon(Icons.remove_red_eye),
-      onPressed: () {
-        model.navigateToInformation();
-      });
 }

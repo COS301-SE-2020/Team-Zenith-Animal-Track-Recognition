@@ -156,7 +156,7 @@ class NavDrawer extends ViewModelWidget<UploadViewModel> {
   @override
   Widget build(BuildContext context, UploadViewModel model) {
     return Container(
-      width: 180,
+      width: 200,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,

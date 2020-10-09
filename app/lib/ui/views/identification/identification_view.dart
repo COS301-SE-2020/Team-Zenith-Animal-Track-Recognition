@@ -149,120 +149,286 @@ class SpoorListBody extends ViewModelWidget<IdentificationViewModel> {
 
   @override
   Widget build(BuildContext context, IdentificationViewModel model) {
-    return DraggableScrollableSheet(
-      key: Key('SpoorListBody'),
-      initialChildSize: 0.32,
-      minChildSize: 0.10,
-      maxChildSize: 0.99,
-      builder: (BuildContext context, ScrollController myscrollController) {
-        return Container(
-          padding: new EdgeInsets.all(0.0),
-          margin: new EdgeInsets.all(0.0),
-          decoration: BoxDecoration(color: Colors.white),
-          child: ListView(
-            padding: new EdgeInsets.only(top: 0.0),
-            controller: myscrollController,
-            children: <Widget>[
-              Container(
-                  padding: new EdgeInsets.all(3.0),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: <Color>[
-                        Color.fromRGBO(58, 119, 168, 1),
-                        Color.fromRGBO(77, 151, 203, 1)
-                      ])),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: IconButton(
-                          alignment: Alignment(0, 0),
-                          icon: Icon(
-                            Icons.keyboard_arrow_up,
-                            color: Colors.white,
+    return model.selected
+        ? GestureDetector(
+            onTap: () {
+              model.selectedVal(!model.selected, null);
+            },
+            child: Stack(
+              children: [
+                DraggableScrollableSheet(
+                  key: Key('SpoorListBody'),
+                  initialChildSize: model.currentSize,
+                  minChildSize: 0.10,
+                  maxChildSize: 0.99,
+                  builder: (BuildContext context,
+                      ScrollController myscrollController) {
+                    return Container(
+                      padding: new EdgeInsets.all(0.0),
+                      margin: new EdgeInsets.all(0.0),
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: ListView(
+                        padding: new EdgeInsets.only(top: 0.0),
+                        controller: myscrollController,
+                        children: <Widget>[
+                          Container(
+                              padding: new EdgeInsets.all(3.0),
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: <Color>[
+                                    Color.fromRGBO(58, 119, 168, 1),
+                                    Color.fromRGBO(77, 151, 203, 1)
+                                  ])),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 1,
+                                    child: IconButton(
+                                      alignment: Alignment(0, 0),
+                                      icon: Icon(
+                                        Icons.keyboard_arrow_up,
+                                        color: Colors.white,
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                  SizedBox(height: 1.0),
+                                  Expanded(
+                                      flex: 4,
+                                      child:
+                                          text(model.confident.name, context)),
+                                ],
+                              )),
+                          Column(
+                            children: <Widget>[
+                              identifyText(context),
+                              Row(children: <Widget>[
+                                Expanded(
+                                    flex: 1,
+                                    child: confidentImageBlock(
+                                        model.confident.pic, model)),
+                                Expanded(
+                                    flex: 1,
+                                    child: ConfidentAnimalIdentiication()),
+                              ])
+                            ],
                           ),
-                          onPressed: () {},
-                        ),
+                          Divider(thickness: 2),
+                          SizedBox(height: 3),
+                          BarInfo(),
+                          Divider(thickness: 2),
+                          Column(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 1,
+                                      child: OtherMatches(
+                                          list: model.recentIdentifications))
+                                ],
+                              )
+                            ],
+                          ),
+                          Divider(thickness: 2),
+                          Column(children: <Widget>[
+                            similarSpoors(),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                    flex: 1,
+                                    child: similarSpoor(model.tracks, model))
+                              ],
+                            )
+                          ]),
+                          Divider(thickness: 2),
+                          Column(
+                            children: <Widget>[
+                              attachATag(context),
+                            ],
+                          ),
+                          Divider(thickness: 2),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 10.0),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                    flex: 1,
+                                    child: ViewInfoFunctionality(
+                                      title: "Animal Info",
+                                    )),
+                                SizedBox(height: 1.0),
+                                Expanded(
+                                    flex: 1,
+                                    child: DownloadFunctionality(
+                                      title: "Share Image",
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: ViewMapFunctionality(
+                                      title: "View Location",
+                                    )),
+                                SizedBox(height: 1.0),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                      SizedBox(height: 1.0),
-                      Expanded(
-                          flex: 4, child: text(model.confident.name, context)),
-                    ],
-                  )),
-              Column(
-                children: <Widget>[
-                  identifyText(context),
-                  Row(children: <Widget>[
-                    Expanded(
-                        flex: 1,
-                        child: confidentImageBlock(model.confident.pic)),
-                    Expanded(flex: 1, child: ConfidentAnimalIdentiication()),
-                  ])
-                ],
-              ),
-              Divider(thickness: 2),
-              SizedBox(height: 10),
-              BarInfo(),
-              Divider(thickness: 2),
-              Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                          flex: 1,
-                          child:
-                              OtherMatches(list: model.recentIdentifications))
-                    ],
-                  )
-                ],
-              ),
-              Divider(thickness: 2),
-              Column(children: <Widget>[
-                similarSpoors(),
-                Row(
-                  children: <Widget>[
-                    Expanded(flex: 1, child: similarSpoor(model.tracks))
-                  ],
-                )
-              ]),
-              Divider(thickness: 2),
-              Column(
-                children: <Widget>[
-                  attachATag(context),
-                ],
-              ),
-              Divider(thickness: 2),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                        flex: 1,
-                        child: ViewInfoFunctionality(
-                          title: "Animal Info",
-                        )),
-                    SizedBox(height: 1.0),
-                    Expanded(
-                        flex: 1,
-                        child: DownloadFunctionality(
-                          title: "Share Image",
-                        )),
-                    Expanded(
-                        flex: 1,
-                        child: ViewMapFunctionality(
-                          title: "View Location",
-                        )),
-                    SizedBox(height: 1.0),
-                  ],
+                    );
+                  },
                 ),
-              )
-            ],
-          ),
-        );
-      },
-    );
+                Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: new EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(model.image),
+                        fit: BoxFit.fill,
+                      ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    height: 300,
+                    width: 300,
+                  ),
+                ),
+              ],
+            ),
+          )
+        : NotificationListener<DraggableScrollableNotification>(
+            // ignore: missing_return
+            onNotification: (notification) {
+              model.setSize(notification.extent);
+            },
+            child: DraggableScrollableSheet(
+              key: Key('SpoorListBody'),
+              initialChildSize: model.currentSize,
+              minChildSize: 0.10,
+              maxChildSize: 0.99,
+              builder:
+                  (BuildContext context, ScrollController myscrollController) {
+                return Container(
+                  padding: new EdgeInsets.all(0.0),
+                  margin: new EdgeInsets.all(0.0),
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: ListView(
+                    padding: new EdgeInsets.only(top: 0.0),
+                    controller: myscrollController,
+                    children: <Widget>[
+                      Container(
+                          padding: new EdgeInsets.all(3.0),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: <Color>[
+                                Color.fromRGBO(58, 119, 168, 1),
+                                Color.fromRGBO(77, 151, 203, 1)
+                              ])),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  alignment: Alignment(0, 0),
+                                  icon: Icon(
+                                    Icons.keyboard_arrow_up,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ),
+                              SizedBox(height: 1.0),
+                              Expanded(
+                                  flex: 4,
+                                  child: text(model.confident.name, context)),
+                            ],
+                          )),
+                      Column(
+                        children: <Widget>[
+                          identifyText(context),
+                          Row(children: <Widget>[
+                            Expanded(
+                                flex: 1,
+                                child: confidentImageBlock(
+                                    model.confident.pic, model)),
+                            Expanded(
+                                flex: 1, child: ConfidentAnimalIdentiication()),
+                          ])
+                        ],
+                      ),
+                      Divider(thickness: 2),
+                      SizedBox(height: 3),
+                      BarInfo(),
+                      Divider(thickness: 2),
+                      Column(
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                  flex: 1,
+                                  child: OtherMatches(
+                                      list: model.recentIdentifications))
+                            ],
+                          )
+                        ],
+                      ),
+                      Divider(thickness: 2),
+                      Column(children: <Widget>[
+                        similarSpoors(),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                                flex: 1,
+                                child: similarSpoor(model.tracks, model))
+                          ],
+                        )
+                      ]),
+                      Divider(thickness: 2),
+                      Column(
+                        children: <Widget>[
+                          attachATag(context),
+                        ],
+                      ),
+                      Divider(thickness: 2),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                                flex: 1,
+                                child: ViewInfoFunctionality(
+                                  title: "Animal Info",
+                                )),
+                            SizedBox(height: 1.0),
+                            Expanded(
+                                flex: 1,
+                                child: DownloadFunctionality(
+                                  title: "Share Image",
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: ViewMapFunctionality(
+                                  title: "View Location",
+                                )),
+                            SizedBox(height: 1.0),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
   }
 }
 
@@ -554,13 +720,13 @@ class ConfidentAnimalIdentiication
     return Container(
       key: Key('ConfidentAnimalIdentiication'),
       alignment: Alignment.center,
-      margin: new EdgeInsets.all(10),
-      padding: new EdgeInsets.only(left: 8),
+      margin: new EdgeInsets.all(2),
+      padding: new EdgeInsets.only(left: 5, right: 5),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
       ),
-      height: 170,
+      height: 150,
       width: 130,
       child: Column(children: <Widget>[
         Expanded(
@@ -573,7 +739,7 @@ class ConfidentAnimalIdentiication
                 children: <Widget>[
                   Expanded(flex: 1, child: animal(context)),
                   Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: GestureDetector(
                           onLongPress: () {
                             model.setEditSpoorName();
@@ -594,7 +760,7 @@ class ConfidentAnimalIdentiication
                 children: <Widget>[
                   Expanded(flex: 1, child: species(context)),
                   Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: GestureDetector(
                           onLongPress: () {
                             model.setEditSpoorSpecies();
@@ -844,7 +1010,7 @@ Widget attachATagButton(var context) {
       child: text16LeftBoldBlack("Track Tags"));
 }
 
-Widget similarSpoor(List<String> tracks) {
+Widget similarSpoor(List<String> tracks, var model) {
   return tracks.isEmpty == true
       ? Center(
           child: Container(
@@ -852,23 +1018,28 @@ Widget similarSpoor(List<String> tracks) {
           child: text16CenterNormalGrey("[No Similar Spoor Found]"),
         ))
       : Container(
-          height: 200,
+          height: 100,
           color: Colors.white,
           child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemCount: tracks.length,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                    margin: EdgeInsets.all(5),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    height: 150,
-                    width: 150,
-                    child: innerImageBlock(tracks[index]));
+                return GestureDetector(
+                  onTap: () {
+                    model.selectedVal(!model.selected, tracks[index]);
+                  },
+                  child: Container(
+                      margin: EdgeInsets.all(5),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      height: 100,
+                      width: 100,
+                      child: innerImageBlock(tracks[index])),
+                );
               }),
         );
 }
@@ -902,13 +1073,11 @@ Widget accuracyScore(String score, var context) {
 Widget similarSpoors() {
   return Container(
     alignment: Alignment.centerLeft,
-    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10, top: 10),
+    margin: new EdgeInsets.only(bottom: 3, left: 10, right: 10, top: 5),
     padding: new EdgeInsets.all(5),
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
     ),
-    //height: 0,
     child: text16LeftBoldBlack(
       "Similar Tracks",
     ),
@@ -917,6 +1086,9 @@ Widget similarSpoors() {
 
 Widget swapImageBlock(String link, int index, IdentificationViewModel model) {
   return InkWell(
+    onTap: () {
+      model.selectedVal(!model.selected, link);
+    },
     onLongPress: () => model.reclassify(index),
     child: new Container(
       alignment: Alignment.center,
@@ -1014,9 +1186,9 @@ Widget backButton(context) {
         left: 10,
       ),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(13),
-          border: Border.all(color: Colors.white)),
+        color: Color.fromRGBO(0, 0, 0, 0),
+        borderRadius: BorderRadius.circular(13),
+      ),
       child: GestureDetector(
         onTap: () {
           Navigator.pop(context);
@@ -1041,22 +1213,26 @@ Widget identifyText(var context) {
   );
 }
 
-Widget confidentImageBlock(String image) {
-  return Container(
-    alignment: Alignment.center,
-    margin: new EdgeInsets.only(bottom: 10, left: 15, right: 10, top: 10),
-    //padding: new EdgeInsets.all(5),
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: NetworkImage(image),
-        //image: AssetImage(image),
-        fit: BoxFit.fill,
+Widget confidentImageBlock(String image, var model) {
+  return GestureDetector(
+    onTap: () {
+      model.selectedVal(!model.selected, image);
+    },
+    child: Container(
+      alignment: Alignment.center,
+      margin: new EdgeInsets.only(bottom: 10, left: 15, right: 5, top: 10),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(image),
+          //image: AssetImage(image),
+          fit: BoxFit.fill,
+        ),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
       ),
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(15),
+      height: 150,
+      width: 130,
     ),
-    height: 170,
-    width: 130,
   );
 }
 
@@ -1102,5 +1278,5 @@ Widget score(String score) {
   return Container(
       alignment: Alignment.centerLeft,
       padding: new EdgeInsets.all(0),
-      child: percentageText("$score", 40));
+      child: percentageText("$score", 50));
 }

@@ -166,14 +166,56 @@ class GalleryView extends StatelessWidget {
                             indicatorWeight: 3,
                           ),
                         ),
-                        body: Container(
-                          padding: EdgeInsets.all(10),
-                          color: Colors.grey[100],
-                          child: TabBarView(
-                            children: getBodyWidgets(
-                                snapshot.data.length, galleryModel.galleryList),
-                          ),
-                        ),
+                        body: model.selected
+                            ? GestureDetector(
+                                onTap: () {
+                                  model.selectedVal(!model.selected, null);
+                                },
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(10),
+                                      color: Colors.grey[100],
+                                      child: TabBarView(
+                                        children: getBodyWidgets(
+                                            snapshot.data.length,
+                                            galleryModel.galleryList),
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        margin: new EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: NetworkImage(model.image),
+                                            fit: BoxFit.fill,
+                                          ),
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        height: 330,
+                                        width: 330,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Container(
+                                padding: EdgeInsets.all(10),
+                                color: Colors.grey[100],
+                                child: TabBarView(
+                                  children: getBodyWidgets(snapshot.data.length,
+                                      galleryModel.galleryList),
+                                ),
+                              ),
                         bottomNavigationBar: BottomNavigation(),
                       ),
                     ),
@@ -228,78 +270,28 @@ class GridItem extends ViewModelWidget<GalleryViewModel> {
   GridItem({this.animalTabList}) : super(reactive: true);
   @override
   Widget build(BuildContext context, GalleryViewModel model) {
-    return model.selected
-        ? GestureDetector(
-            onTap: () {
-              model.selectedVal(!model.selected, null);
-            },
-            child: Stack(
-              children: [
-                GridView.count(
-                  crossAxisCount: 2,
-                  children: List.generate(animalTabList.length, (index) {
-                    return Container(
-                      alignment: Alignment.center,
-                      margin: new EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(animalTabList[index]),
-                          fit: BoxFit.fill,
-                        ),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    );
-                  }),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.black54,
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: new EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(model.image),
-                        fit: BoxFit.fill,
-                      ),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    height: 300,
-                    width: 300,
-                  ),
-                ),
-              ],
+    return GridView.count(
+      crossAxisCount: 2,
+      children: List.generate(animalTabList.length, (index) {
+        return GestureDetector(
+          onTap: () {
+            model.selectedVal(!model.selected, animalTabList[index]);
+          },
+          child: Container(
+            alignment: Alignment.center,
+            margin: new EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(animalTabList[index]),
+                fit: BoxFit.fill,
+              ),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
             ),
-          )
-        : GridView.count(
-            crossAxisCount: 2,
-            children: List.generate(animalTabList.length, (index) {
-              return GestureDetector(
-                onTap: () {
-                  model.selectedVal(!model.selected, animalTabList[index]);
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  margin: new EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(animalTabList[index]),
-                      fit: BoxFit.fill,
-                    ),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-              );
-            }),
-          );
+          ),
+        );
+      }),
+    );
   }
 }
 
@@ -334,7 +326,7 @@ class NavDrawer extends ViewModelWidget<GalleryViewModel> {
   @override
   Widget build(BuildContext context, GalleryViewModel model) {
     return Container(
-      width: 180,
+      width: 200,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
