@@ -215,8 +215,8 @@ class GraphQL implements Api {
 
   @override
   Future<bool> getLoginModel(String email, String password) async {
-    email = Uri.encodeFull(email);
-    password = Uri.encodeFull(password);
+    email = Uri.encodeComponent(email);
+    password = Uri.encodeComponent(password);
 
     try {
       var connectivity = await (Connectivity().checkConnectivity());
