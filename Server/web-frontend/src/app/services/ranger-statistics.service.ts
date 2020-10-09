@@ -366,7 +366,7 @@ export class RangerStatisticsService {
 			var mostTracked = temp[0];
 			console.log("most tracked");
 			console.log(mostTracked);
-			this.mostIdentifiedSource.next([{"name": "Most Animals Identified\n" + mostTracked.mosotTrakedRanger.firstName + " " + mostTracked.mosotTrakedRanger.lastName,
+			this.mostIdentifiedSource.next([{"name": mostTracked.mosotTrakedRanger.firstName + " " + mostTracked.mosotTrakedRanger.lastName,
 				"value": 5 }]);
 		  });
 	}
