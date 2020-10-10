@@ -14,7 +14,7 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class TracksService {
-		private activeTrackSource = new BehaviorSubject<Track>(null);
+	private activeTrackSource = new BehaviorSubject<Track>(null);
 	activeTrack$ = this.activeTrackSource.asObservable();
 	
 	private trackRootQueryUrl = TRACKS_QUERY_STRING + '?query=query{spoorIdentification';
@@ -27,114 +27,6 @@ export class TracksService {
 	//Determines which filter option is currently selected
 	private trackFilterSource = new Subject<string[]>();
 	trackFilter$ = this.trackFilterSource.asObservable();
-	
-	dummyLocations: any = [
-		{//Red Hartebeest
-			dateObj: new Date("10/06/2020"),
-			location: {
-				latitude: -24.988384, 
-				longitude: 31.545741
-			}
-		},		
-		{//Zebra
-			dateObj: new Date("10/06/2020"),
-			location: {
-				latitude: -24.388384, 
-				longitude: 31.545741
-			}
-		},
-		{//Red Hartebeest
-			dateObj: new Date("10/06/2020"),
-			location: {
-				latitude: -24.788384, 
-				longitude: 31.645741
-			}
-		},		
-		{//Buffalo
-			dateObj: new Date("10/05/2020"),
-			location: {
-				latitude: -24.288384, 
-				longitude: 31.550741
-			}
-		},		
-		{//Zebra
-			dateObj: new Date("10/06/2020"),
-			location: {
-				latitude: -24.088384, 
-				longitude: 31.545741
-			}
-		},		
-		{//Zebra
-			dateObj: new Date("10/06/2020"),
-			location: {
-				latitude: -24.188384, 
-				longitude: 31.445741
-			}
-		},		
-		{//Hippo
-			dateObj: new Date("10/06/2020"),
-			location: {
-				latitude: -24.088384, 
-				longitude: 31.545741
-			}
-		},		
-		{//Black Wildebeest
-			dateObj: new Date("10/06/2020"),
-			location: {
-				latitude: -24.088384, 
-				longitude: 31.545741
-			}
-		},		
-		{//Buffalo
-			dateObj: new Date("10/01/2020"),
-			location: {
-				latitude: -24.286384, 
-				longitude: 31.544741
-			}
-		},		
-		{//Black Backed Jackal
-			dateObj: new Date("10/06/2020"),
-			location: {
-				latitude: -24.088384, 
-				longitude: 31.545741
-			}
-		},		
-		{//Black Backed Jacakl
-			dateObj: new Date("10/06/2020"),
-			location: {
-				latitude: -24.088384, 
-				longitude: 31.545741
-			}
-		},		
-		{//Waterbuck
-			dateObj: new Date("10/06/2020"),
-			location: {
-				latitude: -24.088384, 
-				longitude: 31.545741
-			}
-		},		
-		{//Buffalo
-			dateObj: new Date("10/19/2019"),
-			location: {
-				latitude: -24.290384, 
-				longitude: 31.540741
-			}
-		},		
-		{//Buffalo
-			dateObj: new Date("04/26/2020"),
-			location: {
-				latitude: -24.284384, 
-				longitude: 31.536741
-			}
-		},		
-		{//Buffalo
-			dateObj: new Date("09/20/2020"),
-			location: {
-				latitude: -24.292384, 
-				longitude: 31.532741
-			}
-		}
-	];
 	
 	constructor(private http: HttpClient, private messageService: MessageService) { }
 	
@@ -189,12 +81,7 @@ export class TracksService {
 					element.dateObj = new Date(temp.year, temp.month - 1, temp.day, temp.hour, temp.min, temp.second);
 					element.recency = element.dateObj.toISOString();
 				});
-				//DUMMY LOCATIONS TO SET MARKERS WITHIN KRUGER PARK
-				/*for (let i = 0; i < this.dummyLocations.length; i++) {
-					this.trackIdentificationsStore.trackIdentifications[i].location = this.dummyLocations[i].location;
-					this.trackIdentificationsStore.trackIdentifications[i].dateObj = this.dummyLocations[i].dateObj;
-					this.trackIdentificationsStore.trackIdentifications[i].recency = this.dummyLocations[i].dateObj.toISOString();
-				}*/
+
 				this._displayedTracks.next(Object.assign({}, this.trackIdentificationsStore).trackIdentifications);
 				if (initParams.initWithFilter)
 					this.changeTrackFilter(initParams.filterType, initParams.filter);

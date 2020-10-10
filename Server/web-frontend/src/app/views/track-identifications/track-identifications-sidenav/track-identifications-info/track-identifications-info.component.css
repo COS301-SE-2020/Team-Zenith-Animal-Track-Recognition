@@ -70,10 +70,11 @@
     flex-direction: column;
 	justify-content: flex-start;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 #animal-photos-track-image-container
 {
-	height: auto;
+	height: 50vh;
 	width: 100%;
 	display: flex;
 	flex-direction: row;
@@ -82,10 +83,14 @@
 	flex-shrink: 0;
 	overflow: hidden;
 }
+#animal-photos-track-image-container:hover
+{
+	cursor: pointer;
+}
 #animal-photos-track-image-container > img
 {
-	height: auto;
-	width: 100%;
+	flex: 1;
+	height: 100%;
 }
 #animal-photos-track-id-results {
     height: 45%;
@@ -101,17 +106,18 @@
 
 #animal-photos-track-id-result {
     height: 70%;
-    width: 100%;
+    width: 90%;
+	max-width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
-	padding-top: 2%;
+	overflow: hidden;
 }
 
 #animal-photos-track-id-image {
-    height: 135px;
-    width: 135px;
+	height: 100%;
+    width: 20vh;
     border-radius: 10%;
     display: flex;
     flex-direction: row;
@@ -121,13 +127,13 @@
 }
 
 #animal-photos-track-id-image > img {
-    height: 100%;
-    width: auto;
+	flex: 1;
+	width: 100%;
 }
 
 #animal-photos-track-id-score {
     height: 100%;
-    width: 50%;
+    width: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -315,8 +321,8 @@
 	overflow: hidden;
 }
 .other-potential-matches-image > img {
+	flex: 1;
 	height: 100%;
-	width: auto;
 }
 .other-potential-matches-animal-info {
 	height: auto;
@@ -371,48 +377,48 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-	padding: 3% 0;
+	padding: 0;
 }
-#animal-photos-similar-tracks-tab .other-potential-matches-container
-{
+#mat-group-loading-container {
+	height: 100%;
+	width: 100%;
+}
+.similarTracksBatchGrid {
+	height: 100%;
+}
+#animal-photos-similar-tracks-tab .other-potential-matches-image-container {
 	height: 100%;
 	width: 100%;
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
-	align-items: center;
+	align-items: flex-end;
 }
-#animal-photos-similar-tracks-tab .other-potential-matches-image-container {
-	height: 75px;
-	width: 75px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	margin-right: 8%;
-    transition: all 0.3s ease-in-out;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-}
-#animal-photos-similar-tracks-tab .other-potential-matches-image-container:hover {
-	cursor: pointer;
-	transform: translateY(-5%);
+.similarTracksBatchGrid .mat-grid-tile {
+	overflow-y: visible;
 }
 #animal-photos-similar-tracks-tab .other-potential-matches-image {
-	height: 100%;
-	width: auto;
+	height: 90%;
+	width: 90%;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
 	border-radius: 10%;
 	overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+}
+#animal-photos-similar-tracks-tab .other-potential-matches-image:hover  {
+	cursor: pointer;
+	transform: translateY(-10%);
 }
 #animal-photos-similar-tracks-tab .other-potential-matches-image > img {
+	flex: 1;
 	height: 100%;
-	width: auto;
 }
 
 

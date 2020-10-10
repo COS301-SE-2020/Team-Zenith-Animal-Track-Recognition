@@ -25,7 +25,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	@ViewChild('otherMatchesMatTab') otherMatchesMatTab;
 	@ViewChild('simTracksMatTab') simTracksMatTab;
 	geoCoder: google.maps.Geocoder;
-	similarTrackList: any = null;
+	similarTrackList: any [] = null;
 	otherMatchesList: any = null;
 
 	constructor(private changeDetection: ChangeDetectorRef,
@@ -38,33 +38,37 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 		tracksService.activeTrack$.subscribe(
 			track => {
 				this.activeTrack = track;
+				if (this.activeTrack != null) {
+					this.updateSimilarTracks();
+					this.setTrackAddress();
+				}
 			});
 	}
 
-	public ngOnChanges(changes: SimpleChanges) {
-		if (changes) {
-			this.changeDetection.detectChanges();
-			this.updateSimilarTracks();
-			this.setTrackAddress();
+	ngOnInit(): void {
+		this.filterNullOtherMatches();
+	}
+	
+	filterNullOtherMatches() {
+		if (this.activeTrack != null) {
+			console.log(this.activeTrack.potentialMatches);
+			console.log("after filtering");
+			var otherPossibleValidMatches = this.activeTrack.potentialMatches.filter(match => ((match.confidence > 0) && 
+				(match.animal.classification !== this.activeTrack.animal.classification)));
+			console.log(otherPossibleValidMatches);
+			
+			var maxNumOtherMatches = otherPossibleValidMatches.length;
+			this.otherMatchesList = [];
+			for (let j = 0; j < maxNumOtherMatches; j += 2) {
+				this.otherMatchesList.push(otherPossibleValidMatches.slice(j, j + 2));
+			}
+			console.log(this.otherMatchesList);
 		}
 	}
-
-	ngOnInit(): void {
-
-				//Split similar tracks into groups of up to 3 and limit it to 9 similar tracks
-		var maxNumOtherTracks = this.activeTrack.potentialMatches.length;
-
-		this.otherMatchesList = [];
-		for (let j = 0; j < maxNumOtherTracks; j += 2) {
-			this.otherMatchesList.push(this.activeTrack.potentialMatches.slice(j, j + 2));
-		}
-		console.log("other poten OG:");
-		console.log(this.activeTrack.potentialMatches);
-		console.log("after");
-		console.log(this.otherMatchesList);
-		/*this.activeTrack.potentialMatch.forEach(match => {
-			this.
-		});*/
+	
+	changeActiveTrack(track: Track) {
+		this.tracksService.changeActiveTrack(track);
+		this.trackViewNavService.zoomOnTrack(track.spoorIdentificationID + ',' + track.location.latitude + ',' + track.location.longitude);
 	}
 
 	backToTrackList() {
@@ -73,7 +77,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 		this.tracksService.changeActiveTrack(null);
 	}
 	nextPotentialMatch() {
-		if (this.otherMatchesMatTab.selectedIndex != 2)
+		if (this.otherMatchesMatTab.selectedIndex != this.otherMatchesList.length)
 			this.otherMatchesMatTab.selectedIndex += 1;
 	}
 	prevPotentialMatch() {
@@ -133,19 +137,18 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 				let temp = [];
 				temp = Object.values(Object.values(data)[0]);
 				var trackList = temp[0];
-				for (let i = 0; i < trackList.length; i++) {
-					if (trackList[i].spoorIdentificationID === this.activeTrack.spoorIdentificationID)
-						trackList.splice(i, 1);
-				}
-
+				var tracks = trackList.filter(track => track.spoorIdentificationID != this.activeTrack.spoorIdentificationID);
 				//Split similar tracks into groups of up to 3 and limit it to 9 similar tracks
 				var maxNumSimilarTracks = 9;
 				if (trackList.length < maxNumSimilarTracks) {
 					maxNumSimilarTracks = trackList.length;
 				}
 				this.similarTrackList = [];
-				for (let j = 0; j < maxNumSimilarTracks; j += 3) {
-					this.similarTrackList.push(trackList.slice(j, j + 3));
+				var similarTracks = [];
+				for (let j = 0, i = 0; j < maxNumSimilarTracks; j += 3, i++) {
+					similarTracks.push(tracks.slice(j, j + 3));
+					if (similarTracks[i].length > 0)
+						this.similarTrackList.push(tracks.slice(j, j + 3));
 				}
 			});
 	}
