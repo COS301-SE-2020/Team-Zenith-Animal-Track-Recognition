@@ -379,10 +379,6 @@
     justify-content: space-around;
 	padding: 0;
 }
-#mat-group-loading-container {
-	height: 100%;
-	width: 100%;
-}
 .similarTracksBatchGrid {
 	height: 100%;
 }
@@ -519,4 +515,35 @@
     -moz-transition: all 0.2s ease-out;
     -ms-transition: all 0.2s ease-out;
     -o-transition: all 0.2s ease-out;
+}
+
+
+/*Loading ocntainers*/
+.mat-group-loading-container {
+	height: 100%;
+	width: 100%;
+}
+.reclassify-option-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
+}
+.reclassify-option-text-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+	color: rgba(0, 0, 0, 0.50);
+}
+.reclassify-option-btn-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 30%;
+	width: 100%;
 }

@@ -87,38 +87,87 @@
                 </div>
             </div>
             <div id="animal-photos-other-matches-tab">
-                <mat-tab-group mat-align-tabs="center" #otherMatchesMatTab>
-					<mat-tab *ngFor="let matchGroup of otherMatchesList" [label]="tab">
-						<div class="other-potential-matches-container">
-							<ng-container *ngFor="let match of matchGroup">						
-								<div class="other-potential-matches-animal">
-									<div class="other-potential-matches-image-container">
-											<!--<div class="other-potential-matches-image" [matMenuTriggerFor]="otherPossibleMatchMenuOne">-->
-											<div class="other-potential-matches-image">
-												<img src="{{match.animal.pictures[0].URL}}">
-											</div>
-									</div>
-									<!--<mat-menu #otherPossibleMatchMenuOne="matMenu" xPosition="before">
-										<button mat-menu-item (click)="reclassifyTrack(activeTrack, match.animal, index + groupIndex)">
-											<span>Reclassify Track</span>
-										</button>
-									</mat-menu>-->
-									<div class="other-potential-matches-animal-info">
-										<p class="other-potential-match-commonname fontSB">
-											{{match.animal.commonName}}
-										</p>
-										<p class="other-potential-match-classification fontM">
-											{{match.animal.classification | titlecase}}
-										</p>
-										<p class="other-potential-match-accuracy-score fontB">
-											{{match.confidence | percent}}
-										</p>
-									</div>
-								</div>
-							</ng-container>
+				<ng-container *ngIf="otherMatchesList == null; else showOtherPossibleMatches">
+					<div class="mat-group-loading-container">
+						Searching for other possible matches...
+					</div>
+				</ng-container>
+				<ng-template #showOtherPossibleMatches>
+					<ng-container *ngIf="otherMatchesList.length == 0; else otherMatches">
+						<div class="reclassify-option-container">
+							<div class="reclassify-option-text-container">
+								<p class="fontSB">Other possible matches could not be found.</p>
+								<p class="fontSB">Alternatively, click the button below to reclassify this track.</p>
+							</div>
+							<div class="reclassify-option-btn-container">
+								<button mat-button class="buttonColour">Reclassify Track</button>
+							</div>
 						</div>
-					</mat-tab>
-                </mat-tab-group>
+					</ng-container>
+					<ng-template #otherMatches>
+						<mat-tab-group #otherMatchesMatTab [selectedIndex]="otherMatchesMatTabIndex">
+							<ng-container *ngFor="let matchGroup of otherMatchesList"> 
+								<mat-tab [label]="tab">
+									<div class="other-potential-matches-container">
+										<ng-container *ngIf="matchGroup.length != 0">
+											<ng-container *ngFor="let match of matchGroup; count as numMatches">
+												<ng-container *ngIf="match.animal.commonName != 'showReclassifyOption'">
+													<div class="other-potential-matches-animal">
+														<div class="other-potential-matches-image-container">
+															<div class="other-potential-matches-image" [matMenuTriggerFor]="otherPossibleMatchMenu">
+																<img src="{{match.animal.pictures[0].URL}}">
+															</div>
+														</div>
+														<mat-menu #otherPossibleMatchMenu="matMenu" xPosition="before">
+															<button mat-menu-item (click)="reclassifyTrack(activeTrack, match.animal)">
+																<span>Reclassify Track</span>
+															</button>
+														</mat-menu>
+														<div class="other-potential-matches-animal-info">
+															<p class="other-potential-match-commonname fontSB">
+																{{match.animal.commonName}}
+															</p>
+															<p class="other-potential-match-classification fontM">
+																{{match.animal.classification | titlecase}}
+															</p>
+															<p class="other-potential-match-accuracy-score fontB">
+																{{match.confidence | percent}}
+															</p>
+														</div>
+													</div>
+													<ng-container *ngIf="numMatches == 1">
+														<div class="other-potential-matches-animal">
+															<div class="reclassify-option-container">
+																<div class="reclassify-option-text-container">
+																	<p class="fontSB">There are no further matches.</p>
+																	<p class="fontSB">Optionally, click the button below to reclassify this track.</p>
+																</div>
+																<div class="reclassify-option-btn-container">
+																	<button mat-button class="buttonColour">Reclassify Track</button>
+																</div>
+															</div>
+														</div>
+													</ng-container>
+												</ng-container>
+												<ng-container *ngIf="match.animal.commonName == 'showReclassifyOption'">
+													<div class="reclassify-option-container">
+														<div class="reclassify-option-text-container">
+															<p class="fontSB">There are no further matches.</p>
+															<p class="fontSB">Optionally, click the button below to reclassify this track.</p>
+														</div>
+														<div class="reclassify-option-btn-container">
+															<button mat-button class="buttonColour">Reclassify Track</button>
+														</div>
+													</div>
+												</ng-container>
+											</ng-container>
+										</ng-container>
+									</div>
+								</mat-tab>
+							</ng-container>
+						</mat-tab-group>
+					</ng-template>					
+				</ng-template>
             </div>
         </div>
         <div id="animal-photos-similar-tracks-container">
@@ -135,17 +184,17 @@
             </div>
             <div id="animal-photos-similar-tracks-tab">
 				<ng-container *ngIf="similarTrackList == null; else showSimilarTracks">
-					<div id="mat-group-loading-container">
-						Loading tracks...
+					<div class="mat-group-loading-container">
+						<p class="fontSB">Searching for similar tracks...</p>
 					</div>
 				</ng-container>
 				<ng-template #showSimilarTracks>
 						<ng-container *ngIf="similarTrackList.length == 0; else similarTracks">
-							<p>No similar tracks could be found.</p>
+							<p>Similar tracks could not be found.</p>
 						</ng-container>
 						<ng-template #similarTracks>
-										<mat-tab-group mat-align-tabs="center" #simTracksMatTab>
-								<mat-tab *ngFor="let similarTrackBatch of similarTrackList; count as numBatch">
+							<mat-tab-group mat-align-tabs="center" #simTracksMatTab [selectedIndex]="similarTracksMatTabIndex">
+								<mat-tab *ngFor="let similarTrackBatch of similarTrackList">
 									<mat-grid-list class="similarTracksBatchGrid" cols="3" rowHeight="1:1">
 										<mat-grid-tile *ngFor="let similarTrack of similarTrackBatch" (click)="changeActiveTrack(similarTrack)">
 											<div class="other-potential-matches-image-container" matTooltip="View track on map" [matTooltipPosition]="'above'" >

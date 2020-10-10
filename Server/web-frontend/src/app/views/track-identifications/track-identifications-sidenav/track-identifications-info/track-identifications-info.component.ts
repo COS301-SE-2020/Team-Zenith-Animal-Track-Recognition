@@ -1,6 +1,6 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimalPhotoDetailsComponent } from './../../../animals/animals-gallery/animal-photos/animal-photo-details/animal-photo-details.component';
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Input, Output, ViewChildren, EventEmitter} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GoogleMap } from '@angular/google-maps';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
@@ -21,15 +21,15 @@ import { EMPTY } from 'rxjs';
 export class TrackIdentificationsInfoComponent implements OnInit {
 
 	activeTrack: Track = null;
-	@Input() originType: string;
-	@ViewChild('otherMatchesMatTab') otherMatchesMatTab;
-	@ViewChild('simTracksMatTab') simTracksMatTab;
+	@ViewChildren('otherMatchesMatTab') otherMatchesMatTab;
+	@ViewChildren('simTracksMatTab') simTracksMatTab;
+	@Input() otherMatchesMatTabIndex = 0;
+	@Input() similarTracksMatTabIndex = 0;
 	geoCoder: google.maps.Geocoder;
 	similarTrackList: any [] = null;
-	otherMatchesList: any = null;
+	otherMatchesList: any [] = null;
 
-	constructor(private changeDetection: ChangeDetectorRef,
-		private http: HttpClient,
+	constructor(private http: HttpClient,
 		private snackBar: MatSnackBar,
 		public dialog: MatDialog,
 		private router: Router,
@@ -39,30 +39,38 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 			track => {
 				this.activeTrack = track;
 				if (this.activeTrack != null) {
-					this.updateSimilarTracks();
 					this.setTrackAddress();
+					this.filterNullOtherMatches();
+					this.updateSimilarTracks();
 				}
 			});
 	}
 
 	ngOnInit(): void {
-		this.filterNullOtherMatches();
+	}
+	
+	ngAfterViewInit(): void {
+		this.otherMatchesMatTab.changes.subscribe(item => {
+			this.otherMatchesMatTabIndex  = 0;
+		});
+		this.simTracksMatTab.changes.subscribe(item => {
+			this.similarTracksMatTabIndex = 0;
+		});
 	}
 	
 	filterNullOtherMatches() {
 		if (this.activeTrack != null) {
-			console.log(this.activeTrack.potentialMatches);
-			console.log("after filtering");
 			var otherPossibleValidMatches = this.activeTrack.potentialMatches.filter(match => ((match.confidence > 0) && 
 				(match.animal.classification !== this.activeTrack.animal.classification)));
-			console.log(otherPossibleValidMatches);
 			
 			var maxNumOtherMatches = otherPossibleValidMatches.length;
 			this.otherMatchesList = [];
 			for (let j = 0; j < maxNumOtherMatches; j += 2) {
 				this.otherMatchesList.push(otherPossibleValidMatches.slice(j, j + 2));
 			}
-			console.log(this.otherMatchesList);
+			if (otherPossibleValidMatches.length % 2 == 0) {
+				this.otherMatchesList.push([{animal: {commonName: "showReclassifyOption"}}]);
+			}
 		}
 	}
 	
@@ -77,27 +85,30 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 		this.tracksService.changeActiveTrack(null);
 	}
 	nextPotentialMatch() {
-		if (this.otherMatchesMatTab.selectedIndex != this.otherMatchesList.length)
-			this.otherMatchesMatTab.selectedIndex += 1;
+		if (this.otherMatchesMatTabIndex != (this.otherMatchesList.length - 1))
+			this.otherMatchesMatTabIndex++;
 	}
 	prevPotentialMatch() {
-		if (this.otherMatchesMatTab.selectedIndex != 0)
-			this.otherMatchesMatTab.selectedIndex -= 1;
+		if (this.otherMatchesMatTabIndex != 0)
+			this.otherMatchesMatTabIndex--;
 	}
 	nextSimilarTrack() {
-		this.simTracksMatTab.selectedIndex += 1;
+		if (this.similarTracksMatTabIndex != (this.similarTrackList.length - 1))
+			this.similarTracksMatTabIndex += 1;
 	}
 	prevSimilarTrack() {
-		this.simTracksMatTab.selectedIndex -= 1;
+		if (this.similarTrackList.length > 0 && this.similarTracksMatTabIndex != 0)
+			this.similarTracksMatTabIndex -= 1;
 	}
 
-	reclassifyTrack(track: any, newAnimal: any, otherMatchIndex: number) {
-		this.tracksService.reclassifyTrack(JSON.parse(localStorage.getItem('currentToken'))['value'], track, newAnimal);
+	reclassifyTrack(track: any, newAnimal: any) {
+		console.log("clicked on " + newAnimal.commonName);
+		//this.tracksService.reclassifyTrack(JSON.parse(localStorage.getItem('currentToken'))['value'], track, newAnimal);
 		//Visually show change
-		this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - otherMatchIndex].animal = this.activeTrack.animal;
-		this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - otherMatchIndex].confidence = this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - 1].confidence;
-		this.activeTrack.animal = newAnimal;
-		this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - 1].confidence = 1.00;
+		//this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - otherMatchIndex].animal = this.activeTrack.animal;
+		//this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - otherMatchIndex].confidence = this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - 1].confidence;
+		//this.activeTrack.animal = newAnimal;
+		//this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - 1].confidence = 1.00;
 	}
 	//Track Identification manipulation
 	setTrackAddress() {

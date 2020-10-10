@@ -166,8 +166,8 @@
 }
 
 #animal-profile-info-image-wrapper>img {
+    flex: 1;
     height: 100%;
-    width: auto;
 }
 
 #animal-profile-info-text {

@@ -35,6 +35,11 @@ export class TracksService {
 	}
 	
 	changeActiveTrack(track: Track) {
+		if (track != null) {
+			let temp = track.dateAndTime;
+			track.dateObj = new Date(temp.year, temp.month - 1, temp.day, temp.hour, temp.min, temp.second);
+			track.recency = track.dateObj.toISOString();
+		}
 		this.activeTrackSource.next(track);
 	}
 	
