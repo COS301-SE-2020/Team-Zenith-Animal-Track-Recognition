@@ -1,0 +1,186 @@
+.mat-dialog-title {
+    font-size: 120%;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.mat-dialog-content {
+    height: 75%;
+	overflow: hidden;
+}
+#reclassify-track-comparison-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-start;
+	height: 70%;
+	width: 100%;
+}
+.other-potential-matches-container
+{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+.other-potential-matches-animal {
+	height: 100%;
+	width: 35%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+.other-potential-matches-image-container {
+	height: 75%;
+	width: 70%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+.other-potential-matches-image {
+	height: 115px;
+	width: 115px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10%;
+	overflow: hidden;
+}
+.other-potential-matches-image > img {
+	flex: 1;
+	height: 100%;
+}
+.other-potential-matches-animal-info {
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.other-potential-match-commonname, .other-potential-match-classification, .cther-potential-match-accuracy-score {
+	color: rgba(0, 0, 0, 0.60);
+	padding: 0;
+	margin: 0;
+}
+.other-potential-match-commonname {
+    color: rgba(0,0,0,.85);
+}
+.other-potential-match-classification {
+    color: rgba(0,0,0,.65);
+	font-size: 90%;
+}
+.cther-potential-match-accuracy-score {
+	text-align: center;
+	font-size: 120%;
+}
+
+.reclassify-track-comparison-arrow-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 30%;
+}
+.reclassify-track-comparison-arrow-container > p {
+	color: rgba(0, 0, 0, 0.50);
+	margin: 0;
+	padding: 0;
+}
+.reclassify-icon-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: auto;
+	width: 100%;
+}
+.reclassify-icon {
+	font-size: 350%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+}
+#reclassify-track-animal-selection-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 30%;
+	width: 100%;
+}
+#animalListForm {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+}
+#animalListForm > p {
+	margin: 0;
+	padding: 0;
+}
+#reclassify-track-container {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+#add-new-ranger-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.mat-form-field {
+    width: 65%;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.2em 0 0.8em 0;
+}
+
+:host ::ng-deep .mat-form-field-outline:hover,
+:host ::ng-deep .mat-form-field-outline-thick:hover {
+    border-color: #315dbf;
+}
+
+:host ::ng-deep .mat-form-field-wrapper {
+    /*padding-bottom: 0;*/
+}
+
+:host ::ng-deep .mat-form-field-label-wrapper {}
+
+:host ::ng-deep .mat-form-field-label {
+    /*top: 1.1em;*/
+}
+
+.mat-dialog-actions {
+    border-top: 1px solid #CCCCCC;
+}
+
+.mat-dialog-actions>.mat-button {
+	width: 35%;
+}
+
+#cancel-btn {
+    /* width: 20%; */
+    border: 1px solid #CCCCCC;
+}
+
+#add-ranger-btn {
+    /* width: 20%; */
+    background-color: #686E79;
+    color: white;
+}

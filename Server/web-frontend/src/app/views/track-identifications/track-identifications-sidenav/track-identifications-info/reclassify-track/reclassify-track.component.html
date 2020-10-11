@@ -1,0 +1,76 @@
+<div id="dialog-progressbar-container">
+    <mat-progress-bar mode="indeterminate" id="dialog-progressbar"></mat-progress-bar>
+</div>
+<h1 mat-dialog-title>Reclassify {{data.fromAnimal.animal.commonName}} Track</h1>
+<mat-dialog-content>
+    <div id="reclassify-track-container">
+		<div id="reclassify-track-comparison-container">
+			<div class="other-potential-matches-animal">
+				<div class="other-potential-matches-image-container">
+					<div class="other-potential-matches-image" >
+						<img src="{{data.fromAnimal.animal.pictures[0].URL}}">
+					</div>	
+				</div>
+				<div class="other-potential-matches-animal-info">
+					<p class="other-potential-match-commonname fontSB">
+						{{data.fromAnimal.animal.commonName}}
+					</p>
+					<!--<p class="other-potential-match-accuracy-score fontB">
+						Accuracy Score: {{data.fromAnimal.confidence | percent}}
+					</p>-->
+				</div>
+			</div>
+			<div class="reclassify-track-comparison-arrow-container">
+				<p class="fontSB">Reclassify track as</p>
+				<div class="reclassify-icon-container">
+					<mat-icon class="reclassify-icon">trending_flat</mat-icon>
+				</div>
+			</div>
+			<div class="other-potential-matches-animal">
+				<div class="other-potential-matches-image-container">
+					<div class="other-potential-matches-image" >
+						<ng-container *ngIf="data.toAnimal != null; else unselectedAnimalImage">
+							<img src="{{data.toAnimal.pictures[0].URL}}">
+						</ng-container>
+						<ng-template #unselectedAnimalImage>
+							<div style="background-color: #CCC;height:100%;width:100%;">
+							</div>
+						</ng-template>
+					</div>	
+				</div>
+				<div class="other-potential-matches-animal-info">
+					<p class="other-potential-match-commonname fontSB">
+						<ng-container *ngIf="data.toAnimal != null; else unselectedAnimalName">
+							{{data.toAnimal.commonName}}
+						</ng-container>
+						<ng-template #unselectedAnimalName>
+							New Animal
+						</ng-template>
+					</p>
+					<!--<p class="other-potential-match-accuracy-score fontB">
+						Accuracy Score: 100%
+					</p>-->
+				</div>
+			</div>
+		</div>
+		<div id="reclassify-track-animal-selection-container">
+			<form [formGroup]="animalListForm" id="animalListForm">
+            <p class="edit-animal-form-gender-title fontSB">I want to reclassify this track as a </p>
+				<mat-form-field appearance="outline">
+					<input type="text" matInput placeholder="Please enter the name of your chosen animal" formControlName="animalGroupFormControl" [matAutocomplete]="autoGroup">
+					<mat-autocomplete #autoGroup="matAutocomplete">
+						<mat-optgroup *ngFor="let animal of animalGroupOptions | async" [label]="animal.letter">
+							<mat-option *ngFor="let name of animal.names" [value]="name">	
+								{{name}}
+							</mat-option>
+						</mat-optgroup>
+					</mat-autocomplete>
+				</mat-form-field> 
+			</form>
+		</div>
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-button id="cancel-btn" class="fontSB" (click)="closeDialog()">CANCEL</button>
+    <button type="submit" mat-button (click)="onSubmit(false)" id="add-ranger-btn" class="fontSB buttonColour">RECLASSIFY TRACK</button>
+</mat-dialog-actions>

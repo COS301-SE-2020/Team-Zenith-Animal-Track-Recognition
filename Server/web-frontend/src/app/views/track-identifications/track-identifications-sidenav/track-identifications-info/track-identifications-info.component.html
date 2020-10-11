@@ -20,6 +20,9 @@
             <button *ngIf="activeTrack" (click)="viewAnimalPhotos(activeTrack.animal.classification)" mat-menu-item>
 				<span>View Animal Photos</span>
 			</button>
+			<button *ngIf="activeTrack" (click)="openReclassifyDialog(activeTrack)" mat-menu-item>
+				<span>Reclassify Track</span>
+			</button>
         </mat-menu>
     </div>
     <div id="animal-photos-track-info-content">
@@ -100,7 +103,7 @@
 								<p class="fontSB">Alternatively, click the button below to reclassify this track.</p>
 							</div>
 							<div class="reclassify-option-btn-container">
-								<button mat-button class="buttonColour">Reclassify Track</button>
+								<button mat-button class="buttonColour" (click)="openReclassifyDialog(activeTrack)">Reclassify Track</button>
 							</div>
 						</div>
 					</ng-container>
@@ -143,7 +146,7 @@
 																	<p class="fontSB">Optionally, click the button below to reclassify this track.</p>
 																</div>
 																<div class="reclassify-option-btn-container">
-																	<button mat-button class="buttonColour">Reclassify Track</button>
+																	<button mat-button class="buttonColour" (click)="openReclassifyDialog(activeTrack)">Reclassify Track</button>
 																</div>
 															</div>
 														</div>
@@ -156,7 +159,7 @@
 															<p class="fontSB">Optionally, click the button below to reclassify this track.</p>
 														</div>
 														<div class="reclassify-option-btn-container">
-															<button mat-button class="buttonColour">Reclassify Track</button>
+															<button mat-button class="buttonColour" (click)="openReclassifyDialog(activeTrack)">Reclassify Track</button>
 														</div>
 													</div>
 												</ng-container>

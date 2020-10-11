@@ -38,6 +38,7 @@ import { RangersComponent } from './views/rangers/rangers.component';
 import { RangersToolbarComponent } from './views/rangers/rangers-toolbar/rangers-toolbar.component';
 import { RangerSearchSidenavCompComponent } from './views/rangers/ranger-search-sidenav-comp/ranger-search-sidenav-comp.component';
 import { RangerStatisticsComponent } from './views/overview/ranger-statistics/ranger-statistics.component';
+import { ReclassifyTrackComponent } from './views/track-identifications/track-identifications-sidenav/track-identifications-info/reclassify-track/reclassify-track.component';
 import { SideNavigationComponent } from './components/side-navigation/side-navigation.component';
 import { TrackHeatmapOptionsComponent } from './views/track-identifications/track-identifications-sidenav/track-heatmap-options/track-heatmap-options.component';
 import { TrackIdentificationsComponent } from './views/track-identifications/track-identifications.component';
@@ -113,6 +114,7 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     RangerPermissionsComponent,
     RangerStatisticsComponent,
     RangerProfileComponent,
+	ReclassifyTrackComponent,
     TrackHeatmapOptionsComponent,
     TrackIdentificationsComponent,
     TrackIdentificationsToolbarComponent,
@@ -175,7 +177,8 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     DeleteRangerComponent,
     EditAnimalInfoComponent,
     AddAnimalComponent,
-    AnimalPhotoDetailsComponent
+    AnimalPhotoDetailsComponent,
+	ReclassifyTrackComponent
   ],
   bootstrap: [AppComponent]
 })

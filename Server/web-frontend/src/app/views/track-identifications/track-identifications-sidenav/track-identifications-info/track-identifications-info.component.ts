@@ -7,6 +7,7 @@ import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dial
 import { Track } from 'src/app/models/track';
 import { TracksService } from './../../../../services/tracks.service';
 import { TrackViewNavigationService } from './../../../../services/track-view-navigation.service';
+import { ReclassifyTrackComponent } from './reclassify-track/reclassify-track.component';
 import { RelativeTimeMPipe } from 'src/app/pipes/relative-time-m.pipe';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { Router } from '@angular/router';
@@ -68,7 +69,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 			for (let j = 0; j < maxNumOtherMatches; j += 2) {
 				this.otherMatchesList.push(otherPossibleValidMatches.slice(j, j + 2));
 			}
-			if (otherPossibleValidMatches.length % 2 == 0) {
+			if (otherPossibleValidMatches.length % 2 == 0 && otherPossibleValidMatches.length != 0) {
 				this.otherMatchesList.push([{animal: {commonName: "showReclassifyOption"}}]);
 			}
 		}
@@ -104,11 +105,56 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	reclassifyTrack(track: any, newAnimal: any) {
 		console.log("clicked on " + newAnimal.commonName);
 		//this.tracksService.reclassifyTrack(JSON.parse(localStorage.getItem('currentToken'))['value'], track, newAnimal);
-		//Visually show change
 		//this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - otherMatchIndex].animal = this.activeTrack.animal;
 		//this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - otherMatchIndex].confidence = this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - 1].confidence;
 		//this.activeTrack.animal = newAnimal;
 		//this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - 1].confidence = 1.00;
+		const dialogConfig = new MatDialogConfig();
+
+		const reclassifyTrackDialogRef = this.dialog.open(ReclassifyTrackComponent, {
+			height: '65%',
+			width: '40%',
+			autoFocus: true,
+			disableClose: true,
+			id: 'reclassify-track-dialog',
+			data: {
+				fromAnimal: this.activeTrack,
+				preSelectedAnimal: false,
+				toAnimal: newAnimal
+			}
+		});
+		reclassifyTrackDialogRef.afterClosed().subscribe(result => {
+			//this.stopLoader();
+			if (result == "success") {
+				//If ranger was successfully edited refresh component and notify parent
+			}
+			else if (result == 'error') {
+			}
+		});
+	}
+	openReclassifyDialog(track: Track) {
+		const dialogConfig = new MatDialogConfig();
+
+		const reclassifyTrackDialogRef = this.dialog.open(ReclassifyTrackComponent, {
+			height: '65%',
+			width: '40%',
+			autoFocus: true,
+			disableClose: true,
+			id: 'reclassify-track-dialog',
+			data: {
+				fromAnimal: this.activeTrack,
+				preSelectedAnimal: true,
+				toAnimal: null
+				}
+		});
+		reclassifyTrackDialogRef.afterClosed().subscribe(result => {
+			//this.stopLoader();
+			if (result == "success") {
+				//If ranger was successfully edited refresh component and notify parent
+			}
+			else if (result == 'error') {
+			}
+		});		
 	}
 	//Track Identification manipulation
 	setTrackAddress() {
