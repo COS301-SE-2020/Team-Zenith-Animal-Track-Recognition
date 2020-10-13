@@ -27,7 +27,7 @@
                 </div>
 				<mat-tab-group id="ranger-statistics-view-tabgroup" #rangerStatsTab animationDuration="0ms" dynamicHeight> 
 					<mat-tab label="Login Activity">
-						<div id="ranger-statistics-container">
+						<div class="ranger-statistics-container">
 							<div id="ranger-login-statistics-container">
 								<div class="statistics-header-container">
 									<h1>Ranger Login Activity</h1>
@@ -68,7 +68,7 @@
 														<mat-icon>date_range</mat-icon>
 													</button>
 													<div class="statistics-content-title-toolbar-toggleGroupContainer">
-														<mat-button-toggle-group #loginsByDateToggleGroup class="statistics-content-title-toolbar-toggleGroup" (change)="changeLoginsByDateFilter($event.value)" value="platform">
+														<mat-button-toggle-group #loginsByDateToggleGroup class="statistics-content-title-toolbar-toggleGroup" (change)="changeLoginsByDateFilter($event.value)" [value]="loginsByDateFilter">
 														  <mat-button-toggle value="level">Level</mat-button-toggle>
 														  <mat-button-toggle value="platform">Platform</mat-button-toggle>
 														</mat-button-toggle-group>
@@ -136,10 +136,10 @@
 						</div>
 					</mat-tab>
 					<mat-tab label="Tracking Activity">
-						<div id="ranger-statistics-container">
-							<div id="ranger-login-statistics-container">
+						<div class="ranger-statistics-container">
+							<div id="ranger-tracking-statistics-container">
 								<div class="statistics-header-container">
-									<h1>Ranger Tracking Activity</h1>
+									<h1>Ranger Tracking Activity Overview</h1>
 								</div>
 								<div class="statistics-content-main-container">
 									<div id="ranger-identifications-statistics-content-row1" class="statistics-content-row-container">
@@ -203,7 +203,7 @@
 														<mat-icon>date_range</mat-icon>
 													</button>
 													<div class="statistics-content-title-toolbar-toggleGroupContainer">
-														<mat-button-toggle-group #identificationsByDateToggleGroup class="statistics-content-title-toolbar-toggleGroup" (change)="changeIdentificationsByDateFilter($event.value)" value="identifications">
+														<mat-button-toggle-group #identificationsByDateToggleGroup class="statistics-content-title-toolbar-toggleGroup" (change)="changeIdentificationsByDateFilter($event.value)" [value]="allIdsByDateFilter">
 														  <mat-button-toggle value="identifications">Identifications</mat-button-toggle>
 														  <mat-button-toggle value="accuracy score">Accuracy Score</mat-button-toggle>
 														</mat-button-toggle-group>
@@ -224,17 +224,57 @@
 											</div>
 										</div>
 									</div>
-									<!--<div id="ranger-identificationsby-statistics-content-row3" class="statistics-content-row-container">
-										<div id="ranger-loginbylevel-stats-container" class="statistics-content-container">
+									<div class="statistics-header-container">
+										<h1>Tracking Activity By Ranger</h1>
+									</div>
+									<div id="identifications-byRangerStats-content-row1" class="statistics-content-row-container">
+										<div id="identifications-byRangerAndDate-stats" class="statistics-content-container">
 											<div class="statistics-content-container-title">
-												<p class="fontSB">Identifications By Ranger Level - All Time</p>
+												<p class="fontSB">Track Identifications By Date - {{idsByRangerAndDateStart.toDateString()}} to {{idsByRangerAndDateEnd.toDateString()}}</p>
+												<div class="statistics-content-title-toolbar-container">
+													<mat-form-field id="tracksByRangerAndDatePicker" class="statistics-datepicker" appearance="fill">
+														<mat-date-range-input [formGroup]="idsByRangerAndDateRangeForm" [rangePicker]="tracksByRangerAndDatePicker">
+															<input formControlName="idsByRangerAndDateStartControl" matStartDate>
+															<input formControlName="idsByRangerAndDateEndControl" matEndDate>
+														</mat-date-range-input>
+														<mat-date-range-picker #tracksByRangerAndDatePicker></mat-date-range-picker>
+													</mat-form-field>
+													<button mat-icon-button (click)="tracksByRangerAndDatePicker.open()" aria-label="Select Date Range">
+														<mat-icon>date_range</mat-icon>
+													</button>
+													<div class="statistics-content-title-toolbar-toggleGroupContainer">
+														<mat-button-toggle-group #idsByRangerAndDateToggleGroup class="statistics-content-title-toolbar-toggleGroup" (change)="changeIdsByRangerAndDateFilter($event.value)" [value]="idsByRangerAndDateFilter">
+														  <mat-button-toggle value="identifications">Identifications</mat-button-toggle>
+														  <mat-button-toggle value="accuracy score">Accuracy Score</mat-button-toggle>
+														</mat-button-toggle-group>
+													</div>
+												</div>
 											</div>
 											<div class="statistics-content-container-content">
-												<ngx-charts-advanced-pie-chart [scheme]="loginsPerLevelColorScheme" [results]="loginsPerLevel">
-													</ngx-charts-advanced-pie-chart>
-											</div>													
+												<mat-grid-list id="identifications-byRangerAndDate-stats-grid" cols="2" rowHeight="2:1.5">
+												  <mat-grid-tile *ngFor="let rangerData of allIdsByRangerAndDate">
+													<div class="statistics-byRanger-cell">
+														<div class="statistics-byRanger-content-container">
+															<div class="statistics-byRanger-content-title">
+																<p class="fontSB">{{rangerData.ranger.firstName}} {{rangerData.ranger.lastName}}</p>
+															</div>
+															<div class="statistics-byRanger-content">
+																<ngx-charts-line-chart [animations]="true" [scheme]="idsByRangerAndDateColorScheme" [legend]="true" 
+																	[showXAxisLabel]="true"
+																	[showYAxisLabel]="true"
+																	[xAxis]="true"
+																	[yAxis]="true"
+																	[xAxisLabel]="'Identification Date'" [yAxisLabel]="idsByRangerAndDateYLabel"
+																	[results]="rangerData.rangerGraphData">
+																</ngx-charts-line-chart>
+															</div>
+														</div>
+													</div>
+												  </mat-grid-tile>																								  
+												</mat-grid-list>
+											</div>
 										</div>
-									</div>-->
+									</div>
 								</div>
 							</div>
 						</div>

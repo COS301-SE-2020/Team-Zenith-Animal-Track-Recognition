@@ -27,6 +27,13 @@ export class RangerStatisticsComponent implements OnInit {
 	greenColorScheme = {
 		domain: ['#19A020']
 	};
+	cardColor: string = '#FFF';
+	numIdsByDateColorScheme = {
+		domain: ['#E44D25', '#509CD0', '#19A020', '#5AA454']
+	};		
+	avgScoreByDateColorScheme = {
+		domain: ['#EECC6A', '#E44D25', '#509CD0', '#19A020']
+	};	
 	
 	@ViewChild('statisticsSidenav') statsSidenav;
 	@ViewChild('rangerStatsTab') rangerStatsTab;
@@ -65,19 +72,11 @@ export class RangerStatisticsComponent implements OnInit {
 	
 	
 	
-	//Tracking Activity Variables
-	cardColor: string = '#FFF';
-	identificationsByDateYLabel = "Number of Track Identifications";
-	numIdsByDateColorScheme = {
-		domain: ['#E44D25', '#509CD0', '#19A020', '#5AA454']
-	};		
-	avgScoreByDateColorScheme = {
-		domain: ['#EECC6A', '#E44D25', '#509CD0', '#19A020']
-	};	
+	//Tracking Activity Variables - Overview
 	identificationsByDateColorScheme = this.numIdsByDateColorScheme;
+	identificationsByDateYLabel = "Number of Track Identifications";
 	alltime_numIdentifications = [];
 	alltime_avgAccuracyScore = [];
-	mostIdentifications = [];
 	allTimeNumAndScoreIds = [];
 	allIdentifications = [];
 	allIdentificationsByLevel = [];
@@ -85,9 +84,19 @@ export class RangerStatisticsComponent implements OnInit {
 	allIdsByDateStart;
 	allIdsByDateEnd;
 	allIdsByDateFilter = "identifications";
+	//Tracking Activity Variables - By Ranger
+	idsByRangerAndDateColorScheme = this.numIdsByDateColorScheme;
+	idsByRangerAndDateYLabel = "# of Identifications";
+	allIdsByRangerAndDate = [];
+	mostIdentifications = [];
+	idsByRangerAndDateRangeForm: FormGroup;
+	idsByRangerAndDateStart;
+	idsByRangerAndDateEnd;
+	idsByRangerAndDateFilter = "identifications";
 
 
 	constructor(private formBuilder: FormBuilder, private router: Router, private rangerStatsService: RangerStatisticsService) { 
+		//Login Activity
 		rangerStatsService.loginsByApplication$.subscribe(
 			logins => {
 				this.loginsPerApp = logins;
@@ -109,6 +118,8 @@ export class RangerStatisticsComponent implements OnInit {
 				this.recentLoginsDataSource.data = this.recentLogins;
 			}
 		);
+		
+		//Tracking Activity Overview
 		rangerStatsService.allIdentificationsByDate$.subscribe(
 			identifications => {
 				this.allIdentifications = identifications;
@@ -130,9 +141,17 @@ export class RangerStatisticsComponent implements OnInit {
 				this.mostIdentifications = avgScore;
 			}
 		);
+		
+		//Tracking Activity By Ranger
+		rangerStatsService.allIdsRangerAndDate$.subscribe(
+			identifications => {
+				this.allIdsByRangerAndDate = identifications;
+			}
+		);
 	}
 	get loginsByDateRange() { return this.loginsByDateRangeForm.controls; }
 	get allIdsByDateRange() { return this.allIdsByDateRangeForm.controls; }
+	get idsByRangerAndDateRange() { return this.idsByRangerAndDateRangeForm.controls; }
 	
 	ngOnInit(): void {
 		document.getElementById("overview-route").classList.add("activeRoute");
@@ -162,6 +181,19 @@ export class RangerStatisticsComponent implements OnInit {
 				this.changeAllIdsByDateRange();
 			}
 		});
+		
+		this.idsByRangerAndDateEnd = new Date();
+		this.idsByRangerAndDateStart = new Date(this.idsByRangerAndDateEnd.getTime());
+		this.idsByRangerAndDateStart.setDate(this.idsByRangerAndDateStart.getDate() - 7);
+		this.idsByRangerAndDateRangeForm = this.formBuilder.group({
+			idsByRangerAndDateStartControl: ['', Validators.required],
+			idsByRangerAndDateEndControl: ['', Validators.required]
+		});
+		this.idsByRangerAndDateRangeForm.controls['idsByRangerAndDateEndControl'].valueChanges.subscribe(val => {
+			if (val != null) {
+				this.changeIdsByRangerAndDateRange();
+			}
+		});
 		  
 		this.recentLoginsDataSource.paginator = this.recentLoginsPaginator;
 			this.recentLoginsDataSource.sortingDataAccessor = (ranger, property) => {
@@ -180,7 +212,7 @@ export class RangerStatisticsComponent implements OnInit {
 		this.leastIdentified = { commonName: ''};
 		this.animalPercentages = { commonName: ''};
 
-
+		//Most recent identification
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 		  '",sigil:"yes"){animal{commonName},ranger{rangerID,accessLevel,firstName,lastName},dateAndTime{year,month,day,hour,min,second}}}')
 		  .pipe(
@@ -199,6 +231,7 @@ export class RangerStatisticsComponent implements OnInit {
 			this.timeToString(this.latest);
 		  });
 
+		
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsStats3(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 		  '"){commonName,NumberOfIdentifications}}')
 		  .pipe(
@@ -243,7 +276,7 @@ export class RangerStatisticsComponent implements OnInit {
 
 	loadStatistics() {
 		this.rangerStatsService.getRangerLoginActivity(JSON.parse(localStorage.getItem('currentToken'))['value']);
-		this.rangerStatsService.getRangerTrackingActivity(JSON.parse(localStorage.getItem('currentToken'))['value']);	
+		this.rangerStatsService.getAllTrackingActivity(JSON.parse(localStorage.getItem('currentToken'))['value']);	
 	}
 	
 	
@@ -277,6 +310,26 @@ export class RangerStatisticsComponent implements OnInit {
 		this.rangerStatsService.getAllIdentificationsByDate(this.allIdsByDateStart, this.allIdsByDateEnd, this.allIdsByDateFilter);
 	}
 	
+	changeIdsByRangerAndDateFilter(filter: any) {
+		switch (filter) {
+			case "identifications":
+				this.idsByRangerAndDateYLabel = "# of Identifications";
+				this.idsByRangerAndDateColorScheme = this.numIdsByDateColorScheme;
+			break;
+			case "accuracy score":
+				this.idsByRangerAndDateYLabel = "Avg. Accuracy Score (%)";
+				this.idsByRangerAndDateColorScheme = this.avgScoreByDateColorScheme;
+			break;
+		}
+		this.idsByRangerAndDateFilter = filter;
+		this.rangerStatsService.getAllIdsByRangerAndDate(this.idsByRangerAndDateStart, this.idsByRangerAndDateEnd, filter);
+	}
+	changeIdsByRangerAndDateRange() {
+		this.idsByRangerAndDateStart = this.idsByRangerAndDateRange.idsByRangerAndDateStartControl.value;
+		this.idsByRangerAndDateEnd = this.idsByRangerAndDateRange.idsByRangerAndDateEndControl.value;
+		this.rangerStatsService.getAllIdsByRangerAndDate(this.idsByRangerAndDateStart, this.idsByRangerAndDateEnd, this.idsByRangerAndDateFilter);
+	}
+	
 	//Formatting functions
 	formatAsPercentage(val: any) {
 		return val.value + "%";
@@ -287,10 +340,17 @@ export class RangerStatisticsComponent implements OnInit {
 	
 	//Navigation functions
 	changeRangerStatsTab(index: number) {
-		if (index == 0)
+		if (index == 0) {
 			this.rangerStatsService.getRangerLoginActivity(JSON.parse(localStorage.getItem('currentToken'))['value']);
-		else if (index == 1)
-			this.rangerStatsService.getRangerTrackingActivity(JSON.parse(localStorage.getItem('currentToken'))['value']);	
+			this.loginsByDateFilter = "platform";
+		}
+		else if (index == 1) {
+			this.rangerStatsService.getAllTrackingActivity(JSON.parse(localStorage.getItem('currentToken'))['value']);
+			this.identificationsByDateYLabel = "Number of Track Identifications";			
+			this.allIdsByDateFilter = "identifications";
+			this.identificationsByDateColorScheme = this.numIdsByDateColorScheme;
+			this.rangerStatsService.getAllTrackingActivityByRanger(JSON.parse(localStorage.getItem('currentToken'))['value']);
+		}
 		
 		this.activeRangerStatsTabIndex = index;
 		this.rangerStatsTab.selectedIndex  = index;

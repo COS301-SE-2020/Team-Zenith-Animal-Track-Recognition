@@ -119,7 +119,7 @@
     width: 25px;
     border: 1px solid #CCCCCC;
 }
-#ranger-statistics-container {
+.ranger-statistics-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -129,7 +129,7 @@
 	overflow-y: auto;
 	width: 100%;
 }
-#ranger-login-statistics-container {
+#ranger-login-statistics-container, #ranger-tracking-statistics-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -163,16 +163,16 @@
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	/* border: 1px solid red;*/
 }
 #ranger-loginby-statistics-content-row1, #ranger-identifications-statistics-content-row1 {
 	height: 350px;
 }
 #ranger-loginby-statistics-content-row2, #ranger-identifications-statistics-content-row2 {
 	height: 750px;
-	/*border: 1px solid blue;*/
 }
-
+#identifications-byRangerStats-content-row1 {
+	height: auto;
+}
 #ranger-loginby-statistics-content-row3 {
 	height: 550px;
 }
@@ -209,7 +209,7 @@
     animation: fadePop 0.7s ease-out 0s 1 normal none;
 	padding: 0 2%;
 }
-.statistics-content-container-title {
+.statistics-content-container-title, .statistics-byRanger-content-title {
 	border-bottom: 1px solid #CCC;
     height: 4em;
     display: flex;
@@ -218,7 +218,7 @@
     align-items: center;
     width: 100%;
 }
-.statistics-content-container-title > p {
+.statistics-content-container-title > p, .statistics-byRanger-content-title > p {
     color: rgba(0, 0, 0, .35);
     font-size: 110%;
     padding: 0;
@@ -280,6 +280,25 @@
 #ranger-identifications-byDate-stats {
 	width: 100%;
 }
+#identifications-byRangerAndDate-stats {
+	width: 100%;
+	background-color: transparent;
+	border-radius: 0;
+	box-shadow: none;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	height: auto;
+	padding: 0;
+	margin-top: 15px;
+}
+#identifications-byRangerAndDate-stats .statistics-content-container-content {
+	display: block;
+}
+#identifications-byRangerAndDate-stats .statistics-content-container-title {
+	padding-left: 2%;
+}
 #ranger-identifications-alltime-stats, #ranger-accuracyscore-alltime-stats {
 	width: 25%;
 }
@@ -313,6 +332,44 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+}
+#identifications-byRangerAndDate-stats-grid {
+	height: 100%;
+	width: 100%;
+}
+.statistics-byRanger-cell {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+}
+.statistics-byRanger-content-container {
+	background-color: white;
+	border-radius: 12px;
+	box-shadow: 0px 3px 8px #DDD;
+	height: 85%;
+	width: 90%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    animation: fadePop 0.7s ease-out 0s 1 normal none;
+	padding: 0 2%;
+}
+.statistics-byRanger-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	height: auto;
+	min-height: 85%;
+	width: 100%;
 }
 #ranger-loginbyranger-stats-container, #ranger-loginbydate-stats-container {
 	width: 100%;

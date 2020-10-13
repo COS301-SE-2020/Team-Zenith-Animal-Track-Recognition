@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, of, Subject, EMPTY } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from './message.service';
+import { User } from 'src/app/models/user';
 import { Track } from 'src/app/models/track';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { TRACKS_QUERY_STRING } from 'src/app/models/data';
@@ -17,7 +18,7 @@ export class RangerStatisticsService {
 	//activeTrack$ = this.activeTrackSource.asObservable();
 	
 	private trackRootQueryUrl = TRACKS_QUERY_STRING + '?query=query{spoorIdentification';
-	private userRootQueryUrl = ROOT_QUERY_STRING + '?query=query{user';
+	private userRootQueryUrl = ROOT_QUERY_STRING + '?query=query{users';
 	private loginsRootQueryUrl = ROOT_QUERY_STRING + '?query=query{recentLogins';
 	
 	//Ranger Login statistics variables
@@ -39,7 +40,7 @@ export class RangerStatisticsService {
 	private loginsByLevelSource = new Subject<any[]>();
 	loginsByLevel$ = this.loginsByLevelSource.asObservable();
 	
-	//Tracking Activity Variables
+	//Tracking Activity Overview Variables
 	private _displayedTracks = new BehaviorSubject<any[]>([]);
 	readonly displayedTracks = this._displayedTracks.asObservable();
 	//Store a local copy of all track identifications
@@ -51,12 +52,14 @@ export class RangerStatisticsService {
 	allTimeNumAndScoreIds$ = this.allTimeNumAndScoreIdsSource.asObservable();	
 	private allIdentificationsByLevelSource = new Subject<any[]>();		
 	allIdentificationsByLevel$ = this.allIdentificationsByLevelSource.asObservable();		
-	//private avgScoreAllTimeSource = new Subject<any[]>();
-	//avgScoreAllTime$ = this.avgScoreAllTimeSource.asObservable();	
-	//private numIdentificationsSource = new Subject<any[]>();
-	//numIdentifications$ = this.numIdentificationsSource.asObservable();	
 	private mostIdentifiedSource = new Subject<any[]>();
 	mostIdentified$ = this.mostIdentifiedSource.asObservable();	
+	
+	//Tracking Activity By Ranger Variables
+	//Store a local copy of all track identifications
+	private rangersStore: { rangers: User[] } = { rangers: null };
+	private allIdsByRangerAndDateSource = new Subject<any[]>();
+	allIdsRangerAndDate$ = this.allIdsByRangerAndDateSource.asObservable();
 	
 	constructor(private http: HttpClient, private messageService: MessageService) { }
 	
@@ -253,9 +256,9 @@ export class RangerStatisticsService {
 		this.loginsByLevelSource.next(numLogins);		
 	}
 	
-	//Tracking Activity Statistics
+	//Tracking Activity Overview Statistics
 	//HTTPS Requests
-	getRangerTrackingActivity(token: string)
+	getAllTrackingActivity(token: string)
 	{
 		const getIdentificationsQueryUrl = this.trackRootQueryUrl + '(token:"' + token + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},' +
 			'commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},' +
@@ -285,7 +288,7 @@ export class RangerStatisticsService {
 					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
 				}
 			);
-	}
+	}	
 	getAllIdentificationsByDate(startDate: any, endDate: any, dataType: string) {
 		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
 		
@@ -451,19 +454,23 @@ export class RangerStatisticsService {
 				
 		this.allTimeNumAndScoreIdsSource.next(numAndScoreData);
 	}
-	getAvgAccuracyScore(trackList: any[]) {
-		var allTrackIdentifications = cloneDeep(trackList);
-		var accuracyScore = 0;
-		
-		allTrackIdentifications.forEach(track => {
-			accuracyScore += track.potentialMatches[track.potentialMatches.length - 1].confidence;
-		});
-		var avgScore = 0;
-		if (accuracyScore != 0)
-			avgScore =  Math.round(((accuracyScore/allTrackIdentifications.length) * 100));
 
-		//this.avgScoreAllTimeSource.next([{"name": "Average Accuracy Score","value": avgScore}]);
-		return avgScore;
+	//Tracking Activity By Ranger Statistics
+	//HTTPS Requests
+	getAllTrackingActivityByRanger(token: string) {
+		const getRangersQueryUrl = this.userRootQueryUrl + '(tokenIn:"' + token + '"){rangerID,accessLevel,firstName,lastName}}';
+		this.http.get<User[]>(getRangersQueryUrl)
+			.subscribe( data => {
+				this.rangersStore.rangers = Object.values(Object.values(data)[0])[0];	
+				var startDate = new Date();
+				startDate.setDate(startDate.getDate() - 7);
+				this.getAllIdsByRangerAndDate(startDate, new Date(), "identifications");
+			},
+				error => {
+					//this._displayedTracks.next([]);
+					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
+				}
+			);
 	}
 	getMostIdsByRanger() {
 		/*const getMostQueryUrl = this.trackRootQueryUrl + '(token:"' + token + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},' +
@@ -496,12 +503,110 @@ export class RangerStatisticsService {
 				"value": mostTracked.AnimalTracked }]);
 		  });
 	}
+	getAllIdsByRangerAndDate(startDate: any, endDate: any, dataType: string) {
+		var allRangers = cloneDeep(this.rangersStore.rangers);
+		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
+		
+		var graphData = [];
+		
+		var rangerSeries = [];
+		var rangerData = [];
+		allRangers.forEach(ranger => {
+			rangerData = this.getIdsByRangerAndDate(ranger, allTrackIdentifications, startDate, endDate, dataType);
+			graphData.push({ranger: ranger, rangerGraphData: rangerData});
+			console.log(rangerData);		
+		});
+		console.log(graphData);
+		this.allIdsByRangerAndDateSource.next(graphData);	
+	}
+	getIdsByRangerAndDate(ranger: User, trackList: Track[], startDate: any, endDate: any, dataType: string) {
+		//Filter out identifications that do not fall within the time range
+		var filteredIds = [];		
+		var startDateTime = startDate.getTime();
+		var endDateTime = endDate.getTime();
+		var trackTime;	
+		trackList.forEach(track => {
+			trackTime = track.dateObj.getTime();
+			if (trackTime >= startDateTime && trackTime <= endDateTime) {
+				filteredIds.push(track);
+			}
+		});
+		var numDays = Math.abs((endDateTime - startDateTime) / (1000 * 3600 * 24));
+		numDays++;
+		
+		//Count number of Identifications on a specific date per platform or level
+		var fromDate = new Date(startDateTime);
+		var rangerData = [];
+		
+		switch(dataType) {
+			case "identifications":
+				var rangerSeries = [];
+				var numIds = 0;
+				
+				for (let i = 0; i < numDays; i++) {
+					numIds = 0;
+					fromDate = new Date(endDateTime);
+					fromDate.setDate(fromDate.getDate() - i);
+							
+					trackList.forEach(track => {
+						if (this.isSameDay(track.dateObj, fromDate)) {
+							if (track.ranger.rangerID == ranger.rangerID) {
+								numIds++;
+							}
+						}
+					});
+					rangerSeries.push({"value": numIds, "name": fromDate});
+				}
+				rangerData.push({"name": "Total Identifications", "series": rangerSeries.reverse()});
+			break;
+			case "accuracy score":
+				var avgScorePerDay = [];
+				var tracksPerDay = [];
+				var avgScore = 0;
+				
+				for (let i = 0; i < numDays; i++) {
+					avgScore = 0;
+					tracksPerDay = [];
+					fromDate = new Date(endDateTime);
+					fromDate.setDate(fromDate.getDate() - i);
+					
+					filteredIds.forEach(track => {
+						if (this.isSameDay(track.dateObj, fromDate))  {
+							if (track.ranger.rangerID == ranger.rangerID) {
+								tracksPerDay.push(track);
+							}
+						}
+					});
+					avgScore = this.getAvgAccuracyScore(tracksPerDay);
+					avgScorePerDay.push({"value": avgScore, "name": fromDate});
+				}
+				rangerData.push({"name": "Avg. Accuracy Score", "series": avgScorePerDay.reverse()});
+			break;
+		}				
+		
+		return rangerData;
+	}
 	
+	//Other Functions
 	isSameDay(date1: any, date2: any) {
 		var isSameDay = false;
 		if (date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear())
 			isSameDay = true;
 		return isSameDay;
+	}
+	getAvgAccuracyScore(trackList: any[]) {
+		var allTrackIdentifications = cloneDeep(trackList);
+		var accuracyScore = 0;
+		
+		allTrackIdentifications.forEach(track => {
+			accuracyScore += track.potentialMatches[track.potentialMatches.length - 1].confidence;
+		});
+		var avgScore = 0;
+		if (accuracyScore != 0)
+			avgScore =  Math.round(((accuracyScore/allTrackIdentifications.length) * 100));
+
+		//this.avgScoreAllTimeSource.next([{"name": "Average Accuracy Score","value": avgScore}]);
+		return avgScore;
 	}
 
 	/**
