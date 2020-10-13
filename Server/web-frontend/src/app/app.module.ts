@@ -27,7 +27,6 @@ import { AnimalStatisticsComponent } from './views/overview/animal-statistics/an
 import { AnimalsToolbarComponent } from './views/animals/animals-toolbar/animals-toolbar.component';
 import { AnimalTrackInfoComponent } from './views/animals/animals-gallery/animal-photos/animal-photo-details/animal-track-info/animal-track-info.component';
 import { LoginComponent } from './views/login/login.component';
-import { OverviewComponent } from './views/overview/overview.component';
 import { EditAnimalInfoComponent } from './views/animals/edit-animal-info/edit-animal-info.component';
 import { EditRangerInfoComponent } from './views/rangers/edit-ranger-info/edit-ranger-info.component';
 import { DeleteRangerComponent } from './views/rangers/delete-ranger/delete-ranger.component';
@@ -90,7 +89,6 @@ import { RelativeTimeMPipe } from './pipes/relative-time-m.pipe';
     AddRangerComponent,
     AddGroupsComponent,
     LoginComponent,
-    OverviewComponent,
     AnimalsComponent,
     AnimalsGalleryComponent,
     AnimalsGalleryToolbarComponent,

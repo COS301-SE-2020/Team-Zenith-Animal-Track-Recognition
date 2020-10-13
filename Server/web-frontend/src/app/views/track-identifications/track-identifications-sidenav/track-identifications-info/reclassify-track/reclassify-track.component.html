@@ -57,7 +57,7 @@
 			<form [formGroup]="animalListForm" id="animalListForm">
             <p class="edit-animal-form-gender-title fontSB">I want to reclassify this track as a </p>
 				<mat-form-field appearance="outline">
-					<input type="text" matInput placeholder="Please enter the name of your chosen animal" formControlName="animalGroupFormControl" [matAutocomplete]="autoGroup">
+					<input type="text" matInput placeholder="Please enter the name of the animal to reclassify the track to" formControlName="animalGroupFormControl" [matAutocomplete]="autoGroup">
 					<mat-autocomplete #autoGroup="matAutocomplete">
 						<mat-optgroup *ngFor="let animal of animalGroupOptions | async" [label]="animal.letter">
 							<mat-option *ngFor="let name of animal.names" [value]="name">	

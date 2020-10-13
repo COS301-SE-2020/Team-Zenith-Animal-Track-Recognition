@@ -18,16 +18,6 @@
     align-items: center;
     overflow: hidden;
 }
-.mat-tab-group {
-    height: 100%;
-    width: 100%;
-    background-color: #F5F6FA;
-}
-
-:host ::ng-deep .mat-tab-header {
-    /*background-image: linear-gradient(-135deg, #509CD0, #214E7D);*/
-	background-color: white;
-}
 #statistics-view-navigation-container{
 	background-color: white;
     width: 100%;
@@ -36,18 +26,98 @@
     align-items: flex-start;
 	border-bottom: 1px solid #CCC;
 }
-#statistics-view-navigation {
-}
 #overview-workspace {
-    background-color: #F5F6FA;
     height: 100%;
     width: 100%;
-    background-color: white;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    overflow: hidden;
+    overflow-y: auto;
+}
+.mat-tab-group {
+    height: 100%;
+    width: 100%;
+    background-color: #F5F6FA;
+}
+
+:host ::ng-deep #ranger-statistics-view-tabgroup .mat-tab-header {
+	display: none;
+}
+#ranger-search-sidenav-container{
+	height: 100%;
+	width: 100%;
+}
+#ranger-search-sidenav {
+    height: 100%;
+    width: 200px;
+    border-right: 2px solid #CCCCCC;
+}
+#ranger-statistics-navigation-container {
+	height: 90%;
+	width: 100%;
+}
+#ranger-statistics-navigation-container .mat-list-option {
+	color: rgba(0, 0, 0, 0.35);
+}
+#ranger-statistics-navigation-container .mat-list-option.activeStatsNavRoute {
+	color: rgba(0, 0, 0, 0.65);
+}
+#sidenav-close-btn-container {
+    height: 10%;
+    width: 100%;
+    background-image: linear-gradient(-135deg, #509CD0, #214E7D);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#sidenav-open-btn-container {
+    position: absolute;
+    bottom: 3%;
+    left: 0%;
+    height: 6%;
+    width: 40px;
+    background-color: #a41238;
+    border: 1px solid #808080;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    box-shadow: 0px 0px 5px #BBBBBB;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    z-index: 2;
+}
+
+#sidenav-open-btn-container:hover,
+#sidenav-close-btn-container:hover {
+    cursor: pointer;
+}
+
+#side-nav-open-btn,
+#side-nav-close-btn {
+    background-color: white;
+    height: 22px;
+    width: 22px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10%;
+}
+
+#side-nav-close-btn {
+    height: 25px;
+    width: 25px;
+    border: 1px solid #CCCCCC;
 }
 #ranger-statistics-container {
 	display: flex;
@@ -93,28 +163,36 @@
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
+	/* border: 1px solid red;*/
 }
-#ranger-loginby-statistics-content-row1 {
+#ranger-loginby-statistics-content-row1, #ranger-identifications-statistics-content-row1 {
 	height: 350px;
 }
-#ranger-loginby-statistics-content-row2 {
+#ranger-loginby-statistics-content-row2, #ranger-identifications-statistics-content-row2 {
 	height: 750px;
+	/*border: 1px solid blue;*/
 }
 
 #ranger-loginby-statistics-content-row3 {
 	height: 550px;
 }
-.statistics-content-container-one {
-	background-color: white;
-	border-radius: 15px;
-	box-shadow: 0px 3px 8px #CCC;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	height: 100%;
-	width: 45%;
+#ranger-identificationsby-statistics-content-row1 {
+	height: 350px;
 }
-.statistics-content-container-two {
+#ranger-identificationsby-statistics-content-row2 {
+	height: 750px;
+}
+#ranger-identificationsby-statistics-content-row3 {
+	height: 350px;
+}
+#ranger-identificationsby-statistics-content-container1 {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.statistics-content-container {
 	background-color: white;
 	border-radius: 15px;
 	box-shadow: 0px 3px 8px #DDD;
@@ -136,6 +214,7 @@
     height: 4em;
     display: flex;
     flex-direction: row;
+	justify-content: space-between;
     align-items: center;
     width: 100%;
 }
@@ -143,6 +222,34 @@
     color: rgba(0, 0, 0, .35);
     font-size: 110%;
     padding: 0;
+	margin: 0;
+}
+.statistics-content-title-toolbar-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+	height: 100%;
+	width: 30%;
+}
+.statistics-content-title-toolbar-toggleGroupContainer {
+	height: 70%;
+}
+.statistics-content-title-toolbar-toggleGroup {
+	height: 100%;
+}
+:host ::ng-deep .statistics-content-title-toolbar-toggleGroup .mat-button-toggle-button {
+	height: 100%;
+}
+:host ::ng-deep .statistics-content-title-toolbar-toggleGroup .mat-button-toggle-label-content {
+	height: 100%;
+	line-height: 36px;
+}
+.statistics-datepicker {
+	width: 1px;
+	visibility: hidden;
+}
+:host ::ng-deep #loginsByDatePicker .mat-form-field-wrapper {
 	margin: 0;
 }
 .statistics-content-container-content {
@@ -153,14 +260,39 @@
 	min-height: 85%;
 	width: 100%;
 }
-.statistics-content-container-content > ngx-charts-advanced-pie-chart {
-	/*border: 1px solid red;*/
+.statistics-card-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 90%;
+	width: 100%;
+}
+:host ::ng-deep ngx-charts-number-card .cell .trimmed-label {
+	width: 100%;
 }
 #ranger-loginbyapp-stats-container {
 	width: 40%;
 }
 #ranger-loginbylevel-stats-container {
 	width: 55%;
+}
+#ranger-identifications-byDate-stats {
+	width: 100%;
+}
+#ranger-identifications-alltime-stats, #ranger-accuracyscore-alltime-stats {
+	width: 25%;
+}
+#ranger-identifications-alltime-stats .statistics-content-container-content , #ranger-accuracyscore-alltime-stats .statistics-content-container-content  {
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+#ranger-identifications-alltime-stats > .statistics-content-container-title > p, #ranger-accuracyscore-alltime-stats > .statistics-content-container-title > p{
+	font-size: 100%;
+}
+#ranger-identificationsByLevel-alltime-stats {
+	width: 45%;
 }
 :host ::ng-deep .advanced-pie-legend {
 	height: 150px;
@@ -189,7 +321,7 @@
 	height: 100%;
 	width: 100%;
 }
-#logins-by-date-graph-container {
+.by-date-graph-container {
 	height: 85%;
 	display: flex;
 	flex-direction: row;
@@ -230,6 +362,7 @@
 .statistics-content-container-four > .statistics-content-container-one {
 	width: 30%;
 }
+
 /*
 :host ::ng-deep .mat-tab-labels
 {

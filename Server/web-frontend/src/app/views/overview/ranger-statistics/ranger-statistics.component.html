@@ -1,10 +1,8 @@
 <div id="overview-workspace-container">
 	<div id="statistics-view-navigation-container">
 		<nav id="statistics-view-navigation" mat-tab-nav-bar>
-			<a mat-tab-link [active]="'overview'">Overview</a>
-			<!--<a mat-tab-link (click)='route("overview")'>Overview</a>
 			<a mat-tab-link [active]="'ranger-statistics'">Ranger Statistics</a>
-			<a mat-tab-link (click)='route("overview/animal-statistics")'>Animal Statistics</a>-->
+			<a mat-tab-link (click)='route("animal-statistics")'>Animal Statistics</a>
 		</nav>
 	</div>
     <div id="overview-workspace">
@@ -12,8 +10,8 @@
             <mat-drawer id="ranger-search-sidenav" #statisticsSidenav mode="over" (closedStart)="showSidenavBtn()">
 				<div id="ranger-statistics-navigation-container">
 					<mat-selection-list #rangerStatsNavSelectList [multiple]="false">
-						<mat-list-option (click)="changeRangerStatsTab(0)" [selected]="activeRangerStatsTabIndex == 0">Login Activity</mat-list-option>
-						<mat-list-option (click)="changeRangerStatsTab(1)" [selected]="activeRangerStatsTabIndex == 1">Tracking Activity</mat-list-option>
+						<mat-list-option (click)="changeRangerStatsTab(0)" [ngClass]="{'activeStatsNavRoute': activeRangerStatsTabIndex == 0}" [selected]="activeRangerStatsTabIndex == 0" class="fontSB">Login Activity</mat-list-option>
+						<mat-list-option (click)="changeRangerStatsTab(1)" [ngClass]="{'activeStatsNavRoute': activeRangerStatsTabIndex == 1}" [selected]="activeRangerStatsTabIndex == 1" class="fontSB">Tracking Activity</mat-list-option>
 					</mat-selection-list>
 				</div>
                 <div id="sidenav-close-btn-container" (click)="closeSidenav()">
@@ -36,7 +34,7 @@
 								</div>
 								<div class="statistics-content-main-container">
 									<div id="ranger-loginby-statistics-content-row1" class="statistics-content-row-container">
-										<div id="ranger-loginbyapp-stats-container" class="statistics-content-container-two">
+										<div id="ranger-loginbyapp-stats-container" class="statistics-content-container">
 											<div class="statistics-content-container-title">
 												<p class="fontSB">Logins By Application - All Time</p>
 											</div>
@@ -44,18 +42,18 @@
 												<ngx-charts-pie-grid [scheme]="loginsPerAppColorScheme" [results]="loginsPerApp"></ngx-charts-pie-grid>
 											</div>
 										</div>
-										<div id="ranger-loginbylevel-stats-container" class="statistics-content-container-two">
+										<div id="ranger-loginbylevel-stats-container" class="statistics-content-container">
 											<div class="statistics-content-container-title">
 												<p class="fontSB">Logins By Ranger Level - All Time</p>
 											</div>
 											<div class="statistics-content-container-content">
-												<ngx-charts-advanced-pie-chart [scheme]="loginsPerLevelColorScheme" [results]="loginsPerLevel">
+												<ngx-charts-advanced-pie-chart [animations]="true" [scheme]="loginsPerLevelColorScheme" [results]="loginsPerLevel">
 													</ngx-charts-advanced-pie-chart>	
 											</div>													
 										</div>
 									</div>
 									<div  id="ranger-loginby-statistics-content-row2" class="statistics-content-row-container">
-										<div id="ranger-loginbydate-stats-container" class="statistics-content-container-two">
+										<div id="ranger-loginbydate-stats-container" class="statistics-content-container">
 											<div class="statistics-content-container-title">
 												<p class="fontSB">Logins By Date - {{loginsByDateStart.toDateString()}} to {{loginsByDateEnd.toDateString()}}</p>
 												<div class="statistics-content-title-toolbar-container">
@@ -78,7 +76,7 @@
 												</div>
 											</div>
 											<div class="statistics-content-container-content">
-												<div id="logins-by-date-graph-container">
+												<div class="by-date-graph-container">
 													<ngx-charts-area-chart-stacked [animations]="true" [scheme]="loginsPerDateColorScheme" [legend]="true" 
 														[showXAxisLabel]="true"
 														[showYAxisLabel]="true"
@@ -92,7 +90,7 @@
 										</div>
 									</div>
 									<div  id="ranger-loginby-statistics-content-row3" class="statistics-content-row-container">
-										<div id="ranger-loginbyranger-stats-container" class="statistics-content-container-two">
+										<div id="ranger-loginbyranger-stats-container" class="statistics-content-container">
 											<div class="statistics-content-container-title">
 												<p class="fontSB">Logins By Ranger</p>
 											</div>
@@ -144,59 +142,53 @@
 									<h1>Ranger Tracking Activity</h1>
 								</div>
 								<div class="statistics-content-main-container">
-									<!--<div id="ranger-identificationsby-statistics-content-row1" class="statistics-content-row-container">
-										<div id="ranger-loginbyapp-stats-container" class="statistics-content-container-two">
+									<div id="ranger-identifications-statistics-content-row1" class="statistics-content-row-container">
+										<div id="ranger-identifications-alltime-stats" class="statistics-content-container">
 											<div class="statistics-content-container-title">
-												<p class="fontSB">Identifications</p>
+												<p class="fontSB">Total Identifications - All Time</p>
 											</div>
 											<div class="statistics-content-container-content">
-												<ngx-charts-number-card
-													[scheme]="colorScheme"
-													[results]="numIdentifications"
-													[cardColor]="cardColor">
-												</ngx-charts-number-card>
-												<ngx-charts-number-card
-													[scheme]="colorScheme"
-													[results]="avgIdScoreAllTime"
-													[cardColor]="cardColor">
-												</ngx-charts-number-card>		
-												<ngx-charts-number-card
-													[scheme]="colorScheme"
-													[results]="mostIdentifications"
-													[cardColor]="cardColor">
-												</ngx-charts-number-card>									
+												<div class="statistics-card-container">
+													<ngx-charts-number-card
+														[animations]="true"
+														[scheme]="blueColorScheme"
+														[results]="alltime_numIdentifications"
+														[cardColor]="cardColor"
+														[innerPadding]="0">
+													</ngx-charts-number-card>	
+												</div>
 											</div>
 										</div>
-									</div>-->
-									<div id="ranger-identificationsby-statistics-content-row1" class="statistics-content-row-container">
-										<div id="ranger-identificationsNum-stats-container" class="statistics-content-container-two">
+										<div id="ranger-accuracyscore-alltime-stats" class="statistics-content-container">
 											<div class="statistics-content-container-title">
-												<p class="fontSB">Identifications</p>
+												<p class="fontSB">Avg. Accuracy Score - All Time</p>
 											</div>
-											<div id="ranger-identificationsby-statistics-content-container1" class="statistics-content-container-content">
-												<ngx-charts-number-card
-													[view]="[300, 250]"
-													[scheme]="colorScheme"
-													[results]="numIdentifications"
-													[cardColor]="cardColor">
-												</ngx-charts-number-card>
-												<ngx-charts-number-card
-													[view]="[300, 250]"
-													[scheme]="colorScheme"
-													[results]="avgIdScoreAllTime"
-													[cardColor]="cardColor">
-												</ngx-charts-number-card>		
-												<ngx-charts-number-card
-													[view]="[300, 250]"
-													[scheme]="colorScheme"
-													[results]="mostIdentifications"
-													[cardColor]="cardColor">
-												</ngx-charts-number-card>									
+											<div class="statistics-content-container-content">
+												<div class="statistics-card-container">
+													<ngx-charts-number-card
+														[animations]="true"
+														[scheme]="greenColorScheme"
+														[results]="alltime_avgAccuracyScore"
+														[cardColor]="cardColor"
+														[valueFormatting]="formatAsPercentage"
+														[labelFormatting]="formatWithTimeFrame"
+														[innerPadding]="0">
+													</ngx-charts-number-card>			
+												</div>
 											</div>
+										</div>
+										<div id="ranger-identificationsByLevel-alltime-stats" class="statistics-content-container">
+											<div class="statistics-content-container-title">
+												<p class="fontSB">Identifications By Level - All Time</p>
+											</div>
+											<div class="statistics-content-container-content">
+												<ngx-charts-advanced-pie-chart [animations]="true" [scheme]="loginsPerLevelColorScheme" [results]="allIdentificationsByLevel">
+													</ngx-charts-advanced-pie-chart>	
+											</div>										
 										</div>
 									</div>
-									<div  id="ranger-identificationsby-statistics-content-row2" class="statistics-content-row-container">
-										<div id="ranger-loginbydate-stats-container" class="statistics-content-container-two">
+									<div  id="ranger-identifications-statistics-content-row2" class="statistics-content-row-container">
+										<div id="ranger-identifications-byDate-stats" class="statistics-content-container">
 											<div class="statistics-content-container-title">
 												<p class="fontSB">Track Identifications By Date - {{allIdsByDateStart.toDateString()}} to {{allIdsByDateEnd.toDateString()}}</p>
 												<div class="statistics-content-title-toolbar-container">
@@ -210,31 +202,30 @@
 													<button mat-icon-button (click)="tracksByDatePicker.open()" aria-label="Select Date Range">
 														<mat-icon>date_range</mat-icon>
 													</button>
-													<!--<div class="statistics-content-title-toolbar-toggleGroupContainer">
-														<mat-button-toggle-group #loginsByDateToggleGroup class="statistics-content-title-toolbar-toggleGroup" (change)="changeLoginsByDateFilter($event.value)" value="platform">
-														  <mat-button-toggle value="level">Level</mat-button-toggle>
-														  <mat-button-toggle value="platform">Platform</mat-button-toggle>
+													<div class="statistics-content-title-toolbar-toggleGroupContainer">
+														<mat-button-toggle-group #identificationsByDateToggleGroup class="statistics-content-title-toolbar-toggleGroup" (change)="changeIdentificationsByDateFilter($event.value)" value="identifications">
+														  <mat-button-toggle value="identifications">Identifications</mat-button-toggle>
+														  <mat-button-toggle value="accuracy score">Accuracy Score</mat-button-toggle>
 														</mat-button-toggle-group>
-													</div>-->
+													</div>
 												</div>
 											</div>
 											<div class="statistics-content-container-content">
-												<div id="logins-by-date-graph-container">
-													<ngx-charts-area-chart [animations]="true" [scheme]="loginsPerDateColorScheme" [legend]="true" 
+												<div class="by-date-graph-container">
+													<ngx-charts-line-chart [animations]="true" [scheme]="identificationsByDateColorScheme" [legend]="true" 
 														[showXAxisLabel]="true"
 														[showYAxisLabel]="true"
-														[autoScale]="true"
 														[xAxis]="true"
 														[yAxis]="true"
-														[xAxisLabel]="'Identification Date'" [yAxisLabel]="'Number of Track Identifications'"
+														[xAxisLabel]="'Identification Date'" [yAxisLabel]="identificationsByDateYLabel"
 														[timeline]="true" [results]="allIdentifications">
-													</ngx-charts-area-chart>
+													</ngx-charts-line-chart>
 												</div>
 											</div>
 										</div>
 									</div>
 									<!--<div id="ranger-identificationsby-statistics-content-row3" class="statistics-content-row-container">
-										<div id="ranger-loginbylevel-stats-container" class="statistics-content-container-two">
+										<div id="ranger-loginbylevel-stats-container" class="statistics-content-container">
 											<div class="statistics-content-container-title">
 												<p class="fontSB">Identifications By Ranger Level - All Time</p>
 											</div>

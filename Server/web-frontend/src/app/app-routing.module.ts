@@ -5,7 +5,6 @@ import { AnimalProfileComponent } from './views/animal-profile/animal-profile.co
 import { AnimalsGalleryComponent } from './views/animals/animals-gallery/animals-gallery.component';
 import { AnimalPhotosComponent } from './views/animals/animals-gallery/animal-photos/animal-photos.component';
 import { AnimalStatisticsComponent } from './views/overview/animal-statistics/animal-statistics.component';
-import { OverviewComponent } from './views/overview/overview.component';
 import { LoginComponent } from './views/login/login.component';
 import { RangersComponent } from './views/rangers/rangers.component';
 import { RangerProfileComponent } from './views/ranger-profile/ranger-profile.component';
@@ -27,9 +26,8 @@ const routes: Routes = [
   { path: 'rangers/profiles', component: RangerProfileComponent, canActivate: [AuthGuard] },
   { path: 'rangers/permissions', component: RangerPermissionsComponent, canActivate: [AuthGuard] },
   { path: 'identifications', component: TrackIdentificationsComponent, canActivate: [AuthGuard] },
-  { path: 'overview', component: RangerStatisticsComponent, canActivate: [AuthGuard] },
-  { path: 'overview/animal-statistics', component: AnimalStatisticsComponent, canActivate: [AuthGuard] },
-  { path: 'overview/ranger-statistics', component: RangerStatisticsComponent, canActivate: [AuthGuard] },
+  { path: 'animal-statistics', component: AnimalStatisticsComponent, canActivate: [AuthGuard] },
+  { path: 'ranger-statistics', component: RangerStatisticsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full'}
 ];
 

@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/overview';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/ranger-statistics';
   }
 
   get f() { return this.loginForm.controls; }

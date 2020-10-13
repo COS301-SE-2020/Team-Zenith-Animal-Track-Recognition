@@ -40,9 +40,6 @@ export class AuthService {
   }
 
   login(username, password) {
-    console.log(username);
-    console.log(password);
-    
     return this.http.get<any>(ROOT_QUERY_STRING + '?query=query{wdbLogin(eMail:"' + username + '",password:"' + password + '"){token, firstName, lastName, rangerID, accessLevel}}')
       .pipe(map(user => {
         if (null === user.data.wdbLogin) {
