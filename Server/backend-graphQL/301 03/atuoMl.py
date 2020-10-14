@@ -118,18 +118,7 @@ def trane(groth=0,batch_size = Tbatch_size,IMG_HEIGHT = TIMG_HEIGHT,IMG_WIDTH = 
     # sample_training_images, _ = next(train_data_gen
     # print(sample_training_images[0].shape)
     # plotImages(sample_training_images[:5])
-    model = Sequential([
-        Conv2D(64+groth, 3, padding='same', activation='relu',
-            input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
-        MaxPooling2D(),
-        Conv2D(128+groth, 3, padding='same', activation='relu'),
-        MaxPooling2D(),
-        Conv2D(256+groth, 3, padding='same', activation='relu'),
-        MaxPooling2D(),
-        Flatten(),
-        Dense(512, activation='relu'),
-        Dense(len( os.listdir(train_dir)))
-    ])
+    model = stingToModile("A0,G64A1,G128A1,G256A1",groth,IMG_HEIGHT,IMG_WIDTH)
     model.compile(optimizer='adam',
                 loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
                 metrics=['accuracy'])
@@ -208,4 +197,26 @@ else:
 
 
 
+def stingToModile(STR="A0,G64A1,G128A1,G256A1",groth=groth,IMG_HEIGHT=IMG_HEIGHT,IMG_WIDTH=IMG_WIDTH):
 
+    arr=STR.split(",G")
+    arr.pop(0)
+    M=Sequential([])
+    for laer in arr :
+        txt=laer.split("A")
+        switcher ={
+            1:'relu',
+            2:'selu',
+            3:'sigmoid',
+            4:'softplus',
+            5:'softsign',
+            6:'swish',
+            7:'tanh'
+        }
+        actfuc=switcher.get(int(txt[1]))
+        M.add(Conv2D(txt[0]+groth, 3, padding='same', activation=actfuc,input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)))
+        M.add(MaxPooling2D())
+    M.add(Flatten())
+    M.add(Dense(512, activation='relu'))
+    M.add(Dense(len( os.listdir(train_dir))))
+    return M
