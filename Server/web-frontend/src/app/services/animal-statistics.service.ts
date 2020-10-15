@@ -113,9 +113,9 @@ export class AnimalStatisticsService {
 				});
 				
 				this.numIdentificationsSource.next([{"name": "Total Track Identifications", "value": this.trackIdentificationsStore.trackIdentifications.length}]);
-				//this.getNumIdsByAnimal(token);
 				this.getMostTrackedAnimal(token);
 				this.getLeastTrackedAnimal(token);
+				this.getAnimalIdBreakdown("identifications");
 				this._displayedTracks.next(Object.assign({}, this.trackIdentificationsStore).trackIdentifications);
 			},
 				error => {
@@ -172,247 +172,49 @@ export class AnimalStatisticsService {
 				this.leastTrackedAnimalSource.next({animal: animal, numIds: temp[0].NumberOfIdentifications});
 		  });		
 	}
-	getLoginsByDate(startDate: any, endDate: any, dataType: string) {
-		/*
-		var allRangerLogins = cloneDeep(this.rangerLoginsStore.rangerLogins);
-		
-		//Filter out logins that do not fall within the time range
-		var filteredLogins = [];		
-		var startDateTime = startDate.getTime();
-		var endDateTime = endDate.getTime();
-		var loginTime;
-				
-		allRangerLogins.forEach(login => {
-			loginTime = login.dateObj.getTime();
-			if (loginTime >= startDateTime && loginTime <= endDateTime) {
-				filteredLogins.push(login);
-			}
-		});
-		
-		var numDays = Math.abs((endDateTime - startDateTime) / (1000 * 3600 * 24));
-		numDays++;
-		
-		//Count number of logins on a specific date per platform or level
-		var fromDate = new Date(startDateTime);
-		var logins = [];
-		switch(dataType) {
-			case "level":
-				var levelOneSeries = [];
-				var levelTwoSeries = [];
-				var levelThreeSeries = [];
-				var levelOneNumLogins = 0;
-				var levelTwoNumLogins = 0;
-				var levelThreeNumLogins = 0;
-				
-				for (let i = 0; i < numDays; i++) {
-					levelOneNumLogins = 0;
-					levelTwoNumLogins = 0;
-					levelThreeNumLogins = 0;
-					fromDate = new Date(endDateTime);
-					fromDate.setDate(fromDate.getDate() - i);
-					
-					filteredLogins.forEach(ranger => {
-						if (this.isSameDay(ranger.dateObj, fromDate))  {
-							if (ranger.rangerID.accessLevel == "1") {
-								levelOneNumLogins++;
-							}
-							else if (ranger.rangerID.accessLevel == "2") {
-								levelTwoNumLogins++;
-							}
-							else if (ranger.rangerID.accessLevel == "3") {
-								levelThreeNumLogins++;
-							}
-						}
-					});
-					levelOneSeries.push({"value": levelOneNumLogins, "name": fromDate});
-					levelTwoSeries.push({"value": levelTwoNumLogins, "name": fromDate});
-					levelThreeSeries.push({"value": levelThreeNumLogins, "name": fromDate});
-				}
-				logins.push(
-					{"name":"Level 1 Rangers", "series": levelOneSeries.reverse()}, 
-					{"name":"Level 2 Rangers", "series": levelTwoSeries.reverse()}, 
-					{"name":"Level 3 Ranger", "series": levelThreeSeries.reverse()}
-				);
-			break;
-			case "platform":
-				var mobileAppSeries = []; 
-				var webAppSeries = []; 
-				var mobileNumLogins = 0;
-				var webNumLogins = 0;
-				
-				for (let i = 0; i < numDays; i++) {
-					mobileNumLogins = 0;
-					webNumLogins = 0;
-					fromDate = new Date(endDateTime);
-					fromDate.setDate(fromDate.getDate() - i);
-					
-					filteredLogins.forEach(ranger => {
-						if (this.isSameDay(ranger.dateObj, fromDate))  {
-							if (ranger.platform == "app" || ranger.platform == "Mobile Application") {
-								mobileNumLogins++;
-							}
-							else if (ranger.platform == "wdb") {
-								webNumLogins++;
-							}
-						}
-					});
-					mobileAppSeries.push({"value": mobileNumLogins, "name": fromDate});
-					webAppSeries.push({"value": webNumLogins, "name": fromDate});
-				}
-				logins.push(
-					{"name":"Mobile Application", "series": mobileAppSeries.reverse()}, 
-					{"name":"Web Application", "series": webAppSeries.reverse()}
-				);
-			break;
-		}
-		
-		this.loginsByDateSource.next(logins);*/
-	}
-	getRecentLogins(numLogins: number) {
-	/*
-		var allRangerLogins = cloneDeep(this.rangerLoginsStore.rangerLogins);
-		allRangerLogins.reverse();
-		var maxNumLogins = allRangerLogins.length;
-		
-		if (numLogins < maxNumLogins) {
-			maxNumLogins = numLogins;
-		}
-		this.recentLoginsSource.next(allRangerLogins.slice(0, maxNumLogins));
-		*/
-	}
-	calculateLoginsByApplication() {
-			/*
-		var allRangerLogins = cloneDeep(this.rangerLoginsStore.rangerLogins);
-		var mobileAppLogins = 0;
-		var webAppLogins = 0;
-		
-		allRangerLogins.forEach(ranger => {
-			if (ranger.platform == "app" || ranger.platform == "Mobile Application") {
-				mobileAppLogins++;
-			}
-			else if (ranger.platform == "wdb") {
-				webAppLogins++;
-			}
-		});
-		var numLogins = [
-			{"name": "Mobile Tracking", "value": mobileAppLogins}, 
-			{"name": "Web Dashboard", "value": webAppLogins}
-		];
-		this.loginsByApplicationSource.next(numLogins);
-		*/
-	}
-	calculateLoginsByLevel() {
-			/*
-		var allRangerLogins = cloneDeep(this.rangerLoginsStore.rangerLogins);
-		var levelOneLogins = 0;
-		var levelTwoLogins = 0;
-		var levelThreeLogins = 0;
-		
-		allRangerLogins.forEach(ranger => {
-			if (ranger.rangerID.accessLevel == "1") {
-				levelOneLogins++;
-			}
-			else if (ranger.rangerID.accessLevel == "2") {
-				levelTwoLogins++;
-			}
-			else if (ranger.rangerID.accessLevel == "3") {
-				levelThreeLogins++;
-			}
-		});
-		var numLogins = [
-			{"name": "Level 1 Logins", "value": levelOneLogins}, 
-			{"name": "Level 2 Logins", "value": levelTwoLogins},
-			{"name": "Level 3 Logins", "value": levelThreeLogins}
-		];
-		this.loginsByLevelSource.next(numLogins);		
-		*/
-	}
+	
+	
 	
 	//Tracking Activity Overview Statistics
 	//HTTPS Requests
-	getAllIdentificationsByDate(startDate: any, endDate: any, dataType: string) {
-		/*
+	getAnimalIdBreakdown(dataType: string) {
 		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
+		var allAnimals = cloneDeep(this.animalsStore.animals);
 		
-		//Filter out identifications that do not fall within the time range
-		var filteredIds = [];		
-		var startDateTime = startDate.getTime();
-		var endDateTime = endDate.getTime();
-		var trackTime;
-				
-		allTrackIdentifications.forEach(track => {
-			trackTime = track.dateObj.getTime();
-			if (trackTime >= startDateTime && trackTime <= endDateTime) {
-				filteredIds.push(track);
-			}
-		});
-		
-		var numDays = Math.abs((endDateTime - startDateTime) / (1000 * 3600 * 24));
-		numDays++;
-		
-		//Count number of Identifications on a specific date per platform or level
 		var graphData = [];
 		
 		switch(dataType) {
 			case "identifications":
-				graphData = this.getNumIdentificationsByDate(filteredIds, endDateTime, numDays);
+				graphData = this.getNumIdsByAnimal(allTrackIdentifications, allAnimals);
 			break;
 			case "accuracy score":
-				graphData = this.getAvgAccuracyScoreByDate(filteredIds, endDateTime, numDays);
+				//graphData = this.getAvgAccuracyScoreByAnimal(allTrackIdentifications, allAnimals);
 			break;
 		}			
+		console.log("graph data");
+		console.log(graphData);
 
-		this.allIdentificationsByDateSource.next(graphData);	
-		*/		
+		this.numIdsByAnimalSource.next(graphData);			
 	}
-	getNumIdentificationsByDate(trackList: Track[], endDateTime: any, numDays: number) {
-	/*
-		var fromDate = new Date(endDateTime);
+	getNumIdsByAnimal(trackList: Track[], animalList: Animal[]) {
+		//Count number of Identifications on a specific date per platform or level
+		var numIds = 0;
 		var graphData = [];
-		var levelOneSeries = [];
-		var levelTwoSeries = [];
-		var levelThreeSeries = [];
-		var levelOneNumIds = 0;
-		var levelTwoNumIds = 0;
-		var levelThreeNumIds = 0;
-				
-		for (let i = 0; i < numDays; i++) {
-			levelOneNumIds = 0;
-			levelTwoNumIds = 0;
-			levelThreeNumIds = 0;
-			fromDate = new Date(endDateTime);
-			fromDate.setDate(fromDate.getDate() - i);
-							
+		
+		animalList.forEach(animal => {
+			let numIds = 0;
 			trackList.forEach(track => {
-				if (this.isSameDay(track.dateObj, fromDate)) {
-					switch(track.ranger.accessLevel) {
-						case "1":
-							levelOneNumIds++;
-						break;
-						case "2":
-							levelTwoNumIds++;
-						break;
-						case "3":
-							levelThreeNumIds++;
-						break;
-						case "4":
-							levelThreeNumIds++;
-						break;
-					}
+				if (track.animal.animalID == animal.animalID) {
+					numIds++;
 				}
 			});
-			levelOneSeries.push({"value": levelOneNumIds, "name": fromDate});
-			levelTwoSeries.push({"value": levelTwoNumIds, "name": fromDate});
-			levelThreeSeries.push({"value": levelThreeNumIds, "name": fromDate});
-		}
-		graphData.push({"name":"Level 1 Rangers", "series": levelOneSeries.reverse()}, 
-			{"name":"Level 2 Rangers", "series": levelTwoSeries.reverse()}, 
-			{"name":"Level 3 Rangers", "series": levelThreeSeries.reverse()}
-		);
+			if (numIds > 0)
+				graphData.push({"name": animal.commonName, "value": numIds});
+		});
+		
 		return graphData;
-		*/
 	}
-	getAvgAccuracyScoreByDate(trackList: Track[], endDateTime: any, numDays: number) {
+	getAvgAccuracyScoreByAvg(trackList: Track[], animalList: Animal[]) {
 		/*
 		var fromDate = new Date(endDateTime);
 		var graphData = [];
@@ -476,193 +278,6 @@ export class AnimalStatisticsService {
 			{"name":"Level 3 Ranger Accuracy Score", "series": avgScorePerDayLevelThree.reverse()}
 		);
 		return graphData;*/
-	}
-	getAllIdentificationsByLevel() {
-	/*
-		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
-		var levelOneIds = 0;
-		var levelTwoIds = 0;
-		var levelThreeIds = 0;
-		allTrackIdentifications.forEach(track => {
-			if (track.ranger.accessLevel == "1") {
-				levelOneIds++;
-			}
-			else if (track.ranger.accessLevel == "2") {
-				levelTwoIds++;
-			}
-			else if (track.ranger.accessLevel == "3" || track.ranger.accessLevel == "4") {
-				levelThreeIds++;
-			}
-		});
-		var numIds = [
-			{"name": "Level 1", "value": levelOneIds}, 
-			{"name": "Level 2", "value": levelTwoIds},
-			{"name": "Level 3", "value": levelThreeIds}
-		];
-		this.allIdentificationsByLevelSource.next(numIds);	
-		*/		
-	}
-	getAllTimeIdsNumAndScore() {
-	/*
-		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
-		var numAndScoreData = [];
-		var avgScore = this.getAvgAccuracyScore(allTrackIdentifications);
-		
-		numAndScoreData.push({"name": "Total Identifications", "value": allTrackIdentifications.length });
-		numAndScoreData.push({"name": "Accuracy Score", "value": avgScore});
-				
-		this.allTimeNumAndScoreIdsSource.next(numAndScoreData);
-		*/
-	}
-
-	//Tracking Activity By animal Statistics
-	//HTTPS Requests
-	getAllTrackingActivityByanimal(token: string) {
-				/*
-		const getRangersQueryUrl = this.userRootQueryUrl + '(tokenIn:"' + token + '"){rangerID,accessLevel,firstName,lastName}}';
-		this.http.get<User[]>(getRangersQueryUrl)
-			.subscribe( data => {
-				this.rangersStore.rangers = Object.values(Object.values(data)[0])[0];	
-				var startDate = new Date();
-				startDate.setDate(startDate.getDate() - 7);
-				this.getAllIdsByRangerAndDate(startDate, new Date(), "identifications");
-			},
-				error => {
-					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
-				}
-			);
-			*/
-	}
-	getMostIdsByanimal() {
-		/*const getMostQueryUrl = this.trackRootQueryUrl + '(token:"' + token + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},' +
-			'commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},' +
-			'animal{animalID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},' +
-			'confidence},picture{picturesID,URL,kindOfPicture},tags}}';
-		this.http.get<Track[]>(getIdentificationsQueryUrl)
-			.subscribe( data => {
-				this.numIdentificationsSource.next([{"name": "Animals Identified", "value":this.trackIdentificationsStore.trackIdentifications.length }]);
-			},
-				error => {
-					this._displayedTracks.next([]);
-					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
-				}
-			);*/
-			/*
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{rangersStats2(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-		  '"){mosotTrakedRanger{firstName,lastName},AnimalTracked}}')
-		  .pipe(
-			retry(3),
-			catchError(() => {
-					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
-			  return EMPTY;
-			})
-		  )
-		  .subscribe((data: any[]) => {
-			let temp = [];
-			temp = Object.values(Object.values(data)[0]);
-			var mostTracked = temp[0];
-			this.mostIdentifiedSource.next([{"name": mostTracked.mosotTrakedRanger.firstName + " " + mostTracked.mosotTrakedRanger.lastName,
-				"value": mostTracked.AnimalTracked }]);
-		  });
-		  */
-	}
-	getAllIdsByAnimalAndDate(startDate: any, endDate: any, dataType: string) {
-	/*
-		var allRangers = cloneDeep(this.rangersStore.rangers);
-		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
-		
-		//Filter out identifications that do not fall within the time range
-		var filteredIds = [];		
-		var startDateTime = startDate.getTime();
-		var endDateTime = endDate.getTime();
-		var trackTime;
-				
-		allTrackIdentifications.forEach(track => {
-			trackTime = track.dateObj.getTime();
-			if (trackTime >= startDateTime && trackTime <= endDateTime) {
-				filteredIds.push(track);
-			}
-		});
-		
-		var numDays = Math.abs((endDateTime - startDateTime) / (1000 * 3600 * 24));
-		numDays++;
-		
-		//Compare data with global average score and num of identifications
-		var globalData;
-		switch(dataType) {
-			case "identifications":
-				globalData = this.getNumIdentificationsByDate(filteredIds, endDateTime, numDays);
-			break;
-			case "accuracy score":
-				globalData = this.getAvgAccuracyScoreByDate(filteredIds, endDateTime, numDays);
-			break;
-		}				
-		
-		var graphData = [];
-		var rangerData = [];
-		
-		allRangers.forEach(ranger => {
-			rangerData = this.getIdsByRangerAndDate(ranger, filteredIds, endDateTime, numDays, dataType);
-			rangerData = rangerData.concat(globalData);
-			graphData.push({ranger: ranger, rangerGraphData: rangerData});
-		});
-		this.allIdsByRangerAndDateSource.next(graphData);	
-		*/
-	}
-	getIdsByAnimalAndDate(animal: User, trackList: Track[], endDateTime: any, numDays: number, dataType: string) {
-/*
-		//Count number of Identifications on a specific date per platform or level
-		var fromDate = new Date(endDateTime);
-		var rangerData = [];
-		
-		switch(dataType) {
-			case "identifications":
-				var rangerSeries = [];
-				var numIds = 0;
-				
-				for (let i = 0; i < numDays; i++) {
-					numIds = 0;
-					fromDate = new Date(endDateTime);
-					fromDate.setDate(fromDate.getDate() - i);
-							
-					trackList.forEach(track => {
-						if (this.isSameDay(track.dateObj, fromDate)) {
-							if (track.ranger.rangerID == ranger.rangerID) {
-								numIds++;
-							}
-						}
-					});
-					rangerSeries.push({"value": numIds, "name": fromDate});
-				}
-				rangerData.push({"name": ranger.firstName + " " + ranger.lastName, "series": rangerSeries.reverse()});
-			break;
-			case "accuracy score":
-				var avgScorePerDay = [];
-				var tracksPerDay = [];
-				var avgScore = 0;
-				
-				for (let i = 0; i < numDays; i++) {
-					avgScore = 0;
-					tracksPerDay = [];
-					fromDate = new Date(endDateTime);
-					fromDate.setDate(fromDate.getDate() - i);
-					
-					trackList.forEach(track => {
-						if (this.isSameDay(track.dateObj, fromDate))  {
-							if (track.ranger.rangerID == ranger.rangerID) {
-								tracksPerDay.push(track);
-							}
-						}
-					});
-					avgScore = this.getAvgAccuracyScore(tracksPerDay);
-					avgScorePerDay.push({"value": avgScore, "name": fromDate});
-				}
-				rangerData.push({"name": ranger.firstName + " " + ranger.lastName, "series": avgScorePerDay.reverse()});
-			break;
-		}				
-		
-		return rangerData;
-		*/
 	}
 	
 	//Other Functions

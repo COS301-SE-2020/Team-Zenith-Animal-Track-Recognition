@@ -27,24 +27,14 @@ export class AnimalStatisticsComponent implements OnInit {
 	numIdsByDateColorScheme = {
 		domain: ['#E44D25', '#509CD0', '#19A020', '#BA66E8']
 	};		
-	avgScoreByDateColorScheme = {
-		domain: ['#EECC6A', '#E44D25', '#509CD0', '#19A020', '#BA66E8']
+	animalColorScheme = {
+		domain: ['#C0392B', '#9B59B6', '#2980B9', '#1ABC9C', '#16A085', '#27AE60', '#E74C3C','#8E44AD','#3498DB',]
 	};	
 	
 	@ViewChild('statisticsSidenav') statsSidenav;
 	@ViewChild('animalStatsTab') animalStatsTab;
 	activeAnimalStatsTabIndex = 0;
 	
-	loginsPerApp = [];
-	loginsPerLevel = [];
-	showLegend: boolean = true;
-	showLabels: boolean = true;
-	loginsPerAppColorScheme = {
-		domain: ['#E44D25', '#509CD0']
-	};
-	loginsPerLevelColorScheme = {
-		domain: ['#E44D25', '#509CD0', '#19A020']
-	};
 	
 	
 	//Tracking Activity Variables - Overview
@@ -55,11 +45,7 @@ export class AnimalStatisticsComponent implements OnInit {
 	mostTrackedAnimal = null;
 	leastTrackedAnimal = null;
 	
-	alltime_avgAccuracyScore = [];
-	allTimeNumAndScoreIds = [];
-	allIdentifications = [];
-	allIdentificationsByLevel = [];
-	allIdsByDateFilter = "identifications";
+	identificationsByAnimal = [];
 
 
 	constructor(private formBuilder: FormBuilder, private router: Router, private animalStatsService: AnimalStatisticsService) { 
@@ -76,14 +62,19 @@ export class AnimalStatisticsComponent implements OnInit {
 		animalStatsService.mostTrackedAnimal$.subscribe(
 			animal => {
 				this.mostTrackedAnimal = animal;
-				console.log(this.mostTrackedAnimal);
 			}
 		);
 		animalStatsService.leastTrackedAnimal$.subscribe(
 			animal => {
 				this.leastTrackedAnimal = animal;
 			}
-		);
+		);	
+		animalStatsService.numIdsByAnimal$.subscribe(
+			data => {
+				console.log(data);
+				this.identificationsByAnimal = data;
+			}
+		);	
 	}
 	
 	ngOnInit(): void {

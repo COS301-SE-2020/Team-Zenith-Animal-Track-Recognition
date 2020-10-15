@@ -118,18 +118,31 @@
 											</div>										
 										</div>
 									</div>
-									<!--<div  id="animal-identifications-statistics-content-row2" class="statistics-content-row-container">
+									<div  id="animal-identifications-statistics-content-row2" class="statistics-content-row-container">
 										<div id="animal-identifications-byDate-stats" class="statistics-content-container">
 											<div class="statistics-content-container-title">
 												<p class="fontSB">Track Identifications By Animal</p>
 											</div>
 											<div class="statistics-content-container-content">
 												<div class="by-date-graph-container">
-				
+													<ng-container *ngIf="identificationsByAnimal.length == 0">
+														<div class="emptyDataMessage">
+															<p class="fontSB">No data to show.</p>
+														</div>
+													</ng-container>
+													<ngx-charts-pie-chart
+														  [scheme]="animalColorScheme"
+														  [animations]="true"
+														  [results]="identificationsByAnimal"
+														  [legend]="true"
+														  [legendPosition]="'right'"
+														  [labels]="true"
+														  [doughnut]="true">
+													</ngx-charts-pie-chart>
 												</div>
 											</div>
 										</div>
-									</div>-->
+									</div>
 								</div>
 							</div>
 						</div>
