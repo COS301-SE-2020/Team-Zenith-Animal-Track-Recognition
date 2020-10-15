@@ -6,7 +6,7 @@
 The Animal Track Recognition system is an application which will support ERP rangers in identifying animals by certain identification markers relating to the spoor that they may leave behind i.e droppings or tracks.
 
 **Live System**
-* Mobile Tracking Application: [Mobile Tracking Application](https://drive.google.com/file/d/1cntvFsE2ufwXaMnnLwkSMIJQBQPNo14N/view?usp=sharing)
+* Mobile Tracking Application: [Mobile Tracking Application](https://drive.google.com/file/d/1gvFRPOe7T3tB1ZEmFmPq_x9ClThoglka/view?usp=sharing)
 * Web Dashboard Application: [Web Dashboard Application](http://putch.dyndns.org:55554/)
 
 **Demo Videos**
