@@ -28,7 +28,7 @@ export class AnimalStatisticsComponent implements OnInit {
 		domain: ['#E44D25', '#509CD0', '#19A020', '#BA66E8']
 	};		
 	animalColorScheme = {
-		domain: ['#C0392B', '#9B59B6', '#2980B9', '#1ABC9C', '#16A085', '#27AE60', '#E74C3C','#8E44AD','#3498DB',]
+		domain: ['#3498DB', '#A93226','#D35400','#F39C12','#2ECC71', '#9B59B6']
 	};	
 	
 	@ViewChild('statisticsSidenav') statsSidenav;
@@ -46,6 +46,7 @@ export class AnimalStatisticsComponent implements OnInit {
 	leastTrackedAnimal = null;
 	
 	identificationsByAnimal = [];
+	avgScoreByAnimal = [];
 
 
 	constructor(private formBuilder: FormBuilder, private router: Router, private animalStatsService: AnimalStatisticsService) { 
@@ -71,8 +72,13 @@ export class AnimalStatisticsComponent implements OnInit {
 		);	
 		animalStatsService.numIdsByAnimal$.subscribe(
 			data => {
-				console.log(data);
 				this.identificationsByAnimal = data;
+			}
+		);	
+		animalStatsService.avgAccuracyScoreByAnimal$.subscribe(
+			data => {
+				console.log(data);
+				this.avgScoreByAnimal = data;
 			}
 		);	
 	}
@@ -85,6 +91,7 @@ export class AnimalStatisticsComponent implements OnInit {
 	loadStatistics() {
 		this.animalStatsService.getAnimalTrackingActivity(JSON.parse(localStorage.getItem('currentToken'))['value']);
 	}
+	
 	
 	//Formatting functions
 	formatAsPercentage(val: any) {

@@ -29,7 +29,9 @@ export class AnimalStatisticsService {
 	private leastTrackedAnimalSource = new Subject<any>();
 	leastTrackedAnimal$ = this.leastTrackedAnimalSource.asObservable();
 	private numIdsByAnimalSource = new Subject<any[]>();
-	numIdsByAnimal$ = this.numIdsByAnimalSource.asObservable();
+	numIdsByAnimal$ = this.numIdsByAnimalSource.asObservable();	
+	private avgAccuracyScoreByAnimalSource = new Subject<any[]>();
+	avgAccuracyScoreByAnimal$ = this.avgAccuracyScoreByAnimalSource.asObservable();
 	
 	//Track Identifications
 	//Tracking Activity Overview Variables
@@ -181,20 +183,8 @@ export class AnimalStatisticsService {
 		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
 		var allAnimals = cloneDeep(this.animalsStore.animals);
 		
-		var graphData = [];
-		
-		switch(dataType) {
-			case "identifications":
-				graphData = this.getNumIdsByAnimal(allTrackIdentifications, allAnimals);
-			break;
-			case "accuracy score":
-				//graphData = this.getAvgAccuracyScoreByAnimal(allTrackIdentifications, allAnimals);
-			break;
-		}			
-		console.log("graph data");
-		console.log(graphData);
-
-		this.numIdsByAnimalSource.next(graphData);			
+		this.getNumIdsByAnimal(allTrackIdentifications, allAnimals);
+		this.getAvgScoreByAnimal(allTrackIdentifications, allAnimals);
 	}
 	getNumIdsByAnimal(trackList: Track[], animalList: Animal[]) {
 		//Count number of Identifications on a specific date per platform or level
@@ -212,72 +202,24 @@ export class AnimalStatisticsService {
 				graphData.push({"name": animal.commonName, "value": numIds});
 		});
 		
-		return graphData;
+		this.numIdsByAnimalSource.next(graphData);			
 	}
-	getAvgAccuracyScoreByAvg(trackList: Track[], animalList: Animal[]) {
-		/*
-		var fromDate = new Date(endDateTime);
-		var graphData = [];
-		var avgScorePerDay = [];
-		var avgScorePerDayLevelOne = [];
-		var avgScorePerDayLevelTwo = [];
-		var avgScorePerDayLevelThree = [];
-		var tracksPerDay = [];
-		var tracksPerDayLevelOne = [];
-		var tracksPerDayLevelTwo = [];
-		var tracksPerDayLevelThree = [];
+	getAvgScoreByAnimal(trackList: Track[], animalList: Animal[]) {
 		var avgScore = 0;
-		var avgScoreLevelOne = 0;
-		var avgScoreLevelTwo = 0;
-		var avgScoreLevelThree = 0;
-				
-		for (let i = 0; i < numDays; i++) {
-			avgScore = 0;
-			avgScoreLevelOne = 0;
-			avgScoreLevelTwo = 0;
-			avgScoreLevelThree = 0;
-			tracksPerDay = [];
-			tracksPerDayLevelOne = [];
-			tracksPerDayLevelTwo = [];
-			tracksPerDayLevelThree = [];
-			fromDate = new Date(endDateTime);
-			fromDate.setDate(fromDate.getDate() - i);
-					
-			trackList.forEach(track => {
-				if (this.isSameDay(track.dateObj, fromDate))  {
-					tracksPerDay.push(track);
-					switch(track.ranger.accessLevel) {
-						case "1":
-							tracksPerDayLevelOne.push(track);
-						break;
-						case "2":
-							tracksPerDayLevelTwo.push(track);
-						break;
-						case "3":
-							tracksPerDayLevelThree.push(track);
-						break;
-						case "4":
-							tracksPerDayLevelThree.push(track);
-						break;
-					}
-				}
-			});
-			avgScore = this.getAvgAccuracyScore(tracksPerDay);
-			avgScoreLevelOne = this.getAvgAccuracyScore(tracksPerDayLevelOne);
-			avgScoreLevelTwo = this.getAvgAccuracyScore(tracksPerDayLevelTwo);
-			avgScoreLevelThree = this.getAvgAccuracyScore(tracksPerDayLevelThree);
-					
-			avgScorePerDay.push({"value": avgScore, "name": fromDate});
-			avgScorePerDayLevelOne.push({"value": avgScoreLevelOne, "name": fromDate});
-			avgScorePerDayLevelTwo.push({"value": avgScoreLevelTwo, "name": fromDate});
-			avgScorePerDayLevelThree.push({"value": avgScoreLevelThree, "name": fromDate});
-		}
-		graphData.push({"name":"Avg. Accuracy Score", "series": avgScorePerDay.reverse()},
-			{"name":"Level 1 Ranger Accuracy Score", "series": avgScorePerDayLevelOne.reverse()},
-			{"name":"Level 2 Ranger Accuracy Score", "series": avgScorePerDayLevelTwo.reverse()},
-			{"name":"Level 3 Ranger Accuracy Score", "series": avgScorePerDayLevelThree.reverse()}
-		);
-		return graphData;*/
+		var tracksPerAnimal = [];
+		var graphData = [];
+		animalList.forEach(animal => {
+			let avgScore = 0;
+			tracksPerAnimal = [];
+			tracksPerAnimal = trackList.filter(track => track.animal.animalID == animal.animalID);
+			if (tracksPerAnimal && tracksPerAnimal.length > 0) {
+				avgScore = this.getAvgAccuracyScore(tracksPerAnimal);
+				if (avgScore > 0)
+					graphData.push({"name": animal.commonName, "value": avgScore});
+			}
+		});
+
+		this.avgAccuracyScoreByAnimalSource.next(graphData);			
 	}
 	
 	//Other Functions
