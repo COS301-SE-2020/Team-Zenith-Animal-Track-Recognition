@@ -10,8 +10,7 @@
             <mat-drawer id="animal-search-sidenav" #statisticsSidenav mode="over" (closedStart)="showSidenavBtn()">
 				<div id="animal-statistics-navigation-container">
 					<mat-selection-list #animalStatsNavSelectList [multiple]="false">
-						<mat-list-option (click)="changeAnimalStatsTab(0)" [ngClass]="{'activeStatsNavRoute': activeAnimalStatsTabIndex == 0}" [selected]="activeAnimalStatsTabIndex == 0" class="fontSB">Tracking Activity</mat-list-option>
-						<mat-list-option (click)="changeAnimalStatsTab(1)" [ngClass]="{'activeStatsNavRoute': activeAnimalStatsTabIndex == 1}" [selected]="activeAnimalStatsTabIndex == 1" class="fontSB">?? Activity</mat-list-option>
+						<mat-list-option [ngClass]="{'activeStatsNavRoute': activeAnimalStatsTabIndex == 0}" [selected]="activeAnimalStatsTabIndex == 0" class="fontSB">Tracking Activity</mat-list-option>
 					</mat-selection-list>
 				</div>
                 <div id="sidenav-close-btn-container" (click)="closeSidenav()">
@@ -27,261 +26,113 @@
                 </div>
 				<mat-tab-group id="animal-statistics-view-tabgroup" #animalStatsTab animationDuration="0ms" dynamicHeight> 
 					<mat-tab label="Login Activity">
-	<div class="animal-statistics-container">
+						<div class="animal-statistics-container">
 							<div id="animal-tracking-statistics-container">
 								<div class="statistics-header-container">
-									<h1>animal Tracking Activity Overview</h1>
+									<h1>Animal Tracking Activity Overview</h1>
 								</div>
 								<div class="statistics-content-main-container">
 									<div id="animal-identifications-statistics-content-row1" class="statistics-content-row-container">
-										<div id="animal-identifications-alltime-stats" class="statistics-content-container">
+										<div id="animal-numAnimals-alltime-stats" class="statistics-content-container">
 											<div class="statistics-content-container-title">
-												<p class="fontSB">Total Identifications - All Time</p>
+												<p class="fontSB">Number of Animals being tracked</p>
 											</div>
 											<div class="statistics-content-container-content">
 												<div class="statistics-card-container">
-													<!--<ngx-charts-number-card
+													<ng-container *ngIf="numAnimals.length == 0">
+														<div class="emptyDataMessage">
+															<p class="fontSB">No data to show.</p>
+														</div>
+													</ng-container>
+													<ngx-charts-number-card
 														[animations]="true"
-														[scheme]="blueColorScheme"
+														[scheme]="redColorScheme"
+														[results]="numAnimals"
+														[cardColor]="cardColor"
+														[innerPadding]="0">
+													</ngx-charts-number-card>
+												</div>
+											</div>
+										</div>
+										<div id="animal-numIdentifications-alltime-stats" class="statistics-content-container">
+											<div class="statistics-content-container-title">
+												<p class="fontSB">Number of Track Identifications</p>
+											</div>
+											<div class="statistics-content-container-content">
+												<div class="statistics-card-container">
+													<ng-container *ngIf="alltime_numIdentifications.length == 0">
+														<div class="emptyDataMessage">
+															<p class="fontSB">No data to show.</p>
+														</div>
+													</ng-container>
+													<ngx-charts-number-card
+														[animations]="true"
+														[scheme]="greenColorScheme"
 														[results]="alltime_numIdentifications"
 														[cardColor]="cardColor"
 														[innerPadding]="0">
-													</ngx-charts-number-card>-->	
+													</ngx-charts-number-card>
 												</div>
 											</div>
 										</div>
-										<div id="animal-accuracyscore-alltime-stats" class="statistics-content-container">
+										<div id="animal-track-rankings-alltime-stats" class="statistics-content-container">
 											<div class="statistics-content-container-title">
-												<p class="fontSB">Avg. Accuracy Score - All Time</p>
+												<p class="fontSB">Track Rankings Overview - All Time</p>
 											</div>
 											<div class="statistics-content-container-content">
-												<div class="statistics-card-container">
-													<!--<ngx-charts-number-card
-														[animations]="true"
-														[scheme]="greenColorScheme"
-														[results]="alltime_avgAccuracyScore"
-														[cardColor]="cardColor"
-														[valueFormatting]="formatAsPercentage"
-														[labelFormatting]="formatWithTimeFrame"
-														[innerPadding]="0">
-													</ngx-charts-number-card>-->	
+												<div class="animals-rankings-overview-container">
+													<ng-container *ngIf="!mostTrackedAnimal && !leastTrackedAnimal">
+														<div class="emptyDataMessage">
+															<p class="fontSB">No data to show.</p>
+														</div>
+													</ng-container>
+													<ng-container *ngIf="mostTrackedAnimal">
+														<div class="animal-rankings-overview-container">
+															<div class="track-identification-image-container">
+																<img src="{{mostTrackedAnimal.animal.pictures[0].URL}}" alt="Track image">
+															</div>
+															<div class="track-identification-info-container">
+																<div class="track-identification-animal-name">
+																	<span><p class="track-identification-animal-commonName fontSB">Most Tracked Animal</p></span>
+																	<p class="track-identification-animal-classification fontM">{{mostTrackedAnimal.animal.commonName | titlecase}}</p>
+																</div>
+																<p class="track-identification-capture-ranger fontM">{{mostTrackedAnimal.numIds}} Total Track Identifications</p>
+															</div>
+														</div>
+													</ng-container>
+													<ng-container *ngIf="leastTrackedAnimal">
+														<div class="animal-rankings-overview-container">
+															<div class="track-identification-image-container">
+																<img src="{{leastTrackedAnimal.animal.pictures[0].URL}}" alt="Track image">
+															</div>
+															<div class="track-identification-info-container">
+																<div class="track-identification-animal-name">
+																	<span><p class="track-identification-animal-commonName fontSB">Least Tracked Animal</p></span>
+																	<p class="track-identification-animal-classification fontM">{{leastTrackedAnimal.animal.commonName | titlecase}}</p>
+																</div>
+																<p class="track-identification-capture-ranger fontM">{{leastTrackedAnimal.numIds}} Total Track Identifications</p>
+															</div>
+														</div>
+													</ng-container>
 												</div>
-											</div>
-										</div>
-										<div id="animal-identificationsByLevel-alltime-stats" class="statistics-content-container">
-											<div class="statistics-content-container-title">
-												<p class="fontSB">Identifications By Level - All Time</p>
-											</div>
-											<div class="statistics-content-container-content">
-												<!--<ngx-charts-advanced-pie-chart [animations]="true" [scheme]="loginsPerLevelColorScheme" [results]="allIdentificationsByLevel">
-													</ngx-charts-advanced-pie-chart>-->	
 											</div>										
 										</div>
 									</div>
-									<div  id="animal-identifications-statistics-content-row2" class="statistics-content-row-container">
+									<!--<div  id="animal-identifications-statistics-content-row2" class="statistics-content-row-container">
 										<div id="animal-identifications-byDate-stats" class="statistics-content-container">
 											<div class="statistics-content-container-title">
-												<p class="fontSB">Track Identifications By Date - {{allIdsByDateStart.toDateString()}} to {{allIdsByDateEnd.toDateString()}}</p>
-												<div class="statistics-content-title-toolbar-container">
-													<mat-form-field id="tracksByDatePicker" class="statistics-datepicker" appearance="fill">
-														<mat-date-range-input [formGroup]="allIdsByDateRangeForm" [rangePicker]="tracksByDatePicker">
-															<input formControlName="allIdsByDateStartControl" matStartDate>
-															<input formControlName="allIdsByDateEndControl" matEndDate>
-														</mat-date-range-input>
-														<mat-date-range-picker #tracksByDatePicker></mat-date-range-picker>
-													</mat-form-field>
-													<button mat-icon-button (click)="tracksByDatePicker.open()" aria-label="Select Date Range">
-														<mat-icon>date_range</mat-icon>
-													</button>
-													<div class="statistics-content-title-toolbar-toggleGroupContainer">
-														<mat-button-toggle-group #identificationsByDateToggleGroup class="statistics-content-title-toolbar-toggleGroup" (change)="changeIdentificationsByDateFilter($event.value)" [value]="allIdsByDateFilter">
-														  <mat-button-toggle value="identifications">Identifications</mat-button-toggle>
-														  <mat-button-toggle value="accuracy score">Accuracy Score</mat-button-toggle>
-														</mat-button-toggle-group>
-													</div>
-												</div>
+												<p class="fontSB">Track Identifications By Animal</p>
 											</div>
 											<div class="statistics-content-container-content">
 												<div class="by-date-graph-container">
-													<!--<ngx-charts-line-chart [animations]="true" [scheme]="identificationsByDateColorScheme" [legend]="true" 
-														[showXAxisLabel]="true"
-														[showYAxisLabel]="true"
-														[xAxis]="true"
-														[yAxis]="true"
-														[xAxisLabel]="'Identification Date'" [yAxisLabel]="identificationsByDateYLabel"
-														[timeline]="true" [results]="allIdentifications">
-													</ngx-charts-line-chart>-->
+				
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="statistics-header-container">
-										<h1>Tracking Activity By animal</h1>
-									</div>
-									<div id="identifications-byanimalStats-content-row1" class="statistics-content-row-container">
-										<div id="identifications-byanimalAndDate-stats" class="statistics-content-container">
-											<div class="statistics-content-container-title">
-												<p class="fontSB">Track Identifications By Date - {{idsByAnimalAndDateStart.toDateString()}} to {{idsByAnimalAndDateEnd.toDateString()}}</p>
-												<div class="statistics-content-title-toolbar-container">
-													<mat-form-field id="tracksByAnimalAndDatePicker" class="statistics-datepicker" appearance="fill">
-														<mat-date-range-input [formGroup]="idsByAnimalAndDateRangeForm" [rangePicker]="tracksByAnimalAndDatePicker">
-															<input formControlName="idsByAnimalAndDateStartControl" matStartDate>
-															<input formControlName="idsByAnimalAndDateEndControl" matEndDate>
-														</mat-date-range-input>
-														<mat-date-range-picker #tracksByAnimalAndDatePicker></mat-date-range-picker>
-													</mat-form-field>
-													<button mat-icon-button (click)="tracksByAnimalAndDatePicker.open()" aria-label="Select Date Range">
-														<mat-icon>date_range</mat-icon>
-													</button>
-													<div class="statistics-content-title-toolbar-toggleGroupContainer">
-														<mat-button-toggle-group #idsByAnimalAndDateToggleGroup class="statistics-content-title-toolbar-toggleGroup" (change)="changeIdsByAnimalAndDateFilter($event.value)" [value]="idsByAnimalAndDateFilter">
-														  <mat-button-toggle value="identifications">Identifications</mat-button-toggle>
-														  <mat-button-toggle value="accuracy score">Accuracy Score</mat-button-toggle>
-														</mat-button-toggle-group>
-													</div>
-												</div>
-											</div>
-											<div class="statistics-content-container-content">
-												<!--<mat-grid-list id="identifications-byanimalAndDate-stats-grid" cols="2" rowHeight="2:1.5">
-													<ng-container *ngIf="allIdsByanimalAndDate.length > 0">
-														  <mat-grid-tile *ngFor="let animalData of allIdsByanimalAndDate">
-															<div class="statistics-byanimal-cell">
-																<div class="statistics-byanimal-content-container">
-																	<div class="statistics-byanimal-content-title">
-																		<p class="fontSB">{{animalData.animal.firstName}} {{animalData.animal.lastName}}</p>
-																	</div>
-																	<div class="statistics-byanimal-content">
-																		<div class="statistics-byanimal-content-graph">
-																			<ngx-charts-line-chart [animations]="true" [scheme]="idsByanimalAndDateColorScheme" [legend]="true" 
-																				[showXAxisLabel]="true"
-																				[showYAxisLabel]="true"
-																				[xAxis]="true"
-																				[yAxis]="true"
-																				[xAxisLabel]="'Identification Date'" [yAxisLabel]="idsByanimalAndDateYLabel"
-																				[results]="animalData.animalGraphData">
-																			</ngx-charts-line-chart>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														  </mat-grid-tile>
-													</ng-container>
-												</mat-grid-list>-->
-											</div>
-										</div>
-									</div>
+									</div>-->
 								</div>
 							</div>
 						</div>
-					</mat-tab>
-					<mat-tab label="Tracking Activity">
-						<div class="animal-statistics-container">
-							<div id="animal-login-statistics-container">
-								<div class="statistics-header-container">
-									<h1>animal Login Activity</h1>
-								</div>
-								<div class="statistics-content-main-container">
-									<div id="animal-loginby-statistics-content-row1" class="statistics-content-row-container">
-										<div id="animal-loginbyapp-stats-container" class="statistics-content-container">
-											<div class="statistics-content-container-title">
-												<p class="fontSB">Logins By Application - All Time</p>
-											</div>
-											<div class="statistics-content-container-content">
-												<!--<ngx-charts-pie-grid [scheme]="loginsPerAppColorScheme" [results]="loginsPerApp"></ngx-charts-pie-grid>-->
-											</div>
-										</div>
-										<div id="animal-loginbylevel-stats-container" class="statistics-content-container">
-											<div class="statistics-content-container-title">
-												<p class="fontSB">Logins By animal Level - All Time</p>
-											</div>
-											<div class="statistics-content-container-content">
-												<!--<ngx-charts-advanced-pie-chart [animations]="true" [scheme]="loginsPerLevelColorScheme" [results]="loginsPerLevel">
-													</ngx-charts-advanced-pie-chart>-->	
-											</div>													
-										</div>
-									</div>
-									<div  id="animal-loginby-statistics-content-row2" class="statistics-content-row-container">
-										<div id="animal-loginbydate-stats-container" class="statistics-content-container">
-											<div class="statistics-content-container-title">
-												<p class="fontSB">Logins By Date - {{loginsByDateStart.toDateString()}} to {{loginsByDateEnd.toDateString()}}</p>
-												<div class="statistics-content-title-toolbar-container">
-													<mat-form-field id="loginsByDatePicker" class="statistics-datepicker" appearance="fill">
-														<mat-date-range-input [formGroup]="loginsByDateRangeForm" [rangePicker]="loginsByDatePicker">
-															<input matStartDate formControlName="loginsByDateStartControl">
-															<input matEndDate formControlName="loginsByDateEndControl">
-														</mat-date-range-input>
-														<mat-date-range-picker #loginsByDatePicker></mat-date-range-picker>
-													</mat-form-field>
-													<button mat-icon-button (click)="loginsByDatePicker.open()" aria-label="Select Date Range">
-														<mat-icon>date_range</mat-icon>
-													</button>
-													<div class="statistics-content-title-toolbar-toggleGroupContainer">
-														<mat-button-toggle-group #loginsByDateToggleGroup class="statistics-content-title-toolbar-toggleGroup" (change)="changeLoginsByDateFilter($event.value)" [value]="loginsByDateFilter">
-														  <mat-button-toggle value="level">Level</mat-button-toggle>
-														  <mat-button-toggle value="platform">Platform</mat-button-toggle>
-														</mat-button-toggle-group>
-													</div>
-												</div>
-											</div>
-											<div class="statistics-content-container-content">
-												<div class="by-date-graph-container">
-													<!--<ngx-charts-area-chart-stacked [animations]="true" [scheme]="loginsPerDateColorScheme" [legend]="true" 
-														[showXAxisLabel]="true"
-														[showYAxisLabel]="true"
-														[xAxis]="true"
-														[yAxis]="true"
-														[xAxisLabel]="'Login Date'" [yAxisLabel]="'Number of logins'"
-														[timeline]="true" [results]="loginsPerDate">
-													</ngx-charts-area-chart-stacked>-->
-												</div>
-											</div>
-										</div>
-									</div>
-									<div  id="animal-loginby-statistics-content-row3" class="statistics-content-row-container">
-										<div id="animal-loginbyanimal-stats-container" class="statistics-content-container">
-											<div class="statistics-content-container-title">
-												<p class="fontSB">Logins By animal</p>
-											</div>
-											<div class="statistics-content-container-content">
-												<div id="logins-by-animal-table-container">
-													<!--<table id="logins-by-animal-table" mat-table matSort matSortActive="date" matSortDirection="desc" [dataSource]="recentLoginsDataSource">
-														<ng-container matColumnDef="lastName">
-															<th mat-header-cell *matHeaderCellDef mat-sort-header>animal</th>
-															<td mat-cell class="animal-cell" *matCellDef="let element" (click)="viewanimalProfile(element.animalID.animalID)">{{element.animalID.firstName}} {{element.animalID.lastName}}</td>
-														</ng-container>
-														<ng-container matColumnDef="level">
-															<th mat-header-cell *matHeaderCellDef mat-sort-header>animal Level</th>
-															<td mat-cell *matCellDef="let element"> {{element.animalID.accessLevel}} </td>
-														</ng-container>
-														<ng-container matColumnDef="date">
-															<th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
-															<td mat-cell *matCellDef="let element">{{element.dateObj | date:'h:mm a'}}, {{element.dateObj | date:'fullDate'}}</td>
-														</ng-container>
-														<ng-container matColumnDef="platform">
-															<th mat-header-cell *matHeaderCellDef mat-sort-header>Platform</th>
-															<td mat-cell *matCellDef="let element">
-																<ng-container *ngIf="element.platform == 'app'">
-																	Mobile Tracking Application
-																</ng-container>
-																<ng-container *ngIf="element.platform == 'Mobile Application'">
-																	Mobile Tracking Application
-																</ng-container>
-																<ng-container *ngIf="element.platform == 'wdb'">
-																	Web Dashboard Application
-																</ng-container>
-															</td>
-														</ng-container>
-														<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-														<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-													</table>
-													<mat-paginator id="logins-by-animal-paginator" [hidePageSize]="true" [pageSize]="5" [showFirstLastButtons]="true"></mat-paginator>-->
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>				
 					</mat-tab>
 				</mat-tab-group>
            </mat-drawer-content>

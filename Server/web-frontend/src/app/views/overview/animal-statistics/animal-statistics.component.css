@@ -299,18 +299,18 @@
 #identifications-byanimalAndDate-stats .statistics-content-container-title {
 	padding-left: 2%;
 }
-#animal-identifications-alltime-stats, #animal-accuracyscore-alltime-stats {
+#animal-numAnimals-alltime-stats, #animal-numIdentifications-alltime-stats {
 	width: 25%;
 }
-#animal-identifications-alltime-stats .statistics-content-container-content , #animal-accuracyscore-alltime-stats .statistics-content-container-content  {
+#animal-numAnimals-alltime-stats .statistics-content-container-content , #animal-numIdentifications-alltime-stats .statistics-content-container-content  {
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
 }
-#animal-identifications-alltime-stats > .statistics-content-container-title > p, #animal-accuracyscore-alltime-stats > .statistics-content-container-title > p{
+#animal-numAnimals-alltime-stats > .statistics-content-container-title > p, #animal-numIdentifications-alltime-stats > .statistics-content-container-title > p{
 	font-size: 100%;
 }
-#animal-identificationsByLevel-alltime-stats {
+#animal-track-rankings-alltime-stats {
 	width: 45%;
 }
 :host ::ng-deep .advanced-pie-legend {
@@ -427,19 +427,111 @@
 .statistics-content-container-four > .statistics-content-container-one {
 	width: 30%;
 }
-
-/*
-:host ::ng-deep .mat-tab-labels
-{
-	background-color: white;
-	border-bottom: 3px solid #CCC;
-}
-:host ::ng-deep .mat-tab-body-wrapper
-{
+.animals-rankings-overview-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
 	height: 100%;
 	width: 100%;
 }
-:host ::ng-deep .mat-tab-body-content
-{
-	background-color: #F5F6FA;
-}*/
+.animal-rankings-overview-container {
+	height: 35%;
+	width: 90%;
+	background-color: white;
+	border-radius: 15px;
+	box-shadow: 0px 3px 5px #CCC;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    animation: fadePop 0.7s ease-in-out 0s 1 normal none;
+	padding: 2%;
+	margin: 3% 0;
+}
+
+.track-identification-image-container {
+    height: 65px;
+    width: 65px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #CCC;
+    border-radius: 10px;
+	margin-right: 5%;
+    overflow: hidden;
+}
+
+.track-identification-image-container>img {
+    height: 100%;
+    width: 100%;
+}
+
+.track-identification-info-container {
+    height: 100%;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.track-identification-animal-name>span {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.track-identification-animal-commonName {
+    color: #686E79;
+    font-size: 100%;
+}
+
+.track-identification-capture-date {
+    font-size: 80%;
+}
+
+.track-identification-animal-classification,
+.track-identification-capture-ranger {
+    color: #AAA;
+}
+
+.track-identification-animal-name>p,
+.track-identification-animal-name>span>p,
+.track-identification-capture-ranger,
+.track-identification-info-container>span>p {
+    margin: 0;
+    padding: 0;
+}
+
+.track-identification-capture-ranger,
+.track-identification-info-container>span>p {
+    font-size: 90%;
+}
+
+.track-identification-info-container>span {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.emptyDataMessage {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	font-size: 130%;
+	color: #CCC;
+}

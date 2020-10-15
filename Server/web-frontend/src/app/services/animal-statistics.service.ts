@@ -5,6 +5,7 @@ import { catchError, map, retry } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from './message.service';
 import { User } from 'src/app/models/user';
+import { Animal } from 'src/app/models/animal';
 import { Track } from 'src/app/models/track';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { TRACKS_QUERY_STRING } from 'src/app/models/data';
@@ -14,20 +15,32 @@ import { TRACKS_QUERY_STRING } from 'src/app/models/data';
 })
 export class AnimalStatisticsService {
 	private trackRootQueryUrl = TRACKS_QUERY_STRING + '?query=query{spoorIdentification';
-	private userRootQueryUrl = ROOT_QUERY_STRING + '?query=query{users';
+	private animalsRootQueryUrl = ROOT_QUERY_STRING + '?query=query{animals';
 	private loginsRootQueryUrl = ROOT_QUERY_STRING + '?query=query{recentLogins';
 	
-	//animal Login statistics variables
-	//Store a local copy of all animal logins
-	private animalLoginsStore: { animalLogins: any[] } = { animalLogins: null };
-	private _animalLogins = new BehaviorSubject<any[]>([]);
-	readonly animalLogins = this._animalLogins.asObservable();
+	//Animals
+	private animalsStore: { animals: any[] } = { animals: null };
+	private _animals = new BehaviorSubject<Animal[]>([]);
+	readonly animals = this._animals.asObservable();	
+	private numAnimalsSource = new Subject<any[]>();
+	numAnimals$ = this.numAnimalsSource.asObservable();	
+	private mostTrackedAnimalSource = new Subject<any>();
+	mostTrackedAnimal$ = this.mostTrackedAnimalSource.asObservable();	
+	private leastTrackedAnimalSource = new Subject<any>();
+	leastTrackedAnimal$ = this.leastTrackedAnimalSource.asObservable();
+	private numIdsByAnimalSource = new Subject<any[]>();
+	numIdsByAnimal$ = this.numIdsByAnimalSource.asObservable();
 	
-	private defaultNumRecentLogins = 50;	
-	private recentLoginsSource = new BehaviorSubject<any[]>([]);
-	recentLogins$ = this.recentLoginsSource.asObservable();
+	//Track Identifications
+	//Tracking Activity Overview Variables
+	private _displayedTracks = new BehaviorSubject<any[]>([]);
+	readonly displayedTracks = this._displayedTracks.asObservable();
+	//Store a local copy of all track identifications
+	private trackIdentificationsStore: { trackIdentifications: Track[] } = { trackIdentifications: null };
+	private numIdentificationsSource = new Subject<any[]>();
+	numIdentifications$ = this.numIdentificationsSource.asObservable();
 	
-	private loginsByApplicationSource = new Subject<any[]>();
+	/*private loginsByApplicationSource = new Subject<any[]>();
 	loginsByApplication$ = this.loginsByApplicationSource.asObservable();	
 	
 	private loginsByDateSource = new Subject<any[]>();
@@ -35,12 +48,6 @@ export class AnimalStatisticsService {
 	
 	private loginsByLevelSource = new Subject<any[]>();
 	loginsByLevel$ = this.loginsByLevelSource.asObservable();
-	
-	//Tracking Activity Overview Variables
-	private _displayedTracks = new BehaviorSubject<any[]>([]);
-	readonly displayedTracks = this._displayedTracks.asObservable();
-	//Store a local copy of all track identifications
-	private trackIdentificationsStore: { trackIdentifications: Track[] } = { trackIdentifications: null };
 	
 	private allIdentificationsByDateSource = new Subject<any[]>();
 	allIdentificationsByDate$ = this.allIdentificationsByDateSource.asObservable();
@@ -55,12 +62,12 @@ export class AnimalStatisticsService {
 	//Store a local copy of all track identifications
 	private animalsStore: { animals: User[] } = { animals: null };
 	private allIdsByanimalAndDateSource = new Subject<any[]>();
-	allIdsanimalAndDate$ = this.allIdsByanimalAndDateSource.asObservable();
+	allIdsanimalAndDate$ = this.allIdsByanimalAndDateSource.asObservable();*/
 	
 	constructor(private http: HttpClient, private messageService: MessageService) { }
 	
-	get logins() {
-		return this._animalLogins.asObservable();
+	get animalList() {
+		return this._animals.asObservable();
 	}
 	get identifications() {
 		return this._displayedTracks.asObservable();
@@ -68,40 +75,102 @@ export class AnimalStatisticsService {
 	
 		
 	//Login Activity functions
-	getAnimalLoginActivity(token: string)
-	{
-			/*
-		const getRangerLoginQueryUrl = this.loginsRootQueryUrl + '(token:"' + token + '"){rangerID{rangerID, firstName,lastName,accessLevel},time,platform}}';
-		this.http.get<Track[]>(getRangerLoginQueryUrl)
+	getAllAnimals(token: string) {
+		const getAnimalsQueryUrl = this.animalsRootQueryUrl + '(token:"' + token + '"){classification,animalID,commonName,groupID{groupName},heightM,heightF,weightM,weightF,habitats{habitatID},dietType,' +
+			'lifeSpan,gestationPeriod,Offspring,typicalBehaviourM{behaviour,threatLevel},typicalBehaviourF{behaviour,threatLevel},animalOverview,animalDescription,pictures{URL}}}';
+		this.http.get<Animal[]>(getAnimalsQueryUrl)
 			.subscribe( data => {
-				this.rangerLoginsStore.rangerLogins = Object.values(Object.values(data)[0])[0];	
-				this.rangerLoginsStore.rangerLogins.forEach(ranger => {
-					let temp = ranger.time.split(" ");
-					let temp2 = temp[1].split(":");
-					if (temp2[0].length == 1) 
-						temp2[0] = "0" + temp2[0];
-					if (temp2[1].length == 1) 
-						temp2[1] = "0" + temp2[1];
-					if (temp2[2].length == 1) 
-						temp2[2] = "0" + temp2[2];
-					let dateObjString = temp[0] + "T" + temp2[0] + ":" + temp2[1] + ":" + temp2[2];
-					ranger.dateObj = new Date(dateObjString);
-				});
-				this._rangerLogins.next(Object.assign({}, this.rangerLoginsStore).rangerLogins);
-				this.calculateLoginsByApplication();
-				this.calculateLoginsByLevel();
+				this.animalsStore.animals = Object.values(Object.values(data)[0])[0];	
+				this._animals.next(Object.assign({}, this.animalsStore).animals);
+
 				
-				var startDate = new Date();
-				startDate.setDate(startDate.getDate() - 7);
-				this.getLoginsByDate(startDate, new Date(), "platform");
-				this.getRecentLogins(this.defaultNumRecentLogins);
+				this.numAnimalsSource.next([{"name": "Animals on system", "value": this.animalsStore.animals.length}]);
 			},
 				error => {
-					this._rangerLogins.next([]);
+					this._animals.next([]);
 					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
 				}
 			);
-		*/
+	}
+	getAnimalTrackingActivity(token: string)
+	{
+		this.getAllAnimals(token);
+		this.getAllTrackingActivity(token);
+	}
+	getAllTrackingActivity(token: string)
+	{
+		const getIdentificationsQueryUrl = this.trackRootQueryUrl + '(token:"' + token + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},' +
+			'commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},' +
+			'ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},' +
+			'confidence},picture{picturesID,URL,kindOfPicture},tags}}';
+		this.http.get<Track[]>(getIdentificationsQueryUrl)
+			.subscribe( data => {
+				this.trackIdentificationsStore.trackIdentifications = Object.values(Object.values(data)[0])[0];	
+				this.trackIdentificationsStore.trackIdentifications.forEach(element => {
+					let temp = element.dateAndTime;
+					element.dateObj = new Date(temp.year, temp.month - 1, temp.day, temp.hour, temp.min, temp.second);
+					element.recency = element.dateObj.toISOString();
+				});
+				
+				this.numIdentificationsSource.next([{"name": "Total Track Identifications", "value": this.trackIdentificationsStore.trackIdentifications.length}]);
+				//this.getNumIdsByAnimal(token);
+				this.getMostTrackedAnimal(token);
+				this.getLeastTrackedAnimal(token);
+				this._displayedTracks.next(Object.assign({}, this.trackIdentificationsStore).trackIdentifications);
+			},
+				error => {
+					this._displayedTracks.next([]);
+					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
+				}
+			);
+	}	
+	getMostTrackedAnimal(token: string) {
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsStats3(token:"' + token +
+		  '"){commonName,NumberOfIdentifications}}')
+		  .pipe(
+			retry(3),
+			catchError(() => {
+				this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
+			  return EMPTY;
+			})
+		  )
+		  .subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				
+				let animalName = temp[0].commonName;
+				let animal;
+				for (let i = 0; i < this.animalsStore.animals.length; i++) {
+					if (animalName == this.animalsStore.animals[i].commonName) {
+						animal = this.animalsStore.animals[i];
+					}
+				}
+				this.mostTrackedAnimalSource.next({animal: animal, numIds: temp[0].NumberOfIdentifications});
+		  });
+	}
+	getLeastTrackedAnimal(token: string) {
+		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsStats4(token:"' + token +
+		  '"){commonName,NumberOfIdentifications}}')
+		  .pipe(
+			retry(3),
+			catchError(() => {
+				this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
+				return EMPTY;
+			})
+		  )
+		  .subscribe((data: any[]) => {
+				let temp = [];
+				temp = Object.values(Object.values(data)[0]);
+				
+				let animalName = temp[0].commonName;
+				let animal;
+				for (let i = 0; i < this.animalsStore.animals.length; i++) {
+					if (animalName == this.animalsStore.animals[i].commonName) {
+						animal = this.animalsStore.animals[i];
+					}
+				}
+				this.leastTrackedAnimalSource.next({animal: animal, numIds: temp[0].NumberOfIdentifications});
+		  });		
 	}
 	getLoginsByDate(startDate: any, endDate: any, dataType: string) {
 		/*
@@ -261,37 +330,6 @@ export class AnimalStatisticsService {
 	
 	//Tracking Activity Overview Statistics
 	//HTTPS Requests
-	getAllTrackingActivity(token: string)
-	{
-		/*
-		const getIdentificationsQueryUrl = this.trackRootQueryUrl + '(token:"' + token + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},' +
-			'commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},' +
-			'ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},' +
-			'confidence},picture{picturesID,URL,kindOfPicture},tags}}';
-		this.http.get<Track[]>(getIdentificationsQueryUrl)
-			.subscribe( data => {
-				this.trackIdentificationsStore.trackIdentifications = Object.values(Object.values(data)[0])[0];	
-				this.trackIdentificationsStore.trackIdentifications.forEach(element => {
-					let temp = element.dateAndTime;
-					element.dateObj = new Date(temp.year, temp.month - 1, temp.day, temp.hour, temp.min, temp.second);
-					element.recency = element.dateObj.toISOString();
-				});
-				
-				var startDate = new Date();
-				startDate.setDate(startDate.getDate() - 7);
-				this.getAllIdentificationsByDate(startDate, new Date(), "identifications");
-				this.getAllTimeIdsNumAndScore();
-				this.getAllIdentificationsByLevel();
-				this.getMostIdsByRanger();
-				this._displayedTracks.next(Object.assign({}, this.trackIdentificationsStore).trackIdentifications);
-			},
-				error => {
-					this._displayedTracks.next([]);
-					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
-				}
-			);
-			*/
-	}	
 	getAllIdentificationsByDate(startDate: any, endDate: any, dataType: string) {
 		/*
 		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
@@ -528,7 +566,7 @@ export class AnimalStatisticsService {
 		  });
 		  */
 	}
-	getAllIdsByanimalAndDate(startDate: any, endDate: any, dataType: string) {
+	getAllIdsByAnimalAndDate(startDate: any, endDate: any, dataType: string) {
 	/*
 		var allRangers = cloneDeep(this.rangersStore.rangers);
 		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
@@ -571,7 +609,7 @@ export class AnimalStatisticsService {
 		this.allIdsByRangerAndDateSource.next(graphData);	
 		*/
 	}
-	getIdsByanimalAndDate(animal: User, trackList: Track[], endDateTime: any, numDays: number, dataType: string) {
+	getIdsByAnimalAndDate(animal: User, trackList: Track[], endDateTime: any, numDays: number, dataType: string) {
 /*
 		//Count number of Identifications on a specific date per platform or level
 		var fromDate = new Date(endDateTime);

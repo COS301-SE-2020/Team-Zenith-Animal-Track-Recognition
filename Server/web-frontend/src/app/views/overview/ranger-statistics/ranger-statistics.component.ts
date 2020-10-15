@@ -63,7 +63,7 @@ export class RangerStatisticsComponent implements OnInit {
 	@ViewChild('loginsByDateToggleGroup') loginsByDateToggleGroup;
 	loginsPerDate = [];
 	loginsPerDateColorScheme = {
-		domain: ['#5AA454', '#E44D25', '#509CD0']
+		domain: ['#E44D25', '#509CD0', '#19A020']
 	};
 	loginsByDateRangeForm: FormGroup;
 	loginsByDateStart;
