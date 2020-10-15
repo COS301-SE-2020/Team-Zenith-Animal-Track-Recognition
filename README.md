@@ -7,7 +7,7 @@ The Animal Track Recognition system is an application which will support ERP ran
 
 **Live System**
 * Mobile Tracking Application: [Mobile Tracking Application](https://drive.google.com/file/d/1gvFRPOe7T3tB1ZEmFmPq_x9ClThoglka/view?usp=sharing)
-* Web Dashboard Application: [Web Dashboard Application](http://putch.dyndns.org:55554/)
+* Web Dashboard Application: [Web Dashboard Application](http://www.ecko.africa:55554/)
 
 **Demo Videos**
 * Demo 1 Video: [Animal Track Recognition DEMO 1 Video](https://drive.google.com/file/d/1wPRWSZfDXdYjMZgVQhYv0WJvxW_datI-/view?usp=sharing)
