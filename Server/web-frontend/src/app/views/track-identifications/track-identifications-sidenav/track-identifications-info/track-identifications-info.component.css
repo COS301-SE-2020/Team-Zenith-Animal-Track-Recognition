@@ -106,8 +106,7 @@
 
 #animal-photos-track-id-result {
     height: 70%;
-    width: 90%;
-	max-width: 100%;
+	width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -133,7 +132,9 @@
 
 #animal-photos-track-id-score {
     height: 100%;
-    width: auto;
+	width: auto;
+    min-width: 50%;
+	max-width: 60%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

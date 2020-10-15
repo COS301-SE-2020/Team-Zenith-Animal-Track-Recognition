@@ -349,8 +349,8 @@
 	background-color: white;
 	border-radius: 12px;
 	box-shadow: 0px 3px 8px #DDD;
-	height: 85%;
-	width: 90%;
+	height: 90%;
+	width: 95%;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -366,9 +366,17 @@
 .statistics-byRanger-content {
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
+	justify-content: center;
 	height: auto;
 	min-height: 85%;
+	width: 100%;
+}
+.statistics-byRanger-content-graph {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 85%;
 	width: 100%;
 }
 #ranger-loginbyranger-stats-container, #ranger-loginbydate-stats-container {

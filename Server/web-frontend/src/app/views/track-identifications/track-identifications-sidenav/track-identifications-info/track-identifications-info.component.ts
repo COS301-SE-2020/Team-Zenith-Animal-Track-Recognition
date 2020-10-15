@@ -44,6 +44,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 					this.filterNullOtherMatches();
 					this.updateSimilarTracks();
 				}
+				this.stopLoader();
 			});
 	}
 
@@ -63,7 +64,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 		if (this.activeTrack != null) {
 			var otherPossibleValidMatches = this.activeTrack.potentialMatches.filter(match => ((match.confidence > 0) && 
 				(match.animal.classification !== this.activeTrack.animal.classification)));
-			
+			otherPossibleValidMatches.reverse();
 			var maxNumOtherMatches = otherPossibleValidMatches.length;
 			this.otherMatchesList = [];
 			for (let j = 0; j < maxNumOtherMatches; j += 2) {
@@ -103,18 +104,12 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	}
 
 	reclassifyTrack(track: any, newAnimal: any) {
-		console.log("clicked on " + newAnimal.commonName);
-		//this.tracksService.reclassifyTrack(JSON.parse(localStorage.getItem('currentToken'))['value'], track, newAnimal);
-		//this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - otherMatchIndex].animal = this.activeTrack.animal;
-		//this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - otherMatchIndex].confidence = this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - 1].confidence;
-		//this.activeTrack.animal = newAnimal;
-		//this.activeTrack.potentialMatches[this.activeTrack.potentialMatches.length - 1].confidence = 1.00;
 		const dialogConfig = new MatDialogConfig();
 
 		const reclassifyTrackDialogRef = this.dialog.open(ReclassifyTrackComponent, {
 			height: '65%',
 			width: '40%',
-			autoFocus: true,
+			autoFocus: false,
 			disableClose: true,
 			id: 'reclassify-track-dialog',
 			data: {
@@ -126,7 +121,8 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 		reclassifyTrackDialogRef.afterClosed().subscribe(result => {
 			//this.stopLoader();
 			if (result == "success") {
-				//If ranger was successfully edited refresh component and notify parent
+				this.startLoader();
+				this.tracksService.getTrackIdentifications(JSON.parse(localStorage.getItem('currentToken'))['value'], {updateActiveTrack: true, activeTrackID: this.activeTrack.spoorIdentificationID});
 			}
 			else if (result == 'error') {
 			}
@@ -138,7 +134,7 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 		const reclassifyTrackDialogRef = this.dialog.open(ReclassifyTrackComponent, {
 			height: '65%',
 			width: '40%',
-			autoFocus: true,
+			autoFocus: false,
 			disableClose: true,
 			id: 'reclassify-track-dialog',
 			data: {
@@ -148,11 +144,12 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 				}
 		});
 		reclassifyTrackDialogRef.afterClosed().subscribe(result => {
-			//this.stopLoader();
 			if (result == "success") {
-				//If ranger was successfully edited refresh component and notify parent
+				this.tracksService.getTrackIdentifications(JSON.parse(localStorage.getItem('currentToken'))['value'], {updateActiveTrack: true, activeTrackID: this.activeTrack.spoorIdentificationID});
+				//this.ngOnInit();
 			}
 			else if (result == 'error') {
+				
 			}
 		});		
 	}
@@ -173,7 +170,6 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 				}
 			}
 			else {
-				//console.log('Geocoder failed due to: ' + status);
 				temp.location.addresses = null;
 			}
 		});
@@ -241,4 +237,11 @@ export class TrackIdentificationsInfoComponent implements OnInit {
 	}
 
 
+	//Loader
+	startLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'visible';
+	}
+	stopLoader() {
+		document.getElementById('search-nav-loader-container').style.visibility = 'hidden';
+	}
 }

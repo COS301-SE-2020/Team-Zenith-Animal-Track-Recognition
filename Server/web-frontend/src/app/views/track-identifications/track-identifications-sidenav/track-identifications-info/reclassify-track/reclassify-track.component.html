@@ -15,9 +15,6 @@
 					<p class="other-potential-match-commonname fontSB">
 						{{data.fromAnimal.animal.commonName}}
 					</p>
-					<!--<p class="other-potential-match-accuracy-score fontB">
-						Accuracy Score: {{data.fromAnimal.confidence | percent}}
-					</p>-->
 				</div>
 			</div>
 			<div class="reclassify-track-comparison-arrow-container">
@@ -47,9 +44,6 @@
 							New Animal
 						</ng-template>
 					</p>
-					<!--<p class="other-potential-match-accuracy-score fontB">
-						Accuracy Score: 100%
-					</p>-->
 				</div>
 			</div>
 		</div>
@@ -65,6 +59,9 @@
 							</mat-option>
 						</mat-optgroup>
 					</mat-autocomplete>
+					<mat-error *ngIf="animalList.animalGroupFormControl.invalid && (animalList.animalGroupFormControl.dirty || animalList.animalGroupFormControl.touched)" class="alert">
+						{{validationMsg()}}
+					</mat-error>
 				</mat-form-field> 
 			</form>
 		</div>

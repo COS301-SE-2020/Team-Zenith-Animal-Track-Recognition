@@ -421,6 +421,10 @@
 }
 
 .ranger-profile-spoor-image {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
     height: 110px;
     width: 110px;
     background-color: #AAA;
@@ -429,8 +433,8 @@
 }
 
 .ranger-profile-spoor-image>img {
+	flex: 1;
     height: 100%;
-    width: auto;
 }
 
 .ranger-profile-spoor-info {

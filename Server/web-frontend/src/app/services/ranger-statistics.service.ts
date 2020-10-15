@@ -8,15 +8,11 @@ import { User } from 'src/app/models/user';
 import { Track } from 'src/app/models/track';
 import { ROOT_QUERY_STRING } from 'src/app/models/data';
 import { TRACKS_QUERY_STRING } from 'src/app/models/data';
-import { TracksService } from './tracks.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RangerStatisticsService {
-	//private activeTrackSource = new BehaviorSubject<Track>(null);
-	//activeTrack$ = this.activeTrackSource.asObservable();
-	
+export class RangerStatisticsService {	
 	private trackRootQueryUrl = TRACKS_QUERY_STRING + '?query=query{spoorIdentification';
 	private userRootQueryUrl = ROOT_QUERY_STRING + '?query=query{users';
 	private loginsRootQueryUrl = ROOT_QUERY_STRING + '?query=query{recentLogins';
@@ -123,8 +119,6 @@ export class RangerStatisticsService {
 		
 		var numDays = Math.abs((endDateTime - startDateTime) / (1000 * 3600 * 24));
 		numDays++;
-		//console.log("Checking dates from " + endDate.toDateString() + " to " + startDate.toDateString());
-		//console.log("Difference in days between start and end dates is:" + numDays);
 		
 		//Count number of logins on a specific date per platform or level
 		var fromDate = new Date(startDateTime);
@@ -200,7 +194,7 @@ export class RangerStatisticsService {
 			break;
 		}
 		
-		this.loginsByDateSource.next(logins);		
+		this.loginsByDateSource.next(logins);	
 	}
 	getRecentLogins(numLogins: number) {
 		var allRangerLogins = cloneDeep(this.rangerLoginsStore.rangerLogins);
@@ -272,8 +266,6 @@ export class RangerStatisticsService {
 					element.dateObj = new Date(temp.year, temp.month - 1, temp.day, temp.hour, temp.min, temp.second);
 					element.recency = element.dateObj.toISOString();
 				});
-				//this.calculateLoginsByApplication();
-				//this.calculateLoginsByLevel();
 				
 				var startDate = new Date();
 				startDate.setDate(startDate.getDate() - 7);
@@ -292,7 +284,7 @@ export class RangerStatisticsService {
 	getAllIdentificationsByDate(startDate: any, endDate: any, dataType: string) {
 		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
 		
-		//Filter out logins that do not fall within the time range
+		//Filter out identifications that do not fall within the time range
 		var filteredIds = [];		
 		var startDateTime = startDate.getTime();
 		var endDateTime = endDate.getTime();
@@ -309,123 +301,133 @@ export class RangerStatisticsService {
 		numDays++;
 		
 		//Count number of Identifications on a specific date per platform or level
-		var fromDate = new Date(startDateTime);
 		var graphData = [];
 		
 		switch(dataType) {
 			case "identifications":
-				var levelOneSeries = [];
-				var levelTwoSeries = [];
-				var levelThreeSeries = [];
-				var levelOneNumIds = 0;
-				var levelTwoNumIds = 0;
-				var levelThreeNumIds = 0;
-				
-				for (let i = 0; i < numDays; i++) {
-					levelOneNumIds = 0;
-					levelTwoNumIds = 0;
-					levelThreeNumIds = 0;
-					fromDate = new Date(endDateTime);
-					fromDate.setDate(fromDate.getDate() - i);
-							
-					filteredIds.forEach(track => {
-						if (this.isSameDay(track.dateObj, fromDate)) {
-							switch(track.ranger.accessLevel) {
-								case "1":
-									levelOneNumIds++;
-								break;
-								case "2":
-									levelTwoNumIds++;
-								break;
-								case "3":
-									levelThreeNumIds++;
-								break;
-								case "4":
-									levelThreeNumIds++;
-								break;
-							}
-						}
-					});
-					levelOneSeries.push({"value": levelOneNumIds, "name": fromDate});
-					levelTwoSeries.push({"value": levelTwoNumIds, "name": fromDate});
-					levelThreeSeries.push({"value": levelThreeNumIds, "name": fromDate});
-				}
-				graphData.push({"name":"Level 1 Rangers", "series": levelOneSeries.reverse()}, 
-					{"name":"Level 2 Rangers", "series": levelTwoSeries.reverse()}, 
-					{"name":"Level 3 Ranger", "series": levelThreeSeries.reverse()}
-				);
+				graphData = this.getNumIdentificationsByDate(filteredIds, endDateTime, numDays);
 			break;
 			case "accuracy score":
-				var avgScorePerDay = [];
-				var avgScorePerDayLevelOne = [];
-				var avgScorePerDayLevelTwo = [];
-				var avgScorePerDayLevelThree = [];
-				var tracksPerDay = [];
-				var tracksPerDayLevelOne = [];
-				var tracksPerDayLevelTwo = [];
-				var tracksPerDayLevelThree = [];
-				var avgScore = 0;
-				var avgScoreLevelOne = 0;
-				var avgScoreLevelTwo = 0;
-				var avgScoreLevelThree = 0;
-				
-				for (let i = 0; i < numDays; i++) {
-					avgScore = 0;
-					avgScoreLevelOne = 0;
-					avgScoreLevelTwo = 0;
-					avgScoreLevelThree = 0;
-					tracksPerDay = [];
-					tracksPerDayLevelOne = [];
-					tracksPerDayLevelTwo = [];
-					tracksPerDayLevelThree = [];
-					fromDate = new Date(endDateTime);
-					fromDate.setDate(fromDate.getDate() - i);
-					
-					filteredIds.forEach(track => {
-						if (this.isSameDay(track.dateObj, fromDate))  {
-							tracksPerDay.push(track);
-							switch(track.ranger.accessLevel) {
-								case "1":
-									tracksPerDayLevelOne.push(track);
-								break;
-								case "2":
-									tracksPerDayLevelTwo.push(track);
-								break;
-								case "3":
-									tracksPerDayLevelThree.push(track);
-								break;
-								case "4":
-									tracksPerDayLevelThree.push(track);
-								break;
-							}
-						}
-					});
-					avgScore = this.getAvgAccuracyScore(tracksPerDay);
-					avgScoreLevelOne = this.getAvgAccuracyScore(tracksPerDayLevelOne);
-					avgScoreLevelTwo = this.getAvgAccuracyScore(tracksPerDayLevelTwo);
-					avgScoreLevelThree = this.getAvgAccuracyScore(tracksPerDayLevelThree);
-					
-					avgScorePerDay.push({"value": avgScore, "name": fromDate});
-					avgScorePerDayLevelOne.push({"value": avgScoreLevelOne, "name": fromDate});
-					avgScorePerDayLevelTwo.push({"value": avgScoreLevelTwo, "name": fromDate});
-					avgScorePerDayLevelThree.push({"value": avgScoreLevelThree, "name": fromDate});
-				}
-				graphData.push({"name":"Avg. Accuracy Score", "series": avgScorePerDay.reverse()},
-					{"name":"Level 1 Ranger Accuracy Score", "series": avgScorePerDayLevelOne.reverse()},
-					{"name":"Level 2 Ranger Accuracy Score", "series": avgScorePerDayLevelTwo.reverse()},
-					{"name":"Level 3 Ranger Accuracy Score", "series": avgScorePerDayLevelThree.reverse()}
-				);
+				graphData = this.getAvgAccuracyScoreByDate(filteredIds, endDateTime, numDays);
 			break;
 		}			
 
-		this.allIdentificationsByDateSource.next(graphData);		
+		this.allIdentificationsByDateSource.next(graphData);	
+	}
+	getNumIdentificationsByDate(trackList: Track[], endDateTime: any, numDays: number) {
+		var fromDate = new Date(endDateTime);
+		var graphData = [];
+		var levelOneSeries = [];
+		var levelTwoSeries = [];
+		var levelThreeSeries = [];
+		var levelOneNumIds = 0;
+		var levelTwoNumIds = 0;
+		var levelThreeNumIds = 0;
+				
+		for (let i = 0; i < numDays; i++) {
+			levelOneNumIds = 0;
+			levelTwoNumIds = 0;
+			levelThreeNumIds = 0;
+			fromDate = new Date(endDateTime);
+			fromDate.setDate(fromDate.getDate() - i);
+							
+			trackList.forEach(track => {
+				if (this.isSameDay(track.dateObj, fromDate)) {
+					switch(track.ranger.accessLevel) {
+						case "1":
+							levelOneNumIds++;
+						break;
+						case "2":
+							levelTwoNumIds++;
+						break;
+						case "3":
+							levelThreeNumIds++;
+						break;
+						case "4":
+							levelThreeNumIds++;
+						break;
+					}
+				}
+			});
+			levelOneSeries.push({"value": levelOneNumIds, "name": fromDate});
+			levelTwoSeries.push({"value": levelTwoNumIds, "name": fromDate});
+			levelThreeSeries.push({"value": levelThreeNumIds, "name": fromDate});
+		}
+		graphData.push({"name":"Level 1 Rangers", "series": levelOneSeries.reverse()}, 
+			{"name":"Level 2 Rangers", "series": levelTwoSeries.reverse()}, 
+			{"name":"Level 3 Rangers", "series": levelThreeSeries.reverse()}
+		);
+		return graphData;
+	}
+	getAvgAccuracyScoreByDate(trackList: Track[], endDateTime: any, numDays: number) {
+		var fromDate = new Date(endDateTime);
+		var graphData = [];
+		var avgScorePerDay = [];
+		var avgScorePerDayLevelOne = [];
+		var avgScorePerDayLevelTwo = [];
+		var avgScorePerDayLevelThree = [];
+		var tracksPerDay = [];
+		var tracksPerDayLevelOne = [];
+		var tracksPerDayLevelTwo = [];
+		var tracksPerDayLevelThree = [];
+		var avgScore = 0;
+		var avgScoreLevelOne = 0;
+		var avgScoreLevelTwo = 0;
+		var avgScoreLevelThree = 0;
+				
+		for (let i = 0; i < numDays; i++) {
+			avgScore = 0;
+			avgScoreLevelOne = 0;
+			avgScoreLevelTwo = 0;
+			avgScoreLevelThree = 0;
+			tracksPerDay = [];
+			tracksPerDayLevelOne = [];
+			tracksPerDayLevelTwo = [];
+			tracksPerDayLevelThree = [];
+			fromDate = new Date(endDateTime);
+			fromDate.setDate(fromDate.getDate() - i);
+					
+			trackList.forEach(track => {
+				if (this.isSameDay(track.dateObj, fromDate))  {
+					tracksPerDay.push(track);
+					switch(track.ranger.accessLevel) {
+						case "1":
+							tracksPerDayLevelOne.push(track);
+						break;
+						case "2":
+							tracksPerDayLevelTwo.push(track);
+						break;
+						case "3":
+							tracksPerDayLevelThree.push(track);
+						break;
+						case "4":
+							tracksPerDayLevelThree.push(track);
+						break;
+					}
+				}
+			});
+			avgScore = this.getAvgAccuracyScore(tracksPerDay);
+			avgScoreLevelOne = this.getAvgAccuracyScore(tracksPerDayLevelOne);
+			avgScoreLevelTwo = this.getAvgAccuracyScore(tracksPerDayLevelTwo);
+			avgScoreLevelThree = this.getAvgAccuracyScore(tracksPerDayLevelThree);
+					
+			avgScorePerDay.push({"value": avgScore, "name": fromDate});
+			avgScorePerDayLevelOne.push({"value": avgScoreLevelOne, "name": fromDate});
+			avgScorePerDayLevelTwo.push({"value": avgScoreLevelTwo, "name": fromDate});
+			avgScorePerDayLevelThree.push({"value": avgScoreLevelThree, "name": fromDate});
+		}
+		graphData.push({"name":"Avg. Accuracy Score", "series": avgScorePerDay.reverse()},
+			{"name":"Level 1 Ranger Accuracy Score", "series": avgScorePerDayLevelOne.reverse()},
+			{"name":"Level 2 Ranger Accuracy Score", "series": avgScorePerDayLevelTwo.reverse()},
+			{"name":"Level 3 Ranger Accuracy Score", "series": avgScorePerDayLevelThree.reverse()}
+		);
+		return graphData;
 	}
 	getAllIdentificationsByLevel() {
 		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
 		var levelOneIds = 0;
 		var levelTwoIds = 0;
 		var levelThreeIds = 0;
-		//var levelFourIds = 0;
 		allTrackIdentifications.forEach(track => {
 			if (track.ranger.accessLevel == "1") {
 				levelOneIds++;
@@ -442,7 +444,7 @@ export class RangerStatisticsService {
 			{"name": "Level 2", "value": levelTwoIds},
 			{"name": "Level 3", "value": levelThreeIds}
 		];
-		this.allIdentificationsByLevelSource.next(numIds);		
+		this.allIdentificationsByLevelSource.next(numIds);	
 	}
 	getAllTimeIdsNumAndScore() {
 		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
@@ -467,25 +469,11 @@ export class RangerStatisticsService {
 				this.getAllIdsByRangerAndDate(startDate, new Date(), "identifications");
 			},
 				error => {
-					//this._displayedTracks.next([]);
 					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
 				}
 			);
 	}
 	getMostIdsByRanger() {
-		/*const getMostQueryUrl = this.trackRootQueryUrl + '(token:"' + token + '"){spoorIdentificationID,animal{classification,animalID,groupID{groupName},' +
-			'commonName,pictures{picturesID,URL,kindOfPicture},animalMarkerColor},dateAndTime{year,month,day,hour,min,second},location{latitude,longitude},' +
-			'ranger{rangerID,accessLevel,firstName,lastName},potentialMatches{animal{classification,animalID,commonName,pictures{picturesID,URL,kindOfPicture}},' +
-			'confidence},picture{picturesID,URL,kindOfPicture},tags}}';
-		this.http.get<Track[]>(getIdentificationsQueryUrl)
-			.subscribe( data => {
-				this.numIdentificationsSource.next([{"name": "Animals Identified", "value":this.trackIdentificationsStore.trackIdentifications.length }]);
-			},
-				error => {
-					this._displayedTracks.next([]);
-					this.log('An error occurred when connecting to the server. Please refresh and try again.', true)
-				}
-			);*/
 		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{rangersStats2(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
 		  '"){mosotTrakedRanger{firstName,lastName},AnimalTracked}}')
 		  .pipe(
@@ -507,35 +495,46 @@ export class RangerStatisticsService {
 		var allRangers = cloneDeep(this.rangersStore.rangers);
 		var allTrackIdentifications = cloneDeep(this.trackIdentificationsStore.trackIdentifications);
 		
-		var graphData = [];
-		
-		var rangerSeries = [];
-		var rangerData = [];
-		allRangers.forEach(ranger => {
-			rangerData = this.getIdsByRangerAndDate(ranger, allTrackIdentifications, startDate, endDate, dataType);
-			graphData.push({ranger: ranger, rangerGraphData: rangerData});
-			console.log(rangerData);		
-		});
-		console.log(graphData);
-		this.allIdsByRangerAndDateSource.next(graphData);	
-	}
-	getIdsByRangerAndDate(ranger: User, trackList: Track[], startDate: any, endDate: any, dataType: string) {
 		//Filter out identifications that do not fall within the time range
 		var filteredIds = [];		
 		var startDateTime = startDate.getTime();
 		var endDateTime = endDate.getTime();
-		var trackTime;	
-		trackList.forEach(track => {
+		var trackTime;
+				
+		allTrackIdentifications.forEach(track => {
 			trackTime = track.dateObj.getTime();
 			if (trackTime >= startDateTime && trackTime <= endDateTime) {
 				filteredIds.push(track);
 			}
 		});
+		
 		var numDays = Math.abs((endDateTime - startDateTime) / (1000 * 3600 * 24));
 		numDays++;
 		
+		//Compare data with global average score and num of identifications
+		var globalData;
+		switch(dataType) {
+			case "identifications":
+				globalData = this.getNumIdentificationsByDate(filteredIds, endDateTime, numDays);
+			break;
+			case "accuracy score":
+				globalData = this.getAvgAccuracyScoreByDate(filteredIds, endDateTime, numDays);
+			break;
+		}				
+		
+		var graphData = [];
+		var rangerData = [];
+		
+		allRangers.forEach(ranger => {
+			rangerData = this.getIdsByRangerAndDate(ranger, filteredIds, endDateTime, numDays, dataType);
+			rangerData = rangerData.concat(globalData);
+			graphData.push({ranger: ranger, rangerGraphData: rangerData});
+		});
+		this.allIdsByRangerAndDateSource.next(graphData);	
+	}
+	getIdsByRangerAndDate(ranger: User, trackList: Track[], endDateTime: any, numDays: number, dataType: string) {
 		//Count number of Identifications on a specific date per platform or level
-		var fromDate = new Date(startDateTime);
+		var fromDate = new Date(endDateTime);
 		var rangerData = [];
 		
 		switch(dataType) {
@@ -557,7 +556,7 @@ export class RangerStatisticsService {
 					});
 					rangerSeries.push({"value": numIds, "name": fromDate});
 				}
-				rangerData.push({"name": "Total Identifications", "series": rangerSeries.reverse()});
+				rangerData.push({"name": ranger.firstName + " " + ranger.lastName, "series": rangerSeries.reverse()});
 			break;
 			case "accuracy score":
 				var avgScorePerDay = [];
@@ -570,7 +569,7 @@ export class RangerStatisticsService {
 					fromDate = new Date(endDateTime);
 					fromDate.setDate(fromDate.getDate() - i);
 					
-					filteredIds.forEach(track => {
+					trackList.forEach(track => {
 						if (this.isSameDay(track.dateObj, fromDate))  {
 							if (track.ranger.rangerID == ranger.rangerID) {
 								tracksPerDay.push(track);
@@ -580,7 +579,7 @@ export class RangerStatisticsService {
 					avgScore = this.getAvgAccuracyScore(tracksPerDay);
 					avgScorePerDay.push({"value": avgScore, "name": fromDate});
 				}
-				rangerData.push({"name": "Avg. Accuracy Score", "series": avgScorePerDay.reverse()});
+				rangerData.push({"name": ranger.firstName + " " + ranger.lastName, "series": avgScorePerDay.reverse()});
 			break;
 		}				
 		
@@ -605,46 +604,21 @@ export class RangerStatisticsService {
 		if (accuracyScore != 0)
 			avgScore =  Math.round(((accuracyScore/allTrackIdentifications.length) * 100));
 
-		//this.avgScoreAllTimeSource.next([{"name": "Average Accuracy Score","value": avgScore}]);
 		return avgScore;
 	}
 
-	/**
-	* Handle Http operation that failed.
-	* Let the app continue.
-	* @param operation - name of the operation that failed
-	* @param result - optional value to return as the observable result
-	*/
 	private handleError<T>(operation = 'operation', result?: T) 
 	{
 		return (error: any): Observable<T> => {
 
-			// TODO: send the error to remote logging infrastructure
 			console.error(error);
 
-			// TODO: better job of transforming error for user consumption
 			this.log(`${operation} failed: ${error.message}`, true);
 
-			// Let the app keep running by returning an empty result.
 			return of(result as T);
 		};
-		
-			/*  if (error.error instanceof ErrorEvent) {
-		// A client-side or network error occurred. Handle it accordingly.
-		console.error('An error occurred:', error.error.message);
-	  } else {
-		// The backend returned an unsuccessful response code.
-		// The response body may contain clues as to what went wrong.
-		console.error(
-		  `Backend returned code ${error.status}, ` +
-		  `body was: ${error.error}`);
-	  }
-	  // Return an observable with a user-facing error message.
-	  return throwError(
-		'Something bad happened; please try again later.');*/
 	}
 
-	/** Log a HeroService message with the MessageService */
 	private log(message: string, dismissible: boolean) 
 	{
 		this.messageService.show(`${message}`, dismissible);

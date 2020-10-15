@@ -31,11 +31,9 @@ export class ReclassifyTrackComponent implements OnInit {
 	animals: any [] = [];
 	animalNames: any [] = [];
 
-	addUserForm: FormGroup;
 	loading = false;
 	submitted = false;
-	minRangerAge = 16;
-	maxRangerAge = 100;
+
 
 	hide = true;
 	constructor(private formBuilder: FormBuilder,
@@ -63,7 +61,7 @@ export class ReclassifyTrackComponent implements OnInit {
 			toAnimalName = this.data.toAnimal.commonName;
 		
 		this.animalListForm = this.formBuilder.group({
-			animalGroupFormControl: [toAnimalName, Validators.required]
+			animalGroupFormControl: [toAnimalName, [Validators.required, Validators.pattern(/^[a-z ,.'-]+$/i)]]
 		});
 		this.animalGroupOptions = this.animalListForm.get('animalGroupFormControl')!.valueChanges
 		.pipe(
@@ -99,30 +97,14 @@ export class ReclassifyTrackComponent implements OnInit {
 	}
 
 	//Form controls and error handling	
-	validationMsg(formCtrl: any, formCtrlName: string) {
-		/*
-		if (formCtrl.hasError('required')) {
+	get animalList() { return this.animalListForm.controls; }
+	validationMsg() {
+		if (this.animalList.animalGroupFormControl.hasError('required'))
 			return 'Please enter a value';
-		}
-		switch (formCtrlName) {
-			case "firstName":
-				return this.addUser.firstName.hasError('pattern') ? 'Please only enter letters' : '';
-				break;
-			case "lastName":
-				return this.addUser.lastName.hasError('pattern') ? 'Please only enter letters' : '';
-				break;
-			case "email":
-				return this.addUser.email.hasError('email') ? 'Please enter a valid email address i.e example@domain.com' : '';
-				break;
-			case "phoneNumber":
-				if (this.addUser.phoneNumber.hasError('minlength'))
-					return 'Phone number can not be less than 7 digits';
-				if (this.addUser.phoneNumber.hasError('maxlength'))
-					return 'Phone number can not be more than 15 digits';
-				if (this.addUser.phoneNumber.hasError('pattern'))
-					return 'Phone number can only contain digits';
-				break;
-		}*/
+		if (this.animalList.animalGroupFormControl.hasError('pattern'))
+			return 'Please only enter letters';
+		if (this.animalList.animalGroupFormControl.hasError('invalid')) 
+			return 'Please enter or select a valid animal';
 	}
 	
 
@@ -138,18 +120,25 @@ export class ReclassifyTrackComponent implements OnInit {
 	onSubmit(test: boolean) {
 		if (test) { return true; }
 		this.submitted = true;
-		/*if (this.addUserForm.invalid) {
+		if (this.animalListForm.invalid) {
 			return;
-		}*/
+		}
+		if (!this.animalNames.includes(this.animalList.animalGroupFormControl.value)) {
+			this.animalList.animalGroupFormControl.setErrors({'invalid': true});
+			return;
+		}
 		this.loading = true;
 		this.startLoader();
-		//let phoneNumber: string = "" + this.addUser.phoneNumber.value;
-		//phoneNumber = phoneNumber.trim();
-		/*
-		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{addUser(firstName:"' + encodeURIComponent(this.addUser.firstName.value) +
-			'",lastName:"' + encodeURIComponent(this.addUser.lastName.value) + '",password:"' + encodeURIComponent(this.addUser.password.value) +
-			'",token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] + '",accessLevel:"1",eMail:"' +
-			encodeURIComponent(this.addUser.email.value) + '",phoneNumber:"' + encodeURIComponent(phoneNumber) + '"){lastName}}', '')
+		
+		for (let i = 0; i < this.animals.length; i++) {
+			if (this.animals[i].commonName == this.animalList.animalGroupFormControl.value)
+				this.data.toAnimal = this.animals[i];
+		}			
+
+		this.http.post<any>(ROOT_QUERY_STRING + '?query=mutation{updateIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
+			'",latitude:' + encodeURIComponent(this.data.fromAnimal.location.latitude) + ',longitude:' +  encodeURIComponent(this.data.fromAnimal.location.longitude) +
+			',spoorIdentificationID:"' + encodeURIComponent(this.data.fromAnimal.spoorIdentificationID) + '",ranger:"' + encodeURIComponent(this.data.fromAnimal.ranger.rangerID) + 
+			'",animal:"' + encodeURIComponent(this.data.toAnimal.animalID) + '",tags:"' + encodeURIComponent(this.data.fromAnimal.tags) + '"){spoorIdentificationID}}', '')
 			.pipe(
 				retry(3),
 				catchError(() => {
@@ -161,7 +150,6 @@ export class ReclassifyTrackComponent implements OnInit {
 				next: data => this.dialogRef.close("success"),
 				error: error => this.dialogRef.close("error")
 			});
-			*/
 	}
 	
 	

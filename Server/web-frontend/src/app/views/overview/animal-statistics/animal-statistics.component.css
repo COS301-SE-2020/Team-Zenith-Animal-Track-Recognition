@@ -41,26 +41,26 @@
     background-color: #F5F6FA;
 }
 
-:host ::ng-deep #ranger-statistics-view-tabgroup .mat-tab-header {
+:host ::ng-deep #animal-statistics-view-tabgroup .mat-tab-header {
 	display: none;
 }
-#ranger-search-sidenav-container{
+#animal-search-sidenav-container{
 	height: 100%;
 	width: 100%;
 }
-#ranger-search-sidenav {
+#animal-search-sidenav {
     height: 100%;
     width: 200px;
     border-right: 2px solid #CCCCCC;
 }
-#ranger-statistics-navigation-container {
+#animal-statistics-navigation-container {
 	height: 90%;
 	width: 100%;
 }
-#ranger-statistics-navigation-container .mat-list-option {
+#animal-statistics-navigation-container .mat-list-option {
 	color: rgba(0, 0, 0, 0.35);
 }
-#ranger-statistics-navigation-container .mat-list-option.activeStatsNavRoute {
+#animal-statistics-navigation-container .mat-list-option.activeStatsNavRoute {
 	color: rgba(0, 0, 0, 0.65);
 }
 #sidenav-close-btn-container {
@@ -119,7 +119,7 @@
     width: 25px;
     border: 1px solid #CCCCCC;
 }
-#ranger-statistics-container {
+.animal-statistics-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -129,7 +129,7 @@
 	overflow-y: auto;
 	width: 100%;
 }
-#ranger-login-statistics-container {
+#animal-login-statistics-container, #animal-tracking-statistics-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -163,29 +163,29 @@
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	/* border: 1px solid red;*/
 }
-#ranger-loginby-statistics-content-row1, #ranger-identifications-statistics-content-row1 {
+#animal-loginby-statistics-content-row1, #animal-identifications-statistics-content-row1 {
 	height: 350px;
 }
-#ranger-loginby-statistics-content-row2, #ranger-identifications-statistics-content-row2 {
+#animal-loginby-statistics-content-row2, #animal-identifications-statistics-content-row2 {
 	height: 750px;
-	/*border: 1px solid blue;*/
 }
-
-#ranger-loginby-statistics-content-row3 {
+#identifications-byanimalStats-content-row1 {
+	height: auto;
+}
+#animal-loginby-statistics-content-row3 {
 	height: 550px;
 }
-#ranger-identificationsby-statistics-content-row1 {
+#animal-identificationsby-statistics-content-row1 {
 	height: 350px;
 }
-#ranger-identificationsby-statistics-content-row2 {
+#animal-identificationsby-statistics-content-row2 {
 	height: 750px;
 }
-#ranger-identificationsby-statistics-content-row3 {
+#animal-identificationsby-statistics-content-row3 {
 	height: 350px;
 }
-#ranger-identificationsby-statistics-content-container1 {
+#animal-identificationsby-statistics-content-container1 {
 	height: 100%;
 	width: 100%;
 	display: flex;
@@ -209,7 +209,7 @@
     animation: fadePop 0.7s ease-out 0s 1 normal none;
 	padding: 0 2%;
 }
-.statistics-content-container-title {
+.statistics-content-container-title, .statistics-byanimal-content-title {
 	border-bottom: 1px solid #CCC;
     height: 4em;
     display: flex;
@@ -218,7 +218,7 @@
     align-items: center;
     width: 100%;
 }
-.statistics-content-container-title > p {
+.statistics-content-container-title > p, .statistics-byanimal-content-title > p {
     color: rgba(0, 0, 0, .35);
     font-size: 110%;
     padding: 0;
@@ -271,27 +271,46 @@
 :host ::ng-deep ngx-charts-number-card .cell .trimmed-label {
 	width: 100%;
 }
-#ranger-loginbyapp-stats-container {
+#animal-loginbyapp-stats-container {
 	width: 40%;
 }
-#ranger-loginbylevel-stats-container {
+#animal-loginbylevel-stats-container {
 	width: 55%;
 }
-#ranger-identifications-byDate-stats {
+#animal-identifications-byDate-stats {
 	width: 100%;
 }
-#ranger-identifications-alltime-stats, #ranger-accuracyscore-alltime-stats {
+#identifications-byanimalAndDate-stats {
+	width: 100%;
+	background-color: transparent;
+	border-radius: 0;
+	box-shadow: none;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	height: auto;
+	padding: 0;
+	margin-top: 15px;
+}
+#identifications-byanimalAndDate-stats .statistics-content-container-content {
+	display: block;
+}
+#identifications-byanimalAndDate-stats .statistics-content-container-title {
+	padding-left: 2%;
+}
+#animal-identifications-alltime-stats, #animal-accuracyscore-alltime-stats {
 	width: 25%;
 }
-#ranger-identifications-alltime-stats .statistics-content-container-content , #ranger-accuracyscore-alltime-stats .statistics-content-container-content  {
+#animal-identifications-alltime-stats .statistics-content-container-content , #animal-accuracyscore-alltime-stats .statistics-content-container-content  {
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
 }
-#ranger-identifications-alltime-stats > .statistics-content-container-title > p, #ranger-accuracyscore-alltime-stats > .statistics-content-container-title > p{
+#animal-identifications-alltime-stats > .statistics-content-container-title > p, #animal-accuracyscore-alltime-stats > .statistics-content-container-title > p{
 	font-size: 100%;
 }
-#ranger-identificationsByLevel-alltime-stats {
+#animal-identificationsByLevel-alltime-stats {
 	width: 45%;
 }
 :host ::ng-deep .advanced-pie-legend {
@@ -314,10 +333,56 @@
 	justify-content: space-between;
 	align-items: center;
 }
-#ranger-loginbyranger-stats-container, #ranger-loginbydate-stats-container {
+#identifications-byanimalAndDate-stats-grid {
+	height: 100%;
 	width: 100%;
 }
-#logins-by-ranger-table-container, #logins-by-date-graph-container  {
+.statistics-byanimal-cell {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+}
+.statistics-byanimal-content-container {
+	background-color: white;
+	border-radius: 12px;
+	box-shadow: 0px 3px 8px #DDD;
+	height: 90%;
+	width: 95%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    animation: fadePop 0.7s ease-out 0s 1 normal none;
+	padding: 0 2%;
+}
+.statistics-byanimal-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: auto;
+	min-height: 85%;
+	width: 100%;
+}
+.statistics-byanimal-content-graph {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 85%;
+	width: 100%;
+}
+#animal-loginbyanimal-stats-container, #animal-loginbydate-stats-container {
+	width: 100%;
+}
+#logins-by-animal-table-container, #logins-by-date-graph-container  {
 	height: 100%;
 	width: 100%;
 }
@@ -328,11 +393,11 @@
 	justify-content: center;
 	align-items: center;
 }
-#logins-by-ranger-table {
+#logins-by-animal-table {
 	height: 90%;
 	width: 100%;
 }
-.ranger-cell {
+.animal-cell {
     color: #1D1D1D;
     transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.3s ease-in-out;
@@ -341,12 +406,12 @@
     -o-transition: all 0.3s ease-in-out;
 }
 
-.ranger-cell:hover {
+.animal-cell:hover {
     color: black;
     cursor: pointer;
     text-decoration: underline;
 }
-#logins-by-ranger-paginator {
+#logins-by-animal-paginator {
 	border-radius: 15px;
 	height: 10%;
 	width: 100%;

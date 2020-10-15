@@ -26,6 +26,9 @@
         </mat-menu>
     </div>
     <div id="animal-photos-track-info-content">
+		<div id="search-nav-loader-container" class="loader-container">
+			<mat-spinner id="loader"></mat-spinner>
+		</div>
         <div id="animal-photos-track-image-container" matTooltip="Click to expand track photo" [matTooltipPosition]="'right'" (click)="viewTrackPhotoDetails()">
             <img *ngIf="activeTrack" src="{{activeTrack.picture.URL}}" alt="Track image">
         </div>

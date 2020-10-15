@@ -90,6 +90,15 @@ export class TracksService {
 				this._displayedTracks.next(Object.assign({}, this.trackIdentificationsStore).trackIdentifications);
 				if (initParams.initWithFilter)
 					this.changeTrackFilter(initParams.filterType, initParams.filter);
+				
+				if (initParams.updateActiveTrack) {
+					let updatedTrack;
+					for (let i = 0; i < this.trackIdentificationsStore.trackIdentifications.length; i++) {
+						if (initParams.activeTrackID == this.trackIdentificationsStore.trackIdentifications[i].spoorIdentificationID) 
+							updatedTrack = this.trackIdentificationsStore.trackIdentifications[i];
+					}
+					this.changeActiveTrack(updatedTrack);
+				}
 			},
 				error => {
 					this._displayedTracks.next([]);

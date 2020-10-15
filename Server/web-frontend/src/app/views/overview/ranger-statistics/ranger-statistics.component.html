@@ -252,25 +252,29 @@
 											</div>
 											<div class="statistics-content-container-content">
 												<mat-grid-list id="identifications-byRangerAndDate-stats-grid" cols="2" rowHeight="2:1.5">
-												  <mat-grid-tile *ngFor="let rangerData of allIdsByRangerAndDate">
-													<div class="statistics-byRanger-cell">
-														<div class="statistics-byRanger-content-container">
-															<div class="statistics-byRanger-content-title">
-																<p class="fontSB">{{rangerData.ranger.firstName}} {{rangerData.ranger.lastName}}</p>
+													<ng-container *ngIf="allIdsByRangerAndDate.length > 0">
+														  <mat-grid-tile *ngFor="let rangerData of allIdsByRangerAndDate">
+															<div class="statistics-byRanger-cell">
+																<div class="statistics-byRanger-content-container">
+																	<div class="statistics-byRanger-content-title">
+																		<p class="fontSB ranger-cell" (click)="viewRangerProfile(rangerData.rangerID)">{{rangerData.ranger.firstName}} {{rangerData.ranger.lastName}}</p>
+																	</div>
+																	<div class="statistics-byRanger-content">
+																		<div class="statistics-byRanger-content-graph">
+																			<ngx-charts-line-chart [animations]="true" [scheme]="idsByRangerAndDateColorScheme" [legend]="true" 
+																				[showXAxisLabel]="true"
+																				[showYAxisLabel]="true"
+																				[xAxis]="true"
+																				[yAxis]="true"
+																				[xAxisLabel]="'Identification Date'" [yAxisLabel]="idsByRangerAndDateYLabel"
+																				[results]="rangerData.rangerGraphData">
+																			</ngx-charts-line-chart>
+																		</div>
+																	</div>
+																</div>
 															</div>
-															<div class="statistics-byRanger-content">
-																<ngx-charts-line-chart [animations]="true" [scheme]="idsByRangerAndDateColorScheme" [legend]="true" 
-																	[showXAxisLabel]="true"
-																	[showYAxisLabel]="true"
-																	[xAxis]="true"
-																	[yAxis]="true"
-																	[xAxisLabel]="'Identification Date'" [yAxisLabel]="idsByRangerAndDateYLabel"
-																	[results]="rangerData.rangerGraphData">
-																</ngx-charts-line-chart>
-															</div>
-														</div>
-													</div>
-												  </mat-grid-tile>																								  
+														  </mat-grid-tile>
+													</ng-container>
 												</mat-grid-list>
 											</div>
 										</div>

@@ -29,10 +29,10 @@ export class RangerStatisticsComponent implements OnInit {
 	};
 	cardColor: string = '#FFF';
 	numIdsByDateColorScheme = {
-		domain: ['#E44D25', '#509CD0', '#19A020', '#5AA454']
+		domain: ['#E44D25', '#509CD0', '#19A020', '#BA66E8']
 	};		
 	avgScoreByDateColorScheme = {
-		domain: ['#EECC6A', '#E44D25', '#509CD0', '#19A020']
+		domain: ['#EECC6A', '#E44D25', '#509CD0', '#19A020', '#BA66E8']
 	};	
 	
 	@ViewChild('statisticsSidenav') statsSidenav;
@@ -70,8 +70,6 @@ export class RangerStatisticsComponent implements OnInit {
 	loginsByDateEnd;
 	loginsByDateFilter = "platform";
 	
-	
-	
 	//Tracking Activity Variables - Overview
 	identificationsByDateColorScheme = this.numIdsByDateColorScheme;
 	identificationsByDateYLabel = "Number of Track Identifications";
@@ -93,7 +91,6 @@ export class RangerStatisticsComponent implements OnInit {
 	idsByRangerAndDateStart;
 	idsByRangerAndDateEnd;
 	idsByRangerAndDateFilter = "identifications";
-
 
 	constructor(private formBuilder: FormBuilder, private router: Router, private rangerStatsService: RangerStatisticsService) { 
 		//Login Activity
@@ -206,72 +203,6 @@ export class RangerStatisticsComponent implements OnInit {
 		};			
 		this.recentLoginsDataSource.sort = this.recentLoginsSort;
 		this.loadStatistics();
-		  /*
-		this.mostTracked = { mosotTrakedRanger: '' };
-		this.latest = { ranger: { firstName: '', lastName: '' }, animal: { commonName: '' } };
-		this.leastIdentified = { commonName: ''};
-		this.animalPercentages = { commonName: ''};
-
-		//Most recent identification
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{spoorIdentification(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-		  '",sigil:"yes"){animal{commonName},ranger{rangerID,accessLevel,firstName,lastName},dateAndTime{year,month,day,hour,min,second}}}')
-		  .pipe(
-			retry(3),
-			catchError(() => {
-			  this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
-			  this.stopLoader();
-			  this.stopSidenavLoader();
-			  return EMPTY;
-			})
-		  )
-		  .subscribe((data: any[]) => {
-			let temp = [];
-			temp.push(Object.values(Object.values(data)[0])[0]);
-			this.latest = temp[0][0];
-			this.timeToString(this.latest);
-		  });
-
-		
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsStats3(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-		  '"){commonName,NumberOfIdentifications}}')
-		  .pipe(
-			retry(3),
-			catchError(() => {
-			  this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
-			  this.stopLoader();
-			  this.stopSidenavLoader();
-			  return EMPTY;
-			})
-		  )
-		  .subscribe((data: any[]) => {
-			let temp = [];
-			temp = Object.values(Object.values(data)[0]);
-			this.animalPercentages = temp[0];
-
-		  });
-
-		this.http.get<any>(ROOT_QUERY_STRING + '?query=query{animalsStats4(token:"' + JSON.parse(localStorage.getItem('currentToken'))['value'] +
-		  '"){commonName,NumberOfIdentifications}}')
-		  .pipe(
-			retry(3),
-			catchError(() => {
-			  this.snackBar.open('An error occurred when connecting to the server. Please refresh and try again.', "Dismiss", { duration: 7000, });
-			  this.stopLoader();
-			  this.stopSidenavLoader();
-			  return EMPTY;
-			})
-		  )
-		  .subscribe((data: any[]) => {
-			let temp = [];
-			temp = Object.values(Object.values(data)[0]);
-			this.leastIdentified = temp[0];
-
-		  });
-
-		setTimeout(() => {
-		  this.stopLoader();
-		}, 1000);
-		*/
 	}
 
 	loadStatistics() {
@@ -346,10 +277,10 @@ export class RangerStatisticsComponent implements OnInit {
 		}
 		else if (index == 1) {
 			this.rangerStatsService.getAllTrackingActivity(JSON.parse(localStorage.getItem('currentToken'))['value']);
+			this.rangerStatsService.getAllTrackingActivityByRanger(JSON.parse(localStorage.getItem('currentToken'))['value']);
 			this.identificationsByDateYLabel = "Number of Track Identifications";			
 			this.allIdsByDateFilter = "identifications";
 			this.identificationsByDateColorScheme = this.numIdsByDateColorScheme;
-			this.rangerStatsService.getAllTrackingActivityByRanger(JSON.parse(localStorage.getItem('currentToken'))['value']);
 		}
 		
 		this.activeRangerStatsTabIndex = index;
