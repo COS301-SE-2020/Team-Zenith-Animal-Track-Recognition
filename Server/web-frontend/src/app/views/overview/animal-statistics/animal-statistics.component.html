@@ -39,18 +39,20 @@
 											</div>
 											<div class="statistics-content-container-content">
 												<div class="statistics-card-container">
-													<ng-container *ngIf="numAnimals.length == 0">
+													<ng-container *ngIf="numAnimals.length == 0; else showNumAnimals">
 														<div class="emptyDataMessage">
 															<p class="fontSB">No data to show.</p>
 														</div>
 													</ng-container>
-													<ngx-charts-number-card
-														[animations]="true"
-														[scheme]="redColorScheme"
-														[results]="numAnimals"
-														[cardColor]="cardColor"
-														[innerPadding]="0">
-													</ngx-charts-number-card>
+													<ng-template #showNumAnimals>
+														<ngx-charts-number-card
+															[animations]="true"
+															[scheme]="redColorScheme"
+															[results]="numAnimals"
+															[cardColor]="cardColor"
+															[innerPadding]="0">
+														</ngx-charts-number-card>
+													</ng-template>
 												</div>
 											</div>
 										</div>
@@ -60,18 +62,20 @@
 											</div>
 											<div class="statistics-content-container-content">
 												<div class="statistics-card-container">
-													<ng-container *ngIf="alltime_numIdentifications.length == 0">
+													<ng-container *ngIf="alltime_numIdentifications.length == 0; else showNumIds">
 														<div class="emptyDataMessage">
 															<p class="fontSB">No data to show.</p>
 														</div>
 													</ng-container>
-													<ngx-charts-number-card
-														[animations]="true"
-														[scheme]="greenColorScheme"
-														[results]="alltime_numIdentifications"
-														[cardColor]="cardColor"
-														[innerPadding]="0">
-													</ngx-charts-number-card>
+													<ng-template #showNumIds>				
+														<ngx-charts-number-card
+															[animations]="true"
+															[scheme]="greenColorScheme"
+															[results]="alltime_numIdentifications"
+															[cardColor]="cardColor"
+															[innerPadding]="0">
+														</ngx-charts-number-card>
+													</ng-template>
 												</div>
 											</div>
 										</div>
@@ -125,20 +129,22 @@
 											</div>
 											<div class="statistics-content-container-content">
 												<div class="by-date-graph-container">
-													<ng-container *ngIf="identificationsByAnimal.length == 0">
+													<ng-container *ngIf="identificationsByAnimal.length == 0; else showNumIdByAnimal">
 														<div class="emptyDataMessage">
 															<p class="fontSB">No data to show.</p>
 														</div>
 													</ng-container>
-													<ngx-charts-pie-chart
-														  [scheme]="animalColorScheme"
-														  [animations]="true"
-														  [results]="identificationsByAnimal"
-														  [legend]="true"
-														  [legendPosition]="'right'"
-														  [labels]="true"
-														  [doughnut]="true">
-													</ngx-charts-pie-chart>
+													<ng-template #showNumIdByAnimal>
+														<ngx-charts-pie-chart
+															  [scheme]="animalColorScheme"
+															  [animations]="true"
+															  [results]="identificationsByAnimal"
+															  [legend]="true"
+															  [legendPosition]="'right'"
+															  [labels]="true"
+															  [doughnut]="true">
+														</ngx-charts-pie-chart>
+													</ng-template>
 												</div>
 											</div>
 										</div>
@@ -150,23 +156,25 @@
 											</div>
 											<div class="statistics-content-container-content">
 												<div class="by-date-graph-container">
-													<ng-container *ngIf="avgScoreByAnimal.length == 0">
+													<ng-container *ngIf="avgScoreByAnimal.length == 0; else showAvgScoreByAnimal">
 														<div class="emptyDataMessage">
 															<p class="fontSB">No data to show.</p>
 														</div>
 													</ng-container>
-													<ngx-charts-bar-vertical
-														  [xAxis]="true"
-														  [yAxis]="true"
-														  [legend]="true"
-														  [showXAxisLabel]="true"
-														  [showYAxisLabel]="true"
-														  [xAxisLabel]="'Animals'"
-														  [yAxisLabel]="'Avg. Accuracy Score'"
-														  [scheme]="animalColorScheme"
-														  [animations]="true"
-														  [results]="avgScoreByAnimal">
-													</ngx-charts-bar-vertical>
+													<ng-template #showAvgScoreByAnimal>
+														<ngx-charts-bar-vertical
+															  [xAxis]="true"
+															  [yAxis]="true"
+															  [legend]="true"
+															  [showXAxisLabel]="true"
+															  [showYAxisLabel]="true"
+															  [xAxisLabel]="'Animals'"
+															  [yAxisLabel]="'Avg. Accuracy Score'"
+															  [scheme]="animalColorScheme"
+															  [animations]="true"
+															  [results]="avgScoreByAnimal">
+														</ngx-charts-bar-vertical>
+													</ng-template>
 												</div>
 											</div>
 										</div>

@@ -77,7 +77,6 @@ export class AnimalStatisticsComponent implements OnInit {
 		);	
 		animalStatsService.avgAccuracyScoreByAnimal$.subscribe(
 			data => {
-				console.log(data);
 				this.avgScoreByAnimal = data;
 			}
 		);	
