@@ -5,23 +5,15 @@
 **Project Description**
 The Animal Track Recognition system is an application which will support ERP rangers in identifying animals by certain identification markers relating to the spoor that they may leave behind i.e droppings or tracks.
 
-**Mobile Tracking Application**
-* PDF: [Mobile Tracking Application](https://drive.google.com/file/d/1cntvFsE2ufwXaMnnLwkSMIJQBQPNo14N/view?usp=sharing)
+**Live System**
+* Mobile Tracking Application: [Mobile Tracking Application](https://drive.google.com/file/d/1cntvFsE2ufwXaMnnLwkSMIJQBQPNo14N/view?usp=sharing)
+* Web Dashboard Application: [Web Dashboard Application](http://putch.dyndns.org:55554/)
 
-**Web Dashboard Application**
-* PDF: [Web Dashboard Application](http://putch.dyndns.org:55554/)
-
-**DEMO 1 Recorded Video**
-* Video: [Animal Track Recognition DEMO 1 Video](https://drive.google.com/file/d/1wPRWSZfDXdYjMZgVQhYv0WJvxW_datI-/view?usp=sharing)
-
-**DEMO 2 Recorded Video**
-* Video: [Animal Track Recognition DEMO 2 Video](https://drive.google.com/file/d/1Wsltu0sKa-cJ66aMKDCI91PJNubGCKhR/view?usp=sharing)
-
-**DEMO 3 Recorded Video**
-* Video: [Animal Track Recognition DEMO 3 Video](https://drive.google.com/file/d/1NfFtj9OYAtGpqkuROMzn-vF3PaGLdv0p/view?usp=sharing)
-
-**DEMO 4 Recorded Video**
-* Video: [Animal Track Recognition DEMO 4 Video](https://drive.google.com/file/d/1xiYPTq3g1Q2vpbbSa_twDK6jZbVKGuZs/view?usp=sharing)
+**Demo Videos**
+* Demo 1 Video: [Animal Track Recognition DEMO 1 Video](https://drive.google.com/file/d/1wPRWSZfDXdYjMZgVQhYv0WJvxW_datI-/view?usp=sharing)
+* Demo 2 Video: [Animal Track Recognition DEMO 2 Video](https://drive.google.com/file/d/1Wsltu0sKa-cJ66aMKDCI91PJNubGCKhR/view?usp=sharing)
+* Demo 3 Video: [Animal Track Recognition DEMO 3 Video](https://drive.google.com/file/d/1NfFtj9OYAtGpqkuROMzn-vF3PaGLdv0p/view?usp=sharing)
+* Demo 4 Video: [Animal Track Recognition DEMO 4 Video](https://drive.google.com/file/d/1xiYPTq3g1Q2vpbbSa_twDK6jZbVKGuZs/view?usp=sharing)
 
 **Coding Standards Document**
 * PDF: [Animal Track Recognition Coding Standards](https://drive.google.com/file/d/1Eb0PFPzKs8F8VZHP1lAfKrqgMnvFt7ab/view?usp=sharing)
@@ -39,10 +31,10 @@ The Animal Track Recognition system is an application which will support ERP ran
 * PDF: [Animal Track Recognition User Manual Doc](https://drive.google.com/file/d/138Y-w3XJszpY5oBIsyVg4-csuZC8hga1/view?usp=sharing)
 
 **Project Managment Tools**
-* Slack: https://teamzenithhq.slack.com
-* GitKraken Boards: https://app.gitkraken.com/glo/board/XrgQ-72g7AATO0N3
-* Discord: https://discord.com/channels/707165255481950219/707165255481950222
-* InVision: https://teamzenith.invisionapp.com/freehand/COS-301-DEMO-1---Use-Case--View-Wireframe-Concepts-6AnwhkKsC
+* Slack (Communication channels): https://teamzenithhq.slack.com
+* GitKraken Boards (Project Task & Progress Management): https://app.gitkraken.com/glo/board/XrgQ-72g7AATO0N3
+* Discord (Communication channels): https://discord.com/channels/707165255481950219/707165255481950222
+* InVision (UI/UX planning & Wireframes): https://teamzenith.invisionapp.com/freehand/COS-301-DEMO-1---Use-Case--View-Wireframe-Concepts-6AnwhkKsC
 
 **Team Overview**
 This is the profiles of Team Zenith. We are a family of 5. A group talented beyond measure. A team that is ready to create something phenomenal. We are dedicated to our craft as Software Engineers, Computer Scientists and Mathematicians. This repository is the pillar on which we establish ourselves as the best.
@@ -61,10 +53,10 @@ This is the profiles of Team Zenith. We are a family of 5. A group talented beyo
 | :---         | :---         |  
 |**Andrew Lumambo**|    **u16091010**   |
 |**Profile** |[Github](https://andrewlumambo.github.io/)|
-|**Overview**|I am a passionate self-motivated Physics student from Namibia. My work ethic is rooted in being detail orientated and organised, allowing me to move between various multidisciplinary fields that require creative and logical application. This also aids in facilitating friendly work environments through attentiveness and open-mindedness.|
+|**Overview**|I am a self-motivated Physics student from Namibia with a strong passion for both design and development. My work ethic is rooted in being detail orientated and open-minded, as well as being attentive to the needs and ideas of others.|
 |**Position** |Final year BSc Physics|
-|**Interests** |Writing, Painting, Poetry, Reading, Entrepreneurship, Design|
-|**Skills**|C++, Java, HTML, CSS, AJAX, JSON, JavaScript, SQL, PHP, C#, Graphic Design, Branding, Web Design|
+|**Interests** |Project development, Writing, Painting, Poetry, Reading, Entrepreneurship, Design|
+|**Skills**|Web Design, Web Development, Angular, UI Design, UX Design, Graphic Design, Branding, C++, Java, SQL, PHP, C#|
 
 |Team Member | Details | 
 | :---         | :---         |  
